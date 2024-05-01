@@ -1,0 +1,26 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Api.Models
+{
+    public class DBContext : DbContext
+    {
+        public DBContext(DbContextOptions<DBContext> options) : base(options)
+        {
+            
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Rider> Riders { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Address> Addressses { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrdersItems { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+    }
+}
