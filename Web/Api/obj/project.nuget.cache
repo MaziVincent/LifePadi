@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "A8b9dHgYLaGWe7lwXrcg9BZAn8sVibdOrMezgLfjNe+tvIVpmkzuKKL+dQ3dGpU90BKnpU1IG4za2pYWllq8uQ==",
+  "dgSpecHash": "oeDPnBNTUNsGy+26HYKKaY6qlKL1+LK2RJQ7usA/aqY51IqZS/2CKwQhuO5/syqhZceQNxOmqDO6fYADDayNew==",
   "success": true,
   "projectFilePath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Remigius\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\Remigius\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Remigius\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Remigius\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.4\\microsoft.aspnetcore.authentication.jwtbearer.8.0.4.nupkg.sha512",
     "C:\\Users\\Remigius\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

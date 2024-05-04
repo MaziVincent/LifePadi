@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //DB context
 builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
-    builder.Configuration.GetConnectionString("DefaultConnection")
+    builder.Configuration.GetConnectionString("LifePadiDBConnection")
     ));
 
 //Automaper

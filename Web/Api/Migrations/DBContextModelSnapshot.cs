@@ -248,6 +248,9 @@ namespace Api.Migrations
                     b.Property<string>("ProductImgUrl")
                         .HasColumnType("text");
 
+                    b.Property<string>("SearchString")
+                        .HasColumnType("text");
+
                     b.Property<int?>("ServiceId")
                         .HasColumnType("integer");
 
@@ -290,6 +293,9 @@ namespace Api.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -397,6 +403,9 @@ namespace Api.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("text");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
@@ -462,6 +471,9 @@ namespace Api.Migrations
 
                     b.Property<string>("IdentityType")
                         .HasColumnType("text");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.HasDiscriminator().HasValue("Rider");
                 });

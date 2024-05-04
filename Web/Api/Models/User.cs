@@ -18,8 +18,9 @@ namespace Api.Models
 
         public string? ContactAdress { get; set; }
         public string? RefreshToken { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
         public string? SearchString { get; set; }
+        public string? PasswordResetToken { get; set; }
     }
 }
