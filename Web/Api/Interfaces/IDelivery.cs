@@ -1,11 +1,15 @@
 ﻿using Api.DTO;
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
 namespace Api.Interfaces
 {
     public interface IDelivery
     {
+<<<<<<< HEAD
         public Task<IEnumerable<DeliveryDto>> allAsync();
         public Task<IEnumerable<DeliveryDtoLite>> allDeliveryLiteAsync();
         public Task<DeliveryDto> getAsync(int id);
@@ -30,5 +34,15 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfPendingDeliveriesByRider(int riderId);
         public Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId);
         public Task<DeliveryDto> getCustomersOrder(int customerId);
+=======
+        public Task<IEnumerable<DeliveryDTO>> allAsync();
+        public Task<IEnumerable<DeliveryDTOLite>> allDeliveryLiteAsync();
+        public Task<DeliveryDTO> getAsync(int id);
+        public Task<DeliveryDTO> updateAsync(DeliveryDTO delivery, int id);
+        public Task<string> delete(int id);
+        public Task<IEnumerable<DeliveryDTOLite>> getSuccessDelivery(string status);
+        public Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery(string status);
+
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

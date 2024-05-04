@@ -13,6 +13,11 @@
         public Category? Category { get; set; }
         public int VendorId { get; set; }
         public Vendor? Vendor { get; set; }
+<<<<<<< HEAD
+=======
+        public int Service_Id { get; set;}
+        public Service? Service { get; set; }
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         public string? SearchString { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

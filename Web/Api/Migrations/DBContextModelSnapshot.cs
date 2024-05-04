@@ -519,6 +519,15 @@ namespace Api.Migrations
 
                     b.Property<string>("SearchString")
                         .HasColumnType("text");
+<<<<<<< HEAD
+=======
+
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Service_Id")
+                        .HasColumnType("integer");
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
                     b.Property<bool?>("Status")
                         .HasColumnType("boolean");
@@ -1103,7 +1112,11 @@ namespace Api.Migrations
                     b.Property<string>("IdentityType")
                         .HasColumnType("text");
 
+<<<<<<< HEAD
                     b.Property<bool?>("IsVerified")
+=======
+                    b.Property<bool?>("IsActive")
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
                         .HasColumnType("boolean");
 
                     b.HasDiscriminator().HasValue("Rider");

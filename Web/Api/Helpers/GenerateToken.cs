@@ -16,7 +16,11 @@ namespace Api.Helpers
             _config = config;
         }
 
+<<<<<<< HEAD
         public string generateAccessToken(GenTokenDto genTokenDTO)
+=======
+        public string generateAccessToken(GenTokenDTO genTokenDTO)
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         {
             try
             {
@@ -26,7 +30,11 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
+<<<<<<< HEAD
                     new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
+=======
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -46,7 +54,11 @@ namespace Api.Helpers
             }
         }
 
+<<<<<<< HEAD
         public string generateRefreshToken(GenTokenDto genTokenDTO)
+=======
+        public string generateRefreshToken(GenTokenDTO genTokenDTO)
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         {
             try
             {
@@ -56,13 +68,21 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
+<<<<<<< HEAD
                     new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
+=======
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(Claims),
+<<<<<<< HEAD
                     Expires = DateTime.Now.AddDays(5),
+=======
+                    Expires = DateTime.Now.AddDays(1),
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -76,6 +96,7 @@ namespace Api.Helpers
                 throw new Exception(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         public GenTokenDto? validateRefreshToken(string token)
         {
@@ -107,5 +128,7 @@ namespace Api.Helpers
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

@@ -20,7 +20,10 @@ namespace Api.Models
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
         public string? SearchString { get; set; }
         public string? PasswordResetToken { get; set; }
+<<<<<<< HEAD
         public bool? IsActive { get; set; }
         public List<Address>? Addresses { get; set; }
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

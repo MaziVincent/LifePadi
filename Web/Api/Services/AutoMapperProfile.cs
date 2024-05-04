@@ -1,13 +1,17 @@
 ﻿using Api.DTO;
 using Api.Models;
 using AutoMapper;
+<<<<<<< HEAD
 using Customer = Api.Models.Customer;
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
 namespace Api.Services
 {
     public class AutoMapperProfile : Profile
 
     {
+<<<<<<< HEAD
         public AutoMapperProfile()
         {
             //user
@@ -149,6 +153,22 @@ namespace Api.Services
             //Message
             CreateMap<Message, MessageDto>();
             CreateMap<MessageDto, Message>();
+=======
+        public AutoMapperProfile() {
+            CreateMap<UserDTO, User>();
+            CreateMap<Admin, UserDTO>();
+            CreateMap<AuthUserDTO, Admin>();
+            CreateMap<CustomerDTO, Customer>();
+            CreateMap<AuthUserDTO, User>();
+            CreateMap<RiderDTO, Rider>();
+            CreateMap<VendorDTO, Vendor>();
+            CreateMap<OrderDTO, Order>();
+            CreateMap<ProductDTO, Product>();
+            CreateMap<ServiceDTO, Service>();
+            CreateMap<CategoryDTO, Category>();
+            CreateMap<OrderItemDTO, OrderItem>();
+            CreateMap<TransactionDTO, Transaction>();
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         }
     }
 }

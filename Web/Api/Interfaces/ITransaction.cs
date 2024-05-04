@@ -5,6 +5,7 @@ namespace Api.Interfaces
 {
     public interface ITransaction
     {
+<<<<<<< HEAD
         public Task<IEnumerable<TransactionDto>> AllAsync();
         public Task<TransactionDto> GetAsync(int id);
         public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id);
@@ -23,5 +24,13 @@ namespace Api.Interfaces
         public Task<object> PaystackCheckout(InitiatePaymentDto initiatePaymentDto);
         public Task<object> PaystackVerifyPayment(string reference);
         public Task<TransactionDto> GetTransactionByOrderId(int orderId);
+=======
+        public Task<IEnumerable<TransactionDTO>> allAsync();
+        public Task<TransactionDTO> getAsync();
+        public Task<TransactionDTO> updateAsync(TransactionDTO transaction, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<TransactionDTO> createAsync(TransactionDTO transaction);
+        public Task<TransactionDTO> getByPaymentId(BigInteger transactionId);
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

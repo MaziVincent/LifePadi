@@ -1,11 +1,15 @@
 ﻿using Api.DTO;
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
 namespace Api.Interfaces
 {
     public interface ICustomer
     {
+<<<<<<< HEAD
         public Task<AuthUserDto> createAsync(CustomerDto customer);
         public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
         public Task<Customer> getByEmail(string email);
@@ -22,5 +26,15 @@ namespace Api.Interfaces
         public Task<bool> checkPhoneAndEmail(string phoneNumber, string email);
         public Task<string> passwordReset(string phoneNumber);
         public Task<bool> checkPhoneExists(string phoneNumber);
+=======
+        public Task<AuthCustomerDTO> createAsync(CustomerDTO customer);
+        public Task<IEnumerable<CustomerDTO>> getAllAsync();
+        public Task<CustomerDTO> updateAsync(CustomerDTO customer, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<CustomerDTO> getAsync(int id);
+        public Task<IEnumerable<CustomerDTO>> search(string searchString);
+        public Task<IEnumerable<AddressDTO>> customerAddresses(int id);
+        public Task<IEnumerable<OrderDTO>> getCustomerOders(int id);
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

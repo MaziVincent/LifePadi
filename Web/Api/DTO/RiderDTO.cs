@@ -2,6 +2,7 @@
 
 namespace Api.DTO
 {
+<<<<<<< HEAD
     public class RiderDto
     {
         public int? Id { get; set; }
@@ -10,11 +11,16 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? ContactAddress { get; set; }
+=======
+    public class RiderDTO
+    {
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         public string? IdentityType { get; set; }
         public string? IdentityNumber { get; set; }
         public string? IdentityImgUrl { get; set; }
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
+<<<<<<< HEAD
         public bool? IsVerified { get; set; }
         public string? Password { get; set; }
         public List<OrderDtoLite>? Orders { get; set; }
@@ -29,11 +35,21 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? ContactAddress { get; set; }
+=======
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public List<Order>? Orders { get; set; }
+    }
+
+    public class RiderDTOLite
+    {
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
         public string? IdentityType { get; set; }
         public string? IdentityNumber { get; set; }
         public string? IdentityImgUrl { get; set; }
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
+<<<<<<< HEAD
         public bool? IsVerified { get; set; }
         public List<DeliveryDtoLite>? Deliveries { get; set; }
         public List<RiderReview>? RiderReviews { get; set; }
@@ -85,4 +101,9 @@ namespace Api.DTO
         public bool? IsVerified { get; set; }
         public bool? IsActive {get; set;}
     }
+=======
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 }

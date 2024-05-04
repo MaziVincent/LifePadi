@@ -3,11 +3,16 @@ using System.Numerics;
 
 namespace Api.DTO
 {
+<<<<<<< HEAD
     public class TransactionDto
+=======
+    public class TransactionDTO
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
+<<<<<<< HEAD
         public double TotalAmount { get; set; }
         public double AmountPaid { get; set; }
         public string? Status { get; set; }
@@ -165,4 +170,13 @@ namespace Api.DTO
         public double amount { get; set; }
         public DateTime? createdAt { get; set; }
     }
+=======
+        public Double TotalAmount { get; set; }
+        public bool? Status { get; set; }
+        public int OrderId { get; set; }
+        public Order? Order { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 }

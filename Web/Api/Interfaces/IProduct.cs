@@ -1,11 +1,15 @@
 ﻿using Api.DTO;
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
 namespace Api.Interfaces
 {
     public interface IProduct
     {
+<<<<<<< HEAD
         public Task<IEnumerable<ProductDto>> allAsync(int pageNumber, int pageSize, string searchString);
         public Task<IEnumerable<ProductDtoLite>> allProductLiteAsync();
         public Task<ProductDto> getAsync(int id);
@@ -26,5 +30,15 @@ namespace Api.Interfaces
         public Task<object> getVendorProductStat(int vendorId);
         public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
         public Task<SearchDTO> SearchAsync(SearchPaging props);
+=======
+        public Task<IEnumerable<ProductDTO>> allAsync();
+        public Task<IEnumerable<ProductDTOLite>> allProductLiteAsync();
+        public Task<ProductDTO> getAsync(int id);
+        public Task<string> deleteAsync(int id);
+        public Task<ProductDTO> updateAsync(ProductDTO product, int id);
+        public Task<IEnumerable<ProductDTO>> searchProduct(string searchString);
+        public Task<ProductDTO> uploadProductImg(int id, string imgUrl);
+        public Task<VendorDTO> getProductVendor(int id);
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }

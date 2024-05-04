@@ -1,11 +1,15 @@
 ﻿using Api.DTO;
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
+=======
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
 
 namespace Api.Interfaces
 {
     public interface IOrder
     {
+<<<<<<< HEAD
         public Task<PagedList<Order>> allAsync(SearchPaging props);
         public Task<IEnumerable<OrderDtoLite>> allOrderLite();
         public Task<OrderDto> createAsync(OrderDto order);
@@ -25,5 +29,14 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfOrdersThisYear();
         public Task<int> totalNumberOfClosedOrders();
         public Task<object> orderStats();
+=======
+        public Task<IEnumerable<OrderDTO>> allAsync();
+        public Task<IEnumerable<OrderDTOLite>> allOrderLite();
+        public Task<OrderDTO> createAsync(OrderDTO order);
+        public Task<OrderDTO> updateAsync(OrderDTO order, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<OrderDTO> getAsync(int id);
+        public Task<IEnumerable<OrderItemDTOLite>> orderItemDLites(int id);
+>>>>>>> 9a80707 (created the interfaces and the DTOs)
     }
 }
