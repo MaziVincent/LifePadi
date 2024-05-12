@@ -30,8 +30,12 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
+<<<<<<< HEAD
         public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {
@@ -151,10 +155,14 @@ namespace Api.Controllers
 
         [HttpGet("search")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> searchProduct([FromQuery] string searchString)
 =======
         public async Task<IActionResult> searchProduct([FromRoute] string searchString)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> searchProduct([FromQuery] string searchString)
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {
@@ -173,10 +181,14 @@ namespace Api.Controllers
 
         [HttpGet("searchByAll")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> searchByAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string name = "")
 =======
         public async Task<IActionResult> searchByAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string name = "")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> searchByAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string name = "")
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {
@@ -195,10 +207,14 @@ namespace Api.Controllers
 
         [HttpGet("searchByCategory")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> searchByCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "")
 =======
         public async Task<IActionResult> searchByCategory([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string categoryName = "")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> searchByCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "")
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {
@@ -217,10 +233,14 @@ namespace Api.Controllers
 
         [HttpGet("searchByService")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> searchByService([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string serviceName = "")
 =======
         public async Task<IActionResult> searchByService([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string serviceName = "")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> searchByService([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string serviceName = "")
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {
@@ -239,10 +259,14 @@ namespace Api.Controllers
 
         [HttpGet("searchByVendor")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> searchByVendor([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string vendorName = "")
 =======
         public async Task<IActionResult> searchByVendor([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string vendorName = "")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> searchByVendor([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string vendorName = "")
+>>>>>>> 96f3b7d (made some corrections on service, category and product services.)
         {
             try
             {

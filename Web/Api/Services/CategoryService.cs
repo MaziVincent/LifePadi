@@ -116,7 +116,7 @@ namespace Api.Services
                     return categoryDTOs1;
                 }
                 var categories = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
-                    .Where(c => StringSearch.stringSearch(searchString, c.Name!) == true)
+                    .Where(c => c.Name!.ToLower().Contains(searchString.ToLower()))
                     .ToListAsync();
                 var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
                 return categoryDTOs;
