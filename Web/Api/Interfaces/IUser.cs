@@ -5,6 +5,7 @@ namespace Api.Interfaces
     public interface IUser
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<IEnumerable<UserDtoLite>> getAllAsync(int pageNumber, int pageSize);
         public Task<UserDto> getAsync(int id);
         public Task<UserDtoLite> updateAsync(UserDtoLite user, int id);
@@ -17,8 +18,11 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfUsers();
 =======
         public Task<IEnumerable<UserDTO>> getAllAsync();
+=======
+        public Task<IEnumerable<UserDTOLite>> getAllAsync(int pageNumber, int pageSize);
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public Task<UserDTO> getAsync(int id);
-        public Task<UserDTO> updateAsync(UserDTO user, int id);
+        public Task<UserDTOLite> updateAsync(UserDTOLite user, int id);
         public Task<string> deleteAsync(int id);
         public Task<AuthUserDTO> createAsync(UserDTO user);
         public Task<bool> checkEmail(string email);

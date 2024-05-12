@@ -27,7 +27,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -42,11 +46,16 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create( [FromForm] AddressDto address)
+=======
+        public async Task<IActionResult> create( [FromForm] AddressDTO address)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var newAddress = await _iaddress.createAsync(address);
+<<<<<<< HEAD
                 
                 return Ok(newAddress);
             }catch (Exception ex)
@@ -54,12 +63,22 @@ namespace Api.Controllers
                 if(ex.Message.Contains("Address already exist")){
                     return Conflict(ex.Message);
                 }
+=======
+                return Ok(newAddress);
+            }catch (Exception ex)
+            {
+>>>>>>> ee48634 (done with service, category and product controllers.)
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] AddressDto address, int id)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update([FromForm] AddressDTO address, int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -72,7 +91,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -86,6 +109,7 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("setasdefault")]
         public async Task<IActionResult> setAsDefault([FromBody] DefaultAddressDto add )
         {
@@ -103,6 +127,9 @@ namespace Api.Controllers
 
 
         [HttpGet("customer-addresses/{customerId}")]
+=======
+        [HttpGet("{customerId}/customer-addresses")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> getCustomersAddresses([FromRoute] int customerId)
         {
             try
@@ -115,6 +142,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
         
 
         [HttpGet("user-addresses/{userId}")]
@@ -129,5 +157,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

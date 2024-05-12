@@ -2,9 +2,12 @@
 using Api.Interfaces;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using AutoMapper;
 using Api.Helpers;
 using System;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
 namespace Api.Controllers
 {
@@ -13,6 +16,7 @@ namespace Api.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomer? _icustomer;
+<<<<<<< HEAD
         private readonly IMapper _mapper;
         private readonly IEmailVerification _emailVerify;
         public CustomerController(ICustomer icustomer, IMapper mapper, IEmailVerification emailVerify)
@@ -53,6 +57,14 @@ namespace Api.Controllers
         }
 
         [HttpGet("get/{id}")]
+=======
+        public CustomerController(ICustomer icustomer)
+        {
+            _icustomer = icustomer;
+        }
+
+        [HttpGet("{id}/get")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -60,13 +72,18 @@ namespace Api.Controllers
                 var customer = await _icustomer!.getAsync(id);
                 if (customer == null) return NotFound();
                 return Ok(customer);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("getByPhone/{phone}")]
         public async Task<IActionResult> getByPhone(string phone)
         {
@@ -100,12 +117,26 @@ namespace Api.Controllers
                 return Ok(new { result, dataList });
             }
             catch (Exception ex)
+=======
+        [HttpGet("all")]
+        public async Task<IActionResult> getAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10)
+        {
+            try
+            {
+                var customers = await _icustomer!.getAllAsync(pageNumber, pageSize);
+                return Ok(customers);
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -121,13 +152,18 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] CustomerDto customer)
+=======
+        public async Task<IActionResult> create([FromForm] CustomerDTO customer)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest("Some form values are not correct");
                 var authCustomer = await _icustomer!.createAsync(customer);
                 return Ok(authCustomer);
+<<<<<<< HEAD
 
             }
             catch (Exception ex)
@@ -136,48 +172,77 @@ namespace Api.Controllers
                 {
                     return StatusCode(409, ex.Message);
                 }
+=======
+            }catch(Exception ex)
+            {
+>>>>>>> ee48634 (done with service, category and product controllers.)
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] CustomerDto customer)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update(int id, [FromForm] CustomerDTO customer)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var updateCustomer = await _icustomer!.updateAsync(customer, id);
                 if (updateCustomer == null) return NotFound();
                 return Ok(updateCustomer);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("orders/{id}")]
+=======
+        [HttpGet("{id}/orders")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> getOrders(int id)
         {
             try
             {
                 var customerOders = await _icustomer!.getCustomerOders(id);
                 return Ok(customerOders);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("addresses/{id}")]
+=======
+        [HttpGet("{id}/addresses")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> getAddresses(int id)
         {
             try
             {
                 var customersAddresses = await _icustomer!.customerAddresses(id);
                 return Ok(customersAddresses);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
@@ -190,6 +255,7 @@ namespace Api.Controllers
             {
                 var response = await _icustomer!.search(searchString);
                 return Ok(response);
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -264,6 +330,9 @@ namespace Api.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+            }catch(Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }

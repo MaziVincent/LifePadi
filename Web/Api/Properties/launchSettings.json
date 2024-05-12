@@ -9,6 +9,19 @@
     }
   },
   "profiles": {
+<<<<<<< HEAD
+=======
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "api/user/1/get",
+      "applicationUrl": "http://localhost:5287",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+>>>>>>> ee48634 (done with service, category and product controllers.)
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,

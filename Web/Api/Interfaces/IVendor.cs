@@ -10,6 +10,7 @@ namespace Api.Interfaces
     public interface IVendor
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Vendor>> allAsync(SearchPaging props);
         public Task<IEnumerable<VendorDtoLite>> vendorsOnly();
         public Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id);
@@ -32,5 +33,16 @@ namespace Api.Interfaces
         public Task<VendorDTO> uploadVendorImg(int id, string imgUrl);
         public Task<IEnumerable<VendorDTO>> searchAsync(string searchString);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize);
+        public Task<IEnumerable<VendorDTOLite>> vendorsOnly();
+        public Task<IEnumerable<ProductDTOLite>> vendorsProduct(int id);
+        public Task<VendorDTO> uploadVendorImg(int id, IFormFile image);
+        public Task<IEnumerable<VendorDTOLite>> searchAsync(string searchString);
+        public Task<string> deleteAsync(int id);
+        public Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor);
+        public Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id);
+        public Task<AuthVendorDTOLite> getAsync(int id);
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

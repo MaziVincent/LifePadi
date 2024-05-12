@@ -1,5 +1,8 @@
 ﻿using Api.DTO;
+<<<<<<< HEAD
 using Api.Exceptions;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
@@ -30,6 +33,7 @@ namespace Api.Services
             _cloudinary = new Cloudinary(account);
 
         }
+<<<<<<< HEAD
         public async Task<PagedList<Service>> allAsync(SearchPaging props)
         {
             try
@@ -88,6 +92,39 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+=======
+        public async Task<IEnumerable<ServiceDTO>> allAsync()
+        {
+            try
+            {
+                var services = await _dbContext!.Services.Include(s => s.Products)!
+                                  .ThenInclude(p => p.Vendor)
+                                  .OrderByDescending(s => s.CreatedAt)
+                                  .Where(s => s.IsActive == true)
+                                  .ToListAsync();
+                var serviceDTO = _mapper!.Map<List<ServiceDTO>>(services);
+                return serviceDTO;
+
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceDTOLite> createAsync(ServiceDTO service)
+        {
+            try
+            {
+                var newService = _mapper!.Map<Service>(service);
+                newService.IsActive = true;
+                await _dbContext!.Services.AddAsync(newService);
+                await _dbContext!.SaveChangesAsync();
+                var serviceDOLite = _mapper.Map<ServiceDTOLite>(newService);
+                return serviceDOLite;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -96,6 +133,7 @@ namespace Api.Services
             try
             {
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
+<<<<<<< HEAD
                 if (service == null) { return null!; }
                 _dbContext.Services.Remove(service!);
                 await _dbContext!.SaveChangesAsync();
@@ -158,6 +196,45 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+=======
+                if (service != null) { return null!; }
+                _dbContext.Services.Remove(service!);
+                await _dbContext!.SaveChangesAsync();
+                return "Service deleted";
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceDTO> getAsync(int id)
+        {
+            try
+            {
+                var service = await _dbContext!.Services.Include(s => s.Products)!
+                    .ThenInclude(p => p.Vendor)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+                if (service == null) return null!;
+                var serviceDTO = _mapper!.Map<ServiceDTO>(service);
+                return serviceDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ProductDTO>> getServiceProducts(int id)
+        {
+            try
+            {
+                var service = await _dbContext!.Services.Include(s => s.Products)!
+                    .ThenInclude(p => p.Vendor).FirstOrDefaultAsync(s => s.Id == id);
+                var products = _mapper!.Map<List<ProductDTO>>(service!.Products);
+                return products;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -168,10 +245,16 @@ namespace Api.Services
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (response!.IsActive == true) return true;
                 return false;
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+=======
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -179,6 +262,7 @@ namespace Api.Services
         {
             try
             {
+<<<<<<< HEAD
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == name.ToLower());
                 if (response == null) return false;
                 return true;
@@ -190,10 +274,23 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ServiceDtoLite>> nonActiveService()
+=======
+                var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name == name);
+                if (response == null) return false;
+                return true;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ServiceDTOLite>> nonActiveService()
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var services = await _dbContext!.Services.Where(s => s.IsActive == false).ToListAsync();
+<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
                 return ServiceDtoLite;
             }
@@ -204,15 +301,31 @@ namespace Api.Services
         }
 
         public Task<IEnumerable<ServiceDto>> searchByName(string name)
+=======
+                var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
+                return serviceDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<IEnumerable<ServiceDTO>> searchByName(string name)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             throw new NotImplementedException();
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<ServiceDtoLite>> servicesLite()
+=======
+        public async Task<IEnumerable<ServiceDTOLite>> servicesLite()
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var services = await _dbContext!.Services.ToListAsync();
+<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
                 return ServiceDtoLite;
             }
@@ -280,6 +393,17 @@ namespace Api.Services
         }
 
         public async Task<ServiceDtoLite> updateAsync(ServiceDto service, int id)
+=======
+                var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
+                return serviceDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceDTOLite> updateAsync(ServiceDTO service, int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -291,6 +415,7 @@ namespace Api.Services
                 initialService.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Services.Attach(initialService);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<ServiceDtoLite>(initialService);
                 return ServiceDtoLite;
             }
@@ -301,6 +426,17 @@ namespace Api.Services
         }
 
         public async Task<ServiceDto> uploadImgUrl(int id, IFormFile image)
+=======
+                var serviceDTOLite = _mapper!.Map<ServiceDTOLite>(initialService);
+                return serviceDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ServiceDTO> uploadImgUrl(int id, IFormFile image)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -308,6 +444,7 @@ namespace Api.Services
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) return null!;
                 var imgPath = await UploadImage.uploadImg(image, _cloudinary!, folderName);
+<<<<<<< HEAD
                 if (imgPath == null) throw new ServiceException("Can not upload image");
                 service.ServiceIconUrl = imgPath;
                 _dbContext!.Services.Attach(service);
@@ -348,6 +485,18 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+=======
+                if (imgPath == null) throw new Exception("Can not upload image");
+                service.ServiceIconUrl = imgPath;
+                _dbContext!.Services.Attach(service);
+                await _dbContext.SaveChangesAsync();
+                var serviceDTO = _mapper!.Map<ServiceDTO>(service);
+                return serviceDTO;
+
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
     }

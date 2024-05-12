@@ -1,12 +1,16 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using AutoMapper;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+<<<<<<< HEAD
     public class VendorController(IVendor ivendor, IMapper mapper) : ControllerBase
     {
         private readonly IVendor _ivendor = ivendor;
@@ -14,6 +18,18 @@ namespace Api.Controllers
 
         [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id){
+=======
+    public class VendorController : ControllerBase
+    {
+        private readonly IVendor _ivendor;
+        public VendorController(IVendor ivendor) { 
+            _ivendor = ivendor;
+        }
+
+        [HttpGet("{id}/get")]
+        public async Task<IActionResult> get(int id)
+        {
+>>>>>>> ee48634 (done with service, category and product controllers.)
             try
             {
                 var vendor = await _ivendor.getAsync(id);
@@ -26,6 +42,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
+<<<<<<< HEAD
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
@@ -40,20 +57,36 @@ namespace Api.Controllers
                     vendors.HasNext
                 };
                 return Ok(new {result, dataList});
+=======
+        public async Task<IActionResult> getAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10)
+        {
+            try
+            {
+                var vendors = await _ivendor.allAsync(pageNumber, pageSize);
+                return Ok(vendors);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _ivendor.deleteAsync(id);
                 if (response == null) return NotFound();
+<<<<<<< HEAD
                 return Ok(new{success = response});
+=======
+                return Ok(response);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -61,7 +94,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] AuthVendorDto vendor)
+=======
+        public async Task<IActionResult> create([FromForm] AuthVendorDTO vendor)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -80,8 +117,13 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDto vendor)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDTOLite vendor)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -101,15 +143,23 @@ namespace Api.Controllers
                 var result = await _ivendor.searchAsync(searchString);
                 if (result == null) return NotFound();
                 return Ok(result);
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDto vendorImg)
+=======
+        [HttpPut("{id}/uploadImg")]
+        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDTO vendorImg)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -135,7 +185,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("products/{id}")]
+=======
+        [HttpGet("{id}/products")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> vendorProducts(int id)
         {
             try
@@ -148,6 +202,7 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("getByTagName")]
         public async Task<IActionResult> getByTagName([FromQuery] string tag)
         {
@@ -212,5 +267,7 @@ namespace Api.Controllers
             }
         }
 
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

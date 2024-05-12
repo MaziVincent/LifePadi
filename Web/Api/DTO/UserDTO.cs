@@ -9,7 +9,11 @@ namespace Api.DTO
 =======
     public class UserDTO
     {
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public int? Id { get; set; }
+>>>>>>> ee48634 (done with service, category and product controllers.)
         [Required]
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
@@ -45,6 +49,7 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public string? ContactAddress { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -60,6 +65,8 @@ namespace Api.DTO
         public string? ContactAddress { get; set; }
 =======
         public string? PasswordHash { get; set; }
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public string? ContactAdress { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
         public string? RefreshToken { get; set; }
@@ -94,10 +101,15 @@ namespace Api.DTO
     public class AuthUserDtoLite
 =======
         public string? ContactAdress { get; set; }
-        public string? RefreshToken { get; set; }
-        public string? AccessToken { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public Token? Token { get; set; }
+    }
+
+    public class Token
+    {
+        public string? RefreshToken { get; set; }
+        public string? AccessToken { get; set; }
     }
 
     public class AuthUserDTOLite

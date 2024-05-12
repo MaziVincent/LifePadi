@@ -1,11 +1,18 @@
 ﻿
+<<<<<<< HEAD
 using Api.Exceptions;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
 namespace Api.Helpers
 {
+<<<<<<< HEAD
     public static class UploadImage
+=======
+    public class UploadImage
+>>>>>>> ee48634 (done with service, category and product controllers.)
     {
         public static async Task<string> uploadImg(IFormFile file, Cloudinary cloudinary, string folderName)
         {
@@ -30,7 +37,11 @@ namespace Api.Helpers
                 return "No file provided.";
             }catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new ServiceException(ex.Message);
+=======
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
     }

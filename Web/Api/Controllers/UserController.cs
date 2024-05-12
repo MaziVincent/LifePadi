@@ -56,7 +56,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] UserDto user)
+=======
+        public async Task<IActionResult> create([FromForm] UserDTO user)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -70,7 +74,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
+<<<<<<< HEAD
         public async Task<IActionResult> update(int id, [FromForm] UserDtoLite user)
+=======
+        public async Task<IActionResult> update(int id, [FromForm] UserDTOLite user)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {

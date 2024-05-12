@@ -4,6 +4,10 @@
     {
         public Vendor(): base() { }
         public string? Name { get; set; }
+<<<<<<< HEAD
+=======
+        public string? VendorType { get; set; }
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public string? VendorImgUrl { get; set; }
         public string? Tag { get; set; }
         public int? ServiceId { get; set; }

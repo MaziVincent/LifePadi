@@ -4,8 +4,12 @@ using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using CloudinaryDotNet;
 
+=======
+using System.Linq.Expressions;
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
 namespace Api.Services
 {
@@ -13,6 +17,7 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
+<<<<<<< HEAD
         private readonly IConfiguration _config;
         private readonly Cloudinary _cloudinary;
         public CategoryService(DBContext dbContext, IMapper mapper, IConfiguration config)
@@ -92,10 +97,42 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync()
+=======
+        public CategoryService(DBContext dbContext, IMapper mapper) 
+        { 
+            _dbContext = dbContext;
+            _mapper = mapper;
+        }
+        public async Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        {
+            try
+            {
+                var skip = (pageNumber - 1) * pageSize;
+                if (searchString == "")
+                {
+                    var categories1 = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
+                    .ToListAsync();
+                    var categoryDTOs1 = _mapper.Map<List<CategoryDTO>>(categories1);
+                    return categoryDTOs1;
+                }
+                var categories = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
+                    .Where(c => StringSearch.stringSearch(searchString, c.Name!) == true)
+                    .ToListAsync();
+                var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
+                return categoryDTOs;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<CategoryDTOLite>> allCategoryLiteAsync()
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var categories = await _dbContext.Categories.ToListAsync();
+<<<<<<< HEAD
                 var CategoryDtos = _mapper.Map<List<CategoryDtoLite>>(categories);
                 return CategoryDtos;
             }
@@ -106,11 +143,23 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> categoryProducts(int id)
+=======
+                var categoryDTOs = _mapper.Map<List<CategoryDTOLite>>(categories);
+                return categoryDTOs;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ProductDTO>> categoryProducts(int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var category = await _dbContext.Categories
                     .Include(c => c.Products!)
+<<<<<<< HEAD
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .AsSplitQuery()
@@ -160,6 +209,33 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
+=======
+                    .ThenInclude(p => p.Service)
+                    .Include(c => c.Products!)
+                    .ThenInclude(p => p.Vendor)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                var products = _mapper.Map<List<ProductDTO>>(category!.Products);
+                return products;
+
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CategoryDTO> createAsync(CategoryDTOLite category)
+        {
+            try
+            {
+                var newCategory = _mapper.Map<Category>(category);
+                await _dbContext.Categories.AddAsync(newCategory);
+                await _dbContext.SaveChangesAsync();
+                var categoryDTO = _mapper.Map<CategoryDTO>(newCategory);
+                return categoryDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -172,6 +248,7 @@ namespace Api.Services
                 _dbContext.Categories.Remove(category);
                 await _dbContext.SaveChangesAsync();
                 return "Category deleted";
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -180,6 +257,15 @@ namespace Api.Services
         }
 
         public async Task<CategoryDto> getAsync(int id)
+=======
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CategoryDTO> getAsync(int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -187,6 +273,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
+<<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
                 var CategoryDto = _mapper.Map<CategoryDto>(category);
@@ -199,6 +286,20 @@ namespace Api.Services
         }
 
         public async Task<CategoryDto> getByNameAsync(string name)
+=======
+                    .ThenInclude(p => p.Service)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                if (category == null) return null!;
+                var categoryDTO = _mapper.Map<CategoryDTO>(category);
+                return categoryDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CategoryDTO> getByNameAsync(string name)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -206,6 +307,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
+<<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
                 var CategoryDto = _mapper.Map<CategoryDto>(category);
@@ -232,6 +334,21 @@ namespace Api.Services
         }
 
         public async Task<CategoryDto> updateAsync(CategoryDto category, int id)
+=======
+                    .ThenInclude(p => p.Service)
+                    .FirstOrDefaultAsync(c => c.Name == name);
+                if (category == null) return null!;
+                var categoryDTO = _mapper.Map<CategoryDTO>(category);
+                return categoryDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CategoryDTO> updateAsync(CategoryDTO category, int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -242,6 +359,7 @@ namespace Api.Services
                 initialCategory!.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Categories.Attach(initialCategory);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
                 var CategoryDto = _mapper.Map<CategoryDto>(initialCategory);
                 return CategoryDto;
             }
@@ -285,6 +403,13 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
+=======
+                var categoryDTO = _mapper.Map<CategoryDTO>(initialCategory);
+                return categoryDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
     }

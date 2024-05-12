@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using Api.Chat;
 using Api.DTO;
 using Api.Interfaces;
@@ -5,6 +6,11 @@ using Api.Models;
 using Api.Services;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+=======
+using Api.Interfaces;
+using Api.Models;
+using Api.Services;
+>>>>>>> ee48634 (done with service, category and product controllers.)
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -61,12 +67,17 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IVendor, VendorService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IRider, RiderService>();
+=======
+//builder.Services.AddScoped<IRider, RiderService>();
+>>>>>>> ee48634 (done with service, category and product controllers.)
 builder.Services.AddScoped<ICustomer, CustomerService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
 builder.Services.AddScoped<ITransaction, TransactionService>();
@@ -94,16 +105,31 @@ builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+=======
+//builder.Services.AddScoped<ITransaction, TransactionService>();
+//builder.Services.AddScoped<IOrder, OrderService>();
+//builder.Services.AddScoped<IOrderItem, OrderItemService>();
+//builder.Services.AddScoped<IDelivery, DeliveryService>();
+
+
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
 //enable CORS
 builder.Services.AddCors(c =>
 {
+<<<<<<< HEAD
     c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("https://lifepadi.com", "http://localhost:5173", "https://www.lifepadi.com")
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials());
     
+=======
+    c.AddPolicy("AllowAllOrigin", options => options.AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+>>>>>>> ee48634 (done with service, category and product controllers.)
 });
 
 
@@ -127,6 +153,10 @@ app.MapHub<NotificationHub>("/hubs/notification");
 
 app.MapHub<ChatHub>("/chatHub");
 
+
+app.UseAuthentication();
+
+app.UseCors("AllowAllOrigin");
 
 app.UseAuthentication();
 

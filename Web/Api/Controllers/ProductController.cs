@@ -1,6 +1,9 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+<<<<<<< HEAD
 using AutoMapper;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -10,6 +13,7 @@ namespace Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProduct? _iproduct;
+<<<<<<< HEAD
         private readonly IMapper _mapper;
         public ProductController(IProduct iproduct, IMapper mapper)
         {
@@ -19,13 +23,26 @@ namespace Api.Controllers
 
         [HttpGet("all")]
         public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
+=======
+        public ProductController(IProduct iproduct)
+        {
+            _iproduct = iproduct;
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.allAsync(pageNumber, pageSize, searchString);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
@@ -38,23 +55,35 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.allProductLiteAsync();
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch(Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create(CreateProductDto product)
+=======
+        public async Task<IActionResult> create(CreateProductDTO product)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest("Please fill in the form correctly");
                 var newProduct = await _iproduct!.createAsync(product);
                 return Ok(newProduct);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
@@ -68,14 +97,22 @@ namespace Api.Controllers
                 var response = await _iproduct!.deleteAsync(id);
                 if (response == null) return NotFound();
                 return Ok(response);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -83,8 +120,12 @@ namespace Api.Controllers
                 var product = await _iproduct!.getAsync(id);
                 if (product == null) return NotFound();
                 return Ok(product);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
@@ -97,112 +138,175 @@ namespace Api.Controllers
             {
                 var vendor = await _iproduct!.getProductVendor(id);
                 return Ok(vendor);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("search")]
+<<<<<<< HEAD
         public async Task<IActionResult> searchProduct([FromQuery] string searchString)
+=======
+        public async Task<IActionResult> searchProduct([FromRoute] string searchString)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.searchProduct(searchString);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("searchByAll")]
+<<<<<<< HEAD
         public async Task<IActionResult> searchByAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string name = "")
+=======
+        public async Task<IActionResult> searchByAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string name = "")
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.searchProductByAll(pageNumber, pageSize, name);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("searchByCategory")]
+<<<<<<< HEAD
         public async Task<IActionResult> searchByCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "")
+=======
+        public async Task<IActionResult> searchByCategory([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string categoryName = "")
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.searchProductByCategory(pageNumber, pageSize, categoryName);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("searchByService")]
+<<<<<<< HEAD
         public async Task<IActionResult> searchByService([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string serviceName = "")
+=======
+        public async Task<IActionResult> searchByService([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string serviceName = "")
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.searchProductByService(pageNumber, pageSize, serviceName);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("searchByVendor")]
+<<<<<<< HEAD
         public async Task<IActionResult> searchByVendor([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string vendorName = "")
+=======
+        public async Task<IActionResult> searchByVendor([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string vendorName = "")
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var products = await _iproduct!.searchProductByVendor(pageNumber, pageSize, vendorName);
                 return Ok(products);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] ProductDto product, int id)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update([FromForm] ProductDTO product ,int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var updatedProduct = await _iproduct!.updateAsync(product, id);
                 if (updatedProduct == null) return NotFound();
                 return Ok(updatedProduct);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImage(int id, [FromForm] ImageDto productImage)
+=======
+        [HttpPut("{id}/uploadImg")]
+        public async Task<IActionResult> uploadImage(int id, [FromForm] ImageDTO productImage)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var product = await _iproduct!.uploadProductImg(id, productImage.Image!);
                 if (product == null) return NotFound();
                 return Ok(product);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> ee48634 (done with service, category and product controllers.)
             {
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpPut("toogleStatus/{id}")]
         public async Task<IActionResult> toogleStatus(int id)
@@ -270,5 +374,7 @@ namespace Api.Controllers
             }
         }
 
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

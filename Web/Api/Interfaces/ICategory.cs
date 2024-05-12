@@ -10,6 +10,7 @@ namespace Api.Interfaces
     public interface ICategory
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Category>> allAsync(SearchPaging props);
         public Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync();
         public Task<CategoryDto> getAsync(int id);
@@ -26,12 +27,21 @@ namespace Api.Interfaces
 =======
         public Task<IEnumerable<CategoryDTO>> allAsync();
         public Task<IEnumerable<CategoryDTO>> allCategoryLiteAsync();
+=======
+        public Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber, int pageSize, string searchString);
+        public Task<IEnumerable<CategoryDTOLite>> allCategoryLiteAsync();
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public Task<CategoryDTO> getAsync(int id);
-        public Task<IEnumerable<ProductDTOLite>> categoryProducts(int id);
+        public Task<IEnumerable<ProductDTO>> categoryProducts(int id);
         public Task<CategoryDTO> getByNameAsync(string name);
         public Task<string> deleteAsync(int id);
         public Task<CategoryDTO> updateAsync(CategoryDTO category, int id);
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<CategoryDTO> createAsync(CategoryDTOLite category);
+
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
     }
 }

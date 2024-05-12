@@ -7,6 +7,7 @@ namespace Api.Models
         public int Id { get; set; }
         public int Quantity { get; set; }
         public Double Amount { get; set; }
+<<<<<<< HEAD
         [NotMapped]
         public Double _TotalAmount { get; set; } = 0;
         public Double TotalAmount
@@ -20,6 +21,8 @@ namespace Api.Models
                 _TotalAmount = Quantity * Amount;
             }
         }
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public int ProductId { get; set; }
         public Product? Product { get; set; }
         public int OrderId { get; set; }

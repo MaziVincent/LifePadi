@@ -12,6 +12,7 @@ namespace Api.DTO
         public int Quantity { get; set; }
         public Double Amount { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Double TotalAmount { get; set; }
         public string? Name { get; set; }
         public double? Weight { get; set; }
@@ -29,6 +30,12 @@ namespace Api.DTO
         public Product? Product { get; set; }
         public int Order_Id { get; set; }
         public Order? Order { get; set; }
+=======
+        public int ProductId { get; set; }
+        public ProductDTOLite? Product { get; set; }
+        public int OrderId { get; set; }
+        public OrderDTOLite? Order { get; set; }
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -39,6 +46,7 @@ namespace Api.DTO
         public int Id { get; set; }
         public int Quantity { get; set; }
         public Double Amount { get; set; }
+<<<<<<< HEAD
 <<<<<<< HEAD
         public Double TotalAmount { get; set; }
         public string? Name { get; set; }
@@ -51,6 +59,8 @@ namespace Api.DTO
         public int Order_Id { get; set; }
         public Order? Order { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

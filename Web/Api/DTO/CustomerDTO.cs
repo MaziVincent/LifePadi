@@ -37,6 +37,7 @@ namespace Api.DTO
 =======
     public class CustomerDTO
     {
+        public int? Id { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
@@ -46,24 +47,31 @@ namespace Api.DTO
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
         public string? LastName { get; set; }
+        [Required]
         public string? Email { get; set; }
+        [Required]
         public string? PhoneNumber { get; set; }
-        public string? PasswordHash { get; set; }
+        public string? Password { get; set; }
         public string? ContactAdress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }
-        public List<Address>? Addresses { get; set; }
-        public List<Order>? Orders { get; set; }
+        public List<AddressDTOLite>? Addresses { get; set; }
+        public List<OrderDTOLite>? Orders { get; set; }
     }
 
     public class CustomerDTOLite
     {
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public int? Id { get; set; }
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+<<<<<<< HEAD
 <<<<<<< HEAD
         public string? Role { get; set; }
         public string? ContactAddress { get; set; }
@@ -74,6 +82,8 @@ namespace Api.DTO
     public class AuthCustomerDto
 =======
         public string? PasswordHash { get; set; }
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public string? ContactAdress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }

@@ -51,10 +51,10 @@ namespace Api.DTO
         public string? PickupType { get; set; }
         public Double DeliveryFee { get; set; }
         public bool? Status { get; set; }
-        public int Order_Id { get; set; }
-        public Order? Order { get; set; }
-        public int Rider_Id { get; set; }
-        public Rider? Rider { get; set; }
+        public int OrderId { get; set; }
+        public OrderDTOLite? Order { get; set; }
+        public int RiderId { get; set; }
+        public RiderDTOLite? Rider { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
     }

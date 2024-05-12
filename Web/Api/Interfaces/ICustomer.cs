@@ -10,6 +10,7 @@ namespace Api.Interfaces
     public interface ICustomer
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<AuthUserDto> createAsync(CustomerDto customer);
         public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
         public Task<Customer> getByEmail(string email);
@@ -36,5 +37,15 @@ namespace Api.Interfaces
         public Task<IEnumerable<AddressDTO>> customerAddresses(int id);
         public Task<IEnumerable<OrderDTO>> getCustomerOders(int id);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<AuthUserDTO> createAsync(CustomerDTO customer);
+        public Task<IEnumerable<CustomerDTOLite>> getAllAsync(int pageNumber, int pageSize);
+        public Task<CustomerDTOLite> updateAsync(CustomerDTO customer, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<CustomerDTO> getAsync(int id);
+        public Task<IEnumerable<CustomerDTOLite>> search(string searchString);
+        public Task<IEnumerable<AddressDTOLite>> customerAddresses(int id);
+        public Task<IEnumerable<OrderDTOLite>> getCustomerOders(int id);
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

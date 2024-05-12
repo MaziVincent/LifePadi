@@ -38,7 +38,7 @@ namespace Api.DTO
 =======
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public List<Order>? Orders { get; set; }
+        public List<OrderDTOLite>? Orders { get; set; }
     }
 
     public class RiderDTOLite

@@ -16,7 +16,11 @@ namespace Api.Helpers
                 {
                     // Fuzzy matching logic using your chosen library
                     var matchRatio = Fuzz.Ratio(word, searchTearm.ToLower());
+<<<<<<< HEAD
                     if (matchRatio >= 50) // Set a threshold for acceptable similarity
+=======
+                    if (matchRatio >= 0.8) // Set a threshold for acceptable similarity
+>>>>>>> ee48634 (done with service, category and product controllers.)
                     {
                         isMatch = true;
                         break; // Exit inner loop if a match is found
@@ -28,6 +32,9 @@ namespace Api.Helpers
                 throw new Exception(ex.Message);
             }
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }

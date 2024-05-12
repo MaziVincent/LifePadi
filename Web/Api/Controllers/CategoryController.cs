@@ -1,7 +1,10 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 using AutoMapper;
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
 
 namespace Api.Controllers
 {
@@ -10,6 +13,7 @@ namespace Api.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategory _icategory;
+<<<<<<< HEAD
         private readonly IMapper _mapper;
         public CategoryController(ICategory icategory, IMapper mapper) 
         { 
@@ -31,6 +35,20 @@ namespace Api.Controllers
                     categories.CurrentPage
                 };
                 return Ok(new {result, dataList});
+=======
+        public CategoryController(ICategory icategory) 
+        { 
+            _icategory = icategory;
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        {
+            try
+            {
+                var categories = await _icategory.allAsync(pageNumber, pageSize, searchString);
+                return Ok(categories);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -50,7 +68,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("products/{id}")]
+=======
+        [HttpGet("{id}/products")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> getCategoryProducts(int id)
         {
             try
@@ -64,7 +86,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
+=======
+        public async Task<IActionResult> create([FromForm] CategoryDTOLite category)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -73,26 +99,41 @@ namespace Api.Controllers
                 return Ok(newCategory);
             }catch (Exception ex)
             {
+<<<<<<< HEAD
                 if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _icategory.deleteAsync(id);
                 if (response == null) return NotFound();
+<<<<<<< HEAD
                 return Ok(new {success = response});
+=======
+                return Ok(response);
+>>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -120,8 +161,13 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
+>>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -133,6 +179,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpGet("vendorProductCategories/{vendorId}")]
         public async Task<IActionResult> vendorCategories(int vendorId)
@@ -181,5 +228,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> ee48634 (done with service, category and product controllers.)
     }
 }
