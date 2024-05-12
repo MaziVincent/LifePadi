@@ -16,7 +16,7 @@ namespace Api.Helpers
                 {
                     // Fuzzy matching logic using your chosen library
                     var matchRatio = Fuzz.Ratio(word, searchTearm.ToLower());
-                    if (matchRatio >= 0.8) // Set a threshold for acceptable similarity
+                    if (matchRatio >= 50) // Set a threshold for acceptable similarity
                     {
                         isMatch = true;
                         break; // Exit inner loop if a match is found

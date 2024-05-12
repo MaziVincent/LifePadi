@@ -49,7 +49,7 @@ namespace Api.Services
                     .Include(p => p.Service)
                     .Include(p => p.Category)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => StringSearch.stringSearch(searchString, p.SearchString!) == true).ToListAsync();
+                    .Where(p => p.SearchString!.ToLower().Contains(searchString.ToLower())).ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;
             }catch (Exception ex)
@@ -152,7 +152,7 @@ namespace Api.Services
                     {
                         // Fuzzy matching logic using your chosen library
                         var matchRatio = Fuzz.Ratio(word, searchString.ToLower());
-                        if (matchRatio >= 0.8) // Set a threshold for acceptable similarity
+                        if (matchRatio >= 50) // Set a threshold for acceptable similarity
                         {
                             isMatch = true;
                             break; // Exit inner loop if a match is found
@@ -182,9 +182,10 @@ namespace Api.Services
                     .Include(p => p.Service)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => StringSearch.stringSearch(name, p.Category!.Name!) == true || 
-                    StringSearch.stringSearch(name, p.Service!.Name!) == true || 
-                    StringSearch.stringSearch(name, p.Vendor!.Name!) == true)
+                    .Where(p => p.Category!.Name!.ToLower().Contains(name.ToLower()) || 
+                    p.Service!.Name!.ToLower().Contains(name.ToLower()) || 
+                    p.Vendor!.Name!.ToLower().Contains(name.ToLower()) || 
+                    p.SearchString!.ToLower().Contains(name.ToLower()))
                     .ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;
@@ -204,7 +205,7 @@ namespace Api.Services
                     .Include(p => p.Service)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => StringSearch.stringSearch(categoryName, p.Category!.Name!) == true)
+                    .Where(p => p.Category!.Name!.ToLower().Contains(categoryName.ToLower()))
                     .ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;
@@ -224,7 +225,7 @@ namespace Api.Services
                     .Include(p => p.Service)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => StringSearch.stringSearch(serviceName, p.Service!.Name!) == true)
+                    .Where(p => p.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
                     .ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;
@@ -245,7 +246,8 @@ namespace Api.Services
                     .Include(p => p.Service)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => StringSearch.stringSearch(vendorName, p.Vendor!.Name!) == true)
+                    .AsQueryable()
+                    .Where(p => p.Vendor!.Name!.ToLower().Contains(vendorName.ToLower()))
                     .ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;

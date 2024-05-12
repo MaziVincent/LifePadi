@@ -15,7 +15,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> searchProduct([FromRoute] string searchString)
+        public async Task<IActionResult> searchProduct([FromQuery] string searchString)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("searchByAll")]
-        public async Task<IActionResult> searchByAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string name = "")
+        public async Task<IActionResult> searchByAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string name = "")
         {
             try
             {
@@ -122,7 +122,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("searchByCategory")]
-        public async Task<IActionResult> searchByCategory([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string categoryName = "")
+        public async Task<IActionResult> searchByCategory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string categoryName = "")
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("searchByService")]
-        public async Task<IActionResult> searchByService([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string serviceName = "")
+        public async Task<IActionResult> searchByService([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string serviceName = "")
         {
             try
             {
@@ -148,7 +148,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("searchByVendor")]
-        public async Task<IActionResult> searchByVendor([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10, [FromRoute] string vendorName = "")
+        public async Task<IActionResult> searchByVendor([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string vendorName = "")
         {
             try
             {
