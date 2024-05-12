@@ -10,7 +10,9 @@
         public string? PostalCode { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set ; }
+        public int CustomerId { get; set; }
+        public Customer? Customer { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set ; } = DateTime.UtcNow;
     }
 }

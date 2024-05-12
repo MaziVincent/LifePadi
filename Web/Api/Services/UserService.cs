@@ -1,4 +1,5 @@
 ﻿using Api.DTO;
+using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
@@ -11,9 +12,11 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-        public UserService(DBContext dbContext, IMapper mapper) { 
+        private readonly IConfiguration? _config;
+        public UserService(DBContext dbContext, IMapper mapper, IConfiguration config) { 
             _dbContext = dbContext;
             _mapper = mapper;
+            _config = config;
         }
         public async Task<bool> checkEmail(string email)
         {
@@ -36,9 +39,10 @@ namespace Api.Services
             {
                 var newAdmin = _mapper.Map<Admin>(user);
                 newAdmin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                var authuser = _mapper.Map<AuthUserDTO>(newAdmin);
+                newAdmin.SearchString = user.FirstName!.ToUpper()+" "+user.LastName!.ToUpper()+" "+user.Email!.ToUpper();
                 await _dbContext.Admins.AddAsync(newAdmin);
                 await _dbContext.SaveChangesAsync();
+                var authuser = _mapper.Map<AuthUserDTO>(newAdmin);
                 return authuser;
             }catch (Exception ex)
             {
@@ -51,7 +55,7 @@ namespace Api.Services
             try
             {
                 var user = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
-                if (user == null) return "User not found";
+                if (user == null) return null!;
                 _dbContext.Remove(user);
                 await _dbContext.SaveChangesAsync();
                 return "User deleted";
@@ -61,17 +65,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<UserDTO>> getAllAsync()
+        public async Task<IEnumerable<UserDTOLite>> getAllAsync(int pageNumber, int pageSize)
         {
             try
             {
-                var users = await _dbContext.Admins.ToListAsync();
-                var userDTOs = new List<UserDTO>();
-                foreach (var user in users)
-                {
-                    var userDTO = _mapper.Map<UserDTO>(user);
-                    userDTOs.Add(userDTO);
-                }
+                var skip = (pageNumber - 1) * pageSize;
+                var users = await _dbContext.Admins.Skip(skip).Take(pageSize).OrderByDescending(a => a.CreatedAt).ToListAsync();
+                var userDTOs = _mapper.Map<List<UserDTOLite>>(users);
+                
                 return userDTOs!;
             }catch(Exception ex)
             {
@@ -101,6 +102,26 @@ namespace Api.Services
         {
             try
             {
+                var authUser = await authenticate(user);
+                if (authUser == null) return null!;
+                var genTokenDTO = _mapper.Map<GenTokenDTO>(authUser);
+                var genToken = new GenerateToken(_config!);
+                var accessToken = genToken.generateAccessToken(genTokenDTO);
+                var refreshToken = genToken.generateRefreshToken(genTokenDTO);
+                authUser.Token!.AccessToken = accessToken;
+                authUser.Token!.RefreshToken = refreshToken;
+
+                return authUser;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AuthUserDTO> authenticate(AuthUserDTOLite user)
+        {
+            try
+            {
                 var loginUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
                 if (loginUser == null) return null!;
                 if (BCrypt.Net.BCrypt.Verify(user.Password, loginUser.PasswordHash))
@@ -120,7 +141,7 @@ namespace Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<UserDTO> updateAsync(UserDTO user, int id)
+        public async Task<UserDTOLite> updateAsync(UserDTOLite user, int id)
         {
             try
             {
@@ -131,10 +152,12 @@ namespace Api.Services
                 updateUser.Email = user.Email;
                 updateUser.PhoneNumber = user.PhoneNumber;
                 updateUser.ContactAdress = user.ContactAdress;
+                updateUser.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
+                updateUser.UpdatedAt = DateTime.UtcNow;
 
                 _dbContext.Admins.Attach(updateUser);
                 await _dbContext.SaveChangesAsync();
-                var updatedUser = _mapper.Map<UserDTO>(updateUser);
+                var updatedUser = _mapper.Map<UserDTOLite>(updateUser);
                 return updatedUser;
 
             }catch(Exception ex) 

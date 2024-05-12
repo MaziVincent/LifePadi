@@ -37,7 +37,7 @@ namespace Api.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Latitude")
@@ -65,7 +65,7 @@ namespace Api.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Addressses");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Api.Models.Category", b =>
@@ -107,10 +107,7 @@ namespace Api.Migrations
                     b.Property<double>("DeliveryFee")
                         .HasColumnType("double precision");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Order_Id")
+                    b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PickupAdress")
@@ -119,10 +116,7 @@ namespace Api.Migrations
                     b.Property<string>("PickupType")
                         .HasColumnType("text");
 
-                    b.Property<int?>("RiderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rider_Id")
+                    b.Property<int>("RiderId")
                         .HasColumnType("integer");
 
                     b.Property<bool?>("Status")
@@ -151,16 +145,10 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Customer_Id")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("RiderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rider_Id")
                         .HasColumnType("integer");
 
                     b.Property<bool?>("Status")
@@ -192,16 +180,10 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Order_Id")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Product_Id")
+                    b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
@@ -227,10 +209,7 @@ namespace Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Category_Id")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -251,10 +230,7 @@ namespace Api.Migrations
                     b.Property<string>("SearchString")
                         .HasColumnType("text");
 
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Service_Id")
+                    b.Property<int>("ServiceId")
                         .HasColumnType("integer");
 
                     b.Property<bool?>("Status")
@@ -263,10 +239,7 @@ namespace Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VendorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Vendor_Id")
+                    b.Property<int>("VendorId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -379,12 +352,10 @@ namespace Api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -485,10 +456,10 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("VendorImgUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("VendorImgUrl")
+                    b.Property<string>("VendorType")
                         .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("Vendor");
@@ -496,20 +467,28 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Address", b =>
                 {
-                    b.HasOne("Api.Models.Customer", null)
+                    b.HasOne("Api.Models.Customer", "Customer")
                         .WithMany("Addresses")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Api.Models.Delivery", b =>
                 {
                     b.HasOne("Api.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany()
-                        .HasForeignKey("RiderId");
+                        .HasForeignKey("RiderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -520,7 +499,9 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany("Orders")
@@ -535,11 +516,15 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -550,15 +535,21 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Service", "Service")
                         .WithMany("Products")
-                        .HasForeignKey("ServiceId");
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("Products")
-                        .HasForeignKey("VendorId");
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

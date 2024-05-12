@@ -5,7 +5,7 @@
     },
     "postgresql1": {
       "type": "postgresql",
-      "connectionId": "ConnectionStrings:DefaultConnection",
+      "connectionId": "ConnectionStrings:LifePadiDBConnection",
       "dynamicId": null
     }
   }

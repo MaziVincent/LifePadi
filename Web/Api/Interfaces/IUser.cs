@@ -4,9 +4,9 @@ namespace Api.Interfaces
 {
     public interface IUser
     {
-        public Task<IEnumerable<UserDTO>> getAllAsync();
+        public Task<IEnumerable<UserDTOLite>> getAllAsync(int pageNumber, int pageSize);
         public Task<UserDTO> getAsync(int id);
-        public Task<UserDTO> updateAsync(UserDTO user, int id);
+        public Task<UserDTOLite> updateAsync(UserDTOLite user, int id);
         public Task<string> deleteAsync(int id);
         public Task<AuthUserDTO> createAsync(UserDTO user);
         public Task<bool> checkEmail(string email);
