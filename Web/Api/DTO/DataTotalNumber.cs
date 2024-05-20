@@ -2,6 +2,7 @@
 {
     public class DataTotalNumber
     {
+<<<<<<< HEAD
         public int? TotalNumber { get; set; }
         public object[]? Data { get; set; }
     }
@@ -12,6 +13,12 @@
         public int? PageSize { get; set; }
         public int? Next { get; set; }
         public int? Previous { get; set; }
+=======
+        public int? PageNumber { get; set; }
+        public int? PageSize { get; set; }
+        public int? Next { get; set; }
+        public int? Previous {  get; set; }
+>>>>>>> 28d4101 (finished with rider and order)
         public int? TotalNumber { get; set; }
         public object[]? Data { get; set; }
     }

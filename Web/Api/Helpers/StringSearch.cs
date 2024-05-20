@@ -37,8 +37,12 @@ namespace Api.Helpers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+
+>>>>>>> 28d4101 (finished with rider and order)
     }
 }

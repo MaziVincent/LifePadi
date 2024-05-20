@@ -74,7 +74,8 @@ namespace Api.DTO
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public CustomerDTOLite? Customer { get; set; }
-        public bool? Status { get; set; }
+        public string? Status { get; set; }
+        public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? RiderId { get; set; }
@@ -85,11 +86,30 @@ namespace Api.DTO
     public class OrderDTOLite
     {
         public int Id { get; set; }
+        public string? Status { get; set; }
+        public bool? IsDelivered { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    }
+
+    public class OrderDTOLiteB
+    {
+        public int Id { get; set; }
+        public string? Status { get; set; }
+        public bool? IsDelivered { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }
+<<<<<<< HEAD
         public Customer? Customer { get; set; }
         public bool? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public CustomerDTOLite? Customer { get; set; }
+        public int? RiderId { get; set; }
+        public RiderDTOLite? Rider { get; set; }
+>>>>>>> 28d4101 (finished with rider and order)
     }
 }

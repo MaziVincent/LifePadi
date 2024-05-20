@@ -10,6 +10,7 @@ namespace Api.Interfaces
     public interface IRider
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
         public Task<GetRiderDto> getAsync(int id);
         public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
@@ -39,13 +40,31 @@ namespace Api.Interfaces
         public Task<IEnumerable<RiderDTO>> getAllAsync();
         public Task<RiderDTO> getAsync(int id);
         public Task<RiderDTO> updateAsync(RiderDTO rider, int id);
+=======
+        public Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString);
+        public Task<GetRiderDTO> getAsync(int id);
+        public Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id);
+>>>>>>> 28d4101 (finished with rider and order)
         public Task<string> deleteAsync(int id);
-        public Task<AuthUserDTO> createAsync(RiderDTO rider);
+        public Task<AuthRiderDTO> createAsync(CreateRiderDTO rider);
         public Task<IEnumerable<OrderDTO>> orderLists(int id);
+<<<<<<< HEAD
         public Task<IEnumerable<RiderDTO>> searchAsync(string searchString);
         public Task<IEnumerable<OrderDTO>> nonActiveRiders();
         public Task<IEnumerable<DeliveryDTOLite>> successfulDeliveries(int id);
         public Task<IEnumerable<DeliveryDTOLite>> unsuccessfulDeliveries(int id);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<IEnumerable<GetRiderDTO>> searchAsync(string searchString);
+        public Task<IEnumerable<GetRiderDTO>> nonActiveRiders();
+        public Task<IEnumerable<DeliveryDTOLite>> successfulDeliveries(int riderId);
+        public Task<IEnumerable<DeliveryDTOLite>> unsuccessfulDeliveries(int riderId);
+        public Task<IEnumerable<OrderDTO>> getRiderOrders(int id);
+        public Task<GetRiderDTO> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
+        public Task<string> activateRider(int id);
+        public Task<string> verifyRider(int id);
+        public Task<string> deactivateRider(int id);
+        public Task<string> assignOrderToRider(int riderId, int orderId);
+>>>>>>> 28d4101 (finished with rider and order)
     }
 }

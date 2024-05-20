@@ -7,6 +7,7 @@
         public string? Description { get; set; }
         public string? Code { get; set; }
         public string? Type { get; set; }
+<<<<<<< HEAD
         public bool? IsActive { get; set; } = false;
         public bool? IsExpired { get; set; } = false;
         public int? TotalNumberAvailable { get; set; }
@@ -21,5 +22,15 @@
         public List<Transaction>? Transactions { get; set; }
         public List<CustomerVoucher>? CustomerVouchers { get; set; }
         public List<VoucherNotification>? voucherNotifications { get; set; }
+=======
+        public bool? IsActive { get; set; }
+        public int? TotalNumberAvailable { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string? DiscountPercentage { get; set; }
+        public string? Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+>>>>>>> 28d4101 (finished with rider and order)
     }
 }

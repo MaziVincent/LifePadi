@@ -301,6 +301,7 @@ namespace Api.Services
                 updateUser.Email = user.Email;
                 updateUser.PhoneNumber = user.PhoneNumber;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 updateUser.ContactAddress = user.ContactAddress;
                 updateUser.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 updateUser.UpdatedAt = DateTime.UtcNow;
@@ -329,6 +330,9 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
 =======
                 updateUser.ContactAdress = user.ContactAdress;
+=======
+                updateUser.ContactAddress = user.ContactAddress;
+>>>>>>> 28d4101 (finished with rider and order)
                 updateUser.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 updateUser.UpdatedAt = DateTime.UtcNow;
 

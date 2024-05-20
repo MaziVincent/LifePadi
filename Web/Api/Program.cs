@@ -68,15 +68,20 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IVendor, VendorService>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 builder.Services.AddScoped<IRider, RiderService>();
 =======
 //builder.Services.AddScoped<IRider, RiderService>();
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+builder.Services.AddScoped<IRider, RiderService>();
+>>>>>>> 28d4101 (finished with rider and order)
 builder.Services.AddScoped<ICustomer, CustomerService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
+<<<<<<< HEAD
 <<<<<<< HEAD
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
@@ -108,7 +113,11 @@ builder.Logging.AddConsole();
 =======
 //builder.Services.AddScoped<ITransaction, TransactionService>();
 //builder.Services.AddScoped<IOrder, OrderService>();
+=======
+builder.Services.AddScoped<IOrder, OrderService>();
+>>>>>>> 28d4101 (finished with rider and order)
 //builder.Services.AddScoped<IOrderItem, OrderItemService>();
+//builder.Services.AddScoped<ITransaction, TransactionService>();
 //builder.Services.AddScoped<IDelivery, DeliveryService>();
 
 

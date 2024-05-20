@@ -326,7 +326,11 @@ namespace Api.Migrations
                     b.Property<int?>("ReceiverAddressId")
                         .HasColumnType("integer");
 
+<<<<<<< HEAD
                     b.Property<string>("ReceiverAddressOld")
+=======
+                    b.Property<string>("Status")
+>>>>>>> 28d4101 (finished with rider and order)
                         .HasColumnType("text");
 
                     b.Property<string>("ReceiverName")
@@ -426,12 +430,20 @@ namespace Api.Migrations
                     b.Property<bool?>("IsDelivered")
 =======
 
+                    b.Property<bool?>("IsDelivered")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("RiderId")
                         .HasColumnType("integer");
 
+<<<<<<< HEAD
                     b.Property<bool?>("Status")
 >>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("boolean");
+=======
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+>>>>>>> 28d4101 (finished with rider and order)
 
                     b.Property<string>("Order_Id")
                         .HasColumnType("text");
@@ -1137,6 +1149,9 @@ namespace Api.Migrations
 =======
                     b.Property<bool?>("IsActive")
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("IsVerified")
                         .HasColumnType("boolean");
 
                     b.HasDiscriminator().HasValue("Rider");

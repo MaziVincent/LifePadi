@@ -406,8 +406,12 @@ namespace Api.Services
                 initialCustomer.ContactAddress = customer.ContactAddress;
 =======
                 if (initialCustomer == null) return null!;
+<<<<<<< HEAD
                 initialCustomer.ContactAdress = customer.ContactAdress;
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+                initialCustomer.ContactAddress = customer.ContactAddress;
+>>>>>>> 28d4101 (finished with rider and order)
                 initialCustomer.FirstName = customer.FirstName;
                 initialCustomer.LastName = customer.LastName;
                 initialCustomer.Email = customer.Email;
