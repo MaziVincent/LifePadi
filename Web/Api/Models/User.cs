@@ -14,7 +14,7 @@ namespace Api.Models
         [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
         public string? LastName { get; set; }
 
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;

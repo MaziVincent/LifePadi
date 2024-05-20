@@ -151,7 +151,7 @@ namespace Api.Services
                 updateUser.LastName = user.LastName;
                 updateUser.Email = user.Email;
                 updateUser.PhoneNumber = user.PhoneNumber;
-                updateUser.ContactAdress = user.ContactAdress;
+                updateUser.ContactAddress = user.ContactAddress;
                 updateUser.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 updateUser.UpdatedAt = DateTime.UtcNow;
 

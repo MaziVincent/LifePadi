@@ -20,7 +20,7 @@ namespace Api.DTO
         [Required]
         public string? PhoneNumber { get; set; }
         public string? Password { get; set; }
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }

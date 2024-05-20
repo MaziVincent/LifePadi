@@ -129,7 +129,7 @@ namespace Api.Services
                 initialVendor.VendorType = vendor.VendorType;
                 initialVendor.Email = vendor.Email;
                 initialVendor.PhoneNumber = vendor.PhoneNumber;
-                initialVendor.ContactAdress = vendor.ContactAdress;
+                initialVendor.ContactAddress = vendor.ContactAddress;
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vendors.Attach(initialVendor);
                 await _dbContext.SaveChangesAsync();

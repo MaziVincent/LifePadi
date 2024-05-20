@@ -5,7 +5,7 @@ namespace Api.DTO
     public class VendorDTO
     {
         public int? Id { get; set; }
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? VendorType { get; set; }
@@ -16,7 +16,7 @@ namespace Api.DTO
 
     public class VendorDTOLite
     {
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? VendorType { get; set; }
@@ -31,7 +31,7 @@ namespace Api.DTO
         public int? Id { get; set; }
         public string? Email { get; set; }
         public string? VendorType { get; set; }
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? Password { get; set; }
@@ -42,7 +42,7 @@ namespace Api.DTO
         public int? Id { get; set; }
         public string? Email { get; set; }
         public string? VendorType { get; set; }
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public DateTime? CreatedAt { get; set; }

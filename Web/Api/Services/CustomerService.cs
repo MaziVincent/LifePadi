@@ -146,7 +146,7 @@ namespace Api.Services
             {
                 var initialCustomer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
                 if (initialCustomer == null) return null!;
-                initialCustomer.ContactAdress = customer.ContactAdress;
+                initialCustomer.ContactAddress = customer.ContactAddress;
                 initialCustomer.FirstName = customer.FirstName;
                 initialCustomer.LastName = customer.LastName;
                 initialCustomer.Email = customer.Email;

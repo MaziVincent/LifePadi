@@ -6,7 +6,7 @@
         public string? PickupAdress { get; set; }
         public string? PickupType { get; set; }
         public Double DeliveryFee { get; set; }
-        public bool? Status { get; set; }
+        public string? Status { get; set; }
         public int OrderId { get; set; }
         public Order? Order { get; set; }
         public int RiderId { get; set; }

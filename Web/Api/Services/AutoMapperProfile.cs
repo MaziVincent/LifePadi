@@ -24,6 +24,12 @@ namespace Api.Services
 
             //Rider
             CreateMap<RiderDTO, Rider>();
+            CreateMap<Rider, GetRiderDTO>();
+            CreateMap<Rider, AuthRiderDTO>();
+            CreateMap<CreateRiderDTO, Rider>();
+            CreateMap<GetRiderDTO, Rider>();
+            CreateMap<Rider, RiderDTOLite>();
+
 
             //Vendor
             CreateMap<VendorDTO, Vendor>();
@@ -35,6 +41,8 @@ namespace Api.Services
 
             //Order
             CreateMap<OrderDTO, Order>();
+            CreateMap<Order, OrderDTOLite>();
+            CreateMap<Order, OrderDTO>();
 
             //Product
             CreateMap<ProductDTO, Product>();
@@ -55,6 +63,8 @@ namespace Api.Services
 
             //OrderItem
             CreateMap<OrderItemDTO, OrderItem>();
+            CreateMap<OrderItem, OrderItemDTOLite>();
+            CreateMap<OrderItem, OrderItemDTO>();
 
             //Transaction
             CreateMap<TransactionDTO, Transaction>();
@@ -63,6 +73,11 @@ namespace Api.Services
             CreateMap<Address, AddressDTOLite>();
             CreateMap<AddressDTO, Address>();
             CreateMap<Address, AddressDTO>();
+
+            //Delivry
+            CreateMap<Delivery, DeliveryDTO>();
+            CreateMap<Delivery, DeliveryDTOLite>();
+            CreateMap<DeliveryDTO, Delivery>();
         }
     }
 }

@@ -44,15 +44,15 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IVendor, VendorService>();
-//builder.Services.AddScoped<IRider, RiderService>();
+builder.Services.AddScoped<IRider, RiderService>();
 builder.Services.AddScoped<ICustomer, CustomerService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
-//builder.Services.AddScoped<ITransaction, TransactionService>();
-//builder.Services.AddScoped<IOrder, OrderService>();
+builder.Services.AddScoped<IOrder, OrderService>();
 //builder.Services.AddScoped<IOrderItem, OrderItemService>();
+//builder.Services.AddScoped<ITransaction, TransactionService>();
 //builder.Services.AddScoped<IDelivery, DeliveryService>();
 
 

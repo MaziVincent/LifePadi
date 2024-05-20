@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240513142809_added_a_property_that_verifies_rider")]
+    partial class added_a_property_that_verifies_rider
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,8 +122,8 @@ namespace Api.Migrations
                     b.Property<int>("RiderId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<bool?>("Status")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
@@ -148,14 +151,11 @@ namespace Api.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<bool?>("IsDelivered")
-                        .HasColumnType("boolean");
-
                     b.Property<int?>("RiderId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<bool?>("Status")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -337,7 +337,7 @@ namespace Api.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
 
-                    b.Property<string>("ContactAddress")
+                    b.Property<string>("ContactAdress")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedAt")
