@@ -40,9 +40,17 @@ namespace Api.Interfaces
         public Task<DeliveryDTO> getAsync(int id);
         public Task<DeliveryDTO> updateAsync(DeliveryDTO delivery, int id);
         public Task<string> delete(int id);
+<<<<<<< HEAD
         public Task<IEnumerable<DeliveryDTOLite>> getSuccessDelivery(string status);
         public Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery(string status);
 
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<IEnumerable<DeliveryDTO>> getWithStatus(string status);
+        public Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery();
+        public Task<IEnumerable<DeliveryDTO>> getRidersDeliveries(int riderId);
+        public Task<DeliveryDTO> getOrderDelivery(int orderId);
+        public Task<DeliveryDTO> createAsync(DeliveryDTO delivery);
+>>>>>>> 4641615 (finished with delivery service and controller)
     }
 }

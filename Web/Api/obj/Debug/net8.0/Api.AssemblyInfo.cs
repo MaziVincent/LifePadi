@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
+>>>>>>> 4088e0a (finished with delivery service and controller)
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -78,8 +78,6 @@ namespace Api.DTO
         public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public int? RiderId { get; set; }
-        public RiderDTOLite? Rider { get; set; }
         public List<OrderItemDTOLite>? OrderItems { get; set; }
     }
 
@@ -108,8 +106,11 @@ namespace Api.DTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
         public CustomerDTOLite? Customer { get; set; }
+<<<<<<< HEAD
         public int? RiderId { get; set; }
         public RiderDTOLite? Rider { get; set; }
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
     }
 }

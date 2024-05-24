@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "sGXmy7sdLD8=",
   "success": true,
   "projectFilePath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
+=======
+  "dgSpecHash": "h4E2ybbPObG5/WJ/6pF//C5fIknecDbyy2NmTGjPGi2Uv9M0k7uWx5ydvg1n7QI1q/29nniohjDCU2tTbr+ESw==",
+  "success": true,
+  "projectFilePath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+>>>>>>> 4088e0a (finished with delivery service and controller)
   "expectedPackageFiles": [
     "/Users/mac/.nuget/packages/automapper/13.0.1/automapper.13.0.1.nupkg.sha512",
     "/Users/mac/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",

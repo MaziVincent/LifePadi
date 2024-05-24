@@ -14,7 +14,11 @@
 =======
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
+<<<<<<< HEAD
         public List<Order>? Orders { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public List<Delivery>? Deliveries { get; set; }
+>>>>>>> 4641615 (finished with delivery service and controller)
     }
 }

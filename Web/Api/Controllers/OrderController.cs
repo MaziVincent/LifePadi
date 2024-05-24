@@ -209,6 +209,7 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         //[HttpGet("rider/{riderId}/getOrders")]
         //public async Task<IActionResult> getRiderOrders(int riderId)
 
@@ -228,6 +229,11 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+        //[HttpGet("rider/{riderId}/getOrders")]
+        //public async Task<IActionResult> getRiderOrders(int riderId)
+        
+>>>>>>> 4641615 (finished with delivery service and controller)
 
         [HttpPut("{id}/update")]
         public async Task<IActionResult> update(int id, [FromForm] OrderDTO order)

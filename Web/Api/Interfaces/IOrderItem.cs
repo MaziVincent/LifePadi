@@ -5,6 +5,7 @@ namespace Api.Interfaces
     public interface IOrderItem
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<DataTotalNumber> allAsync();
         public Task<DataTotalNumber> allOrderItemLiteAsync();
         public Task<OrderItemDto> getAsync(int id);
@@ -15,6 +16,10 @@ namespace Api.Interfaces
 =======
         public Task<IEnumerable<OrderItemDTO>> allAsync();
         public Task<IEnumerable<OrderItemDTOLite>> allOrderItemLiteAsync();
+=======
+        public Task<DataTotalNumber> allAsync();
+        public Task<DataTotalNumber> allOrderItemLiteAsync();
+>>>>>>> 4641615 (finished with delivery service and controller)
         public Task<OrderItemDTO> getAsync(int id);
         public Task<OrderItemDTO> updateAsync( OrderItemDTO orderItem ,int id);
         public Task<string> deleteAsync(int id);

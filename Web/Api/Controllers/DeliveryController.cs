@@ -1,6 +1,9 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+<<<<<<< HEAD
 using AutoMapper;
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -10,11 +13,17 @@ namespace Api.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IDelivery _idelivery;
+<<<<<<< HEAD
         private readonly IMapper _mapper;
         public DeliveryController(IDelivery idelivery, IMapper mapper)
         {
             _idelivery = idelivery;
             _mapper = mapper;
+=======
+        public DeliveryController(IDelivery idelivery) 
+        { 
+            _idelivery = idelivery;
+>>>>>>> 4641615 (finished with delivery service and controller)
         }
 
         [HttpGet("all")]
@@ -24,8 +33,12 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allAsync();
                 return Ok(deliveries);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
@@ -38,14 +51,19 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allDeliveryLiteAsync();
                 return Ok(deliveries);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create(DeliveryDto delivery)
         {
             try
@@ -55,12 +73,26 @@ namespace Api.Controllers
                 return Ok(newDelivery);
             }
             catch (Exception ex)
+=======
+        public async Task<IActionResult> create([FromForm] DeliveryDTO delivery)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest("Invalid form");
+                var newDelivery = await _idelivery.createAsync(delivery);
+                return Ok(newDelivery);
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -68,14 +100,22 @@ namespace Api.Controllers
                 var response = await _idelivery.delete(id);
                 if (response == null) return NotFound();
                 return Ok(response);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -83,14 +123,22 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getAsync(id);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("order/get/{orderId}")]
+=======
+        [HttpGet("order/{orderId}/get")]
+>>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> getOrderDelivery(int orderId)
         {
             try
@@ -98,14 +146,19 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getOrderDelivery(orderId);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("rider/{riderId}")]
+<<<<<<< HEAD
         public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
         {
             try
@@ -124,6 +177,16 @@ namespace Api.Controllers
                 return Ok(new { result, dataList });
             }
             catch (Exception ex)
+=======
+        public async Task<IActionResult> getRiderDeliveries(int riderId)
+        {
+            try
+            {
+                var deliveries = await _idelivery.getRidersDeliveries(riderId);
+                if (deliveries == null) return NotFound();
+                return Ok(deliveries);
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
@@ -136,8 +199,12 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.getunSuccessfulDelivery();
                 return Ok(deliveries);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
@@ -150,21 +217,31 @@ namespace Api.Controllers
             {
                 var response = await _idelivery.getWithStatus(status);
                 return Ok(response);
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update(int id, [FromForm] DeliveryDTO delivery)
+>>>>>>> 4641615 (finished with delivery service and controller)
         {
             try
             {
                 var updatedDelivery = await _idelivery.updateAsync(delivery, id);
                 if (updatedDelivery == null) return NotFound();
                 return Ok(updatedDelivery);
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -284,6 +361,9 @@ namespace Api.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }

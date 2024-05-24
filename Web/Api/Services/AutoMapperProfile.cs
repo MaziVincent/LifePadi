@@ -212,6 +212,7 @@ namespace Api.Services
             CreateMap<OrderItemDTO, OrderItem>();
             CreateMap<OrderItem, OrderItemDTOLite>();
             CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<OrderItem, OrderItemDTOLite>();
 
             //Transaction
             CreateMap<TransactionDTO, Transaction>();
@@ -231,7 +232,11 @@ namespace Api.Services
             CreateMap<Delivery, DeliveryDTO>();
             CreateMap<Delivery, DeliveryDTOLite>();
             CreateMap<DeliveryDTO, Delivery>();
+<<<<<<< HEAD
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+            CreateMap<DeliveryDTOLite, Delivery>();
+>>>>>>> 4641615 (finished with delivery service and controller)
         }
     }
 }

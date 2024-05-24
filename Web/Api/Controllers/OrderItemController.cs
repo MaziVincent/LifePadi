@@ -41,7 +41,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create(OrderItemDto orderItem)
+=======
+        public async Task<IActionResult> create([FromForm] OrderItemDTO orderItem)
+>>>>>>> 4641615 (finished with delivery service and controller)
         {
             try
             {
@@ -53,7 +57,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -67,7 +75,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -81,8 +93,13 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] OrderItemDto orderItem)
+=======
+        [HttpPut("{id}/update")]
+        public async Task<IActionResult> update(int id, [FromForm] OrderItemDTO orderItem)
+>>>>>>> 4641615 (finished with delivery service and controller)
         {
             try
             {

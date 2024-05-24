@@ -46,7 +46,7 @@ namespace Api.Interfaces
 =======
         public Task<IEnumerable<OrderItemDTOLite>> orderItemLites(int id);
         public Task<IEnumerable<OrderDTO>> customerOrders(int customerId);
-        public Task<IEnumerable<OrderDTO>> riderOrders(int riderId);
+        //public Task<IEnumerable<OrderDTO>> riderOrders(int riderId);
         public Task<OrderDTO> updateOrderStatus(int id, string status);
 >>>>>>> 28d4101 (finished with rider and order)
     }

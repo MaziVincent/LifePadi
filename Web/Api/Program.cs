@@ -85,6 +85,7 @@ builder.Services.AddScoped<IService,  ServiceService>();
 <<<<<<< HEAD
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<ITransaction, TransactionService>();
 builder.Services.AddScoped<IDelivery, DeliveryService>();
 builder.Services.AddScoped<IVoucher, VoucherService>();
@@ -117,8 +118,10 @@ builder.Logging.AddConsole();
 builder.Services.AddScoped<IOrder, OrderService>();
 >>>>>>> 28d4101 (finished with rider and order)
 //builder.Services.AddScoped<IOrderItem, OrderItemService>();
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
 //builder.Services.AddScoped<ITransaction, TransactionService>();
-//builder.Services.AddScoped<IDelivery, DeliveryService>();
+builder.Services.AddScoped<IDelivery, DeliveryService>();
 
 
 >>>>>>> ee48634 (done with service, category and product controllers.)

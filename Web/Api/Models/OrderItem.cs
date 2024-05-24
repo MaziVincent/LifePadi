@@ -8,12 +8,19 @@ namespace Api.Models
         public int Quantity { get; set; }
         public Double Amount { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         [NotMapped]
         public Double _TotalAmount { get; set; } = 0;
         public Double TotalAmount
         {
             get
             {
+=======
+        [NotMapped]
+        public Double _TotalAmount { get; set; } = 0;
+        public Double TotalAmount { 
+            get {
+>>>>>>> 4641615 (finished with delivery service and controller)
                 return _TotalAmount;
             }
             set
@@ -21,8 +28,11 @@ namespace Api.Models
                 _TotalAmount = Quantity * Amount;
             }
         }
+<<<<<<< HEAD
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
         public int ProductId { get; set; }
         public Product? Product { get; set; }
         public int OrderId { get; set; }

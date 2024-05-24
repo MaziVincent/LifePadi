@@ -51,6 +51,7 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         [HttpPost("create")]
         public async Task<IActionResult> create([FromForm] CreateRiderDto rider)
@@ -68,6 +69,8 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
 
         [HttpPost("create")]
         public async Task<IActionResult> create([FromForm] CreateRiderDTO rider)

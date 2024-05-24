@@ -60,11 +60,15 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDTOLite>> successfulDeliveries(int riderId);
         public Task<IEnumerable<DeliveryDTOLite>> unsuccessfulDeliveries(int riderId);
         public Task<IEnumerable<OrderDTO>> getRiderOrders(int id);
+        public Task<IEnumerable<DeliveryDTO>> getRiderDeliveries(int id);
         public Task<GetRiderDTO> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
         public Task<string> activateRider(int id);
         public Task<string> verifyRider(int id);
         public Task<string> deactivateRider(int id);
+<<<<<<< HEAD
         public Task<string> assignOrderToRider(int riderId, int orderId);
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
     }
 }

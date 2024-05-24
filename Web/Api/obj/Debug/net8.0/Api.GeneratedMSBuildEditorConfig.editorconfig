@@ -9,11 +9,19 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Api
 build_property.RootNamespace = Api
+<<<<<<< HEAD
 build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
+=======
+build_property.ProjectDir = C:\works\LifePadi\Web\Api\
+>>>>>>> 4088e0a (finished with delivery service and controller)
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
+=======
+build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\Api
+>>>>>>> 4088e0a (finished with delivery service and controller)
 build_property._RazorSourceGeneratorDebug = 

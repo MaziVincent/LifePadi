@@ -5,6 +5,7 @@ namespace Api.Models
     public class Delivery
     {
         public int Id { get; set; }
+<<<<<<< HEAD
         
          public int? PickUpAddressId { get; set; }
         public Address? PickUpAddress {get; set;}
@@ -12,6 +13,9 @@ namespace Api.Models
         public int? DeliveryAddressId { get; set; }
         public Address? DeliveryAddress { get; set; }
         
+=======
+        public string? PickupAddress { get; set; }
+>>>>>>> 4641615 (finished with delivery service and controller)
         public string? PickupType { get; set; }
 <<<<<<< HEAD
         public double DeliveryFee { get; set; }

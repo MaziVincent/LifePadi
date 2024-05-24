@@ -192,10 +192,15 @@ namespace Api.Migrations
 <<<<<<< HEAD
                         .HasColumnType("integer");
 
+<<<<<<< HEAD
                     b.Property<int?>("PickUpAddressId")
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("integer");
+=======
+                    b.Property<string>("PickupAddress")
+                        .HasColumnType("text");
+>>>>>>> 4641615 (finished with delivery service and controller)
 
                     b.Property<string>("PickupType")
                         .HasColumnType("text");
@@ -433,6 +438,7 @@ namespace Api.Migrations
                     b.Property<bool?>("IsDelivered")
                         .HasColumnType("boolean");
 
+<<<<<<< HEAD
                     b.Property<int?>("RiderId")
                         .HasColumnType("integer");
 
@@ -441,6 +447,8 @@ namespace Api.Migrations
 >>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("boolean");
 =======
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
                     b.Property<string>("Status")
                         .HasColumnType("text");
 >>>>>>> 28d4101 (finished with rider and order)
@@ -1277,7 +1285,7 @@ namespace Api.Migrations
 =======
 
                     b.HasOne("Api.Models.Rider", "Rider")
-                        .WithMany()
+                        .WithMany("Deliveries")
                         .HasForeignKey("RiderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1374,11 +1382,14 @@ namespace Api.Migrations
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany("Orders")
                         .HasForeignKey("RiderId");
 >>>>>>> ee48634 (done with service, category and product controllers.)
 
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
                     b.Navigation("Customer");
                 });
 
@@ -1640,8 +1651,11 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Rider", b =>
                 {
                     b.Navigation("Deliveries");
+<<<<<<< HEAD
 
                     b.Navigation("RiderReviews");
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
                 });
 
             modelBuilder.Entity("Api.Models.Vendor", b =>

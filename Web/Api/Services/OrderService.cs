@@ -63,8 +63,8 @@ namespace Api.Services
             try
             {
                 var orders = await _dbContext!.Orders
-                    .Include(o => o.Rider)
                     .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)
                     .OrderByDescending(o => o.CreatedAt)
                     .ToListAsync();
                 var orderDTO = _mapper.Map<List<OrderDTO>>(orders);
@@ -481,24 +481,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDTO>> riderOrders(int riderId)
-        {
-            try
-            {
-                var orders = await _dbContext!.Orders
-                    .Include(o => o.OrderItems)
-                    .Include(o => o.Customer)
-                    .OrderByDescending(o => o.CreatedAt)
-                    .Where(o => o.RiderId == riderId)
-                    .ToListAsync();
-                var orderDTO = _mapper.Map<List<OrderDTO>>(orders);
-                return orderDTO;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        
 
         public async Task<OrderDTO> updateAsync(OrderDTO order, int id)
 >>>>>>> 28d4101 (finished with rider and order)
@@ -509,6 +492,7 @@ namespace Api.Services
                 if (initialOrder == null) return null!;
                 initialOrder.Status = order.Status;
                 initialOrder.CustomerId = order.CustomerId;
+<<<<<<< HEAD
 <<<<<<< HEAD
                 initialOrder.UpdatedAt = DateTime.UtcNow;
                 initialOrder.IsDelivered = order.IsDelivered;
@@ -529,6 +513,8 @@ namespace Api.Services
         public async Task<OrderDto> updateOrderStatus(int id, string status)
 =======
                 initialOrder.RiderId = order.RiderId;
+=======
+>>>>>>> 4641615 (finished with delivery service and controller)
                 initialOrder.UpdatedAt = DateTime.UtcNow;
                 initialOrder.IsDelivered = order.IsDelivered;
                 _dbContext.Orders.Attach(initialOrder);
