@@ -51,9 +51,9 @@ builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
 builder.Services.AddScoped<IOrder, OrderService>();
-//builder.Services.AddScoped<IOrderItem, OrderItemService>();
+builder.Services.AddScoped<IOrderItem, OrderItemService>();
 //builder.Services.AddScoped<ITransaction, TransactionService>();
-//builder.Services.AddScoped<IDelivery, DeliveryService>();
+builder.Services.AddScoped<IDelivery, DeliveryService>();
 
 
 

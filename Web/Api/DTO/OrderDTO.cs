@@ -11,8 +11,6 @@ namespace Api.DTO
         public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public int? RiderId { get; set; }
-        public RiderDTOLite? Rider { get; set; }
         public List<OrderItemDTOLite>? OrderItems { get; set; }
     }
 
@@ -34,7 +32,5 @@ namespace Api.DTO
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }
         public CustomerDTOLite? Customer { get; set; }
-        public int? RiderId { get; set; }
-        public RiderDTOLite? Rider { get; set; }
     }
 }

@@ -108,18 +108,9 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("rider/{riderId}/getOrders")]
-        public async Task<IActionResult> getRiderOrders(int riderId)
-        {
-            try
-            {
-                var orders = await _iorder.riderOrders(riderId);
-                return Ok(orders);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpGet("rider/{riderId}/getOrders")]
+        //public async Task<IActionResult> getRiderOrders(int riderId)
+        
 
         [HttpPut("{id}/update")]
         public async Task<IActionResult> update(int id, [FromForm] OrderDTO order)

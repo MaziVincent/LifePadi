@@ -44,21 +44,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> assignOrderToRider(int riderId, int orderId)
-        {
-            try
-            {
-                var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
-                if (order == null) return null!;
-                order.RiderId = riderId;
-                _dbContext.Orders.Attach(order);
-                await _dbContext.SaveChangesAsync();
-                return "Order successfuly assigned";
-            }catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        
 
         public async Task<AuthRiderDTO> createAsync(CreateRiderDTO rider)
         {
@@ -123,7 +109,7 @@ namespace Api.Services
                 if (searchString == "")
                 {
                     var riders1 = await _dbContext.Riders.Skip(skip).Take(pageSize)
-                        .Include(r => r.Orders)
+                        .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
                         .ToListAsync();
@@ -131,7 +117,7 @@ namespace Api.Services
                     return getRiderDTO1;
                 }
                 var riders = await _dbContext.Riders.Skip(skip).Take(pageSize)
-                        .Include(r => r.Orders)
+                        .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.SearchString!.ToLower().Contains(searchString.ToLower()))
                         .ToListAsync();
@@ -149,7 +135,7 @@ namespace Api.Services
         {
             try
             {
-                var rider = await _dbContext.Riders.Include(r => r.Orders)
+                var rider = await _dbContext.Riders.Include(r => r.Deliveries)
                     .FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 var getRiderDTO = _mapper.Map<GetRiderDTO>(rider);
@@ -160,13 +146,40 @@ namespace Api.Services
             }
         }
 
+        public async Task<IEnumerable<DeliveryDTO>> getRiderDeliveries(int id)
+        {
+            try
+            {
+                var delivery = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Where(d => d.RiderId == id)
+                    .ToListAsync();
+                if (delivery == null) return null!;
+                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(delivery);
+                return deliveryDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<OrderDTO>> getRiderOrders(int id)
         {
             try
             {
-                var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
-                if (rider == null) return null!;
-                var orderDTO = _mapper.Map<List<OrderDTO>>(rider.Orders);
+                var deliverise = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Where(d => d.RiderId == id)
+                    .ToListAsync();
+                if (deliverise == null) return null!;
+                var orderList = new List<Order>();
+                foreach (var delivery in deliverise)
+                {
+                    orderList.Append(delivery.Order);
+                    
+                }
+                var orderDTO = _mapper.Map<List<OrderDTO>>(orderList);
                 return orderDTO;
             }catch(Exception ex)
             {
@@ -178,7 +191,7 @@ namespace Api.Services
         {
             try
             {
-                var riders = await _dbContext.Riders.Include(r => r.Orders).Where(r => r.IsActive == false)
+                var riders = await _dbContext.Riders.Include(r => r.Deliveries).Where(r => r.IsActive == false)
                     .ToListAsync();
                 var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riders);
                 return getRiderDTO;
@@ -199,7 +212,7 @@ namespace Api.Services
             try
             {
                 var riderList = new List<Rider>();
-                var riders = await _dbContext.Riders.Include(r => r.Orders).ToListAsync();
+                var riders = await _dbContext.Riders.Include(r => r.Deliveries).ToListAsync();
                 foreach (var rider in riders)
                 {
                     var searchParam = rider.SearchString!.ToLower().Split(" ");

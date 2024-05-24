@@ -65,6 +65,7 @@ namespace Api.Services
             CreateMap<OrderItemDTO, OrderItem>();
             CreateMap<OrderItem, OrderItemDTOLite>();
             CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<OrderItem, OrderItemDTOLite>();
 
             //Transaction
             CreateMap<TransactionDTO, Transaction>();
@@ -78,6 +79,7 @@ namespace Api.Services
             CreateMap<Delivery, DeliveryDTO>();
             CreateMap<Delivery, DeliveryDTOLite>();
             CreateMap<DeliveryDTO, Delivery>();
+            CreateMap<DeliveryDTOLite, Delivery>();
         }
     }
 }

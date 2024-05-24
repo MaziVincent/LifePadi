@@ -29,19 +29,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{riderId}/assignOrder/{orderId}")]
-        public async Task<IActionResult> assignOrder(int riderId, int orderId)
-        {
-            try
-            {
-                var res = await _irider!.assignOrderToRider(riderId, orderId);
-                if (res == null) return NotFound();
-                return Ok(res);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         [HttpPost("create")]
         public async Task<IActionResult> create([FromForm] CreateRiderDTO rider)

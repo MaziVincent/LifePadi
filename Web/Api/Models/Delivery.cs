@@ -3,7 +3,7 @@
     public class Delivery
     {
         public int Id { get; set; }
-        public string? PickupAdress { get; set; }
+        public string? PickupAddress { get; set; }
         public string? PickupType { get; set; }
         public Double DeliveryFee { get; set; }
         public string? Status { get; set; }

@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240521161421_added_totalAmount_to_orderItem_model")]
+    partial class added_totalAmount_to_orderItem_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +113,7 @@ namespace Api.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PickupAddress")
+                    b.Property<string>("PickupAdress")
                         .HasColumnType("text");
 
                     b.Property<string>("PickupType")
@@ -151,6 +154,9 @@ namespace Api.Migrations
                     b.Property<bool?>("IsDelivered")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("RiderId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Status")
                         .HasColumnType("text");
 
@@ -160,6 +166,8 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("RiderId");
 
                     b.ToTable("Orders");
                 });
@@ -489,7 +497,7 @@ namespace Api.Migrations
                         .IsRequired();
 
                     b.HasOne("Api.Models.Rider", "Rider")
-                        .WithMany("Deliveries")
+                        .WithMany()
                         .HasForeignKey("RiderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -507,7 +515,13 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Models.Rider", "Rider")
+                        .WithMany("Orders")
+                        .HasForeignKey("RiderId");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Rider");
                 });
 
             modelBuilder.Entity("Api.Models.OrderItem", b =>
@@ -591,7 +605,7 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Rider", b =>
                 {
-                    b.Navigation("Deliveries");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Api.Models.Vendor", b =>

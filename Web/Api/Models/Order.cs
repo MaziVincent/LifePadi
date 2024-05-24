@@ -9,8 +9,7 @@
         public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public int? RiderId { get; set; }
-        public Rider? Rider { get; set; }
+        
         public List<OrderItem>? OrderItems { get; set; }
 
     }
