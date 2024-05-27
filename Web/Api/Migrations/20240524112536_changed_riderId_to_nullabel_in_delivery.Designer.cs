@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240524112536_changed_riderId_to_nullabel_in_delivery")]
+    partial class changed_riderId_to_nullabel_in_delivery
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,9 +296,6 @@ namespace Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AmountPaid")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -305,8 +305,8 @@ namespace Api.Migrations
                     b.Property<BigInteger>("PaymentId")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<bool?>("Status")
+                        .HasColumnType("boolean");
 
                     b.Property<double>("TotalAmount")
                         .HasColumnType("double precision");
@@ -317,14 +317,9 @@ namespace Api.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VoucherId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("VoucherId");
 
                     b.ToTable("Transactions");
                 });
@@ -417,61 +412,6 @@ namespace Api.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Api.Models.Voucher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("DiscountPercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsExpired")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("TotalNumberAvailable")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TotalNumberUsed")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("Api.Models.Admin", b =>
@@ -625,13 +565,7 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api.Models.Voucher", "Voucher")
-                        .WithMany("Transactions")
-                        .HasForeignKey("VoucherId");
-
                     b.Navigation("Order");
-
-                    b.Navigation("Voucher");
                 });
 
             modelBuilder.Entity("Api.Models.Category", b =>
@@ -647,11 +581,6 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Service", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Api.Models.Voucher", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Api.Models.Customer", b =>

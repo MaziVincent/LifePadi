@@ -1,4 +1,6 @@
-﻿namespace Api.DTO
+﻿using Api.Models;
+
+namespace Api.DTO
 {
     public class VoucherDTO
     {
@@ -8,11 +10,14 @@
         public string? Code { get; set; }
         public string? Type { get; set; }
         public bool? IsActive { get; set; }
+        public bool? IsExpired { get; set; }
         public int? TotalNumberAvailable { get; set; }
+        public int? TotalNumberUsed { get; set; } = 0;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string? DiscountPercentage { get; set; }
+        public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
+        public List<TransactionDTO>? Transactions { get; set; }
     }
 
     public class VoucherDTOLite
@@ -24,9 +29,10 @@
         public string? Type { get; set; }
         public bool? IsActive { get; set; }
         public int? TotalNumberAvailable { get; set; }
+        public int? TotalNumberUsed { get; set; } = 0;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string? DiscountPercentage { get; set; }
+        public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

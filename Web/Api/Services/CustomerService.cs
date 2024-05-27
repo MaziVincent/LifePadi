@@ -5,6 +5,7 @@ using AutoMapper;
 using FuzzySharp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Customer = Api.Models.Customer;
 
 namespace Api.Services
 {

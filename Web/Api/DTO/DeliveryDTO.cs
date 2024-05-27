@@ -11,7 +11,7 @@ namespace Api.DTO
         public string? Status { get; set; }
         public int OrderId { get; set; }
         public OrderDTOLite? Order { get; set; }
-        public int RiderId { get; set; }
+        public int? RiderId { get; set; }
         public RiderDTOLite? Rider { get; set; }
     }
 
@@ -24,5 +24,14 @@ namespace Api.DTO
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
+    }
+
+    public class CreateDeliveryDTO
+    {
+        public int Id { get; set; }
+        public string? PickupAddress { get; set; }
+        public string? PickupType { get; set; }
+        public Double DeliveryFee { get; set; }
+        public int OrderId { get; set; }
     }
 }

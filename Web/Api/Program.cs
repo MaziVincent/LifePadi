@@ -16,6 +16,8 @@ builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
     builder.Configuration.GetConnectionString("LifePadiDBConnection")
     ));
 
+builder.Services.AddHttpClient();
+
 //Automaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -52,8 +54,9 @@ builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
-//builder.Services.AddScoped<ITransaction, TransactionService>();
+builder.Services.AddScoped<ITransaction, TransactionService>();
 builder.Services.AddScoped<IDelivery, DeliveryService>();
+builder.Services.AddScoped<IVoucher, VoucherService>();
 
 
 

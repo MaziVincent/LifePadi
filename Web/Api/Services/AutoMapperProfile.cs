@@ -1,6 +1,7 @@
 ﻿using Api.DTO;
 using Api.Models;
 using AutoMapper;
+using Customer = Api.Models.Customer;
 
 namespace Api.Services
 {
@@ -69,6 +70,7 @@ namespace Api.Services
 
             //Transaction
             CreateMap<TransactionDTO, Transaction>();
+            CreateMap<Transaction, TransactionDTO>();
 
             //Adress
             CreateMap<Address, AddressDTOLite>();
@@ -80,6 +82,11 @@ namespace Api.Services
             CreateMap<Delivery, DeliveryDTOLite>();
             CreateMap<DeliveryDTO, Delivery>();
             CreateMap<DeliveryDTOLite, Delivery>();
+            CreateMap<Delivery, CreateDeliveryDTO>();
+
+            //Voucher
+            CreateMap<Voucher, VoucherDTO>();
+            CreateMap<VoucherDTO, Voucher>();
         }
     }
 }

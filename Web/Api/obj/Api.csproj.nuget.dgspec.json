@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
+    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {}
   },
   "projects": {
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
+    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectPath": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
         "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
-        "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
+        "outputPath": "C:\\works\\LifePadi\\Web\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

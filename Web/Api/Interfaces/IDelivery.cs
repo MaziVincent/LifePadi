@@ -13,6 +13,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery();
         public Task<IEnumerable<DeliveryDTO>> getRidersDeliveries(int riderId);
         public Task<DeliveryDTO> getOrderDelivery(int orderId);
-        public Task<DeliveryDTO> createAsync(DeliveryDTO delivery);
+        public Task<CreateDeliveryDTO> createAsync(DeliveryDTO delivery);
+        public Task<string> assynRiderTODelivery(int id, int riderId);
     }
 }
