@@ -14,6 +14,7 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
+<<<<<<< HEAD
         private readonly ICustomerVoucher _customerVoucher;
 
         public VoucherService(DBContext dBContext, IMapper mapper, ICustomerVoucher customerVoucher)
@@ -21,6 +22,13 @@ namespace Api.Services
             _dbContext = dBContext;
             _mapper = mapper;
             _customerVoucher = customerVoucher;
+=======
+
+        public VoucherService(DBContext dBContext, IMapper mapper)
+        {
+            _dbContext = dBContext;
+            _mapper = mapper;
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
         }
 
@@ -35,14 +43,22 @@ namespace Api.Services
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Voucher activated";
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch (Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> allActiveAsync()
+=======
+        public async Task<IEnumerable<VoucherDTO>> allActiveAsync()
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -50,23 +66,37 @@ namespace Api.Services
                     .Where(v => v.IsActive == true)
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
+<<<<<<< HEAD
                 var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return voucherList;
             }
             catch (Exception ex)
+=======
+                var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
+                return voucherList;
+            }catch (Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> allAsync()
+=======
+        public async Task<IEnumerable<VoucherDTO>> allAsync()
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var vouchers = await _dbContext.Vouchers
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
+<<<<<<< HEAD
                 var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
+=======
+                var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 return voucherList;
             }
             catch (Exception ex)
@@ -85,6 +115,7 @@ namespace Api.Services
                 if (comparismResult == 0)
                 {
                     return true;
+<<<<<<< HEAD
                 }
                 else if (comparismResult < 0)
                 {
@@ -96,12 +127,26 @@ namespace Api.Services
                 }
             }
             catch (Exception ex)
+=======
+                }else if(comparismResult < 0)
+                {
+                    return false;
+                }else
+                {
+                    return true;
+                }
+            }catch (Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<VoucherDto> createAsync(VoucherDto voucher)
+=======
+        public async Task<VoucherDTO> createAsync(VoucherDTO voucher)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -109,6 +154,7 @@ namespace Api.Services
                 newVoucher.Code = GenerateCode.GenerateRandomString();
                 newVoucher.IsActive = true;
                 newVoucher.IsExpired = false;
+<<<<<<< HEAD
                 // string str_startDate = voucher.StartDate.ToString()!;
                 // string str_endDate = voucher.EndDate.ToString()!;
                 // Remove the StarDate and EndDate values when the data is coming from the frontend and not postman
@@ -148,6 +194,24 @@ namespace Api.Services
                 return VoucherDto;
             }
             catch (Exception ex)
+=======
+                string str_startDate = voucher.StartDate.ToString()!;
+                string str_endDate = voucher.EndDate.ToString()!;
+                // Remove the StarDate and EndDate values when the data is coming from the frontend and not postman
+                DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                if (startDate.Kind == DateTimeKind.Unspecified)
+                    startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+                if (endDate.Kind == DateTimeKind.Unspecified)
+                    endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                newVoucher.StartDate = startDate;
+                newVoucher.EndDate = endDate;
+                await _dbContext.Vouchers.AddAsync(newVoucher);
+                await _dbContext.SaveChangesAsync();
+                var voucherDTO = _mapper.Map<VoucherDTO>(newVoucher);
+                return voucherDTO;
+            }catch(Exception ex) 
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -169,8 +233,12 @@ namespace Api.Services
                 _dbContext.Vouchers.AttachRange(expiredVouchers);
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -187,14 +255,22 @@ namespace Api.Services
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Voucher deactivated";
+<<<<<<< HEAD
             }
             catch (Exception ex)
+=======
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<object> deleteAsync(int id)
+=======
+        public async Task<string> deleteAsync(int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -202,9 +278,14 @@ namespace Api.Services
                 if (voucher == null) return null!;
                 _dbContext.Vouchers.Remove(voucher);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
                 return new {success = "Voucher deleted"};
             }
             catch (Exception ex)
+=======
+                return "Voucher deleted";
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -224,7 +305,11 @@ namespace Api.Services
                     v.Status = "Expired";
                     v.UpdatedAt = DateTime.UtcNow;
                 });
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 _dbContext.Vouchers.AttachRange(expiredVouchers);
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
@@ -235,15 +320,25 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<VoucherDto> getAsync(int id)
+=======
+        public async Task<VoucherDTO> getAsync(int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers.FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) return null!;
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<VoucherDto>(voucher);
 
                 return VoucherDto;
+=======
+                var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
+
+                return voucherDTO;
+>>>>>>> 7f9ad44 (done with payment and voucher)
             }
             catch (Exception ex)
             {
@@ -251,7 +346,11 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers()
+=======
+        public async Task<IEnumerable<VoucherDTO>> getCurrentRunningVouchers()
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -259,10 +358,16 @@ namespace Api.Services
                     .OrderByDescending(v => v.CreatedAt)
                     .Where(v => v.IsExpired == false && v.IsActive == true)
                     .ToListAsync();
+<<<<<<< HEAD
                 var VoucherDtoList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return VoucherDtoList;
             }
             catch (Exception ex)
+=======
+                var voucherDTOList = _mapper.Map<List<VoucherDTO>>(vouchers);
+                return voucherDTOList;
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -276,10 +381,15 @@ namespace Api.Services
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
                 int num = (int)voucher.TotalNumberAvailable! - (int)voucher.TotalNumberUsed!;
+<<<<<<< HEAD
                 
                 return num;
             }
             catch (Exception ex)
+=======
+                return num;
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -292,7 +402,11 @@ namespace Api.Services
                 var voucher = await _dbContext.Vouchers
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
+<<<<<<< HEAD
                 if (voucher.IsActive == true) return true;
+=======
+                if(voucher.IsActive == true) return true;
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 return false;
             }
             catch (Exception ex)
@@ -301,31 +415,50 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<VoucherDto> searchWithCode(string voucherCode)
+=======
+        public async Task<VoucherDTO> searchWithCode(string voucherCode)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .FirstOrDefaultAsync(v => v.Code!.ToLower() == voucherCode.ToLower());
                 if (voucher == null) return null!;
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<VoucherDto>(voucher);
                 return VoucherDto;
             }
             catch (Exception ex)
+=======
+                var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
+                return voucherDTO;
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> searchWithName(string name)
+=======
+        public async Task<IEnumerable<VoucherDTO>> searchWithName(string name)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .Where(v => v.Name!.ToLower().Contains(name.ToLower()))
                     .ToListAsync();
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
                 return VoucherDto;
+=======
+                var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
+                return voucherDTO;
+>>>>>>> 7f9ad44 (done with payment and voucher)
             }
             catch (Exception ex)
             {
@@ -333,15 +466,24 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> searchWithType(string voucherType)
+=======
+        public async Task<IEnumerable<VoucherDTO>> searchWithType(string voucherType)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .Where(v => v.Name!.ToLower().Contains(voucherType.ToLower()))
                     .ToListAsync();
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
                 return VoucherDto;
+=======
+                var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
+                return voucherDTO;
+>>>>>>> 7f9ad44 (done with payment and voucher)
             }
             catch (Exception ex)
             {
@@ -349,6 +491,7 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<int> totalNumberOfActiveVouchers()
         {
             try
@@ -393,6 +536,9 @@ namespace Api.Services
         }
 
         public async Task<VoucherDto> updateAsync(VoucherDto voucher, int id)
+=======
+        public async Task<VoucherDTO> updateAsync(VoucherDTO voucher, int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -409,10 +555,16 @@ namespace Api.Services
                 initialVoucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(initialVoucher);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<VoucherDto>(initialVoucher);
                 return VoucherDto;
             }
             catch (Exception ex)
+=======
+                var voucherDTO = _mapper.Map<VoucherDTO>(initialVoucher);
+                return voucherDTO;
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }
@@ -429,14 +581,18 @@ namespace Api.Services
                 if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
                 if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
                 voucher.TotalNumberUsed += 1;
+<<<<<<< HEAD
                 voucher.IsExpired = true;
                 voucher.Status = "Used";
                 voucher.IsActive = false;
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 voucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Successful";
 
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -498,6 +654,9 @@ namespace Api.Services
                 return stats;
             }
             catch (Exception ex)
+=======
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 throw new Exception(ex.Message);
             }

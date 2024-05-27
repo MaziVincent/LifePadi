@@ -206,6 +206,9 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                     b.Property<int?>("RiderId")
                         .HasColumnType("integer");
 
@@ -725,9 +728,12 @@ namespace Api.Migrations
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
+<<<<<<< HEAD
 
                     b.Property<bool?>("StatusBool")
                         .HasColumnType("boolean");
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
                     b.Property<double?>("SubTotal")
                         .HasColumnType("double precision");
@@ -747,17 +753,23 @@ namespace Api.Migrations
                     b.Property<int?>("VoucherId")
                         .HasColumnType("integer");
 
+<<<<<<< HEAD
                     b.Property<int?>("WalletId")
                         .HasColumnType("integer");
 
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("VoucherId");
 
+<<<<<<< HEAD
                     b.HasIndex("WalletId");
 
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                     b.ToTable("Transactions");
                 });
 
@@ -854,6 +866,7 @@ namespace Api.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Api.Models.VendorCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -917,6 +930,8 @@ namespace Api.Migrations
                     b.ToTable("VendorReviews");
                 });
 
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
             modelBuilder.Entity("Api.Models.Voucher", b =>
                 {
                     b.Property<int>("Id")
@@ -934,6 +949,7 @@ namespace Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+<<<<<<< HEAD
                     b.Property<double?>("DiscountAmount")
                         .HasColumnType("double precision");
 
@@ -941,6 +957,12 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
+=======
+                    b.Property<int?>("DiscountPercentage")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("EndDate")
+>>>>>>> 7f9ad44 (done with payment and voucher)
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("IsActive")
@@ -952,7 +974,11 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+<<<<<<< HEAD
                     b.Property<DateTime>("StartDate")
+=======
+                    b.Property<DateTime?>("StartDate")
+>>>>>>> 7f9ad44 (done with payment and voucher)
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -975,6 +1001,7 @@ namespace Api.Migrations
                     b.ToTable("Vouchers");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Api.Models.VoucherNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -1119,6 +1146,8 @@ namespace Api.Migrations
                     b.ToTable("Withdrawals");
                 });
 
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
             modelBuilder.Entity("Api.Models.Admin", b =>
                 {
                     b.HasBaseType("Api.Models.User");
@@ -1286,12 +1315,16 @@ namespace Api.Migrations
 
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany("Deliveries")
+<<<<<<< HEAD
                         .HasForeignKey("RiderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 >>>>>>> ee48634 (done with service, category and product controllers.)
 
                     b.Navigation("DeliveryAddress");
+=======
+                        .HasForeignKey("RiderId");
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
                     b.Navigation("Order");
 
@@ -1507,6 +1540,7 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+<<<<<<< HEAD
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("VendorReviews")
                         .HasForeignKey("VendorId")
@@ -1583,6 +1617,15 @@ namespace Api.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("VendorCategory");
+=======
+                    b.HasOne("Api.Models.Voucher", "Voucher")
+                        .WithMany("Transactions")
+                        .HasForeignKey("VoucherId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Voucher");
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 });
 
             modelBuilder.Entity("Api.Models.Category", b =>
@@ -1633,6 +1676,11 @@ namespace Api.Migrations
                     b.Navigation("Deposites");
 
                     b.Navigation("Withdrawals");
+                });
+
+            modelBuilder.Entity("Api.Models.Voucher", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Api.Models.Customer", b =>

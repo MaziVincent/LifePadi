@@ -368,5 +368,19 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{id}/assignRider/{riderId}")]
+        public async Task<IActionResult> assignRiderToDelivery(int id, int riderId)
+        {
+            try
+            {
+                var delivery = await _idelivery.assynRiderTODelivery(id, riderId);
+                if (delivery == null) return NotFound();
+                return Ok(delivery);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

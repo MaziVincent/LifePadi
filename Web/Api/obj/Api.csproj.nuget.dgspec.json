@@ -2,6 +2,7 @@
   "format": 1,
   "restore": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
   },
   "projects": {
@@ -15,17 +16,24 @@
         "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
 =======
     "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
+=======
+    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {}
+>>>>>>> 6f7231c (done with payment and voucher)
   },
   "projects": {
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
+    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
         "projectName": "Api",
-        "projectPath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectPath": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
         "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
+<<<<<<< HEAD
         "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
 >>>>>>> 4088e0a (finished with delivery service and controller)
+=======
+        "outputPath": "C:\\works\\LifePadi\\Web\\API\\obj\\",
+>>>>>>> 6f7231c (done with payment and voucher)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

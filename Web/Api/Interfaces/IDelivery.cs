@@ -50,7 +50,12 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery();
         public Task<IEnumerable<DeliveryDTO>> getRidersDeliveries(int riderId);
         public Task<DeliveryDTO> getOrderDelivery(int orderId);
+<<<<<<< HEAD
         public Task<DeliveryDTO> createAsync(DeliveryDTO delivery);
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public Task<CreateDeliveryDTO> createAsync(DeliveryDTO delivery);
+        public Task<string> assynRiderTODelivery(int id, int riderId);
+>>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }

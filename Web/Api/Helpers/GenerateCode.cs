@@ -14,6 +14,7 @@ namespace Api.Helpers
             {
                 sb.Append(chars[random.Next(chars.Length)]);
             }
+<<<<<<< HEAD
             return "LifePadi-" + sb.ToString();
         }
 
@@ -44,6 +45,9 @@ namespace Api.Helpers
                 .Substring(0, 12);  // Take the first 12 characters
             
             return shortGuid;
+=======
+            return "LifePadi" + sb.ToString();
+>>>>>>> 7f9ad44 (done with payment and voucher)
         }
     }
 }

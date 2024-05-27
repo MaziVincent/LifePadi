@@ -28,8 +28,12 @@ namespace Api.Models
         public string? Status { get; set; }
         public int OrderId { get; set; }
         public Order? Order { get; set; }
+<<<<<<< HEAD
         public int RiderId { get; set; }
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public int? RiderId { get; set; }
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public Rider? Rider { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

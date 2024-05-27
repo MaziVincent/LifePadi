@@ -6,6 +6,7 @@ using FuzzySharp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Newtonsoft.Json.Linq;
 using Customer = Api.Models.Customer;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ using Api.Helpers;
 
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+using Customer = Api.Models.Customer;
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
 namespace Api.Services
 {

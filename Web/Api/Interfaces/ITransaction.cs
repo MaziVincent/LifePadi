@@ -26,11 +26,16 @@ namespace Api.Interfaces
         public Task<TransactionDto> GetTransactionByOrderId(int orderId);
 =======
         public Task<IEnumerable<TransactionDTO>> allAsync();
-        public Task<TransactionDTO> getAsync();
+        public Task<TransactionDTO> getAsync(int id);
         public Task<TransactionDTO> updateAsync(TransactionDTO transaction, int id);
         public Task<string> deleteAsync(int id);
         public Task<TransactionDTO> createAsync(TransactionDTO transaction);
         public Task<TransactionDTO> getByPaymentId(BigInteger transactionId);
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<DTO.Data> initiatePayment(InitiatePaymentDTO initiatePayment);
+        public Task<PaymentDetailsDTO> confirmPayment(string status, string tx_ref, string transaction_id);
+>>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }

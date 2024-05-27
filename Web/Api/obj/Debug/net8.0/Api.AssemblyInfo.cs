@@ -15,10 +15,14 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
 >>>>>>> 4088e0a (finished with delivery service and controller)
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4088e0aee0747a8cb6980679d26858402d0cb25a")]
+>>>>>>> 6f7231c (done with payment and voucher)
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

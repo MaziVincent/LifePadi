@@ -14,7 +14,11 @@ namespace Api.Controllers
             _ivoucher = ivoucher;
         }
 
+<<<<<<< HEAD
         [HttpPut("activate/{id}")]
+=======
+        [HttpPut("{id}/activate")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> activate(int id)
         {
             try
@@ -55,7 +59,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("isExpired/{id}")]
+=======
+        [HttpGet("{id}/isExpired")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> checkIfExpired(int id)
         {
             try
@@ -70,7 +78,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] VoucherDto voucher)
+=======
+        public async Task<IActionResult> create([FromForm] VoucherDTO voucher)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -109,7 +121,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
+=======
+        [HttpDelete("{id}/delete")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -195,17 +211,24 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("searchWithCode")]
+=======
+        [HttpGet("seachWithCode")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> searchWithCode([FromQuery] string code)
         {
             try
             {
                 var response = await _ivoucher.searchWithCode(code);
+<<<<<<< HEAD
                 if(response == null) 
                 {
                     return NotFound();
                     
                 }
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 return Ok(response);
             }
             catch (Exception ex)
@@ -214,7 +237,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("searchWithName")]
+=======
+        [HttpGet("seachWithName")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> searchWithName([FromQuery] string name)
         {
             try
@@ -243,7 +270,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
+<<<<<<< HEAD
         public async Task<IActionResult> update([FromBody] VoucherDto voucher, int id)
+=======
+        public async Task<IActionResult> update([FromBody] VoucherDTO voucher, int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -256,7 +287,11 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpPut("use/{id}")]
+=======
+        [HttpPut("{id}/use")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> useVoucher(int id)
         {
             try
@@ -267,14 +302,18 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 if (ex.Message == "Voucher expired") return NotFound(ex.Message);
                 if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
                 if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("use")]
+<<<<<<< HEAD
         public async Task<IActionResult> useVoucherByCustomer([FromQuery] string voucherCode, int customerId)
         {
             try
@@ -294,6 +333,8 @@ namespace Api.Controllers
         }
 
         [HttpPut("use/lite")]
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> applyVoucher([FromQuery] string code, Double totalAmount)
         {
             try

@@ -27,11 +27,15 @@ builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
     builder.Configuration.GetConnectionString("LifePadiDBConnection")
     ));
 
+<<<<<<< HEAD
 builder.Services.AddHttpClient<CustomerService>();
 builder.Services.AddHttpClient<TransactionService>();
 
 //SignalR
 builder.Services.AddSignalR();
+=======
+builder.Services.AddHttpClient();
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
 //Automaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -86,6 +90,7 @@ builder.Services.AddScoped<IService,  ServiceService>();
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 builder.Services.AddScoped<ITransaction, TransactionService>();
 builder.Services.AddScoped<IDelivery, DeliveryService>();
 builder.Services.AddScoped<IVoucher, VoucherService>();
@@ -121,7 +126,11 @@ builder.Services.AddScoped<IOrder, OrderService>();
 =======
 >>>>>>> 4641615 (finished with delivery service and controller)
 //builder.Services.AddScoped<ITransaction, TransactionService>();
+=======
+builder.Services.AddScoped<ITransaction, TransactionService>();
+>>>>>>> 7f9ad44 (done with payment and voucher)
 builder.Services.AddScoped<IDelivery, DeliveryService>();
+builder.Services.AddScoped<IVoucher, VoucherService>();
 
 
 >>>>>>> ee48634 (done with service, category and product controllers.)

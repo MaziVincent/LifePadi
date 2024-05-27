@@ -2,9 +2,13 @@
 using Api.Models;
 using AutoMapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Customer = Api.Models.Customer;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Customer = Api.Models.Customer;
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
 namespace Api.Services
 {
@@ -217,8 +221,12 @@ namespace Api.Services
             //Transaction
             CreateMap<TransactionDTO, Transaction>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
+=======
+            CreateMap<Transaction, TransactionDTO>();
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
             //Adress
             CreateMap<Address, AddressDTOLite>();
@@ -236,7 +244,15 @@ namespace Api.Services
 >>>>>>> 28d4101 (finished with rider and order)
 =======
             CreateMap<DeliveryDTOLite, Delivery>();
+<<<<<<< HEAD
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+            CreateMap<Delivery, CreateDeliveryDTO>();
+
+            //Voucher
+            CreateMap<Voucher, VoucherDTO>();
+            CreateMap<VoucherDTO, Voucher>();
+>>>>>>> 7f9ad44 (done with payment and voucher)
         }
     }
 }

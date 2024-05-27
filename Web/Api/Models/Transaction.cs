@@ -7,6 +7,7 @@ namespace Api.Models
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
+<<<<<<< HEAD
         public double TotalAmount { get; set; }
         public double AmountPaid { get; set; }  
         public double? SubTotal { get; set; }  
@@ -15,6 +16,14 @@ namespace Api.Models
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int? OrderId { get; set; }
+=======
+        public Double TotalAmount { get; set; }
+        public Double AmountPaid { get; set; }  
+        public string? Status { get; set; }
+        public int? VoucherId { get; set; }
+        public Voucher? Voucher { get; set; }
+        public int OrderId { get; set; }
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public Order? Order { get; set; }
         public DateTime? PaidAt { get; set; }
         public string? PaymentChannel {get; set;}

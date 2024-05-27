@@ -9,8 +9,11 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Numerics;
 using System.Text;
+<<<<<<< HEAD
 using System.Threading.Tasks;
 using System.Net.Http;
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
 namespace Api.Services
 {
@@ -21,18 +24,28 @@ namespace Api.Services
         private readonly IConfiguration _config;
         private readonly IHttpClientFactory _ClientFactory;
         private readonly IVoucher _ivoucher;
+<<<<<<< HEAD
         private readonly HttpClient _httpClient;
         public TransactionService(DBContext dbContext, IMapper mapper, IConfiguration config, IHttpClientFactory clientFactory, IVoucher ivoucher, HttpClient httpClient)
+=======
+        public TransactionService(DBContext dbContext, IMapper mapper, IConfiguration config, IHttpClientFactory clientFactory, IVoucher ivoucher)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _config = config;
             _ClientFactory = clientFactory;
             _ivoucher = ivoucher;
+<<<<<<< HEAD
             _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<TransactionDto>> AllAsync()
+=======
+        }
+
+        public async Task<IEnumerable<TransactionDTO>> allAsync()
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -41,6 +54,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();
+<<<<<<< HEAD
                 var transactionDTO = _mapper.Map<List<TransactionDto>>(transactions);
                 return transactionDTO;
             }
@@ -126,6 +140,23 @@ namespace Api.Services
                 //this is the uri
                 var request = new HttpRequestMessage(HttpMethod.Get,
                 $"https://api.flutterwave.com/v3/transactions/{transactionInfo.transaction_id}/verify");
+=======
+                var transactionDTO = _mapper.Map<List<TransactionDTO>>(transactions);
+                return transactionDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<PaymentDetailsDTO> confirmPayment(string status, string tx_ref, string transaction_id)
+        {
+            try
+            {
+                //this is the uri
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                $"https://api.flutterwave.com/v3/transactions/{transaction_id}/verify");
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 //create an an instance of IHttpclientFactory
                 var client = _ClientFactory.CreateClient();
                 //add the auth token to the header
@@ -138,7 +169,11 @@ namespace Api.Services
                     //convert the respond to string
                     var apiString = await response.Content.ReadAsStringAsync();
                     //deserialize it to json object
+<<<<<<< HEAD
                     var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDto>(apiString);
+=======
+                    var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDTO>(apiString);
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
                     if (paymentRes!.Status == "success")
                     {
@@ -146,6 +181,7 @@ namespace Api.Services
                         transaction.Status = paymentRes.Status;
                         transaction.AmountPaid = paymentRes.Data!.Amount;
                         transaction.TransactionRef = paymentRes.Data!.Tx_ref;
+<<<<<<< HEAD
                         transaction.PaymentId = (BigInteger)paymentRes.Data!.Id!;
                         transaction.TotalAmount = paymentRes.Data!.Meta!.totalAmount;
                         transaction.OrderId = (int)paymentRes.Data!.Meta.orderId!;
@@ -156,12 +192,20 @@ namespace Api.Services
                         }
                         // var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
                         // transaction.VoucherId = voucher.Id;
+=======
+                        transaction.PaymentId = (BigInteger) paymentRes.Data!.Id!;
+                        transaction.TotalAmount = paymentRes.Data!.Meta!.totalAmount;
+                        transaction.OrderId = (int) paymentRes.Data!.Meta.orderId!;
+                        var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
+                        transaction.VoucherId = voucher.Id;
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
                         await _dbContext.Transactions.AddAsync(transaction);
                         await _dbContext.SaveChangesAsync();
 
                         return paymentRes;
                     }
+<<<<<<< HEAD
                     throw new Exceptions.ServiceException(paymentRes.Status!);
                 }
                 throw new Exceptions.ServiceException("Response not Ok");
@@ -188,28 +232,56 @@ namespace Api.Services
         }
 
         public Task<TransactionDto> CreateAsync(TransactionDto transaction)
+=======
+                    throw new Exception(paymentRes.Status);
+                }
+                throw new Exception("Response not Ok");
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<TransactionDTO> createAsync(TransactionDTO transaction)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             throw new NotImplementedException();
         }
 
+<<<<<<< HEAD
         public async Task<string> DeleteAsync(int id)
+=======
+        public async Task<string> deleteAsync(int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var transaction = await _dbContext.Transactions
                     .FirstOrDefaultAsync(t => t.Id == id);
+<<<<<<< HEAD
                 if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
+=======
+                if (transaction == null) throw new Exception("Transaction not found");
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 _dbContext.Transactions.Remove(transaction);
                 await _dbContext.SaveChangesAsync();
                 return "Transaction deleted";
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
         public async Task<TransactionDto> GetAsync(int id)
+=======
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<TransactionDTO> getAsync(int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -217,6 +289,7 @@ namespace Api.Services
                     .Include(t => t.Order)
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.Id == id);
+<<<<<<< HEAD
                 if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
@@ -228,6 +301,18 @@ namespace Api.Services
         }
 
         public async Task<TransactionDto> GetByPaymentId(BigInteger transactionId)
+=======
+                if (transaction == null) throw new Exception("Transaction not found");
+                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                return transactionDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<TransactionDTO> getByPaymentId(BigInteger transactionId)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
@@ -235,6 +320,7 @@ namespace Api.Services
                     .Include(t => t.Order)
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.PaymentId == transactionId);
+<<<<<<< HEAD
                 if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
@@ -246,10 +332,23 @@ namespace Api.Services
         }
 
         public async Task<DTO.Data> InitiatePayment(InitiatePaymentDto initiatePayment)
+=======
+                if (transaction == null) throw new Exception("Transaction not found");
+                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                return transactionDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<DTO.Data> initiatePayment(InitiatePaymentDTO initiatePayment)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             try
             {
                 var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePayment.OrderId);
+<<<<<<< HEAD
                 if (payment != null)
                 {
                     throw new Exceptions.ServiceException("Already paid for this order");
@@ -260,13 +359,28 @@ namespace Api.Services
                 // string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
                 string redirectUrl = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 Customer_Info customer = new Customer_Info();
+=======
+                if(payment != null)
+                {
+                    throw new Exception("Already paid for this order");
+                }
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePayment.OrderId);
+                if (order == null) throw new Exception("Order not found");
+                var tx_ref = GenerateTxRef.genTx_rf();
+                string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+                DTO.Customer customer = new DTO.Customer();
+>>>>>>> 7f9ad44 (done with payment and voucher)
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;
                 customer.name = order.Customer.FirstName;
                 Customizations customizations = new Customizations();
                 customizations.title = "LifePadi";
                 customizations.description = "Service payment";
+<<<<<<< HEAD
                 customizations.logo = "https://res.cloudinary.com/dbxapeqzu/image/upload/v1724785015/LifePadi/logo/Logo_dark_ndhilz.svg";
+=======
+                customizations.logo = "https://res.cloudinary.com/dkk8x5qzl/image/upload/v1704877092/logo/e4et2rgmldcyq8hasmvj.jpg";
+>>>>>>> 7f9ad44 (done with payment and voucher)
 
                 Meta meta = new Meta();
                 meta.totalAmount = (Double)initiatePayment.TotalAmount!;
@@ -307,7 +421,11 @@ namespace Api.Services
                     var apiString = await response.Content.ReadAsStringAsync();
 
                     var paymentRes = JsonConvert.DeserializeObject<JsonResponse>(apiString);
+<<<<<<< HEAD
                     // Console.WriteLine(paymentRes);
+=======
+                    Console.WriteLine(paymentRes);
+>>>>>>> 7f9ad44 (done with payment and voucher)
                     if (paymentRes!.status == "success")
                     {
                         return new DTO.Data
@@ -315,6 +433,7 @@ namespace Api.Services
                             link = paymentRes.data!.link
                         };
                     }
+<<<<<<< HEAD
                     throw new Exceptions.ServiceException("Payment not successful");
                 }
                 throw new Exceptions.ServiceException(response.StatusCode.ToString());
@@ -616,6 +735,20 @@ namespace Api.Services
         }
 
         public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id)
+=======
+                    throw new Exception("Payment not successful");
+                }
+                throw new Exception(response.StatusCode.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<TransactionDTO> updateAsync(TransactionDTO transaction, int id)
+>>>>>>> 7f9ad44 (done with payment and voucher)
         {
             throw new NotImplementedException();
         }

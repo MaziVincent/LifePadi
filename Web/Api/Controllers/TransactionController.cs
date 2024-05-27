@@ -15,6 +15,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("initiate")]
+<<<<<<< HEAD
         public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDto initiatePayment)
         {
             try
@@ -23,11 +24,21 @@ namespace Api.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+        public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDTO initiatePayment)
+        {
+            try
+            {
+                var response = await _itran.initiatePayment(initiatePayment);
+                return Ok(response);
+            }catch (Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
 
 
             [HttpGet("confirmPayment")]
@@ -39,6 +50,16 @@ namespace Api.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+        [HttpGet("confirmPayment")]
+        public async Task<IActionResult> comfirmPayment([FromQuery] string status, [FromQuery] string tx_ref, [FromQuery] string transaction_id)
+        {
+            try
+            {
+                var response = await _itran.confirmPayment(status, tx_ref, transaction_id);
+                return Ok(response);
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 return BadRequest(ex.Message);
             }
@@ -49,29 +70,47 @@ namespace Api.Controllers
         {
             try
             {
+<<<<<<< HEAD
                 var response = await _itran.AllAsync();
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+                var response = await _itran.allAsync();
+                return Ok(response);
+            }catch (Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 return BadRequest(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
+=======
+        [HttpGet("{id}/get")]
+>>>>>>> 7f9ad44 (done with payment and voucher)
         public async Task<IActionResult> get(int id)
         {
             try
             {
+<<<<<<< HEAD
                 var response = await _itran.GetAsync(id);
                 if (response == null) return StatusCode(404, "Transaction not found");
                 return Ok(response);
             }
             catch (Exception ex)
+=======
+                var response = await _itran.getAsync(id);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }catch(Exception ex)
+>>>>>>> 7f9ad44 (done with payment and voucher)
             {
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpPost("BaniCheckout")]
         public async Task<IActionResult> baniCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
@@ -148,5 +187,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }

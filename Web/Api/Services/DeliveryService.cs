@@ -117,15 +117,42 @@ namespace Api.Services
             }
         }
 
-        public async Task<DeliveryDTO> createAsync(DeliveryDTO delivery)
+        public async Task<string> assynRiderTODelivery(int id, int riderId)
         {
             try
             {
-                var newDelivery = _mapper.Map<Delivery>(delivery);
-                await _dbContext.Deliveries.AddAsync(newDelivery);
+                var delivery = await _dbContext.Deliveries
+                    .Include(d => d.Order)
+                    .FirstOrDefaultAsync(d => d.Id == id);
+                if (delivery == null) return null!;
+                var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == riderId);
+                if (rider == null) return null!;
+                delivery.RiderId = riderId;
+                delivery.UpdateAt = DateTime.UtcNow;
+                _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
-                var deliveryDTO = _mapper.Map<DeliveryDTO>(newDelivery);
-                return deliveryDTO;
+                return "Rider assign successfully";
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CreateDeliveryDTO> createAsync(DeliveryDTO delivery)
+        {
+            try
+            {
+                var initialDelivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == delivery.OrderId);
+                if (initialDelivery == null)
+                {
+                    var newDelivery = _mapper.Map<Delivery>(delivery);
+                    newDelivery.Status = "Pending";
+                    await _dbContext.Deliveries.AddAsync(newDelivery);
+                    await _dbContext.SaveChangesAsync();
+                    var deliveryDTO = _mapper.Map<CreateDeliveryDTO>(newDelivery);
+                    return deliveryDTO;
+                }
+                throw new Exception("Already created delivery for this order");
             }
             catch (Exception ex)
             {

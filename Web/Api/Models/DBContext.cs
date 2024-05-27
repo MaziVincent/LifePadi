@@ -23,6 +23,7 @@ namespace Api.Models
         public DbSet<Service> Services { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
+<<<<<<< HEAD
         public DbSet<VendorCategory> VendorCategories { get; set; }
         public DbSet<VendorReview> VendorReviews { get; set; }
         public DbSet<RiderReview> RiderReviews { get; set; }
@@ -46,5 +47,7 @@ namespace Api.Models
                 .HasForeignKey<Wallet>(w => w.CustomerId);
             
         }
+=======
+>>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }
