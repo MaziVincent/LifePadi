@@ -14,7 +14,7 @@ namespace Api.Models
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Rider> Riders { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Address> Addressses { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -22,5 +22,6 @@ namespace Api.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Voucher> Vouchers { get; set; }
     }
 }

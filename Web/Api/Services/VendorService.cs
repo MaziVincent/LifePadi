@@ -1,0 +1,195 @@
+﻿using Api.DTO;
+using Api.Helpers;
+using Api.Interfaces;
+using Api.Models;
+using AutoMapper;
+using CloudinaryDotNet;
+using FuzzySharp;
+using Microsoft.EntityFrameworkCore;
+
+namespace Api.Services
+{
+    public class VendorService : IVendor
+    {
+        private readonly DBContext? _dbContext;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _config;
+        private readonly Cloudinary _cloudinary;
+        public VendorService(DBContext dbContext, IMapper mapper, IConfiguration config)
+        {
+            _dbContext = dbContext;
+            _mapper = mapper;
+            _config = config;
+            var account = new Account(
+                _config["Cloudinary:Cloud_Name"],
+                _config["Cloudinary:Api_Key"],
+                _config["Cloudinary:Api_Secret"]
+             );
+            _cloudinary = new Cloudinary( account );
+        }
+        public async Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize)
+        {
+            try
+            {
+                var skip = (pageNumber - 1) * pageSize;
+                var vendors = await _dbContext!.Vendors.Skip(skip).Take(pageSize).OrderByDescending(v => v.CreatedAt).Include(v => v.Products).ToListAsync();
+                var allVendor = _mapper.Map<List<VendorDTO>>(vendors);
+                return allVendor;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor)
+        {
+            try
+            {
+                var newVendor = _mapper.Map<Vendor>(vendor);
+                newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
+                newVendor.SearchString = vendor.VendorType!.ToUpper()+ " " +vendor.Name!.Replace(" ", "").ToUpper();
+                await _dbContext!.Vendors.AddAsync(newVendor);
+                await _dbContext!.SaveChangesAsync();
+                var authUserDTO = _mapper.Map<AuthVendorDTOLite>(newVendor);
+                return authUserDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<string> deleteAsync(int id)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
+                if (vendor == null) return null!;
+                return "Vendor deleted";
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AuthVendorDTOLite> getAsync(int id)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
+                if (vendor == null) return null!;
+                var authVendorDTOLite = _mapper.Map<AuthVendorDTOLite>(vendor);
+                return authVendorDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDTOLite>> searchAsync(string searchString)
+        {
+            try
+            {
+                var vendorList = new List<Vendor>();
+                var vendors = await _dbContext!.Vendors.ToListAsync();
+                foreach (var vendor in vendors)
+                {
+                    var searchParam = vendor.SearchString!.ToLower().Split(" ");
+                    bool isMatch = false;
+                    foreach (var word in searchParam)
+                    {
+                        // Fuzzy matching logic using your chosen library
+                        var matchRatio = Fuzz.Ratio(word, searchString.ToLower());
+                        if (matchRatio >= 0.8) // Set a threshold for acceptable similarity
+                        {
+                            isMatch = true;
+                            break; // Exit inner loop if a match is found
+                        }
+                    }
+                    if (isMatch)
+                    {
+                        vendorList.Add(vendor);
+                    }
+                }
+                var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendorList);
+                return vendorDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id)
+        {
+            try
+            {
+                var initialVendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
+                if (initialVendor == null) return null!;
+                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
+                initialVendor.Name = vendor.Name;
+                initialVendor.VendorType = vendor.VendorType;
+                initialVendor.Email = vendor.Email;
+                initialVendor.PhoneNumber = vendor.PhoneNumber;
+                initialVendor.ContactAddress = vendor.ContactAddress;
+                initialVendor.UpdatedAt = DateTime.UtcNow;
+                _dbContext.Vendors.Attach(initialVendor);
+                await _dbContext.SaveChangesAsync();
+                var currentVendor = _mapper.Map<AuthVendorDTOLite>(initialVendor);
+
+                return currentVendor;
+            }catch (Exception ex) { 
+                throw new Exception(ex.Message); 
+            }
+        }
+
+        public async Task<VendorDTO> uploadVendorImg(int id, IFormFile image)
+        {
+            try
+            {
+                string? folderName = "Vendors";
+                var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
+                if (vendor == null) return null!;
+                var imgPath = await UploadImage.uploadImg(image, _cloudinary, folderName);
+                if (imgPath == null) throw new Exception("Can not upload the vendor image");
+                vendor.VendorImgUrl = imgPath;
+                _dbContext!.Vendors.Attach(vendor);
+                await _dbContext.SaveChangesAsync();
+                var vendorDTO = _mapper.Map<VendorDTO>(vendor);
+                return vendorDTO;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDTOLite>> vendorsOnly()
+        {
+            try
+            {
+                var vendors = await _dbContext!.Vendors.ToListAsync();
+                var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendors);
+                return vendorDTOLite;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ProductDTOLite>> vendorsProduct(int id)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors
+                    .Include(v => v.Products!)
+                    .ThenInclude(p => p.Service)
+                    .Include(v => v.Products!)
+                    .ThenInclude(p => p.Category)
+                    .FirstOrDefaultAsync(v => v.Id == id);
+                var products = _mapper.Map<List<ProductDTOLite>>(vendor!.Products);
+                return products;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}
