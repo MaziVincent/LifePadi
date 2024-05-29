@@ -1,1 +1,0 @@
-frontend for life padi
