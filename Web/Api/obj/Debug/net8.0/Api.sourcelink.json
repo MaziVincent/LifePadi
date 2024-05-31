@@ -10,6 +10,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
 =======
 {"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
@@ -33,6 +34,8 @@
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/7349b469ce6c7687859b04145c5afef593e69336/*"}}
 >>>>>>> 18f5cdb (Admin service)
 =======
+=======
+>>>>>>> e0958f8 (added modelstate for service)
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/18f5cdbd46da9999a48d3f21d725ade11a86e8a2/*"}}
 >>>>>>> 93aff31 (create service modal)
 =======
@@ -43,7 +46,14 @@
 >>>>>>> 54fb00d (removed service from product)
 =======
 {"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/54fb00df4ea7b63eb218ba1f087138b40bf86f88/*"}}
+<<<<<<< HEAD
 >>>>>>> d913f14 (done with dashboard)
 =======
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/f1ec52e08a5de5a2b2b84ac19401c37a55a9e5d6/*"}}
 >>>>>>> 2e24261 (git ignore)
+=======
+>>>>>>> d913f14e3a7a1ab70976aed4f92252cc80be9074
+=======
+{"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/d913f14e3a7a1ab70976aed4f92252cc80be9074/*"}}
+>>>>>>> b6e5f3e (added modelstate for service)
+>>>>>>> e0958f8 (added modelstate for service)

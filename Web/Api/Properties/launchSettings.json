@@ -46,9 +46,13 @@
       }
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> aefa4ba (made sure the serviceicon url is saving correctly)
+=======
+
+>>>>>>> eedaa53 (added modelstate for service)
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
