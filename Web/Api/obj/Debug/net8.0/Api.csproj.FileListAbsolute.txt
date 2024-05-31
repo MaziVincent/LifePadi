@@ -222,6 +222,7 @@ C:/works/LifePadi/Web/Api/obj/Debug/net8.0/Api.csproj.Up2Date
 /Users/mac/Projects/LifePadi/Web/Api/obj/Debug/net8.0/Api.genruntimeconfig.cache
 /Users/mac/Projects/LifePadi/Web/Api/obj/Debug/net8.0/ref/Api.dll
 =======
+<<<<<<< HEAD
 C:\works\LifePadi\Web\Api\bin\Debug\net8.0\appsettings.Development.json
 C:\works\LifePadi\Web\Api\bin\Debug\net8.0\appsettings.json
 C:\works\LifePadi\Web\Api\bin\Debug\net8.0\global.json
@@ -344,3 +345,20 @@ C:\works\LifePadi\Web\API\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\works\LifePadi\Web\API\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\works\LifePadi\Web\API\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 >>>>>>> b04b543 (done with service, category and product controllers.)
+=======
+C:/works/LifePadi/Web/Api/bin/Debug/net8.0/BCrypt.Net-Next.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/FuzzySharp.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/CloudinaryDotNet.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/Bogus.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:/works/LifePadi/Web/API/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+>>>>>>> 6f7231c36f4ce9c7a5c2b02d9cf00ae04ecf55c3
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Bogus.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/CloudinaryDotNet.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/FuzzySharp.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+>>>>>>> 18f5cdb (Admin service)

@@ -3,6 +3,9 @@
   "restore": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 18f5cdb (Admin service)
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
   },
   "projects": {
@@ -14,6 +17,7 @@
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
         "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
+<<<<<<< HEAD
 =======
     "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
 =======
@@ -34,6 +38,8 @@
 =======
         "outputPath": "C:\\works\\LifePadi\\Web\\API\\obj\\",
 >>>>>>> 6f7231c (done with payment and voucher)
+=======
+>>>>>>> 18f5cdb (Admin service)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

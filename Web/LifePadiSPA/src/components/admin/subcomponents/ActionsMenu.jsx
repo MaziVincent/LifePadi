@@ -5,10 +5,17 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { green } from '@mui/material/colors';
 
+<<<<<<< HEAD
 // const options = [
 //   {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
 //   {icon:'line-icon-Pen-5 text-blue-700 text-xl', text:'Edit'},
 //   {icon:'line-icon-Close text-red-700 text-xl', text:'Delete'} 
+=======
+const options = [
+  {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
+  {icon:'line-icon-Pen-5 text-blue-700 text-xl', text:'Edit'},
+  {icon:'line-icon-Close text-red-700 text-xl', text:'Delete'} 
+>>>>>>> 55ba6ae (Admin service)
   
 // ];
 
@@ -47,6 +54,7 @@ export default function LongMenu( {view,dispatch, id}) {
         onClose={handleClose}
         
       >
+<<<<<<< HEAD
        
           <MenuItem  selected={true} onClick={() => {
             
@@ -54,6 +62,11 @@ export default function LongMenu( {view,dispatch, id}) {
             view(id)
             }}>
             <div className='flex gap-2  '> <i className='line-icon-Eye text-background font-bold text-xl'></i><span>View Order </span></div>
+=======
+        {options.map((option) => (
+          <MenuItem key={option.text} selected={option.text === 'View'} onClick={handleClose}>
+            <div className='flex gap-2 '> <i className={`${option.icon}`}></i><span>{option.text}</span></div>
+>>>>>>> 55ba6ae (Admin service)
           </MenuItem>
 
           <MenuItem onClick={ () => {

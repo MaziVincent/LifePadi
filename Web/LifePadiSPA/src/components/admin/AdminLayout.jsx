@@ -10,7 +10,11 @@ const AdminLayout = () => {
   return (
     <main className="">
       {" "}
+<<<<<<< HEAD
       <div className=" bg-primary dark:bg-darkBg dark:text-primary border-3 border-red h-full ">
+=======
+      <div className=" bg-gray-100 dark:bg-gray-900 h-[100svh] ">
+>>>>>>> 55ba6ae (Admin service)
         <AdminHeader setAside={setAside} />
 
         {/* <!-- Sidebar --> */}
