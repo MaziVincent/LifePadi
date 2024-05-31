@@ -1,4 +1,9 @@
 .vs/
+<<<<<<< HEAD
 obj
 bin
 packages
+=======
+.obj/
+.bin/
+>>>>>>> b993299 (git ignore)

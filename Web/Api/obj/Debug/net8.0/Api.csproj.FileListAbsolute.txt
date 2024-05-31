@@ -362,6 +362,7 @@ C:/works/LifePadi/Web/API/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 /Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/mac/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 18f5cdb (Admin service)
 =======
 C:\works\LifePadi\Web\Api\bin\Debug\net8.0\appsettings.Development.json
@@ -483,3 +484,5 @@ C:\works\LifePadi\Web\Api\obj\Debug\net8.0\Api.pdb
 C:\works\LifePadi\Web\Api\obj\Debug\net8.0\Api.genruntimeconfig.cache
 C:\works\LifePadi\Web\Api\obj\Debug\net8.0\ref\Api.dll
 >>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
+=======
+>>>>>>> 2e24261 (git ignore)

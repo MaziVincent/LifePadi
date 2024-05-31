@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 18f5cdb (Admin service)
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
@@ -15,13 +16,17 @@
 =======
     "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
 >>>>>>> 54fb00d (removed service from product)
+=======
+    "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
+>>>>>>> 2e24261 (git ignore)
   },
   "projects": {
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
+    "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectUniqueName": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "projectName": "Api",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
@@ -60,20 +65,22 @@
         "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
         "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
 >>>>>>> 54fb00d (removed service from product)
+=======
+        "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
+        "packagesPath": "/Users/mac/.nuget/packages/",
+        "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
+>>>>>>> 2e24261 (git ignore)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Remigius\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/mac/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -170,10 +177,14 @@
             }
           },
 <<<<<<< HEAD
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
 =======
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
 >>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
+=======
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
+>>>>>>> 2e24261 (git ignore)
         }
       }
     }
