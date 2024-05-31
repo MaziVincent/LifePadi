@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 obj
 bin
+<<<<<<< HEAD
 packages
 =======
 .obj/
@@ -12,3 +13,6 @@ packages
 obj
 bin
 >>>>>>> f09ab23 (gitignore)
+=======
+packages
+>>>>>>> 7782aa1 (Remove ignored files)
