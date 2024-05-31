@@ -24,6 +24,10 @@ namespace Api.Interfaces
         public Task<OrderItemDTO> updateAsync( OrderItemDTO orderItem ,int id);
         public Task<string> deleteAsync(int id);
         public Task<OrderItemDTO> createAsync(OrderItemDTO orderItem);
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<int> totalNumberOfOrderItems();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

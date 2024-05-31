@@ -40,8 +40,13 @@ namespace Api.Interfaces
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
         public Task<CategoryDTO> createAsync(CategoryDTOLite category);
+<<<<<<< HEAD
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public Task<int> numberOfCategories();
+        public Task<object> categoryStats();
+>>>>>>> 98415b4 (done with dashboard)
 
     }
 }

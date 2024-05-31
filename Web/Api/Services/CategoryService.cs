@@ -18,6 +18,7 @@ namespace Api.Services
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
         private readonly IConfiguration _config;
         private readonly Cloudinary _cloudinary;
         public CategoryService(DBContext dbContext, IMapper mapper, IConfiguration config)
@@ -100,6 +101,10 @@ namespace Api.Services
 =======
         public CategoryService(DBContext dbContext, IMapper mapper) 
         { 
+=======
+        public CategoryService(DBContext dbContext, IMapper mapper)
+        {
+>>>>>>> 98415b4 (done with dashboard)
             _dbContext = dbContext;
             _mapper = mapper;
         }
@@ -120,7 +125,8 @@ namespace Api.Services
                     .ToListAsync();
                 var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
                 return categoryDTOs;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -146,7 +152,8 @@ namespace Api.Services
 =======
                 var categoryDTOs = _mapper.Map<List<CategoryDTOLite>>(categories);
                 return categoryDTOs;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -220,7 +227,25 @@ namespace Api.Services
                 var products = _mapper.Map<List<ProductDTO>>(category!.Products);
                 return products;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> categoryStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalCategories = await numberOfCategories(),
+                    totalProducts = await _dbContext.Products.CountAsync(),
+                };
+                return stats;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -235,7 +260,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var categoryDTO = _mapper.Map<CategoryDTO>(newCategory);
                 return categoryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)
@@ -252,6 +278,7 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Category deleted";
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -262,6 +289,10 @@ namespace Api.Services
         public async Task<CategoryDto> getAsync(int id)
 =======
             }catch (Exception ex)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -298,7 +329,8 @@ namespace Api.Services
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);
                 return categoryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -349,6 +381,19 @@ namespace Api.Services
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);
                 return categoryDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> numberOfCategories()
+        {
+            try
+            {
+                var count = await _dbContext.Categories.CountAsync();
+                return count;
             }
             catch (Exception ex)
             {
@@ -415,7 +460,8 @@ namespace Api.Services
 =======
                 var categoryDTO = _mapper.Map<CategoryDTO>(initialCategory);
                 return categoryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)

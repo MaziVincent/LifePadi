@@ -20,6 +20,7 @@ using System.Reflection;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
@@ -39,6 +40,9 @@ using System.Reflection;
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15ee6541257ea2fef36e06e7f2d52ce4174d9db8")]
 >>>>>>> 54fb00d (removed service from product)
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54fb00df4ea7b63eb218ba1f087138b40bf86f88")]
+>>>>>>> d913f14 (done with dashboard)
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -38,15 +38,21 @@ namespace Api.Services
         public UserService(DBContext dbContext, IMapper mapper) { 
 =======
         private readonly IConfiguration? _config;
+<<<<<<< HEAD
         public UserService(DBContext dbContext, IMapper mapper, IConfiguration config) { 
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public UserService(DBContext dbContext, IMapper mapper, IConfiguration config)
+        {
+>>>>>>> 98415b4 (done with dashboard)
             _dbContext = dbContext;
             _mapper = mapper;
             _config = config;
         }
         public async Task<bool> checkEmail(string email)
         {
-            try{
+            try
+            {
                 var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
                 if (user == null)
@@ -54,6 +60,7 @@ namespace Api.Services
                     return false;
                 }
                 return true;
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
             catch (Exception ex)
@@ -84,6 +91,10 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
 =======
             }catch(Exception ex)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -95,12 +106,13 @@ namespace Api.Services
             {
                 var newAdmin = _mapper.Map<Admin>(user);
                 newAdmin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                newAdmin.SearchString = user.FirstName!.ToUpper()+" "+user.LastName!.ToUpper()+" "+user.Email!.ToUpper();
+                newAdmin.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 await _dbContext.Admins.AddAsync(newAdmin);
                 await _dbContext.SaveChangesAsync();
                 var authuser = _mapper.Map<AuthUserDTO>(newAdmin);
                 return authuser;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
@@ -120,6 +132,7 @@ namespace Api.Services
                 return "User deleted";
             }
             catch (Exception ex)
+<<<<<<< HEAD
             {
                 throw new ServiceException(ex.Message);
             }
@@ -151,6 +164,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "User deleted";
             }catch(Exception ex)
+=======
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -163,9 +178,10 @@ namespace Api.Services
                 var skip = (pageNumber - 1) * pageSize;
                 var users = await _dbContext.Admins.Skip(skip).Take(pageSize).OrderByDescending(a => a.CreatedAt).ToListAsync();
                 var userDTOs = _mapper.Map<List<UserDTOLite>>(users);
-                
+
                 return userDTOs!;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -191,7 +207,8 @@ namespace Api.Services
 =======
                 var userDTO = _mapper.Map<UserDTO>(user);
                 return userDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -242,7 +259,8 @@ namespace Api.Services
                 authUser.Token!.RefreshToken = refreshToken;
 
                 return authUser;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -270,7 +288,8 @@ namespace Api.Services
                     return authUser;
                 }
                 return null!;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
@@ -341,8 +360,22 @@ namespace Api.Services
                 var updatedUser = _mapper.Map<UserDTOLite>(updateUser);
                 return updatedUser;
 
-            }catch(Exception ex) 
-            { 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfUsers()
+        {
+            try
+            {
+                var response = await _dbContext.Users.CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
             }

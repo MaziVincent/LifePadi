@@ -51,6 +51,9 @@ namespace Api.Interfaces
         public Task<IEnumerable<ProductDTO>> searchProductByCategory(int pageNumber, int pageSize, string categoryName);
         public Task<IEnumerable<ProductDTO>> searchProductByService(int pageNumber, int pageSize, string serviceName);
         public Task<IEnumerable<ProductDTO>> searchProductByAll(int pageNumber, int pageSize, string name);
+        public Task<int> totalNumberOfProducts();
+        public Task<int> totalNumberOfProductsByVendor(int vendorId);
+        public Task<int> totalNumberOfProductsByCategory(int categoryId);
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
     }

@@ -437,6 +437,63 @@ namespace Api.Services
             }
         }
 
+        public async Task<object> serviceStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalNumberOfServices = await totalNumberOfServices(),
+                    totalNumberOfActiveServices = await totalNumberOfActiveServices(),
+                    totalNumberOfNonActiveServices = await totalNumberOfNonActiveServices()
+                };
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfActiveServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.Where(s => s.IsActive == true).CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfNonActiveServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.Where(s => s.IsActive == false).CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ServiceDTOLite> updateAsync(ServiceDTO service, int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
         {

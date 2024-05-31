@@ -66,9 +66,18 @@ namespace Api.Interfaces
         public Task<string> verifyRider(int id);
         public Task<string> deactivateRider(int id);
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<string> assignOrderToRider(int riderId, int orderId);
 >>>>>>> 28d4101 (finished with rider and order)
 =======
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public Task<int> totalNumberOfRiders();
+        public Task<int> totalNumberOfNonActiveRiders();
+        public Task<int> totalNumberOfActiveRiders();
+        public Task<int> totalNumberOfVerifiedRiders();
+        public Task<int> totalNumberOfUnverifiedRiders();
+        public Task<object> getRiderStats();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

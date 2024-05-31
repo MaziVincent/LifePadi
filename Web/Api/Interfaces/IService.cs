@@ -52,6 +52,14 @@ namespace Api.Interfaces
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
         public Task<IEnumerable<VendorDTOLite>> getVendorsForService(int id);
+<<<<<<< HEAD
 >>>>>>> 58020e7 (removed service from product)
+=======
+        public Task<int> totalNumberOfServices();
+        public Task<int> totalNumberOfActiveServices();
+        public Task<int> totalNumberOfNonActiveServices();
+        public Task<object> serviceStats();
+        
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

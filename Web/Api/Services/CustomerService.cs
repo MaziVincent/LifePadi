@@ -350,6 +350,18 @@ namespace Api.Services
             }
         }
 
+        public async Task<int> numberOfCustomers()
+        {
+            try
+            {
+                var customers = await _dbContext.Customers.CountAsync();
+                return customers;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<CustomerDTOLite>> search(string searchString)
 >>>>>>> ee48634 (done with service, category and product controllers.)
         {

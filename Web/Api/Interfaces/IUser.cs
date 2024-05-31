@@ -29,6 +29,10 @@ namespace Api.Interfaces
         public Task<bool> resetPassword(ForgotPasswordDTO forgotPassword);
         public Task<IEnumerable<OrderDTO>> getUserOders(int id);
         public Task<AuthUserDTO> login(AuthUserDTOLite user);
+<<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public Task<int> totalNumberOfUsers();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

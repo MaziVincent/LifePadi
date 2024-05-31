@@ -44,11 +44,16 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Voucher activated";
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
             catch (Exception ex)
 =======
             }catch (Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -74,8 +79,13 @@ namespace Api.Services
 =======
                 var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
                 return voucherList;
+<<<<<<< HEAD
             }catch (Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -116,6 +126,7 @@ namespace Api.Services
                 {
                     return true;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 }
                 else if (comparismResult < 0)
                 {
@@ -129,14 +140,24 @@ namespace Api.Services
             catch (Exception ex)
 =======
                 }else if(comparismResult < 0)
+=======
+                }
+                else if (comparismResult < 0)
+>>>>>>> 98415b4 (done with dashboard)
                 {
                     return false;
-                }else
+                }
+                else
                 {
                     return true;
                 }
+<<<<<<< HEAD
             }catch (Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -210,8 +231,13 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var voucherDTO = _mapper.Map<VoucherDTO>(newVoucher);
                 return voucherDTO;
+<<<<<<< HEAD
             }catch(Exception ex) 
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -234,11 +260,16 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
             catch (Exception ex)
 =======
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -256,11 +287,16 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Voucher deactivated";
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
             catch (Exception ex)
 =======
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -284,8 +320,13 @@ namespace Api.Services
             catch (Exception ex)
 =======
                 return "Voucher deleted";
+<<<<<<< HEAD
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -306,10 +347,14 @@ namespace Api.Services
                     v.UpdatedAt = DateTime.UtcNow;
                 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
                 
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+
+>>>>>>> 98415b4 (done with dashboard)
                 _dbContext.Vouchers.AttachRange(expiredVouchers);
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
@@ -366,8 +411,13 @@ namespace Api.Services
 =======
                 var voucherDTOList = _mapper.Map<List<VoucherDTO>>(vouchers);
                 return voucherDTOList;
+<<<<<<< HEAD
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -388,8 +438,13 @@ namespace Api.Services
             catch (Exception ex)
 =======
                 return num;
+<<<<<<< HEAD
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -403,10 +458,14 @@ namespace Api.Services
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (voucher.IsActive == true) return true;
 =======
                 if(voucher.IsActive == true) return true;
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                if (voucher.IsActive == true) return true;
+>>>>>>> 98415b4 (done with dashboard)
                 return false;
             }
             catch (Exception ex)
@@ -434,8 +493,13 @@ namespace Api.Services
 =======
                 var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
                 return voucherDTO;
+<<<<<<< HEAD
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -492,6 +556,9 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98415b4 (done with dashboard)
         public async Task<int> totalNumberOfActiveVouchers()
         {
             try
@@ -535,8 +602,11 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<VoucherDto> updateAsync(VoucherDto voucher, int id)
 =======
+=======
+>>>>>>> 98415b4 (done with dashboard)
         public async Task<VoucherDTO> updateAsync(VoucherDTO voucher, int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
         {
@@ -563,8 +633,13 @@ namespace Api.Services
 =======
                 var voucherDTO = _mapper.Map<VoucherDTO>(initialVoucher);
                 return voucherDTO;
+<<<<<<< HEAD
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -592,6 +667,7 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Successful";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
             catch (Exception ex)
@@ -634,6 +710,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return voucher;
 
+=======
+>>>>>>> 98415b4 (done with dashboard)
             }
             catch (Exception ex)
             {
@@ -654,9 +732,12 @@ namespace Api.Services
                 return stats;
             }
             catch (Exception ex)
+<<<<<<< HEAD
 =======
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }

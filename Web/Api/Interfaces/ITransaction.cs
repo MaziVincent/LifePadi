@@ -36,6 +36,14 @@ namespace Api.Interfaces
 =======
         public Task<DTO.Data> initiatePayment(InitiatePaymentDTO initiatePayment);
         public Task<PaymentDetailsDTO> confirmPayment(string status, string tx_ref, string transaction_id);
+<<<<<<< HEAD
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public Task<int> totalNumberOfTransactions();
+        public Task<int> totalNumberOfSuccessfulTransactions();
+        public Task<int> totalNumberOfFailedTransactions();
+        public Task<int> totalNumberOfPendingTransactions();
+        public Task<object> transactionStats();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

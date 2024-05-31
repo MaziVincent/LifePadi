@@ -43,6 +43,10 @@ namespace Api.Interfaces
         public Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor);
         public Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id);
         public Task<AuthVendorDTOLite> getAsync(int id);
+<<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public Task<int> totalNumberOfVendors();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

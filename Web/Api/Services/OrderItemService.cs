@@ -43,8 +43,9 @@ namespace Api.Services
                     TotalNumber = orderItems.Count(),
                     Data = orderItemDTO.ToArray(),
                 };
-                
-            }catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 4641615 (finished with delivery service and controller)
@@ -115,7 +116,8 @@ namespace Api.Services
 =======
                 var orderItemDTO = _mapper.Map<OrderItemDTO>(newOrderItem);
                 return orderItemDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 4641615 (finished with delivery service and controller)
@@ -132,11 +134,16 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Item deleted";
 <<<<<<< HEAD
+<<<<<<< HEAD
             }
             catch (Exception ex)
 =======
             }catch (Exception ex)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -170,6 +177,9 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 98415b4 (done with dashboard)
         public async Task<int> totalNumberOfOrderItems()
         {
             try
@@ -183,8 +193,11 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<OrderItemDto> updateAsync(OrderItemDto orderItem, int id)
 =======
+=======
+>>>>>>> 98415b4 (done with dashboard)
         public async Task<OrderItemDTO> updateAsync(OrderItemDTO orderItem, int id)
 >>>>>>> 4641615 (finished with delivery service and controller)
         {
@@ -207,8 +220,13 @@ namespace Api.Services
 =======
                 var orderItemDTO = _mapper.Map<OrderItemDTO>(initialOrderItem);
                 return orderItemDTO;
+<<<<<<< HEAD
             }catch (Exception ex)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }

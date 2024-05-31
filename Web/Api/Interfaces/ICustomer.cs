@@ -46,6 +46,10 @@ namespace Api.Interfaces
         public Task<IEnumerable<CustomerDTOLite>> search(string searchString);
         public Task<IEnumerable<AddressDTOLite>> customerAddresses(int id);
         public Task<IEnumerable<OrderDTOLite>> getCustomerOders(int id);
+<<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public Task<int> numberOfCustomers();
+>>>>>>> 98415b4 (done with dashboard)
     }
 }

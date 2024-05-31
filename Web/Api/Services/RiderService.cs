@@ -16,10 +16,14 @@ namespace Api.Services
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
         public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper)
 =======
         public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper) 
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper)
+>>>>>>> 98415b4 (done with dashboard)
         {
             _config = config;
             _dbContext = dbContext;
@@ -30,12 +34,16 @@ namespace Api.Services
                 _config["Cloudinary:Api_Secret"]
             );
 <<<<<<< HEAD
+<<<<<<< HEAD
             _cloudinary = new Cloudinary(account);
         }
 
         public async Task<object> activateRider(int id)
 =======
             _cloudinary = new Cloudinary( account );
+=======
+            _cloudinary = new Cloudinary(account);
+>>>>>>> 98415b4 (done with dashboard)
         }
 
         public async Task<string> activateRider(int id)
@@ -62,13 +70,12 @@ namespace Api.Services
                 _dbContext.Riders.Attach(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider activated";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-        
 
         public async Task<AuthRiderDTO> createAsync(CreateRiderDTO rider)
 >>>>>>> 28d4101 (finished with rider and order)
@@ -104,7 +111,7 @@ namespace Api.Services
                 newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
                 newRider.IsActive = true;
                 newRider.IsVerified = false;
-                newRider.SearchString = rider.FirstName!.ToUpper()+" "+rider.LastName!.ToUpper()+" "+rider.Email!.ToUpper()+" "+rider.PhoneNumber;
+                newRider.SearchString = rider.FirstName!.ToUpper() + " " + rider.LastName!.ToUpper() + " " + rider.Email!.ToUpper() + " " + rider.PhoneNumber;
                 var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
                 if (imgPath == null!) throw new Exception("Can not upload the product image");
                 newRider.IdentityImgUrl = imgPath;
@@ -112,7 +119,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var authRiderDTO = _mapper.Map<AuthRiderDTO>(newRider);
                 return authRiderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -155,6 +163,7 @@ namespace Api.Services
                 _dbContext.Riders.Remove(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider deleted";
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
             catch (Exception ex)
@@ -345,6 +354,10 @@ namespace Api.Services
         public Task<IEnumerable<OrderDto>> orderLists(int id)
 =======
             }catch (Exception ex)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -370,11 +383,12 @@ namespace Api.Services
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.SearchString!.ToLower().Contains(searchString.ToLower()))
                         .ToListAsync();
-                        
+
                 var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riders);
                 return getRiderDTO;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -389,7 +403,8 @@ namespace Api.Services
                 if (rider == null) return null!;
                 var getRiderDTO = _mapper.Map<GetRiderDTO>(rider);
                 return getRiderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -426,11 +441,36 @@ namespace Api.Services
                 foreach (var delivery in deliverise)
                 {
                     orderList.Append(delivery.Order);
-                    
+
                 }
                 var orderDTO = _mapper.Map<List<OrderDTO>>(orderList);
                 return orderDTO;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> getRiderStats()
+        {
+            try{
+                var totalRiders = await totalNumberOfRiders();
+                var totalActiveRiders = await totalNumberOfActiveRiders();
+                var totalNonActiveRiders = await totalNumberOfNonActiveRiders();
+                var totalVerifiedRiders = await totalNumberOfVerifiedRiders();
+                var totalUnverifiedRiders = await totalNumberOfUnverifiedRiders();
+                var stats = new
+                {
+                    totalRiders,
+                    totalActiveRiders,
+                    totalNonActiveRiders,
+                    totalVerifiedRiders,
+                    totalUnverifiedRiders
+                };
+                return stats;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -445,7 +485,8 @@ namespace Api.Services
                 var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riders);
                 return getRiderDTO;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -520,14 +561,80 @@ namespace Api.Services
         {
             try
             {
-                
+
                 var deliveries = await _dbContext.Deliveries.OrderByDescending(r => r.CreatedAt)
                     .Include(d => d.Rider)
                     .Where(d => d.Rider!.Id == riderId && d.Status == "successful")
                     .ToListAsync();
                 var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(deliveries);
-                return deliveryDTOLite;                
-            }catch (Exception ex)
+                return deliveryDTOLite;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfActiveRiders()
+        {
+            try
+            {
+                var riders = await _dbContext.Riders.Where(r => r.IsActive == true).CountAsync();
+                return riders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfNonActiveRiders()
+        {
+            try
+            {
+                var riders = await _dbContext.Riders.Where(r => r.IsActive == false).CountAsync();
+                return riders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfRiders()
+        {
+            try
+            {
+                var riders = await _dbContext.Riders.CountAsync();
+                return riders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfUnverifiedRiders()
+        {
+            try
+            {
+                var riders = await _dbContext.Riders.Where(r => r.IsVerified == false).CountAsync();
+                return riders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfVerifiedRiders()
+        {
+            try
+            {
+                var riders = await _dbContext.Riders.Where(r => r.IsVerified == true).CountAsync();
+                return riders;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -708,7 +815,8 @@ namespace Api.Services
 =======
                 var getRiderDTO = _mapper.Map<GetRiderDTO>(initialRider);
                 return getRiderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -741,7 +849,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var getRiderDTO = _mapper.Map<GetRiderDTO>(rider);
                 return getRiderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 28d4101 (finished with rider and order)
@@ -758,6 +867,7 @@ namespace Api.Services
                 _dbContext.Riders.Attach(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider verified";
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
             catch (Exception ex)
@@ -842,6 +952,10 @@ namespace Api.Services
 
 =======
             }catch(Exception ex)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }

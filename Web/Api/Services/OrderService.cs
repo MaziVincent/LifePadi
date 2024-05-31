@@ -18,6 +18,7 @@ namespace Api.Services
         private readonly DBContext? _dbContext;
         private readonly IMapper _mapper;
 <<<<<<< HEAD
+<<<<<<< HEAD
         private readonly IFcmService _fcmService;
         // private readonly UpdateOrderAmount updateOrderAmount;
         public OrderService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
@@ -54,6 +55,9 @@ namespace Api.Services
         public async Task<IEnumerable<OrderDtoLite>> allOrderLite()
 =======
         public OrderService( DBContext dBContext, IMapper mapper)
+=======
+        public OrderService(DBContext dBContext, IMapper mapper)
+>>>>>>> 98415b4 (done with dashboard)
         {
             _dbContext = dBContext;
             _mapper = mapper;
@@ -73,7 +77,8 @@ namespace Api.Services
                     TotalNumber = orders.Count(),
                     Data = orderDTO.ToArray(),
                 };
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -99,7 +104,8 @@ namespace Api.Services
 =======
                 var orderDTOLite = _mapper.Map<List<OrderDTOLite>>(orders);
                 return orderDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -182,7 +188,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var orderDTO = _mapper.Map<OrderDTO>(newOrder);
                 return orderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -229,7 +236,8 @@ namespace Api.Services
                     .ToListAsync();
                 var orderDTO = _mapper.Map<List<OrderDTO>>(orders);
                 return orderDTO;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 28d4101 (finished with rider and order)
@@ -245,6 +253,7 @@ namespace Api.Services
                 _dbContext.Orders.Remove(order);
                 await _dbContext.SaveChangesAsync();
                 return "Order deleted";
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
             catch (Exception ex)
@@ -308,6 +317,10 @@ namespace Api.Services
         public async Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id)
 =======
             }catch(Exception ex)
+=======
+            }
+            catch (Exception ex)
+>>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
             }
@@ -321,7 +334,8 @@ namespace Api.Services
                 if (order == null) return null!;
                 var orderDTO = _mapper.Map<OrderDTO>(order);
                 return orderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -475,13 +489,139 @@ namespace Api.Services
 =======
                 var orderItems = _mapper.Map<List<OrderItemDTOLite>>(order!.OrderItems);
                 return orderItems;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        
+        public async Task<object> orderStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalNumberOfOrders = await totalNumberOfOrders(),
+                    totalNumberOfPendingOrders = await totalNumberOfPendingOrders(),
+                    totalNumberOfDeliveredOrders = await totalNumberOfDeliveredOrders(),
+                    totalNumberOfCancelledOrders = await totalNumberOfCancelledOrders(),
+                    totalNumberOfOrdersToday = await totalNumberOfOrdersToday(),
+                    totalNumberOfOrdersThisMonth = await totalNumberOfOrdersThisMonth(),
+                    totalNumberOfOrdersThisYear = await totalNumberOfOrdersThisYear(),
+                    totalNumberOfClosedOrders = await totalNumberOfClosedOrders()
+                };
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfCancelledOrders()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.Status == "Cancelled").CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfClosedOrders()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.Status == "Closed").CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfDeliveredOrders()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.Status == "Delivered").CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfOrders()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfOrdersThisMonth()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.CreatedAt.Month == DateTime.UtcNow.Month).CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfOrdersThisYear()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.CreatedAt.Year == DateTime.UtcNow.Year).CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfOrdersToday()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.CreatedAt.Date == DateTime.UtcNow.Date).CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfPendingOrders()
+        {
+            try
+            {
+                var orders = await _dbContext!.Orders.Where(o => o.Status == "Pending").CountAsync();
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public async Task<OrderDTO> updateAsync(OrderDTO order, int id)
 >>>>>>> 28d4101 (finished with rider and order)
@@ -521,7 +661,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var orderDTO = _mapper.Map<OrderDTO>(initialOrder);
                 return orderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -569,7 +710,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var orderDTO = _mapper.Map<OrderDTO>(order);
                 return orderDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
 >>>>>>> 28d4101 (finished with rider and order)
