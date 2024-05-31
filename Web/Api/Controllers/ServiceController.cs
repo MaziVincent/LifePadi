@@ -102,7 +102,7 @@ namespace Api.Controllers
                 if(!ModelState.IsValid) return BadRequest("Invalid input");
                 if (service.Name == null || service.Description == null) return BadRequest("Name and Description are required");
                 var isNameTaken = await _iservice.nameExists(service.Name!);
-                if (isNameTaken == false)
+                if (!isNameTaken)
                 {
                     var newService = await _iservice.createAsync(service);
                     return Ok(newService);
