@@ -97,6 +97,8 @@ namespace Api.DTO
         public string? VendorType { get; set; }
         public string? VendorImgUrl { get; set; }
         public string? SearchString { get; set; }
+        public int? ServiceId { get; set; }
+        public Service? Service { get; set; }
         public List<ProductDTOLite>? Products { get; set; }
     }
 
@@ -124,6 +126,7 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? Password { get; set; }
+        public int? ServiceId { get; set; }
     }
 
     public class AuthVendorDTOLite

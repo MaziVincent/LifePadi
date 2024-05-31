@@ -19,8 +19,12 @@ namespace Api.DTO
         public List<VendorDtoLite>? Vendors { get; set; }
 =======
         public IFormFile? ServiceIcon { get; set; }
+<<<<<<< HEAD
         public List<ProductDTOLite>? Products { get; set; }
 >>>>>>> c824428 (added creating serviceIcon while creating the service)
+=======
+        public List<VendorDTOLite>? Vendors { get; set; }
+>>>>>>> 58020e7 (removed service from product)
         public bool? IsActive { get; set; }
     }
 

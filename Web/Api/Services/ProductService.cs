@@ -50,6 +50,7 @@ namespace Api.Services
                     var products1 = await _dbContext!.Products.Skip(skip).Take(pageSize)
                         .Include(p => p.Vendor)
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .Include(p => p.Category)
                         .OrderByDescending(p => p.CreatedAt)
                         .Where(p => p.Status == true).ToListAsync();
@@ -73,6 +74,8 @@ namespace Api.Services
         public async Task<IEnumerable<ProductDtoLite>> allProductLiteAsync()
 =======
                         .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                         .Include(p => p.Category)
                         .OrderByDescending(p => p.CreatedAt)
                         .Where(p => p.Status == true).ToListAsync();
@@ -81,7 +84,6 @@ namespace Api.Services
                 }
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Vendor)
-                    .Include(p => p.Service)
                     .Include(p => p.Category)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.SearchString!.ToLower().Contains(searchString.ToLower())).ToListAsync();
@@ -190,6 +192,7 @@ namespace Api.Services
                 var product = await _dbContext.Products
                     .Include(p => p.Vendor)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .ThenInclude(v => v!.Addresses)
                     .Include(p => p.Category)
                     .Include(p => p.ProductReviews)!
@@ -242,6 +245,8 @@ namespace Api.Services
         public async Task<VendorDto> getProductVendor(int id)
 =======
                     .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(p => p.Category)
                     .FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
@@ -367,6 +372,7 @@ namespace Api.Services
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(name.ToLower()) ||
@@ -385,10 +391,11 @@ namespace Api.Services
         public async Task<IEnumerable<ProductDto>> searchProductByCategory(int pageNumber, int pageSize, string categoryName)
 =======
                     .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(name.ToLower()) || 
-                    p.Service!.Name!.ToLower().Contains(name.ToLower()) || 
                     p.Vendor!.Name!.ToLower().Contains(name.ToLower()) || 
                     p.SearchString!.ToLower().Contains(name.ToLower()))
                     .ToListAsync();
@@ -409,6 +416,7 @@ namespace Api.Services
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(categoryName.ToLower()))
@@ -425,6 +433,8 @@ namespace Api.Services
         public async Task<IEnumerable<ProductDto>> searchProductByService(int pageNumber, int pageSize, string serviceName)
 =======
                     .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(categoryName.ToLower()))
@@ -446,6 +456,7 @@ namespace Api.Services
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Vendor!.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
@@ -462,9 +473,11 @@ namespace Api.Services
         public async Task<IEnumerable<ProductDto>> searchProductByVendor(int pageNumber, int pageSize, string vendorName)
 =======
                     .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => p.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
+                    .Where(p => p.Vendor!.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
                     .ToListAsync();
                 var productDTO = _mapper.Map<List<ProductDTO>>(products);
                 return productDTO;
@@ -483,6 +496,7 @@ namespace Api.Services
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
+<<<<<<< HEAD
 <<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
@@ -558,6 +572,8 @@ namespace Api.Services
         public async Task<ProductDto> updateAsync(ProductDto product, int id)
 =======
                     .Include(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .AsQueryable()
@@ -583,9 +599,12 @@ namespace Api.Services
                 initialProduct.Description = product.Description;
                 initialProduct.Price = product.Price;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                 initialProduct.ServiceId = product.ServiceId;
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 58020e7 (removed service from product)
                 initialProduct.VendorId = product.VendorId;
                 initialProduct.CategoryId = product.CategoryId;
                 initialProduct.Status = product.Status;

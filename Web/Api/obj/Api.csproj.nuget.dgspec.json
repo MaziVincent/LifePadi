@@ -5,19 +5,24 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 18f5cdb (Admin service)
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
 =======
     "c:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
 >>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
+=======
+    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
+>>>>>>> 54fb00d (removed service from product)
   },
   "projects": {
-    "c:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
+    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "projectUniqueName": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
         "projectName": "Api",
+<<<<<<< HEAD
 <<<<<<< HEAD
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
@@ -50,6 +55,11 @@
         "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
         "outputPath": "c:\\works\\LifePadi\\Web\\Api\\obj\\",
 >>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
+=======
+        "projectPath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
+        "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
+>>>>>>> 54fb00d (removed service from product)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

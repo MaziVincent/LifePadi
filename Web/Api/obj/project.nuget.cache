@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "dgSpecHash": "sGXmy7sdLD8=",
 =======
   "dgSpecHash": "u51aw3Rn4oxHuvPe5jC6AtPL9WGLoNX5WLdFfIW0GbjIW+TCcO9YCcOx+LPnqgrdfUQ58/rk/6wrBrzE/knlkg==",
@@ -25,6 +26,11 @@
   "success": true,
   "projectFilePath": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
 >>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
+=======
+  "dgSpecHash": "h4E2ybbPObG5/WJ/6pF//C5fIknecDbyy2NmTGjPGi2Uv9M0k7uWx5ydvg1n7QI1q/29nniohjDCU2tTbr+ESw==",
+  "success": true,
+  "projectFilePath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+>>>>>>> 54fb00d (removed service from product)
   "expectedPackageFiles": [
     "C:\\Users\\Remigius\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Remigius\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",

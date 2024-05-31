@@ -18,6 +18,7 @@
         public Vendor? Vendor { get; set; }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         public int Service_Id { get; set;}
 =======
@@ -25,6 +26,8 @@
 >>>>>>> ee48634 (done with service, category and product controllers.)
         public Service? Service { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+>>>>>>> 58020e7 (removed service from product)
         public string? SearchString { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

@@ -160,6 +160,7 @@ namespace Api.Services
                 var category = await _dbContext.Categories
                     .Include(c => c.Products!)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .AsSplitQuery()
@@ -211,6 +212,8 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
 =======
                     .ThenInclude(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -274,6 +277,7 @@ namespace Api.Services
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
                 var CategoryDto = _mapper.Map<CategoryDto>(category);
@@ -288,6 +292,8 @@ namespace Api.Services
         public async Task<CategoryDto> getByNameAsync(string name)
 =======
                     .ThenInclude(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);
@@ -307,6 +313,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
+<<<<<<< HEAD
 <<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
@@ -336,6 +343,8 @@ namespace Api.Services
         public async Task<CategoryDto> updateAsync(CategoryDto category, int id)
 =======
                     .ThenInclude(p => p.Service)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);

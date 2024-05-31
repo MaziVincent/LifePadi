@@ -463,6 +463,7 @@ namespace Api.Services
                 var vendor = await _dbContext!.Vendors
                     .Include(v => v.Products!)
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
@@ -570,6 +571,8 @@ namespace Api.Services
 =======
                     .ThenInclude(p => p.Service)
                     .Include(v => v.Products!)
+=======
+>>>>>>> 58020e7 (removed service from product)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDTOLite>>(vendor!.Products);

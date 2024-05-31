@@ -568,10 +568,13 @@ namespace Api.Migrations
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
                     b.Property<int>("ServiceId")
                         .HasColumnType("integer");
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 
+=======
+>>>>>>> 58020e7 (removed service from product)
                     b.Property<bool?>("Status")
                         .HasColumnType("boolean");
 
@@ -1205,6 +1208,7 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     b.Property<string>("OpeningHours")
                         .HasColumnType("text");
 
@@ -1222,6 +1226,11 @@ namespace Api.Migrations
 
                     b.Property<string>("VendorImgUrl")
 =======
+=======
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("integer");
+
+>>>>>>> 58020e7 (removed service from product)
                     b.Property<string>("VendorImgUrl")
                         .HasColumnType("text");
 
@@ -1231,8 +1240,11 @@ namespace Api.Migrations
 
                     b.HasIndex("ServiceId");
 
+<<<<<<< HEAD
                     b.HasIndex("VendorCategoryId");
 
+=======
+>>>>>>> 58020e7 (removed service from product)
                     b.HasDiscriminator().HasValue("Vendor");
                 });
 
@@ -1455,6 +1467,7 @@ namespace Api.Migrations
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
                     b.HasOne("Api.Models.Service", "Service")
                         .WithMany("Products")
                         .HasForeignKey("ServiceId")
@@ -1462,6 +1475,8 @@ namespace Api.Migrations
                         .IsRequired();
 >>>>>>> ee48634 (done with service, category and product controllers.)
 
+=======
+>>>>>>> 58020e7 (removed service from product)
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
@@ -1628,6 +1643,15 @@ namespace Api.Migrations
 >>>>>>> 7f9ad44 (done with payment and voucher)
                 });
 
+            modelBuilder.Entity("Api.Models.Vendor", b =>
+                {
+                    b.HasOne("Api.Models.Service", "Service")
+                        .WithMany("Vendors")
+                        .HasForeignKey("ServiceId");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Api.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -1650,6 +1674,7 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Service", b =>
                 {
                     b.Navigation("Vendors");
+<<<<<<< HEAD
                 });
 
             modelBuilder.Entity("Api.Models.User", b =>
@@ -1676,6 +1701,8 @@ namespace Api.Migrations
                     b.Navigation("Deposites");
 
                     b.Navigation("Withdrawals");
+=======
+>>>>>>> 58020e7 (removed service from product)
                 });
 
             modelBuilder.Entity("Api.Models.Voucher", b =>

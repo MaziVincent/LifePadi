@@ -71,8 +71,6 @@ namespace Api.DTO
         public CategoryDTOLite? Category { get; set; }
         public int VendorId { get; set; }
         public VendorDTOLite? Vendor { get; set; }
-        public int ServiceId { get; set; }
-        public ServiceDTOLite? Service { get; set; }
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
     }
@@ -108,8 +106,11 @@ namespace Api.DTO
         public Category? Category { get; set; }
         public int VendorId { get; set; }
         public Vendor? Vendor { get; set; }
+<<<<<<< HEAD
         public int ServiceId { get; set; }
         public Service? Service { get; set; }
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 58020e7 (removed service from product)
     }
 }

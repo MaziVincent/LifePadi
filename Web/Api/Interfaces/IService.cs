@@ -48,6 +48,10 @@ namespace Api.Interfaces
         public Task<IEnumerable<ServiceDTOLite>> nonActiveService();
         public Task<ServiceDTO> uploadImgUrl(int id, IFormFile image);
         public Task<IEnumerable<ProductDTO>> getServiceProducts(int id);
+<<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public Task<IEnumerable<VendorDTOLite>> getVendorsForService(int id);
+>>>>>>> 58020e7 (removed service from product)
     }
 }
