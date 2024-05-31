@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240531083107_added_listOfVendors_to_service_and_service_to_vendor")]
+    partial class added_listOfVendors_to_service_and_service_to_vendor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,6 +234,9 @@ namespace Api.Migrations
                     b.Property<string>("SearchString")
                         .HasColumnType("text");
 
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
                     b.Property<bool?>("Status")
                         .HasColumnType("boolean");
 
@@ -243,6 +249,8 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ServiceId");
 
                     b.HasIndex("VendorId");
 
@@ -598,6 +606,12 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
@@ -605,6 +619,8 @@ namespace Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Service");
 
                     b.Navigation("Vendor");
                 });

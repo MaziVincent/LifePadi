@@ -33,15 +33,16 @@ namespace Api.Services
         {
             try
             {
-                var services = await _dbContext!.Services.Include(s => s.Products)!
-                                  .ThenInclude(p => p.Vendor)
+                var services = await _dbContext!.Services.Include(s => s.Vendors)!
+                                  .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
                                   .Where(s => s.IsActive == true)
                                   .ToListAsync();
                 var serviceDTO = _mapper!.Map<List<ServiceDTO>>(services);
                 return serviceDTO;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -54,17 +55,18 @@ namespace Api.Services
                 string? folderName = "Services";
                 var newService = _mapper!.Map<Service>(service);
                 newService.IsActive = true;
-                if(service.ServiceIcon != null)
+                if (service.ServiceIcon != null)
                 {
                     var imgPath = await UploadImage.uploadImg(service.ServiceIcon, _cloudinary!, folderName);
                     if (imgPath == null) throw new Exception("Can not upload image");
-                    service.ServiceIconUrl = imgPath;
+                    newService.ServiceIconUrl = imgPath;
                 }
                 await _dbContext!.Services.AddAsync(newService);
                 await _dbContext!.SaveChangesAsync();
                 var serviceDOLite = _mapper.Map<ServiceDTOLite>(newService);
                 return serviceDOLite;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -79,7 +81,8 @@ namespace Api.Services
                 _dbContext.Services.Remove(service!);
                 await _dbContext!.SaveChangesAsync();
                 return "Service deleted";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -89,13 +92,14 @@ namespace Api.Services
         {
             try
             {
-                var service = await _dbContext!.Services.Include(s => s.Products)!
-                    .ThenInclude(p => p.Vendor)
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products)
                     .FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) return null!;
                 var serviceDTO = _mapper!.Map<ServiceDTO>(service);
                 return serviceDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -105,11 +109,27 @@ namespace Api.Services
         {
             try
             {
-                var service = await _dbContext!.Services.Include(s => s.Products)!
-                    .ThenInclude(p => p.Vendor).FirstOrDefaultAsync(s => s.Id == id);
-                var products = _mapper!.Map<List<ProductDTO>>(service!.Products);
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
+                var products = _mapper!.Map<List<ProductDTO>>(service!.Vendors!.SelectMany(v => v.Products!));
                 return products;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDTOLite>> getVendorsForService(int id)
+        {
+            try
+            {
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
+                var vendors = _mapper!.Map<List<VendorDTOLite>>(service!.Vendors);
+                return vendors;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -122,7 +142,8 @@ namespace Api.Services
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (response!.IsActive == true) return true;
                 return false;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -135,7 +156,8 @@ namespace Api.Services
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name == name);
                 if (response == null) return false;
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -148,7 +170,8 @@ namespace Api.Services
                 var services = await _dbContext!.Services.Where(s => s.IsActive == false).ToListAsync();
                 var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
                 return serviceDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -166,7 +189,65 @@ namespace Api.Services
                 var services = await _dbContext!.Services.ToListAsync();
                 var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
                 return serviceDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> serviceStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalNumberOfServices = await totalNumberOfServices(),
+                    totalNumberOfActiveServices = await totalNumberOfActiveServices(),
+                    totalNumberOfNonActiveServices = await totalNumberOfNonActiveServices()
+                };
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfActiveServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.Where(s => s.IsActive == true).CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfNonActiveServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.Where(s => s.IsActive == false).CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfServices()
+        {
+            try
+            {
+                var response = await _dbContext!.Services.CountAsync();
+                return response;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -186,7 +267,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var serviceDTOLite = _mapper!.Map<ServiceDTOLite>(initialService);
                 return serviceDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -207,7 +289,8 @@ namespace Api.Services
                 var serviceDTO = _mapper!.Map<ServiceDTO>(service);
                 return serviceDTO;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

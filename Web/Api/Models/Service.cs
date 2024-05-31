@@ -9,6 +9,6 @@
         public string? ServiceIconUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public List<Product>? Products { get; set; }
+        public List<Vendor>? Vendors { get; set; }
     }
 }

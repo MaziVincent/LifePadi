@@ -13,5 +13,6 @@ namespace Api.Interfaces
         public Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor);
         public Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id);
         public Task<AuthVendorDTOLite> getAsync(int id);
+        public Task<int> totalNumberOfVendors();
     }
 }

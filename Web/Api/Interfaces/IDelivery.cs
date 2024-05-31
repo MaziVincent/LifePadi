@@ -15,5 +15,11 @@ namespace Api.Interfaces
         public Task<DeliveryDTO> getOrderDelivery(int orderId);
         public Task<CreateDeliveryDTO> createAsync(DeliveryDTO delivery);
         public Task<string> assynRiderTODelivery(int id, int riderId);
+        public Task<int> totalNumberOfDeliveries();
+        public Task<int> totalNumberOfSuccessfulDeliveries();
+        public Task<int> totalNumberOfUnSuccessfulDeliveries();
+        public Task<int> totalNumberOfPendingDeliveries();
+        public Task<int> totalNumberOfDeliveriesByRider(int riderId);
+        public Task<object> deliveryStats();
     }
 }

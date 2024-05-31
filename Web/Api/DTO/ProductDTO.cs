@@ -14,8 +14,6 @@ namespace Api.DTO
         public CategoryDTOLite? Category { get; set; }
         public int VendorId { get; set; }
         public VendorDTOLite? Vendor { get; set; }
-        public int ServiceId { get; set; }
-        public ServiceDTOLite? Service { get; set; }
 
     }
 
@@ -44,7 +42,5 @@ namespace Api.DTO
         public Category? Category { get; set; }
         public int VendorId { get; set; }
         public Vendor? Vendor { get; set; }
-        public int ServiceId { get; set; }
-        public Service? Service { get; set; }
     }
 }

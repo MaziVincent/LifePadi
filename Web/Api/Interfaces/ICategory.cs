@@ -12,7 +12,8 @@ namespace Api.Interfaces
         public Task<string> deleteAsync(int id);
         public Task<CategoryDTO> updateAsync(CategoryDTO category, int id);
         public Task<CategoryDTO> createAsync(CategoryDTOLite category);
-
+        public Task<int> numberOfCategories();
+        public Task<object> categoryStats();
 
     }
 }

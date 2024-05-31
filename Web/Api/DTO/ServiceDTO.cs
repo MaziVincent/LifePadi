@@ -9,7 +9,7 @@ namespace Api.DTO
         public string? Description { get; set; }
         public string? ServiceIconUrl { get; set; }
         public IFormFile? ServiceIcon { get; set; }
-        public List<ProductDTOLite>? Products { get; set; }
+        public List<VendorDTOLite>? Vendors { get; set; }
         public bool? IsActive { get; set; }
     }
 

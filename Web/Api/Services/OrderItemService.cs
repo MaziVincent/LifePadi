@@ -30,8 +30,9 @@ namespace Api.Services
                     TotalNumber = orderItems.Count(),
                     Data = orderItemDTO.ToArray(),
                 };
-                
-            }catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -71,7 +72,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var orderItemDTO = _mapper.Map<OrderItemDTO>(newOrderItem);
                 return orderItemDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -86,7 +88,8 @@ namespace Api.Services
                 _dbContext.OrdersItems.Remove(orderItem);
                 await _dbContext.SaveChangesAsync();
                 return "Item deleted";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -110,6 +113,19 @@ namespace Api.Services
             }
         }
 
+        public async Task<int> totalNumberOfOrderItems()
+        {
+            try
+            {
+                var orderItems = await _dbContext.OrdersItems.CountAsync();
+                return orderItems;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<OrderItemDTO> updateAsync(OrderItemDTO orderItem, int id)
         {
             try
@@ -125,7 +141,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var orderItemDTO = _mapper.Map<OrderItemDTO>(initialOrderItem);
                 return orderItemDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

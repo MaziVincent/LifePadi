@@ -10,5 +10,6 @@ namespace Api.Interfaces
         public Task<OrderItemDTO> updateAsync( OrderItemDTO orderItem ,int id);
         public Task<string> deleteAsync(int id);
         public Task<OrderItemDTO> createAsync(OrderItemDTO orderItem);
+        public Task<int> totalNumberOfOrderItems();
     }
 }

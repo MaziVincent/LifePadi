@@ -25,7 +25,7 @@ namespace Api.Services
                 _config["Cloudinary:Api_Key"],
                 _config["Cloudinary:Api_Secret"]
              );
-            _cloudinary = new Cloudinary( account );
+            _cloudinary = new Cloudinary(account);
         }
         public async Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize)
         {
@@ -35,7 +35,8 @@ namespace Api.Services
                 var vendors = await _dbContext!.Vendors.Skip(skip).Take(pageSize).OrderByDescending(v => v.CreatedAt).Include(v => v.Products).ToListAsync();
                 var allVendor = _mapper.Map<List<VendorDTO>>(vendors);
                 return allVendor;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -47,12 +48,13 @@ namespace Api.Services
             {
                 var newVendor = _mapper.Map<Vendor>(vendor);
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
-                newVendor.SearchString = vendor.VendorType!.ToUpper()+ " " +vendor.Name!.Replace(" ", "").ToUpper();
+                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
                 await _dbContext!.SaveChangesAsync();
                 var authUserDTO = _mapper.Map<AuthVendorDTOLite>(newVendor);
                 return authUserDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -65,7 +67,8 @@ namespace Api.Services
                 var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (vendor == null) return null!;
                 return "Vendor deleted";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -79,7 +82,8 @@ namespace Api.Services
                 if (vendor == null) return null!;
                 var authVendorDTOLite = _mapper.Map<AuthVendorDTOLite>(vendor);
                 return authVendorDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -112,7 +116,21 @@ namespace Api.Services
                 }
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendorList);
                 return vendorDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfVendors()
+        {
+            try
+            {
+                var totalVendors = await _dbContext!.Vendors.CountAsync();
+                return totalVendors;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -136,8 +154,10 @@ namespace Api.Services
                 var currentVendor = _mapper.Map<AuthVendorDTOLite>(initialVendor);
 
                 return currentVendor;
-            }catch (Exception ex) { 
-                throw new Exception(ex.Message); 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -155,7 +175,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var vendorDTO = _mapper.Map<VendorDTO>(vendor);
                 return vendorDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -168,7 +189,8 @@ namespace Api.Services
                 var vendors = await _dbContext!.Vendors.ToListAsync();
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendors);
                 return vendorDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -180,13 +202,12 @@ namespace Api.Services
             {
                 var vendor = await _dbContext!.Vendors
                     .Include(v => v.Products!)
-                    .ThenInclude(p => p.Service)
-                    .Include(v => v.Products!)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDTOLite>>(vendor!.Products);
                 return products;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

@@ -140,6 +140,19 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("{id}/getVendors")]
+        public async Task<IActionResult> getVendors(int id)
+        {
+            try
+            {
+                var vendors = await _iservice.getVendorsForService(id);
+                return Ok(vendors);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

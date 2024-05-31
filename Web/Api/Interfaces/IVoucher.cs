@@ -22,5 +22,10 @@ namespace Api.Interfaces
         public Task<string> deactivateAllExpiredVouchers();
         public Task<string> expireALlPastDueDate();
         public Task<string> useVoucher(int id);
+        public Task<int> totalNumberOfVouchers();
+        public Task<int> totalNumberOfActiveVouchers();
+        public Task<int> totalNumberOfNonActiveVouchers();
+        public Task<object> voucherStats();
+        
     }
 }

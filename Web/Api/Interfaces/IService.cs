@@ -16,5 +16,11 @@ namespace Api.Interfaces
         public Task<IEnumerable<ServiceDTOLite>> nonActiveService();
         public Task<ServiceDTO> uploadImgUrl(int id, IFormFile image);
         public Task<IEnumerable<ProductDTO>> getServiceProducts(int id);
+        public Task<IEnumerable<VendorDTOLite>> getVendorsForService(int id);
+        public Task<int> totalNumberOfServices();
+        public Task<int> totalNumberOfActiveServices();
+        public Task<int> totalNumberOfNonActiveServices();
+        public Task<object> serviceStats();
+        
     }
 }
