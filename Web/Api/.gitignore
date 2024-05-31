@@ -1,5 +1,6 @@
 .vs/
 <<<<<<< HEAD
+<<<<<<< HEAD
 obj
 bin
 packages
@@ -7,3 +8,7 @@ packages
 .obj/
 .bin/
 >>>>>>> b993299 (git ignore)
+=======
+obj
+bin
+>>>>>>> f09ab23 (gitignore)

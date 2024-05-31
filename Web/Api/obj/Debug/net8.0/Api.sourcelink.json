@@ -12,6 +12,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
 =======
 {"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
@@ -61,3 +62,6 @@
 =======
 {"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/e0958f87ac348461b38f8ca85c2f3d6ff28937de/*"}}
 >>>>>>> a2a661a (created a new service)
+=======
+{"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/575f1a3f0f5347ff49a93adccf441bb45fb84367/*"}}
+>>>>>>> 805ff4e (gitignore)
