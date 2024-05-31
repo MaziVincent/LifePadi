@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5hXCVQzXixzXnLZ4Jm9E62OeHmrO5KFu77Oiw4RS2WDgRoP7uHcSmY69Sb7SbXpQ6ANfre0QplDyBxw6bbDrmw==",
+  "dgSpecHash": "h4E2ybbPObG5/WJ/6pF//C5fIknecDbyy2NmTGjPGi2Uv9M0k7uWx5ydvg1n7QI1q/29nniohjDCU2tTbr+ESw==",
   "success": true,
-  "projectFilePath": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+  "projectFilePath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Remigius\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Remigius\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",

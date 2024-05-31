@@ -59,7 +59,6 @@ namespace Api.Services
             {
                 var category = await _dbContext.Categories
                     .Include(c => c.Products!)
-                    .ThenInclude(p => p.Service)
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -110,7 +109,6 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
-                    .ThenInclude(p => p.Service)
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);
@@ -129,7 +127,6 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
-                    .ThenInclude(p => p.Service)
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
                 var categoryDTO = _mapper.Map<CategoryDTO>(category);

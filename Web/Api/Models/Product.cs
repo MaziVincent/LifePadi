@@ -12,8 +12,6 @@
         public Category? Category { get; set; }
         public int VendorId { get; set; }
         public Vendor? Vendor { get; set; }
-        public int ServiceId { get; set;}
-        public Service? Service { get; set; }
         public string? SearchString { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt {  get; set; } = DateTime.UtcNow;

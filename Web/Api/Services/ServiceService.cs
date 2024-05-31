@@ -33,8 +33,8 @@ namespace Api.Services
         {
             try
             {
-                var services = await _dbContext!.Services.Include(s => s.Products)!
-                                  .ThenInclude(p => p.Vendor)
+                var services = await _dbContext!.Services.Include(s => s.Vendors)!
+                                  .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
                                   .Where(s => s.IsActive == true)
                                   .ToListAsync();
@@ -92,8 +92,8 @@ namespace Api.Services
         {
             try
             {
-                var service = await _dbContext!.Services.Include(s => s.Products)!
-                    .ThenInclude(p => p.Vendor)
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products)
                     .FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) return null!;
                 var serviceDTO = _mapper!.Map<ServiceDTO>(service);
@@ -109,10 +109,25 @@ namespace Api.Services
         {
             try
             {
-                var service = await _dbContext!.Services.Include(s => s.Products)!
-                    .ThenInclude(p => p.Vendor).FirstOrDefaultAsync(s => s.Id == id);
-                var products = _mapper!.Map<List<ProductDTO>>(service!.Products);
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
+                var products = _mapper!.Map<List<ProductDTO>>(service!.Vendors!.SelectMany(v => v.Products!));
                 return products;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDTOLite>> getVendorsForService(int id)
+        {
+            try
+            {
+                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
+                var vendors = _mapper!.Map<List<VendorDTOLite>>(service!.Vendors);
+                return vendors;
             }
             catch (Exception ex)
             {
