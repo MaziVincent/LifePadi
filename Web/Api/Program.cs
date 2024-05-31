@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 //DB context
 builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
     builder.Configuration.GetConnectionString("LifePadiDBConnection")
