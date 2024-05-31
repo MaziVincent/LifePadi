@@ -12,6 +12,7 @@ build_property.RootNamespace = Api
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
 =======
 build_property.ProjectDir = C:\works\LifePadi\Web\Api\
@@ -22,11 +23,15 @@ build_property.ProjectDir = C:\works\LifePadi\Web\API\
 =======
 build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
 >>>>>>> 18f5cdb (Admin service)
+=======
+build_property.ProjectDir = C:\works\LifePadi\Web\API\
+>>>>>>> b964101 (added creating serviceIcon while creating the service)
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -40,4 +45,7 @@ build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\API
 =======
 build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
 >>>>>>> 18f5cdb (Admin service)
+=======
+build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\API
+>>>>>>> b964101 (added creating serviceIcon while creating the service)
 build_property._RazorSourceGeneratorDebug = 

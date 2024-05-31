@@ -17,8 +17,11 @@ namespace Api.Controllers.Admin
         private readonly IService _service;
         private readonly ICategory _category;
         private readonly IVoucher _voucher;
+<<<<<<< HEAD
         private readonly IProduct _product;
         private readonly IUser _user;
+=======
+>>>>>>> c824428 (added creating serviceIcon while creating the service)
         public DashboardController(
             IOrder order,
             IOrderItem orderItem,
@@ -29,11 +32,17 @@ namespace Api.Controllers.Admin
             ICustomer customer,
             IService service,
             ICategory category,
+<<<<<<< HEAD
             IVoucher voucher,
             IProduct product,
             IUser user
             )
         {
+=======
+            IVoucher voucher
+            ) 
+        { 
+>>>>>>> c824428 (added creating serviceIcon while creating the service)
             _order = order;
             _orderItem = orderItem;
             _delivery = delivery;
@@ -44,6 +53,7 @@ namespace Api.Controllers.Admin
             _service = service;
             _category = category;
             _voucher = voucher;
+<<<<<<< HEAD
             _product = product;
             _user = user;
         }
@@ -338,6 +348,8 @@ namespace Api.Controllers.Admin
             {
                 return BadRequest(ex.Message);
             }
+=======
+>>>>>>> c824428 (added creating serviceIcon while creating the service)
         }
     }
 }

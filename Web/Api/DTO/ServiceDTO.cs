@@ -14,8 +14,13 @@ namespace Api.DTO
         public string? ServiceIconUrl { get; set; }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public IFormFile? ServiceIcon { get; set; }
         public List<VendorDtoLite>? Vendors { get; set; }
+=======
+        public IFormFile? ServiceIcon { get; set; }
+        public List<ProductDTOLite>? Products { get; set; }
+>>>>>>> c824428 (added creating serviceIcon while creating the service)
         public bool? IsActive { get; set; }
     }
 

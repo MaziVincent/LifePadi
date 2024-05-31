@@ -115,8 +115,15 @@ namespace Api.Services
         {
             try
             {
+                string? folderName = "Services";
                 var newService = _mapper!.Map<Service>(service);
                 newService.IsActive = true;
+                if(service.ServiceIcon != null)
+                {
+                    var imgPath = await UploadImage.uploadImg(service.ServiceIcon, _cloudinary!, folderName);
+                    if (imgPath == null) throw new Exception("Can not upload image");
+                    service.ServiceIconUrl = imgPath;
+                }
                 await _dbContext!.Services.AddAsync(newService);
                 await _dbContext!.SaveChangesAsync();
                 var serviceDOLite = _mapper.Map<ServiceDTOLite>(newService);
