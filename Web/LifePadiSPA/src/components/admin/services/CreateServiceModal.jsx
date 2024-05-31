@@ -45,7 +45,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
 
     console.log(file)
     
-    if (!file || file.size > 200 * 1024) {
+    if (!file || file.size > 50 * 1024) {
       setFileError(true);
     }
   };
@@ -155,7 +155,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     Service Icon (
                     <span className="text-sm text-gray-500">
                       {" "}
-                      Icon should not be above 200kb
+                      Icon should not be above 50kb
                     </span>
                     )
                   </label>
