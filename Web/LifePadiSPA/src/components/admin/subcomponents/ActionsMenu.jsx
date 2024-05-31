@@ -5,11 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const options = [
-  'None',
-  'Atria',
-  'Callisto',
-  'Dione',
-  'Ganymede',
+  {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
+  {icon:'line-icon-Pen-5 text-blue-700 text-xl', text:'Edit'},
+  {icon:'line-icon-Close text-red-700 text-xl', text:'Delete'} 
   
 ];
 
@@ -20,6 +18,7 @@ export default function LongMenu() {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -47,8 +46,8 @@ export default function LongMenu() {
         onClose={handleClose}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
+          <MenuItem key={option.text} selected={option.text === 'View'} onClick={handleClose}>
+            <div className='flex gap-2 '> <i className={`${option.icon}`}></i><span>{option.text}</span></div>
           </MenuItem>
         ))}
       </Menu>

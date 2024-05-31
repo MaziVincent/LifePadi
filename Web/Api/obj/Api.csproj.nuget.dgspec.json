@@ -1,7 +1,6 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
   },
   "projects": {
@@ -13,19 +12,6 @@
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
         "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
-=======
-    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {}
-  },
-  "projects": {
-    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
-        "projectName": "Api",
-        "projectPath": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
-        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
-        "outputPath": "C:\\works\\LifePadi\\Web\\API\\obj\\",
->>>>>>> 6f7231c36f4ce9c7a5c2b02d9cf00ae04ecf55c3
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
