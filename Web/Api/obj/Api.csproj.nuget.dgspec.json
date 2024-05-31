@@ -4,16 +4,21 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 18f5cdb (Admin service)
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
+=======
+    "c:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
   },
   "projects": {
-    "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {
+    "c:\\works\\LifePadi\\Web\\Api\\Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
+        "projectUniqueName": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
         "projectName": "Api",
+<<<<<<< HEAD
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
         "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
@@ -40,17 +45,25 @@
 >>>>>>> 6f7231c (done with payment and voucher)
 =======
 >>>>>>> 18f5cdb (Admin service)
+=======
+        "projectPath": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
+        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
+        "outputPath": "c:\\works\\LifePadi\\Web\\Api\\obj\\",
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "/Users/mac/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Remigius\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -146,7 +159,11 @@
               "privateAssets": "all"
             }
           },
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
         }
       }
     }

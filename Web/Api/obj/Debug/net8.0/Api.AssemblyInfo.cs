@@ -18,6 +18,7 @@ using System.Reflection;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
@@ -31,6 +32,9 @@ using System.Reflection;
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b96410141d7320ba228d6d0ee8aac1b5055c78fd")]
 >>>>>>> 93aff31 (create service modal)
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b96410141d7320ba228d6d0ee8aac1b5055c78fd")]
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

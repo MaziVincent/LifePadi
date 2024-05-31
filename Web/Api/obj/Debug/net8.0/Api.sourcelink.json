@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
 =======
 {"documents":{"C:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/40c304e984787783e6668264fb43965729756d9d/*"}}
@@ -31,3 +32,6 @@
 =======
 {"documents":{"/Users/mac/Projects/LifePadi/*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/18f5cdbd46da9999a48d3f21d725ade11a86e8a2/*"}}
 >>>>>>> 93aff31 (create service modal)
+=======
+{"documents":{"c:\\works\\LifePadi\\*":"https://raw.githubusercontent.com/MaziVincent/LifePadi/b96410141d7320ba228d6d0ee8aac1b5055c78fd/*"}}
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)

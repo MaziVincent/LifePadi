@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 912a98eb4b48195eeed5af80fe07aede0d98ab61c7827b7f54d005283f5bc4cc
 =======
 c4ae4cd19f2e9a97beed8cfbad057264daae0d57dd69cfa6f010ef39b8a9dc2b
@@ -15,3 +16,6 @@ c4ae4cd19f2e9a97beed8cfbad057264daae0d57dd69cfa6f010ef39b8a9dc2b
 =======
 89af54f6d1569ac05f5070b50c19758beb3331043d795bc7f59a7f4bfacbf64a
 >>>>>>> 93aff31 (create service modal)
+=======
+89af54f6d1569ac05f5070b50c19758beb3331043d795bc7f59a7f4bfacbf64a
+>>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)

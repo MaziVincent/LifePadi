@@ -10,6 +10,7 @@
   },
   "profiles": {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "http": {
       "commandName": "Project",
@@ -22,6 +23,8 @@
       }
     },
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> aefa4ba (made sure the serviceicon url is saving correctly)
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
@@ -42,7 +45,10 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> aefa4ba (made sure the serviceicon url is saving correctly)
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
