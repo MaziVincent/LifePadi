@@ -74,7 +74,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
 =======
     console.log(file)
     
-    if (!file || file.size > 200 * 1024) {
+    if (!file || file.size > 50 * 1024) {
       setFileError(true);
 >>>>>>> 55ba6ae (Admin service)
     }
@@ -208,10 +208,14 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     <span className="text-sm text-gray-500">
                       {" "}
 <<<<<<< HEAD
+<<<<<<< HEAD
                       Icon should not be above 50kb
 =======
                       Icon should not be above 200kb
 >>>>>>> 55ba6ae (Admin service)
+=======
+                      Icon should not be above 50kb
+>>>>>>> a1fc9d6 (create service modal)
                     </span>
                     )
                   </label>
