@@ -23,6 +23,7 @@ using System.Reflection;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
@@ -51,6 +52,9 @@ using System.Reflection;
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d913f14e3a7a1ab70976aed4f92252cc80be9074")]
 >>>>>>> e0958f8 (added modelstate for service)
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0958f87ac348461b38f8ca85c2f3d6ff28937de")]
+>>>>>>> a2a661a (created a new service)
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

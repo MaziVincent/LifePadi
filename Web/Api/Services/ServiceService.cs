@@ -116,7 +116,7 @@ namespace Api.Services
         {
             try
             {
-                string? folderName = "Services";
+                string folderName = "Services";
                 var newService = _mapper!.Map<Service>(service);
                 newService.IsActive = true;
                 if (service.ServiceIcon != null)
@@ -295,6 +295,7 @@ namespace Api.Services
             try
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == name.ToLower());
                 if (response == null) return false;
                 return true;
@@ -308,6 +309,9 @@ namespace Api.Services
         public async Task<IEnumerable<ServiceDtoLite>> nonActiveService()
 =======
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name == name);
+=======
+                var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == name.ToLower());
+>>>>>>> fff24f0 (created a new service)
                 if (response == null) return false;
                 return true;
             }
