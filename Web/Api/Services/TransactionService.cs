@@ -39,7 +39,8 @@ namespace Api.Services
                     .ToListAsync();
                 var transactionDTO = _mapper.Map<List<TransactionDTO>>(transactions);
                 return transactionDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -72,9 +73,9 @@ namespace Api.Services
                         transaction.Status = paymentRes.Status;
                         transaction.AmountPaid = paymentRes.Data!.Amount;
                         transaction.TransactionRef = paymentRes.Data!.Tx_ref;
-                        transaction.PaymentId = (BigInteger) paymentRes.Data!.Id!;
+                        transaction.PaymentId = (BigInteger)paymentRes.Data!.Id!;
                         transaction.TotalAmount = paymentRes.Data!.Meta!.totalAmount;
-                        transaction.OrderId = (int) paymentRes.Data!.Meta.orderId!;
+                        transaction.OrderId = (int)paymentRes.Data!.Meta.orderId!;
                         var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
                         transaction.VoucherId = voucher.Id;
 
@@ -86,7 +87,8 @@ namespace Api.Services
                     throw new Exception(paymentRes.Status);
                 }
                 throw new Exception("Response not Ok");
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -125,7 +127,8 @@ namespace Api.Services
                 if (transaction == null) throw new Exception("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
                 return transactionDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -142,7 +145,8 @@ namespace Api.Services
                 if (transaction == null) throw new Exception("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
                 return transactionDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -153,7 +157,7 @@ namespace Api.Services
             try
             {
                 var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePayment.OrderId);
-                if(payment != null)
+                if (payment != null)
                 {
                     throw new Exception("Already paid for this order");
                 }
@@ -221,6 +225,76 @@ namespace Api.Services
                 }
                 throw new Exception(response.StatusCode.ToString());
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfFailedTransactions()
+        {
+            try
+            {
+                var transactions = await _dbContext.Transactions.Where(t => t.Status == "failed").CountAsync();
+                return transactions;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfPendingTransactions()
+        {
+            try
+            {
+                var transactions = await _dbContext.Transactions.Where(t => t.Status == "pending").CountAsync();
+                return transactions;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfSuccessfulTransactions()
+        {
+            try
+            {
+                var transactions = await _dbContext.Transactions.Where(t => t.Status == "success").CountAsync();
+                return transactions;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfTransactions()
+        {
+            try
+            {
+                var transactions = await _dbContext.Transactions.CountAsync();
+                return transactions;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> transactionStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalNumberOfTransactions = await totalNumberOfTransactions(),
+                    totalNumberOfSuccessfulTransactions = await totalNumberOfSuccessfulTransactions(),
+                    totalNumberOfFailedTransactions = await totalNumberOfFailedTransactions(),
+                    totalNumberOfPendingTransactions = await totalNumberOfPendingTransactions()
+                };
+                return stats;
             }
             catch (Exception ex)
             {

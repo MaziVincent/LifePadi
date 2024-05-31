@@ -26,7 +26,8 @@ namespace Api.Services
                     .ToListAsync();
                 var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(delivries);
                 return deliveryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -63,7 +64,8 @@ namespace Api.Services
                 _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Rider assign successfully";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -100,7 +102,27 @@ namespace Api.Services
                 _dbContext.Deliveries.Remove(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Delivery deleted";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> deliveryStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalDeliveries = await totalNumberOfDeliveries(),
+                    totalSuccessfulDeliveries = await totalNumberOfSuccessfulDeliveries(),
+                    totalUnSuccessfulDeliveries = await totalNumberOfUnSuccessfulDeliveries(),
+                    totalPendingDeliveries = await totalNumberOfPendingDeliveries(),
+                };
+                return stats;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -117,7 +139,8 @@ namespace Api.Services
                 if (delivery == null) return null!;
                 var deliveryDTO = _mapper.Map<DeliveryDTO>(delivery);
                 return deliveryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -134,7 +157,8 @@ namespace Api.Services
                 if (delivery == null) return null!;
                 var deliveryDTO = _mapper.Map<DeliveryDTO>(delivery);
                 return deliveryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -152,7 +176,8 @@ namespace Api.Services
                     .ToListAsync();
                 var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(deliveries);
                 return deliveryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -168,7 +193,8 @@ namespace Api.Services
                     .ToListAsync();
                 var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(deliveries);
                 return deliveryDTOLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -193,6 +219,79 @@ namespace Api.Services
             }
         }
 
+        public async Task<int> totalNumberOfDeliveries()
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries.CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfDeliveriesByRider(int riderId)
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId)
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfPendingDeliveries()
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.Status == "Pending")
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfSuccessfulDeliveries()
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.Status == "Successful")
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfUnSuccessfulDeliveries()
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.Status == "Unsuccessful")
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<DeliveryDTO> updateAsync(DeliveryDTO delivery, int id)
         {
             try
@@ -209,7 +308,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var deliveryDTO = _mapper.Map<DeliveryDTO>(initialDelivery);
                 return deliveryDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

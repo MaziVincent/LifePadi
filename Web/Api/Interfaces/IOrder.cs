@@ -14,5 +14,14 @@ namespace Api.Interfaces
         public Task<IEnumerable<OrderDTO>> customerOrders(int customerId);
         //public Task<IEnumerable<OrderDTO>> riderOrders(int riderId);
         public Task<OrderDTO> updateOrderStatus(int id, string status);
+        public Task<int> totalNumberOfOrders();
+        public Task<int> totalNumberOfPendingOrders();
+        public Task<int> totalNumberOfDeliveredOrders();
+        public Task<int> totalNumberOfCancelledOrders();
+        public Task<int> totalNumberOfOrdersToday();
+        public Task<int> totalNumberOfOrdersThisMonth();
+        public Task<int> totalNumberOfOrdersThisYear();
+        public Task<int> totalNumberOfClosedOrders();
+        public Task<object> orderStats();
     }
 }

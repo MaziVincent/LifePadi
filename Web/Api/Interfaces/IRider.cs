@@ -20,5 +20,11 @@ namespace Api.Interfaces
         public Task<string> activateRider(int id);
         public Task<string> verifyRider(int id);
         public Task<string> deactivateRider(int id);
+        public Task<int> totalNumberOfRiders();
+        public Task<int> totalNumberOfNonActiveRiders();
+        public Task<int> totalNumberOfActiveRiders();
+        public Task<int> totalNumberOfVerifiedRiders();
+        public Task<int> totalNumberOfUnverifiedRiders();
+        public Task<object> getRiderStats();
     }
 }

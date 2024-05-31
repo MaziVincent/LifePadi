@@ -33,7 +33,8 @@ namespace Api.Services
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Voucher activated";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -49,7 +50,8 @@ namespace Api.Services
                     .ToListAsync();
                 var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
                 return voucherList;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -81,14 +83,17 @@ namespace Api.Services
                 if (comparismResult == 0)
                 {
                     return true;
-                }else if(comparismResult < 0)
+                }
+                else if (comparismResult < 0)
                 {
                     return false;
-                }else
+                }
+                else
                 {
                     return true;
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -117,7 +122,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var voucherDTO = _mapper.Map<VoucherDTO>(newVoucher);
                 return voucherDTO;
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -139,7 +145,8 @@ namespace Api.Services
                 _dbContext.Vouchers.AttachRange(expiredVouchers);
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -156,7 +163,8 @@ namespace Api.Services
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Voucher deactivated";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -171,7 +179,8 @@ namespace Api.Services
                 _dbContext.Vouchers.Remove(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Voucher deleted";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -191,7 +200,7 @@ namespace Api.Services
                     v.Status = "Expired";
                     v.UpdatedAt = DateTime.UtcNow;
                 });
-                
+
                 _dbContext.Vouchers.AttachRange(expiredVouchers);
                 await _dbContext.SaveChangesAsync();
                 return "All Expired vouchers deactivated";
@@ -228,7 +237,8 @@ namespace Api.Services
                     .ToListAsync();
                 var voucherDTOList = _mapper.Map<List<VoucherDTO>>(vouchers);
                 return voucherDTOList;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -243,7 +253,8 @@ namespace Api.Services
                 if (voucher == null) throw new Exception("Voucher not found");
                 int num = (int)voucher.TotalNumberAvailable! - (int)voucher.TotalNumberUsed!;
                 return num;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -256,7 +267,7 @@ namespace Api.Services
                 var voucher = await _dbContext.Vouchers
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
-                if(voucher.IsActive == true) return true;
+                if (voucher.IsActive == true) return true;
                 return false;
             }
             catch (Exception ex)
@@ -274,7 +285,8 @@ namespace Api.Services
                 if (voucher == null) return null!;
                 var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
                 return voucherDTO;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -312,6 +324,49 @@ namespace Api.Services
             }
         }
 
+        public async Task<int> totalNumberOfActiveVouchers()
+        {
+            try
+            {
+                var vouchers = await _dbContext.Vouchers
+                    .Where(v => v.IsActive == true)
+                    .CountAsync();
+                return vouchers;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfNonActiveVouchers()
+        {
+            try
+            {
+                var vouchers = await _dbContext.Vouchers
+                    .Where(v => v.IsActive == false)
+                    .CountAsync();
+                return vouchers;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfVouchers()
+        {
+            try
+            {
+                var vouchers = await _dbContext.Vouchers.CountAsync();
+                return vouchers;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<VoucherDTO> updateAsync(VoucherDTO voucher, int id)
         {
             try
@@ -331,7 +386,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var voucherDTO = _mapper.Map<VoucherDTO>(initialVoucher);
                 return voucherDTO;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -353,7 +409,26 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 return "Successful";
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> voucherStats()
+        {
+            try
+            {
+                var stats = new
+                {
+                    totalNumberOfActiveVouchers = await totalNumberOfActiveVouchers(),
+                    totalNumberOfNonActiveVouchers = await totalNumberOfNonActiveVouchers(),
+                    totalNumberOfVouchers = await totalNumberOfVouchers()
+                };
+                return stats;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

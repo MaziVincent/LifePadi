@@ -13,21 +13,24 @@ namespace Api.Services
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IConfiguration? _config;
-        public UserService(DBContext dbContext, IMapper mapper, IConfiguration config) { 
+        public UserService(DBContext dbContext, IMapper mapper, IConfiguration config)
+        {
             _dbContext = dbContext;
             _mapper = mapper;
             _config = config;
         }
         public async Task<bool> checkEmail(string email)
         {
-            try{
+            try
+            {
                 var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
                 if (user == null)
                 {
                     return false;
                 }
                 return true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -39,12 +42,13 @@ namespace Api.Services
             {
                 var newAdmin = _mapper.Map<Admin>(user);
                 newAdmin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                newAdmin.SearchString = user.FirstName!.ToUpper()+" "+user.LastName!.ToUpper()+" "+user.Email!.ToUpper();
+                newAdmin.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 await _dbContext.Admins.AddAsync(newAdmin);
                 await _dbContext.SaveChangesAsync();
                 var authuser = _mapper.Map<AuthUserDTO>(newAdmin);
                 return authuser;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -59,7 +63,8 @@ namespace Api.Services
                 _dbContext.Remove(user);
                 await _dbContext.SaveChangesAsync();
                 return "User deleted";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -72,9 +77,10 @@ namespace Api.Services
                 var skip = (pageNumber - 1) * pageSize;
                 var users = await _dbContext.Admins.Skip(skip).Take(pageSize).OrderByDescending(a => a.CreatedAt).ToListAsync();
                 var userDTOs = _mapper.Map<List<UserDTOLite>>(users);
-                
+
                 return userDTOs!;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -87,7 +93,8 @@ namespace Api.Services
                 var user = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
                 var userDTO = _mapper.Map<UserDTO>(user);
                 return userDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -112,7 +119,8 @@ namespace Api.Services
                 authUser.Token!.RefreshToken = refreshToken;
 
                 return authUser;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -130,7 +138,8 @@ namespace Api.Services
                     return authUser;
                 }
                 return null!;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -160,8 +169,22 @@ namespace Api.Services
                 var updatedUser = _mapper.Map<UserDTOLite>(updateUser);
                 return updatedUser;
 
-            }catch(Exception ex) 
-            { 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfUsers()
+        {
+            try
+            {
+                var response = await _dbContext.Users.CountAsync();
+                return response;
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
         }

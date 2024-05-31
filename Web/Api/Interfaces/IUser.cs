@@ -13,5 +13,6 @@ namespace Api.Interfaces
         public Task<bool> resetPassword(ForgotPasswordDTO forgotPassword);
         public Task<IEnumerable<OrderDTO>> getUserOders(int id);
         public Task<AuthUserDTO> login(AuthUserDTOLite user);
+        public Task<int> totalNumberOfUsers();
     }
 }
