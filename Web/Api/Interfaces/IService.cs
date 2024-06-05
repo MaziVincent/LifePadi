@@ -1,10 +1,14 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
+
 
 namespace Api.Interfaces
 {
     public interface IService
     {
-        public Task<IEnumerable<ServiceDTO>> allAsync();
+        public Task<PagedList<Service>> allAsync(SearchPaging props);
         public Task<IEnumerable<ServiceDTOLite>> servicesLite();
         public Task<ServiceDTO> getAsync(int id);
         public Task<ServiceDTOLite> updateAsync(ServiceDTO service, int id);

@@ -4,14 +4,13 @@ import baseUrl from "../../../api/baseUrl";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from 'react-hot-toast'
 import { useState } from "react";
 
 const CreateServiceModal = ({ open, handleClose }) => {
   const post = usePost();
   const { auth } = useAuth();
-  const url = `${baseUrl}service`;
+  const url = `${baseUrl}service/create`;
   const queryClient = useQueryClient();
   const [fileError, setFileError] = useState(false);
 
@@ -23,7 +22,14 @@ const CreateServiceModal = ({ open, handleClose }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
-    const response = await post(url, data, auth?.accessToken);
+    const service = {...data, ServiceIcon: data.ServiceIcon[0]}
+    const formData = new FormData()
+
+    for(const key in service){
+      formData.append(key, service[key])
+    }
+    const response = await post(url, formData, auth?.accessToken);
+    console.log(response);
   };
 
   const { mutate } = useMutation(create, {
@@ -36,6 +42,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
   });
 
   const handleCreate = (service) => {
+  //  console.log(data)
     mutate(service);
   };
 
@@ -43,10 +50,12 @@ const CreateServiceModal = ({ open, handleClose }) => {
    
     const file = event.target.files[0];
 
-    console.log(file)
+    //console.log(file)
     
     if (!file || file.size > 50 * 1024) {
       setFileError(true);
+    }else{
+      setFileError(false)
     }
   };
 
@@ -65,7 +74,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
       >
-        <ToastContainer />
+        <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
@@ -164,7 +173,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     name="icon"
                     id="icon"
                     accept="image/*"
-                    {...register("IconUrl", { required: true })}
+                    {...register("ServiceIcon", { required: true })}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type icon of diagnosis"
                     required
@@ -175,7 +184,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                       Service icon is required
                     </p>
                   )}
-                  {fileError ?? (
+                  {fileError && (
                     <p className="text-sm text-red-400">
                       {" "}
                       File should not be above 200kb
@@ -183,11 +192,10 @@ const CreateServiceModal = ({ open, handleClose }) => {
                   )}
                 </div>
               </div>
-              
-                <button
+              <button
                   type="submit"
                   disabled={fileError}
-                  className="inline-flex items-center text-gray-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className={`inline-flex items-center ${fileError ? 'text-green-700' : 'text-gray-700'} dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"
@@ -203,6 +211,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                   </svg>
                   Create New Service
                 </button>
+                
             
             </form>
           </div>

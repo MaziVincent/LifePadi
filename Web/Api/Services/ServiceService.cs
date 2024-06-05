@@ -2,6 +2,8 @@
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +31,35 @@ namespace Api.Services
             _cloudinary = new Cloudinary(account);
 
         }
-        public async Task<IEnumerable<ServiceDTO>> allAsync()
+        public async Task<PagedList<Service>> allAsync(SearchPaging props)
         {
             try
             {
+                IQueryable<Service> servicesList = Enumerable.Empty<Service>().AsQueryable();
+                if(props.SearchString is null){
+
+
                 var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                   .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
                                   .Where(s => s.IsActive == true)
                                   .ToListAsync();
-                var serviceDTO = _mapper!.Map<List<ServiceDTO>>(services);
-                return serviceDTO;
+                servicesList = servicesList.Concat(services);
+
+                var result = PagedList<Service>.ToPagedList(servicesList, props.PageNumber, props.PageSize);
+                return result;
+
+                }
+
+                var servicesSearch = await _dbContext!.Services.Include(s => s.Vendors)!
+                                  .ThenInclude(p => p.Products)
+                                  .OrderByDescending(s => s.CreatedAt)
+                                  .Where(s => s.IsActive == true)
+                                  .Where(s => s.SearchString!.Contains(props.SearchString!.ToUpper())).ToListAsync();
+                servicesList = servicesList.Concat(servicesSearch);
+
+                var returned = PagedList<Service>.ToPagedList(servicesList, props.PageNumber, props.PageSize);
+                return returned;
 
             }
             catch (Exception ex)
@@ -55,6 +75,7 @@ namespace Api.Services
                 string folderName = "Services";
                 var newService = _mapper!.Map<Service>(service);
                 newService.IsActive = true;
+                newService.SearchString = (service.Name + " " + service.Description).ToUpper();
                 if (service.ServiceIcon != null)
                 {
                     var imgPath = await UploadImage.uploadImg(service.ServiceIcon, _cloudinary!, folderName);
@@ -77,8 +98,8 @@ namespace Api.Services
             try
             {
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
-                if (service != null) { return null!; }
-                _dbContext.Services.Remove(service!);
+                if (service == null) { return null!; }
+                 _dbContext.Services.Remove(service!);
                 await _dbContext!.SaveChangesAsync();
                 return "Service deleted";
             }

@@ -1,14 +1,16 @@
 
 import axios from "axios";
+import axiosPrivate from "../api/axios"
 
 const usePost = () => {
   const postData = async (url,data, token) => {
     const controller = new AbortController();
 
+    console.log(data);
     let result;
 
     try {
-      const response = await axios.post(url, data, {
+      const response = await axiosPrivate.post(url, data, {
         signal: controller.signal,
         headers: {
           Authorization: `Bearer ${token}`,

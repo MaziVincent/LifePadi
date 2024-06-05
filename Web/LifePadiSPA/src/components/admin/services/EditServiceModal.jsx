@@ -4,10 +4,11 @@ import baseUrl from "../../../api/baseUrl";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
 import { useQueryClient, useMutation } from "react-query";
 import { useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
+import toast, {Toaster} from "react-hot-toast";
+
+
 
 const EditServiceModal = ({ open, handleClose, service }) => {
   const queryClient = useQueryClient();
@@ -25,7 +26,19 @@ const EditServiceModal = ({ open, handleClose, service }) => {
   } = useForm({ mode: "all" });
 
   const editService = async (data) => {
-    const response = await update(url, data, auth?.accessToken);
+   
+    const formData = new FormData()
+    formData.append("Name",data.Name)
+    formData.append("Description",data.Description)
+    formData.append("IsActive",data.IsActive)
+    
+    if(data.ServiceIcon){
+      formData.append("ServiceIcon",data.ServiceIcon[0])
+      const result = await update(`${url}/uploadImg/${data.Id}`, formData, auth?.accessToken)
+    console.log(result.data)
+    }
+    
+    const response = await update(`${url}/update/${data.Id}`, formData, auth?.accessToken);
 
     console.log(response.data);
   };
@@ -37,6 +50,9 @@ const EditServiceModal = ({ open, handleClose, service }) => {
       toast.success("Service Updated Successfully");
       handleClose({ type: "edit" });
     },
+    onError:()=>{
+      toast.error("Update Failed")
+    }
   });
 
   const handleService = (service) => {
@@ -55,7 +71,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
 
     console.log(file)
     
-    if (!file || file.size > 200 * 1024) {
+    if (!file || file.size > 50 * 1024) {
       setFileError(true);
     }
   };
@@ -64,7 +80,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     <Modal
       open={open}
       onClose={() => {
-        handleClose({ type: "open" });
+        handleClose({ type: "edit" });
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -74,19 +90,19 @@ const EditServiceModal = ({ open, handleClose, service }) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full"
       >
-        <ToastContainer />
+        <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900">
-                Create Service
+                Update Service
               </h3>
               <button
                 type="button"
                 onClick={() => {
-                  handleClose({ type: "open" });
+                  handleClose({ type: "edit" });
                 }}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
@@ -121,7 +137,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     type="text"
                     name="name"
                     id="name"
-                    {...register("Name", { required: true })}
+                    {...register("Name", )}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type name of Service"
                     required=""
@@ -144,7 +160,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     id="description"
                     rows="4"
                     name="description"
-                    {...register("Description", { required: true })}
+                    {...register("Description", )}
                     className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Service Descriptions here"
                   ></textarea>
@@ -172,10 +188,9 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     name="icon"
                     id="icon"
                     accept="image/*"
-                    {...register("IconUrl", { required: true })}
+                    {...register("ServiceIcon", )}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type icon of diagnosis"
-                    required
                     onChange={handleChange}
                   />
                   {errors.icon && (
@@ -209,7 +224,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Create New Service
+                Update Service
               </button>
             </form>
           </div>

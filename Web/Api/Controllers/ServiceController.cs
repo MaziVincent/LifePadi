@@ -1,5 +1,7 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -9,25 +11,37 @@ namespace Api.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly IService _iservice;
-        public ServiceController(IService iservice) 
+        private readonly IMapper _mapper;
+        public ServiceController(IService iservice, IMapper mapper) 
         { 
             _iservice = iservice;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll()
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var services = await _iservice.allAsync();
-                return Ok(services);
+                var services = await _iservice.allAsync(props);
+
+                var result = _mapper.Map<List<ServiceDTO>>(services);
+                var dataList = new {
+                    services.TotalCount,
+                    services.TotalPages,
+                    services.PageSize,
+                    services.CurrentPage
+
+                };
+                
+                return Ok(new {result, dataList});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -80,9 +94,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/uploadImg")]
+        [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDTO serviceIcon)
         {
+            if(serviceIcon is null){
+                return BadRequest("No Image provided");
+            }
             try
             {
                 var service = await _iservice.uploadImgUrl(id, serviceIcon.Image!);
@@ -95,7 +112,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] ServiceDTO service)
+        public async Task<IActionResult> create( [FromForm] ServiceDTO service)
         {
             try
             {
@@ -114,7 +131,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] ServiceDTO service, int id)
         {
             try
@@ -128,14 +145,15 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _iservice.deleteAsync(id);
                 if (response == null) return NotFound();
-                return Ok(response);
+                
+                return Ok(new {success = response });
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
