@@ -10,7 +10,7 @@ namespace Api.Interfaces
         public Task<string> deleteAsync(int id);
         public Task<CustomerDTO> getAsync(int id);
         public Task<IEnumerable<CustomerDTOLite>> search(string searchString);
-        public Task<IEnumerable<AddressDTOLite>> customerAddresses(int id);
+        public Task<IEnumerable<AddressDtoLite>> customerAddresses(int id);
         public Task<IEnumerable<OrderDTOLite>> getCustomerOders(int id);
         public Task<int> numberOfCustomers();
     }

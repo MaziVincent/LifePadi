@@ -73,9 +73,9 @@ namespace Api.Services
             CreateMap<Transaction, TransactionDTO>();
 
             //Adress
-            CreateMap<Address, AddressDTOLite>();
-            CreateMap<AddressDTO, Address>();
-            CreateMap<Address, AddressDTO>();
+            CreateMap<Address, AddressDtoLite>();
+            CreateMap<AddressDto, Address>();
+            CreateMap<Address, AddressDto>();
 
             //Delivry
             CreateMap<Delivery, DeliveryDTO>();

@@ -48,7 +48,7 @@ namespace Api.Services
             {
                 var newVendor = _mapper.Map<Vendor>(vendor);
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
-                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
+                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
                 await _dbContext!.SaveChangesAsync();
                 var authUserDTO = _mapper.Map<AuthVendorDTOLite>(newVendor);
@@ -82,6 +82,22 @@ namespace Api.Services
                 if (vendor == null) return null!;
                 var authVendorDTOLite = _mapper.Map<AuthVendorDTOLite>(vendor);
                 return authVendorDTOLite;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<VendorDTOLite> getVendorByTagName(string tag)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors.Include(v => v.Products)
+                .FirstOrDefaultAsync(v => v.Tag!.ToLower().Contains(tag.ToLower()));
+                if (vendor == null) return null!;
+                var vendorDTOLite = _mapper.Map<VendorDTOLite>(vendor);
+                return vendorDTOLite;
             }
             catch (Exception ex)
             {
@@ -142,7 +158,7 @@ namespace Api.Services
             {
                 var initialVendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (initialVendor == null) return null!;
-                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
+                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 initialVendor.Name = vendor.Name;
                 initialVendor.VendorType = vendor.VendorType;
                 initialVendor.Email = vendor.Email;

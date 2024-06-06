@@ -24,7 +24,7 @@ namespace Api.DTO
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }
-        public List<AddressDTOLite>? Addresses { get; set; }
+        public List<AddressDtoLite>? Addresses { get; set; }
         public List<OrderDTOLite>? Orders { get; set; }
     }
 

@@ -141,5 +141,19 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("getByTagName")]
+        public async Task<IActionResult> getByTagName([FromQuery] string tag)
+        {
+            try
+            {
+                var vendor = await _ivendor.getVendorByTagName(tag);
+                if (vendor == null) return NotFound();
+                return Ok(vendor);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

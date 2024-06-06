@@ -36,13 +36,13 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<AddressDTOLite>> customerAddresses(int id)
+        public async Task<IEnumerable<AddressDtoLite>> customerAddresses(int id)
         {
             try
             {
                 var customer = await _dbContext.Customers.Include(c => c.Addresses).FirstOrDefaultAsync(c => c.Id == id);
                 if (customer == null) return null!;
-                var addresses = _mapper.Map<List<AddressDTOLite>>(customer.Addresses);
+                var addresses = _mapper.Map<List<AddressDtoLite>>(customer.Addresses);
                 return addresses;
             }catch(Exception ex) 
             {

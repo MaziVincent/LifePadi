@@ -20,6 +20,7 @@ namespace Api.DTO
         public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
+        public List<AddressDtoLite>? Addresses { get; set; }
     }
 
     public class UserDTOLite
