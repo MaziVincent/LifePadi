@@ -55,7 +55,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] AuthVendorDTO vendor)
+        public async Task<IActionResult> create([FromForm] AuthVendorDto vendor)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDTOLite vendor)
+        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDtoLite vendor)
         {
             try
             {
@@ -135,6 +135,20 @@ namespace Api.Controllers
             {
                 var products = await _ivendor.vendorsProduct(id);
                 return Ok(products);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("getByTagName")]
+        public async Task<IActionResult> getByTagName([FromQuery] string tag)
+        {
+            try
+            {
+                var vendor = await _ivendor.getVendorByTagName(tag);
+                if (vendor == null) return NotFound();
+                return Ok(vendor);
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);

@@ -5,15 +5,15 @@ namespace Api.Interfaces
     public interface IOrder
     {
         public Task<DataTotalNumber> allAsync();
-        public Task<IEnumerable<OrderDTOLite>> allOrderLite();
-        public Task<OrderDTO> createAsync(OrderDTO order);
-        public Task<OrderDTO> updateAsync(OrderDTO order, int id);
+        public Task<IEnumerable<OrderDtoLite>> allOrderLite();
+        public Task<OrderDto> createAsync(OrderDto order);
+        public Task<OrderDto> updateAsync(OrderDto order, int id);
         public Task<string> deleteAsync(int id);
-        public Task<OrderDTO> getAsync(int id);
-        public Task<IEnumerable<OrderItemDTOLite>> orderItemLites(int id);
-        public Task<IEnumerable<OrderDTO>> customerOrders(int customerId);
-        //public Task<IEnumerable<OrderDTO>> riderOrders(int riderId);
-        public Task<OrderDTO> updateOrderStatus(int id, string status);
+        public Task<OrderDto> getAsync(int id);
+        public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
+        public Task<IEnumerable<OrderDto>> customerOrders(int customerId);
+        //public Task<IEnumerable<OrderDto>> riderOrders(int riderId);
+        public Task<OrderDto> updateOrderStatus(int id, string status);
         public Task<int> totalNumberOfOrders();
         public Task<int> totalNumberOfPendingOrders();
         public Task<int> totalNumberOfDeliveredOrders();

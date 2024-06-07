@@ -42,7 +42,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create( [FromForm] AddressDTO address)
+        public async Task<IActionResult> create( [FromForm] AddressDto address)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update([FromForm] AddressDTO address, int id)
+        public async Task<IActionResult> update([FromForm] AddressDto address, int id)
         {
             try
             {
@@ -89,6 +89,19 @@ namespace Api.Controllers
             {
                 var addresses = await _iaddress.getCustomersAddresses(customerId);
                 if (addresses == null) return NotFound();
+                return Ok(addresses);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{userId}/user-addresses")]
+        public async Task<IActionResult> getUsersAddress([FromRoute] int userId)
+        {
+            try
+            {
+                var addresses = await _iaddress.getUsersAddress(userId);
                 return Ok(addresses);
             }catch (Exception ex)
             {

@@ -2,19 +2,19 @@
 
 namespace Api.DTO
 {
-    public class OrderDTO
+    public class OrderDto
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public CustomerDTOLite? Customer { get; set; }
+        public CustomerDtoLite? Customer { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public List<OrderItemDTOLite>? OrderItems { get; set; }
+        public List<OrderItemDtoLite>? OrderItems { get; set; }
     }
 
-    public class OrderDTOLite
+    public class OrderDtoLite
     {
         public int Id { get; set; }
         public string? Status { get; set; }
@@ -23,7 +23,7 @@ namespace Api.DTO
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
-    public class OrderDTOLiteB
+    public class OrderDtoLiteB
     {
         public int Id { get; set; }
         public string? Status { get; set; }
@@ -31,6 +31,6 @@ namespace Api.DTO
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }
-        public CustomerDTOLite? Customer { get; set; }
+        public CustomerDtoLite? Customer { get; set; }
     }
 }

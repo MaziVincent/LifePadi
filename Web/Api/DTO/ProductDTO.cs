@@ -2,7 +2,7 @@
 
 namespace Api.DTO
 {
-    public class ProductDTO
+    public class ProductDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -11,13 +11,13 @@ namespace Api.DTO
         public Double? Price { get; set; }
         public string? ProductImgUrl { get; set; }
         public int CategoryId { get; set; }
-        public CategoryDTOLite? Category { get; set; }
+        public CategoryDtoLite? Category { get; set; }
         public int VendorId { get; set; }
-        public VendorDTOLite? Vendor { get; set; }
+        public VendorDtoLite? Vendor { get; set; }
 
     }
 
-    public class ProductDTOLite
+    public class ProductDtoLite
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -29,7 +29,7 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
     }
 
-    public class CreateProductDTO
+    public class CreateProductDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

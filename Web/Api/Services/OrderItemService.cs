@@ -24,11 +24,11 @@ namespace Api.Services
                     .Include(o => o.Order)
                     .OrderByDescending(o => o.CreatedAt)
                     .ToListAsync();
-                var orderItemDTO = _mapper.Map<List<OrderItemDTO>>(orderItems);
+                var OrderItemDto = _mapper.Map<List<OrderItemDto>>(orderItems);
                 return new DataTotalNumber
                 {
                     TotalNumber = orderItems.Count(),
-                    Data = orderItemDTO.ToArray(),
+                    Data = OrderItemDto.ToArray(),
                 };
 
             }
@@ -47,11 +47,11 @@ namespace Api.Services
                     .Include(o => o.Order)
                     .OrderByDescending(o => o.CreatedAt)
                     .ToListAsync();
-                var orderItemDTOLite = _mapper.Map<List<OrderItemDTOLite>>(orderItems);
+                var OrderItemDtoLite = _mapper.Map<List<OrderItemDtoLite>>(orderItems);
                 return new DataTotalNumber
                 {
                     TotalNumber = orderItems.Count(),
-                    Data = orderItemDTOLite.ToArray(),
+                    Data = OrderItemDtoLite.ToArray(),
                 };
 
             }
@@ -61,7 +61,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<OrderItemDTO> createAsync(OrderItemDTO orderItem)
+        public async Task<OrderItemDto> createAsync(OrderItemDto orderItem)
         {
             try
             {
@@ -70,8 +70,8 @@ namespace Api.Services
                 newOrderItem.SetAmount(orderItem.Amount);
                 await _dbContext.OrdersItems.AddAsync(newOrderItem);
                 await _dbContext.SaveChangesAsync();
-                var orderItemDTO = _mapper.Map<OrderItemDTO>(newOrderItem);
-                return orderItemDTO;
+                var OrderItemDto = _mapper.Map<OrderItemDto>(newOrderItem);
+                return OrderItemDto;
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<OrderItemDTO> getAsync(int id)
+        public async Task<OrderItemDto> getAsync(int id)
         {
             try
             {
@@ -104,8 +104,8 @@ namespace Api.Services
                     .Include(o => o.Product)
                     .FirstOrDefaultAsync(o => o.Id == id);
                 if (orderItem == null) return null!;
-                var orderItemDTO = _mapper.Map<OrderItemDTO>(orderItem);
-                return orderItemDTO;
+                var OrderItemDto = _mapper.Map<OrderItemDto>(orderItem);
+                return OrderItemDto;
             }
             catch (Exception ex)
             {
@@ -126,7 +126,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<OrderItemDTO> updateAsync(OrderItemDTO orderItem, int id)
+        public async Task<OrderItemDto> updateAsync(OrderItemDto orderItem, int id)
         {
             try
             {
@@ -139,8 +139,8 @@ namespace Api.Services
                 initialOrderItem.UpdatedAt = DateTime.UtcNow;
                 _dbContext.OrdersItems.Attach(initialOrderItem);
                 await _dbContext.SaveChangesAsync();
-                var orderItemDTO = _mapper.Map<OrderItemDTO>(initialOrderItem);
-                return orderItemDTO;
+                var OrderItemDto = _mapper.Map<OrderItemDto>(initialOrderItem);
+                return OrderItemDto;
             }
             catch (Exception ex)
             {

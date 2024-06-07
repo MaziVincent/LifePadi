@@ -65,7 +65,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CategoryDTOLite category)
+        public async Task<IActionResult> create([FromForm] CategoryDtoLite category)
         {
             try
             {

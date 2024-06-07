@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Api.DTO
 {
-    public class TransactionDTO
+    public class TransactionDto
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -14,10 +14,10 @@ namespace Api.DTO
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }
-        public OrderDTOLite? Order { get; set; }
+        public OrderDtoLite? Order { get; set; }
     }
 
-    public class TransactionDTOLite
+    public class TransactionDtoLite
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -29,7 +29,7 @@ namespace Api.DTO
         public DateTime UpdatedAt { get; set; }
     }
 
-    public class InitiatePaymentDTO
+    public class InitiatePaymentDto
     {
         public Double Amount { get; set; }
         public Double? TotalAmount { get; set; }
@@ -39,7 +39,7 @@ namespace Api.DTO
 
     }
 
-    public class PaymentDTO
+    public class PaymentDto
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -47,9 +47,9 @@ namespace Api.DTO
         public Double TotalAmount { get; set; }
         public string? Status { get; set; }
         public int? VoucherId { get; set; }
-        public VoucherDTO? Voucher { get; set; }
+        public VoucherDto? Voucher { get; set; }
         public int OrderId { get; set; }
-        public OrderDTOLite? Order { get; set; }
+        public OrderDtoLite? Order { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

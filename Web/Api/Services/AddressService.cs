@@ -17,31 +17,33 @@ namespace Api.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AddressDTO>> allAsync()
+        public async Task<IEnumerable<AddressDto>> allAsync()
         {
             try
             {
                 var addresses = await _dbContext.Addresses
-                    .Include(a => a.Customer)
+                    .Include(a => a.User)
                     .OrderByDescending(a => a.CreatedAt).ToListAsync();
-                var addressDTOLite = _mapper.Map<List<AddressDTO>>(addresses);
-                return addressDTOLite;
-            }catch(Exception ex)
+                var AddressDtoLite = _mapper.Map<List<AddressDto>>(addresses);
+                return AddressDtoLite;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<AddressDTOLite> createAsync(AddressDTO address)
+        public async Task<AddressDtoLite> createAsync(AddressDto address)
         {
             try
             {
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();
-                var addressDTOLite = _mapper.Map<AddressDTOLite>(newaddress);
-                return addressDTOLite;
-            }catch(Exception ex)
+                var AddressDtoLite = _mapper.Map<AddressDtoLite>(newaddress);
+                return AddressDtoLite;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -56,41 +58,60 @@ namespace Api.Services
                 _dbContext.Addresses.Remove(address);
                 await _dbContext.SaveChangesAsync();
                 return "Deleted successfuly";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<AddressDTO> getAsync(int id)
+        public async Task<AddressDto> getAsync(int id)
         {
             try
             {
-                var address = await _dbContext.Addresses.Include(a => a.Customer).FirstOrDefaultAsync(a => a.Id == id);
+                var address = await _dbContext.Addresses.Include(a => a.User).FirstOrDefaultAsync(a => a.Id == id);
                 if (address == null) return null!;
-                var addressDTO = _mapper.Map<AddressDTO>(address);
-                return addressDTO;
-            }catch(Exception ex)
+                var AddressDto = _mapper.Map<AddressDto>(address);
+                return AddressDto;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<IEnumerable<AddressDTOLite>> getCustomersAddresses(int customerId)
+        public async Task<IEnumerable<AddressDtoLite>> getCustomersAddresses(int customerId)
         {
             try
             {
-                var addresses = await _dbContext.Addresses.Where(a => a.CustomerId == customerId).ToListAsync();
+                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId).ToListAsync();
                 if (addresses == null) return null!;
-                var addressDTOLite = _mapper.Map<List<AddressDTOLite>>(addresses);
-                return addressDTOLite;
-            }catch (Exception ex)
+                var AddressDtoLite = _mapper.Map<List<AddressDtoLite>>(addresses);
+                return AddressDtoLite;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<AddressDTOLite> updateAsync(AddressDTO address, int id)
+        public async Task<IEnumerable<AddressDtoLite>> getUsersAddress(int userId)
+        {
+            try
+            {
+                var userAddress = await _dbContext.Addresses.Include(a => a.User)
+                .Where(a => a.UserId == userId)
+                .ToListAsync();
+                var addresDtoLite = _mapper.Map<List<AddressDtoLite>>(userAddress);
+                return addresDtoLite;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AddressDtoLite> updateAsync(AddressDto address, int id)
         {
             try
             {
@@ -106,9 +127,10 @@ namespace Api.Services
 
                 _dbContext.Addresses.Attach(initialAddress);
                 await _dbContext.SaveChangesAsync();
-                var addressDTOLite = _mapper.Map<AddressDTOLite>(initialAddress);
-                return addressDTOLite;
-            }catch(Exception ex)
+                var AddressDtoLite = _mapper.Map<AddressDtoLite>(initialAddress);
+                return AddressDtoLite;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

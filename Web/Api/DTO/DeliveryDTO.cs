@@ -2,7 +2,7 @@
 
 namespace Api.DTO
 {
-    public class DeliveryDTO
+    public class DeliveryDto
     {
         public int Id { get; set; }
         public string? PickupAddress { get; set; }
@@ -10,12 +10,12 @@ namespace Api.DTO
         public Double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public int OrderId { get; set; }
-        public OrderDTOLite? Order { get; set; }
+        public OrderDtoLite? Order { get; set; }
         public int? RiderId { get; set; }
-        public RiderDTOLite? Rider { get; set; }
+        public RiderDtoLite? Rider { get; set; }
     }
 
-    public class DeliveryDTOLite
+    public class DeliveryDtoLite
     {
         public int Id { get; set; }
         public string? PickupAddress { get; set; }
@@ -26,7 +26,7 @@ namespace Api.DTO
         public DateTime UpdateAt { get; set; }
     }
 
-    public class CreateDeliveryDTO
+    public class CreateDeliveryDto
     {
         public int Id { get; set; }
         public string? PickupAddress { get; set; }

@@ -27,13 +27,13 @@ namespace Api.Services
              );
             _cloudinary = new Cloudinary(account);
         }
-        public async Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var vendors = await _dbContext!.Vendors.Skip(skip).Take(pageSize).OrderByDescending(v => v.CreatedAt).Include(v => v.Products).ToListAsync();
-                var allVendor = _mapper.Map<List<VendorDTO>>(vendors);
+                var allVendor = _mapper.Map<List<VendorDto>>(vendors);
                 return allVendor;
             }
             catch (Exception ex)
@@ -42,16 +42,16 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor)
+        public async Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor)
         {
             try
             {
                 var newVendor = _mapper.Map<Vendor>(vendor);
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
-                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
+                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
                 await _dbContext!.SaveChangesAsync();
-                var authUserDTO = _mapper.Map<AuthVendorDTOLite>(newVendor);
+                var authUserDTO = _mapper.Map<AuthVendorDtoLite>(newVendor);
                 return authUserDTO;
             }
             catch (Exception ex)
@@ -74,14 +74,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthVendorDTOLite> getAsync(int id)
+        public async Task<AuthVendorDtoLite> getAsync(int id)
         {
             try
             {
                 var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (vendor == null) return null!;
-                var authVendorDTOLite = _mapper.Map<AuthVendorDTOLite>(vendor);
-                return authVendorDTOLite;
+                var authVendorDtoLite = _mapper.Map<AuthVendorDtoLite>(vendor);
+                return authVendorDtoLite;
             }
             catch (Exception ex)
             {
@@ -89,7 +89,23 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VendorDTOLite>> searchAsync(string searchString)
+        public async Task<VendorDtoLite> getVendorByTagName(string tag)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors.Include(v => v.Products)
+                .FirstOrDefaultAsync(v => v.Tag!.ToLower().Contains(tag.ToLower()));
+                if (vendor == null) return null!;
+                var VendorDtoLite = _mapper.Map<VendorDtoLite>(vendor);
+                return VendorDtoLite;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString)
         {
             try
             {
@@ -114,8 +130,8 @@ namespace Api.Services
                         vendorList.Add(vendor);
                     }
                 }
-                var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendorList);
-                return vendorDTOLite;
+                var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendorList);
+                return VendorDtoLite;
             }
             catch (Exception ex)
             {
@@ -136,22 +152,23 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id)
+        public async Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id)
         {
             try
             {
                 var initialVendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (initialVendor == null) return null!;
-                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
+                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 initialVendor.Name = vendor.Name;
                 initialVendor.VendorType = vendor.VendorType;
                 initialVendor.Email = vendor.Email;
                 initialVendor.PhoneNumber = vendor.PhoneNumber;
                 initialVendor.ContactAddress = vendor.ContactAddress;
+                initialVendor.Tag = vendor.Tag;
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vendors.Attach(initialVendor);
                 await _dbContext.SaveChangesAsync();
-                var currentVendor = _mapper.Map<AuthVendorDTOLite>(initialVendor);
+                var currentVendor = _mapper.Map<AuthVendorDtoLite>(initialVendor);
 
                 return currentVendor;
             }
@@ -161,7 +178,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<VendorDTO> uploadVendorImg(int id, IFormFile image)
+        public async Task<VendorDto> uploadVendorImg(int id, IFormFile image)
         {
             try
             {
@@ -173,8 +190,8 @@ namespace Api.Services
                 vendor.VendorImgUrl = imgPath;
                 _dbContext!.Vendors.Attach(vendor);
                 await _dbContext.SaveChangesAsync();
-                var vendorDTO = _mapper.Map<VendorDTO>(vendor);
-                return vendorDTO;
+                var VendorDto = _mapper.Map<VendorDto>(vendor);
+                return VendorDto;
             }
             catch (Exception ex)
             {
@@ -182,13 +199,13 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VendorDTOLite>> vendorsOnly()
+        public async Task<IEnumerable<VendorDtoLite>> vendorsOnly()
         {
             try
             {
                 var vendors = await _dbContext!.Vendors.ToListAsync();
-                var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendors);
-                return vendorDTOLite;
+                var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendors);
+                return VendorDtoLite;
             }
             catch (Exception ex)
             {
@@ -196,7 +213,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<ProductDTOLite>> vendorsProduct(int id)
+        public async Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id)
         {
             try
             {
@@ -204,7 +221,7 @@ namespace Api.Services
                     .Include(v => v.Products!)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
-                var products = _mapper.Map<List<ProductDTOLite>>(vendor!.Products);
+                var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
                 return products;
             }
             catch (Exception ex)

@@ -2,7 +2,7 @@
 
 namespace Api.DTO
 {
-    public class RiderDTO
+    public class RiderDto
     {
         public int? Id { get; set; }
         public string?  FirstName { get; set; }
@@ -17,10 +17,10 @@ namespace Api.DTO
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
         public string? Password { get; set; }
-        public List<OrderDTOLite>? Orders { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
     }
 
-    public class GetRiderDTO
+    public class GetRiderDto
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -34,10 +34,10 @@ namespace Api.DTO
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
-        public List<OrderDTOLite>? Orders { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
     }
 
-    public class RiderDTOLite
+    public class RiderDtoLite
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -56,7 +56,7 @@ namespace Api.DTO
     }
 
 
-    public class CreateRiderDTO
+    public class CreateRiderDto
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -70,10 +70,10 @@ namespace Api.DTO
         public IFormFile? IdentityImg { get; set; }
         public string? EmergencyContact { get; set; }
         public string? Password { get; set; }
-        public List<OrderDTOLite>? Orders { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
     }
 
-    public class AuthRiderDTO : AuthUserDTO
+    public class AuthRiderDto : AuthUserDto
     {
         public bool? IsVerified { get; set; }
     }

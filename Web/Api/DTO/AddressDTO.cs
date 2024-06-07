@@ -2,7 +2,7 @@
 
 namespace Api.DTO
 {
-    public class AddressDTO
+    public class AddressDto
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
@@ -12,11 +12,11 @@ namespace Api.DTO
         public string? PostalCode { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
-        public int CustomerId { get; set; }
-        public CustomerDTOLite? Customer { get; set; }
+        public int UserId { get; set; }
+        public UserDtoLite? User { get; set; }
     }
 
-    public class AddressDTOLite
+    public class AddressDtoLite
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
