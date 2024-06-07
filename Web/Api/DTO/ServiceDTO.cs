@@ -2,18 +2,18 @@
 
 namespace Api.DTO
 {
-    public class ServiceDTO
+    public class ServiceDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? ServiceIconUrl { get; set; }
         public IFormFile? ServiceIcon { get; set; }
-        public List<VendorDTOLite>? Vendors { get; set; }
+        public List<VendorDtoLite>? Vendors { get; set; }
         public bool? IsActive { get; set; }
     }
 
-    public class ServiceDTOLite
+    public class ServiceDtoLite
     {
         public int Id { get; set; }
         public string? Name { get; set; }

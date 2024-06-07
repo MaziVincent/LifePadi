@@ -15,7 +15,7 @@ namespace Api.Services
             _dbContext = dBContext;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<DeliveryDTO>> allAsync()
+        public async Task<IEnumerable<DeliveryDto>> allAsync()
         {
             try
             {
@@ -24,8 +24,8 @@ namespace Api.Services
                     .Include(d => d.Rider)
                     .OrderByDescending(d => d.CreatedAt)
                     .ToListAsync();
-                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(delivries);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(delivries);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {
@@ -33,15 +33,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<DeliveryDTOLite>> allDeliveryLiteAsync()
+        public async Task<IEnumerable<DeliveryDtoLite>> allDeliveryLiteAsync()
         {
             try
             {
                 var delivries = await _dbContext.Deliveries
                     .OrderByDescending(d => d.CreatedAt)
                     .ToListAsync();
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(delivries);
-                return deliveryDTOLite;
+                var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(delivries);
+                return DeliveryDtoLite;
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<CreateDeliveryDTO> createAsync(DeliveryDTO delivery)
+        public async Task<CreateDeliveryDto> createAsync(DeliveryDto delivery)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace Api.Services
                     newDelivery.Status = "Pending";
                     await _dbContext.Deliveries.AddAsync(newDelivery);
                     await _dbContext.SaveChangesAsync();
-                    var deliveryDTO = _mapper.Map<CreateDeliveryDTO>(newDelivery);
-                    return deliveryDTO;
+                    var DeliveryDto = _mapper.Map<CreateDeliveryDto>(newDelivery);
+                    return DeliveryDto;
                 }
                 throw new Exception("Already created delivery for this order");
             }
@@ -128,7 +128,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<DeliveryDTO> getAsync(int id)
+        public async Task<DeliveryDto> getAsync(int id)
         {
             try
             {
@@ -137,8 +137,8 @@ namespace Api.Services
                     .Include(d => d.Rider)
                     .FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
-                var deliveryDTO = _mapper.Map<DeliveryDTO>(delivery);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {
@@ -146,7 +146,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<DeliveryDTO> getOrderDelivery(int orderId)
+        public async Task<DeliveryDto> getOrderDelivery(int orderId)
         {
             try
             {
@@ -155,8 +155,8 @@ namespace Api.Services
                     .Include(d => d.Rider)
                     .FirstOrDefaultAsync(d => d.OrderId == orderId);
                 if (delivery == null) return null!;
-                var deliveryDTO = _mapper.Map<DeliveryDTO>(delivery);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {
@@ -164,7 +164,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<DeliveryDTO>> getRidersDeliveries(int riderId)
+        public async Task<IEnumerable<DeliveryDto>> getRidersDeliveries(int riderId)
         {
             try
             {
@@ -174,8 +174,8 @@ namespace Api.Services
                     .OrderByDescending(d => d.CreatedAt)
                     .Where(d => d.RiderId == riderId)
                     .ToListAsync();
-                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(deliveries);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {
@@ -183,7 +183,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery()
+        public async Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery()
         {
             try
             {
@@ -191,8 +191,8 @@ namespace Api.Services
                     .OrderByDescending(d => d.CreatedAt)
                     .Where(d => d.Status == "Unsuccessful")
                     .ToListAsync();
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(deliveries);
-                return deliveryDTOLite;
+                var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
+                return DeliveryDtoLite;
             }
             catch (Exception ex)
             {
@@ -200,7 +200,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<DeliveryDTO>> getWithStatus(string status)
+        public async Task<IEnumerable<DeliveryDto>> getWithStatus(string status)
         {
             try
             {
@@ -210,8 +210,8 @@ namespace Api.Services
                     .OrderByDescending(d => d.CreatedAt)
                     .Where(d => d.Status!.Contains(status))
                     .ToListAsync();
-                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(deliveries);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {
@@ -292,7 +292,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<DeliveryDTO> updateAsync(DeliveryDTO delivery, int id)
+        public async Task<DeliveryDto> updateAsync(DeliveryDto delivery, int id)
         {
             try
             {
@@ -306,8 +306,8 @@ namespace Api.Services
                 initialDelivery.PickupType = delivery.PickupType;
                 _dbContext.Deliveries.Attach(initialDelivery);
                 await _dbContext.SaveChangesAsync();
-                var deliveryDTO = _mapper.Map<DeliveryDTO>(initialDelivery);
-                return deliveryDTO;
+                var DeliveryDto = _mapper.Map<DeliveryDto>(initialDelivery);
+                return DeliveryDto;
             }
             catch (Exception ex)
             {

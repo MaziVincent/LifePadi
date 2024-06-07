@@ -17,7 +17,7 @@ namespace Api.Services
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        public async Task<IEnumerable<CategoryDto>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
         {
             try
             {
@@ -26,14 +26,14 @@ namespace Api.Services
                 {
                     var categories1 = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
                     .ToListAsync();
-                    var categoryDTOs1 = _mapper.Map<List<CategoryDTO>>(categories1);
-                    return categoryDTOs1;
+                    var CategoryDtos1 = _mapper.Map<List<CategoryDto>>(categories1);
+                    return CategoryDtos1;
                 }
                 var categories = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
                     .Where(c => c.Name!.ToLower().Contains(searchString.ToLower()))
                     .ToListAsync();
-                var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
-                return categoryDTOs;
+                var CategoryDtos = _mapper.Map<List<CategoryDto>>(categories);
+                return CategoryDtos;
             }
             catch (Exception ex)
             {
@@ -41,13 +41,13 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<CategoryDTOLite>> allCategoryLiteAsync()
+        public async Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync()
         {
             try
             {
                 var categories = await _dbContext.Categories.ToListAsync();
-                var categoryDTOs = _mapper.Map<List<CategoryDTOLite>>(categories);
-                return categoryDTOs;
+                var CategoryDtos = _mapper.Map<List<CategoryDtoLite>>(categories);
+                return CategoryDtos;
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<ProductDTO>> categoryProducts(int id)
+        public async Task<IEnumerable<ProductDto>> categoryProducts(int id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .FirstOrDefaultAsync(c => c.Id == id);
-                var products = _mapper.Map<List<ProductDTO>>(category!.Products);
+                var products = _mapper.Map<List<ProductDto>>(category!.Products);
                 return products;
 
             }
@@ -91,15 +91,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<CategoryDTO> createAsync(CategoryDTOLite category)
+        public async Task<CategoryDto> createAsync(CategoryDtoLite category)
         {
             try
             {
                 var newCategory = _mapper.Map<Category>(category);
                 await _dbContext.Categories.AddAsync(newCategory);
                 await _dbContext.SaveChangesAsync();
-                var categoryDTO = _mapper.Map<CategoryDTO>(newCategory);
-                return categoryDTO;
+                var CategoryDto = _mapper.Map<CategoryDto>(newCategory);
+                return CategoryDto;
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<CategoryDTO> getAsync(int id)
+        public async Task<CategoryDto> getAsync(int id)
         {
             try
             {
@@ -133,8 +133,8 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
-                var categoryDTO = _mapper.Map<CategoryDTO>(category);
-                return categoryDTO;
+                var CategoryDto = _mapper.Map<CategoryDto>(category);
+                return CategoryDto;
             }
             catch (Exception ex)
             {
@@ -142,7 +142,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<CategoryDTO> getByNameAsync(string name)
+        public async Task<CategoryDto> getByNameAsync(string name)
         {
             try
             {
@@ -152,8 +152,8 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
-                var categoryDTO = _mapper.Map<CategoryDTO>(category);
-                return categoryDTO;
+                var CategoryDto = _mapper.Map<CategoryDto>(category);
+                return CategoryDto;
             }
             catch (Exception ex)
             {
@@ -174,7 +174,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<CategoryDTO> updateAsync(CategoryDTO category, int id)
+        public async Task<CategoryDto> updateAsync(CategoryDto category, int id)
         {
             try
             {
@@ -185,8 +185,8 @@ namespace Api.Services
                 initialCategory!.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Categories.Attach(initialCategory);
                 await _dbContext.SaveChangesAsync();
-                var categoryDTO = _mapper.Map<CategoryDTO>(initialCategory);
-                return categoryDTO;
+                var CategoryDto = _mapper.Map<CategoryDto>(initialCategory);
+                return CategoryDto;
             }
             catch (Exception ex)
             {

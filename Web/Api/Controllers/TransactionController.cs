@@ -15,7 +15,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("initiate")]
-        public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDTO initiatePayment)
+        public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDto initiatePayment)
         {
             try
             {

@@ -36,7 +36,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthUserDTO> createAsync(UserDTO user)
+        public async Task<AuthUserDto> createAsync(UserDto user)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Api.Services
                 newAdmin.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 await _dbContext.Admins.AddAsync(newAdmin);
                 await _dbContext.SaveChangesAsync();
-                var authuser = _mapper.Map<AuthUserDTO>(newAdmin);
+                var authuser = _mapper.Map<AuthUserDto>(newAdmin);
                 return authuser;
             }
             catch (Exception ex)
@@ -70,15 +70,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<UserDTOLite>> getAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<UserDtoLite>> getAllAsync(int pageNumber, int pageSize)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var users = await _dbContext.Admins.Skip(skip).Take(pageSize).OrderByDescending(a => a.CreatedAt).ToListAsync();
-                var userDTOs = _mapper.Map<List<UserDTOLite>>(users);
+                var UserDtos = _mapper.Map<List<UserDtoLite>>(users);
 
-                return userDTOs!;
+                return UserDtos!;
             }
             catch (Exception ex)
             {
@@ -86,13 +86,13 @@ namespace Api.Services
             }
         }
 
-        public async Task<UserDTO> getAsync(int id)
+        public async Task<UserDto> getAsync(int id)
         {
             try
             {
                 var user = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
-                var userDTO = _mapper.Map<UserDTO>(user);
-                return userDTO;
+                var UserDto = _mapper.Map<UserDto>(user);
+                return UserDto;
             }
             catch (Exception ex)
             {
@@ -100,21 +100,21 @@ namespace Api.Services
             }
         }
 
-        public Task<IEnumerable<OrderDTO>> getUserOders(int id)
+        public Task<IEnumerable<OrderDto>> getUserOders(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<AuthUserDTO> login(AuthUserDTOLite user)
+        public async Task<AuthUserDto> login(AuthUserDtoLite user)
         {
             try
             {
                 var authUser = await authenticate(user);
                 if (authUser == null) return null!;
-                var genTokenDTO = _mapper.Map<GenTokenDTO>(authUser);
+                var genTokenDto = _mapper.Map<GenTokenDto>(authUser);
                 var genToken = new GenerateToken(_config!);
-                var accessToken = genToken.generateAccessToken(genTokenDTO);
-                var refreshToken = genToken.generateRefreshToken(genTokenDTO);
+                var accessToken = genToken.generateAccessToken(genTokenDto);
+                var refreshToken = genToken.generateRefreshToken(genTokenDto);
                 authUser.Token!.AccessToken = accessToken;
                 authUser.Token!.RefreshToken = refreshToken;
 
@@ -126,7 +126,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthUserDTO> authenticate(AuthUserDTOLite user)
+        public async Task<AuthUserDto> authenticate(AuthUserDtoLite user)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace Api.Services
                 if (loginUser == null) return null!;
                 if (BCrypt.Net.BCrypt.Verify(user.Password, loginUser.PasswordHash))
                 {
-                    var authUser = _mapper.Map<AuthUserDTO>(loginUser);
+                    var authUser = _mapper.Map<AuthUserDto>(loginUser);
                     return authUser;
                 }
                 return null!;
@@ -150,7 +150,7 @@ namespace Api.Services
             throw new NotImplementedException();
         }
 
-        public async Task<UserDTOLite> updateAsync(UserDTOLite user, int id)
+        public async Task<UserDtoLite> updateAsync(UserDtoLite user, int id)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace Api.Services
 
                 _dbContext.Admins.Attach(updateUser);
                 await _dbContext.SaveChangesAsync();
-                var updatedUser = _mapper.Map<UserDTOLite>(updateUser);
+                var updatedUser = _mapper.Map<UserDtoLite>(updateUser);
                 return updatedUser;
 
             }

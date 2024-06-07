@@ -2,13 +2,13 @@
 
 namespace Api.DTO
 {
-    public class PaymentDetailsDTO
+    public class PaymentDetailsDto
     {
-        public DataDTO? Data { get; set; }
+        public DataDto? Data { get; set; }
         public string? Status { get; set; }
     }
 
-    public class DataDTO
+    public class DataDto
     {
         public int Id { get; set; }
         public Double Amount { get; set; }

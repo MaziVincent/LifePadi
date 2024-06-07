@@ -4,16 +4,16 @@ namespace Api.Interfaces
 {
     public interface IVendor
     {
-        public Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize);
-        public Task<IEnumerable<VendorDTOLite>> vendorsOnly();
-        public Task<IEnumerable<ProductDTOLite>> vendorsProduct(int id);
-        public Task<VendorDTO> uploadVendorImg(int id, IFormFile image);
-        public Task<IEnumerable<VendorDTOLite>> searchAsync(string searchString);
+        public Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize);
+        public Task<IEnumerable<VendorDtoLite>> vendorsOnly();
+        public Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id);
+        public Task<VendorDto> uploadVendorImg(int id, IFormFile image);
+        public Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString);
         public Task<string> deleteAsync(int id);
-        public Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor);
-        public Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id);
-        public Task<AuthVendorDTOLite> getAsync(int id);
-        public Task<VendorDTOLite> getVendorByTagName(string tag);
+        public Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor);
+        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id);
+        public Task<AuthVendorDtoLite> getAsync(int id);
+        public Task<VendorDtoLite> getVendorByTagName(string tag);
         public Task<int> totalNumberOfVendors();
     }
 }

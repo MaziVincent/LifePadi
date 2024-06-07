@@ -41,7 +41,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] OrderItemDTO orderItem)
+        public async Task<IActionResult> create([FromForm] OrderItemDto orderItem)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update(int id, [FromForm] OrderItemDTO orderItem)
+        public async Task<IActionResult> update(int id, [FromForm] OrderItemDto orderItem)
         {
             try
             {

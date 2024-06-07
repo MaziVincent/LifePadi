@@ -25,7 +25,7 @@ namespace Api.Controllers
             {
                 var services = await _iservice.allAsync(props);
 
-                var result = _mapper.Map<List<ServiceDTO>>(services);
+                var result = _mapper.Map<List<ServiceDto>>(services);
                 var dataList = new {
                     services.TotalCount,
                     services.TotalPages,
@@ -112,7 +112,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create( [FromForm] ServiceDTO service)
+        public async Task<IActionResult> create( [FromForm] ServiceDto service)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> update([FromForm] ServiceDTO service, int id)
+        public async Task<IActionResult> update([FromForm] ServiceDto service, int id)
         {
             try
             {

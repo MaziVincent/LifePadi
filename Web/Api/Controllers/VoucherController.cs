@@ -70,7 +70,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] VoucherDTO voucher)
+        public async Task<IActionResult> create([FromForm] VoucherDto voucher)
         {
             try
             {
@@ -238,7 +238,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update([FromBody] VoucherDTO voucher, int id)
+        public async Task<IActionResult> update([FromBody] VoucherDto voucher, int id)
         {
             try
             {

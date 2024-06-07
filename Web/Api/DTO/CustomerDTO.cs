@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.DTO
 {
-    public class CustomerDTO
+    public class CustomerDto
     {
         public int? Id { get; set; }
         [Required]
@@ -25,10 +25,10 @@ namespace Api.DTO
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
-        public List<OrderDTOLite>? Orders { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
     }
 
-    public class CustomerDTOLite
+    public class CustomerDtoLite
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -41,7 +41,7 @@ namespace Api.DTO
         public DateTime DOB { get; set; }
     }
 
-    public class AuthCustomerDTO
+    public class AuthCustomerDto
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }

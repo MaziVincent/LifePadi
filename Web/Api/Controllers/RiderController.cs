@@ -31,7 +31,7 @@ namespace Api.Controllers
 
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CreateRiderDTO rider)
+        public async Task<IActionResult> create([FromForm] CreateRiderDto rider)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update(int id, [FromForm] CreateRiderDTO rider)
+        public async Task<IActionResult> update(int id, [FromForm] CreateRiderDto rider)
         {
             try
             {

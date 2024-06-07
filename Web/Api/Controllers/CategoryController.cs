@@ -54,7 +54,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CategoryDTOLite category)
+        public async Task<IActionResult> create([FromForm] CategoryDtoLite category)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
+        public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
         {
             try
             {

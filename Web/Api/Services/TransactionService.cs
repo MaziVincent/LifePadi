@@ -28,7 +28,7 @@ namespace Api.Services
             _ivoucher = ivoucher;
         }
 
-        public async Task<IEnumerable<TransactionDTO>> allAsync()
+        public async Task<IEnumerable<TransactionDto>> allAsync()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();
-                var transactionDTO = _mapper.Map<List<TransactionDTO>>(transactions);
+                var transactionDTO = _mapper.Map<List<TransactionDto>>(transactions);
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<PaymentDetailsDTO> confirmPayment(string status, string tx_ref, string transaction_id)
+        public async Task<PaymentDetailsDto> confirmPayment(string status, string tx_ref, string transaction_id)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Api.Services
                     //convert the respond to string
                     var apiString = await response.Content.ReadAsStringAsync();
                     //deserialize it to json object
-                    var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDTO>(apiString);
+                    var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDto>(apiString);
 
                     if (paymentRes!.Status == "success")
                     {
@@ -94,7 +94,7 @@ namespace Api.Services
             }
         }
 
-        public Task<TransactionDTO> createAsync(TransactionDTO transaction)
+        public Task<TransactionDto> createAsync(TransactionDto transaction)
         {
             throw new NotImplementedException();
         }
@@ -116,7 +116,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<TransactionDTO> getAsync(int id)
+        public async Task<TransactionDto> getAsync(int id)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.Id == id);
                 if (transaction == null) throw new Exception("Transaction not found");
-                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<TransactionDTO> getByPaymentId(BigInteger transactionId)
+        public async Task<TransactionDto> getByPaymentId(BigInteger transactionId)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.PaymentId == transactionId);
                 if (transaction == null) throw new Exception("Transaction not found");
-                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -152,7 +152,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<DTO.Data> initiatePayment(InitiatePaymentDTO initiatePayment)
+        public async Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment)
         {
             try
             {
@@ -302,7 +302,7 @@ namespace Api.Services
             }
         }
 
-        public Task<TransactionDTO> updateAsync(TransactionDTO transaction, int id)
+        public Task<TransactionDto> updateAsync(TransactionDto transaction, int id)
         {
             throw new NotImplementedException();
         }

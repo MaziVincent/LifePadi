@@ -40,7 +40,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VoucherDTO>> allActiveAsync()
+        public async Task<IEnumerable<VoucherDto>> allActiveAsync()
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Api.Services
                     .Where(v => v.IsActive == true)
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
-                var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
+                var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return voucherList;
             }
             catch (Exception ex)
@@ -57,14 +57,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VoucherDTO>> allAsync()
+        public async Task<IEnumerable<VoucherDto>> allAsync()
         {
             try
             {
                 var vouchers = await _dbContext.Vouchers
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
-                var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
+                var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return voucherList;
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<VoucherDTO> createAsync(VoucherDTO voucher)
+        public async Task<VoucherDto> createAsync(VoucherDto voucher)
         {
             try
             {
@@ -120,8 +120,8 @@ namespace Api.Services
                 newVoucher.EndDate = endDate;
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
-                var voucherDTO = _mapper.Map<VoucherDTO>(newVoucher);
-                return voucherDTO;
+                var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
+                return VoucherDto;
             }
             catch (Exception ex)
             {
@@ -211,15 +211,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<VoucherDTO> getAsync(int id)
+        public async Task<VoucherDto> getAsync(int id)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers.FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) return null!;
-                var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
+                var VoucherDto = _mapper.Map<VoucherDto>(voucher);
 
-                return voucherDTO;
+                return VoucherDto;
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VoucherDTO>> getCurrentRunningVouchers()
+        public async Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers()
         {
             try
             {
@@ -235,8 +235,8 @@ namespace Api.Services
                     .OrderByDescending(v => v.CreatedAt)
                     .Where(v => v.IsExpired == false && v.IsActive == true)
                     .ToListAsync();
-                var voucherDTOList = _mapper.Map<List<VoucherDTO>>(vouchers);
-                return voucherDTOList;
+                var VoucherDtoList = _mapper.Map<List<VoucherDto>>(vouchers);
+                return VoucherDtoList;
             }
             catch (Exception ex)
             {
@@ -276,15 +276,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<VoucherDTO> searchWithCode(string voucherCode)
+        public async Task<VoucherDto> searchWithCode(string voucherCode)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .FirstOrDefaultAsync(v => v.Code!.ToLower() == voucherCode.ToLower());
                 if (voucher == null) return null!;
-                var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
-                return voucherDTO;
+                var VoucherDto = _mapper.Map<VoucherDto>(voucher);
+                return VoucherDto;
             }
             catch (Exception ex)
             {
@@ -292,15 +292,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VoucherDTO>> searchWithName(string name)
+        public async Task<IEnumerable<VoucherDto>> searchWithName(string name)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .Where(v => v.Name!.ToLower().Contains(name.ToLower()))
                     .ToListAsync();
-                var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
-                return voucherDTO;
+                var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
+                return VoucherDto;
             }
             catch (Exception ex)
             {
@@ -308,15 +308,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VoucherDTO>> searchWithType(string voucherType)
+        public async Task<IEnumerable<VoucherDto>> searchWithType(string voucherType)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers
                     .Where(v => v.Name!.ToLower().Contains(voucherType.ToLower()))
                     .ToListAsync();
-                var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
-                return voucherDTO;
+                var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
+                return VoucherDto;
             }
             catch (Exception ex)
             {
@@ -367,7 +367,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<VoucherDTO> updateAsync(VoucherDTO voucher, int id)
+        public async Task<VoucherDto> updateAsync(VoucherDto voucher, int id)
         {
             try
             {
@@ -384,8 +384,8 @@ namespace Api.Services
                 initialVoucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(initialVoucher);
                 await _dbContext.SaveChangesAsync();
-                var voucherDTO = _mapper.Map<VoucherDTO>(initialVoucher);
-                return voucherDTO;
+                var VoucherDto = _mapper.Map<VoucherDto>(initialVoucher);
+                return VoucherDto;
             }
             catch (Exception ex)
             {

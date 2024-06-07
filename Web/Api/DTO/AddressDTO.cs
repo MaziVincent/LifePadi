@@ -13,7 +13,7 @@ namespace Api.DTO
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
         public int UserId { get; set; }
-        public UserDTOLite? User { get; set; }
+        public UserDtoLite? User { get; set; }
     }
 
     public class AddressDtoLite

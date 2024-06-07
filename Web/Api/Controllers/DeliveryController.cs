@@ -41,7 +41,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] DeliveryDTO delivery)
+        public async Task<IActionResult> create([FromForm] DeliveryDto delivery)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update(int id, [FromForm] DeliveryDTO delivery)
+        public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
         {
             try
             {

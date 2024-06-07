@@ -16,7 +16,7 @@ namespace Api.Helpers
             _config = config;
         }
 
-        public string generateAccessToken(GenTokenDTO genTokenDTO)
+        public string generateAccessToken(GenTokenDto genTokenDTO)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Api.Helpers
             }
         }
 
-        public string generateRefreshToken(GenTokenDTO genTokenDTO)
+        public string generateRefreshToken(GenTokenDto genTokenDTO)
         {
             try
             {

@@ -2,7 +2,7 @@
 
 namespace Api.DTO
 {
-    public class UserDTO
+    public class UserDto
     {
         public int? Id { get; set; }
         [Required]
@@ -23,7 +23,7 @@ namespace Api.DTO
         public List<AddressDtoLite>? Addresses { get; set; }
     }
 
-    public class UserDTOLite
+    public class UserDtoLite
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -36,7 +36,7 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
     }
 
-    public class AuthUserDTO
+    public class AuthUserDto
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -55,7 +55,7 @@ namespace Api.DTO
         public string? AccessToken { get; set; }
     }
 
-    public class AuthUserDTOLite
+    public class AuthUserDtoLite
     {
         public string? Email { get; set; }
         public string? Password { get; set; }
