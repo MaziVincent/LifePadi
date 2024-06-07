@@ -15,6 +15,7 @@ namespace Api.Interfaces
 =======
 >>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
+<<<<<<< HEAD
         public Task<GetRiderDto> getAsync(int id);
         public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
         public Task<string> deleteAsync(int id);
@@ -45,6 +46,9 @@ namespace Api.Interfaces
         public Task<RiderDTO> updateAsync(RiderDTO rider, int id);
 =======
         public Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString);
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb3cf8 (resolved merge conflicts)
         public Task<GetRiderDTO> getAsync(int id);
         public Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id);
 <<<<<<< HEAD
@@ -72,6 +76,10 @@ namespace Api.Interfaces
         public Task<GetRiderDto> getAsync(int id);
         public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
 >>>>>>> b8c66da (changed all DTO to Dto)
+=======
+        public Task<GetRiderDto> getAsync(int id);
+        public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
+>>>>>>> ce86924 (resolved merge conflicts)
         public Task<string> deleteAsync(int id);
         public Task<AuthRiderDto> createAsync(CreateRiderDto rider);
         public Task<IEnumerable<OrderDto>> orderLists(int id);

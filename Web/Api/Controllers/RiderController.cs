@@ -162,6 +162,10 @@ namespace Api.Controllers
                     riders.CurrentPage,
                     riders.PageSize
                 };
+<<<<<<< HEAD
+=======
+            var result = _mapper.Map<List<RiderDto>>(riders);
+>>>>>>> 7fb3cf8 (resolved merge conflicts)
 
                 return Ok(new { result, dataList });
             }

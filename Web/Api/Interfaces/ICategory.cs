@@ -12,8 +12,11 @@ namespace Api.Interfaces
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> 7fb3cf8 (resolved merge conflicts)
         public Task<PagedList<Category>> allAsync(SearchPaging props);
         public Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync();
         public Task<CategoryDto> getAsync(int id);
@@ -39,6 +42,9 @@ namespace Api.Interfaces
         public Task<CategoryDTO> getByNameAsync(string name);
 =======
         public Task<IEnumerable<CategoryDto>> allAsync(int pageNumber, int pageSize, string searchString);
+=======
+        public Task<PagedList<Category>> allAsync(SearchPaging props);
+>>>>>>> ce86924 (resolved merge conflicts)
         public Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync();
         public Task<CategoryDto> getAsync(int id);
         public Task<IEnumerable<ProductDto>> categoryProducts(int id);

@@ -167,9 +167,13 @@ namespace Api.Controllers
 
 <<<<<<< HEAD
         [HttpPut("update/{id}")]
+<<<<<<< HEAD
         public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
 =======
         [HttpPut("{id}/update")]
+=======
+<<<<<<< HEAD
+>>>>>>> 7fb3cf8 (resolved merge conflicts)
         public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
 <<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
@@ -178,7 +182,13 @@ namespace Api.Controllers
         [HttpPut("{id}/update")]
         public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
 >>>>>>> b8c66da (changed all DTO to Dto)
+<<<<<<< HEAD
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+=======
+        public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
+>>>>>>> ce86924 (resolved merge conflicts)
+>>>>>>> 7fb3cf8 (resolved merge conflicts)
         {
             try
             {
