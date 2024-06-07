@@ -2,6 +2,8 @@
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -17,23 +19,26 @@ namespace Api.Services
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        public async Task<PagedList<Category>> allAsync(SearchPaging props)
         {
             try
             {
-                var skip = (pageNumber - 1) * pageSize;
-                if (searchString == "")
+                IQueryable<Category> categoryList = Enumerable.Empty<Category>().AsQueryable();
+
+                if (props.SearchString is null)
                 {
-                    var categories1 = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
+                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                     .ToListAsync();
-                    var categoryDTOs1 = _mapper.Map<List<CategoryDTO>>(categories1);
-                    return categoryDTOs1;
+                    categoryList = categoryList.Concat(categories1);
+                    var result = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
+                    return result;
                 }
-                var categories = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
-                    .Where(c => c.Name!.ToLower().Contains(searchString.ToLower()))
+                var categories = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                    .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
-                var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
-                return categoryDTOs;
+                categoryList = categoryList.Concat(categories);
+                var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
+                return returned;
             }
             catch (Exception ex)
             {

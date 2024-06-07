@@ -10,12 +10,11 @@ import toast, {Toaster} from "react-hot-toast";
 
 
 
-const EditServiceModal = ({ open, handleClose, service }) => {
+const EditCategoryModal = ({ open, handleClose, category }) => {
   const queryClient = useQueryClient();
   const update = useUpdate();
   const { auth } = useAuth();
-  const url = `${baseUrl}service`;
-  const [fileError, setFileError] = useState(false)
+  const url = `${baseUrl}category`;
 
   const {
     register,
@@ -30,13 +29,6 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     const formData = new FormData()
     formData.append("Name",data.Name)
     formData.append("Description",data.Description)
-    formData.append("IsActive",data.IsActive)
-    
-    if(data.ServiceIcon){
-      formData.append("Image",data.ServiceIcon[0])
-      const result = await update(`${url}/uploadImg/${data.Id}`, formData, auth?.accessToken)
-    console.log(result.data)
-    }
     
     const response = await update(`${url}/update/${data.Id}`, formData, auth?.accessToken);
 
@@ -45,7 +37,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
 
   const { mutate } = useMutation(editService, {
     onSuccess: () => {
-      queryClient.invalidateQueries("services");
+      queryClient.invalidateQueries("categories");
       reset();
       toast.success("Service Updated Successfully");
       handleClose({ type: "edit" });
@@ -55,26 +47,17 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     }
   });
 
-  const handleService = (service) => {
-    mutate(service);
+  const handleCategory = (category) => {
+    mutate(category);
   };
 
   useEffect(() => {
-    Object.entries(service).forEach(([key, value]) => {
+    Object.entries(category).forEach(([key, value]) => {
       setValue(key, value);
     });
-  }, [service, setValue]);
+  }, [category, setValue]);
 
-  const handleChange = (event) => {
-   
-    const file = event.target.files[0];
-
-    console.log(file)
-    
-    if (!file || file.size > 50 * 1024) {
-      setFileError(true);
-    }
-  };
+ 
 
   return (
     <Modal
@@ -97,7 +80,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Update Service
+                Update Category
               </h3>
               <button
                 type="button"
@@ -124,7 +107,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
               </button>
             </div>
             {/* <!-- Modal body --> */}
-            <form onSubmit={handleSubmit(handleService)}>
+            <form onSubmit={handleSubmit(handleCategory)}>
               <div className="grid gap-4 mb-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label
@@ -144,7 +127,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                   />
                   {errors.name && (
                     <p className="text-sm text-red-400">
-                      Name of service is required
+                      Name of Category is required
                     </p>
                   )}
                 </div>
@@ -171,45 +154,11 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                   )}
                 </div>
 
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="icon"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Service Icon (
-                    <span className="text-sm text-gray-500 dark:text-gray-300">
-                      {" "}
-                      Icon should not be above 50kb
-                    </span>
-                    )
-                  </label>
-                  <input
-                    type="file"
-                    name="icon"
-                    id="icon"
-                    accept="image/*"
-                    {...register("ServiceIcon", )}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type icon of diagnosis"
-                    onChange={handleChange}
-                  />
-                  {errors.icon && (
-                    <p className="text-sm text-red-400">
-                      Service icon is required
-                    </p>
-                  )}
-                  {fileError ?? (
-                    <p className="text-sm text-red-400">
-                      {" "}
-                      File should not be above 50kb
-                    </p>
-                  )}
-                </div>
+                  
               </div>
 
               <button
                 type="submit"
-                disabled={fileError}
                 className="inline-flex items-center text-gray-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 <svg
@@ -224,7 +173,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Service
+                Update Category
               </button>
             </form>
           </div>
@@ -234,4 +183,4 @@ const EditServiceModal = ({ open, handleClose, service }) => {
   );
 };
 
-export default EditServiceModal;
+export default EditCategoryModal;

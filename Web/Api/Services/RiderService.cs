@@ -2,6 +2,8 @@
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using CloudinaryDotNet;
 using FuzzySharp;
@@ -102,29 +104,33 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString)
+        public async Task<PagedList<Rider>> getAllAsync(SearchPaging props)
         {
             try
             {
-                var skip = (pageNumber - 1) * pageSize;
-                if (searchString == "")
+                IQueryable<Rider> ridersList = Enumerable.Empty<Rider>().AsQueryable();
+                if (props.SearchString is null)
                 {
-                    var riders1 = await _dbContext.Riders.Skip(skip).Take(pageSize)
+                    var ridersLs = await _dbContext.Riders
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
                         .ToListAsync();
-                    var getRiderDTO1 = _mapper.Map<List<GetRiderDTO>>(riders1);
-                    return getRiderDTO1;
+                    ridersList = ridersList.Concat(ridersLs);
+                    var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
+
+                    return result;
+                    
                 }
-                var riders = await _dbContext.Riders.Skip(skip).Take(pageSize)
+                var riders = await _dbContext.Riders
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
-                        .Where(r => r.SearchString!.ToLower().Contains(searchString.ToLower()))
+                        .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
                         .ToListAsync();
+                ridersList = ridersList.Concat(riders);
+                var response = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 
-                var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riders);
-                return getRiderDTO;
+                return response;
 
             }
             catch (Exception ex)
@@ -193,7 +199,8 @@ namespace Api.Services
 
         public async Task<object> getRiderStats()
         {
-            try{
+            try
+            {
                 var totalRiders = await totalNumberOfRiders();
                 var totalActiveRiders = await totalNumberOfActiveRiders();
                 var totalNonActiveRiders = await totalNumberOfNonActiveRiders();

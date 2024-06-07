@@ -1,10 +1,13 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface ICategory
     {
-        public Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber, int pageSize, string searchString);
+        public Task<PagedList<Category>> allAsync(SearchPaging props);
         public Task<IEnumerable<CategoryDTOLite>> allCategoryLiteAsync();
         public Task<CategoryDTO> getAsync(int id);
         public Task<IEnumerable<ProductDTO>> categoryProducts(int id);

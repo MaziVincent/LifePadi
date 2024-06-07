@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -9,10 +11,12 @@ namespace Api.Controllers
     public class RiderController : ControllerBase
     {
         private readonly IRider? _irider;
+        private readonly IMapper _mapper;
 
-        public RiderController(IRider irider)
+        public RiderController(IRider irider , IMapper mapper)
         {
             _irider = irider;
+            _mapper = mapper;
         }
 
         [HttpPut("{id}/activate")]
@@ -73,12 +77,20 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var riders = await _irider!.getAllAsync(pageNumber, pageSize, searchString);
-                return Ok(riders);
+                var riders = await _irider!.getAllAsync(props);
+                var dataList = new {
+                    riders.TotalCount,
+                    riders.TotalPages,
+                    riders.CurrentPage,
+                    riders.PageSize
+                };
+            var result = _mapper.Map<List<RiderDTO>>(riders);
+
+                return Ok(new {result, dataList});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);

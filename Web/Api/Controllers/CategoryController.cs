@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -9,18 +11,27 @@ namespace Api.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategory _icategory;
-        public CategoryController(ICategory icategory) 
+        private readonly IMapper _mapper;
+        public CategoryController(ICategory icategory, IMapper mapper) 
         { 
             _icategory = icategory;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var categories = await _icategory.allAsync(pageNumber, pageSize, searchString);
-                return Ok(categories);
+                var categories = await _icategory.allAsync(props);
+                var result = _mapper.Map<List<CategoryDTO>>(categories);
+                var dataList = new {
+                    categories.PageSize,
+                    categories.TotalPages,
+                    categories.TotalCount,
+                    categories.CurrentPage
+                };
+                return Ok(new {result, dataList});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -40,7 +51,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/products")]
+        [HttpGet("products/{id}")]
         public async Task<IActionResult> getCategoryProducts(int id)
         {
             try
@@ -67,7 +78,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -81,7 +92,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -109,7 +120,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
         {
             try

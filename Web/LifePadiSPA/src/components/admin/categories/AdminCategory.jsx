@@ -1,284 +1,202 @@
-import ActionsMenu from "../subcomponents/ActionsMenu";
+import CreateCategoryModal from "./CreateCategoryModal";
+import EditCategoryModal from "./EditCategoryModal";
+import { useReducer, useState } from "react";
+import useFetch from "../../../hooks/useFetch";
+import { useQuery, useQueryClient } from "react-query";
+import useAuth from "../../../hooks/useAuth";
+import baseUrl from "../../../api/baseUrl";
+import toast, { Toaster } from "react-hot-toast";
+import { CircularProgress } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
+import DeleteDialogue from "../subcomponents/DeleteDialogue";
+import serviceIcon from "../../../assets/images/services.png";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "open":
+      return { ...state, open: !state.open };
+    case "edit":
+      return { ...state, edit: !state.edit };
+    case "activate":
+      return { ...state, activate: !state.activate };
+    case "delete":
+      return { ...state, delete: !state.delete };
+    case "category":
+      return { ...state, category: action.payload };
+    case "deleteId":
+      return { ...state, deleteId: action.payload };
+
+    default:
+      throw new Error();
+  }
+};
 
 const AdminCategory = () => {
-  return (
-    <div className="bg-gray-100">
-      <section className="bg-white dark:bg-gray-900 mb-5">
-        <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
-          <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white">
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl md:text-4xl font-extrabold">73M+</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                developers
-              </dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                contributors
-              </dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl md:text-4xl font-extrabold">4M+</dt>
-              <dd className="font-light text-gray-500 dark:text-gray-400">
-                organizations
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-      <section>
-        <h2 className="text-center ">Categories </h2>
-      </section>
+  const fetch = useFetch();
+  const { auth } = useAuth();
+  const url = `${baseUrl}category`;
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  // const activate = useActivate();
+  const queryClient = useQueryClient();
 
-      <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-        <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
-          <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-              <div className="w-full md:w-1/2">
-                <form className="flex items-center">
-                  <label
-                    htmlFor="simple-search"
-                    className="sr-only"
-                  >
-                    Search
-                  </label>
-                  <div className="relative w-full">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <svg
-                        aria-hidden="true"
-                        className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <input
-                      type="text"
-                      id="simple-search"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                      placeholder="Search"
-                      required=""
-                    />
-                  </div>
-                </form>
-              </div>
-              <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                <button
-                  type="button"
-                  className="flex items-center justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+  const [state, dispatch] = useReducer(reducer, {
+    open: false,
+    edit: false,
+    activate: false,
+    delete: false,
+    category: {},
+    deleteId: 0,
+  });
+
+  const getCategories = async (url) => {
+    const result = await fetch(url, auth.accessToken);
+
+    return result.data;
+  };
+
+  const { data, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["categories", page, search],
+    queryFn: () =>
+      getCategories(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+  });
+
+  console.log(data);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    //console.log("page " + value);
+  };
+
+  return (
+    <div className="bg-gray-100 dark:bg-gray-900">
+    <Toaster />
+    <section className="bg-white dark:bg-gray-900 mb-5">
+      <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
+        <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
+          <div className="flex flex-col items-center justify-center">
+            <dt className="mb-2 text-3xl md:text-4xl font-extrabold">
+              {data?.dataList.TotalCount || 0}
+            </dt>
+            <dd className="font-light text-gray-500 dark:text-gray-400">
+              Categories
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section className="bg-white dark:bg-gray-900">
+      <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
+        Categories{" "}
+      </h2>
+    </section>
+
+    <CreateCategoryModal
+      open={state.open}
+      handleClose={dispatch}
+    />
+    <EditCategoryModal
+      open={state.edit}
+      handleClose={dispatch}
+      category={state.category}
+    />
+    <DeleteDialogue
+      open={state.delete}
+      handleClose={dispatch}
+      deleteId={state.deleteId}
+      url={url}
+    />
+
+    <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+      <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
+        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            <div className="w-full md:w-1/2">
+              <form className="flex items-center">
+                <label
+                  htmlFor="simple-search"
+                  className="sr-only"
                 >
-                  <i className="line-icon-Add"></i>
-                  Add product
-                </button>
-                <div className="flex items-center space-x-3 w-full md:w-auto">
-                  <button
-                    id="actionsDropdownButton"
-                    data-dropdown-toggle="actionsDropdown"
-                    className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="button"
-                  >
+                  Search
+                </label>
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
-                      className="-ml-1 mr-1.5 w-5 h-5"
+                      aria-hidden="true"
+                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
                     >
                       <path
-                        clipRule="evenodd"
                         fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clipRule="evenodd"
                       />
                     </svg>
-                    Actions
-                  </button>
-                  <div
-                    id="actionsDropdown"
-                    className="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                  >
-                    <ul
-                      className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                      aria-labelledby="actionsDropdownButton"
-                    >
-                      <li>
-                        <a
-                          href="#"
-                          className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Mass Edit
-                        </a>
-                      </li>
-                    </ul>
-                    <div className="py-1">
-                      <a
-                        href="#"
-                        className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >
-                        Delete all
-                      </a>
-                    </div>
                   </div>
-                  <button
-                    id="filterDropdownButton"
-                    data-dropdown-toggle="filterDropdown"
-                    className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      className="h-4 w-4 mr-2 text-gray-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Filter
-                    <svg
-                      className="-mr-1 ml-1.5 w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        clipRule="evenodd"
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      />
-                    </svg>
-                  </button>
-                  <div
-                    id="filterDropdown"
-                    className="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
-                  >
-                    <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                      Choose brand
-                    </h6>
-                    <ul
-                      className="space-y-2 text-sm"
-                      aria-labelledby="filterDropdownButton"
-                    >
-                      <li className="flex items-center">
-                        <input
-                          id="apple"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="apple"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                        >
-                          Apple (56)
-                        </label>
-                      </li>
-                      <li className="flex items-center">
-                        <input
-                          id="fitbit"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="fitbit"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                        >
-                          Microsoft (16)
-                        </label>
-                      </li>
-                      <li className="flex items-center">
-                        <input
-                          id="razor"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="razor"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                        >
-                          Razor (49)
-                        </label>
-                      </li>
-                      <li className="flex items-center">
-                        <input
-                          id="nikon"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="nikon"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                        >
-                          Nikon (12)
-                        </label>
-                      </li>
-                      <li className="flex items-center">
-                        <input
-                          id="benq"
-                          type="checkbox"
-                          value=""
-                          className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor="benq"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                        >
-                          BenQ (74)
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
+                  <input
+                    type="text"
+                    id="simple-search"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Search"
+                    required=""
+                  />
                 </div>
-              </div>
+              </form>
             </div>
-            <div className="overflow-x-auto">
+            <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => dispatch({ type: "open" })}
+                className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+              >
+                <i className="line-icon-Add font-bold text-lg"></i>
+                Add Category
+              </button>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            {isLoading && (
+              <p className="flex items-center justify-center">
+                {" "}
+                <CircularProgress />
+              </p>
+            )}
+            {isError && (
+              <p className="flex items-center justify-center">
+                {" "}
+                <Alert severity="error">Error Fetching Data..</Alert>
+              </p>
+            )}
+            {isSuccess && (
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th
                       scope="col"
                       className="px-4 py-3"
                     >
-                      Product name
+                      Category Name
                     </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Category
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Brand
-                    </th>
+
                     <th
                       scope="col"
                       className="px-4 py-3"
                     >
                       Description
                     </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Price
-                    </th>
+
                     <th
                       scope="col"
                       className="px-4 py-3"
@@ -288,159 +206,97 @@ const AdminCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b dark:border-gray-700">
-                    <th
-                      scope="row"
-                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                   {data?.result.map((cat) => (
+                    <tr
+                      key={cat.Id}
+                      onClick={()=>navigate(`/admin/category/${cat.Id}`)}
+                      className="border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
                     >
-                      Apple iMac 27&#34;
-                    </th>
-                    <td className="px-4 py-3">PC</td>
-                    <td className="px-4 py-3">Apple</td>
-                    <td className="px-4 py-3">300</td>
-                    <td className="px-4 py-3">$2999</td>
-                    <td className="px-4 py-3 flex items-center justify-end">
-                      <ActionsMenu />
-                    </td>
-                  </tr>
-                  <tr className="border-b dark:border-gray-700">
-                    <th
-                      scope="row"
-                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      Apple iMac 20&#34;
-                    </th>
-                    <td className="px-4 py-3">PC</td>
-                    <td className="px-4 py-3">Apple</td>
-                    <td className="px-4 py-3">200</td>
-                    <td className="px-4 py-3">$1499</td>
-                    <td className="px-4 py-3 flex items-center justify-end">
-                      <ActionsMenu />
-                    </td>
-                  </tr>
+                      <th
+                        scope="row"
+                        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {cat.Name}
+                      </th>
+                      
+                      <td className="px-4 py-3">{cat.Description}</td>
 
-                  <tr className="border-b dark:border-gray-700">
-                    <th
-                      scope="row"
-                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      Monitor BenQ EX2710Q
-                    </th>
-                    <td className="px-4 py-3">TV/Monitor</td>
-                    <td className="px-4 py-3">BenQ</td>
-                    <td className="px-4 py-3">354</td>
-                    <td className="px-4 py-3">$499</td>
-                    <td className="px-4 py-3 flex items-center justify-end">
-                      <ActionsMenu />
-                    </td>
-                  </tr>
+                      <td className="px-4 py-3 flex items-center justify-end">
+                        <div className="flex justify-end gap-4">
+                          <button
+                            x-data="{ tooltip: 'Delete' }"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              dispatch({type:"delete"});
+                              dispatch({type:"deleteId", payload:cat.Id})
+                              //setDeleteId(ap._id);
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="h-6 w-6 text-red-500"
+                              x-tooltip="tooltip"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            x-data="{ tooltip: 'Edite' }"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              dispatch({ type: "edit" });
+                              dispatch({type:"category", payload:cat})
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="h-6 w-6"
+                              x-tooltip="tooltip"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))} 
                 </tbody>
               </table>
-            </div>
-            <nav
-              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-              aria-label="Table navigation"
-            >
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                Showing
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  1-10
-                </span>
-                of
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  1000
-                </span>
-              </span>
-              <ul className="inline-flex items-stretch -space-x-px">
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    <span className="sr-only">Previous</span>
-                    <svg
-                      className="w-5 h-5"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    1
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    2
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    aria-current="page"
-                    className="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                  >
-                    3
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    ...
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    100
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    <span className="sr-only">Next</span>
-                    <svg
-                      className="w-5 h-5"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            )}
           </div>
+          <nav
+            className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+            aria-label="Table navigation"
+          >
+            <Pagination
+              count={data?.dataList.TotalPages}
+              page={page}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+              className="dark:text-gray-50 dark:bg-gray-200"
+            />
+          </nav>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+  </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import CreateService from "./CreateServiceModal";
-import EditService from "./EditServiceModal";
+import EditServiceModal from "./EditServiceModal";
 import { useReducer, useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 import { useQuery, useQueryClient } from "react-query";
@@ -102,7 +102,7 @@ const AdminService = () => {
         open={state.open}
         handleClose={dispatch}
       />
-      <EditService
+      <EditServiceModal
         open={state.edit}
         handleClose={dispatch}
         service={state.service}
@@ -215,7 +215,8 @@ const AdminService = () => {
                     {data?.result.map((service) => (
                       <tr
                         key={service.Id}
-                        className="border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                        onClick={()=>navigate(`/admin/service/${service.Id}`)}
+                        className="border-b cursor-pointer dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
                       >
                         <th
                           scope="row"

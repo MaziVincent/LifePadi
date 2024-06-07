@@ -1,10 +1,13 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface IRider
     {
-        public Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString);
+        public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
         public Task<GetRiderDTO> getAsync(int id);
         public Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id);
         public Task<string> deleteAsync(int id);

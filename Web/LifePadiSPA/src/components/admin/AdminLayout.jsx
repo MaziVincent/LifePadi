@@ -20,7 +20,7 @@ const AdminLayout = () => {
           setAside={setAside}
         />
 
-        <div className={`p-2 ml-1 md:ml-20 lg:ml-44 pt-20 pb-20`}>
+        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-44 py-20`}>
           <Outlet />
         </div>
         <AdminFooter />
