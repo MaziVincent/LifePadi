@@ -11,11 +11,16 @@ namespace Api.Interfaces
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Vendor>> allAsync(SearchPaging props);
+=======
+        public Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<IEnumerable<VendorDtoLite>> vendorsOnly();
         public Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id);
         public Task<VendorDto> uploadVendorImg(int id, IFormFile image);
         public Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString);
+<<<<<<< HEAD
         public Task<string> deleteAsync(int id);
         public Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor);
         public Task<AuthVendorDtoLite> updateAsync(AuthVendorDto vendor, int id);
@@ -46,6 +51,13 @@ namespace Api.Interfaces
 <<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
+=======
+        public Task<string> deleteAsync(int id);
+        public Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor);
+        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id);
+        public Task<AuthVendorDtoLite> getAsync(int id);
+        public Task<VendorDtoLite> getVendorByTagName(string tag);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> totalNumberOfVendors();
 >>>>>>> 98415b4 (done with dashboard)
     }

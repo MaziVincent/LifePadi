@@ -112,7 +112,7 @@ namespace Api.Services
             _mapper = mapper;
         }
 
-        public async Task<AuthUserDTO> createAsync(CustomerDTO customer)
+        public async Task<AuthUserDto> createAsync(CustomerDto customer)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Api.Services
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 await _dbContext.Customers.AddAsync(newCustomer);
                 await _dbContext.SaveChangesAsync();
-                var authUserDTO = _mapper.Map<AuthUserDTO>(newCustomer);
+                var authUserDTO = _mapper.Map<AuthUserDto>(newCustomer);
                 return authUserDTO;
             }catch (Exception ex)
             {
@@ -268,41 +268,46 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<CustomerDTOLite>> getAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<CustomerDtoLite>> getAllAsync(int pageNumber, int pageSize)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var customers = await _dbContext.Customers.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt).ToListAsync();
-                var customerDTOLite = _mapper.Map<List<CustomerDTOLite>>(customers);
-                return customerDTOLite;
+                var CustomerDtoLite = _mapper.Map<List<CustomerDtoLite>>(customers);
+                return CustomerDtoLite;
             }catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<CustomerDTO> getAsync(int id)
+        public async Task<CustomerDto> getAsync(int id)
         {
             try
             {
                 var customer = await _dbContext.Customers.Include(c => c.Addresses).FirstOrDefaultAsync(c => c.Id == id);
                 if (customer == null) return null!;
-                var customerDTO = _mapper.Map<CustomerDTO>(customer);
-                return customerDTO;
+                var CustomerDto = _mapper.Map<CustomerDto>(customer);
+                return CustomerDto;
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<OrderDTOLite>> getCustomerOders(int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IEnumerable<OrderDtoLite>> getCustomerOders(int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var customer = await _dbContext.Customers.Include(c => c.Orders).FirstOrDefaultAsync(c => c.Id == id);
                 if (customer == null) return null!;
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var orders = _mapper.Map<List<OrderDtoLite>>(customer.Orders);
                 return orders;
@@ -343,6 +348,9 @@ namespace Api.Services
         public async Task<IEnumerable<CustomerDtoLite>> search(string searchString)
 =======
                 var orders = _mapper.Map<List<OrderDTOLite>>(customer.Orders);
+=======
+                var orders = _mapper.Map<List<OrderDtoLite>>(customer.Orders);
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 return orders;
             }catch (Exception ex)
             {
@@ -362,8 +370,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<CustomerDTOLite>> search(string searchString)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IEnumerable<CustomerDtoLite>> search(string searchString)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -389,6 +401,7 @@ namespace Api.Services
                     }
                 }
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var CustomerDtoLite = _mapper.Map<List<CustomerDtoLite>>(customerList);
                 return CustomerDtoLite;
             }
@@ -403,6 +416,10 @@ namespace Api.Services
 =======
                 var customerDTOLite = _mapper.Map<List<CustomerDTOLite>>(customerList);
                 return customerDTOLite;
+=======
+                var CustomerDtoLite = _mapper.Map<List<CustomerDtoLite>>(customerList);
+                return CustomerDtoLite;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -410,8 +427,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<CustomerDTOLite> updateAsync(CustomerDTO customer, int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -437,6 +458,7 @@ namespace Api.Services
                 initialCustomer.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Customers.Attach(initialCustomer);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var CustomerDtoLite = _mapper.Map<CustomerDtoLite>(initialCustomer);
                 var Type = _oService.Strip(user!.GetType().ToString());
@@ -516,6 +538,10 @@ namespace Api.Services
 =======
                 var customerDTOLite = _mapper.Map<CustomerDTOLite>(initialCustomer);
                 return customerDTOLite;
+=======
+                var CustomerDtoLite = _mapper.Map<CustomerDtoLite>(initialCustomer);
+                return CustomerDtoLite;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }catch (Exception ex)
             {
                 throw new Exception(ex.Message);

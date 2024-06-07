@@ -6,6 +6,7 @@ namespace Api.Interfaces
     public interface ITransaction
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<IEnumerable<TransactionDto>> AllAsync();
         public Task<TransactionDto> GetAsync(int id);
         public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id);
@@ -39,6 +40,16 @@ namespace Api.Interfaces
 <<<<<<< HEAD
 >>>>>>> 7f9ad44 (done with payment and voucher)
 =======
+=======
+        public Task<IEnumerable<TransactionDto>> allAsync();
+        public Task<TransactionDto> getAsync(int id);
+        public Task<TransactionDto> updateAsync(TransactionDto transaction, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<TransactionDto> createAsync(TransactionDto transaction);
+        public Task<TransactionDto> getByPaymentId(BigInteger transactionId);
+        public Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment);
+        public Task<PaymentDetailsDto> confirmPayment(string status, string tx_ref, string transaction_id);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> totalNumberOfTransactions();
         public Task<int> totalNumberOfSuccessfulTransactions();
         public Task<int> totalNumberOfFailedTransactions();

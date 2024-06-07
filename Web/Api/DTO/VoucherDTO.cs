@@ -57,10 +57,10 @@ namespace Api.DTO
         public DateTime? EndDate { get; set; }
         public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
-        public List<TransactionDTO>? Transactions { get; set; }
+        public List<TransactionDto>? Transactions { get; set; }
     }
 
-    public class VoucherDTOLite
+    public class VoucherDtoLite
     {
         public int Id { get; set; }
         public string? Name { get; set; }

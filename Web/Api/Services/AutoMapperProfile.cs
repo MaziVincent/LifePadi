@@ -160,65 +160,66 @@ namespace Api.Services
 =======
         public AutoMapperProfile() {
             //user
-            CreateMap<UserDTOLite, User>();
-            CreateMap<User, UserDTOLite>();
-            CreateMap<UserDTO, Admin>();
-            CreateMap<Admin, UserDTO>();
-            CreateMap<Admin, AuthUserDTO>();
-            CreateMap<AuthUserDTO, User>();
-            CreateMap<GenTokenDTO, AuthUserDTO>();
+            CreateMap<UserDtoLite, User>();
+            CreateMap<User, UserDtoLite>();
+            CreateMap<UserDto, Admin>();
+            CreateMap<Admin, UserDto>();
+            CreateMap<Admin, AuthUserDto>();
+            CreateMap<AuthUserDto, User>();
+            CreateMap<GenTokenDto, AuthUserDto>();
 
             //Customer
-            CreateMap<CustomerDTO, Customer>();
-            CreateMap<Customer, CustomerDTOLite>();
-            CreateMap<Customer, AuthUserDTO>();
+            CreateMap<CustomerDto, Customer>();
+            CreateMap<Customer, CustomerDtoLite>();
+            CreateMap<Customer, AuthUserDto>();
 
             //Rider
-            CreateMap<RiderDTO, Rider>();
-            CreateMap<Rider, GetRiderDTO>();
-            CreateMap<Rider, AuthRiderDTO>();
-            CreateMap<CreateRiderDTO, Rider>();
-            CreateMap<GetRiderDTO, Rider>();
-            CreateMap<Rider, RiderDTOLite>();
+            CreateMap<RiderDto, Rider>();
+            CreateMap<Rider, GetRiderDto>();
+            CreateMap<Rider, AuthRiderDto>();
+            CreateMap<CreateRiderDto, Rider>();
+            CreateMap<GetRiderDto, Rider>();
+            CreateMap<Rider, RiderDtoLite>();
 
 
             //Vendor
-            CreateMap<VendorDTO, Vendor>();
-            CreateMap<Vendor, VendorDTOLite>();
-            CreateMap<AuthVendorDTO, Vendor>();
-            CreateMap<Vendor, AuthUserDTO>();
-            CreateMap<Vendor, AuthVendorDTOLite>();
-            CreateMap<Vendor, VendorDTO>();
+            CreateMap<VendorDto, Vendor>();
+            CreateMap<Vendor, VendorDtoLite>();
+            CreateMap<AuthVendorDto, Vendor>();
+            CreateMap<Vendor, AuthUserDto>();
+            CreateMap<Vendor, AuthVendorDtoLite>();
+            CreateMap<Vendor, VendorDto>();
 
             //Order
-            CreateMap<OrderDTO, Order>();
-            CreateMap<Order, OrderDTOLite>();
-            CreateMap<Order, OrderDTO>();
+            CreateMap<OrderDto, Order>();
+            CreateMap<Order, OrderDtoLite>();
+            CreateMap<Order, OrderDto>();
 
             //Product
-            CreateMap<ProductDTO, Product>();
-            CreateMap<Product, ProductDTOLite>();
-            CreateMap<Product, ProductDTO>();
-            CreateMap<CreateProductDTO, Product>();
+            CreateMap<ProductDto, Product>();
+            CreateMap<Product, ProductDtoLite>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<CreateProductDto, Product>();
 
             //Service
-            CreateMap<ServiceDTO, Service>();
-            CreateMap<Service, ServiceDTO>();
-            CreateMap<Service, ServiceDTOLite>();
+            CreateMap<ServiceDto, Service>();
+            CreateMap<Service, ServiceDto>();
+            CreateMap<Service, ServiceDtoLite>();
 
             //Category
-            CreateMap<CategoryDTO, Category>();
-            CreateMap<Category, CategoryDTO>();
-            CreateMap<Category, CategoryDTOLite>();
-            CreateMap<CategoryDTOLite, Category>();
+            CreateMap<CategoryDto, Category>();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryDtoLite>();
+            CreateMap<CategoryDtoLite, Category>();
 
             //OrderItem
-            CreateMap<OrderItemDTO, OrderItem>();
-            CreateMap<OrderItem, OrderItemDTOLite>();
-            CreateMap<OrderItem, OrderItemDTO>();
-            CreateMap<OrderItem, OrderItemDTOLite>();
+            CreateMap<OrderItemDto, OrderItem>();
+            CreateMap<OrderItem, OrderItemDtoLite>();
+            CreateMap<OrderItem, OrderItemDto>();
+            CreateMap<OrderItem, OrderItemDtoLite>();
 
             //Transaction
+<<<<<<< HEAD
             CreateMap<TransactionDTO, Transaction>();
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -227,6 +228,10 @@ namespace Api.Services
 =======
             CreateMap<Transaction, TransactionDTO>();
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            CreateMap<TransactionDto, Transaction>();
+            CreateMap<Transaction, TransactionDto>();
+>>>>>>> 836ec36 (changed all DTO to Dto)
 
             //Adress
             CreateMap<Address, AddressDTOLite>();
@@ -237,6 +242,7 @@ namespace Api.Services
 =======
 
             //Delivry
+<<<<<<< HEAD
             CreateMap<Delivery, DeliveryDTO>();
             CreateMap<Delivery, DeliveryDTOLite>();
             CreateMap<DeliveryDTO, Delivery>();
@@ -253,6 +259,17 @@ namespace Api.Services
             CreateMap<Voucher, VoucherDTO>();
             CreateMap<VoucherDTO, Voucher>();
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+            CreateMap<Delivery, DeliveryDto>();
+            CreateMap<Delivery, DeliveryDtoLite>();
+            CreateMap<DeliveryDto, Delivery>();
+            CreateMap<DeliveryDtoLite, Delivery>();
+            CreateMap<Delivery, CreateDeliveryDto>();
+
+            //Voucher
+            CreateMap<Voucher, VoucherDto>();
+            CreateMap<VoucherDto, Voucher>();
+>>>>>>> 836ec36 (changed all DTO to Dto)
         }
     }
 }

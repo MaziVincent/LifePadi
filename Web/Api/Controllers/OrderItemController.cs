@@ -42,10 +42,14 @@ namespace Api.Controllers
 
         [HttpPost("create")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create(OrderItemDto orderItem)
 =======
         public async Task<IActionResult> create([FromForm] OrderItemDTO orderItem)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public async Task<IActionResult> create([FromForm] OrderItemDto orderItem)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -98,8 +102,12 @@ namespace Api.Controllers
         public async Task<IActionResult> update(int id, [FromForm] OrderItemDto orderItem)
 =======
         [HttpPut("{id}/update")]
+<<<<<<< HEAD
         public async Task<IActionResult> update(int id, [FromForm] OrderItemDTO orderItem)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public async Task<IActionResult> update(int id, [FromForm] OrderItemDto orderItem)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

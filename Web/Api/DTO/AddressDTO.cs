@@ -60,8 +60,13 @@ namespace Api.DTO
         public string? PostalCode { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
+<<<<<<< HEAD
         public int CustomerId { get; set; }
         public CustomerDTOLite? Customer { get; set; }
+=======
+        public int UserId { get; set; }
+        public UserDtoLite? User { get; set; }
+>>>>>>> 836ec36 (changed all DTO to Dto)
     }
 
     public class AddressDTOLite

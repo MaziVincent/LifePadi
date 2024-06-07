@@ -11,6 +11,9 @@ namespace Api.Interfaces
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
         public Task<GetRiderDto> getAsync(int id);
         public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
@@ -44,6 +47,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString);
         public Task<GetRiderDTO> getAsync(int id);
         public Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id);
+<<<<<<< HEAD
 >>>>>>> 28d4101 (finished with rider and order)
         public Task<string> deleteAsync(int id);
         public Task<AuthRiderDTO> createAsync(CreateRiderDTO rider);
@@ -62,6 +66,23 @@ namespace Api.Interfaces
         public Task<IEnumerable<OrderDTO>> getRiderOrders(int id);
         public Task<IEnumerable<DeliveryDTO>> getRiderDeliveries(int id);
         public Task<GetRiderDTO> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
+=======
+=======
+        public Task<IEnumerable<GetRiderDto>> getAllAsync(int pageNumber, int pageSize, string searchString);
+        public Task<GetRiderDto> getAsync(int id);
+        public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
+>>>>>>> b8c66da (changed all DTO to Dto)
+        public Task<string> deleteAsync(int id);
+        public Task<AuthRiderDto> createAsync(CreateRiderDto rider);
+        public Task<IEnumerable<OrderDto>> orderLists(int id);
+        public Task<IEnumerable<GetRiderDto>> searchAsync(string searchString);
+        public Task<IEnumerable<GetRiderDto>> nonActiveRiders();
+        public Task<IEnumerable<DeliveryDtoLite>> successfulDeliveries(int riderId);
+        public Task<IEnumerable<DeliveryDtoLite>> unsuccessfulDeliveries(int riderId);
+        public Task<IEnumerable<OrderDto>> getRiderOrders(int id);
+        public Task<IEnumerable<DeliveryDto>> getRiderDeliveries(int id);
+        public Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<string> activateRider(int id);
         public Task<string> verifyRider(int id);
         public Task<string> deactivateRider(int id);

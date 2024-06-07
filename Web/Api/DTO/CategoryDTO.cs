@@ -3,6 +3,7 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class CategoryDto
     {
         public int? Id { get; set; }
@@ -30,16 +31,19 @@ namespace Api.DTO
         public IFormFile? Icon { get; set; }
 =======
     public class CategoryDTO
+=======
+    public class CategoryDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public List<ProductDTOLite>? Products { get; set; }
+        public List<ProductDtoLite>? Products { get; set; }
     }
 
-    public class CategoryDTOLite
+    public class CategoryDtoLite
     {
         public int? Id { get; set; }
         public string? Name { get; set; }

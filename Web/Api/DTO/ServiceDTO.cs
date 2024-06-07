@@ -3,10 +3,14 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class ServiceDto
 =======
     public class ServiceDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class ServiceDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -17,6 +21,7 @@ namespace Api.DTO
 <<<<<<< HEAD
         public IFormFile? ServiceIcon { get; set; }
         public List<VendorDtoLite>? Vendors { get; set; }
+<<<<<<< HEAD
 =======
         public IFormFile? ServiceIcon { get; set; }
 <<<<<<< HEAD
@@ -25,10 +30,13 @@ namespace Api.DTO
 =======
         public List<VendorDTOLite>? Vendors { get; set; }
 >>>>>>> 58020e7 (removed service from product)
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public bool? IsActive { get; set; }
     }
 
     public class ServiceDtoLite
+<<<<<<< HEAD
 =======
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -41,6 +49,8 @@ namespace Api.DTO
 
     public class ServiceDTOLite
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? Name { get; set; }

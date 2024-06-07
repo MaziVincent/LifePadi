@@ -3,10 +3,14 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class OrderItemDto
 =======
     public class OrderItemDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class OrderItemDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
@@ -36,8 +40,9 @@ namespace Api.DTO
         public Double TotalAmount { get; set; }
 >>>>>>> 4641615 (finished with delivery service and controller)
         public int ProductId { get; set; }
-        public ProductDTOLite? Product { get; set; }
+        public ProductDtoLite? Product { get; set; }
         public int OrderId { get; set; }
+<<<<<<< HEAD
         public OrderDTOLite? Order { get; set; }
 <<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
@@ -49,6 +54,12 @@ namespace Api.DTO
 
     public class OrderItemDTOLite
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public OrderDtoLite? Order { get; set; }
+    }
+
+    public class OrderItemDtoLite
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public int Quantity { get; set; }

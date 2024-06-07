@@ -3,6 +3,7 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class PaymentDetailsDto
     {
         public DataDto? Data { get; set; }
@@ -12,13 +13,20 @@ namespace Api.DTO
     public class DataDto
 =======
     public class PaymentDetailsDTO
+=======
+    public class PaymentDetailsDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
-        public DataDTO? Data { get; set; }
+        public DataDto? Data { get; set; }
         public string? Status { get; set; }
     }
 
+<<<<<<< HEAD
     public class DataDTO
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+    public class DataDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public Double Amount { get; set; }

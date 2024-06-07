@@ -11,14 +11,24 @@ namespace Api.Interfaces
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Order>> allAsync(SearchPaging props);
+=======
+        public Task<DataTotalNumber> allAsync();
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<IEnumerable<OrderDtoLite>> allOrderLite();
         public Task<OrderDto> createAsync(OrderDto order);
         public Task<OrderDto> updateAsync(OrderDto order, int id);
         public Task<string> deleteAsync(int id);
+<<<<<<< HEAD
         public Task<SingleOrderDto> getAsync(int id);
         public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
         public Task<PagedList<SingleOrderDto>> customerOrders(int id, SearchPaging props);
+=======
+        public Task<OrderDto> getAsync(int id);
+        public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
+        public Task<IEnumerable<OrderDto>> customerOrders(int customerId);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         //public Task<IEnumerable<OrderDto>> riderOrders(int riderId);
         public Task<OrderDto> updateOrderStatus(int id, string status);
         public Task<int> totalNumberOfOrders();

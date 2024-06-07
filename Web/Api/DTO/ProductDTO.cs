@@ -3,10 +3,14 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class ProductDto
 =======
     public class ProductDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class ProductDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -68,14 +72,14 @@ namespace Api.DTO
         public Service? Service { get; set; }
 =======
         public int CategoryId { get; set; }
-        public CategoryDTOLite? Category { get; set; }
+        public CategoryDtoLite? Category { get; set; }
         public int VendorId { get; set; }
-        public VendorDTOLite? Vendor { get; set; }
+        public VendorDtoLite? Vendor { get; set; }
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
     }
 
-    public class ProductDTOLite
+    public class ProductDtoLite
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -93,7 +97,7 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
     }
 
-    public class CreateProductDTO
+    public class CreateProductDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

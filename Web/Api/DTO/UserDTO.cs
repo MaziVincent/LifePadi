@@ -3,6 +3,9 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
     public class UserDto
     {
         public int? Id { get; set; }
@@ -34,6 +37,7 @@ namespace Api.DTO
         public List<AddressDtoLite>? Addresses { get; set; }
     }
 
+<<<<<<< HEAD
     public class UserDtoLiteMessage
 =======
         public string? ContactAdress { get; set; }
@@ -60,6 +64,8 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
     }
 
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
     public class UserDtoLite
     {
         public int Id { get; set; }
@@ -83,10 +89,14 @@ namespace Api.DTO
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class AuthUserDto
 =======
     public class AuthUserDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class AuthUserDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -108,6 +118,7 @@ namespace Api.DTO
     }
 
     public class AuthUserDtoLite
+<<<<<<< HEAD
 =======
         public string? ContactAdress { get; set; }
 =======
@@ -126,6 +137,8 @@ namespace Api.DTO
 
     public class AuthUserDTOLite
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public string? Email { get; set; }
         public string? Password { get; set; }

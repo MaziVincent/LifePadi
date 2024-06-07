@@ -5,10 +5,14 @@ namespace Api.Interfaces
     public interface IVoucher
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<IEnumerable<VoucherDto>> allAsync();
         public Task<IEnumerable<VoucherDto>> allActiveAsync();
         public Task<VoucherDto> getAsync(int id);
         public Task<VoucherDto> createAsync(VoucherDto voucher);
+<<<<<<< HEAD
         public Task<bool> isActive(int id);
         public Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers();
         public Task<IEnumerable<VoucherDto>> searchWithName(string name);
@@ -25,12 +29,23 @@ namespace Api.Interfaces
         public Task<VoucherDTO> searchWithCode(string voucherCode);
         public Task<IEnumerable<VoucherDTO>> searchWithType(string voucherType);
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public Task<bool> isActive(int id);
+        public Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers();
+        public Task<IEnumerable<VoucherDto>> searchWithName(string name);
+        public Task<VoucherDto> searchWithCode(string voucherCode);
+        public Task<IEnumerable<VoucherDto>> searchWithType(string voucherType);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> getNumberAvailableVoucher(int id);
         public Task<bool> checkIfExpired(int id);
         public Task<string> deactivateVoucher(int id);
         public Task<string> activateVoucher(int id);
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<object> deleteAsync(int id);
+=======
+        public Task<string> deleteAsync(int id);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<VoucherDto> updateAsync(VoucherDto voucher, int id);
         public Task<string> deactivateAllExpiredVouchers();
         public Task<string> expireALlPastDueDate();

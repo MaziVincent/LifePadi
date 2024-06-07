@@ -11,6 +11,7 @@ namespace Api.Interfaces
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<AuthUserDto> createAsync(CustomerDto customer);
         public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
         public Task<Customer> getByEmail(string email);
@@ -49,6 +50,16 @@ namespace Api.Interfaces
 <<<<<<< HEAD
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
+=======
+        public Task<AuthUserDto> createAsync(CustomerDto customer);
+        public Task<IEnumerable<CustomerDtoLite>> getAllAsync(int pageNumber, int pageSize);
+        public Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id);
+        public Task<string> deleteAsync(int id);
+        public Task<CustomerDto> getAsync(int id);
+        public Task<IEnumerable<CustomerDtoLite>> search(string searchString);
+        public Task<IEnumerable<AddressDtoLite>> customerAddresses(int id);
+        public Task<IEnumerable<OrderDtoLite>> getCustomerOders(int id);
+>>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> numberOfCustomers();
 >>>>>>> 98415b4 (done with dashboard)
     }

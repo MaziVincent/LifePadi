@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class CustomerDto
     {
         public int? Id { get; set; }
@@ -36,6 +37,9 @@ namespace Api.DTO
         public int? Id { get; set; }
 =======
     public class CustomerDTO
+=======
+    public class CustomerDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int? Id { get; set; }
         [Required]
@@ -56,11 +60,16 @@ namespace Api.DTO
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }
+<<<<<<< HEAD
         public List<AddressDTOLite>? Addresses { get; set; }
         public List<OrderDTOLite>? Orders { get; set; }
+=======
+        public List<AddressDtoLite>? Addresses { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
+>>>>>>> 836ec36 (changed all DTO to Dto)
     }
 
-    public class CustomerDTOLite
+    public class CustomerDtoLite
     {
 <<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
@@ -90,8 +99,12 @@ namespace Api.DTO
         public DateTime DOB { get; set; }
     }
 
+<<<<<<< HEAD
     public class AuthCustomerDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class AuthCustomerDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }

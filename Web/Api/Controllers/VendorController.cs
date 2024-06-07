@@ -95,10 +95,14 @@ namespace Api.Controllers
 
         [HttpPost("create")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] AuthVendorDto vendor)
 =======
         public async Task<IActionResult> create([FromForm] AuthVendorDTO vendor)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> create([FromForm] AuthVendorDto vendor)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -122,8 +126,12 @@ namespace Api.Controllers
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDto vendor)
 =======
         [HttpPut("{id}/update")]
+<<<<<<< HEAD
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDTOLite vendor)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDtoLite vendor)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

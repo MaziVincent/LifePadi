@@ -4,10 +4,14 @@ using System.Numerics;
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class TransactionDto
 =======
     public class TransactionDTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class TransactionDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -177,10 +181,10 @@ namespace Api.DTO
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }
-        public OrderDTOLite? Order { get; set; }
+        public OrderDtoLite? Order { get; set; }
     }
 
-    public class TransactionDTOLite
+    public class TransactionDtoLite
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -195,7 +199,7 @@ namespace Api.DTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
 
-    public class InitiatePaymentDTO
+    public class InitiatePaymentDto
     {
         public Double Amount { get; set; }
         public Double? TotalAmount { get; set; }
@@ -205,7 +209,7 @@ namespace Api.DTO
 
     }
 
-    public class PaymentDTO
+    public class PaymentDto
     {
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
@@ -213,9 +217,9 @@ namespace Api.DTO
         public Double TotalAmount { get; set; }
         public string? Status { get; set; }
         public int? VoucherId { get; set; }
-        public VoucherDTO? Voucher { get; set; }
+        public VoucherDto? Voucher { get; set; }
         public int OrderId { get; set; }
-        public OrderDTOLite? Order { get; set; }
+        public OrderDtoLite? Order { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

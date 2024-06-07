@@ -60,10 +60,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> allActiveAsync()
 =======
         public async Task<IEnumerable<VoucherDTO>> allActiveAsync()
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<VoucherDto>> allActiveAsync()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -72,6 +76,9 @@ namespace Api.Services
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return voucherList;
             }
@@ -92,10 +99,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> allAsync()
 =======
         public async Task<IEnumerable<VoucherDTO>> allAsync()
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<VoucherDto>> allAsync()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -103,10 +114,14 @@ namespace Api.Services
                     .OrderByDescending(v => v.CreatedAt)
                     .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
 =======
                 var voucherList = _mapper.Map<List<VoucherDTO>>(vouchers);
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                var voucherList = _mapper.Map<List<VoucherDto>>(vouchers);
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 return voucherList;
             }
             catch (Exception ex)
@@ -164,10 +179,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<VoucherDto> createAsync(VoucherDto voucher)
 =======
         public async Task<VoucherDTO> createAsync(VoucherDTO voucher)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<VoucherDto> createAsync(VoucherDto voucher)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -229,12 +248,17 @@ namespace Api.Services
                 newVoucher.EndDate = endDate;
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
+<<<<<<< HEAD
                 var voucherDTO = _mapper.Map<VoucherDTO>(newVoucher);
                 return voucherDTO;
 <<<<<<< HEAD
             }catch(Exception ex) 
 >>>>>>> 7f9ad44 (done with payment and voucher)
 =======
+=======
+                var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
+                return VoucherDto;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
 >>>>>>> 98415b4 (done with dashboard)
@@ -366,15 +390,20 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<VoucherDto> getAsync(int id)
 =======
         public async Task<VoucherDTO> getAsync(int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<VoucherDto> getAsync(int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var voucher = await _dbContext.Vouchers.FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) return null!;
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var VoucherDto = _mapper.Map<VoucherDto>(voucher);
 
@@ -384,6 +413,11 @@ namespace Api.Services
 
                 return voucherDTO;
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                var VoucherDto = _mapper.Map<VoucherDto>(voucher);
+
+                return VoucherDto;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -392,10 +426,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers()
 =======
         public async Task<IEnumerable<VoucherDTO>> getCurrentRunningVouchers()
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<VoucherDto>> getCurrentRunningVouchers()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -404,6 +442,9 @@ namespace Api.Services
                     .Where(v => v.IsExpired == false && v.IsActive == true)
                     .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 var VoucherDtoList = _mapper.Map<List<VoucherDto>>(vouchers);
                 return VoucherDtoList;
             }
@@ -475,10 +516,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<VoucherDto> searchWithCode(string voucherCode)
 =======
         public async Task<VoucherDTO> searchWithCode(string voucherCode)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<VoucherDto> searchWithCode(string voucherCode)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -486,6 +531,9 @@ namespace Api.Services
                     .FirstOrDefaultAsync(v => v.Code!.ToLower() == voucherCode.ToLower());
                 if (voucher == null) return null!;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 var VoucherDto = _mapper.Map<VoucherDto>(voucher);
                 return VoucherDto;
             }
@@ -506,10 +554,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> searchWithName(string name)
 =======
         public async Task<IEnumerable<VoucherDTO>> searchWithName(string name)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<VoucherDto>> searchWithName(string name)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -517,12 +569,17 @@ namespace Api.Services
                     .Where(v => v.Name!.ToLower().Contains(name.ToLower()))
                     .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
                 return VoucherDto;
 =======
                 var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
                 return voucherDTO;
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
+                return VoucherDto;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -531,10 +588,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IEnumerable<VoucherDto>> searchWithType(string voucherType)
 =======
         public async Task<IEnumerable<VoucherDTO>> searchWithType(string voucherType)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<VoucherDto>> searchWithType(string voucherType)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -542,12 +603,17 @@ namespace Api.Services
                     .Where(v => v.Name!.ToLower().Contains(voucherType.ToLower()))
                     .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
                 return VoucherDto;
 =======
                 var voucherDTO = _mapper.Map<List<VoucherDTO>>(voucher);
                 return voucherDTO;
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                var VoucherDto = _mapper.Map<List<VoucherDto>>(voucher);
+                return VoucherDto;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -603,12 +669,16 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<VoucherDto> updateAsync(VoucherDto voucher, int id)
 =======
 =======
 >>>>>>> 98415b4 (done with dashboard)
         public async Task<VoucherDTO> updateAsync(VoucherDTO voucher, int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<VoucherDto> updateAsync(VoucherDto voucher, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -626,6 +696,9 @@ namespace Api.Services
                 _dbContext.Vouchers.Attach(initialVoucher);
                 await _dbContext.SaveChangesAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 var VoucherDto = _mapper.Map<VoucherDto>(initialVoucher);
                 return VoucherDto;
             }

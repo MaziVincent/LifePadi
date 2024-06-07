@@ -79,10 +79,14 @@ namespace Api.Controllers
 
         [HttpPost("create")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] VoucherDto voucher)
 =======
         public async Task<IActionResult> create([FromForm] VoucherDTO voucher)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IActionResult> create([FromForm] VoucherDto voucher)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -271,10 +275,14 @@ namespace Api.Controllers
 
         [HttpPut("{id}/update")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> update([FromBody] VoucherDto voucher, int id)
 =======
         public async Task<IActionResult> update([FromBody] VoucherDTO voucher, int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IActionResult> update([FromBody] VoucherDto voucher, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

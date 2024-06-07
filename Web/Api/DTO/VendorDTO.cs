@@ -3,6 +3,7 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class VendorDto
     {
         public int? Id { get; set; }
@@ -89,6 +90,9 @@ namespace Api.DTO
         public IFormFile? Image { get; set; }
 =======
     public class VendorDTO
+=======
+    public class VendorDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int? Id { get; set; }
         public string? ContactAddress { get; set; }
@@ -99,10 +103,10 @@ namespace Api.DTO
         public string? SearchString { get; set; }
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }
-        public List<ProductDTOLite>? Products { get; set; }
+        public List<ProductDtoLite>? Products { get; set; }
     }
 
-    public class VendorDTOLite
+    public class VendorDtoLite
     {
         public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
@@ -117,7 +121,7 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
     }
 
-    public class AuthVendorDTO
+    public class AuthVendorDto
     {
         public int? Id { get; set; }
         public string? Email { get; set; }
@@ -129,7 +133,7 @@ namespace Api.DTO
         public int? ServiceId { get; set; }
     }
 
-    public class AuthVendorDTOLite
+    public class AuthVendorDtoLite
     {
         public int? Id { get; set; }
         public string? Email { get; set; }

@@ -3,6 +3,9 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 836ec36 (changed all DTO to Dto)
     public class RiderDto
     {
         public int? Id { get; set; }
@@ -41,11 +44,15 @@ namespace Api.DTO
 =======
         public bool? IsVerified { get; set; }
         public string? Password { get; set; }
-        public List<OrderDTOLite>? Orders { get; set; }
+        public List<OrderDtoLite>? Orders { get; set; }
     }
 
+<<<<<<< HEAD
     public class GetRiderDTO
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+    public class GetRiderDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -64,11 +71,15 @@ namespace Api.DTO
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
+<<<<<<< HEAD
 >>>>>>> 28d4101 (finished with rider and order)
         public List<OrderDTOLite>? Orders { get; set; }
+=======
+        public List<OrderDtoLite>? Orders { get; set; }
+>>>>>>> 836ec36 (changed all DTO to Dto)
     }
 
-    public class RiderDTOLite
+    public class RiderDtoLite
     {
 <<<<<<< HEAD
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
@@ -119,8 +130,12 @@ namespace Api.DTO
     public class CreateRiderDto
 =======
 
+<<<<<<< HEAD
     public class CreateRiderDTO
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+    public class CreateRiderDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -134,6 +149,7 @@ namespace Api.DTO
         public IFormFile? IdentityImg { get; set; }
         public string? EmergencyContact { get; set; }
         public string? Password { get; set; }
+<<<<<<< HEAD
 <<<<<<< HEAD
         public List<OrderDtoLite>? Orders { get; set; }
     }
@@ -154,9 +170,12 @@ namespace Api.DTO
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
         public List<OrderDTOLite>? Orders { get; set; }
+=======
+        public List<OrderDtoLite>? Orders { get; set; }
+>>>>>>> 836ec36 (changed all DTO to Dto)
     }
 
-    public class AuthRiderDTO : AuthUserDTO
+    public class AuthRiderDto : AuthUserDto
     {
         public bool? IsVerified { get; set; }
     }

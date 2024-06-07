@@ -64,6 +64,7 @@ namespace Api.Controllers
 
         [HttpPost("create")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create(DeliveryDto delivery)
         {
             try
@@ -75,6 +76,9 @@ namespace Api.Controllers
             catch (Exception ex)
 =======
         public async Task<IActionResult> create([FromForm] DeliveryDTO delivery)
+=======
+        public async Task<IActionResult> create([FromForm] DeliveryDto delivery)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -233,8 +237,12 @@ namespace Api.Controllers
         public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
 =======
         [HttpPut("{id}/update")]
+<<<<<<< HEAD
         public async Task<IActionResult> update(int id, [FromForm] DeliveryDTO delivery)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

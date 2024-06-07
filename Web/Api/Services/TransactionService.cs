@@ -44,8 +44,12 @@ namespace Api.Services
 =======
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<TransactionDTO>> allAsync()
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<IEnumerable<TransactionDto>> allAsync()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -54,6 +58,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var transactionDTO = _mapper.Map<List<TransactionDto>>(transactions);
                 return transactionDTO;
@@ -142,6 +147,9 @@ namespace Api.Services
                 $"https://api.flutterwave.com/v3/transactions/{transactionInfo.transaction_id}/verify");
 =======
                 var transactionDTO = _mapper.Map<List<TransactionDTO>>(transactions);
+=======
+                var transactionDTO = _mapper.Map<List<TransactionDto>>(transactions);
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -150,7 +158,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<PaymentDetailsDTO> confirmPayment(string status, string tx_ref, string transaction_id)
+        public async Task<PaymentDetailsDto> confirmPayment(string status, string tx_ref, string transaction_id)
         {
             try
             {
@@ -171,10 +179,14 @@ namespace Api.Services
                     var apiString = await response.Content.ReadAsStringAsync();
                     //deserialize it to json object
 <<<<<<< HEAD
+<<<<<<< HEAD
                     var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDto>(apiString);
 =======
                     var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDTO>(apiString);
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                    var paymentRes = JsonConvert.DeserializeObject<PaymentDetailsDto>(apiString);
+>>>>>>> 836ec36 (changed all DTO to Dto)
 
                     if (paymentRes!.Status == "success")
                     {
@@ -248,8 +260,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public Task<TransactionDTO> createAsync(TransactionDTO transaction)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public Task<TransactionDto> createAsync(TransactionDto transaction)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             throw new NotImplementedException();
         }
@@ -286,8 +302,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<TransactionDTO> getAsync(int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<TransactionDto> getAsync(int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -309,7 +329,7 @@ namespace Api.Services
         public async Task<TransactionDto> GetByPaymentId(BigInteger transactionId)
 =======
                 if (transaction == null) throw new Exception("Transaction not found");
-                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -318,8 +338,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<TransactionDTO> getByPaymentId(BigInteger transactionId)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<TransactionDto> getByPaymentId(BigInteger transactionId)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -341,7 +365,7 @@ namespace Api.Services
         public async Task<DTO.Data> InitiatePayment(InitiatePaymentDto initiatePayment)
 =======
                 if (transaction == null) throw new Exception("Transaction not found");
-                var transactionDTO = _mapper.Map<TransactionDTO>(transaction);
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
@@ -350,8 +374,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<DTO.Data> initiatePayment(InitiatePaymentDTO initiatePayment)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -829,8 +857,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public Task<TransactionDTO> updateAsync(TransactionDTO transaction, int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public Task<TransactionDto> updateAsync(TransactionDto transaction, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             throw new NotImplementedException();
         }

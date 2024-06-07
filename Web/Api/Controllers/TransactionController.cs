@@ -16,6 +16,7 @@ namespace Api.Controllers
 
         [HttpPost("initiate")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDto initiatePayment)
         {
             try
@@ -26,6 +27,9 @@ namespace Api.Controllers
             catch (Exception ex)
 =======
         public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDTO initiatePayment)
+=======
+        public async Task<IActionResult> initiatePayment([FromBody] InitiatePaymentDto initiatePayment)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

@@ -42,6 +42,7 @@ namespace Api.Services
 <<<<<<< HEAD
             _cloudinary = new Cloudinary(account);
         }
+<<<<<<< HEAD
         public async Task<PagedList<Vendor>> allAsync(SearchPaging props)
         {
             try
@@ -77,12 +78,15 @@ namespace Api.Services
 >>>>>>> 98415b4 (done with dashboard)
         }
         public async Task<IEnumerable<VendorDTO>> allAsync(int pageNumber, int pageSize)
+=======
+        public async Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var vendors = await _dbContext!.Vendors.Skip(skip).Take(pageSize).OrderByDescending(v => v.CreatedAt).Include(v => v.Products).ToListAsync();
-                var allVendor = _mapper.Map<List<VendorDTO>>(vendors);
+                var allVendor = _mapper.Map<List<VendorDto>>(vendors);
                 return allVendor;
             }
             catch (Exception ex)
@@ -91,8 +95,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<AuthVendorDTOLite> createAsync(AuthVendorDTO vendor)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -132,7 +140,7 @@ namespace Api.Services
                 newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
                 await _dbContext!.SaveChangesAsync();
-                var authUserDTO = _mapper.Map<AuthVendorDTOLite>(newVendor);
+                var authUserDTO = _mapper.Map<AuthVendorDtoLite>(newVendor);
                 return authUserDTO;
             }
             catch (Exception ex)
@@ -251,14 +259,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<AuthVendorDTOLite> getAsync(int id)
+        public async Task<AuthVendorDtoLite> getAsync(int id)
         {
             try
             {
                 var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (vendor == null) return null!;
-                var authVendorDTOLite = _mapper.Map<AuthVendorDTOLite>(vendor);
-                return authVendorDTOLite;
+                var authVendorDtoLite = _mapper.Map<AuthVendorDtoLite>(vendor);
+                return authVendorDtoLite;
             }
             catch (Exception ex)
             {
@@ -266,8 +274,28 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VendorDTOLite>> searchAsync(string searchString)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<VendorDtoLite> getVendorByTagName(string tag)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors.Include(v => v.Products)
+                .FirstOrDefaultAsync(v => v.Tag!.ToLower().Contains(tag.ToLower()));
+                if (vendor == null) return null!;
+                var VendorDtoLite = _mapper.Map<VendorDtoLite>(vendor);
+                return VendorDtoLite;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -292,6 +320,7 @@ namespace Api.Services
                         vendorList.Add(vendor);
                     }
                 }
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendorList);
                 return VendorDtoLite;
@@ -319,6 +348,10 @@ namespace Api.Services
 =======
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendorList);
                 return vendorDTOLite;
+=======
+                var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendorList);
+                return VendorDtoLite;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -339,8 +372,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<AuthVendorDTOLite> updateAsync(AuthVendorDTOLite vendor, int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -389,10 +426,11 @@ namespace Api.Services
                 initialVendor.Email = vendor.Email;
                 initialVendor.PhoneNumber = vendor.PhoneNumber;
                 initialVendor.ContactAddress = vendor.ContactAddress;
+                initialVendor.Tag = vendor.Tag;
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vendors.Attach(initialVendor);
                 await _dbContext.SaveChangesAsync();
-                var currentVendor = _mapper.Map<AuthVendorDTOLite>(initialVendor);
+                var currentVendor = _mapper.Map<AuthVendorDtoLite>(initialVendor);
 
                 return currentVendor;
             }
@@ -402,8 +440,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<VendorDTO> uploadVendorImg(int id, IFormFile image)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<VendorDto> uploadVendorImg(int id, IFormFile image)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -445,8 +487,8 @@ namespace Api.Services
                 vendor.VendorImgUrl = imgPath;
                 _dbContext!.Vendors.Attach(vendor);
                 await _dbContext.SaveChangesAsync();
-                var vendorDTO = _mapper.Map<VendorDTO>(vendor);
-                return vendorDTO;
+                var VendorDto = _mapper.Map<VendorDto>(vendor);
+                return VendorDto;
             }
             catch (Exception ex)
             {
@@ -454,12 +496,17 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<VendorDTOLite>> vendorsOnly()
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IEnumerable<VendorDtoLite>> vendorsOnly()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var vendors = await _dbContext!.Vendors.ToListAsync();
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendors);
                 return VendorDtoLite;
@@ -474,6 +521,10 @@ namespace Api.Services
 =======
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendors);
                 return vendorDTOLite;
+=======
+                var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendors);
+                return VendorDtoLite;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -481,8 +532,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<ProductDTOLite>> vendorsProduct(int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public async Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -601,7 +656,7 @@ namespace Api.Services
 >>>>>>> 58020e7 (removed service from product)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
-                var products = _mapper.Map<List<ProductDTOLite>>(vendor!.Products);
+                var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
                 return products;
             }
             catch (Exception ex)

@@ -17,10 +17,14 @@ namespace Api.Helpers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public string generateAccessToken(GenTokenDto genTokenDTO)
 =======
         public string generateAccessToken(GenTokenDTO genTokenDTO)
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public string generateAccessToken(GenTokenDto genTokenDTO)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -55,10 +59,14 @@ namespace Api.Helpers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public string generateRefreshToken(GenTokenDto genTokenDTO)
 =======
         public string generateRefreshToken(GenTokenDTO genTokenDTO)
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public string generateRefreshToken(GenTokenDto genTokenDTO)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {

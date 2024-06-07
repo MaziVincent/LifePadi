@@ -71,11 +71,11 @@ namespace Api.Services
                     .Include(o => o.OrderItems)
                     .OrderByDescending(o => o.CreatedAt)
                     .ToListAsync();
-                var orderDTO = _mapper.Map<List<OrderDTO>>(orders);
+                var OrderDto = _mapper.Map<List<OrderDto>>(orders);
                 return new DataTotalNumber
                 {
                     TotalNumber = orders.Count(),
-                    Data = orderDTO.ToArray(),
+                    Data = OrderDto.ToArray(),
                 };
             }
             catch (Exception ex)
@@ -84,12 +84,17 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<OrderDTOLite>> allOrderLite()
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public async Task<IEnumerable<OrderDtoLite>> allOrderLite()
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var orders = await _dbContext!.Orders.OrderByDescending(o => o.CreatedAt).ToListAsync();
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var OrderDtoLite = _mapper.Map<List<OrderDtoLite>>(orders);
                 return OrderDtoLite;
@@ -104,6 +109,10 @@ namespace Api.Services
 =======
                 var orderDTOLite = _mapper.Map<List<OrderDTOLite>>(orders);
                 return orderDTOLite;
+=======
+                var OrderDtoLite = _mapper.Map<List<OrderDtoLite>>(orders);
+                return OrderDtoLite;
+>>>>>>> 836ec36 (changed all DTO to Dto)
             }
             catch (Exception ex)
             {
@@ -111,8 +120,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<OrderDTO> createAsync(OrderDTO order)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public async Task<OrderDto> createAsync(OrderDto order)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -186,8 +199,8 @@ namespace Api.Services
                 newOrder.IsDelivered = false;
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
-                var orderDTO = _mapper.Map<OrderDTO>(newOrder);
-                return orderDTO;
+                var OrderDto = _mapper.Map<OrderDto>(newOrder);
+                return OrderDto;
             }
             catch (Exception ex)
             {
@@ -195,7 +208,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDTO>> customerOrders(int customerId)
+        public async Task<IEnumerable<OrderDto>> customerOrders(int customerId)
         {
             try
             {
@@ -234,8 +247,8 @@ namespace Api.Services
 =======
                     .Where(o => o.CustomerId == customerId)
                     .ToListAsync();
-                var orderDTO = _mapper.Map<List<OrderDTO>>(orders);
-                return orderDTO;
+                var OrderDto = _mapper.Map<List<OrderDto>>(orders);
+                return OrderDto;
             }
             catch (Exception ex)
             {
@@ -326,14 +339,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<OrderDTO> getAsync(int id)
+        public async Task<OrderDto> getAsync(int id)
         {
             try
             {
                 var order = await _dbContext!.Orders.FirstOrDefaultAsync(o => o.Id == id);
                 if (order == null) return null!;
-                var orderDTO = _mapper.Map<OrderDTO>(order);
-                return orderDTO;
+                var OrderDto = _mapper.Map<OrderDto>(order);
+                return OrderDto;
             }
             catch (Exception ex)
             {
@@ -341,13 +354,18 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<OrderItemDTOLite>> orderItemLites(int id)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public async Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var order = await _dbContext!.Orders
                     .Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var orderItems = _mapper.Map<List<OrderItemDtoLite>>(order!.OrderItems);
                 return orderItems;
@@ -488,6 +506,9 @@ namespace Api.Services
         public async Task<OrderDto> updateAsync(OrderDto order, int id)
 =======
                 var orderItems = _mapper.Map<List<OrderItemDTOLite>>(order!.OrderItems);
+=======
+                var orderItems = _mapper.Map<List<OrderItemDtoLite>>(order!.OrderItems);
+>>>>>>> 836ec36 (changed all DTO to Dto)
                 return orderItems;
             }
             catch (Exception ex)
@@ -623,8 +644,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<OrderDTO> updateAsync(OrderDTO order, int id)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public async Task<OrderDto> updateAsync(OrderDto order, int id)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -659,8 +684,8 @@ namespace Api.Services
                 initialOrder.IsDelivered = order.IsDelivered;
                 _dbContext.Orders.Attach(initialOrder);
                 await _dbContext.SaveChangesAsync();
-                var orderDTO = _mapper.Map<OrderDTO>(initialOrder);
-                return orderDTO;
+                var OrderDto = _mapper.Map<OrderDto>(initialOrder);
+                return OrderDto;
             }
             catch (Exception ex)
             {
@@ -668,8 +693,12 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<OrderDTO> updateOrderStatus(int id, string status)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        public async Task<OrderDto> updateOrderStatus(int id, string status)
+>>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -708,8 +737,8 @@ namespace Api.Services
 =======
                 _dbContext.Orders.Attach(order);
                 await _dbContext.SaveChangesAsync();
-                var orderDTO = _mapper.Map<OrderDTO>(order);
-                return orderDTO;
+                var OrderDto = _mapper.Map<OrderDto>(order);
+                return OrderDto;
             }
             catch (Exception ex)
             {

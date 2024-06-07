@@ -3,6 +3,7 @@
 namespace Api.DTO
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class OrderDto
     {
         public int Id { get; set; }
@@ -70,18 +71,21 @@ namespace Api.DTO
         public List<OrderItemDto>? OrderItems { get; set; }
 =======
     public class OrderDTO
+=======
+    public class OrderDto
+>>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public CustomerDTOLite? Customer { get; set; }
+        public CustomerDtoLite? Customer { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public List<OrderItemDTOLite>? OrderItems { get; set; }
+        public List<OrderItemDtoLite>? OrderItems { get; set; }
     }
 
-    public class OrderDTOLite
+    public class OrderDtoLite
     {
         public int Id { get; set; }
         public string? Status { get; set; }
@@ -90,7 +94,7 @@ namespace Api.DTO
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
-    public class OrderDTOLiteB
+    public class OrderDtoLiteB
     {
         public int Id { get; set; }
         public string? Status { get; set; }
@@ -98,6 +102,7 @@ namespace Api.DTO
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }
+<<<<<<< HEAD
 <<<<<<< HEAD
         public Customer? Customer { get; set; }
         public bool? Status { get; set; }
@@ -112,5 +117,8 @@ namespace Api.DTO
 >>>>>>> 28d4101 (finished with rider and order)
 =======
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public CustomerDtoLite? Customer { get; set; }
+>>>>>>> 836ec36 (changed all DTO to Dto)
     }
 }
