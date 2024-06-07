@@ -7,7 +7,7 @@ namespace Api.Interfaces
 {
     public interface ICategory
     {
-        public Task<IEnumerable<CategoryDto>> allAsync(int pageNumber, int pageSize, string searchString);
+        public Task<PagedList<Category>> allAsync(SearchPaging props);
         public Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync();
         public Task<CategoryDto> getAsync(int id);
         public Task<IEnumerable<ProductDto>> categoryProducts(int id);

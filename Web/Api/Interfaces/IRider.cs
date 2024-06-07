@@ -8,8 +8,8 @@ namespace Api.Interfaces
     public interface IRider
     {
         public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
-        public Task<GetRiderDTO> getAsync(int id);
-        public Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id);
+        public Task<GetRiderDto> getAsync(int id);
+        public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
         public Task<string> deleteAsync(int id);
         public Task<AuthRiderDto> createAsync(CreateRiderDto rider);
         public Task<IEnumerable<OrderDto>> orderLists(int id);

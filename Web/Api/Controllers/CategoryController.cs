@@ -24,7 +24,7 @@ namespace Api.Controllers
             try
             {
                 var categories = await _icategory.allAsync(props);
-                var result = _mapper.Map<List<CategoryDTO>>(categories);
+                var result = _mapper.Map<List<CategoryDto>>(categories);
                 var dataList = new {
                     categories.PageSize,
                     categories.TotalPages,
@@ -121,7 +121,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
+        public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
         {
             try
             {

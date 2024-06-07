@@ -35,7 +35,7 @@ namespace Api.Controllers
 
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CreateRiderDTO rider)
+        public async Task<IActionResult> create([FromForm] CreateRiderDto rider)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Api.Controllers
                     riders.CurrentPage,
                     riders.PageSize
                 };
-            var result = _mapper.Map<List<RiderDTO>>(riders);
+            var result = _mapper.Map<List<RiderDto>>(riders);
 
                 return Ok(new {result, dataList});
             }catch (Exception ex)
@@ -178,7 +178,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<IActionResult> update(int id, [FromForm] CreateRiderDTO rider)
+        public async Task<IActionResult> update(int id, [FromForm] CreateRiderDto rider)
         {
             try
             {
