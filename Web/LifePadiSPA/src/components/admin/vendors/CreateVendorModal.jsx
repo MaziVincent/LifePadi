@@ -46,11 +46,11 @@ const idTypes = [
   { name: "Drivers Licence " },
 ];
 
-const CreateRiderModal = ({ open, handleClose }) => {
+const CreateVendorModal = ({ open, handleClose }) => {
   
   const post = usePost();
   const { auth } = useAuth();
-  const url = `${baseUrl}rider/create`;
+  const url = `${baseUrl}vendor/create`;
   const queryClient = useQueryClient();
   const [fileError, setFileError] = useState(false);
   const [file, setFile] = useState(null);
@@ -65,9 +65,9 @@ const CreateRiderModal = ({ open, handleClose }) => {
 
   const create = async (data) => {
     const formData = new FormData();
-const rider = {...data, IdentityImg:file}
-    for (const key in rider) {
-      formData.append(key, rider[key]);
+const vendor = {...data, IdentityImg:file}
+    for (const key in vendor) {
+      formData.append(key, vendor[key]);
     }
     const response = await post(url, formData, auth?.accessToken);
    // console.log(response.data);
@@ -75,16 +75,16 @@ const rider = {...data, IdentityImg:file}
 
   const { mutate } = useMutation(create, {
     onSuccess: () => {
-      queryClient.invalidateQueries("riders");
-      toast.success("Rider Created Successfully");
+      queryClient.invalidateQueries("vendors");
+      toast.success("Vendor Created Successfully");
       handleClose({ type: "open" })
       reset();
     },
   });
 
-  const handleCreate = (rider) => {
+  const handleCreate = (vendor) => {
     //  console.log(data)
-    mutate(rider);
+    mutate(vendor);
   };
 
   const [value, setValue] = useState(0);
@@ -126,7 +126,7 @@ const rider = {...data, IdentityImg:file}
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
-              Create Rider
+              Create Vendor
             </h3>
             <button
               type="button"
@@ -527,4 +527,4 @@ const rider = {...data, IdentityImg:file}
   );
 };
 
-export default CreateRiderModal;
+export default CreateVendorModal;

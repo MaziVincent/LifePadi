@@ -75,6 +75,11 @@ namespace Api.DTO
 
     public class AuthRiderDto : AuthUserDto
     {
+        public string? IdentityType { get; set; }
+        public string? IdentityNumber { get; set; }
+        public string? IdentityImgUrl { get; set; }
+        public string? EmergencyContact { get; set; }
         public bool? IsVerified { get; set; }
+        public string? IsActive {get; set;}
     }
 }

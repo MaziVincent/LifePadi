@@ -73,6 +73,8 @@ builder.Services.AddCors(c =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
 var app = builder.Build();
 
 

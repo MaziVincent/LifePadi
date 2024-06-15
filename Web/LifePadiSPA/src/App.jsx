@@ -7,6 +7,7 @@ import AdminService from './components/admin/services/AdminService'
 import AdminServiceDetails from './components/admin/services/AdminServiceDetails'
 import AdminCategory from './components/admin/categories/AdminCategory'
 import AdminRider from './components/admin/riders/AdminRider'
+import AdminRiderDetails from './components/admin/riders/AdminRiderDetails'
 import AdminCustomer from './components/admin/users/AdminCustomer'
 import AdminVendor from './components/admin/vendors/AdminVendor'
 import AdminOrderDetails from './components/admin/AdminOrderDetails'
@@ -34,6 +35,7 @@ function App() {
         <Route path='/admin/category' element={<AdminCategory />} />
         <Route path='/admin/category/:id' element={<AdminCategoryDetails />} />
         <Route path='/admin/rider' element={<AdminRider />} />
+        <Route path='/admin/rider/:id' element={<AdminRiderDetails />} />
         <Route path='/admin/customer' element={<AdminCustomer />} />
         <Route path='/admin/vendor' element={<AdminVendor />} />
         <Route path='/admin/order/:id' element={<AdminOrderDetails />} />

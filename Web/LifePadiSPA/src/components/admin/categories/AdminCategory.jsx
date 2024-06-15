@@ -34,6 +34,7 @@ const reducer = (state, action) => {
 };
 
 const AdminCategory = () => {
+  
   const fetch = useFetch();
   const { auth } = useAuth();
   const url = `${baseUrl}category`;

@@ -19,7 +19,7 @@ namespace Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPut("{id}/activate")]
+        [HttpPut("activate/{id}")]
         public async Task<IActionResult> activateRider(int id)
         {
             try
@@ -48,21 +48,21 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/deactivate")]
+        [HttpPut("deactivate/{id}")]
         public async Task<IActionResult> deactivateRider(int id)
         {
             try
             {
                 var res = await _irider!.deactivateRider(id);
                 if (res == null) return NotFound();
-                return Ok(res);
+                return Ok(new {success = "Rider Deactivated Successfully"});
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> deleteRider(int id)
         {
             try
@@ -82,13 +82,15 @@ namespace Api.Controllers
             try
             {
                 var riders = await _irider!.getAllAsync(props);
+
+            var result = _mapper.Map<List<AuthRiderDto>>(riders);
+            
                 var dataList = new {
                     riders.TotalCount,
                     riders.TotalPages,
                     riders.CurrentPage,
                     riders.PageSize
                 };
-            var result = _mapper.Map<List<RiderDto>>(riders);
 
                 return Ok(new {result, dataList});
             }catch (Exception ex)
@@ -97,7 +99,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -177,7 +179,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] CreateRiderDto rider)
         {
             try
@@ -191,7 +193,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/uploadIdentity")]
+        [HttpPut("uploadIdentity/{id}")]
         public async Task<IActionResult> uploadIdentity(int id, ImageDTO imageFile)
         {
             try
@@ -206,7 +208,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/verify")]
+        [HttpPut("verify/{id}")]
         public async Task<IActionResult> verifyRider(int id)
         {
             try

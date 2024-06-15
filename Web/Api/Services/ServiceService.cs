@@ -36,9 +36,8 @@ namespace Api.Services
             try
             {
                 IQueryable<Service> servicesList = Enumerable.Empty<Service>().AsQueryable();
+               
                 if(props.SearchString is null){
-
-
                 var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                   .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
