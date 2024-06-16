@@ -194,7 +194,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("uploadIdentity/{id}")]
-        public async Task<IActionResult> uploadIdentity(int id, ImageDTO imageFile)
+        public async Task<IActionResult> uploadIdentity(int id, ImageDto imageFile)
         {
             try
             {
