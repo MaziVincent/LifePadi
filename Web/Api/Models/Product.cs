@@ -8,6 +8,7 @@
         public bool? Status { get; set; }
         public Double? Price { get; set; }
         public string? ProductImgUrl { get; set; }
+        public string? Tag { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public int VendorId { get; set; }

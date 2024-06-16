@@ -95,7 +95,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("uploadImg/{id}")]
-        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDTO serviceIcon)
+        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDto serviceIcon)
         {
             if(serviceIcon is null){
                 return BadRequest("No Image provided");

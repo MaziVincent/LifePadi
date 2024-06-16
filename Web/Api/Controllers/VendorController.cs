@@ -102,7 +102,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{id}/uploadImg")]
-        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDTO vendorImg)
+        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDto vendorImg)
         {
             try
             {

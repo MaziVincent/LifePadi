@@ -1,4 +1,5 @@
 ﻿using Api.DTO;
+using Api.Exceptions;
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
@@ -63,7 +64,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -78,7 +79,7 @@ namespace Api.Services
                 if (service.ServiceIcon != null)
                 {
                     var imgPath = await UploadImage.uploadImg(service.ServiceIcon, _cloudinary!, folderName);
-                    if (imgPath == null) throw new Exception("Can not upload image");
+                    if (imgPath == null) throw new ServiceException("Can not upload image");
                     newService.ServiceIconUrl = imgPath;
                 }
                 await _dbContext!.Services.AddAsync(newService);
@@ -88,7 +89,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -104,7 +105,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -121,7 +122,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -136,7 +137,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -151,7 +152,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -165,7 +166,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -179,7 +180,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -193,7 +194,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -212,7 +213,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -230,7 +231,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -243,7 +244,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -256,7 +257,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -269,7 +270,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -290,7 +291,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -302,7 +303,7 @@ namespace Api.Services
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) return null!;
                 var imgPath = await UploadImage.uploadImg(image, _cloudinary!, folderName);
-                if (imgPath == null) throw new Exception("Can not upload image");
+                if (imgPath == null) throw new ServiceException("Can not upload image");
                 service.ServiceIconUrl = imgPath;
                 _dbContext!.Services.Attach(service);
                 await _dbContext.SaveChangesAsync();
@@ -312,7 +313,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
     }

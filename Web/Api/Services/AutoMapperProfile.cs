@@ -87,6 +87,10 @@ namespace Api.Services
             //Voucher
             CreateMap<Voucher, VoucherDto>();
             CreateMap<VoucherDto, Voucher>();
+
+            //VendorCategory
+            CreateMap<VendorCategory, VendorCategoryDto>();
+            CreateMap<VendorCategoryDto, VendorCategory>();
         }
     }
 }

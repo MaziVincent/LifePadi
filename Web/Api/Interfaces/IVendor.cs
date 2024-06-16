@@ -15,5 +15,6 @@ namespace Api.Interfaces
         public Task<AuthVendorDtoLite> getAsync(int id);
         public Task<VendorDtoLite> getVendorByTagName(string tag);
         public Task<int> totalNumberOfVendors();
+        public Task<bool> vendorExists(string email);
     }
 }

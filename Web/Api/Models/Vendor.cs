@@ -4,11 +4,14 @@
     {
         public Vendor(): base() { }
         public string? Name { get; set; }
-        public string? VendorType { get; set; }
         public string? VendorImgUrl { get; set; }
         public string? Tag { get; set; }
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }
+        public int? VendorCategoryId { get; set; }
+        public VendorCategory? VendorCategory { get; set; }
+        public string? OpeningHours { get; set; }
+        public string? ClosingHours { get; set; }
         public List<Product>? Products { get; set; }
     }
 }

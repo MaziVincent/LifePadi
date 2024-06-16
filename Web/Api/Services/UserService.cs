@@ -1,4 +1,5 @@
 ﻿using Api.DTO;
+using Api.Exceptions;
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
@@ -32,7 +33,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -50,7 +51,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -66,7 +67,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -96,7 +97,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -122,7 +123,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -141,7 +142,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -172,7 +173,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -185,7 +186,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
     }

@@ -23,5 +23,6 @@ namespace Api.Models
         public DbSet<Service> Services { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<VendorCategory> VendorCategories { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Api.DTO;
+using Api.Exceptions;
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
@@ -38,7 +39,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new InvalidOperationException(ex.Message);
             }
         }
 
@@ -47,8 +48,10 @@ namespace Api.Services
             try
             {
                 var newVendor = _mapper.Map<Vendor>(vendor);
+                var vendorExist = await vendorExists(vendor.Email!);
+                if (vendorExist) throw new AlreadyExistException("Vendor already exists");
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
-                newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
+                newVendor.SearchString = vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
                 await _dbContext!.SaveChangesAsync();
                 var authUserDTO = _mapper.Map<AuthVendorDtoLite>(newVendor);
@@ -56,7 +59,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -70,7 +73,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -85,7 +88,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -101,7 +104,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -135,7 +138,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -148,7 +151,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -158,13 +161,14 @@ namespace Api.Services
             {
                 var initialVendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (initialVendor == null) return null!;
-                initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
+                initialVendor.SearchString = vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 initialVendor.Name = vendor.Name;
-                initialVendor.VendorType = vendor.VendorType;
                 initialVendor.Email = vendor.Email;
                 initialVendor.PhoneNumber = vendor.PhoneNumber;
                 initialVendor.ContactAddress = vendor.ContactAddress;
                 initialVendor.Tag = vendor.Tag;
+                initialVendor.OpeningHours = vendor.OpeningHours;
+                initialVendor.ClosingHours = vendor.ClosingHours;
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vendors.Attach(initialVendor);
                 await _dbContext.SaveChangesAsync();
@@ -174,7 +178,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -186,7 +190,7 @@ namespace Api.Services
                 var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (vendor == null) return null!;
                 var imgPath = await UploadImage.uploadImg(image, _cloudinary, folderName);
-                if (imgPath == null) throw new Exception("Can not upload the vendor image");
+                if (imgPath == null) throw new ServiceException("Can not upload the vendor image");
                 vendor.VendorImgUrl = imgPath;
                 _dbContext!.Vendors.Attach(vendor);
                 await _dbContext.SaveChangesAsync();
@@ -195,7 +199,21 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<bool> vendorExists(string email)
+        {
+            try
+            {
+                var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Email!.ToLower() == email.ToLower());
+                if (vendor == null) return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -209,7 +227,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -226,7 +244,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
     }
