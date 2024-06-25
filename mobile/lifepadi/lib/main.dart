@@ -1,37 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-void main() => runApp(const MyApp());
+import 'router/router.dart';
+import 'utils/state_logger.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LifePadi',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+void main() {
+  runApp(
+    const ProviderScope(
+      observers: [StateLogger()],
+      child: MyAwesomeApp(),
+    ),
+  );
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class MyAwesomeApp extends ConsumerWidget {
+  const MyAwesomeApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('LifePadi Home Page'),
-      ),
-      body: const Center(
-        child: Text(
-          'Hello, World!',
-          style: TextStyle(fontSize: 24),
-        ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'hooks_riverpod + go_router Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
       ),
     );
   }
