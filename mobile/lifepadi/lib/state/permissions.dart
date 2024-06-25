@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../entities/user_role.dart';
@@ -22,19 +20,7 @@ Future<UserRole> permissions(PermissionsRef ref) async {
 
   if (userId == null) return const UserRole.none();
 
-  return _requestMock();
-}
+  //TODO: Get the user role from the auth model later on
 
-/// Gives a random [UserRole] based on a dice roll.
-UserRole _requestMock() {
-  // mock
-  final random = Random().nextDouble();
-
-  if (random < 0.25) {
-    return const UserRole.admin();
-  } else if (random < 0.5) {
-    return const UserRole.user();
-  } else {
-    return const UserRole.guest();
-  }
+  return const UserRole.user();
 }

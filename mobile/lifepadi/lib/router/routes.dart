@@ -6,9 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/details_page.dart';
 
 import '../pages/admin_page.dart';
-import '../pages/guest_page.dart';
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
+import '../pages/rider_page.dart';
 import '../pages/splash_page.dart';
 import '../pages/user_page.dart';
 import '../state/permissions.dart';
@@ -20,7 +20,7 @@ part 'routes.g.dart';
   routes: [
     TypedGoRoute<AdminRoute>(path: 'admin'),
     TypedGoRoute<UserRoute>(path: 'user'),
-    TypedGoRoute<GuestRoute>(path: 'guest'),
+    TypedGoRoute<RiderRoute>(path: 'guest'),
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -39,7 +39,7 @@ class HomeRoute extends GoRouteData {
     return userRole.map(
       admin: (_) => const AdminRoute().location,
       user: (_) => const UserRoute().location,
-      guest: (_) => const GuestRoute().location,
+      rider: (_) => const RiderRoute().location,
       none: (_) => null,
     );
   }
@@ -88,12 +88,12 @@ class UserRoute extends GoRouteData {
   }
 }
 
-class GuestRoute extends GoRouteData {
-  const GuestRoute();
+class RiderRoute extends GoRouteData {
+  const RiderRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const GuestPage();
+    return const RiderPage();
   }
 }
 
