@@ -5,19 +5,22 @@ import useDelete from "../../../hooks/useDelete";
 import useAuth from "../../../hooks/useAuth";
 import { useQueryClient } from "react-query";
 
-const DeleteDialogue = ({ open, handleClose, deleteId, url }) => {
+const DeleteDialogue = ({ open, handleClose, deleteId, url, name }) => {
   const { auth } = useAuth();
   const del = useDelete();
   const queryClient = useQueryClient();
-
+//console.log(deleteId)
+  //handle delete
   const handleDelete = async (_id) => {
     const result = await del(`${url}/delete/${_id}`, auth.accessToken);
+    //console.log(result);
     if (!result.success) {
-      toast.error("Error Deleting Service");
+      toast.error("Error Deleting Item");
+      handleClose({type:"delete"});
       return;
     }
-    toast.success("Service Deleted Successfully");
-    queryClient.invalidateQueries("services");
+    toast.success("Item Deleted Successfully");
+    queryClient.invalidateQueries(`${name}`);
     handleClose({type:"delete"});
 
     //
@@ -69,7 +72,8 @@ const DeleteDialogue = ({ open, handleClose, deleteId, url }) => {
             ></path>
           </svg>
           <p className="mb-4 text-gray-500 dark:text-gray-300">
-            Are you sure you want to delete this item?
+            Are you sure you want to delete this item? <br/>
+            <span className="text-red-600"> This action cannot be undone !!</span>
           </p>
           <div className="flex justify-center items-center space-x-4">
             <button

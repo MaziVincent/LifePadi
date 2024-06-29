@@ -9,7 +9,9 @@ import AdminCategory from './components/admin/categories/AdminCategory'
 import AdminRider from './components/admin/riders/AdminRider'
 import AdminRiderDetails from './components/admin/riders/AdminRiderDetails'
 import AdminCustomer from './components/admin/users/AdminCustomer'
-import AdminVendor from './components/admin/vendors/AdminVendor'
+import AdminVendorCategory from './components/admin/vendors/AdminVendorCategory'
+import AdminVendorCategoryDetails from './components/admin/vendors/AdminVendorCategoryDetails'
+import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDetails'
 import AdminOrderDetails from './components/admin/AdminOrderDetails'
 import AdminCategoryDetails from './components/admin/categories/AdminCategoryDetail'
 
@@ -37,7 +39,10 @@ function App() {
         <Route path='/admin/rider' element={<AdminRider />} />
         <Route path='/admin/rider/:id' element={<AdminRiderDetails />} />
         <Route path='/admin/customer' element={<AdminCustomer />} />
-        <Route path='/admin/vendor' element={<AdminVendor />} />
+        <Route path='/admin/vendorcategory' element={<AdminVendorCategory />} />
+        <Route path='/admin/vendorcategory/:id' element={<AdminVendorCategoryDetails />} />
+        <Route path='/admin/vendor/:id' element={<AdminVendorDetails />} />
+
         <Route path='/admin/order/:id' element={<AdminOrderDetails />} />
 
       </Route>

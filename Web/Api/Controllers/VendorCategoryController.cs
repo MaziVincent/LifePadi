@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -13,19 +16,28 @@ namespace Api.Controllers
     public class VendorCategoryController : ControllerBase
     {
         private readonly IVendorCategory _ivendorCategoryService;
+        private readonly IMapper _mapper;
         const string notFound = "VendorCategory not found";
-        public VendorCategoryController(IVendorCategory ivendorCategoryService)
+        public VendorCategoryController(IVendorCategory ivendorCategoryService, IMapper mapper)
         {
             _ivendorCategoryService = ivendorCategoryService;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> allAsync()
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var vendorCategories = await _ivendorCategoryService.allAsync();
-                return Ok(vendorCategories);
+                var vendorCategories = await _ivendorCategoryService.allAsync(props);
+                var result = _mapper.Map<List<VendorCategoryDto>>(vendorCategories);
+                var dataList = new {
+                    vendorCategories.PageSize,
+                    vendorCategories.TotalPages,
+                    vendorCategories.TotalCount,
+                    vendorCategories.CurrentPage
+                };
+                return Ok(new {result, dataList});
             }
             catch (Exception ex)
             {
@@ -55,7 +67,7 @@ namespace Api.Controllers
                 var result = await _ivendorCategoryService.DeleteAsync(id);
                 if (result)
                 {
-                    return Ok("VendorCategory deleted successfully");
+                    return Ok(new {success = "VendorCategory deleted successfully"});
                 }
                 return NotFound(notFound);
             }
@@ -101,7 +113,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/vendors")]
+        [HttpGet("vendors/{id}")]
         public async Task<IActionResult> getAllVendors(int id)
         {
             try

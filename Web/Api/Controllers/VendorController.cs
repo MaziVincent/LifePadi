@@ -40,14 +40,14 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _ivendor.deleteAsync(id);
                 if (response == null) return NotFound();
-                return Ok(response);
+                return Ok(new{success = response});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -74,7 +74,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDtoLite vendor)
         {
             try
@@ -101,7 +101,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/uploadImg")]
+        [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDto vendorImg)
         {
             try

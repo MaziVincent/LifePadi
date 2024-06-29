@@ -1,6 +1,6 @@
-import useUpdate from "../../../hooks/useUpdate";
-import useAuth from "../../../hooks/useAuth";
-import baseUrl from "../../../api/baseUrl";
+import useUpdate from "../../../../hooks/useUpdate";
+import useAuth from "../../../../hooks/useAuth";
+import baseUrl from "../../../../api/baseUrl";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,11 +10,11 @@ import toast, {Toaster} from "react-hot-toast";
 
 
 
-const EditCategoryModal = ({ open, handleClose, category }) => {
+const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
   const queryClient = useQueryClient();
   const update = useUpdate();
   const { auth } = useAuth();
-  const url = `${baseUrl}category`;
+  const url = `${baseUrl}vendorcategory`;
 
   const {
     register,
@@ -24,7 +24,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
     formState: { errors },
   } = useForm({ mode: "all" });
 
-  const editCategory = async (data) => {
+  const editService = async (data) => {
    
     const formData = new FormData()
     formData.append("Name",data.Name)
@@ -35,11 +35,11 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
     console.log(response.data);
   };
 
-  const { mutate } = useMutation(editCategory, {
+  const { mutate } = useMutation(editService, {
     onSuccess: () => {
-      queryClient.invalidateQueries("categories");
+      queryClient.invalidateQueries("vendorcategories");
       reset();
-      toast.success("Category Updated Successfully");
+      toast.success("Vendor Category Updated Successfully");
       handleClose({ type: "edit" });
     },
     onError:()=>{
@@ -52,10 +52,10 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
   };
 
   useEffect(() => {
-    Object.entries(category).forEach(([key, value]) => {
+    Object.entries(vendorCategory).forEach(([key, value]) => {
       setValue(key, value);
     });
-  }, [category, setValue]);
+  }, [vendorCategory, setValue]);
 
  
 
@@ -122,12 +122,12 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     id="name"
                     {...register("Name", )}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type name of Category"
+                    placeholder="Type name of Vendor Category"
                     required=""
                   />
                   {errors.name && (
                     <p className="text-sm text-red-400">
-                      Name of Category is required
+                      Name of Vendor Category is required
                     </p>
                   )}
                 </div>
@@ -145,7 +145,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     name="description"
                     {...register("Description", )}
                     className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Write Category Descriptions here"
+                    placeholder="Write Vendor Category Descriptions here"
                   ></textarea>
                   {errors.description && (
                     <p className="text-sm text-red-400">
@@ -173,7 +173,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Category
+                Update Vendor Category
               </button>
             </form>
           </div>
@@ -183,4 +183,4 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
   );
 };
 
-export default EditCategoryModal;
+export default EditVendorCategoryModal;

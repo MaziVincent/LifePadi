@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,13 +22,26 @@ namespace Api.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<VendorCategoryDto>> allAsync()
+        public async Task<PagedList<VendorCategory>> allAsync(SearchPaging props)
         {
             try
             {
-                var vendorCategories = await _context.VendorCategories.ToListAsync();
-                var vendorCategoriesDto = _mapper.Map<IEnumerable<VendorCategoryDto>>(vendorCategories);
-                return vendorCategoriesDto;
+                IQueryable<VendorCategory> categoryList = Enumerable.Empty<VendorCategory>().AsQueryable();
+
+                if (props.SearchString is null)
+                {
+                    var categories1 = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt)
+                    .ToListAsync();
+                    categoryList = categoryList.Concat(categories1);
+                    var result = PagedList<VendorCategory>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                var categories = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt)
+                    .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .ToListAsync();
+                categoryList = categoryList.Concat(categories);
+                var returned = PagedList<VendorCategory>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
+                return returned;
             }
             catch (InvalidOperationException ex)
             {
@@ -92,7 +107,7 @@ namespace Api.Services
             try
             {
                 var vendorCategory = await _context.VendorCategories
-                .Include(v => v.Vendors).FirstOrDefaultAsync(v => v.Id == id);
+                .Include(v => v.Vendors).FirstOrDefaultAsync();
 
                 if (vendorCategory == null)
                 {

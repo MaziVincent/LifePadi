@@ -20,6 +20,7 @@ namespace Api.DTO
 
     public class VendorDtoLite
     {
+        public int? Id { get; set; }
         public string? ContactAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
@@ -43,7 +44,14 @@ namespace Api.DTO
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
         public string? Password { get; set; }
+        public string? Town { get; set;}
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? PostalCode { get; set; }
+        public string? Longitude { get; set; }
+        public string? Latitude { get; set; }
         public int? ServiceId { get; set; }
+        public int? VendorCategoryId {get; set;}
     }
 
     public class AuthVendorDtoLite

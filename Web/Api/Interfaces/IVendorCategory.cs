@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface IVendorCategory
     {
-        public Task<IEnumerable<VendorCategoryDto>> allAsync();
+        public Task<PagedList<VendorCategory>> allAsync( SearchPaging props);
         public Task<VendorCategoryDto> getAsync(int id);
         public Task<VendorCategoryDto> CreateAsync(VendorCategoryDto vc);
         public Task<VendorCategoryDto> UpdateAsync(int id, VendorCategoryDto vc);

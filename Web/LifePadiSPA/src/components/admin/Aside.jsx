@@ -18,7 +18,7 @@ const Aside = ({ aside, setAside }) => {
       text:"Categories"
     },
     {
-      to:"/admin/vendor",
+      to:"/admin/vendorcategory",
       icon:"line-icon-Shopping-Bag text-2xl hover:text-green-800",
       text:"Vendors"
     },

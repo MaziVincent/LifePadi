@@ -6,7 +6,7 @@ const usePost = () => {
   const postData = async (url,data, token) => {
     const controller = new AbortController();
 
-    console.log(data);
+   // console.log(data);
     let result;
 
     try {
