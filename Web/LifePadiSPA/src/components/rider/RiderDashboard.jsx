@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
 import {
@@ -392,3 +393,10 @@ const RiderDashboard = () => {
 }
 
 export default RiderDashboard
+=======
+const RiderDashboard = () => {
+    return ( <> Riddr dash </> );
+}
+ 
+export default RiderDashboard;
+>>>>>>> a0030da (vendor and product commit)

@@ -60,8 +60,13 @@ namespace Api.DTO
 
         public string? State { get; set; }
         public string? PostalCode { get; set; }
+<<<<<<< HEAD
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
+=======
+        public string? Longitude { get; set; }
+        public string? Latitude { get; set; }
+>>>>>>> a0030da (vendor and product commit)
         public string? VendorImgUrl { get; set; }
         public int? ServiceId { get; set; }
         public int? VendorCategoryId {get; set;}

@@ -1,9 +1,13 @@
 ﻿using Api.DTO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Api.Models;
+>>>>>>> a0030da (vendor and product commit)
 
 namespace Api.Interfaces
 {
@@ -54,8 +58,8 @@ namespace Api.Interfaces
 =======
         public Task<string> deleteAsync(int id);
         public Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor);
-        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id);
-        public Task<AuthVendorDtoLite> getAsync(int id);
+        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDto vendor, int id);
+        public Task<AuthVendorDto> getAsync(int id);
         public Task<VendorDtoLite> getVendorByTagName(string tag);
 >>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> totalNumberOfVendors();

@@ -135,6 +135,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+<<<<<<< HEAD
 =======
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
                 newVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
@@ -147,6 +148,8 @@ namespace Api.Services
             {
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> a0030da (vendor and product commit)
             }
         }
 
@@ -157,6 +160,9 @@ namespace Api.Services
                 var vendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
                 if (vendor == null) return null!;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0030da (vendor and product commit)
                 _dbContext.Vendors.Remove(vendor);
                 await _dbContext.SaveChangesAsync();
                 return "Vendor deleted";
@@ -171,9 +177,13 @@ namespace Api.Services
         {
             try
             {
+<<<<<<< HEAD
                 var vendor = await _dbContext!.Vendors.Where(v => v.Id == id)
                                 .Include(p => p.Products)
                                 .Include(v => v.Addresses!.Where(a => a.UserId == id)).FirstOrDefaultAsync();
+=======
+                var vendor = await _dbContext!.Vendors.Where(v => v.Id == id).Include(v => v.Addresses!.Where(a => a.UserId == id)).FirstOrDefaultAsync();
+>>>>>>> a0030da (vendor and product commit)
                 if (vendor == null) return null!;
                 var address = vendor.Addresses!.FirstOrDefault();
                 if (address == null)
@@ -190,6 +200,7 @@ namespace Api.Services
                         ServiceId = vendor.ServiceId,
                         VendorCategoryId = vendor.VendorCategoryId,
                         ContactAddress = vendor.ContactAddress,
+<<<<<<< HEAD
                         VendorImgUrl = vendor.VendorImgUrl,
                         Products = _mapper.Map<List<ProductDtoLite>>(vendor.Products)
 
@@ -225,6 +236,40 @@ namespace Api.Services
 
 
 
+=======
+                        VendorImgUrl = vendor.VendorImgUrl
+                       
+                    };
+
+
+
+                    return authVendorDto1;
+                }
+                var authVendorDto = new AuthVendorDto
+                {
+                    Id = vendor.Id,
+                    Name = vendor.Name,
+                    Email = vendor.Email,
+                    PhoneNumber = vendor.PhoneNumber,
+                    //Password = vendor.PasswordHash,
+                    Tag = vendor.Tag,
+                    OpeningHours = vendor.OpeningHours,
+                    ClosingHours = vendor.ClosingHours,
+                    ServiceId = vendor.ServiceId,
+                    VendorCategoryId = vendor.VendorCategoryId,
+                    ContactAddress = vendor.ContactAddress,
+                    VendorImgUrl = vendor.VendorImgUrl,
+                    Town = address!.Town,
+                    City = address.City,
+                    State = address.State,
+                    PostalCode = address.PostalCode,
+                    Longitude = address.Longitude,
+                    Latitude = address.Latitude,
+                };
+
+
+
+>>>>>>> a0030da (vendor and product commit)
                 return authVendorDto;
             }
             catch (Exception ex)
@@ -250,6 +295,7 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString)
+<<<<<<< HEAD
 =======
                 return "Vendor deleted";
             }
@@ -296,6 +342,8 @@ namespace Api.Services
 
         public async Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
@@ -322,6 +370,9 @@ namespace Api.Services
                 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0030da (vendor and product commit)
                 var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendorList);
                 return VendorDtoLite;
             }
@@ -345,6 +396,7 @@ namespace Api.Services
         }
 
         public async Task<AuthVendorDtoLite> updateAsync(AuthVendorDto vendor, int id)
+<<<<<<< HEAD
 =======
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendorList);
                 return vendorDTOLite;
@@ -378,11 +430,16 @@ namespace Api.Services
 =======
         public async Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
                 var initialVendor = await _dbContext!.Vendors.FirstOrDefaultAsync(v => v.Id == id);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0030da (vendor and product commit)
                 var currentAddress = await _dbContext!.Addresses.FirstOrDefaultAsync(a => a.UserId == id);
                 if (initialVendor == null) return null!;
                 initialVendor.SearchString = vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
@@ -394,18 +451,28 @@ namespace Api.Services
                 initialVendor.ServiceId = vendor.ServiceId;
                 initialVendor.OpeningHours = vendor.OpeningHours;
                 initialVendor.ClosingHours = vendor.ClosingHours;
+<<<<<<< HEAD
                 initialVendor.TimeTakesToPurchase = vendor.TimeTakesToPurchase;
+=======
+>>>>>>> a0030da (vendor and product commit)
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 currentAddress!.Name = vendor.ContactAddress;
                 currentAddress.Town = vendor.Town;
                 currentAddress.City = vendor.City;
                 currentAddress.State = vendor.State;
+<<<<<<< HEAD
                 currentAddress.LocalGovt = vendor.LocalGovt;
+=======
+>>>>>>> a0030da (vendor and product commit)
                 currentAddress.PostalCode = vendor.PostalCode;
                 currentAddress.Longitude = vendor.Longitude;
                 currentAddress.Latitude = vendor.Latitude;
                 _dbContext!.Addresses.Update(currentAddress);
+<<<<<<< HEAD
                 _dbContext.Vendors.Update(initialVendor);
+=======
+                _dbContext.Vendors.Attach(initialVendor);
+>>>>>>> a0030da (vendor and product commit)
                 await _dbContext.SaveChangesAsync();
                 var currentVendor = _mapper.Map<AuthVendorDtoLite>(initialVendor);
 
@@ -418,6 +485,7 @@ namespace Api.Services
         }
 
         public async Task<VendorDto> uploadVendorImg(int id, IFormFile image)
+<<<<<<< HEAD
 =======
                 if (initialVendor == null) return null!;
                 initialVendor.SearchString = vendor.VendorType!.ToUpper() + " " + vendor.Name!.Replace(" ", "").ToUpper();
@@ -446,6 +514,8 @@ namespace Api.Services
 =======
         public async Task<VendorDto> uploadVendorImg(int id, IFormFile image)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
@@ -454,6 +524,9 @@ namespace Api.Services
                 if (vendor == null) return null!;
                 var imgPath = await UploadImage.uploadImg(image, _cloudinary, folderName);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0030da (vendor and product commit)
                 if (imgPath == null) throw new ServiceException("Can not upload the vendor image");
                 vendor.VendorImgUrl = imgPath;
                 _dbContext!.Vendors.Attach(vendor);
@@ -482,6 +555,7 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<VendorDtoLite>> vendorsOnly()
+<<<<<<< HEAD
 =======
                 if (imgPath == null) throw new Exception("Can not upload the vendor image");
                 vendor.VendorImgUrl = imgPath;
@@ -502,12 +576,17 @@ namespace Api.Services
 =======
         public async Task<IEnumerable<VendorDtoLite>> vendorsOnly()
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
                 var vendors = await _dbContext!.Vendors.ToListAsync();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0030da (vendor and product commit)
                 var VendorDtoLite = _mapper.Map<List<VendorDtoLite>>(vendors);
                 return VendorDtoLite;
             }
@@ -518,6 +597,7 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id)
+<<<<<<< HEAD
 =======
                 var vendorDTOLite = _mapper.Map<List<VendorDTOLite>>(vendors);
                 return vendorDTOLite;
@@ -538,11 +618,14 @@ namespace Api.Services
 =======
         public async Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
                 var vendor = await _dbContext!.Vendors
                     .Include(v => v.Products!)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                         .ThenInclude(p => p.Category)
@@ -654,6 +737,8 @@ namespace Api.Services
                     .Include(v => v.Products!)
 =======
 >>>>>>> 58020e7 (removed service from product)
+=======
+>>>>>>> a0030da (vendor and product commit)
                     .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
@@ -661,7 +746,11 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new Exception(ex.Message);
+=======
+                throw new ServiceException(ex.Message);
+>>>>>>> a0030da (vendor and product commit)
             }
         }
     }

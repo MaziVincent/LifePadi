@@ -163,7 +163,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     placeholder="Type name of Service"
                     required=""
                   />
-                  {errors.name && (
+                  {errors.Name && (
                     <p className="text-sm text-red-400">
 >>>>>>> 55ba6ae (Admin service)
                       Name of service is required
@@ -187,10 +187,14 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     placeholder="Write Service Descriptions here"
                   ></textarea>
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {errors.Description && (
                     <p className="text-sm text-red">
 =======
                   {errors.description && (
+=======
+                  {errors.Description && (
+>>>>>>> a0030da (vendor and product commit)
                     <p className="text-sm text-red-400">
 >>>>>>> 55ba6ae (Admin service)
                       Description is required
@@ -232,6 +236,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     onChange={handleChange}
                   />
                   {errors.ServiceIcon && (
+<<<<<<< HEAD
                     <p className="text-sm text-red">
                       Service icon is required
                     </p>
@@ -248,6 +253,8 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     onChange={handleChange}
                   />
                   {errors.icon && (
+=======
+>>>>>>> a0030da (vendor and product commit)
                     <p className="text-sm text-red-400">
                       Service icon is required
                     </p>

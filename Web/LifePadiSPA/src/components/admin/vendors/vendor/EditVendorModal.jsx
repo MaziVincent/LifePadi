@@ -67,7 +67,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
   });
 
   const handleUpdate = (vendor) => {
+<<<<<<< HEAD
     console.log(vendor);
+=======
+    //console.log(vendor);
+>>>>>>> a0030da (vendor and product commit)
      mutate(vendor);
   };
 
@@ -84,8 +88,12 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       console.error("Error fetching states:", error);
       setError("Error fetching states. Please try again later.");
     }
+<<<<<<< HEAD
   }, [vendorId]);
   
+=======
+  }, []);
+>>>>>>> a0030da (vendor and product commit)
 
   const getServices = useCallback(async () => {
     try {
@@ -95,12 +103,17 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       console.error("Error fetching services:", error);
       setError("Error fetching services. Please try again later.");
     }
+<<<<<<< HEAD
   }, [baseUrl, vendorId]);
+=======
+  }, [baseUrl]);
+>>>>>>> a0030da (vendor and product commit)
 
   const getLocalGovts = async (state) => {
 
     try {
       const localGovts = await fetch(`https://nga-states-lga.onrender.com/?state=${state}`);
+<<<<<<< HEAD
      
       
       if(localGovts.data.includes('Error')){
@@ -111,6 +124,10 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
       setLGAs(localGovts.data);
       console.log(localGovts.data)
+=======
+      setLGAs(localGovts.data);
+     // console.log(localGovts.data)
+>>>>>>> a0030da (vendor and product commit)
 
     } catch (error) {
       console.error("Error fetching LGAs:", error);
@@ -121,15 +138,24 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
   const getVendor = useCallback(async () => {
     try {
       const result = await fetch(`${url}/get/${vendorId}`, auth.accessToken);
+<<<<<<< HEAD
       console.log(result.data);
       setVendor(result.data);
       console.log(result.data?.State)
       getLocalGovts(result.data?.State);
+=======
+      //console.log(result.data);
+      setVendor(result.data);
+>>>>>>> a0030da (vendor and product commit)
       Object.entries(result.data).forEach(([key, value]) => {
         setValue(key, value);
       });
 
+<<<<<<< HEAD
      
+=======
+      getLocalGovts(result.data.State);
+>>>>>>> a0030da (vendor and product commit)
 
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -147,6 +173,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
     //     setValue(key, value);
     //   });
     // }
+<<<<<<< HEAD
   }, [vendorId]);
 
   useEffect(() => {
@@ -158,7 +185,20 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
     getServices();
     //console.log('services')
 
+=======
+>>>>>>> a0030da (vendor and product commit)
   }, [vendorId]);
+
+  useEffect(() => {
+    getStates();
+    //console.log('state')
+  }, []);
+
+  useEffect(() => {
+    getServices();
+    //console.log('services')
+
+  }, []);
 
   const handleStateChange = (e) => {
     e.preventDefault();
@@ -472,16 +512,27 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
                 <div className="sm:col-span-1">
                   <label
+<<<<<<< HEAD
                     htmlFor="localGovt"
+=======
+                    htmlFor="city"
+>>>>>>> a0030da (vendor and product commit)
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
                     Vendor LocalGovt
                   </label>
                   <select
+<<<<<<< HEAD
                     id="localGovt"
                     name="localGovt"
                     {...register("LocalGovt", {
                       required: "LocalGovt is required",
+=======
+                    id="city"
+                    name="city"
+                    {...register("City", {
+                      required: "City is required",
+>>>>>>> a0030da (vendor and product commit)
                     })}
                     defaultValue={"default"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"

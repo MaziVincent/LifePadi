@@ -26,7 +26,7 @@ namespace Api.Controllers
             _ivendor = ivendor;
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
 >>>>>>> ee48634 (done with service, category and product controllers.)
@@ -124,6 +124,7 @@ namespace Api.Controllers
 <<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDto vendor)
+<<<<<<< HEAD
 =======
         [HttpPut("{id}/update")]
 <<<<<<< HEAD
@@ -132,6 +133,8 @@ namespace Api.Controllers
 =======
         public async Task<IActionResult> update(int id, [FromForm] AuthVendorDtoLite vendor)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> a0030da (vendor and product commit)
         {
             try
             {
@@ -152,9 +155,13 @@ namespace Api.Controllers
                 if (result == null) return NotFound();
                 return Ok(result);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+
+>>>>>>> a0030da (vendor and product commit)
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -194,10 +201,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("products/{id}")]
 =======
         [HttpGet("{id}/products")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("products/{id}")]
+>>>>>>> a0030da (vendor and product commit)
         public async Task<IActionResult> vendorProducts(int id)
         {
             try
