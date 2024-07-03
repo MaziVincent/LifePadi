@@ -1,16 +1,18 @@
-import usePost from "../../../hooks/usePost";
-import useAuth from "../../../hooks/useAuth";
-import baseUrl from "../../../api/baseUrl";
+
+
+import useUpdate from "../../../../hooks/useUpdate";
+import useAuth from "../../../../hooks/useAuth";
+import baseUrl from "../../../../api/baseUrl";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from 'react-hot-toast'
 import { useState } from "react";
 
-const CreateServiceModal = ({ open, handleClose }) => {
-  const post = usePost();
+const UploadImageModal = ({ open, handleClose, id }) => {
+  const update = useUpdate();
   const { auth } = useAuth();
-  const url = `${baseUrl}service/create`;
+  const url = `${baseUrl}vendor/uploadImg/${id}`;
   const queryClient = useQueryClient();
   const [fileError, setFileError] = useState(false);
 
@@ -22,28 +24,26 @@ const CreateServiceModal = ({ open, handleClose }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
-    const service = {...data, ServiceIcon: data.ServiceIcon[0]}
     const formData = new FormData()
 
-    for(const key in service){
-      formData.append(key, service[key])
-    }
-    const response = await post(url, formData, auth?.accessToken);
+    formData.append('Image', data.Image[0])
+    
+    const response = await update(url, formData, auth?.accessToken);
     console.log(response);
   };
 
   const { mutate } = useMutation(create, {
     onSuccess: () => {
-      queryClient.invalidateQueries("services");
-      toast.success("Service Created Successfully");
+      queryClient.invalidateQueries("vendorcategory");
+      toast.success("Image Uploaded Successfully");
       reset();
-      handleClose({ type: "open" });
+      handleClose({ type: "upload" });
     },
   });
 
-  const handleCreate = (service) => {
-  //  console.log(data)
-    mutate(service);
+  const handleUpload = (image) => {
+   // console.log(image)
+    mutate(image);
   };
 
   const handleChange = (event) => {
@@ -52,7 +52,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
 
     //console.log(file)
     
-    if (!file || file.size > 50 * 1024) {
+    if (!file || file.size > 200 * 1024) {
       setFileError(true);
     }else{
       setFileError(false)
@@ -64,7 +64,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
     <Modal
       open={open}
       onClose={() => {
-        handleClose({ type: "open" });
+        handleClose({ type: "upload" });
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -81,12 +81,12 @@ const CreateServiceModal = ({ open, handleClose }) => {
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
-                Create Service
+                Upload Vendor Image
               </h3>
               <button
                 type="button"
                 onClick={() => {
-                  handleClose({ type: "open" });
+                  handleClose({ type: "upload" });
                 }}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
@@ -108,63 +108,17 @@ const CreateServiceModal = ({ open, handleClose }) => {
               </button>
             </div>
             {/* <!-- Modal body --> */}
-            <form onSubmit={handleSubmit(handleCreate)}>
+            <form onSubmit={handleSubmit(handleUpload)}>
               <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    {...register("Name", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type name of Service"
-                    required=""
-                  />
-                  {errors.Name && (
-                    <p className="text-sm text-red-400">
-                      Name of service is required
-                    </p>
-                  )}
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="description"
-                    className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-50"
-                  >
-                    Description
-                  </label>
-                  <textarea
-                    id="description"
-                    rows="4"
-                    name="description"
-                    {...register("Description", { required: true })}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Write Service Descriptions here"
-                  ></textarea>
-                  {errors.Description && (
-                    <p className="text-sm text-red-400">
-                      Description is required
-                    </p>
-                  )}
-                  
-                </div>
-
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="icon"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Service Icon (
+                    Vendor Image (
                     <span className="text-sm text-gray-500">
                       {" "}
-                      Icon should not be above 50kb
+                      Icon should not be above 200kb
                     </span>
                     )
                   </label>
@@ -173,21 +127,21 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     name="icon"
                     id="icon"
                     accept="image/*"
-                    {...register("ServiceIcon", { required: true })}
+                    {...register("Image", { required: true })}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Upload Service Icon"
+                    placeholder="Upload Vendor Image"
                     required
                     onChange={handleChange}
                   />
-                  {errors.ServiceIcon && (
+                  {errors.icon && (
                     <p className="text-sm text-red-400">
-                      Service icon is required
+                      Vendor Image is required
                     </p>
                   )}
                   {fileError && (
                     <p className="text-sm text-red-400">
                       {" "}
-                      File should not be above 50kb
+                      File should not be above 200kb
                     </p>
                   )}
                 </div>
@@ -209,7 +163,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Create New Service
+                  Upload Vendor Image
                 </button>
                 
             
@@ -221,4 +175,4 @@ const CreateServiceModal = ({ open, handleClose }) => {
   );
 };
 
-export default CreateServiceModal;
+export default UploadImageModal;

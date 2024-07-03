@@ -84,7 +84,7 @@ const AdminServiceDetails = () => {
         <Breadcrumbs aria-label="breadcrumb">
           <Link
             to="/admin/service"
-            className="hover:border-b-2"
+            className="hover:border-b-2 hover:border-b-green-700"
           >
             Services
           </Link>
@@ -92,7 +92,7 @@ const AdminServiceDetails = () => {
           <Link
             to="#"
             aria-current="page"
-            className="hover:border-b-2"
+            className="hover:border-b-2 hover:border-b-green-700"
           >
             {data?.Name}
           </Link>

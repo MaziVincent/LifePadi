@@ -1,4 +1,5 @@
 ﻿using Api.DTO;
+using Api.Models;
 
 namespace Api.Interfaces
 {
@@ -11,8 +12,8 @@ namespace Api.Interfaces
         public Task<IEnumerable<VendorDtoLite>> searchAsync(string searchString);
         public Task<string> deleteAsync(int id);
         public Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor);
-        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDtoLite vendor, int id);
-        public Task<AuthVendorDtoLite> getAsync(int id);
+        public Task<AuthVendorDtoLite> updateAsync(AuthVendorDto vendor, int id);
+        public Task<AuthVendorDto> getAsync(int id);
         public Task<VendorDtoLite> getVendorByTagName(string tag);
         public Task<int> totalNumberOfVendors();
         public Task<bool> vendorExists(string email);

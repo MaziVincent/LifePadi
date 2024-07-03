@@ -1,4 +1,4 @@
-import usePost from "../../../../hooks/usePost";
+import useUpdate from "../../../../hooks/useUpdate";
 import useFetch from "../../../../hooks/useFetch";
 import useAuth from "../../../../hooks/useAuth";
 import baseUrl from "../../../../api/baseUrl";
@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CustomTabPanel from "../../subcomponents/CustomTabPanel";
@@ -19,93 +19,133 @@ function a11yProps(index) {
 }
 
 const EditVendorModal = ({ open, handleClose, vendorId }) => {
-
-  const post = usePost();
+  const update = useUpdate();
   const fetch = useFetch();
   const { auth } = useAuth();
   const url = `${baseUrl}vendor`;
   const queryClient = useQueryClient();
   const [states, setStates] = useState([]);
-  const [lga, setLGAs] = useState([]);
+  const [services, setServices] = useState([]);
+  const [vendor, setVendor] = useState({});
+  const [value, set_Value] = useState(0);
+  const [error, setError] = useState("");
+  const [lgas, setLGAs] = useState([]);
 
-  const getData = async () => {
-    const [vendor, services] = Promise.all([
-        await fetch(`${url}/${vendorId}`, auth.accessToken),
-        await fetch(`${baseUrl}service/allLite`, auth.accessToken)
+  //console.log(vendorId);
 
-    ])
-
-    return {vendor : vendor.data, services: services.data };
-  };
-
-  const { data, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ["data", vendorId],
-    queryFn: () => getData(),
-    keepPreviousData: true,
-    staleTime: 20000,
-    refetchOnMount: "always",
-    enabled: !!vendorId
-  });
-
-  console.log(data);
- 
   const {
     register,
     handleSubmit,
     reset,
     watch,
     setValue,
-    formState: { errors, isValid, isSubmitting  },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "all" });
 
   const updateVendor = async (data) => {
-      
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    const response = await update(`${url}/update/${rider.Id}`, formData, auth?.accessToken);
-    console.log(response.data);
+    const response = await update(
+      `${url}/update/${vendorId}`,
+      formData,
+      auth?.accessToken
+    );
+   // console.log(response.data);
   };
 
   const { mutate } = useMutation(updateVendor, {
     onSuccess: () => {
       queryClient.invalidateQueries("vendorcategory");
       toast.success("Vendor Updated Successfully");
-      handleClose({ type: "edit" })
+      handleClose({ type: "edit" });
       reset();
     },
   });
 
   const handleUpdate = (vendor) => {
-      console.log(vendor)
-   // mutate(rider);
+    //console.log(vendor);
+     mutate(vendor);
   };
-
-  const [value, set_Value] = useState(0);
 
   const handleChange = (event, newValue) => {
     set_Value(newValue);
   };
 
-  useEffect(() => {
-    
-    const getStates = async () => {
+  const getStates = useCallback(async () => {
+    try {
       const result = await fetch("https://nga-states-lga.onrender.com/fetch");
       setStates(result.data);
-      //console.log(result.data);
-    };
-    getStates();
 
-    if(data){
-        Object.entries(data.vendor).forEach(([key, value]) => {
-            setValue(key, value);
-          });
+    } catch (error) {
+      console.error("Error fetching states:", error);
+      setError("Error fetching states. Please try again later.");
+    }
+  }, []);
+
+  const getServices = useCallback(async () => {
+    try {
+      const result = await fetch(`${baseUrl}service/allLite`);
+      setServices(result.data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+      setError("Error fetching services. Please try again later.");
+    }
+  }, [baseUrl]);
+
+  const getLocalGovts = async (state) => {
+
+    try {
+      const localGovts = await fetch(`https://nga-states-lga.onrender.com/?state=${state}`);
+      setLGAs(localGovts.data);
+     // console.log(localGovts.data)
+
+    } catch (error) {
+      console.error("Error fetching LGAs:", error);
+      setError("Error fetching Local Govts. Please try again later.");
+    }
+  };
+
+  const getVendor = useCallback(async () => {
+    try {
+      const result = await fetch(`${url}/get/${vendorId}`, auth.accessToken);
+      //console.log(result.data);
+      setVendor(result.data);
+      Object.entries(result.data).forEach(([key, value]) => {
+        setValue(key, value);
+      });
+
+      getLocalGovts(result.data.State);
+
+    } catch (error) {
+      console.error("Error fetching states:", error);
+      setError("Error fetching states. Please try again later.");
+    }
+  }, [vendorId]);
+
+  useEffect(() => {
+    if (vendorId) {
+      getVendor();
     }
 
-    
-
+    // if (vendor) {
+    //   Object.entries(vendor).forEach(([key, value]) => {
+    //     setValue(key, value);
+    //   });
+    // }
   }, [vendorId]);
+
+  useEffect(() => {
+    getStates();
+    //console.log('state')
+  }, []);
+
+  useEffect(() => {
+    getServices();
+    //console.log('services')
+
+  }, []);
 
   const handleStateChange = (e) => {
     e.preventDefault();
@@ -114,17 +154,19 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
         `https://nga-states-lga.onrender.com/?state=${state}`
       );
 
-      console.log(result.data)
+     // console.log(result.data);
       setLGAs(result.data);
     };
     getLGAs(e.target.value);
   };
 
+
   return (
     <Modal
       open={open}
       onClose={() => {
-        handleClose({ type: "open" });
+        handleClose({ type: "edit" });
+        reset();
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -144,7 +186,8 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
             <button
               type="button"
               onClick={() => {
-                handleClose({ type: "open" });
+                handleClose({ type: "edit" });
+                reset();
               }}
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="defaultModal"
@@ -327,10 +370,9 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     >
                       Select Service Type
                     </option>
-                    {isError && <option> Error Loading Service </option>}
-                    {isLoading && <option> Loading Service... </option>}
+                    {error && <option> Error Loading Service </option>}
 
-                    {data?.map((service) => (
+                    {services?.map((service) => (
                       <option
                         key={service.Id}
                         value={service.Id}
@@ -387,14 +429,13 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                       required: "State is required",
                     })}
                     defaultValue={"default"}
-                    onChange={(e,) => handleStateChange(e)}
+                    onChange={(e) => handleStateChange(e)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option
                       disabled
                       value="default"
                       className="text-gray-600"
-                      
                     >
                       Select State
                     </option>
@@ -418,14 +459,14 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
                 <div className="sm:col-span-1">
                   <label
-                    htmlFor="state"
+                    htmlFor="city"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
                     Vendor City/LGA
                   </label>
                   <select
-                    id="state"
-                    name="state"
+                    id="city"
+                    name="city"
                     {...register("City", {
                       required: "City is required",
                     })}
@@ -436,12 +477,13 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                       disabled
                       value="default"
                       className="text-gray-600"
-                      selected
+                      
                     >
                       Select City/LGA
                     </option>
 
-                    { lga.map((lga) => (
+                    {
+                    lgas?.map((lga) => (
                       <option
                         key={lga}
                         value={lga}
@@ -580,63 +622,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     </p>
                   )}
                 </div>
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    {...register("Password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 4,
-                        message: "Password must be at least 4 characters",
-                      },
-                    })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Password"
-                    required
-                  />
-
-                  {errors.Password && (
-                    <p className="text-sm text-red-400">
-                      {errors.Password.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    {...register("ConfirmPassword", {
-                      required: "Confirm Password is required",
-                      validate: (value) =>
-                        value === watch("Password") || "Passwords do not match",
-                    })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type confirm Password "
-                    required=""
-                  />
-
-                  {errors.ConfirmPassword && (
-                    <p className="text-sm text-red-400">
-                      {errors.ConfirmPassword.message}
-                    </p>
-                  )}
-                </div>
+                
               </div>
               <button
                 type="submit"

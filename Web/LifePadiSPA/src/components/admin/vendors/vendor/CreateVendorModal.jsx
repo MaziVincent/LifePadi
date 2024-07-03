@@ -63,7 +63,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
 
   const { mutate } = useMutation(create, {
     onSuccess: () => {
-      queryClient.invalidateQueries("vendors");
+      queryClient.invalidateQueries("vendorcategory");
       toast.success("Vendor Created Successfully");
       handleClose({ type: "open" });
       reset();

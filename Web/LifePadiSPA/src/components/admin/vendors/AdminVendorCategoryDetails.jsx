@@ -12,6 +12,9 @@ import Alert from "@mui/material/Alert";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialogue from "../subcomponents/DeleteDialogue";
 import { DataGrid } from "@mui/x-data-grid";
+import { Breadcrumbs } from "@mui/material";
+import { Link } from "react-router-dom";
+import UploadImageModal from "./vendor/UploadImageModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -23,10 +26,12 @@ const reducer = (state, action) => {
       return { ...state, activate: !state.activate };
     case "delete":
       return { ...state, delete: !state.delete };
-    case "vendor":
-      return { ...state, vendor: action.payload };
+    case "vendorId":
+      return { ...state, vendorId: action.payload };
     case "deleteId":
       return { ...state, deleteId: action.payload };
+    case "upload":
+      return {...state, upload: !state.upload}
 
     default:
       throw new Error();
@@ -47,7 +52,8 @@ const AdminVendorCategoryDetails = () => {
     edit: false,
     activate: false,
     delete: false,
-    vendor: {},
+    upload:false,
+    vendorId: null,
     deleteId: 0,
   });
 
@@ -119,7 +125,7 @@ const AdminVendorCategoryDetails = () => {
               onClick={(event) => {
                 event.stopPropagation();
                 dispatch({ type: "edit" });
-                dispatch({ type: "vendor", payload: params.row });
+                dispatch({ type: "vendorId", payload: params.row.Id });
               }}
             >
               <svg
@@ -138,7 +144,14 @@ const AdminVendorCategoryDetails = () => {
                 />
               </svg>
             </button>
-            <button className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 ">
+            <button 
+            className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 "
+            onClick={(event) => {
+              event.stopPropagation();
+              dispatch({ type: "upload" });
+              dispatch({ type: "vendorId", payload: params.row.Id });
+            }}
+            >
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -183,7 +196,7 @@ const AdminVendorCategoryDetails = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
   //   const handlePageChange = (event, value) => {
   //     setPage(value);
@@ -196,26 +209,22 @@ const AdminVendorCategoryDetails = () => {
       <section className="bg-white dark:bg-gray-900 mb-5 flex flex-col gap-3">
         <div className="flex justify-start p-3 w-full">
           {" "}
-          <button onClick={() => navigate(-1)}>
-            {" "}
-            <svg
-              className="w-8 h-8 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="27"
-              height="27"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="m15 19-7-7 7-7"
-              />
-            </svg>
-          </button>
+          <Breadcrumbs aria-label="breadcrumb">
+          <Link
+            to="/admin/vendorcategory"
+            className="hover:border-b-2 hover:border-b-green-700"
+          >
+            Category
+          </Link>
+
+          <Link
+            to="#"
+            aria-current="page"
+            className="hover:border-b-2 hover:border-b-green-700"
+          >
+            {data?.Name}
+          </Link>
+        </Breadcrumbs>
         </div>
         <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
           <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
@@ -233,7 +242,7 @@ const AdminVendorCategoryDetails = () => {
 
       <section className="bg-white dark:bg-gray-900">
         <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
-          Vendors - {data?.Vendors.length}
+          Vendors - {data?.Vendors.length ? data?.Vendors.length : 0 }
         </h2>
       </section>
 
@@ -246,8 +255,10 @@ const AdminVendorCategoryDetails = () => {
       <EditVendorModal
         open={state.edit}
         handleClose={dispatch}
-        vendorCategory={state.category}
+        vendorId={state.vendorId}
       />
+
+      <UploadImageModal open={state.upload} handleClose={dispatch} id={state.vendorId}  />
 
       
 

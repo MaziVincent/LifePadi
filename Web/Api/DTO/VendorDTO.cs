@@ -50,6 +50,7 @@ namespace Api.DTO
         public string? PostalCode { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
+        public string? VendorImgUrl { get; set; }
         public int? ServiceId { get; set; }
         public int? VendorCategoryId {get; set;}
     }
@@ -63,7 +64,10 @@ namespace Api.DTO
         public string? Name { get; set; }
         public string? Tag { get; set; }
         public string? OpeningHours { get; set; }
+        public int? ServiceId {get; set;}
+        public int? VendorCategoryId {get; set;}
         public string? ClosingHours { get; set; }
+        
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

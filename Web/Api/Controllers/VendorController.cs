@@ -13,7 +13,7 @@ namespace Api.Controllers
             _ivendor = ivendor;
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -75,7 +75,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDtoLite vendor)
+        public async Task<IActionResult> update(int id, [FromForm] AuthVendorDto vendor)
         {
             try
             {
@@ -95,6 +95,7 @@ namespace Api.Controllers
                 var result = await _ivendor.searchAsync(searchString);
                 if (result == null) return NotFound();
                 return Ok(result);
+
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -128,7 +129,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/products")]
+        [HttpGet("products/{id}")]
         public async Task<IActionResult> vendorProducts(int id)
         {
             try

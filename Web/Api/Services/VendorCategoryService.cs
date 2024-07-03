@@ -106,7 +106,7 @@ namespace Api.Services
         {
             try
             {
-                var vendorCategory = await _context.VendorCategories
+                var vendorCategory = await _context.VendorCategories.Where(v => v.Id == id)
                 .Include(v => v.Vendors).FirstOrDefaultAsync();
 
                 if (vendorCategory == null)
