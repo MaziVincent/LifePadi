@@ -8,9 +8,12 @@ import baseUrl from "../../../../api/baseUrl";
 import toast, { Toaster } from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import Pagination from "@mui/material/Pagination";
 >>>>>>> a0030da (vendor and product commit)
+=======
+>>>>>>> 4dc5d34 (worked on product component)
 import Alert from "@mui/material/Alert";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialogue from "../../subcomponents/DeleteDialogue";
@@ -36,10 +39,14 @@ const reducer = (state, action) => {
       return { ...state, upload: !state.upload };
     case "product":
 <<<<<<< HEAD
+<<<<<<< HEAD
         return { ...state, product: action.payload };
 =======
         return { ...state, product: !state.upload };
 >>>>>>> a0030da (vendor and product commit)
+=======
+        return { ...state, product: action.payload };
+>>>>>>> 4dc5d34 (worked on product component)
 
     default:
       throw new Error();
@@ -192,6 +199,7 @@ const AdminVendorDetails = () => {
     queryFn: () => getVendorAndProducts(`${url}`),
     staleTime: 20000,
 <<<<<<< HEAD
+<<<<<<< HEAD
     refetchOnMount: "always",
   });
 
@@ -202,6 +210,12 @@ const AdminVendorDetails = () => {
 
   //console.log(data);
 >>>>>>> a0030da (vendor and product commit)
+=======
+    refetchOnMount: "always",
+  });
+
+  //console.log(data.products);
+>>>>>>> 4dc5d34 (worked on product component)
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900">
@@ -253,10 +267,14 @@ const AdminVendorDetails = () => {
                 <img
                   src={data?.vendor?.VendorImgUrl}
 <<<<<<< HEAD
+<<<<<<< HEAD
                   className="w-full rounded-full"
 =======
                   className="w-full"
 >>>>>>> a0030da (vendor and product commit)
+=======
+                  className="w-full rounded-full"
+>>>>>>> 4dc5d34 (worked on product component)
                 />
               </div>
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold">
@@ -315,8 +333,12 @@ const AdminVendorDetails = () => {
                   className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
+<<<<<<< HEAD
                   Create Vendor
 >>>>>>> a0030da (vendor and product commit)
+=======
+                  Create Product
+>>>>>>> 4dc5d34 (worked on product component)
                 </button>
               </div>
             </div>
@@ -350,6 +372,7 @@ const AdminVendorDetails = () => {
                   getRowId={(row) => row.Id}
                   onRowClick={(row) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     navigate(`/admin/product/${row.id}`);
                   }}
                   className="cursor-pointer bg-primary"
@@ -358,6 +381,9 @@ const AdminVendorDetails = () => {
             </div>
 =======
                     navigate(`/admin/vendor/${row.id}`);
+=======
+                    navigate(`/admin/product/${row.id}`);
+>>>>>>> 4dc5d34 (worked on product component)
                   }}
                   className="cursor-pointer"
                 />

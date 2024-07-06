@@ -41,6 +41,7 @@ namespace Api.DTO
         public string? ProductImgUrl { get; set; }
         public string? Tag { get; set; }
         public int? CategoryId {get; set;}
+<<<<<<< HEAD
         public CategoryDtoLite? Category { get; set; }
         public int? VendorId {get; set;}
         public VendorDtoLite? Vendor { get; set; }
@@ -93,6 +94,9 @@ namespace Api.DTO
         public int Service_Id { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
 =======
+=======
+        public int? VendorId {get; set;}
+>>>>>>> 4dc5d34 (worked on product component)
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

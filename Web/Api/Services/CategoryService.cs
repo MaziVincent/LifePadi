@@ -70,6 +70,7 @@ namespace Api.Services
                 return CategoryDtos;
 >>>>>>> b8c66da (changed all DTO to Dto)
             }
+<<<<<<< HEAD
 
             catch (Exception ex)
             {
@@ -140,6 +141,9 @@ namespace Api.Services
                 var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
                 return categoryDTOs;
             }
+=======
+            
+>>>>>>> 4dc5d34 (worked on product component)
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);

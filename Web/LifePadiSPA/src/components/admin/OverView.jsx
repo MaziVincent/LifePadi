@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
+<<<<<<< HEAD
 import { useState, useReducer } from "react";
 import { CircularProgress } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
@@ -31,11 +32,15 @@ const reducer = (state, action) => {
       throw new Error();
   }
 };
+=======
+import { useState } from "react";
+>>>>>>> 4dc5d34 (worked on product component)
 
 const Overview = () => {
   const fetch = useFetch();
   const { auth } = useAuth();
   const url = `${baseUrl}order`;
+<<<<<<< HEAD
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
@@ -49,6 +54,11 @@ const Overview = () => {
     category: {},
     id: 0,
   });
+=======
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+
+>>>>>>> 4dc5d34 (worked on product component)
 
   const getOrders = async (url) => {
     const response = await fetch(url, auth.accessToken);
@@ -59,12 +69,17 @@ const Overview = () => {
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["orders", page, search],
     queryFn: () =>
+<<<<<<< HEAD
       getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
+=======
+      getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+>>>>>>> 4dc5d34 (worked on product component)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
   });
 
+<<<<<<< HEAD
   //console.log(data);
 
 
@@ -77,6 +92,9 @@ const Overview = () => {
     navigate(`/admin/order/${id}`)
 
   }
+=======
+  console.log(data)
+>>>>>>> 4dc5d34 (worked on product component)
 
   return (
     <div className="bg-gray-100">

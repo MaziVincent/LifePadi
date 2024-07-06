@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 <<<<<<< HEAD
@@ -62,21 +64,22 @@ namespace Api.Services
             _dbContext = dBContext;
             _mapper = mapper;
         }
-        public async Task<DataTotalNumber> allAsync()
+        public async Task<PagedList<Order>> allAsync(SearchPaging props)
         {
             try
             {
-                var orders = await _dbContext!.Orders
+                IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
+
+                     var _orders = await _dbContext!.Orders
                     .Include(o => o.Customer)
                     .Include(o => o.OrderItems)
                     .OrderByDescending(o => o.CreatedAt)
                     .ToListAsync();
-                var OrderDto = _mapper.Map<List<OrderDto>>(orders);
-                return new DataTotalNumber
-                {
-                    TotalNumber = orders.Count(),
-                    Data = OrderDto.ToArray(),
-                };
+                    orderList = orderList.Concat(_orders);
+                    var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                    return result;
+                
+                
             }
             catch (Exception ex)
             {

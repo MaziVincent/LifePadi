@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Layout from "./components/Layout";
@@ -50,6 +51,26 @@ import TrackOrder from "./components/customer/TrackOrder";
 import PrivacyPolicy from "./components/home/PrivacyPolicy";
 import TermsAndCondition from "./components/home/TermsAndCondition";
 import Faq from "./components/home/Faq";
+=======
+import { Routes, Route } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import Layout from './components/Layout'
+import AdminLayout from './components/admin/AdminLayout'
+import Overview from './components/admin/OverView'
+import AdminService from './components/admin/services/AdminService'
+import AdminServiceDetails from './components/admin/services/AdminServiceDetails'
+import AdminCategory from './components/admin/categories/AdminCategory'
+import AdminRider from './components/admin/riders/AdminRider'
+import AdminRiderDetails from './components/admin/riders/AdminRiderDetails'
+import AdminCustomer from './components/admin/users/AdminCustomer'
+import AdminVendorCategory from './components/admin/vendors/AdminVendorCategory'
+import AdminVendorCategoryDetails from './components/admin/vendors/AdminVendorCategoryDetails'
+import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDetails'
+import AdminOrderDetails from './components/admin/AdminOrderDetails'
+import AdminCategoryDetails from './components/admin/categories/AdminCategoryDetail'
+import AdminProduct from './components/admin/vendors/product/AdminProduct'
+
+>>>>>>> 4dc5d34 (worked on product component)
 
 function App() {
   const queryClient = new QueryClient();
@@ -104,10 +125,27 @@ function App() {
 
         {/* AUTH */}
 
+<<<<<<< HEAD
         <Route
           path="/login"
           element={<Login />}
         />
+=======
+      {/*PROTECTED ROUTES ADMIN */}
+      <Route path='/admin' element={<AdminLayout />} >
+        <Route index element={<Overview />} />
+        <Route path='/admin/service' element={<AdminService />} />
+        <Route path='/admin/service/:id' element={<AdminServiceDetails />} />
+        <Route path='/admin/category' element={<AdminCategory />} />
+        <Route path='/admin/category/:id' element={<AdminCategoryDetails />} />
+        <Route path='/admin/rider' element={<AdminRider />} />
+        <Route path='/admin/rider/:id' element={<AdminRiderDetails />} />
+        <Route path='/admin/customer' element={<AdminCustomer />} />
+        <Route path='/admin/vendorcategory' element={<AdminVendorCategory />} />
+        <Route path='/admin/vendorcategory/:id' element={<AdminVendorCategoryDetails />} />
+        <Route path='/admin/vendor/:id' element={<AdminVendorDetails />} />
+        <Route path='/admin/product/:id' element={<AdminProduct />} />
+>>>>>>> 4dc5d34 (worked on product component)
 
         <Route
           path="/forgotPassword"

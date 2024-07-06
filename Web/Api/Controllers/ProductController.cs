@@ -117,10 +117,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
 =======
         [HttpGet("{id}/get")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("get/{id}")]
+>>>>>>> 4dc5d34 (worked on product component)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -288,6 +292,7 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] ProductDto product, int id)
 =======
@@ -296,6 +301,9 @@ namespace Api.Controllers
         public async Task<IActionResult> update([FromForm] ProductDTO product ,int id)
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
+=======
+        [HttpPut("update/{id}")]
+>>>>>>> 4dc5d34 (worked on product component)
         public async Task<IActionResult> update([FromForm] ProductDto product ,int id)
 >>>>>>> 836ec36 (changed all DTO to Dto)
         {
@@ -316,6 +324,9 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4dc5d34 (worked on product component)
         [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImage(int id, [FromForm] ImageDto productImage)
 =======

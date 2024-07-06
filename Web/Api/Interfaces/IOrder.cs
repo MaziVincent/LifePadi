@@ -1,9 +1,15 @@
 ﻿using Api.DTO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Api.Models;
+using API.DTO;
+using API.Models;
+>>>>>>> 4dc5d34 (worked on product component)
 
 namespace Api.Interfaces
 {
@@ -12,10 +18,14 @@ namespace Api.Interfaces
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Order>> allAsync(SearchPaging props);
 =======
         public Task<DataTotalNumber> allAsync();
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<PagedList<Order>> allAsync(SearchPaging props);
+>>>>>>> 4dc5d34 (worked on product component)
         public Task<IEnumerable<OrderDtoLite>> allOrderLite();
         public Task<OrderDto> createAsync(OrderDto order);
         public Task<OrderDto> updateAsync(OrderDto order, int id);

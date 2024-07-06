@@ -54,6 +54,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
 
   const create = async (data) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     // console.log(vendor)
     const formData = new FormData();
     for (const key in data) {
@@ -65,6 +66,12 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
     for (const key in vendor) {
       formData.append(key, vendor[key]);
 >>>>>>> a0030da (vendor and product commit)
+=======
+    // console.log(vendor)
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+>>>>>>> 4dc5d34 (worked on product component)
     }
     const response = await post(url, formData, auth?.accessToken);
     //console.log(response.data);
@@ -81,6 +88,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
 
   const handleCreate = (prod) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     const vendor = { ...prod, VendorId: vendorId, Image:file };
     //console.log(vendor);
@@ -89,6 +97,12 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
     //console.log(prod);
     mutate(prod);
 >>>>>>> a0030da (vendor and product commit)
+=======
+
+    const vendor = { ...prod, VendorId: vendorId, Image:file };
+    //console.log(prod);
+    mutate(vendor);
+>>>>>>> 4dc5d34 (worked on product component)
   };
 
   const handleChange = (event) => {

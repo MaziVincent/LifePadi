@@ -15,10 +15,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import UploadImageModal from "../subcomponents/UploadImageModal";
 =======
 import UploadImageModal from "./vendor/UploadImageModal";
 >>>>>>> a0030da (vendor and product commit)
+=======
+import UploadImageModal from "../subcomponents/UploadImageModal";
+>>>>>>> 4dc5d34 (worked on product component)
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -36,10 +40,14 @@ const reducer = (state, action) => {
       return { ...state, deleteId: action.payload };
     case "upload":
 <<<<<<< HEAD
+<<<<<<< HEAD
       return { ...state, upload: !state.upload };
 =======
       return {...state, upload: !state.upload}
 >>>>>>> a0030da (vendor and product commit)
+=======
+      return { ...state, upload: !state.upload };
+>>>>>>> 4dc5d34 (worked on product component)
 
     default:
       throw new Error();
@@ -61,10 +69,14 @@ const AdminVendorCategoryDetails = () => {
     activate: false,
     delete: false,
 <<<<<<< HEAD
+<<<<<<< HEAD
     upload: false,
 =======
     upload:false,
 >>>>>>> a0030da (vendor and product commit)
+=======
+    upload: false,
+>>>>>>> 4dc5d34 (worked on product component)
     vendorId: null,
     deleteId: 0,
   });
@@ -156,6 +168,9 @@ const AdminVendorCategoryDetails = () => {
               </svg>
             </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4dc5d34 (worked on product component)
             <button
               className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 "
               onClick={(event) => {
@@ -163,6 +178,7 @@ const AdminVendorCategoryDetails = () => {
                 dispatch({ type: "upload" });
                 dispatch({ type: "vendorId", payload: params.row.Id });
               }}
+<<<<<<< HEAD
 =======
             <button 
             className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 "
@@ -172,6 +188,8 @@ const AdminVendorCategoryDetails = () => {
               dispatch({ type: "vendorId", payload: params.row.Id });
             }}
 >>>>>>> a0030da (vendor and product commit)
+=======
+>>>>>>> 4dc5d34 (worked on product component)
             >
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-background"
@@ -228,6 +246,7 @@ const AdminVendorCategoryDetails = () => {
           {" "}
           <Breadcrumbs aria-label="breadcrumb">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Link
               to="/admin/vendorcategory"
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
@@ -260,6 +279,23 @@ const AdminVendorCategoryDetails = () => {
           </Link>
         </Breadcrumbs>
 >>>>>>> a0030da (vendor and product commit)
+=======
+            <Link
+              to="/admin/vendorcategory"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              Category
+            </Link>
+
+            <Link
+              to="#"
+              aria-current="page"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              {data?.Name}
+            </Link>
+          </Breadcrumbs>
+>>>>>>> 4dc5d34 (worked on product component)
         </div>
         <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
           <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
@@ -278,10 +314,14 @@ const AdminVendorCategoryDetails = () => {
       <section className="bg-white dark:bg-gray-900">
         <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
 <<<<<<< HEAD
+<<<<<<< HEAD
           Vendors - {data?.Vendors.length ? data?.Vendors.length : 0}
 =======
           Vendors - {data?.Vendors.length ? data?.Vendors.length : 0 }
 >>>>>>> a0030da (vendor and product commit)
+=======
+          Vendors - {data?.Vendors.length ? data?.Vendors.length : 0}
+>>>>>>> 4dc5d34 (worked on product component)
         </h2>
       </section>
 
@@ -298,11 +338,15 @@ const AdminVendorCategoryDetails = () => {
       />
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4dc5d34 (worked on product component)
       <UploadImageModal
         open={state.upload}
         handleClose={dispatch}
         id={state.vendorId}
         url={`${baseUrl}vendor`}
+<<<<<<< HEAD
         name="Vendor"
       />
 =======
@@ -310,6 +354,9 @@ const AdminVendorCategoryDetails = () => {
 
       
 >>>>>>> a0030da (vendor and product commit)
+=======
+      />
+>>>>>>> 4dc5d34 (worked on product component)
 
       <DeleteDialogue
         open={state.delete}

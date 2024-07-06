@@ -6,7 +6,10 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+<<<<<<< HEAD
 import LoadingGif from "../../shared/LodingGif";
+=======
+>>>>>>> 4dc5d34 (worked on product component)
 
 const UploadImageModal = ({ open, handleClose,url, id, name }) => {
   const update = useUpdate();
@@ -20,7 +23,11 @@ const UploadImageModal = ({ open, handleClose,url, id, name }) => {
     register,
     handleSubmit,
     reset,
+<<<<<<< HEAD
     formState: { errors, isSubmitting },
+=======
+    formState: { errors },
+>>>>>>> 4dc5d34 (worked on product component)
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -78,7 +85,11 @@ const UploadImageModal = ({ open, handleClose,url, id, name }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
+<<<<<<< HEAD
           <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+=======
+          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+>>>>>>> 4dc5d34 (worked on product component)
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 capitalize dark:text-gray-50">
@@ -171,7 +182,11 @@ const UploadImageModal = ({ open, handleClose,url, id, name }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
+<<<<<<< HEAD
                 {isSubmitting ? <LoadingGif/> : `Upload ${name} Image` }
+=======
+                {`Upload ${name} Image`}
+>>>>>>> 4dc5d34 (worked on product component)
               </button>
             </form>
           </div>
