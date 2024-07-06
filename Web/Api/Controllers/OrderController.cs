@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -9,18 +11,27 @@ namespace Api.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrder _iorder;
-        public OrderController(IOrder iorder)
+        private readonly IMapper _mapper;
+        public OrderController(IOrder iorder, IMapper mapper)
         {
             _iorder = iorder;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> all()
+        public async Task<IActionResult> all([FromQuery] SearchPaging props)
         {
             try
             {
-                var orders = await _iorder.allAsync();
-                return Ok(orders);
+                var orders = await _iorder.allAsync(props);
+                var result = _mapper.Map<List<OrderDto>>(orders);
+                var dataList = new {
+                    orders.PageSize,
+                    orders.TotalPages,
+                    orders.TotalCount,
+                    orders.CurrentPage
+                };
+                return Ok(new {result, dataList});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -80,7 +91,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try

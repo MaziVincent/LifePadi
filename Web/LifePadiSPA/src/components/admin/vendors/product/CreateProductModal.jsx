@@ -41,11 +41,10 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
-    const vendor = { ...data, VendorId: vendorId };
     // console.log(vendor)
     const formData = new FormData();
-    for (const key in vendor) {
-      formData.append(key, vendor[key]);
+    for (const key in data) {
+      formData.append(key, data[key]);
     }
     const response = await post(url, formData, auth?.accessToken);
     //console.log(response.data);
@@ -61,8 +60,10 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
   });
 
   const handleCreate = (prod) => {
+
+    const vendor = { ...prod, VendorId: vendorId, Image:file };
     //console.log(prod);
-    mutate(prod);
+    mutate(vendor);
   };
 
   const handleChange = (event) => {

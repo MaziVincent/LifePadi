@@ -40,6 +40,7 @@ namespace Api.Services
                 var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
             }
+            
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);

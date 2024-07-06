@@ -14,7 +14,7 @@ import DeleteDialogue from "../subcomponents/DeleteDialogue";
 import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
-import UploadImageModal from "./vendor/UploadImageModal";
+import UploadImageModal from "../subcomponents/UploadImageModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,7 +31,7 @@ const reducer = (state, action) => {
     case "deleteId":
       return { ...state, deleteId: action.payload };
     case "upload":
-      return {...state, upload: !state.upload}
+      return { ...state, upload: !state.upload };
 
     default:
       throw new Error();
@@ -52,7 +52,7 @@ const AdminVendorCategoryDetails = () => {
     edit: false,
     activate: false,
     delete: false,
-    upload:false,
+    upload: false,
     vendorId: null,
     deleteId: 0,
   });
@@ -101,7 +101,6 @@ const AdminVendorCategoryDetails = () => {
                 event.stopPropagation();
                 dispatch({ type: "delete" });
                 dispatch({ type: "deleteId", payload: params.row.Id });
-                
               }}
             >
               <svg
@@ -144,13 +143,13 @@ const AdminVendorCategoryDetails = () => {
                 />
               </svg>
             </button>
-            <button 
-            className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 "
-            onClick={(event) => {
-              event.stopPropagation();
-              dispatch({ type: "upload" });
-              dispatch({ type: "vendorId", payload: params.row.Id });
-            }}
+            <button
+              className="flex justify-center items-center rounded-lg px-2 shadow-lg bg-blue-200 h-10 hover:bg-blue-400 "
+              onClick={(event) => {
+                event.stopPropagation();
+                dispatch({ type: "upload" });
+                dispatch({ type: "vendorId", payload: params.row.Id });
+              }}
             >
               <svg
                 className="w-6 h-6 text-gray-800 dark:text-white"
@@ -210,21 +209,21 @@ const AdminVendorCategoryDetails = () => {
         <div className="flex justify-start p-3 w-full">
           {" "}
           <Breadcrumbs aria-label="breadcrumb">
-          <Link
-            to="/admin/vendorcategory"
-            className="hover:border-b-2 hover:border-b-green-700"
-          >
-            Category
-          </Link>
+            <Link
+              to="/admin/vendorcategory"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              Category
+            </Link>
 
-          <Link
-            to="#"
-            aria-current="page"
-            className="hover:border-b-2 hover:border-b-green-700"
-          >
-            {data?.Name}
-          </Link>
-        </Breadcrumbs>
+            <Link
+              to="#"
+              aria-current="page"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              {data?.Name}
+            </Link>
+          </Breadcrumbs>
         </div>
         <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
           <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
@@ -242,7 +241,7 @@ const AdminVendorCategoryDetails = () => {
 
       <section className="bg-white dark:bg-gray-900">
         <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
-          Vendors - {data?.Vendors.length ? data?.Vendors.length : 0 }
+          Vendors - {data?.Vendors.length ? data?.Vendors.length : 0}
         </h2>
       </section>
 
@@ -251,16 +250,19 @@ const AdminVendorCategoryDetails = () => {
         handleClose={dispatch}
         vendorCategory={id}
       />
-      
+
       <EditVendorModal
         open={state.edit}
         handleClose={dispatch}
         vendorId={state.vendorId}
       />
 
-      <UploadImageModal open={state.upload} handleClose={dispatch} id={state.vendorId}  />
-
-      
+      <UploadImageModal
+        open={state.upload}
+        handleClose={dispatch}
+        id={state.vendorId}
+        url={`${baseUrl}vendor`}
+      />
 
       <DeleteDialogue
         open={state.delete}

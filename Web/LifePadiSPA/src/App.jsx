@@ -14,6 +14,7 @@ import AdminVendorCategoryDetails from './components/admin/vendors/AdminVendorCa
 import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDetails'
 import AdminOrderDetails from './components/admin/AdminOrderDetails'
 import AdminCategoryDetails from './components/admin/categories/AdminCategoryDetail'
+import AdminProduct from './components/admin/vendors/product/AdminProduct'
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path='/admin/vendorcategory' element={<AdminVendorCategory />} />
         <Route path='/admin/vendorcategory/:id' element={<AdminVendorCategoryDetails />} />
         <Route path='/admin/vendor/:id' element={<AdminVendorDetails />} />
+        <Route path='/admin/product/:id' element={<AdminProduct />} />
 
         <Route path='/admin/order/:id' element={<AdminOrderDetails />} />
 

@@ -1,7 +1,35 @@
-import ActionsMenu from "./subcomponents/ActionsMenu"
-
+import ActionsMenu from "./subcomponents/ActionsMenu";
+import { useQuery } from "react-query";
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../api/baseUrl";
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
 
 const Overview = () => {
+  const fetch = useFetch();
+  const { auth } = useAuth();
+  const url = `${baseUrl}order`;
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+
+
+  const getOrders = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    return response.data;
+  };
+
+  const { data, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["orders", page, search],
+    queryFn: () =>
+      getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+  });
+
+  console.log(data)
+
   return (
     <div className="bg-gray-100">
       <section className="bg-white dark:bg-gray-900 mb-5">

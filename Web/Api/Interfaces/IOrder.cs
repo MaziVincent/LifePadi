@@ -1,10 +1,13 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface IOrder
     {
-        public Task<DataTotalNumber> allAsync();
+        public Task<PagedList<Order>> allAsync(SearchPaging props);
         public Task<IEnumerable<OrderDtoLite>> allOrderLite();
         public Task<OrderDto> createAsync(OrderDto order);
         public Task<OrderDto> updateAsync(OrderDto order, int id);

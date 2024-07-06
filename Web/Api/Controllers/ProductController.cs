@@ -68,7 +68,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -160,7 +160,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] ProductDto product ,int id)
         {
             try
@@ -174,7 +174,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/uploadImg")]
+        [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImage(int id, [FromForm] ImageDto productImage)
         {
             try
