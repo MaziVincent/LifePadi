@@ -25,7 +25,7 @@ jobs:
       run: dotnet build Web/Api --configuration Release --no-restore
 
     - name: Package Lambda function
-      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Api/LifePadiFunction.zip
+      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
