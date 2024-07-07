@@ -29,7 +29,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -85,11 +85,11 @@ namespace Api.Services
                     var DeliveryDto = _mapper.Map<CreateDeliveryDto>(newDelivery);
                     return DeliveryDto;
                 }
-                throw new Exception("Already created delivery for this order");
+                throw new Exceptions.ServiceException("Already created delivery for this order");
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -179,7 +179,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -215,7 +215,51 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<DeliveryDto>> getWithStatusForRider(int riderId, string status)
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Include(d => d.Order)
+                    .Include(d => d.Rider)
+                    .OrderByDescending(d => d.CreatedAt)
+                    .Where(d => d.RiderId == riderId && d.Status!.Contains(status))
+                    .ToListAsync();
+                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
+                return DeliveryDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<object> getWithStatusForRiderCount(int riderId)
+        {
+            try
+            {
+                var pending = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId && d.Status!.Contains("Pending"))
+                    .CountAsync();
+                var successful = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId && d.Status!.Contains("Successful"))
+                    .CountAsync();
+                var unsuccessful = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId && d.Status!.Contains("Unsuccessful"))
+                    .CountAsync();
+                return new {
+                    pending= pending,
+                    successful= successful,
+                    unsuccessful= unsuccessful
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -228,7 +272,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -243,7 +287,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -258,7 +302,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -273,7 +317,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -288,7 +332,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -311,7 +355,24 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> updateStatus(string status, int id)
+        {
+            try
+            {
+                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
+                if (delivery == null) return null!;
+                delivery.Status = status;
+                delivery.UpdateAt = DateTime.UtcNow;
+                _dbContext.Deliveries.Attach(delivery);
+                await _dbContext.SaveChangesAsync();
+                return "Delivery status updated";
+            }catch(Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }

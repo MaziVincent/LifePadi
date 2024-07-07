@@ -9,8 +9,8 @@ namespace Api.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IDelivery _idelivery;
-        public DeliveryController(IDelivery idelivery) 
-        { 
+        public DeliveryController(IDelivery idelivery)
+        {
             _idelivery = idelivery;
         }
 
@@ -21,7 +21,8 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allAsync();
                 return Ok(deliveries);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -34,7 +35,8 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allDeliveryLiteAsync();
                 return Ok(deliveries);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -48,7 +50,8 @@ namespace Api.Controllers
                 if (!ModelState.IsValid) return BadRequest("Invalid form");
                 var newDelivery = await _idelivery.createAsync(delivery);
                 return Ok(newDelivery);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -62,7 +65,8 @@ namespace Api.Controllers
                 var response = await _idelivery.delete(id);
                 if (response == null) return NotFound();
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -76,7 +80,8 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getAsync(id);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -90,7 +95,8 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getOrderDelivery(orderId);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -104,7 +110,8 @@ namespace Api.Controllers
                 var deliveries = await _idelivery.getRidersDeliveries(riderId);
                 if (deliveries == null) return NotFound();
                 return Ok(deliveries);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -117,7 +124,8 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.getunSuccessfulDelivery();
                 return Ok(deliveries);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -130,7 +138,8 @@ namespace Api.Controllers
             {
                 var response = await _idelivery.getWithStatus(status);
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -144,7 +153,8 @@ namespace Api.Controllers
                 var updatedDelivery = await _idelivery.updateAsync(delivery, id);
                 if (updatedDelivery == null) return NotFound();
                 return Ok(updatedDelivery);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -158,7 +168,51 @@ namespace Api.Controllers
                 var delivery = await _idelivery.assynRiderTODelivery(id, riderId);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}/updateStatus")]
+        public async Task<IActionResult> updateStatus(int id, [FromQuery] string status)
+        {
+            try
+            {
+                var response = await _idelivery.updateStatus(status, id);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("getWithStatus/{riderId}")]
+        public async Task<IActionResult> getWithStatusForRider(int riderId, [FromQuery] string status)
+        {
+            try
+            {
+                var response = await _idelivery.getWithStatusForRider(riderId, status);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("getWithStatusCount/{riderId}")]
+        public async Task<IActionResult> getWithStatusForRiderCount(int riderId)
+        {
+            try
+            {
+                var response = await _idelivery.getWithStatusForRiderCount(riderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
