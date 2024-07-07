@@ -20,6 +20,15 @@ jobs:
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: us-east-1
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "3.1.x"
+=======
+>>>>>>> 9f31878 (Update 3 deploy.yml)
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -30,6 +39,10 @@ jobs:
     
     - name: Add Lambda tools to PATH
       run: echo "$(dotnet --list-tools-path)" >> $GITHUB_PATH
+<<<<<<< HEAD
+=======
+>>>>>>> 4d4898c (Update 3 deploy.yml)
+>>>>>>> 9f31878 (Update 3 deploy.yml)
 
     - name: Install dependencies
       run: dotnet restore Web/Api
