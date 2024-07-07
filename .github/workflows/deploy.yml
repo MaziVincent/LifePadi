@@ -17,6 +17,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '3.1.x'
+    
+    - name: Install Lambda tools
+      run: dotnet tool install -g Amazon.Lambda.Tools
+    
+    - name: Add Lambda tools to PATH
+      run: echo "::add-path::$(dotnet tool path -g)"
 
     - name: Install dependencies
       run: dotnet restore Web/Api
