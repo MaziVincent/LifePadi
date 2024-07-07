@@ -45,4 +45,4 @@ jobs:
       run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
 
     - name: Deploy to Lambda
-      run: aws lambda update-function-code --function-name Lifepadi-Api --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
+      run: aws lambda update-function-code --function-name Lifepadi-API --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
