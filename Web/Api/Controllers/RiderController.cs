@@ -13,7 +13,7 @@ namespace Api.Controllers
         private readonly IRider? _irider;
         private readonly IMapper _mapper;
 
-        public RiderController(IRider irider , IMapper mapper)
+        public RiderController(IRider irider, IMapper mapper)
         {
             _irider = irider;
             _mapper = mapper;
@@ -27,7 +27,8 @@ namespace Api.Controllers
                 var res = await _irider!.activateRider(id);
                 if (res == null) return NotFound();
                 return Ok(res);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -42,7 +43,8 @@ namespace Api.Controllers
                 if (!ModelState.IsValid) return BadRequest("Please fill the neccassary details");
                 var newRider = await _irider!.createAsync(rider);
                 return Ok(newRider);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -55,8 +57,9 @@ namespace Api.Controllers
             {
                 var res = await _irider!.deactivateRider(id);
                 if (res == null) return NotFound();
-                return Ok(new {success = "Rider Deactivated Successfully"});
-            }catch(Exception ex)
+                return Ok(new { success = "Rider Deactivated Successfully" });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -70,7 +73,8 @@ namespace Api.Controllers
                 var res = await _irider!.deleteAsync(id);
                 if (res == null) return NotFound();
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -83,17 +87,19 @@ namespace Api.Controllers
             {
                 var riders = await _irider!.getAllAsync(props);
 
-            var result = _mapper.Map<List<AuthRiderDto>>(riders);
-            
-                var dataList = new {
+                var result = _mapper.Map<List<AuthRiderDto>>(riders);
+
+                var dataList = new
+                {
                     riders.TotalCount,
                     riders.TotalPages,
                     riders.CurrentPage,
                     riders.PageSize
                 };
 
-                return Ok(new {result, dataList});
-            }catch (Exception ex)
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -107,7 +113,8 @@ namespace Api.Controllers
                 var rider = await _irider!.getAsync(id);
                 if (rider == null) return NotFound();
                 return Ok(rider);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -120,7 +127,8 @@ namespace Api.Controllers
             {
                 var orders = await _irider!.getRiderOrders(id);
                 return Ok(orders);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -133,7 +141,8 @@ namespace Api.Controllers
             {
                 var riders = await _irider!.nonActiveRiders();
                 return Ok(riders);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -146,7 +155,8 @@ namespace Api.Controllers
             {
                 var riders = await _irider!.searchAsync(searchString);
                 return Ok(riders);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -159,7 +169,8 @@ namespace Api.Controllers
             {
                 var delivries = await _irider!.successfulDeliveries(id);
                 return Ok(delivries);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -187,7 +198,8 @@ namespace Api.Controllers
                 var updatedRider = await _irider!.updateAsync(rider, id);
                 if (updatedRider == null) return NotFound();
                 return Ok(updatedRider);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -202,7 +214,8 @@ namespace Api.Controllers
                 var res = await _irider!.uploadRiderIdentityImg(id, imageFile.Image!);
                 if (res == null) return NotFound();
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -216,7 +229,23 @@ namespace Api.Controllers
                 var res = await _irider!.verifyRider(id);
                 if (res == null) return NotFound();
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("toggleStatus/{id}")]
+        public async Task<IActionResult> toggleRiderStatus(int id)
+        {
+            try
+            {
+                var res = await _irider!.toggleRiderStatus(id);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

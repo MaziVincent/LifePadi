@@ -43,7 +43,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -58,7 +58,7 @@ namespace Api.Services
                 newRider.IsVerified = false;
                 newRider.SearchString = rider.FirstName!.ToUpper() + " " + rider.LastName!.ToUpper() + " " + rider.Email!.ToUpper() + " " + rider.PhoneNumber;
                 var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
+                if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                 newRider.IdentityImgUrl = imgPath;
                 await _dbContext.Riders.AddAsync(newRider);
                 await _dbContext.SaveChangesAsync();
@@ -67,7 +67,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Api.Services
                 var orderList = new List<Order>();
                 foreach (var delivery in deliverise)
                 {
-                    orderList.Append(delivery.Order);
+                    orderList.Append(delivery.Order!);
 
                 }
                 var OrderDto = _mapper.Map<List<OrderDto>>(orderList);
@@ -193,7 +193,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -218,7 +218,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -234,7 +234,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -274,7 +274,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -292,7 +292,25 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> toggleRiderStatus(int id)
+        {
+            try
+            {
+                var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
+                if (rider == null) return null!;
+                rider.IsActive = !rider.IsActive;
+                _dbContext.Riders.Attach(rider);
+                await _dbContext.SaveChangesAsync();
+                if (rider.IsActive == false) return "Rider deactivated";
+                return "Rider activated";
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -305,7 +323,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -318,7 +336,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -331,7 +349,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -344,7 +362,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -357,7 +375,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -375,7 +393,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -396,7 +414,7 @@ namespace Api.Services
                 {
                     var folderName = "Riders";
                     var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
-                    if (imgPath == null!) throw new Exception("Can not upload the product image");
+                    if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                     initialRider.IdentityImgUrl = imgPath;
                 }
                 initialRider.UpdatedAt = DateTime.UtcNow;
@@ -407,7 +425,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -419,7 +437,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null!) return null!;
                 var imgPath = await UploadImage.uploadImg(riderIdendityImg, _cloudinary, folderName);
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
+                if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                 rider.IdentityImgUrl = imgPath;
                 _dbContext.Riders.Attach(rider);
                 await _dbContext.SaveChangesAsync();
@@ -428,7 +446,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -445,7 +463,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }

@@ -21,6 +21,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDto>> getRiderDeliveries(int id);
         public Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
         public Task<string> activateRider(int id);
+        public Task<string> toggleRiderStatus(int id);
         public Task<string> verifyRider(int id);
         public Task<string> deactivateRider(int id);
         public Task<int> totalNumberOfRiders();
