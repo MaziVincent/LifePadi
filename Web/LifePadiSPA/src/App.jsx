@@ -15,6 +15,8 @@ import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDet
 import AdminOrderDetails from './components/admin/AdminOrderDetails'
 import AdminCategoryDetails from './components/admin/categories/AdminCategoryDetail'
 import AdminProduct from './components/admin/vendors/product/AdminProduct'
+import RiderLayout from './components/rider/RiderLayout'
+import RiderdDashboard from './components/rider/RiderDashboard'
 
 
 function App() {
@@ -47,6 +49,9 @@ function App() {
 
         <Route path='/admin/order/:id' element={<AdminOrderDetails />} />
 
+      </Route>
+      <Route path='/rider' element={<RiderLayout />}>
+        <Route index element={<RiderdDashboard />} />
       </Route>
     </Routes>
       
