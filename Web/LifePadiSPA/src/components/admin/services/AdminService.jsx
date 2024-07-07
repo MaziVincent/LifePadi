@@ -67,7 +67,7 @@ const AdminService = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -207,6 +207,13 @@ const AdminService = () => {
                         scope="col"
                         className="px-4 py-3"
                       >
+                        Status
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-4 py-3"
+                      >
                         <span className="sr-only">Actions</span>
                       </th>
                     </tr>
@@ -238,6 +245,7 @@ const AdminService = () => {
                           </div>
                         </td>
                         <td className="px-4 py-3">{service.Description}</td>
+                        <td className="px-4 py-3">{service.IsActive ? <span className="text-green-700"> Active </span> : <span className="text-red-700"> In-Active </span>}</td>
 
                         <td className="px-4 py-3 flex items-center justify-end">
                           <div className="flex justify-end gap-4">
