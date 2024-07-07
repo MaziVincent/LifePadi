@@ -4,6 +4,7 @@ import useLogout from "../../hooks/useLogout";
 import { ClickAwayListener } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import logo from "../../assets/images/Logo(dark).svg";
 
 const AdminHeader = ({ setAside }) => {
   const logout = useLogout();
@@ -66,8 +67,16 @@ const AdminHeader = ({ setAside }) => {
           </ClickAwayListener>
           <Link
             to="/admin"
-            className="flex items-center justify-between mr-4"
+            className="flex items-center justify-between gap-5 mr-4"
           >
+            <div className="w-10 h-12">
+              {" "}
+              <img
+                src={logo}
+                alt=""
+                className="w-full"
+              />{" "}
+            </div>
             <span className="self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white">
               Admin Dashboard
             </span>

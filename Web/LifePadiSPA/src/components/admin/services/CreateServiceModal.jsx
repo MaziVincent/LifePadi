@@ -18,7 +18,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -194,8 +194,8 @@ const CreateServiceModal = ({ open, handleClose }) => {
               </div>
               <button
                   type="submit"
-                  disabled={fileError}
-                  className={`inline-flex items-center ${fileError ? 'text-green-700' : 'text-gray-700'} dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                  disabled={fileError || isSubmitting || !isValid }
+                  className={`inline-flex items-center ${fileError ?  'text-gray-700' : 'text-green-700' } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"
