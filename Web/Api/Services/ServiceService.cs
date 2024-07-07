@@ -54,7 +54,6 @@ namespace Api.Services
                 var servicesSearch = await _dbContext!.Services.Include(s => s.Vendors)!
                                   .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
-                                  .Where(s => s.IsActive == true)
                                   .Where(s => s.SearchString!.Contains(props.SearchString!.ToUpper())).ToListAsync();
                 servicesList = servicesList.Concat(servicesSearch);
 

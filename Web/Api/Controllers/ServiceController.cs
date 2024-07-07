@@ -160,7 +160,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/getVendors")]
+        [HttpGet("getVendors/{id}")]
         public async Task<IActionResult> getVendors(int id)
         {
             try

@@ -173,6 +173,46 @@ const EditServiceModal = ({ open, handleClose, service }) => {
 
                 <div className="sm:col-span-2">
                   <label
+                    htmlFor="status"
+                    className="block mb-2 text-sm font-bold text-gray-900"
+                  >
+                    Status
+                  </label>
+                  <select
+                    id="status"
+                    name="status"
+                    {...register("IsActive", {
+                      required: "Status is required",
+                    })}
+                    defaultValue={"default"}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  >
+                    <option
+                      disabled
+                      value="default"
+                      className="text-gray-600"
+                    >
+                      Change Status
+                    </option>
+                    
+                    <option value={true} >
+                        Active
+                      </option>
+                      <option value={false} >
+                        De-Activate
+                      </option>
+                  
+                  </select>
+
+                  {errors.IsActive && (
+                    <span className="text-sm text-red-400">
+                      {errors.IsActive.message}
+                    </span>
+                  )}
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
                     htmlFor="icon"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
