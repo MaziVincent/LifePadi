@@ -19,6 +19,7 @@ import RiderLayout from './components/rider/RiderLayout'
 import RiderdDashboard from './components/rider/RiderDashboard'
 import AdminVoucher from './components/admin/vouchers/AdminVoucher'
 import Admin from './components/admin/admins/Admin'
+import Home from './components/home/Home'
 
 
 function App() {
@@ -28,7 +29,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
     <Routes>
       {/*PIBLIC ROUTES */}
-      <Route path='/' element={<Layout />} />
+      <Route path='/' element={<Layout />} >
+      <Route index element={<Home />} />
+      </Route>
 
 
 
