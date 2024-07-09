@@ -13,6 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 <<<<<<< HEAD
+<<<<<<< HEAD
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -22,6 +23,13 @@ jobs:
         aws-region: us-east-1
 =======
 >>>>>>> bd96ed0 (added session token)
+=======
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::400142046446:role/Github_Action_Role
+        aws-region: us-east-1
+>>>>>>> 53ef23c (Update deploy.yml)
 
 <<<<<<< HEAD
 =======
@@ -72,6 +80,7 @@ jobs:
     - name: Package Lambda function
       run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
 
+<<<<<<< HEAD
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -80,6 +89,8 @@ jobs:
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: us-east-1 # Change to your region
 
+=======
+>>>>>>> 53ef23c (Update deploy.yml)
     - name: Upload to S3
       run: aws s3 cp Api/MyLambdaFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
 
