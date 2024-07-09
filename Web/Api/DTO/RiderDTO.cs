@@ -72,6 +72,7 @@ namespace Api.DTO
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 28d4101 (finished with rider and order)
         public List<OrderDTOLite>? Orders { get; set; }
 =======
@@ -101,6 +102,9 @@ namespace Api.DTO
         public bool? IsVerified { get; set; }
         public List<DeliveryDtoLite>? Deliveries { get; set; }
         public List<RiderReview>? RiderReviews { get; set; }
+=======
+        public List<DeliveryDtoLite>? Deliveries { get; set; }
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
     }
 
     public class RiderDtoLite
@@ -127,6 +131,9 @@ namespace Api.DTO
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
     public class CreateRiderDto
 =======
 

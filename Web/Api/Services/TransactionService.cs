@@ -408,8 +408,12 @@ namespace Api.Services
                 if (order == null) throw new Exception("Order not found");
                 var tx_ref = GenerateTxRef.genTx_rf();
                 string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+<<<<<<< HEAD
                 DTO.Customer customer = new DTO.Customer();
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+                Customer_Info customer = new Customer_Info();
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;
                 customer.name = order.Customer.FirstName;

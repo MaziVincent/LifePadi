@@ -45,7 +45,10 @@ namespace Api.Services
                     var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                       .ThenInclude(p => p.Products)
                                       .OrderByDescending(s => s.CreatedAt)
+<<<<<<< HEAD
                                       .Where(s => s.IsActive == true)
+=======
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                                       .ToListAsync();
                     servicesList = servicesList.Concat(services);
 

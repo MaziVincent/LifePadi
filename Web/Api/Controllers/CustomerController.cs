@@ -1,13 +1,18 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
 <<<<<<< HEAD
 using AutoMapper;
 using Api.Helpers;
 using System;
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+using AutoMapper;
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
 namespace Api.Controllers
 {
@@ -16,6 +21,7 @@ namespace Api.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomer? _icustomer;
+<<<<<<< HEAD
 <<<<<<< HEAD
         private readonly IMapper _mapper;
         private readonly IEmailVerification _emailVerify;
@@ -59,12 +65,21 @@ namespace Api.Controllers
         [HttpGet("get/{id}")]
 =======
         public CustomerController(ICustomer icustomer)
+=======
+        private readonly IMapper _mapper;
+        public CustomerController(ICustomer icustomer, IMapper mapper)
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         {
             _icustomer = icustomer;
+            _mapper = mapper;
         }
 
+<<<<<<< HEAD
         [HttpGet("{id}/get")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("get/{id}")]
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -119,12 +134,22 @@ namespace Api.Controllers
             catch (Exception ex)
 =======
         [HttpGet("all")]
-        public async Task<IActionResult> getAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10)
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var customers = await _icustomer!.getAllAsync(pageNumber, pageSize);
-                return Ok(customers);
+                var customers = await _icustomer!.getAllAsync(props);
+                var result = _mapper.Map<List<CustomerDtoLite>>(customers);
+
+                var dataList = new
+                {
+                    customers.TotalCount,
+                    customers.TotalPages,
+                    customers.CurrentPage,
+                    customers.PageSize
+                };
+
+                return Ok(new { result, dataList });
             }catch (Exception ex)
 >>>>>>> ee48634 (done with service, category and product controllers.)
             {
@@ -133,10 +158,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
 =======
         [HttpDelete("{id}/delete")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpDelete("delete/{id}")]
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -185,6 +214,9 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] CustomerDto customer)
 =======
@@ -213,10 +245,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("orders/{id}")]
 =======
         [HttpGet("{id}/orders")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("orders/{id}")]
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public async Task<IActionResult> getOrders(int id)
         {
             try
@@ -235,10 +271,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("addresses/{id}")]
 =======
         [HttpGet("{id}/addresses")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("addresses/{id}")]
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public async Task<IActionResult> getAddresses(int id)
         {
             try

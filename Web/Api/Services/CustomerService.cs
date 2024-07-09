@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using FuzzySharp;
 using Microsoft.AspNetCore.Identity;
@@ -268,15 +270,35 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<CustomerDtoLite>> getAllAsync(int pageNumber, int pageSize)
+        public async Task<PagedList<Customer>> getAllAsync (SearchPaging props)
         {
             try
             {
-                var skip = (pageNumber - 1) * pageSize;
-                var customers = await _dbContext.Customers.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt).ToListAsync();
-                var CustomerDtoLite = _mapper.Map<List<CustomerDtoLite>>(customers);
-                return CustomerDtoLite;
-            }catch (Exception ex)
+                IQueryable<Customer> customerList = Enumerable.Empty<Customer>().AsQueryable();
+                if (props.SearchString is null)
+                {
+                    var customerLs = await _dbContext.Customers
+                        .OrderByDescending(r => r.CreatedAt)
+                        .ToListAsync();
+                        
+                    customerList = customerList.Concat(customerLs);
+                    var result = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
+
+                    return result;
+                    
+                }
+                var customers = await _dbContext.Customers
+                        .OrderByDescending(r => r.CreatedAt)
+                        .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
+                        .ToListAsync();
+                customerList = customerList.Concat(customers);
+                var response = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
+
+                return response;
+
+            }
+            
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

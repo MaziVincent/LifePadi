@@ -193,10 +193,17 @@ namespace Api.Services
                         .AsSplitQuery()
                         .ToListAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+<<<<<<< HEAD
+=======
+                        
+>>>>>>> 589567d (Finishing touches on the admin portal)
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                     ridersList = ridersList.Concat(ridersLs);
                     var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 

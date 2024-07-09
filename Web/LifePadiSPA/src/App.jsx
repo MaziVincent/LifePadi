@@ -69,6 +69,13 @@ import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDet
 import AdminOrderDetails from './components/admin/AdminOrderDetails'
 import AdminCategoryDetails from './components/admin/categories/AdminCategoryDetail'
 import AdminProduct from './components/admin/vendors/product/AdminProduct'
+<<<<<<< HEAD
+=======
+import RiderLayout from './components/rider/RiderLayout'
+import RiderdDashboard from './components/rider/RiderDashboard'
+import AdminVoucher from './components/admin/vouchers/AdminVoucher'
+import Admin from './components/admin/admins/Admin'
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
 >>>>>>> 4dc5d34 (worked on product component)
 
@@ -147,10 +154,16 @@ function App() {
         <Route path='/admin/product/:id' element={<AdminProduct />} />
 >>>>>>> 4dc5d34 (worked on product component)
 
+<<<<<<< HEAD
         <Route
           path="/forgotPassword"
           element={<ForgotPassword />}
         />
+=======
+        <Route path='/admin/order/:id' element={<AdminOrderDetails />} />
+        <Route path='/admin/voucher' element={<AdminVoucher />} />
+        <Route path='/admin/admin' element={<Admin />} />
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
         {/* SHOP ROUTES */}
         <Route element={<PersistLogin />}>

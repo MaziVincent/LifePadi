@@ -21,22 +21,36 @@ const AdminCustomer = () => {
   // const activate = useActivate();
   const queryClient = useQueryClient();
 
+<<<<<<< HEAD
   const getCustomers = async (url) => {
+=======
+  const getRiders = async (url) => {
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
     const result = await fetch(url, auth.accessToken);
 
     return result.data;
   };
 
   const { data, isError, isLoading, isSuccess } = useQuery({
+<<<<<<< HEAD
     queryKey: ["customers", page, search],
     queryFn: () =>
       getCustomers(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+=======
+    queryKey: ["riders", page, search],
+    queryFn: () =>
+      getRiders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
   });
 
+<<<<<<< HEAD
   //console.log(data);
+=======
+  console.log(data);
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -140,7 +154,11 @@ const AdminCustomer = () => {
               )}
              { isSuccess && (
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+<<<<<<< HEAD
                   <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
+=======
+                  <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                     <tr>
                       <th
                         scope="col"
@@ -165,8 +183,13 @@ const AdminCustomer = () => {
                     </tr>
                   </thead>
                   <tbody>
+<<<<<<< HEAD
                     {data?.result.map((customer) => (
                       <tr className="hover:bg-gray dark:hover:bg-darkHover cursor-pointer" key={customer.Id} onClick={()=>navigate(`/admin/customer/${customer.Id}`)}>
+=======
+                    {data?.result.map((rider) => (
+                      <tr className="hover:bg-gray-100 cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                         <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
@@ -178,6 +201,7 @@ const AdminCustomer = () => {
                           </div>
                           <div className="text-sm">
                             <div className="font-medium capitalize  text-gray-700">
+<<<<<<< HEAD
                               {`${customer.FirstName} ${customer.LastName}`}
                             </div>
                             <div className="text-gray-400">{customer.Email}</div>
@@ -185,6 +209,15 @@ const AdminCustomer = () => {
                         </th>
                         <td className="px-6 py-4 text-center">{customer.PhoneNumber}</td>
                         <td className="px-6 py-4 text-center">{customer.ContactAddress}</td>
+=======
+                              {`${rider.FirstName} ${rider.LastName}`}
+                            </div>
+                            <div className="text-gray-400">{rider.Email}</div>
+                          </div>
+                        </th>
+                        <td className="px-6 py-4 text-center">{rider.PhoneNumber}</td>
+                        <td className="px-6 py-4 text-center">{rider.ContactAddress}</td>
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
                        
                       </tr>
                     ))}
@@ -205,7 +238,11 @@ const AdminCustomer = () => {
                 onChange={handlePageChange}
                 variant="outlined"
                 shape="rounded"
+<<<<<<< HEAD
                 className="dark:text-gray-50 dark:bg-primary "
+=======
+                className="dark:text-gray-50 dark:bg-gray-200"
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
               />
             </nav>
           </div>

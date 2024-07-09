@@ -34,10 +34,14 @@ namespace Api.DTO
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? Processor_Response { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Customer_Info? Customer { get; set; }
 =======
         public DTO.Customer? Customer { get; set; }
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public Customer_Info? Customer { get; set; }
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public Meta? Meta { get; set; }
         public string? Tx_ref { get; set; }
         public BigInteger? TransactionId { get; set; }

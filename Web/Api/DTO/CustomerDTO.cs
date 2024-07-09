@@ -82,6 +82,7 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public string? Role { get; set; }
         public string? ContactAddress { get; set; }
         public DateTime DOB { get; set; }
@@ -94,6 +95,9 @@ namespace Api.DTO
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
         public string? ContactAdress { get; set; }
+=======
+        public string? ContactAddress { get; set; }
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public DateTime DOB { get; set; }

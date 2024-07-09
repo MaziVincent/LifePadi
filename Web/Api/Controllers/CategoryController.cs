@@ -123,10 +123,14 @@ namespace Api.Controllers
                 var response = await _icategory.deleteAsync(id);
                 if (response == null) return NotFound();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 return Ok(new {success = response});
 =======
                 return Ok(response);
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+                return Ok(new {success = response});
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);

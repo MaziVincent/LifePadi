@@ -1,9 +1,15 @@
 ﻿using Api.DTO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Api.Models;
+using API.DTO;
+using API.Models;
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
 namespace Api.Interfaces
 {
@@ -52,7 +58,8 @@ namespace Api.Interfaces
 =======
 =======
         public Task<AuthUserDto> createAsync(CustomerDto customer);
-        public Task<IEnumerable<CustomerDtoLite>> getAllAsync(int pageNumber, int pageSize);
+        public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
+
         public Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id);
         public Task<string> deleteAsync(int id);
         public Task<CustomerDto> getAsync(int id);

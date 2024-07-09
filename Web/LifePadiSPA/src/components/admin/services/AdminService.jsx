@@ -13,12 +13,15 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import DeleteDialogue from "../subcomponents/DeleteDialogue";
 //import serviceIcon from "../../../assets/images/services.png";
+<<<<<<< HEAD
 =======
 import Pagination from "@mui/material/Pagination";
 import CreateService from "./CreateServiceModal";
 import EditService from "./EditServiceModal"
 import { useReducer } from "react";
 >>>>>>> 55ba6ae (Admin service)
+=======
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
 
 const reducer = (state, action) => {
   switch (action.type) {

@@ -231,7 +231,7 @@ namespace Api.DTO
         public string? name { get; set; }
         public string? redirect_url { get; set; }
         public string? currency { get; set; }
-        public Customer? customer { get; set; }
+        public Customer_Info? customer { get; set; }
         public Customizations? customizations { get; set; }
         public Meta? meta {  get; set; }
     }
@@ -246,7 +246,7 @@ namespace Api.DTO
 
     }
 
-    public class Customer
+    public class Customer_Info
     {
         public string? email { get; set; }
         public string? name { get; set; }

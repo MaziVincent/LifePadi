@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import useFetch from "../../../hooks/useFetch";
 import { useQuery, useQueryClient } from "react-query";
@@ -72,3 +73,12 @@ const Admin = () => {
 }
  
 export default Admin;
+=======
+const AdminCategory = () => {
+    return ( <div>
+        Admins 
+    </div> );
+}
+ 
+export default AdminCategory;
+>>>>>>> a2698f4 (Finishing touches on the admin portal)
