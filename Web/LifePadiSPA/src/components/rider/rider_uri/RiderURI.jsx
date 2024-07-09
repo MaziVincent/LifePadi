@@ -18,3 +18,4 @@ export const riderDeliveriesWithStatusCountUrl =
   baseUrl + 'delivery/getWithStatusCount/{riderId}'
 export const riderDeliveriesWithStatusUrl = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/{riderId}';
+
