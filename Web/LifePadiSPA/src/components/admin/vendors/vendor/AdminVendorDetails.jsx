@@ -313,19 +313,6 @@ const AdminVendorDetails = () => {
                 />
               )}
             </div>
-            <nav
-              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-              aria-label="Table navigation"
-            >
-              {/* <Pagination
-                  count={data?.dataList.TotalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                  variant="outlined"
-                  shape="rounded"
-                  className="dark:text-gray-50 dark:bg-gray-200"
-                /> */}
-            </nav>
           </div>
         </div>
       </section>

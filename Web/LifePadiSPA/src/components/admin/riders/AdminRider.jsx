@@ -11,7 +11,6 @@ import Alert from "@mui/material/Alert";
 import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import DeActivateDialogue from "../subcomponents/DeActivateDialogue";
-import serviceIcon from "../../../assets/images/services.png";
 
 const reducer = (state, action) => {
   switch (action.type) {

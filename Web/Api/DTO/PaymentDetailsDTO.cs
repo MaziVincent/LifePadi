@@ -15,7 +15,7 @@ namespace Api.DTO
         public Double TotalAmount { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? Processor_Response { get; set; }
-        public DTO.Customer? Customer { get; set; }
+        public Customer_Info? Customer { get; set; }
         public Meta? Meta { get; set; }
         public string? Tx_ref { get; set; }
         public BigInteger? TransactionId { get; set; }

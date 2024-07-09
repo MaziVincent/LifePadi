@@ -197,10 +197,6 @@ const AdminVendorCategoryDetails = () => {
 
   //console.log(data);
 
-  //   const handlePageChange = (event, value) => {
-  //     setPage(value);
-  //     //console.log("page " + value);
-  //   };
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900">
