@@ -1,9 +1,15 @@
 ﻿using Api.DTO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Api.Models;
+using API.DTO;
+using API.Models;
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
 
 namespace Api.Interfaces
 {
@@ -22,6 +28,7 @@ namespace Api.Interfaces
         public Task<string> delete(int id);
         public Task<IEnumerable<DeliveryDto>> getWithStatus(string status);
         public Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery();
+<<<<<<< HEAD
         public Task<PagedList<DeliveryDto>> getRidersDeliveries(int riderId, SearchPaging props);
 =======
         public Task<string> delete(int id);
@@ -29,6 +36,9 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery();
         public Task<IEnumerable<DeliveryDto>> getRidersDeliveries(int riderId);
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<PagedList<Delivery>> getRidersDeliveries(int riderId, SearchPaging props);
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         public Task<DeliveryDto> getOrderDelivery(int orderId);
         public Task<CreateDeliveryDto> createAsync(DeliveryDto delivery);
         public Task<string> assynRiderTODelivery(int id, int riderId);

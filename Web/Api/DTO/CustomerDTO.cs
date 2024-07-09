@@ -116,10 +116,14 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public string? ContactAddress { get; set; }
 =======
         public string? ContactAdress { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public string? ContactAddress { get; set; }
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         public string? RefreshToken { get; set; }
         public string? AccessToken { get; set; }
         public DateTime? CreatedAt { get; set; }

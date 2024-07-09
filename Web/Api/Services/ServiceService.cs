@@ -46,9 +46,15 @@ namespace Api.Services
                                       .ThenInclude(p => p.Products)
                                       .OrderByDescending(s => s.CreatedAt)
 <<<<<<< HEAD
+<<<<<<< HEAD
                                       .Where(s => s.IsActive == true)
 =======
 >>>>>>> a2698f4 (Finishing touches on the admin portal)
+=======
+=======
+                                      .Where(s => s.IsActive == true)
+>>>>>>> 3ffc3a3 (added pagination and search to riders delivery)
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
                                       .ToListAsync();
                     servicesList = servicesList.Concat(services);
 

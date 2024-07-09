@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -333,6 +335,7 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<PagedList<DeliveryDto>> getRidersDeliveries(int riderId, SearchPaging props)
         {
             try
@@ -392,17 +395,37 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<DeliveryDto>> getRidersDeliveries(int riderId)
+=======
+        public async Task<PagedList<Delivery>> getRidersDeliveries(int riderId, SearchPaging props)
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         {
             try
             {
-                var deliveries = await _dbContext.Deliveries
-                    .Include(d => d.Order)
-                    .Include(d => d.Rider)
-                    .OrderByDescending(d => d.CreatedAt)
-                    .Where(d => d.RiderId == riderId)
-                    .ToListAsync();
-                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
-                return DeliveryDto;
+                IQueryable<Delivery> deliveryList = Enumerable.Empty<Delivery>().AsQueryable();
+                if (props.SearchString is null)
+                {
+                    var deliveries = await _dbContext.Deliveries
+                        .Include(d => d.Order)
+                        .Include(d => d.Rider)
+                        .OrderByDescending(d => d.CreatedAt)
+                        .Where(d => d.RiderId == riderId)
+                        .ToListAsync();
+                    deliveryList = deliveryList.Concat(deliveries);
+                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                else
+                {
+                    var deliveries = await _dbContext.Deliveries
+                        .Include(d => d.Order)
+                        .Include(d => d.Rider)
+                        .OrderByDescending(d => d.CreatedAt)
+                        .Where(d => d.RiderId == riderId && d.PickupAddress!.ToLower().Contains(props.SearchString.ToLower()))
+                        .ToListAsync();
+                    deliveryList = deliveryList.Concat(deliveries);
+                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
+                    return result;
+                }
             }
             catch (Exception ex)
             {

@@ -1,9 +1,14 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using AutoMapper;
 =======
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+using API.DTO;
+using AutoMapper;
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -14,16 +19,22 @@ namespace Api.Controllers
     {
         private readonly IDelivery _idelivery;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         private readonly IMapper _mapper;
         public DeliveryController(IDelivery idelivery, IMapper mapper)
         {
             _idelivery = idelivery;
             _mapper = mapper;
+<<<<<<< HEAD
 =======
         public DeliveryController(IDelivery idelivery) 
         { 
             _idelivery = idelivery;
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         }
 
         [HttpGet("all")]
@@ -163,6 +174,7 @@ namespace Api.Controllers
 
         [HttpGet("rider/{riderId}")]
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
         {
             try
@@ -183,14 +195,32 @@ namespace Api.Controllers
             catch (Exception ex)
 =======
         public async Task<IActionResult> getRiderDeliveries(int riderId)
+=======
+        public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
         {
             try
             {
-                var deliveries = await _idelivery.getRidersDeliveries(riderId);
+                var deliveries = await _idelivery.getRidersDeliveries(riderId, props);
                 if (deliveries == null) return NotFound();
+<<<<<<< HEAD
                 return Ok(deliveries);
             }catch (Exception ex)
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+                var result = _mapper.Map<List<DeliveryDto>>(deliveries);
+                var dataList = new
+                {
+                    deliveries.TotalCount,
+                    deliveries.TotalPages,
+                    deliveries.PageSize,
+                    deliveries.CurrentPage
+
+                };
+                return Ok(new {result, dataList});
+            }
+            catch (Exception ex)
+>>>>>>> 6022c93 (added pagination and search to riders delivery)
             {
                 return BadRequest(ex.Message);
             }
