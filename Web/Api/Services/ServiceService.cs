@@ -43,6 +43,7 @@ namespace Api.Services
                     var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                       .ThenInclude(p => p.Products)
                                       .OrderByDescending(s => s.CreatedAt)
+                                      .Where(s => s.IsActive == true)
                                       .ToListAsync();
                     servicesList = servicesList.Concat(services);
 

@@ -1,4 +1,7 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
@@ -12,7 +15,7 @@ namespace Api.Interfaces
         public Task<string> delete(int id);
         public Task<IEnumerable<DeliveryDto>> getWithStatus(string status);
         public Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery();
-        public Task<IEnumerable<DeliveryDto>> getRidersDeliveries(int riderId);
+        public Task<PagedList<Delivery>> getRidersDeliveries(int riderId, SearchPaging props);
         public Task<DeliveryDto> getOrderDelivery(int orderId);
         public Task<CreateDeliveryDto> createAsync(DeliveryDto delivery);
         public Task<string> assynRiderTODelivery(int id, int riderId);

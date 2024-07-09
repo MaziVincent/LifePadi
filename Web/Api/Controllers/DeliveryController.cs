@@ -1,5 +1,7 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using API.DTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -9,9 +11,11 @@ namespace Api.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IDelivery _idelivery;
-        public DeliveryController(IDelivery idelivery)
+        private readonly IMapper _mapper;
+        public DeliveryController(IDelivery idelivery, IMapper mapper)
         {
             _idelivery = idelivery;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
@@ -103,13 +107,22 @@ namespace Api.Controllers
         }
 
         [HttpGet("rider/{riderId}")]
-        public async Task<IActionResult> getRiderDeliveries(int riderId)
+        public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
         {
             try
             {
-                var deliveries = await _idelivery.getRidersDeliveries(riderId);
+                var deliveries = await _idelivery.getRidersDeliveries(riderId, props);
                 if (deliveries == null) return NotFound();
-                return Ok(deliveries);
+                var result = _mapper.Map<List<DeliveryDto>>(deliveries);
+                var dataList = new
+                {
+                    deliveries.TotalCount,
+                    deliveries.TotalPages,
+                    deliveries.PageSize,
+                    deliveries.CurrentPage
+
+                };
+                return Ok(new {result, dataList});
             }
             catch (Exception ex)
             {

@@ -48,7 +48,7 @@ namespace Api.DTO
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? ContactAdress { get; set; }
+        public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? AccessToken { get; set; }
         public DateTime? CreatedAt { get; set; }
