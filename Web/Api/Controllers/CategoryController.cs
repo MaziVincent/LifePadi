@@ -85,7 +85,7 @@ namespace Api.Controllers
             {
                 var response = await _icategory.deleteAsync(id);
                 if (response == null) return NotFound();
-                return Ok(response);
+                return Ok(new {success = response});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);

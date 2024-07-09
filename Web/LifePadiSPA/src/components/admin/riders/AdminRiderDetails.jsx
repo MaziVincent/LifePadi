@@ -7,12 +7,44 @@ import useFetch from "../../../hooks/useFetch";
 import { CircularProgress } from "@mui/material";
 //import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
+import { Breadcrumbs } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const AdminRiderDetails = () => {
   const { id } = useParams();
   const url = `${baseUrl}rider/get`;
   const { auth } = useAuth();
   const fetch = useFetch();
+  const [idImage, setIdImage] = useState(false)
+
+  const columns = [
+    { field: "Id", headerName: "ID", width: 50 },
+    {
+      field: "CreatedAt",
+      headerName: "Delivery Date",
+      width: 150,
+      //editable: true,
+    },
+    {
+      field: "DeliveryFee",
+      headerName: "Delivery Fee",
+      width: 150,
+      //editable: true,
+    },
+    {
+      field: "PickupAddress",
+      headerName: "Pick-up Address",
+      //type: "number",
+      width: 200,
+      //editable: true,
+    },
+    {
+      field: "Status",
+      headerName: "Status",
+      width: 70,
+    },
+  ];
 
   const getRider = async (url) => {
     const response = await fetch(url, auth.accessToken);
@@ -28,10 +60,30 @@ const AdminRiderDetails = () => {
     refetchOnMount: "always",
   });
 
+  const toggleImageView = () => {
+    setIdImage(!idImage)
+  }
+
   console.log(data);
 
   return (
     <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-10 p-3">
+      <Breadcrumbs aria-label="breadcrumb">
+            <Link
+              to="/admin/rider"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              Riders
+            </Link>
+
+            <Link
+              to="#"
+              aria-current="page"
+              className="hover:border-b-2 hover:border-b-green-700"
+            >
+              {data?.FirstName}
+            </Link>
+          </Breadcrumbs>
       <h1 className="text-3xl font-bold text-center p-4">Rider Details</h1>
       {isLoading && (
         <p className="flex items-center justify-center">
@@ -68,7 +120,7 @@ const AdminRiderDetails = () => {
               </p>
             </div>
             <div className="flex gap-3 items-center ">
-              <h3 className="text-lg font-bold"> Email Address :</h3>
+              <h3 className="text-lg font-bold"> Email :</h3>
               <p className="text-gray-800 capitalize">{`${data?.Email}`} </p>
             </div>
             <div className="flex gap-2 items-center ">
@@ -98,14 +150,39 @@ const AdminRiderDetails = () => {
 
           <div className="flex flex-col gap-2 items-center col-span-2 p-5">
             <h3 className="text-2xl font-bold"> Identity Image :</h3>
-            <p className="text-gray-800 capitalize w-full">
-              <img
-                src={`${data?.IdentityImgUrl}`}
-                alt="ID Image"
-                className="w-full h-96 object-cover rounded-lg shadow-lg"
-              />
-            </p>
+            <div><button className="rounded-lg shadow-lg bg-green-500 p-4 font-bold" onClick={toggleImageView}> View ID Image </button></div>
+           {
+            idImage && <p className="text-gray-800 capitalize w-full">
+            <img
+              src={`${data?.IdentityImgUrl}`}
+              alt="ID Image"
+              className="w-full h-96 object-cover rounded-lg shadow-lg"
+            />
+          </p>
+           } 
           </div>
+          <div className="overflow-x-auto col-span-2">
+             
+              {isSuccess && (
+                <DataGrid
+                  rows={data?.Deliveries}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[5]}
+                  //checkboxSelection
+                  disableRowSelectionOnClick
+                  getRowId={(row) => row.Id}
+                  
+                  className="cursor-pointer"
+                />
+              )}
+            </div>
         </div>
       )}
     </div>

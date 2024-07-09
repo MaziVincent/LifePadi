@@ -11,7 +11,7 @@ import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import DeleteDialogue from "../subcomponents/DeleteDialogue";
-import serviceIcon from "../../../assets/images/services.png";
+//import serviceIcon from "../../../assets/images/services.png";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,7 +41,7 @@ const AdminService = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   // const activate = useActivate();
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -112,6 +112,7 @@ const AdminService = () => {
         handleClose={dispatch}
         deleteId={state.deleteId}
         url={url}
+        name='services'
       />
 
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">

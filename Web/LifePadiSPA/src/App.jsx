@@ -17,6 +17,8 @@ import AdminCategoryDetails from './components/admin/categories/AdminCategoryDet
 import AdminProduct from './components/admin/vendors/product/AdminProduct'
 import RiderLayout from './components/rider/RiderLayout'
 import RiderdDashboard from './components/rider/RiderDashboard'
+import AdminVoucher from './components/admin/vouchers/AdminVoucher'
+import Admin from './components/admin/admins/Admin'
 
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
         <Route path='/admin/product/:id' element={<AdminProduct />} />
 
         <Route path='/admin/order/:id' element={<AdminOrderDetails />} />
+        <Route path='/admin/voucher' element={<AdminVoucher />} />
+        <Route path='/admin/admin' element={<Admin />} />
 
       </Route>
       <Route path='/rider' element={<RiderLayout />}>

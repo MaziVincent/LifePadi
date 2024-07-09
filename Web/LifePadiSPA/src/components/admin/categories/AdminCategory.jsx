@@ -68,7 +68,7 @@ const AdminCategory = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
   const handlePageChange = (event, value) => {
     setPage(value);

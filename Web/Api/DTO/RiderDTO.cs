@@ -34,7 +34,7 @@ namespace Api.DTO
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
-        public List<OrderDtoLite>? Orders { get; set; }
+        public List<DeliveryDtoLite>? Deliveries { get; set; }
     }
 
     public class RiderDtoLite
@@ -54,7 +54,6 @@ namespace Api.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
-
 
     public class CreateRiderDto
     {

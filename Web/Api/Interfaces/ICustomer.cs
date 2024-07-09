@@ -1,11 +1,15 @@
 ﻿using Api.DTO;
+using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface ICustomer
     {
         public Task<AuthUserDto> createAsync(CustomerDto customer);
-        public Task<IEnumerable<CustomerDtoLite>> getAllAsync(int pageNumber, int pageSize);
+        public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
+
         public Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id);
         public Task<string> deleteAsync(int id);
         public Task<CustomerDto> getAsync(int id);

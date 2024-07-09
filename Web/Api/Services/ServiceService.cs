@@ -37,17 +37,18 @@ namespace Api.Services
             try
             {
                 IQueryable<Service> servicesList = Enumerable.Empty<Service>().AsQueryable();
-               
-                if(props.SearchString is null){
-                var services = await _dbContext!.Services.Include(s => s.Vendors)!
-                                  .ThenInclude(p => p.Products)
-                                  .OrderByDescending(s => s.CreatedAt)
-                                  .Where(s => s.IsActive == true)
-                                  .ToListAsync();
-                servicesList = servicesList.Concat(services);
 
-                var result = PagedList<Service>.ToPagedList(servicesList, props.PageNumber, props.PageSize);
-                return result;
+                if (props.SearchString is null)
+                {
+                    var services = await _dbContext!.Services.Include(s => s.Vendors)!
+                                      .ThenInclude(p => p.Products)
+                                      .OrderByDescending(s => s.CreatedAt)
+                                      .Where(s => s.IsActive == true)
+                                      .ToListAsync();
+                    servicesList = servicesList.Concat(services);
+
+                    var result = PagedList<Service>.ToPagedList(servicesList, props.PageNumber, props.PageSize);
+                    return result;
 
                 }
 
@@ -98,7 +99,7 @@ namespace Api.Services
             {
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) { return null!; }
-                 _dbContext.Services.Remove(service!);
+                _dbContext.Services.Remove(service!);
                 await _dbContext!.SaveChangesAsync();
                 return "Service deleted";
             }
@@ -112,11 +113,14 @@ namespace Api.Services
         {
             try
             {
-                var service = await _dbContext!.Services.Include(s => s.Vendors)!
+                var service = await _dbContext!.Services.Where(s => s.Id == id)
+                    .Include(s => s.Vendors)!
                     .ThenInclude(p => p.Products)
-                    .FirstOrDefaultAsync(s => s.Id == id);
+                    .FirstOrDefaultAsync();
+
                 if (service == null) return null!;
                 var ServiceDto = _mapper!.Map<ServiceDto>(service);
+                
                 return ServiceDto;
             }
             catch (Exception ex)

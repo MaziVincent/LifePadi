@@ -116,6 +116,7 @@ namespace Api.Services
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
                         .ToListAsync();
+                        
                     ridersList = ridersList.Concat(ridersLs);
                     var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 

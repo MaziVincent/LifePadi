@@ -1,7 +1,9 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -10,12 +12,14 @@ namespace Api.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomer? _icustomer;
-        public CustomerController(ICustomer icustomer)
+        private readonly IMapper _mapper;
+        public CustomerController(ICustomer icustomer, IMapper mapper)
         {
             _icustomer = icustomer;
+            _mapper = mapper;
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -30,19 +34,29 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10)
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var customers = await _icustomer!.getAllAsync(pageNumber, pageSize);
-                return Ok(customers);
+                var customers = await _icustomer!.getAllAsync(props);
+                var result = _mapper.Map<List<CustomerDtoLite>>(customers);
+
+                var dataList = new
+                {
+                    customers.TotalCount,
+                    customers.TotalPages,
+                    customers.CurrentPage,
+                    customers.PageSize
+                };
+
+                return Ok(new { result, dataList });
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -71,7 +85,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] CustomerDto customer)
         {
             try
@@ -85,7 +99,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/orders")]
+        [HttpGet("orders/{id}")]
         public async Task<IActionResult> getOrders(int id)
         {
             try
@@ -98,7 +112,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/addresses")]
+        [HttpGet("addresses/{id}")]
         public async Task<IActionResult> getAddresses(int id)
         {
             try

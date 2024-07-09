@@ -110,7 +110,7 @@ const AdminProduct = () => {
         </div>
       </section>
 
-      <section className="bg-white dark:bg-gray-900 flex justify-evenly items-center">
+      <section className="bg-white dark:bg-gray-900 flex flex-col md:flex-row py-6 justify-evenly items-center ">
         <div>
           {" "}
           <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-red-400': 'bg-green-400'} font-bold cursor-pointer`}>
