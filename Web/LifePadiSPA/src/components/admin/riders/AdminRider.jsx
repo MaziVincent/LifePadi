@@ -4,7 +4,7 @@ import useFetch from "../../../hooks/useFetch";
 import { useQuery, useQueryClient } from "react-query";
 import useAuth from "../../../hooks/useAuth";
 import baseUrl from "../../../api/baseUrl";
-import toast, { Toaster } from "react-hot-toast";
+import  { Toaster } from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
