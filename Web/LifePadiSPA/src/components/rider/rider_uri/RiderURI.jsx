@@ -17,5 +17,5 @@ export const updateStatusUrl = baseUrl + 'delivery/{id}/updateStatus';
 export const riderDeliveriesWithStatusCountUrl =
   baseUrl + 'delivery/getWithStatusCount/{riderId}'
 export const riderDeliveriesWithStatusUrl = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
-export const riderDeliveriesUrl = baseUrl + 'delivery/rider/{riderId}';
 
+export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
