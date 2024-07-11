@@ -62,7 +62,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == riderId);
                 if (rider == null) return null!;
                 delivery.RiderId = riderId;
-                delivery.UpdateAt = DateTime.UtcNow;
+                delivery.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Rider assign successfully";
@@ -365,7 +365,7 @@ namespace Api.Services
                 initialDelivery.PickupAddress = delivery.PickupAddress;
                 initialDelivery.RiderId = delivery.RiderId;
                 initialDelivery.OrderId = delivery.OrderId;
-                initialDelivery.UpdateAt = DateTime.UtcNow;
+                initialDelivery.UpdatedAt = DateTime.UtcNow;
                 initialDelivery.PickupType = delivery.PickupType;
                 _dbContext.Deliveries.Attach(initialDelivery);
                 await _dbContext.SaveChangesAsync();
@@ -378,6 +378,29 @@ namespace Api.Services
             }
         }
 
+        public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string DeliveryStatus, string OrderStatus)
+        {
+            try
+            {
+                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == deliveryId);
+                if (delivery == null) return null!;
+                var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+                if (order == null) return null!;
+                delivery.Status = DeliveryStatus;
+                delivery.UpdatedAt = DateTime.UtcNow;
+                order.Status = OrderStatus;
+                order.UpdatedAt = DateTime.UtcNow;
+                _dbContext.Deliveries.Attach(delivery);
+                _dbContext.Orders.Attach(order);
+                await _dbContext.SaveChangesAsync();
+
+                return "Delivery and Order status updated";
+            }catch(Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<string> updateStatus(string status, int id)
         {
             try
@@ -385,7 +408,7 @@ namespace Api.Services
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
                 delivery.Status = status;
-                delivery.UpdateAt = DateTime.UtcNow;
+                delivery.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Delivery status updated";

@@ -7,6 +7,7 @@
         public Customer? Customer { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
+        public string? Type { get; set; } = "Normal";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
