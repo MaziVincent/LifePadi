@@ -5,13 +5,24 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Fade from '@mui/material/Fade'
 import { Link } from 'react-router-dom'
+<<<<<<< HEAD
 import { UpdateModal } from './RiderModal'
 
 const FadeMenu = ({delivery}) => {
+=======
+import { ViewModal, UpdateModal } from './RiderModal'
+
+const FadeMenu = ({delivery}) => {
+    console.log(delivery.Id);
+>>>>>>> d8a3578 (created a modal for view and update)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
+<<<<<<< HEAD
+=======
+        console.log(event.currentTarget);
+>>>>>>> d8a3578 (created a modal for view and update)
     };
     const handleClose = () => {
         setAnchorEl(null);
@@ -50,8 +61,14 @@ const FadeMenu = ({delivery}) => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
+<<<<<<< HEAD
         <MenuItem onClick={handleClose}>
           <Link to={`delivery/${delivery.Id}`} >
+=======
+        <MenuItem onClick={handleClose}>{delivery.Id}</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to='#' onClick={handleOpenViewModal}>
+>>>>>>> d8a3578 (created a modal for view and update)
             View
           </Link>
         </MenuItem>
@@ -59,7 +76,11 @@ const FadeMenu = ({delivery}) => {
           <Link to='#' onClick={handleOpenUpdateModal}>Update</Link>
         </MenuItem>
       </Menu>
+<<<<<<< HEAD
       {/* <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} /> */}
+=======
+      <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} />
+>>>>>>> d8a3578 (created a modal for view and update)
       <UpdateModal delivery={delivery} openUpdateModal={openUpdateModal} setOpenUpdateModal={setOpenUpdateModal} />
     </div>
   )

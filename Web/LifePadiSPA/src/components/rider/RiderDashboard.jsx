@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
+<<<<<<< HEAD
 import {
   riderDeliveriesUrl,
   successfulDeliveriesCountUrl,
@@ -11,10 +12,20 @@ import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
 import FadeMenu from './FadeMenu'
 import CircularProgress from '@mui/material/CircularProgress'
+=======
+import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
+import { useQuery } from 'react-query'
+import useAuth from '../../hooks/useAuth'
+import baseUrl from '../../api/baseUrl'
+import { useRef } from 'react'
+import { Link } from 'react-router-dom'
+import FadeMenu from './FadeMenu'
+>>>>>>> d8a3578 (created a modal for view and update)
 
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
+<<<<<<< HEAD
   
   let page = 1;
   let totalPage = 1;
@@ -22,11 +33,20 @@ const RiderDashboard = () => {
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
   const riderId = auth.Id
+=======
+  const [page, setpage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [action, setAction] = useState(false)
+  const [dataId, setDataId] = useState(Number)
+  const svgRef = useRef(null)
+  const riderId = 3
+>>>>>>> d8a3578 (created a modal for view and update)
 
   const getRiderDeliveris = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
+<<<<<<< HEAD
   const getRiderPendingDeliverisCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
@@ -49,11 +69,26 @@ const RiderDashboard = () => {
           riderDeliveriesUrl + riderId
         }?PageNumber=${page}&SearchString=${search}`
       ),
+=======
+  const getRiderDeliveris = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+  const {
+    data: ridersCount,
+    isError: riderCountError,
+    isLoading: riderCountLoading,
+    isSuccess: riderCountSuccess,
+  } = useQuery({
+    queryKey: 'ridersCount',
+    queryFn: () => getRidersCount(ridersCountUrl),
+>>>>>>> d8a3578 (created a modal for view and update)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
 
+<<<<<<< HEAD
   if (riderDeliveriesSuccess) {
     if (riderDeliveries){
       totalPage = riderDeliveries.dataList.TotalPages;
@@ -90,11 +125,30 @@ const RiderDashboard = () => {
     queryFn: () =>
       getRiderSuccessfulDeliverisCount(
         `${successfulDeliveriesCountUrl + riderId}`
+=======
+  if (riderCountSuccess) {
+    console.log(ridersCount)
+  }
+
+  const {
+    data: riderDeliveries,
+    isError: riderDeliveriesError,
+    isLoading: riderDeliveriesLoading,
+    isSuccess: riderDeliveriesSuccess,
+  } = useQuery({
+    queryKey: ['deliveris', page, search],
+    queryFn: () =>
+      getRiderDeliveris(
+        `${
+          riderDeliveriesUrl + riderId
+        }?PageNumber=${page}&SearchString=${search}`
+>>>>>>> d8a3578 (created a modal for view and update)
       ),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
+<<<<<<< HEAD
   const setPage = (i) => {
     if (i > 0 && i <= totalPage) {
       page = i;
@@ -108,6 +162,19 @@ const RiderDashboard = () => {
   const setPreviousPage = (page) => {
     if (page > 0) {
       page -= 1;
+=======
+
+  if (riderDeliveriesSuccess) {
+    console.log(riderDeliveries.result)
+  }
+  const openOption = (id) => {
+    console.log(id)
+    setDataId(id)
+    if (svgRef.current) {
+      setDataId(svgRef.current.getAttribute('data-id'))
+      // console.log(dataId)
+      setAction(!action)
+>>>>>>> d8a3578 (created a modal for view and update)
     }
   }
 
@@ -118,11 +185,17 @@ const RiderDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+<<<<<<< HEAD
                 {riderDeliveriesLoading ? (
                   <CircularProgress size={20} />
                 ) : (
                   riderDeliveries?.dataList?.TotalCount
                 )}
+=======
+                {riderDeliveriesLoading
+                  ? 'Loading'
+                  : riderDeliveries.dataList.TotalCount + 'M+'}
+>>>>>>> d8a3578 (created a modal for view and update)
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
@@ -232,17 +305,21 @@ const RiderDashboard = () => {
                       IsDelivered
                     </th>
                     <th scope='col' className='px-4 py-3'>
+<<<<<<< HEAD
                       Customer Name
                     </th>
                     <th scope='col' className='px-4 py-3'>
                       Customer Phone
                     </th>
                     <th scope='col' className='px-4 py-3'>
+=======
+>>>>>>> d8a3578 (created a modal for view and update)
                       <span className=''>Actions</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
+<<<<<<< HEAD
                   {riderDeliveriesLoading && (
                     <tr className=''>
                       <td colSpan={8} className=''>
@@ -253,6 +330,9 @@ const RiderDashboard = () => {
                     </tr>
                   )}
                   {riderDeliveries ? (
+=======
+                  {riderDeliveries &&
+>>>>>>> d8a3578 (created a modal for view and update)
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -270,6 +350,7 @@ const RiderDashboard = () => {
                         <td className='px-4 py-3'>{delivery.Status}</td>
                         <td className='px-4 py-3'>{delivery.Order.Status}</td>
                         <td className='px-4 py-3'>
+<<<<<<< HEAD
                           {delivery.Order?.IsDelivered ? 'True' : 'False'}
                         </td>
                         <td className='px-4 py-3'>
@@ -290,6 +371,15 @@ const RiderDashboard = () => {
                       <td colSpan={6} className='text-center'>No data found</td>
                     </tr>
                   )}
+=======
+                          {delivery.Order.IsDelivered ? 'True' : 'False'}
+                        </td>
+                        <td className='px-4 py-3 flex items-center justify-end dropdown'>
+                          <FadeMenu delivery={delivery} />
+                        </td>
+                      </tr>
+                    ))}
+>>>>>>> d8a3578 (created a modal for view and update)
                 </tbody>
               </table>
             </div>
@@ -300,6 +390,7 @@ const RiderDashboard = () => {
               <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 Showing
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
+<<<<<<< HEAD
                   1-
                   {riderDeliveriesLoading ? (
                     <CircularProgress size={20} />
@@ -312,6 +403,13 @@ const RiderDashboard = () => {
                   {riderDeliveriesLoading
                     ? 'Loading'
                     : riderDeliveries?.dataList?.TotalCount}
+=======
+                  1-10
+                </span>
+                of
+                <span className='font-semibold text-gray-900 dark:text-white m-1'>
+                  {riderDeliveries && riderDeliveries.dataList.TotalCount}
+>>>>>>> d8a3578 (created a modal for view and update)
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>

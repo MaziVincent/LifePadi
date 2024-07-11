@@ -20,6 +20,7 @@ export const riderDeliveriesWithStatusCountUrl =
   baseUrl + 'delivery/getWithStatusCount/{riderId}'
 export const riderDeliveriesWithStatusUrl = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const successfulDeliveriesCountUrl =
   baseUrl + 'delivery/successful/rider/' //add riderId from the component before using this url
 export const pendingDeliveriesCountUrl =
@@ -30,6 +31,8 @@ export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus
 
 export const getDeliveryUrl = baseUrl + 'delivery/get/{id}';
 =======
+=======
+>>>>>>> d8a3578 (created a modal for view and update)
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/{riderId}';
 =======
 export const toggleRiderStatus = baseUrl + "rider/toggleRiderStatus";
@@ -50,4 +53,11 @@ export const riderDeliveriesWithStatusCount =
   baseUrl + 'delivery/getWithStatusCount/{riderId}'
 export const riderDeliveriesWithStatus = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
 >>>>>>> fe84f75 (added rider url)
+<<<<<<< HEAD
 >>>>>>> 110b09c (added rider url)
+=======
+=======
+
+export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
+>>>>>>> ae93a7b (created a modal for view and update)
+>>>>>>> d8a3578 (created a modal for view and update)
