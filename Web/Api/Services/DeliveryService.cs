@@ -762,7 +762,10 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus)
+=======
+        public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string DeliveryStatus, string OrderStatus)
         {
             try
             {
@@ -770,11 +773,40 @@ namespace Api.Services
                 if (delivery == null) return null!;
                 var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
                 if (order == null) return null!;
+                delivery.Status = DeliveryStatus;
+                delivery.UpdatedAt = DateTime.UtcNow;
+                order.Status = OrderStatus;
+                order.UpdatedAt = DateTime.UtcNow;
+                _dbContext.Deliveries.Attach(delivery);
+                _dbContext.Orders.Attach(order);
+                await _dbContext.SaveChangesAsync();
+
+                return "Delivery and Order status updated";
+            }catch(Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> updateStatus(string status, int id)
+>>>>>>> 52db56c (made some changes in the delivery and order)
+        {
+            try
+            {
+                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == deliveryId);
+                if (delivery == null) return null!;
+<<<<<<< HEAD
+                var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+                if (order == null) return null!;
                 delivery.Status = deliveryStatus;
                 delivery.UpdatedAt = DateTime.UtcNow;
                 order.Status = "Completed";
                 order.IsDelivered = true;
                 order.UpdatedAt = DateTime.UtcNow;
+=======
+                delivery.Status = status;
+                delivery.UpdatedAt = DateTime.UtcNow;
+>>>>>>> 52db56c (made some changes in the delivery and order)
                 _dbContext.Deliveries.Attach(delivery);
                 _dbContext.Orders.Attach(order);
                 await _dbContext.SaveChangesAsync();

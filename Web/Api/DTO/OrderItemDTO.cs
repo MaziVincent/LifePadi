@@ -72,6 +72,7 @@ namespace Api.DTO
         public double? Weight { get; set; }
         public string? Description { get; set; }
         public bool? IsFragile { get; set; }
+<<<<<<< HEAD
 =======
         public int Product_Id { get; set; }
         public Product? Product { get; set; }
@@ -83,6 +84,8 @@ namespace Api.DTO
 =======
         public Double TotalAmount { get; set; }
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

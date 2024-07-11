@@ -346,12 +346,20 @@ namespace Api.Controllers
         }
 
         [HttpPut("updateBothStatus")]
+<<<<<<< HEAD
         public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId)
         {
             try
             {
                 var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus);
                 if (response == null) return NotFound();
+=======
+        public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId, string orderStatus)
+        {
+            try
+            {
+                var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus, orderStatus);
+>>>>>>> 52db56c (made some changes in the delivery and order)
                 return Ok(response);
             }
             catch (Exception ex)
@@ -359,6 +367,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpGet("pending/rider/{riderId}")]
         public async Task<IActionResult> totalNumberOfPendingDeliveriesByRider(int riderId)
@@ -420,5 +429,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
     }
 }

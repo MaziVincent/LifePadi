@@ -15,7 +15,11 @@ namespace Api.Models
         
 =======
         public string? PickupAddress { get; set; }
+<<<<<<< HEAD
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+        public string? DeliveryAddress { get; set; }
+>>>>>>> 52db56c (made some changes in the delivery and order)
         public string? PickupType { get; set; }
 <<<<<<< HEAD
         public double DeliveryFee { get; set; }

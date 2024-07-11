@@ -12,6 +12,7 @@ namespace Api.DTO
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
         public string? Type { get; set; }
+<<<<<<< HEAD
         public string? Instruction { get; set; }
         public string? Order_Id { get; set; }
         public double TotalAmount { get; set; }
@@ -80,9 +81,11 @@ namespace Api.DTO
         public CustomerDtoLite? Customer { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public List<OrderItemDtoLite>? OrderItems { get; set; }
+        public List<OrderItemDto>? OrderItems { get; set; }
     }
 
     public class OrderDtoLite
@@ -90,6 +93,7 @@ namespace Api.DTO
         public int Id { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
+        public string? Type { get; set;}
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
@@ -99,6 +103,7 @@ namespace Api.DTO
         public int Id { get; set; }
         public string? Status { get; set; }
         public bool? IsDelivered { get; set; }
+        public string? Type { get; set;}
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }

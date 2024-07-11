@@ -50,6 +50,7 @@ namespace Api.Interfaces
         public Task<object> deliveryStats();
         public Task<IEnumerable<DeliveryDto>> getWithStatusForRider(int riderId, string status);
         public Task<object> getWithStatusForRiderCount(int riderId);
+<<<<<<< HEAD
         public Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus);
         public Task<int> totalNumberOfPendingDeliveriesByRider(int riderId);
         public Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId);
@@ -86,5 +87,8 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfDeliveriesByRider(int riderId);
         public Task<object> deliveryStats();
 >>>>>>> 98415b4 (done with dashboard)
+=======
+        public Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string DeliveryStatus, string OrderStatus);
+>>>>>>> 52db56c (made some changes in the delivery and order)
     }
 }

@@ -59,6 +59,8 @@ namespace Api.DTO
         public OrderDtoLite? Order { get; set; }
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
     public class DeliveryDtoLite
@@ -69,8 +71,12 @@ namespace Api.DTO
         public Double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
+<<<<<<< HEAD
         public DateTime UpdateAt { get; set; }
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+        public DateTime UpdatedAt { get; set; }
+>>>>>>> 52db56c (made some changes in the delivery and order)
     }
 
     public class CreateDeliveryDto

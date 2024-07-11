@@ -6,12 +6,16 @@ using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Exceptions;
 using Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 =======
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+using Api.Exceptions;
+>>>>>>> 52db56c (made some changes in the delivery and order)
 
 namespace Api.Services
 {
@@ -83,7 +87,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -105,6 +109,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+<<<<<<< HEAD
             }
         }
 
@@ -120,6 +125,8 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
             }
         }
 
@@ -134,6 +141,7 @@ namespace Api.Services
             {
                 var newOrder = _mapper.Map<Order>(order);
                 newOrder.Status = "Pending";
+<<<<<<< HEAD
 <<<<<<< HEAD
                 if (order.Type is null)
                 {
@@ -199,6 +207,13 @@ namespace Api.Services
                     return normalResult;
                 }
 =======
+=======
+                if (order.Type is null){
+                    newOrder.Type = "Normal";
+                }else{
+                    newOrder.Type = order.Type;
+                }
+>>>>>>> 52db56c (made some changes in the delivery and order)
                 newOrder.IsDelivered = false;
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
@@ -207,7 +222,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -255,8 +270,12 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new Exception(ex.Message);
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+                throw new ServiceException(ex.Message);
+>>>>>>> 52db56c (made some changes in the delivery and order)
             }
         }
 
@@ -275,6 +294,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+<<<<<<< HEAD
             }
         }
 
@@ -339,6 +359,8 @@ namespace Api.Services
 >>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
             }
         }
 
@@ -353,7 +375,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -376,6 +398,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+<<<<<<< HEAD
             }
         }
 
@@ -517,6 +540,8 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
             }
         }
 
@@ -539,7 +564,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -552,7 +577,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -565,7 +590,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -578,7 +603,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -591,7 +616,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -604,7 +629,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -617,7 +642,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -630,7 +655,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -643,7 +668,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -692,7 +717,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -745,8 +770,12 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new Exception(ex.Message);
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+                throw new ServiceException(ex.Message);
+>>>>>>> 52db56c (made some changes in the delivery and order)
             }
         }
     }

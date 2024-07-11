@@ -182,8 +182,13 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+<<<<<<< HEAD
                     b.Property<int?>("DeliveryAddressId")
                         .HasColumnType("integer");
+=======
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("text");
+>>>>>>> 52db56c (made some changes in the delivery and order)
 
                     b.Property<double>("DeliveryFee")
                         .HasColumnType("double precision");
@@ -216,6 +221,7 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
+<<<<<<< HEAD
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -366,6 +372,8 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -474,6 +482,9 @@ namespace Api.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("text");
 
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -499,6 +510,9 @@ namespace Api.Migrations
                         .HasColumnType("timestamp with time zone");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -508,8 +522,11 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+<<<<<<< HEAD
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 52db56c (made some changes in the delivery and order)
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
