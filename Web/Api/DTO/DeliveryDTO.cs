@@ -14,7 +14,7 @@ namespace Api.DTO
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
     }
-
+//Delivery Dto Lite
     public class DeliveryDtoLite
     {
         public int Id { get; set; }
