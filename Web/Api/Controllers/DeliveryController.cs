@@ -237,6 +237,7 @@ namespace Api.Controllers
             try
             {
                 var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus, orderStatus);
+                if (response == null) return NotFound();
                 return Ok(response);
             }
             catch (Exception ex)
