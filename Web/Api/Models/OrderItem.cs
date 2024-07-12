@@ -22,6 +22,10 @@ namespace Api.Models
         public Product? Product { get; set; }
         public int OrderId { get; set; }
         public Order? Order { get; set; }
+        public string? Name { get; set; }
+        public double? Weight { get; set; }
+        public string? Description { get; set; }
+        public bool? IsFragile { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

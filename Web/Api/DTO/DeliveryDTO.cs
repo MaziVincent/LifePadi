@@ -13,6 +13,8 @@ namespace Api.DTO
         public OrderDtoLite? Order { get; set; }
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 //Delivery Dto Lite
     public class DeliveryDtoLite
@@ -23,7 +25,7 @@ namespace Api.DTO
         public Double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class CreateDeliveryDto
