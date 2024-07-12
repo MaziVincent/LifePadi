@@ -1,28 +1,78 @@
 import ActionsMenu from '../admin/subcomponents/ActionsMenu'
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
-import { ridersCountUrl } from './rider_uri/RiderURI'
+import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
 import { useQuery } from 'react-query'
 import useAuth from '../../hooks/useAuth'
+import baseUrl from '../../api/baseUrl'
+import { useRef } from 'react'
+import { Link } from 'react-router-dom'
+import FadeMenu from './FadeMenu'
 
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
+  const [page, setpage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [action, setAction] = useState(false)
+  const [dataId, setDataId] = useState(Number)
+  const svgRef = useRef(null)
+  const riderId = 3
 
   const getRidersCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
-  const { data, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ridersCountUrl,
+  const getRiderDeliveris = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+  const {
+    data: ridersCount,
+    isError: riderCountError,
+    isLoading: riderCountLoading,
+    isSuccess: riderCountSuccess,
+  } = useQuery({
+    queryKey: 'ridersCount',
     queryFn: () => getRidersCount(ridersCountUrl),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-  
-  if (isSuccess) {
-    console.log(data)
+
+  if (riderCountSuccess) {
+    console.log(ridersCount)
+  }
+
+  const {
+    data: riderDeliveries,
+    isError: riderDeliveriesError,
+    isLoading: riderDeliveriesLoading,
+    isSuccess: riderDeliveriesSuccess,
+  } = useQuery({
+    queryKey: ['deliveris', page, search],
+    queryFn: () =>
+      getRiderDeliveris(
+        `${
+          riderDeliveriesUrl + riderId
+        }?PageNumber=${page}&SearchString=${search}`
+      ),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+
+  if (riderDeliveriesSuccess) {
+    console.log(riderDeliveries.result)
+  }
+  const openOption = (id) => {
+    console.log(id)
+    setDataId(id)
+    if (svgRef.current) {
+      setDataId(svgRef.current.getAttribute('data-id'))
+      // console.log(dataId)
+      setAction(!action)
+    }
   }
 
   return (
@@ -32,10 +82,12 @@ const RiderDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-4 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
-                {isLoading ? 'Loading' : data + 'M+'}
+                {riderDeliveriesLoading
+                  ? 'Loading'
+                  : riderDeliveries.dataList.TotalCount + 'M+'}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
-                Total
+                Total Deliveries
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
@@ -275,93 +327,51 @@ const RiderDashboard = () => {
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                   <tr>
                     <th scope='col' className='px-4 py-3'>
-                      Product name
+                      Pick Up Address
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Category
+                      Delivery Fee
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Brand
+                      Delivery Status
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Description
+                      Order Status
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Price
+                      IsDelivered
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      <span className='sr-only'>Actions</span>
+                      <span className=''>Actions</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className='border-b dark:border-gray-700'>
-                    <th
-                      scope='row'
-                      className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'
-                    >
-                      Monitor BenQ EX2710Q
-                    </th>
-                    <td className='px-4 py-3'>TV/Monitor</td>
-                    <td className='px-4 py-3'>BenQ</td>
-                    <td className='px-4 py-3'>354</td>
-                    <td className='px-4 py-3'>$499</td>
-                    <td className='px-4 py-3 flex items-center justify-end'>
-                      {/* <button
-                                id="benq-ex2710q-dropdown-button"
-                                data-dropdown-toggle="benq-ex2710q-dropdown"
-                                className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                type="button"
-                            >
-                                <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                                >
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                </svg>
-                            </button> */}
-                      {/* <td className="px-4 py-3 flex items-center justify-end">
-                                <ActionsMenu />
-                            </td> */}
-                      <div
-                        id='benq-ex2710q-dropdown'
-                        className='hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
+                  {riderDeliveries &&
+                    riderDeliveries.result.map((delivery) => (
+                      <tr
+                        className='border-b dark:border-gray-700'
+                        key={delivery.Id}
                       >
-                        <ul
-                          className='py-1 text-sm text-gray-700 dark:text-gray-200'
-                          aria-labelledby='benq-ex2710q-dropdown-button'
+                        <th
+                          scope='row'
+                          className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                         >
-                          <li>
-                            <a
-                              href='#'
-                              className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                            >
-                              Show
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href='#'
-                              className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                            >
-                              Edit
-                            </a>
-                          </li>
-                        </ul>
-                        <div className='py-1'>
-                          <a
-                            href='#'
-                            className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
-                          >
-                            Delete
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+                          {delivery.PickupAddress}
+                        </th>
+                        <td className='px-4 py-3'>
+                          &#x20A6; {delivery.DeliveryFee}
+                        </td>
+                        <td className='px-4 py-3'>{delivery.Status}</td>
+                        <td className='px-4 py-3'>{delivery.Order.Status}</td>
+                        <td className='px-4 py-3'>
+                          {delivery.Order.IsDelivered ? 'True' : 'False'}
+                        </td>
+                        <td className='px-4 py-3 flex items-center justify-end dropdown'>
+                          <FadeMenu delivery={delivery} />
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -371,12 +381,12 @@ const RiderDashboard = () => {
             >
               <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 Showing
-                <span className='font-semibold text-gray-900 dark:text-white'>
+                <span className='font-semibold text-gray-900 dark:text-white m-1'>
                   1-10
                 </span>
                 of
-                <span className='font-semibold text-gray-900 dark:text-white'>
-                  1000
+                <span className='font-semibold text-gray-900 dark:text-white m-1'>
+                  {riderDeliveries && riderDeliveries.dataList.TotalCount}
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>

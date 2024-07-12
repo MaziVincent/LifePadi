@@ -230,5 +230,19 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("updateBothStatus")]
+        public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId, string orderStatus)
+        {
+            try
+            {
+                var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus, orderStatus);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
