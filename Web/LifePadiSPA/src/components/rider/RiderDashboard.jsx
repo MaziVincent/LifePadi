@@ -61,19 +61,16 @@ const RiderDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-
+  if (riderDeliveries){
+    console.log(riderDeliveries)
+  }
   if (riderDeliveriesSuccess) {
-    console.log(riderDeliveries.result)
+    console.log(riderDeliveries)
   }
-  const openOption = (id) => {
-    console.log(id)
-    setDataId(id)
-    if (svgRef.current) {
-      setDataId(svgRef.current.getAttribute('data-id'))
-      // console.log(dataId)
-      setAction(!action)
-    }
+  if (riderDeliveriesError) {
+    console.log(riderDeliveriesError)
   }
+  
 
   return (
     <div className='bg-gray-100'>
