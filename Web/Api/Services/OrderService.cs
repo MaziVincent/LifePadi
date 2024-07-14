@@ -24,16 +24,16 @@ namespace Api.Services
             {
                 IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
 
-                     var _orders = await _dbContext!.Orders
-                    .Include(o => o.Customer)
-                    .Include(o => o.OrderItems)
-                    .OrderByDescending(o => o.CreatedAt)
-                    .ToListAsync();
-                    orderList = orderList.Concat(_orders);
-                    var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
-                    return result;
-                
-                
+                var _orders = await _dbContext!.Orders
+               .Include(o => o.Customer)
+               .Include(o => o.OrderItems)
+               .OrderByDescending(o => o.CreatedAt)
+               .ToListAsync();
+                orderList = orderList.Concat(_orders);
+                var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                return result;
+
+
             }
             catch (Exception ex)
             {
@@ -61,10 +61,13 @@ namespace Api.Services
             {
                 var newOrder = _mapper.Map<Order>(order);
                 newOrder.Status = "Pending";
-                if (order.Type is null){
+                if (order.Type is null)
+                {
                     newOrder.Type = "Normal";
 
-                }else{
+                }
+                else
+                {
                     newOrder.Type = order.Type;
                 }
                 newOrder.IsDelivered = false;
@@ -119,8 +122,8 @@ namespace Api.Services
             try
             {
                 var order = await _dbContext!.Orders.Where(o => o.Id == id)
-                    .Include(o => o.OrderItems)
                     .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product)
                     .FirstOrDefaultAsync();
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<OrderDto>(order);

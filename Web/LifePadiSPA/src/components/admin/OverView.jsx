@@ -3,11 +3,32 @@ import { useQuery } from "react-query";
 import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { CircularProgress } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import OrderStatusModal from "./orders/OrderStatusModal";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "open":
+      return { ...state, open: !state.open };
+    case "edit":
+      return { ...state, edit: !state.edit };
+    case "activate":
+      return { ...state, activate: !state.activate };
+    case "delete":
+      return { ...state, delete: !state.delete };
+    case "category":
+      return { ...state, category: action.payload };
+    case "id":
+      return { ...state, id: action.payload };
+
+    default:
+      throw new Error();
+  }
+};
 
 const Overview = () => {
   const fetch = useFetch();
@@ -16,6 +37,15 @@ const Overview = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  const [state, dispatch] = useReducer(reducer, {
+    open: false,
+    edit: false,
+    activate: false,
+    delete: false,
+    category: {},
+    id: 0,
+  });
 
   const getOrders = async (url) => {
     const response = await fetch(url, auth.accessToken);
@@ -101,7 +131,7 @@ const Overview = () => {
           </dl>
         </div>
       </section>
-
+      <OrderStatusModal open={state.edit} handleClose={dispatch} url={url} id={state.id} name="orders" />
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
           <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -351,7 +381,7 @@ const Overview = () => {
                       <td className="px-4 py-3">{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
                       <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
                       <td className="px-4 py-3 flex items-center justify-end">
-                        <ActionsMenu view = {handleOrderDetails} id={order.Id} />
+                        <ActionsMenu view = {handleOrderDetails} edit={dispatch} id={order.Id} />
                       </td>
                     </tr>
                   ))}
