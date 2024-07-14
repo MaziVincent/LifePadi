@@ -7,6 +7,7 @@ import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const fetch = useFetch();
@@ -14,6 +15,7 @@ const Overview = () => {
   const url = `${baseUrl}order`;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const getOrders = async (url) => {
     const response = await fetch(url, auth.accessToken);
@@ -37,6 +39,11 @@ const Overview = () => {
     setPage(value);
     //console.log("page " + value);
   };
+
+  const handleOrderDetails = (id) => {
+    navigate(`/admin/order/${id}`)
+
+  }
 
   return (
     <div className="bg-gray-100">
@@ -344,7 +351,7 @@ const Overview = () => {
                       <td className="px-4 py-3">{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
                       <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
                       <td className="px-4 py-3 flex items-center justify-end">
-                        <ActionsMenu />
+                        <ActionsMenu view = {handleOrderDetails} id={order.Id} />
                       </td>
                     </tr>
                   ))}

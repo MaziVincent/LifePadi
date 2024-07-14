@@ -76,7 +76,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -91,7 +91,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("order/{orderId}/get")]
+        [HttpGet("order/get/{orderId}")]
         public async Task<IActionResult> getOrderDelivery(int orderId)
         {
             try
@@ -158,7 +158,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
         {
             try
@@ -173,7 +173,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/assignRider/{riderId}")]
+        [HttpPut("assignRider/{id}/{riderId}")]
         public async Task<IActionResult> assignRiderToDelivery(int id, int riderId)
         {
             try
@@ -188,7 +188,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/updateStatus")]
+        [HttpPut("updateStatus/{id}")]
         public async Task<IActionResult> updateStatus(int id, [FromQuery] string status)
         {
             try
