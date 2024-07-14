@@ -13,7 +13,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 // const ITEM_HEIGHT = 48;
 
-export default function LongMenu( {view, id}) {
+export default function LongMenu( {view,edit, id}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -54,7 +54,11 @@ export default function LongMenu( {view, id}) {
             <div className='flex gap-2 '> <i className='line-icon-Eye text-green-700 text-xl'></i><span>View </span></div>
           </MenuItem>
 
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={ () => {
+            handleClose;
+            edit({type:'edit'});
+            edit({type:'id', payload:id})}}
+            >
             <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue-700 text-xl'></i><span>Edit </span></div>
           </MenuItem>
 
