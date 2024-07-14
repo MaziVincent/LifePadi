@@ -77,7 +77,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -106,7 +106,7 @@ namespace Api.Controllers
         }
 
 
-        [HttpGet("{id}/orderItems")]
+        [HttpGet("orderItems/{id}")]
         public async Task<IActionResult> orderItems(int id)
         {
             try
@@ -123,7 +123,7 @@ namespace Api.Controllers
         //public async Task<IActionResult> getRiderOrders(int riderId)
         
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] OrderDto order)
         {
             try
@@ -137,7 +137,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/updateStatus")]
+        [HttpPut("updateStatus/{id}")]
         public async Task<IActionResult> updateStatus(int id, [FromQuery] string status)
         {
             try

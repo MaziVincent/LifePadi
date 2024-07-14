@@ -63,6 +63,7 @@ namespace Api.Services
                 newOrder.Status = "Pending";
                 if (order.Type is null){
                     newOrder.Type = "Normal";
+                    
                 }else{
                     newOrder.Type = order.Type;
                 }

@@ -4,16 +4,16 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-const options = [
-  {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
-  {icon:'line-icon-Pen-5 text-blue-700 text-xl', text:'Edit'},
-  {icon:'line-icon-Close text-red-700 text-xl', text:'Delete'} 
+// const options = [
+//   {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
+//   {icon:'line-icon-Pen-5 text-blue-700 text-xl', text:'Edit'},
+//   {icon:'line-icon-Close text-red-700 text-xl', text:'Delete'} 
   
-];
+// ];
 
 // const ITEM_HEIGHT = 48;
 
-export default function LongMenu() {
+export default function LongMenu( {view, id}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -45,11 +45,23 @@ export default function LongMenu() {
         open={open}
         onClose={handleClose}
       >
-        {options.map((option) => (
-          <MenuItem key={option.text} selected={option.text === 'View'} onClick={handleClose}>
-            <div className='flex gap-2 '> <i className={`${option.icon}`}></i><span>{option.text}</span></div>
+       
+          <MenuItem  selected={true} onClick={() => {
+            
+            handleClose; 
+            view(id)
+            }}>
+            <div className='flex gap-2 '> <i className='line-icon-Eye text-green-700 text-xl'></i><span>View </span></div>
           </MenuItem>
-        ))}
+
+          <MenuItem onClick={handleClose}>
+            <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue-700 text-xl'></i><span>Edit </span></div>
+          </MenuItem>
+
+          <MenuItem onClick={handleClose}>
+            <div className='flex gap-2 '> <i className='line-icon-Close text-red-700 text-xl'></i><span>Delete </span></div>
+          </MenuItem>
+        
       </Menu>
     </div>
   );
