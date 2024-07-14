@@ -23,15 +23,15 @@ const AdminOrderDetails = () => {
         return response.data;
       };
 
-      const getVendorAndProducts = (url) => {
+      const getOrderAndDelivery = () => {
         return Promise.all([
           fetch(`${url}/get/${id}`, auth.accessToken),
-          fetch(`${url}/products/${id}`, auth.accessToken),
+          fetch(`${baseUrl}delivery/order/get/${id}`, auth.accessToken),
         ])
           .then(([result, response]) => {
             return {
-              vendor: result.data,
-              products: response.data,
+              order: result.data,
+              delivery: response.data,
             };
           })
           .catch((error) => {
@@ -43,7 +43,7 @@ const AdminOrderDetails = () => {
     
       const { data, isError, isSuccess, isLoading } = useQuery({
         queryKey: ["order"],
-        queryFn: () => getOrder(`${url}/get/${id}`),
+        queryFn: () => getOrderAndDelivery(),
         keepPreviousData: true,
         staleTime: 10000,
         refetchOnMount: "always",

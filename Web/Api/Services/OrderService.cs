@@ -63,7 +63,7 @@ namespace Api.Services
                 newOrder.Status = "Pending";
                 if (order.Type is null){
                     newOrder.Type = "Normal";
-                    
+
                 }else{
                     newOrder.Type = order.Type;
                 }
@@ -118,7 +118,10 @@ namespace Api.Services
         {
             try
             {
-                var order = await _dbContext!.Orders.FirstOrDefaultAsync(o => o.Id == id);
+                var order = await _dbContext!.Orders.Where(o => o.Id == id)
+                    .Include(o => o.OrderItems)
+                    .Include(o => o.Customer)
+                    .FirstOrDefaultAsync();
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<OrderDto>(order);
                 return OrderDto;

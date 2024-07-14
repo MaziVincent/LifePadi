@@ -61,7 +61,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
