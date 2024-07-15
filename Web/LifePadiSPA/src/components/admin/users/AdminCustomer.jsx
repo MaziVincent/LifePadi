@@ -21,16 +21,16 @@ const AdminCustomer = () => {
   // const activate = useActivate();
   const queryClient = useQueryClient();
 
-  const getRiders = async (url) => {
+  const getCustomers = async (url) => {
     const result = await fetch(url, auth.accessToken);
 
     return result.data;
   };
 
   const { data, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ["riders", page, search],
+    queryKey: ["customers", page, search],
     queryFn: () =>
-      getRiders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+      getCustomers(`${url}/all?PageNumber=${page}&SearchString=${search}`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
@@ -165,8 +165,8 @@ const AdminCustomer = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data?.result.map((rider) => (
-                      <tr className="hover:bg-gray-100 cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
+                    {data?.result.map((customer) => (
+                      <tr className="hover:bg-gray-100 cursor-pointer" key={customer.Id} onClick={()=>navigate(`/admin/customer/${customer.Id}`)}>
                         <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
@@ -178,13 +178,13 @@ const AdminCustomer = () => {
                           </div>
                           <div className="text-sm">
                             <div className="font-medium capitalize  text-gray-700">
-                              {`${rider.FirstName} ${rider.LastName}`}
+                              {`${customer.FirstName} ${customer.LastName}`}
                             </div>
-                            <div className="text-gray-400">{rider.Email}</div>
+                            <div className="text-gray-400">{customer.Email}</div>
                           </div>
                         </th>
-                        <td className="px-6 py-4 text-center">{rider.PhoneNumber}</td>
-                        <td className="px-6 py-4 text-center">{rider.ContactAddress}</td>
+                        <td className="px-6 py-4 text-center">{customer.PhoneNumber}</td>
+                        <td className="px-6 py-4 text-center">{customer.ContactAddress}</td>
                        
                       </tr>
                     ))}
