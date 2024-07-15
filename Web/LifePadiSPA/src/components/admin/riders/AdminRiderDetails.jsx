@@ -53,7 +53,7 @@ const AdminRiderDetails = () => {
   };
 
   const { data, isError, isSuccess, isLoading } = useQuery({
-    queryKey: ["category"],
+    queryKey: ["rider"],
     queryFn: () => getRider(`${url}/${id}`),
     keepPreviousData: true,
     staleTime: 10000,

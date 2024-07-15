@@ -9,6 +9,7 @@ import AdminCategory from './components/admin/categories/AdminCategory'
 import AdminRider from './components/admin/riders/AdminRider'
 import AdminRiderDetails from './components/admin/riders/AdminRiderDetails'
 import AdminCustomer from './components/admin/users/AdminCustomer'
+import AdminCustomerDetails from './components/admin/users/AdminCustomerDetails'
 import AdminVendorCategory from './components/admin/vendors/AdminVendorCategory'
 import AdminVendorCategoryDetails from './components/admin/vendors/AdminVendorCategoryDetails'
 import AdminVendorDetails from './components/admin/vendors/vendor/AdminVendorDetails'
@@ -20,6 +21,7 @@ import RiderdDashboard from './components/rider/RiderDashboard'
 import AdminVoucher from './components/admin/vouchers/AdminVoucher'
 import Admin from './components/admin/admins/Admin'
 import Home from './components/home/Home'
+import Page404 from './components/Page404'
 
 
 function App() {
@@ -47,6 +49,7 @@ function App() {
         <Route path='/admin/rider' element={<AdminRider />} />
         <Route path='/admin/rider/:id' element={<AdminRiderDetails />} />
         <Route path='/admin/customer' element={<AdminCustomer />} />
+        <Route path='/admin/customer/:id' element={<AdminCustomerDetails />} />
         <Route path='/admin/vendorcategory' element={<AdminVendorCategory />} />
         <Route path='/admin/vendorcategory/:id' element={<AdminVendorCategoryDetails />} />
         <Route path='/admin/vendor/:id' element={<AdminVendorDetails />} />
@@ -60,6 +63,10 @@ function App() {
       <Route path='/rider' element={<RiderLayout />}>
         <Route index element={<RiderdDashboard />} />
       </Route>
+
+
+
+      <Route path='*' element={<Page404 />} />
     </Routes>
       
     </QueryClientProvider>

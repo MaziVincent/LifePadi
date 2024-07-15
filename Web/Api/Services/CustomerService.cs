@@ -15,8 +15,8 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-        public CustomerService(DBContext dBContext, IMapper mapper) 
-        { 
+        public CustomerService(DBContext dBContext, IMapper mapper)
+        {
             _dbContext = dBContext;
             _mapper = mapper;
         }
@@ -32,7 +32,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var authUserDTO = _mapper.Map<AuthUserDto>(newCustomer);
                 return authUserDTO;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -46,7 +47,8 @@ namespace Api.Services
                 if (customer == null) return null!;
                 var addresses = _mapper.Map<List<AddressDtoLite>>(customer.Addresses);
                 return addresses;
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -61,13 +63,14 @@ namespace Api.Services
                 _dbContext.Customers.Remove(customer);
                 await _dbContext.SaveChangesAsync();
                 return "Customer account deleted";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        public async Task<PagedList<Customer>> getAllAsync (SearchPaging props)
+        public async Task<PagedList<Customer>> getAllAsync(SearchPaging props)
         {
             try
             {
@@ -77,12 +80,12 @@ namespace Api.Services
                     var customerLs = await _dbContext.Customers
                         .OrderByDescending(r => r.CreatedAt)
                         .ToListAsync();
-                        
+
                     customerList = customerList.Concat(customerLs);
                     var result = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
 
                     return result;
-                    
+
                 }
                 var customers = await _dbContext.Customers
                         .OrderByDescending(r => r.CreatedAt)
@@ -94,7 +97,7 @@ namespace Api.Services
                 return response;
 
             }
-            
+
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -105,11 +108,24 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.Include(c => c.Addresses).FirstOrDefaultAsync(c => c.Id == id);
+                var customer = await _dbContext.Customers.Where(c => c.Id == id).Include(c => c.Addresses)
+                .Include(c => c.Orders).FirstOrDefaultAsync();
                 if (customer == null) return null!;
-                var CustomerDto = _mapper.Map<CustomerDto>(customer);
+                var CustomerDto = new CustomerDto
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email,
+                    DOB = customer.DOB,
+                    PhoneNumber = customer.PhoneNumber,
+                    ContactAddress = customer.ContactAddress,
+                    Addresses = _mapper.Map<List<AddressDtoLite>>(customer.Addresses),
+                    Orders = _mapper.Map<List<OrderDtoLite>>(customer.Orders)
+                };
                 return CustomerDto;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -123,7 +139,8 @@ namespace Api.Services
                 if (customer == null) return null!;
                 var orders = _mapper.Map<List<OrderDtoLite>>(customer.Orders);
                 return orders;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -135,7 +152,8 @@ namespace Api.Services
             {
                 var customers = await _dbContext.Customers.CountAsync();
                 return customers;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -193,7 +211,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var CustomerDtoLite = _mapper.Map<CustomerDtoLite>(initialCustomer);
                 return CustomerDtoLite;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
