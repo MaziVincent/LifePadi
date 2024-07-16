@@ -35,6 +35,12 @@ function App() {
       <Route index element={<Home />} />
       </Route>
 
+      {/* SHOP ROUTES */}
+
+      <Route path='/shop' element={<ShopLayout />} >
+        <route index element={<Shop />} />
+      </Route>
+
 
 
 

@@ -1,10 +1,11 @@
 ﻿
+using Api.Exceptions;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
 namespace Api.Helpers
 {
-    public class UploadImage
+    public static class UploadImage
     {
         public static async Task<string> uploadImg(IFormFile file, Cloudinary cloudinary, string folderName)
         {
@@ -29,7 +30,7 @@ namespace Api.Helpers
                 return "No file provided.";
             }catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
     }
