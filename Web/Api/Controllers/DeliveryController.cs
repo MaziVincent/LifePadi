@@ -232,11 +232,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("updateBothStatus")]
-        public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId, string orderStatus)
+        public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId)
         {
             try
             {
-                var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus, orderStatus);
+                var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus);
                 if (response == null) return NotFound();
                 return Ok(response);
             }
