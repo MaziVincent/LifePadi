@@ -378,7 +378,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string DeliveryStatus, string OrderStatus)
+        public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus)
         {
             try
             {
@@ -386,9 +386,9 @@ namespace Api.Services
                 if (delivery == null) return null!;
                 var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
                 if (order == null) return null!;
-                delivery.Status = DeliveryStatus;
+                delivery.Status = deliveryStatus;
                 delivery.UpdatedAt = DateTime.UtcNow;
-                order.Status = OrderStatus;
+                order.IsDelivered = true;
                 order.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
                 _dbContext.Orders.Attach(order);
