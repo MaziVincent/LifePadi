@@ -59,5 +59,12 @@ export const riderDeliveriesWithStatus = baseUrl + 'delivery/getWithStatus/{ride
 =======
 
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
+<<<<<<< HEAD
 >>>>>>> ae93a7b (created a modal for view and update)
+<<<<<<< HEAD
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+=======
+export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus'; //add orderId, deliveryId and deliveryStatus as query params
+>>>>>>> 06231f6 (still working on updating delivery status)
+>>>>>>> 1795118 (still working on updating delivery status)

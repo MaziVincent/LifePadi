@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1795118 (still working on updating delivery status)
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
 <<<<<<< HEAD
@@ -16,11 +19,13 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
 import { useQuery } from 'react-query'
 import useAuth from '../../hooks/useAuth'
-import baseUrl from '../../api/baseUrl'
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import FadeMenu from './FadeMenu'
+<<<<<<< HEAD
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+import CircularProgress from '@mui/material/CircularProgress'
+>>>>>>> 1795118 (still working on updating delivery status)
 
 const RiderDashboard = () => {
   const fetch = useFetch()
@@ -36,9 +41,6 @@ const RiderDashboard = () => {
 =======
   const [page, setpage] = useState(1)
   const [search, setSearch] = useState('')
-  const [action, setAction] = useState(false)
-  const [dataId, setDataId] = useState(Number)
-  const svgRef = useRef(null)
   const riderId = 3
 >>>>>>> d8a3578 (created a modal for view and update)
 
@@ -193,9 +195,15 @@ const RiderDashboard = () => {
                 )}
 =======
                 {riderDeliveriesLoading
+<<<<<<< HEAD
                   ? 'Loading'
                   : riderDeliveries.dataList.TotalCount + 'M+'}
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+                  ? (<CircularProgress size={20} />)
+                  : riderDeliveriesSuccess &&
+                    riderDeliveries.dataList.TotalCount + 'M+'}
+>>>>>>> 1795118 (still working on updating delivery status)
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
@@ -274,7 +282,28 @@ const RiderDashboard = () => {
                     {/* <i className='line-icon-Add'></i> */}
                     Verified
                   </button>
+<<<<<<< HEAD
                 ) : (
+=======
+                  <div
+                    id='actionsDropdown'
+                    className='hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
+                  >
+                    <ul
+                      className='py-1 text-sm text-gray-700 dark:text-gray-200'
+                      aria-labelledby='actionsDropdownButton'
+                    >
+                      <li>
+                        <Link
+                          to='#'
+                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
+                        >
+                          Mass Edit
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+>>>>>>> 1795118 (still working on updating delivery status)
                   <button
                     type='button'
                     className='flex items-center justify-center text-red bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
@@ -282,7 +311,52 @@ const RiderDashboard = () => {
                     {/* <i className='line-icon-Add'></i> */}
                     Not Verified
                   </button>
+<<<<<<< HEAD
                 )}
+=======
+                  <div
+                    id='filterDropdown'
+                    className='z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700'
+                  >
+                    <h6 className='mb-3 text-sm font-medium text-gray-900 dark:text-white'>
+                      Choose brand
+                    </h6>
+                    <ul
+                      className='space-y-2 text-sm'
+                      aria-labelledby='filterDropdownButton'
+                    >
+                      <li className='flex items-center'>
+                        <input
+                          id='apple'
+                          type='checkbox'
+                          value=''
+                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
+                        />
+                        <label
+                          htmlFor='apple'
+                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
+                        >
+                          Apple (56)
+                        </label>
+                      </li>
+                      <li className='flex items-center'>
+                        <input
+                          id='fitbit'
+                          type='checkbox'
+                          value=''
+                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
+                        />
+                        <label
+                          htmlFor='fitbit'
+                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
+                        >
+                          Microsoft (16)
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+>>>>>>> 1795118 (still working on updating delivery status)
               </div>
             </div>
             <div className='overflow-x-auto'>
@@ -320,6 +394,7 @@ const RiderDashboard = () => {
                 </thead>
                 <tbody>
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {riderDeliveriesLoading && (
                     <tr className=''>
                       <td colSpan={8} className=''>
@@ -333,6 +408,18 @@ const RiderDashboard = () => {
 =======
                   {riderDeliveries &&
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+                  {riderDeliveriesLoading ? (
+                    <tr className=''>
+                      <td colSpan={6} className=''>
+                        <div className='p-3 flex flex-row justify-center items-center w-full'>
+                          <CircularProgress />
+                        </div>
+
+                      </td>
+                    </tr>
+                  ) : (
+>>>>>>> 1795118 (still working on updating delivery status)
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -350,6 +437,7 @@ const RiderDashboard = () => {
                         <td className='px-4 py-3'>{delivery.Status}</td>
                         <td className='px-4 py-3'>{delivery.Order.Status}</td>
                         <td className='px-4 py-3'>
+<<<<<<< HEAD
 <<<<<<< HEAD
                           {delivery.Order?.IsDelivered ? 'True' : 'False'}
                         </td>
@@ -373,13 +461,21 @@ const RiderDashboard = () => {
                   )}
 =======
                           {delivery.Order.IsDelivered ? 'True' : 'False'}
+=======
+                          {delivery.Order?.IsDelivered ? 'True' : 'False'}
+>>>>>>> 1795118 (still working on updating delivery status)
                         </td>
                         <td className='px-4 py-3 flex items-center justify-end dropdown'>
                           <FadeMenu delivery={delivery} />
                         </td>
                       </tr>
+<<<<<<< HEAD
                     ))}
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+                    ))
+                  )}
+>>>>>>> 1795118 (still working on updating delivery status)
                 </tbody>
               </table>
             </div>
@@ -408,14 +504,25 @@ const RiderDashboard = () => {
                 </span>
                 of
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
+<<<<<<< HEAD
                   {riderDeliveries && riderDeliveries.dataList.TotalCount}
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+                  {riderDeliveriesLoading
+                    ? 'Loading'
+                    : riderDeliveries.dataList.TotalCount}
+>>>>>>> 1795118 (still working on updating delivery status)
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
+<<<<<<< HEAD
                   <button
                     onClick={() => setPreviousPage(page)}
+=======
+                  <Link
+                    to='#'
+>>>>>>> 1795118 (still working on updating delivery status)
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -432,6 +539,7 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
+<<<<<<< HEAD
                   </button>
                 </li>
                 {Array.from({ length: totalPage }, (_, i) => (
@@ -445,6 +553,36 @@ const RiderDashboard = () => {
                   </li>
                 ))}
                 <li className='hidden'>
+=======
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='#'
+                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                  >
+                    1
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='#'
+                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                  >
+                    2
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='#'
+                    aria-current='page'
+                    className='flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                  >
+                    3
+                  </Link>
+                </li>
+                <li>
+>>>>>>> 1795118 (still working on updating delivery status)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -452,7 +590,11 @@ const RiderDashboard = () => {
                     ...
                   </Link>
                 </li>
+<<<<<<< HEAD
                 <li className='hidden'>
+=======
+                <li>
+>>>>>>> 1795118 (still working on updating delivery status)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -461,8 +603,13 @@ const RiderDashboard = () => {
                   </Link>
                 </li>
                 <li>
+<<<<<<< HEAD
                   <button
                     onClick={() => setNextPage(page)}
+=======
+                  <Link
+                    to='#'
+>>>>>>> 1795118 (still working on updating delivery status)
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
@@ -479,7 +626,11 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
+<<<<<<< HEAD
                   </button>
+=======
+                  </Link>
+>>>>>>> 1795118 (still working on updating delivery status)
                 </li>
               </ul>
             </nav>
