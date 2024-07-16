@@ -19,3 +19,4 @@ export const riderDeliveriesWithStatusCountUrl =
 export const riderDeliveriesWithStatusUrl = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
 
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
+export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus'; //add orderId, deliveryId and deliveryStatus as query params

@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import DateFormater from '../shared/DateFormater'
 import useUpdate from '../../hooks/useUpdate'
+import useAuth from '../../hooks/useAuth'
+import { updateDeliveryOrderStatusUrl } from './rider_uri/RiderURI'
 
 const style = {
   position: 'absolute',
@@ -50,6 +52,10 @@ export const ViewModal = ({ delivery, openViewModal, setOpenViewModal }) => {
             {delivery.PickupType}
           </Typography>
           <Typography>
+            <span className='text-lg font-bold'>Delivery Time: </span>{' '}
+            {DateFormater(delivery.CreatedAt)}
+          </Typography>
+          <Typography>
             <span className='text-lg font-bold'>Ordered Date: </span>{' '}
             <span className='text-sm'>
               {DateFormater(delivery.Order.CreatedAt)}
@@ -61,6 +67,21 @@ export const ViewModal = ({ delivery, openViewModal, setOpenViewModal }) => {
                 {delivery.Order.Status}
                 </span>
             </Typography>
+            {(delivery.Order.Status === 'Successful' && delivery.Status == 'Delivered') ? (
+                <Typography>
+                    <span className='text-lg font-bold'>Delivery time: </span>{' '}
+                    <span className='text-sm'>
+                        {DateFormater(delivery.UpdatedAt)}
+                    </span>
+                </Typography>
+            ) : (
+              <Typography>
+                <span className='text-lg font-bold'>Delivery time: </span>{' '}
+                <span className='text-red-600'>
+                    Not yet delivered
+                </span>
+              </Typography>
+            )}
         </Box>
       </Modal>
     </div>
@@ -72,14 +93,23 @@ export const ViewModal = ({ delivery, openViewModal, setOpenViewModal }) => {
 export const UpdateModal = ({ delivery, openUpdateModal, setOpenUpdateModal }) => {
   const handleCloseUpdateModal = () => setOpenUpdateModal(false)
     const updateData = useUpdate()
-
-    const handleUpdateStatus = async (deliveryId, status, orderId) => {
+    const { auth } = useAuth()
+    
+    const handleUpdateStatus = async (deliveryId, orderId) => {
+      const url = updateDeliveryOrderStatusUrl + `?orderId=${delivery.Order.Id}&deliveryId=${delivery.Id}&deliveryStatus=Delivered`
+      const deliveryStatus = 'Delivered'
         try{
-
-            console.log(deliveryId, status, orderId);
+            const response = await updateData(url, {
+                deliveryId,
+                orderId,
+                deliveryStatus,
+            }, auth.accessToken)
+            console.log(response)
+            // console.log(deliveryId, orderId);
         }catch(error){
             console.log(error)
         }
+        handleCloseUpdateModal()
     }
 
   return (
@@ -101,7 +131,7 @@ export const UpdateModal = ({ delivery, openUpdateModal, setOpenUpdateModal }) =
             <button
               type='button'
               className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
-              onClick={() => handleUpdateStatus(delivery.Id, 'Delivered', delivery.Order.Id)}
+              onClick={() => handleUpdateStatus(delivery.Id, delivery.Order.Id)}
             >
               Yes
             </button>

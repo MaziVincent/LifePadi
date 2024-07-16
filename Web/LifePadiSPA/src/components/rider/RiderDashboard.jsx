@@ -1,22 +1,17 @@
-import ActionsMenu from '../admin/subcomponents/ActionsMenu'
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
 import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
 import { useQuery } from 'react-query'
 import useAuth from '../../hooks/useAuth'
-import baseUrl from '../../api/baseUrl'
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import FadeMenu from './FadeMenu'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
   const [page, setpage] = useState(1)
   const [search, setSearch] = useState('')
-  const [action, setAction] = useState(false)
-  const [dataId, setDataId] = useState(Number)
-  const svgRef = useRef(null)
   const riderId = 3
 
   const getRidersCount = async (url) => {
@@ -80,8 +75,9 @@ const RiderDashboard = () => {
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
                 {riderDeliveriesLoading
-                  ? 'Loading'
-                  : riderDeliveries.dataList.TotalCount + 'M+'}
+                  ? (<CircularProgress size={20} />)
+                  : riderDeliveriesSuccess &&
+                    riderDeliveries.dataList.TotalCount + 'M+'}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
@@ -182,22 +178,14 @@ const RiderDashboard = () => {
                       aria-labelledby='actionsDropdownButton'
                     >
                       <li>
-                        <a
-                          href='#'
+                        <Link
+                          to='#'
                           className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
                         >
                           Mass Edit
-                        </a>
+                        </Link>
                       </li>
                     </ul>
-                    <div className='py-1'>
-                      <a
-                        href='#'
-                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white'
-                      >
-                        Delete all
-                      </a>
-                    </div>
                   </div>
                   <button
                     id='filterDropdownButton'
@@ -272,48 +260,6 @@ const RiderDashboard = () => {
                           Microsoft (16)
                         </label>
                       </li>
-                      <li className='flex items-center'>
-                        <input
-                          id='razor'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='razor'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Razor (49)
-                        </label>
-                      </li>
-                      <li className='flex items-center'>
-                        <input
-                          id='nikon'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='nikon'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Nikon (12)
-                        </label>
-                      </li>
-                      <li className='flex items-center'>
-                        <input
-                          id='benq'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='benq'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          BenQ (74)
-                        </label>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -344,7 +290,16 @@ const RiderDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {riderDeliveries &&
+                  {riderDeliveriesLoading ? (
+                    <tr className=''>
+                      <td colSpan={6} className=''>
+                        <div className='p-3 flex flex-row justify-center items-center w-full'>
+                          <CircularProgress />
+                        </div>
+
+                      </td>
+                    </tr>
+                  ) : (
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -362,13 +317,14 @@ const RiderDashboard = () => {
                         <td className='px-4 py-3'>{delivery.Status}</td>
                         <td className='px-4 py-3'>{delivery.Order.Status}</td>
                         <td className='px-4 py-3'>
-                          {delivery.Order.IsDelivered ? 'True' : 'False'}
+                          {delivery.Order?.IsDelivered ? 'True' : 'False'}
                         </td>
                         <td className='px-4 py-3 flex items-center justify-end dropdown'>
                           <FadeMenu delivery={delivery} />
                         </td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -383,13 +339,15 @@ const RiderDashboard = () => {
                 </span>
                 of
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
-                  {riderDeliveries && riderDeliveries.dataList.TotalCount}
+                  {riderDeliveriesLoading
+                    ? 'Loading'
+                    : riderDeliveries.dataList.TotalCount}
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -406,52 +364,52 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     1
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     2
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     aria-current='page'
                     className='flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
                   >
                     3
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     ...
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     100
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href='#'
+                  <Link
+                    to='#'
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
@@ -468,7 +426,7 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
