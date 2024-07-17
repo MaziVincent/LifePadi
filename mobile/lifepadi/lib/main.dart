@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/theme/custom_theme.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
@@ -23,9 +24,7 @@ class LifepadiApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       title: 'hooks_riverpod + go_router Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.cyan,
-      ),
+      theme: lightTheme(),
       debugShowCheckedModeBanner: false,
     );
   }

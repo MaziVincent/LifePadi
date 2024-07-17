@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/details_page.dart';
+import 'package:lifepadi/pages/onboarding_page.dart';
 
 import '../pages/admin_page.dart';
 import '../pages/home_page.dart';
@@ -67,6 +68,16 @@ class SplashRoute extends GoRouteData {
         );
       },
     );
+  }
+}
+
+@TypedGoRoute<OnboardingRoute>(path: '/onboarding')
+class OnboardingRoute extends GoRouteData {
+  const OnboardingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const OnboardingPage();
   }
 }
 

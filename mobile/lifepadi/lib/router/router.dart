@@ -43,7 +43,7 @@ GoRouter router(RouterRef ref) {
     routes: $appRoutes,
     redirect: (context, state) async {
       if (isAuth.value.unwrapPrevious().hasError) {
-        return const LoginRoute().location; // Onboarding route
+        return const OnboardingRoute().location;
       }
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
         return const SplashRoute().location;
@@ -56,14 +56,22 @@ GoRouter router(RouterRef ref) {
         // awaiting the loading animation on the splash screen
         return Future.delayed(
           const Duration(seconds: 4),
-          () => auth ? const HomeRoute().location : const LoginRoute().location,
+          () => auth
+              ? const HomeRoute().location
+              : const OnboardingRoute().location,
         );
       }
 
-      final isLoggingIn = state.uri.path == const LoginRoute().location;
+      final guestRoutes = [
+        const OnboardingRoute().location,
+        const LoginRoute().location,
+      ];
+
+      // Check if path is in guestRoutes
+      final isLoggingIn = guestRoutes.contains(state.uri.path);
       if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
-      return auth ? null : const SplashRoute().location;
+      return auth ? null : const OnboardingRoute().location;
     },
   );
   ref.onDispose(router.dispose); // always clean up after yourselves (:
