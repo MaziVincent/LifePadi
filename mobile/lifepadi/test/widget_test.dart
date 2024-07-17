@@ -8,7 +8,7 @@ void main() {
   testWidgets('startup redirects to home when signed in', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(
-      const ProviderScope(child: MyAwesomeApp()),
+      const ProviderScope(child: LifepadiApp()),
     );
     expect(find.text('Splash Page'), findsOneWidget);
 

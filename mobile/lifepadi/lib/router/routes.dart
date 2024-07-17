@@ -20,7 +20,7 @@ part 'routes.g.dart';
   routes: [
     TypedGoRoute<AdminRoute>(path: 'admin'),
     TypedGoRoute<UserRoute>(path: 'user'),
-    TypedGoRoute<RiderRoute>(path: 'guest'),
+    TypedGoRoute<RiderRoute>(path: 'rider'),
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -55,8 +55,18 @@ class SplashRoute extends GoRouteData {
   const SplashRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SplashPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: const SplashPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          // Applying the transition only when leaving the page
+          opacity: Tween<double>(begin: 1, end: 0).animate(secondaryAnimation),
+          child: child,
+        );
+      },
+    );
   }
 }
 

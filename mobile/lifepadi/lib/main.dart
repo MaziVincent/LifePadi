@@ -8,13 +8,13 @@ void main() {
   runApp(
     const ProviderScope(
       observers: [StateLogger()],
-      child: MyAwesomeApp(),
+      child: LifepadiApp(),
     ),
   );
 }
 
-class MyAwesomeApp extends ConsumerWidget {
-  const MyAwesomeApp({super.key});
+class LifepadiApp extends ConsumerWidget {
+  const LifepadiApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,6 +26,7 @@ class MyAwesomeApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

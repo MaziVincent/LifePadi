@@ -28,7 +28,8 @@ GoRouter router(RouterRef ref) {
     // update the listenable, when some provider value changes
     // here, we are just interested in wheter the user's logged in
     ..listen(
-      authControllerProvider.select((value) => value.whenData((value) => value.isAuth)),
+      authControllerProvider
+          .select((value) => value.whenData((value) => value.isAuth)),
       (_, next) {
         isAuth.value = next;
       },
@@ -40,14 +41,24 @@ GoRouter router(RouterRef ref) {
     initialLocation: const SplashRoute().location,
     debugLogDiagnostics: true,
     routes: $appRoutes,
-    redirect: (context, state) {
-      if (isAuth.value.unwrapPrevious().hasError) return const LoginRoute().location;
-      if (isAuth.value.isLoading || !isAuth.value.hasValue) return const SplashRoute().location;
+    redirect: (context, state) async {
+      if (isAuth.value.unwrapPrevious().hasError) {
+        return const LoginRoute().location; // Onboarding route
+      }
+      if (isAuth.value.isLoading || !isAuth.value.hasValue) {
+        return const SplashRoute().location;
+      }
 
       final auth = isAuth.value.requireValue;
 
       final isSplash = state.uri.path == const SplashRoute().location;
-      if (isSplash) return auth ? const HomeRoute().location : const LoginRoute().location;
+      if (isSplash) {
+        // awaiting the loading animation on the splash screen
+        return Future.delayed(
+          const Duration(seconds: 4),
+          () => auth ? const HomeRoute().location : const LoginRoute().location,
+        );
+      }
 
       final isLoggingIn = state.uri.path == const LoginRoute().location;
       if (isLoggingIn) return auth ? const HomeRoute().location : null;

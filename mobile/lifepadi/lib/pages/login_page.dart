@@ -15,6 +15,7 @@ class LoginPage extends HookConsumerWidget {
         );
 
     return Scaffold(
+      backgroundColor: Colors.red,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

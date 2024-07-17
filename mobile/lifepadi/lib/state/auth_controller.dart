@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lifepadi/entities/user_role.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,11 +32,13 @@ class AuthController extends _$AuthController {
   }
 
   /// Tries to perform a login with the saved token on the persistant storage.
-  /// If _anything_ goes wrong, deletes the internal token and returns a [User.signedOut].
+  /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
   Future<Auth> _loginRecoveryAttempt() {
     try {
       final savedToken = _sharedPreferences.getString(_sharedPrefsKey);
-      if (savedToken == null) throw const UnauthorizedException('No auth token found');
+      if (savedToken == null) {
+        throw const UnauthorizedException('No auth token found');
+      }
 
       return _loginWithToken(savedToken);
     } catch (_, __) {
@@ -87,7 +88,8 @@ class AuthController extends _$AuthController {
       }
 
       next.requireValue.map<void>(
-        signedIn: (signedIn) => _sharedPreferences.setString(_sharedPrefsKey, signedIn.token),
+        signedIn: (signedIn) =>
+            _sharedPreferences.setString(_sharedPrefsKey, signedIn.token),
         signedOut: (signedOut) {
           _sharedPreferences.remove(_sharedPrefsKey);
         },
