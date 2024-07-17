@@ -9,13 +9,12 @@ class OnboardingFeature extends StatelessWidget {
     super.key,
     required this.feature,
     required this.currentPage,
-    required this.index,
     required this.total,
     required this.pageController,
   });
 
   final OnboardingInfo feature;
-  final int currentPage, index, total;
+  final int currentPage, total;
   final PageController pageController;
 
   @override
@@ -52,7 +51,7 @@ class OnboardingFeature extends StatelessWidget {
             ),
           ),
         ),
-        const Spacer(),
+        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
@@ -63,93 +62,11 @@ class OnboardingFeature extends StatelessWidget {
             ),
           ),
         ),
-        const Spacer(flex: 2),
+        // const SizedBox(height: 16),
+        const Spacer(),
         PaginationDots(
           currentPage: currentPage,
           length: total,
-        ),
-        const Spacer(flex: 3),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (index != 0) {
-                    pageController.animateToPage(
-                      index - 1,
-                      duration: kAnimationDuration,
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color:
-                          index != 0 ? kDarkPrimary : const Color(0xFFC7C7C7),
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    color: index != 0 ? kDarkPrimary : const Color(0xFFC7C7C7),
-                    size: 18,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: Navigate to the get started page.
-                    },
-                    child: Text(
-                      'Skip',
-                      style: textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: kDarkPrimary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      if (index == total - 1) {
-                        // TODO: Navigate to the get started page.
-                      } else {
-                        pageController.animateToPage(
-                          index + 1,
-                          duration: kAnimationDuration,
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [kDarkPrimary, kLightPrimary],
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
         const Spacer(),
       ],
