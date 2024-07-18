@@ -18,4 +18,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "never"
   },
+  "todo-tree.tree.scanMode": "workspace only",
 }

@@ -65,6 +65,7 @@ GoRouter router(RouterRef ref) {
       final guestRoutes = [
         const OnboardingRoute().location,
         const LoginRoute().location,
+        const GetStartedRoute().location,
       ];
 
       // Check if path is in guestRoutes

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/details_page.dart';
+import 'package:lifepadi/pages/get_started_page.dart';
 import 'package:lifepadi/pages/onboarding_page.dart';
 
 import '../pages/admin_page.dart';
@@ -81,7 +82,21 @@ class OnboardingRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<LoginRoute>(path: '/login')
+@TypedGoRoute<GetStartedRoute>(
+  path: '/get-started',
+  routes: [
+    TypedGoRoute<LoginRoute>(path: 'login'),
+  ],
+)
+class GetStartedRoute extends GoRouteData {
+  const GetStartedRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const GetStartedPage();
+  }
+}
+
 class LoginRoute extends GoRouteData {
   const LoginRoute();
 

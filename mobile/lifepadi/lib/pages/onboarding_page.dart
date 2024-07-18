@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
@@ -78,7 +80,7 @@ class OnboardingPage extends HookWidget {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: currentPage.value != 0
-                              ? kDarkPrimary
+                              ? kDarkPrimaryColor
                               : const Color(0xFFC7C7C7),
                         ),
                       ),
@@ -86,7 +88,7 @@ class OnboardingPage extends HookWidget {
                       child: Icon(
                         Icons.arrow_back_ios,
                         color: currentPage.value != 0
-                            ? kDarkPrimary
+                            ? kDarkPrimaryColor
                             : const Color(0xFFC7C7C7),
                         size: 18,
                       ),
@@ -97,14 +99,14 @@ class OnboardingPage extends HookWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // TODO: Navigate to the get started page.
+                          context.go(const GetStartedRoute().location);
                         },
                         child: Text(
                           'Skip',
                           style:
                               Theme.of(context).textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: kDarkPrimary,
+                                    color: kDarkPrimaryColor,
                                   ),
                         ),
                       ),
@@ -112,7 +114,7 @@ class OnboardingPage extends HookWidget {
                       GestureDetector(
                         onTap: () {
                           if (currentPage.value == features.length - 1) {
-                            // TODO: Navigate to the get started page.
+                            context.go(const GetStartedRoute().location);
                           } else {
                             pageController.animateToPage(
                               currentPage.value + 1,
@@ -127,7 +129,7 @@ class OnboardingPage extends HookWidget {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
-                              colors: [kDarkPrimary, kLightPrimary],
+                              colors: [kDarkPrimaryColor, kLightPrimaryColor],
                             ),
                           ),
                           child: const Icon(

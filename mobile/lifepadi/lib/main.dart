@@ -23,7 +23,7 @@ class LifepadiApp extends ConsumerWidget {
 
     return MaterialApp.router(
       routerConfig: router,
-      title: 'hooks_riverpod + go_router Demo',
+      title: 'Lifepadi',
       theme: lightTheme(),
       debugShowCheckedModeBanner: false,
     );

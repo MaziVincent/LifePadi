@@ -42,7 +42,7 @@ class PageDot extends StatelessWidget {
       width: isActive ? 24 : 8,
       height: 8,
       decoration: ShapeDecoration(
-        color: isActive ? kLightPrimary : const Color(0xFFD9D9D9),
+        color: isActive ? kLightPrimaryColor : const Color(0xFFD9D9D9),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
