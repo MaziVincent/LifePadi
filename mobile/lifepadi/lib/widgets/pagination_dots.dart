@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
 
 class PaginationDots extends StatelessWidget {
@@ -38,16 +40,16 @@ class PageDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: kAnimationDuration,
-      width: isActive ? 24 : 8,
-      height: 8,
+      duration: 300.milliseconds,
+      width: isActive ? 24.h : 8.h,
+      height: 8.h,
       decoration: ShapeDecoration(
         color: isActive ? kLightPrimaryColor : const Color(0xFFD9D9D9),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(4.r),
         ),
       ),
-      margin: isLast ? null : const EdgeInsets.only(right: 8),
+      margin: isLast ? null : const EdgeInsets.only(right: 8).w,
     );
   }
 }

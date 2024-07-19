@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/theme/custom_theme.dart';
+import 'package:lifepadi/theme/theme.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
@@ -21,11 +22,17 @@ class LifepadiApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
-    return MaterialApp.router(
-      routerConfig: router,
-      title: 'Lifepadi',
-      theme: lightTheme(),
-      debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (_, __) {
+        return MaterialApp.router(
+          routerConfig: router,
+          title: 'Lifepadi',
+          theme: lightTheme(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

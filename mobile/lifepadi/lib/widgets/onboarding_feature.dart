@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/inverted_semi_circle_clipper.dart';
@@ -19,7 +20,6 @@ class OnboardingFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
     final (:info, :description, :image) = feature;
 
@@ -30,7 +30,7 @@ class OnboardingFeature extends StatelessWidget {
             controlPointYFactor: 5,
           ),
           child: Container(
-            height: size.height * .6,
+            height: 0.6.sh,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(image),
@@ -40,35 +40,37 @@ class OnboardingFeature extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            info,
-            textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              letterSpacing: -0.80,
-            ),
+          padding: EdgeInsets.symmetric(horizontal: 36.5.w),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 9.w),
+                child: Text(
+                  info,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.80,
+                  ),
+                ),
+              ),
+              10.verticalSpace,
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: kLightTextColor,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            description,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyLarge?.copyWith(
-              color: kLightTextColor,
-            ),
-          ),
-        ),
-        // const SizedBox(height: 16),
-        const Spacer(),
+        24.verticalSpace,
         PaginationDots(
           currentPage: currentPage,
           length: total,
         ),
-        const Spacer(),
       ],
     );
   }

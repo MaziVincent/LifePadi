@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/utils/constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 import '../widgets/onboarding_feature.dart';
+import '../widgets/onboarding_navigation.dart';
 
 class OnboardingPage extends HookWidget {
   const OnboardingPage({super.key});
@@ -43,7 +42,7 @@ class OnboardingPage extends HookWidget {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.85,
+              height: 0.85.sh,
               child: PageView.builder(
                 itemCount: features.length,
                 onPageChanged: (index) => currentPage.value = index,
@@ -58,92 +57,13 @@ class OnboardingPage extends HookWidget {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (currentPage.value != 0) {
-                        pageController.animateToPage(
-                          currentPage.value - 1,
-                          duration: kAnimationDuration,
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: currentPage.value != 0
-                              ? kDarkPrimaryColor
-                              : const Color(0xFFC7C7C7),
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(left: 4),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: currentPage.value != 0
-                            ? kDarkPrimaryColor
-                            : const Color(0xFFC7C7C7),
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.go(const GetStartedRoute().location);
-                        },
-                        child: Text(
-                          'Skip',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: kDarkPrimaryColor,
-                                  ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          if (currentPage.value == features.length - 1) {
-                            context.go(const GetStartedRoute().location);
-                          } else {
-                            pageController.animateToPage(
-                              currentPage.value + 1,
-                              duration: kAnimationDuration,
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        },
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [kDarkPrimaryColor, kLightPrimaryColor],
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            const Spacer(),
+            OnboardingNavigation(
+              currentPage: currentPage,
+              pageController: pageController,
+              features: features,
             ),
+            const Spacer(),
           ],
         ),
       ),

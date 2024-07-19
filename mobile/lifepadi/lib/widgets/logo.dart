@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 
@@ -13,10 +14,10 @@ class Logo extends StatelessWidget {
       children: [
         Image.asset(
           'assets/images/logo-dark.png',
-          width: 32,
-          height: 39.96,
+          width: 32.w,
+          height: 39.96.h,
         ),
-        const SizedBox(width: 8),
+        8.horizontalSpace,
         Text.rich(
           TextSpan(
             children: [
@@ -24,20 +25,20 @@ class Logo extends StatelessWidget {
                 text: 'Life',
                 style: GoogleFonts.montserrat(
                   color: const Color(0xFF263238),
-                  fontSize: 36,
+                  fontSize: 36.sp,
                   fontWeight: FontWeight.w900,
-                  height: 0,
-                  letterSpacing: -0.36,
+                  height: 0.r,
+                  letterSpacing: -0.36.r,
                 ),
               ),
               TextSpan(
                 text: 'padi',
                 style: GoogleFonts.montserrat(
                   color: kLightPrimaryColor,
-                  fontSize: 36,
+                  fontSize: 36.sp,
                   fontWeight: FontWeight.w900,
-                  height: 0,
-                  letterSpacing: -0.36,
+                  height: 0.r,
+                  letterSpacing: -0.36.r,
                 ),
               ),
             ],
