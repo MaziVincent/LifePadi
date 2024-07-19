@@ -160,7 +160,7 @@ const AdminCategory = () => {
               <button
                 type="button"
                 onClick={() => dispatch({ type: "open" })}
-                className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
               >
                 <i className="line-icon-Add font-bold text-lg"></i>
                 Add Category
@@ -182,7 +182,7 @@ const AdminCategory = () => {
             )}
             {isSuccess && (
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
                   <tr>
                     <th
                       scope="col"
@@ -211,7 +211,7 @@ const AdminCategory = () => {
                     <tr
                       key={cat.Id}
                       onClick={()=>navigate(`/admin/category/${cat.Id}`)}
-                      className="border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                      className="border-b dark:border-gray hover:bg-gray-100 dark:hover:bg-darkHover cursor-pointer"
                     >
                       <th
                         scope="row"
@@ -239,7 +239,7 @@ const AdminCategory = () => {
                               viewBox="0 0 24 24"
                               strokeWidth="1.5"
                               stroke="currentColor"
-                              className="h-6 w-6 text-red-500"
+                              className="h-6 w-6 text-red"
                               x-tooltip="tooltip"
                             >
                               <path

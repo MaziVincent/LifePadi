@@ -7,6 +7,8 @@ import useFetch from "../../../hooks/useFetch";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import { grey } from "@mui/material/colors";
+
 
 const AdminServiceDetails = () => {
   const { id } = useParams();
@@ -62,7 +64,7 @@ const AdminServiceDetails = () => {
     event.preventDefault();
   };
   return (
-    <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-5 p-5">
+    <div className="text-gray-900 dark:text-primary flex flex-col gap-5 p-5">
       <div
         role="presentation"
         onClick={handleClick}
@@ -138,6 +140,7 @@ const AdminServiceDetails = () => {
               disableRowSelectionOnClick
               getRowId={(row) => row.Id}
               className="cursor-pointer"
+              sx={{color:grey[400]}}
             />
           )}
         </div>
