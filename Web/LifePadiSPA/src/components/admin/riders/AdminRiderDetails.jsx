@@ -23,13 +23,13 @@ const AdminRiderDetails = () => {
     {
       field: "CreatedAt",
       headerName: "Delivery Date",
-      width: 150,
+      width: 180,
       //editable: true,
     },
     {
       field: "DeliveryFee",
       headerName: "Delivery Fee",
-      width: 150,
+      width: 100,
       //editable: true,
     },
     {
@@ -42,7 +42,7 @@ const AdminRiderDetails = () => {
     {
       field: "Status",
       headerName: "Status",
-      width: 70,
+      width: 100,
     },
   ];
 
@@ -71,7 +71,7 @@ const AdminRiderDetails = () => {
       <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/rider"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Riders
             </Link>
@@ -79,7 +79,7 @@ const AdminRiderDetails = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               {data?.FirstName}
             </Link>
@@ -143,7 +143,7 @@ const AdminRiderDetails = () => {
             <div className="flex gap-2 items-center">
               <h3 className="text-lg font-bold"> Rider Status :</h3>
               <p className="text-gray-800 capitalize">
-                {data?.IsActive ? <span className="text-green-700"> Active  </span> : <span className="text-red-700"> De-Activated  </span>}
+                {data?.IsActive ? <span className="text-secondary"> Active  </span> : <span className="text-red"> De-Activated  </span>}
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@ const AdminRiderDetails = () => {
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}
                   
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-primary"
                 />
               )}
             </div>

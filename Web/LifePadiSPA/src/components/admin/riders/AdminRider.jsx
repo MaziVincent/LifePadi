@@ -158,7 +158,7 @@ const AdminRider = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-                  className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
                   Create Rider
@@ -180,7 +180,7 @@ const AdminRider = () => {
               )}
               {isSuccess && (
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
                     <tr>
                       <th
                         scope="col"
@@ -219,8 +219,8 @@ const AdminRider = () => {
                   </thead>
                   <tbody>
                     {data?.result.map((rider) => (
-                      <tr className="hover:bg-gray-100 cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
-                        <th className="flex gap-3 px-6 py-4 font-normal justify-center text-gray-900">
+                      <tr className="hover:bg-darkHover cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
+                        <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
                               className="h-full w-full rounded-full object-cover object-center"
@@ -233,18 +233,18 @@ const AdminRider = () => {
                             <div className="font-medium capitalize  text-gray-700">
                               {`${rider.FirstName} ${rider.LastName}`}
                             </div>
-                            <div className="text-gray-400">{rider.Email}</div>
+                            <div className="text-gray">{rider.Email}</div>
                           </div>
                         </th>
                         <td className="px-6 py-4 text-center">
                           {rider.IsActive ? (
                             <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                              <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                              <span className="h-1.5 w-1.5 rounded-full bg-secondary"></span>
                               Active
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
-                              <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                              <span className="h-1.5 w-1.5 rounded-full bg-red"></span>
                               In-Active
                             </span>
                           )}
@@ -253,11 +253,11 @@ const AdminRider = () => {
                         <td className="px-6 py-4 text-center flex justify-center">
                           <div className="flex gap-2">
                             {rider.IsVerified ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-lightgreen px-2 py-1 text-xs font-semibold text-blue-600">
                                 Verified
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-600">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-lightindigo px-2 py-1 text-xs font-semibold text-violet-600">
                                 Not Verified
                               </span>
                             )}
@@ -275,7 +275,7 @@ const AdminRider = () => {
                             }}
                           >
                             <svg
-                              className="w-6 h-6 text-red-400 "
+                              className="w-6 h-6 text-red "
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
                               width="24"

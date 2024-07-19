@@ -109,7 +109,7 @@ const AdminVendorCategoryDetails = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6 text-red-500"
+                className="h-6 w-6 text-red"
                 x-tooltip="tooltip"
               >
                 <path
@@ -152,7 +152,7 @@ const AdminVendorCategoryDetails = () => {
               }}
             >
               <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-6 h-6 text-gray-800 dark:text-background"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -202,12 +202,12 @@ const AdminVendorCategoryDetails = () => {
     <div className="bg-gray-100 dark:bg-gray-900">
       <Toaster />
       <section className="bg-white dark:bg-gray-900 mb-5 flex flex-col gap-3">
-        <div className="flex justify-start p-3 w-full">
+        <div className="flex justify-start p-3 w-full ">
           {" "}
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/vendorcategory"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Category
             </Link>
@@ -215,7 +215,7 @@ const AdminVendorCategoryDetails = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               {data?.Name}
             </Link>
@@ -276,14 +276,14 @@ const AdminVendorCategoryDetails = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-                  className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
                   Create Vendor
                 </button>
               </div>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto ">
               {isLoading && (
                 <p className="flex items-center justify-center">
                   {" "}
@@ -314,7 +314,7 @@ const AdminVendorCategoryDetails = () => {
                   onRowClick={(row) => {
                     navigate(`/admin/vendor/${row.id}`);
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-primary"
                 />
               )}
             </div>

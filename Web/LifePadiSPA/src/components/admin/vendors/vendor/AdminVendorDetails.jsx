@@ -117,7 +117,7 @@ const AdminVendorDetails = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-6 w-6 text-red-500"
+                className="h-6 w-6 text-red"
                 x-tooltip="tooltip"
               >
                 <path
@@ -193,7 +193,7 @@ const AdminVendorDetails = () => {
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/vendorcategory"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Category
             </Link>
@@ -201,7 +201,7 @@ const AdminVendorDetails = () => {
             <Link
               to={`/admin/vendorcategory/${data?.vendor?.VendorCategoryId}`}
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Vendor Category
             </Link>
@@ -209,7 +209,7 @@ const AdminVendorDetails = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               {data?.vendor?.Name}
             </Link>
@@ -271,7 +271,7 @@ const AdminVendorDetails = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-                  className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
                   Create Product
@@ -309,7 +309,7 @@ const AdminVendorDetails = () => {
                   onRowClick={(row) => {
                     navigate(`/admin/product/${row.id}`);
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-primary"
                 />
               )}
             </div>

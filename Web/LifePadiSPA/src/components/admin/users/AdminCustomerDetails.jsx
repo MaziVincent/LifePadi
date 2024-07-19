@@ -61,10 +61,10 @@ const AdminCustomerDetails = () => {
 
   return (
     <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-10 p-3">
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs aria-label="breadcrumb" >
         <Link
           to="/admin/customer"
-          className="hover:border-b-2 hover:border-b-green-700"
+          className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
         >
           Customers
         </Link>
@@ -72,7 +72,7 @@ const AdminCustomerDetails = () => {
         <Link
           to="#"
           aria-current="page"
-          className="hover:border-b-2 hover:border-b-green-700"
+          className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
         >
           {data?.FirstName}
         </Link>
@@ -227,7 +227,7 @@ const AdminCustomerDetails = () => {
                 //checkboxSelection
                 disableRowSelectionOnClick
                 getRowId={(row) => row.Id}
-                className="cursor-pointer"
+                className="cursor-pointer dark:bg-primary"
               />
             )}
           </div> 
