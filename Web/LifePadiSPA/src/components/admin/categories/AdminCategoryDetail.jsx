@@ -8,6 +8,7 @@ import useFetch from "../../../hooks/useFetch";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import {CircularProgress} from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 
 const AdminCategoryDetails = () => {   
@@ -23,20 +24,20 @@ const AdminCategoryDetails = () => {
           {
             field: "Name",
             headerName: "Product Name",
-            width: 150,
+            width: 180,
             //editable: true,
           },
           {
             field: "Tag",
             headerName: "Tag",
-            width: 150,
+            width: 180,
             //editable: true,
           },
           {
             field: "Description",
             headerName: "Description",
             //type: "number",
-            width: 150,
+            width: 180,
             //editable: true,
           },
           {
@@ -134,6 +135,7 @@ const AdminCategoryDetails = () => {
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}
                   className="cursor-pointer"
+                  sx={{color:grey[400]}}
                 />
               )}
             </div>

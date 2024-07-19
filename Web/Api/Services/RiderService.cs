@@ -286,7 +286,7 @@ namespace Api.Services
 
                 var deliveries = await _dbContext.Deliveries.OrderByDescending(r => r.CreatedAt)
                     .Include(d => d.Rider)
-                    .Where(d => d.Rider!.Id == riderId && d.Status == "successful")
+                    .Where(d => d.Rider!.Id == riderId && d.Status.ToLower() == "delivered")
                     .ToListAsync();
                 var deliveryDTOLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
                 return deliveryDTOLite;
@@ -380,14 +380,14 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<DeliveryDtoLite>> unsuccessfulDeliveries(int riderId)
+        public async Task<IEnumerable<DeliveryDtoLite>> pendingDeliveries(int riderId)
         {
             try
             {
 
                 var deliveries = await _dbContext.Deliveries.OrderByDescending(r => r.CreatedAt)
                     .Include(d => d.Rider)
-                    .Where(d => d.Rider!.Id == riderId && d.Status == "unsuccessful")
+                    .Where(d => d.Rider!.Id == riderId && d.Status.ToLower() == "pending")
                     .ToListAsync();
                 var deliveryDTOLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
                 return deliveryDTOLite;

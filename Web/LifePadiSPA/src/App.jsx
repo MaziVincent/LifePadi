@@ -22,6 +22,9 @@ import AdminVoucher from './components/admin/vouchers/AdminVoucher'
 import Admin from './components/admin/admins/Admin'
 import Home from './components/home/Home'
 import Page404 from './components/Page404'
+import ShopLayout from './components/shop/ShopLayout'
+import Shop from './components/shop/Shop'
+import Vendor from './components/shop/Vendor'
 
 
 function App() {
@@ -38,7 +41,8 @@ function App() {
       {/* SHOP ROUTES */}
 
       <Route path='/shop' element={<ShopLayout />} >
-        <route index element={<Shop />} />
+      <Route path='/shop/vendor/:id' element={<Vendor />} />
+        <Route index element={<Shop />} />
       </Route>
 
 

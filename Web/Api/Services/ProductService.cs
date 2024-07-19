@@ -53,7 +53,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Api.Services
                 newProduct.Status = true;
                 newProduct.SearchString = product.Name!.ToUpper() + " " + product.Price + " " + newProduct.Status;
                 var imgPath = await UploadImage.uploadImg(product.Image!, _cloudinary, folderName);
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
+                if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                 newProduct.ProductImgUrl = imgPath;
                 await _dbContext.Products.AddAsync(newProduct);
                 await _dbContext.SaveChangesAsync();
@@ -90,7 +90,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -194,7 +194,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -214,7 +214,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -234,7 +234,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -255,7 +255,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -268,7 +268,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -281,7 +281,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -294,7 +294,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -319,7 +319,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -340,7 +340,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }

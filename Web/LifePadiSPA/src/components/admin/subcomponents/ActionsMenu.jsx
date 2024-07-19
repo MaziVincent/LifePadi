@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { green } from '@mui/material/colors';
 
 // const options = [
 //   {icon:'line-icon-Eye text-green-700 text-xl', text:'View'},
@@ -25,7 +26,7 @@ export default function LongMenu( {view,edit, id}) {
   };
 
   return (
-    <div className='rounded-lg'>
+    <div className='rounded-lg ' >
       <IconButton
         aria-label="more"
         id="long-button"
@@ -34,7 +35,7 @@ export default function LongMenu( {view,edit, id}) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreHorizIcon />
+        <MoreHorizIcon sx={{color:green[500]}} />
       </IconButton>
       <Menu
         id="long-menu"
@@ -44,6 +45,7 @@ export default function LongMenu( {view,edit, id}) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        
       >
        
           <MenuItem  selected={true} onClick={() => {

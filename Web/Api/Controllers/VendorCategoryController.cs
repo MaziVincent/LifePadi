@@ -46,7 +46,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync([FromForm] VendorCategoryDto vc)
+        public async Task<IActionResult> CreateAsync([FromForm] CreateVendorCategoryDto vc)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromForm] VendorCategoryDto vc)
+        public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateVendorCategoryDto vc)
         {
             try
             {

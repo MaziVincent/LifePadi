@@ -72,12 +72,12 @@ const CreateServiceModal = ({ open, handleClose }) => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
+        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-auto  "
       >
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-white rounded-lg shadow bg-primary dark:text-primary dark:bg-darkMenu sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -127,7 +127,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     required=""
                   />
                   {errors.Name && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Name of service is required
                     </p>
                   )}
@@ -149,7 +149,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     placeholder="Write Service Descriptions here"
                   ></textarea>
                   {errors.Description && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Description is required
                     </p>
                   )}
@@ -180,12 +180,12 @@ const CreateServiceModal = ({ open, handleClose }) => {
                     onChange={handleChange}
                   />
                   {errors.ServiceIcon && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Service icon is required
                     </p>
                   )}
                   {fileError && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {" "}
                       File should not be above 50kb
                     </p>
@@ -195,7 +195,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
               <button
                   type="submit"
                   disabled={fileError || isSubmitting || !isValid }
-                  className={`inline-flex items-center ${fileError ?  'text-gray-700' : 'text-green-700' } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                  className={`inline-flex items-center ${fileError ?  'text-gray-700' : 'text-secondary' } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-gray cursor-pointer`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"

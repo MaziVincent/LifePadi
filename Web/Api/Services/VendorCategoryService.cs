@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.DTO;
+using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
 using API.DTO;
 using API.Models;
 using AutoMapper;
+using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
@@ -16,11 +18,19 @@ namespace Api.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        const string errorMessage = "An error occurred while processing the request.";
-        public VendorCategoryService(DBContext context, IMapper mapper)
+        private readonly Cloudinary _cloudinary;
+        private readonly IConfiguration _config;
+        public VendorCategoryService(DBContext context, IMapper mapper, IConfiguration config)
         {
             _context = context;
             _mapper = mapper;
+            _config = config;
+            var account = new Account(
+                _config["Cloudinary:Cloud_Name"],
+                _config["Cloudinary:Api_Key"],
+                _config["Cloudinary:Api_Secret"]
+            );
+            _cloudinary = new Cloudinary(account);
         }
         public async Task<PagedList<VendorCategory>> allAsync(SearchPaging props)
         {
@@ -43,24 +53,28 @@ namespace Api.Services
                 var returned = PagedList<VendorCategory>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
-        public async Task<VendorCategoryDto> CreateAsync(VendorCategoryDto vc)
+        public async Task<VendorCategoryDto> CreateAsync(CreateVendorCategoryDto vc)
         {
             try
             {
+                string folderName = "VendorCategory";
                 var vendorCategory = _mapper.Map<VendorCategory>(vc);
+                var imgPath = await UploadImage.uploadImg(vc.Icon!, _cloudinary, folderName);
+                if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the vendorCategory image");
+                vendorCategory.IconUrl = imgPath;
                 await _context.VendorCategories.AddAsync(vendorCategory);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<VendorCategoryDto>(vendorCategory);
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -77,9 +91,9 @@ namespace Api.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -96,9 +110,9 @@ namespace Api.Services
                 var vendorCategoryDtos = _mapper.Map<IEnumerable<VendorCategoryDto>>(vendors);
                 return vendorCategoryDtos;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -116,20 +130,27 @@ namespace Api.Services
                 var vendorCategoryDto = _mapper.Map<VendorCategoryDto>(vendorCategory);
                 return vendorCategoryDto;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
-        public async Task<VendorCategoryDto> UpdateAsync(int id, VendorCategory vc)
+        public async Task<VendorCategoryDto> UpdateAsync(int id, CreateVendorCategoryDto vc)
         {
             try
             {
+                string folderName = "VendorCategory";
                 var initialVendorCategory = await _context.VendorCategories.FirstOrDefaultAsync(v => v.Id == id);
                 if (initialVendorCategory == null)
                 {
                     return null!;
+                }
+                if (vc.Icon != null)
+                {
+                    var imgPath = await UploadImage.uploadImg(vc.Icon, _cloudinary, folderName);
+                    if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the vendorCategory image");
+                    initialVendorCategory.IconUrl = imgPath;
                 }
                 initialVendorCategory.Name = vc.Name;
                 initialVendorCategory.Description = vc.Description;
@@ -139,32 +160,9 @@ namespace Api.Services
                 var vendorCategoryDto = _mapper.Map<VendorCategoryDto>(initialVendorCategory);
                 return vendorCategoryDto;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(errorMessage, ex);
-            }
-        }
-
-        public async Task<VendorCategoryDto> UpdateAsync(int id, VendorCategoryDto vc)
-        {
-            try
-            {
-                var initialVendorCategory = await _context.VendorCategories.FirstOrDefaultAsync(v => v.Id == id);
-                if (initialVendorCategory == null)
-                {
-                    return null!;
-                }
-                initialVendorCategory.UpdatedAt = DateTime.UtcNow;
-                initialVendorCategory.Name = vc.Name;
-                initialVendorCategory.Description = vc.Description;
-                _context.VendorCategories.Attach(initialVendorCategory);
-                await _context.SaveChangesAsync();
-                var vendorCategoryDto = _mapper.Map<VendorCategoryDto>(initialVendorCategory);
-                return vendorCategoryDto;
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new InvalidOperationException(errorMessage, ex);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }

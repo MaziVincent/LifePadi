@@ -10,7 +10,7 @@ const AdminLayout = () => {
   return (
     <main className="">
       {" "}
-      <div className=" bg-gray-100 dark:bg-gray-900 h-[100svh] ">
+      <div className=" bg-primary dark:bg-darkBg dark:text-primary border-3 border-red h-full ">
         <AdminHeader setAside={setAside} />
 
         {/* <!-- Sidebar --> */}
@@ -20,7 +20,7 @@ const AdminLayout = () => {
           setAside={setAside}
         />
 
-        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-44 py-20`}>
+        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-44 py-20 border-3 h-full border-red`}>
           <Outlet />
         </div>
         <AdminFooter />
