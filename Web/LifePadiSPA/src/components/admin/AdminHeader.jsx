@@ -18,7 +18,7 @@ const AdminHeader = ({ setAside }) => {
     }, 2000);
   };
   return (
-    <nav className="bg-gray-50 text-gray-700  border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 fixed left-0 right-0 top-0 z-50 ">
+    <nav className=" px-4 py-2.5 bg-primary dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 shadow-md ">
       <ToastContainer />
       <div className="flex  justify-between items-center">
         <div className="flex justify-start items-center">
@@ -85,7 +85,7 @@ const AdminHeader = ({ setAside }) => {
         <div className="flex  justify-end w-auto">
           <button
             onClick={() => handleLogout()}
-            className="flex items-center justify-center text-red-500 cursor-pointer focus:border-2  border-red-300 rounded-lg"
+            className="flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg"
           >
             <svg
               className="w-6 h-6 text-red-500 dark:text-red-500"

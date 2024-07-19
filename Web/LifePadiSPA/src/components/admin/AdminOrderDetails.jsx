@@ -47,11 +47,11 @@ const AdminOrderDetails = () => {
   console.log(data);
 
   return (
-    <section className="bg-gray-100 dark:bg-gray-900 p-2 text-gray-900 dark:text-gray-50">
+    <section className=" p-2 text-gray-900 dark:text-primary">
       <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
             >
               Dashboard
             </Link>
@@ -59,14 +59,14 @@ const AdminOrderDetails = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
             >
               Order Details
             </Link>
           </Breadcrumbs>
       <h1 className="text-center text-2xl font-bold py-4"> Order Details </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-        <div className="col-span-2 border-2 shadow-lg flex flex-col md:flex-row justify-between p-5 bg-white rounded-lg shadow-purple-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 dark:bg-darkMenu ">
+        <div className="col-span-2 border-2 shadow-sm flex flex-col md:flex-row justify-between p-5 bg-white rounded-lg shadow-lightgreen">
           {" "}
           <div>
             <h2 className="font-bold border-b-2 mb-2"> Order Info. </h2>
@@ -85,7 +85,7 @@ const AdminOrderDetails = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto col-span-2 bg-white shadow-lg shadow-green-200 rounded-lg">
+        <div className="overflow-x-auto col-span-2 bg-white shadow-sm shadow-lightyellow rounded-lg">
           <h2 className="text-xl font-bold text-center p-2"> Order Items</h2>
             {isLoading && (
                 <p className="flex items-center justify-center">
@@ -173,7 +173,7 @@ const AdminOrderDetails = () => {
                 </tbody>
               </table> )}
             </div>
-        <div className="border-2 col-span-2 bg-white p-3 shadow-lg shadow-blue-200 rounded-lg ">
+        <div className="border-2 col-span-2 bg-white p-3 shadow-sm shadow-lightcyan rounded-lg ">
           {" "}
           <h1 className="font-bold text-center text-xl">Delivery Details </h1>{" "}
           <p> Delivery Date : {new Date(data?.delivery.CreatedAt).toDateString()} </p>
@@ -183,7 +183,7 @@ const AdminOrderDetails = () => {
           <p> Pickup Type : {data?.delivery.Status}</p>
           
         </div>
-        <div className="border-2 col-span-2 p-3 bg-white shadow-lg shadow-orange-200 rounded-lg ">
+        <div className="border-2 col-span-2 p-3 bg-white shadow-sm shadow-lightemerald rounded-lg ">
           {" "}
           <h1 className="font-bold text-center text-xl">Rider Details </h1>{" "}
           <p> Rider Full Name : {data?.delivery.Rider.FirstName} {data?.delivery.Rider.LastName}</p>

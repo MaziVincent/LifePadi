@@ -78,7 +78,7 @@ const Overview = () => {
   return (
     <div className="bg-gray-100">
       <section className="bg-white dark:bg-gray-900 mb-5">
-        <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
+        <div className="max-w-screen-xl px-4 py-8 mx-auto text-center dark:bg-darkMenu lg:py-16 lg:px-6 shadow-md ">
           <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white">
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-purple-700">
@@ -135,7 +135,7 @@ const Overview = () => {
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
           <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            <div className="flex flex-col dark:bg-darkMenu md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
               <div className="w-full md:w-1/2">
                 <form className="flex items-center">
                   <label
@@ -380,7 +380,7 @@ const Overview = () => {
                       <td className="px-4 py-3">{order.Status}</td>
                       <td className="px-4 py-3">{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
                       <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
-                      <td className="px-4 py-3 flex items-center justify-end">
+                      <td className="px-4 py-3 flex items-center justify-end ">
                         <ActionsMenu view = {handleOrderDetails} edit={dispatch} id={order.Id} />
                       </td>
                     </tr>
@@ -390,7 +390,7 @@ const Overview = () => {
               </table> )}
             </div>
             <nav
-              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4 dark:bg-darkMenu"
               aria-label="Table navigation"
             >
                <Pagination
@@ -401,7 +401,7 @@ const Overview = () => {
                 onChange={handlePageChange}
                 variant="outlined"
                 shape="rounded"
-                className="dark:text-gray-50 dark:bg-gray-200"
+                className="dark:text-primary dark:bg-primary"
               />
             </nav>
           </div>

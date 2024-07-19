@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Aside = ({ aside, setAside }) => {
+  const [activeLink, setActiveLink] = useState("Overview");
+
+  const handleClick = (link) => {
+    setActiveLink(link);
+  };
   const links = [
     {
       to: "/admin",
@@ -49,7 +55,7 @@ const Aside = ({ aside, setAside }) => {
   ];
   return (
     <aside
-      className={`fixed top-0 left-0  z-40 w-18 overflow-auto lg:w-58 h-screen pt-8 pb-10 dark:bg-gray-800 transition-transform  bg-gray-50 border-r border-gray-200 md:translate-x-0  dark:border-gray-700 ${
+      className={`fixed top-0 left-0  z-40 w-18 overflow-auto lg:w-58 h-screen pt-8 pb-10 dark:bg-darkMenu transition-transform  bg-gray-50 shadow-lg md:translate-x-0  dark:border-gray-700 ${
         aside ? "translate-x-0" : "-translate-x-full"
       }`}
       aria-label="Sidenav"
@@ -61,7 +67,8 @@ const Aside = ({ aside, setAside }) => {
             <li key={link.to}>
               <Link
                 to={link.to}
-                className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 group"
+                className={`flex items-center p-2 text-base font-medium ${activeLink === link.text ? 'text-secondary' : ''} rounded-lg dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-darkHover group`}
+              onClick={() => handleClick(link.text)}
               >
                 <i className={`${link.icon}`}></i>
                 <span className="hidden lg:flex ml-3">{link.text}</span>
