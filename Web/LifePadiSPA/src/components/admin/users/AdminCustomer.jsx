@@ -140,7 +140,7 @@ const AdminCustomer = () => {
               )}
              { isSuccess && (
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-md text-gray-700 uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
                     <tr>
                       <th
                         scope="col"
@@ -166,7 +166,7 @@ const AdminCustomer = () => {
                   </thead>
                   <tbody>
                     {data?.result.map((customer) => (
-                      <tr className="hover:bg-gray-100 cursor-pointer" key={customer.Id} onClick={()=>navigate(`/admin/customer/${customer.Id}`)}>
+                      <tr className="hover:bg-gray dark:hover:bg-darkHover cursor-pointer" key={customer.Id} onClick={()=>navigate(`/admin/customer/${customer.Id}`)}>
                         <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
@@ -205,7 +205,7 @@ const AdminCustomer = () => {
                 onChange={handlePageChange}
                 variant="outlined"
                 shape="rounded"
-                className="dark:text-gray-50 dark:bg-gray-200"
+                className="dark:text-gray-50 dark:bg-primary "
               />
             </nav>
           </div>
