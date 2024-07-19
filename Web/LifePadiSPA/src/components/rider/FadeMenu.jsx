@@ -8,12 +8,10 @@ import { Link } from 'react-router-dom'
 import { ViewModal, UpdateModal } from './RiderModal'
 
 const FadeMenu = ({delivery}) => {
-    console.log(delivery.Id);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        console.log(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
@@ -52,7 +50,6 @@ const FadeMenu = ({delivery}) => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>{delivery.Id}</MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to='#' onClick={handleOpenViewModal}>
             View
