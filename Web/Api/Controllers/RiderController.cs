@@ -162,12 +162,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/successfulDeliveries")]
-        public async Task<IActionResult> successfulDelivries(int id)
+        [HttpGet("{riderId}/successfulDeliveries")]
+        public async Task<IActionResult> successfulDelivries(int riderId)
         {
             try
             {
-                var delivries = await _irider!.successfulDeliveries(id);
+                var delivries = await _irider!.successfulDeliveries(riderId);
                 return Ok(delivries);
             }
             catch (Exception ex)
@@ -176,12 +176,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/unsuccessfulDeliveries")]
-        public async Task<IActionResult> unsuccessfulDelivries(int id)
+        [HttpGet("{riderId}/pendingDeliveries")]
+        public async Task<IActionResult> pendingDelivries(int riderId)
         {
             try
             {
-                var delivries = await _irider!.unsuccessfulDeliveries(id);
+                var delivries = await _irider!.pendingDeliveries(riderId);
                 return Ok(delivries);
             }
             catch (Exception ex)
