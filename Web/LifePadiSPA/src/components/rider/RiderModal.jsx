@@ -67,7 +67,7 @@ export const ViewModal = ({ delivery, openViewModal, setOpenViewModal }) => {
                 {delivery.Order.Status}
                 </span>
             </Typography>
-            {(delivery.Order.Status === 'Successful' && delivery.Status == 'Delivered') ? (
+            {(delivery.Order.IsDelivered) ? (
                 <Typography>
                     <span className='text-lg font-bold'>Delivery time: </span>{' '}
                     <span className='text-sm'>
@@ -130,14 +130,15 @@ export const UpdateModal = ({ delivery, openUpdateModal, setOpenUpdateModal }) =
           <div className='flex justify-end mt-3 gap-2'>
             <button
               type='button'
-              className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+              className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
               onClick={() => handleUpdateStatus(delivery.Id, delivery.Order.Id)}
+              disabled={delivery.Order.IsDelivered}
             >
-              Yes
+              {delivery.Order.IsDelivered ? 'Delivered' : 'Yes'}
             </button>
             <button
               type='button'
-              className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+              className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
               onClick={handleCloseUpdateModal}
             >
               No

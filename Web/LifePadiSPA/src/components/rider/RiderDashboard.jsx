@@ -35,10 +35,6 @@ const RiderDashboard = () => {
     refetchOnMount: 'always',
   })
 
-  if (riderCountSuccess) {
-    console.log(ridersCount)
-  }
-
   const {
     data: riderDeliveries,
     isError: riderDeliveriesError,
@@ -56,22 +52,17 @@ const RiderDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-  if (riderDeliveries){
+
+  if (riderDeliveriesSuccess){
     console.log(riderDeliveries)
-  }
-  if (riderDeliveriesSuccess) {
-    console.log(riderDeliveries)
-  }
-  if (riderDeliveriesError) {
-    console.log(riderDeliveriesError)
   }
   
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-darkBg'>
       <section className='bg-white dark:bg-gray-900 mb-5'>
         <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 '>
-          <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-4 dark:text-white'>
+          <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
                 {riderDeliveriesLoading
@@ -95,16 +86,10 @@ const RiderDashboard = () => {
                 Pending
               </dd>
             </div>
-            <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>4M+</dt>
-              <dd className='font-light text-gray-500 dark:text-gray-400'>
-                Unsuccessful
-              </dd>
-            </div>
           </dl>
         </div>
       </section>
-      <section className='bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>
+      <section className='bg-darkMenu dark:bg-gray-900 p-3 sm:p-5'>
         <div className='mx-auto max-w-screen-xl px-2 lg:px-12'>
           <div className='bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
@@ -117,7 +102,7 @@ const RiderDashboard = () => {
                     <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
                       <svg
                         aria-hidden='true'
-                        className='w-5 h-5 text-gray-500 dark:text-gray-400'
+                        className='w-5 h-5 text-darkBg dark:text-gray-400'
                         fill='currentColor'
                         viewBox='0 0 20 20'
                         xmlns='http://www.w3.org/2000/svg'
@@ -132,7 +117,7 @@ const RiderDashboard = () => {
                     <input
                       type='text'
                       id='simple-search'
-                      className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+                      className='bg-gray-50 border border-gray-300 text-darkBg text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
                       placeholder='Search'
                       required=''
                     />
@@ -335,7 +320,7 @@ const RiderDashboard = () => {
               <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 Showing
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
-                  1-10
+                  1-{riderDeliveriesLoading ? (<CircularProgress size={20} />): riderDeliveriesSuccess && riderDeliveries.dataList.PageSize}
                 </span>
                 of
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
