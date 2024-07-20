@@ -28,5 +28,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<DeliveryDto>> getWithStatusForRider(int riderId, string status);
         public Task<object> getWithStatusForRiderCount(int riderId);
         public Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus);
+        public Task<int> totalNumberOfPendingDeliveriesByRider(int riderId);
+        public Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId);
     }
 }

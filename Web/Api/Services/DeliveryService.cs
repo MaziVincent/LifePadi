@@ -325,12 +325,42 @@ namespace Api.Services
             }
         }
 
+        public async Task<int> totalNumberOfPendingDeliveriesByRider(int riderId)
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId && d.Status == "Pending")
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<int> totalNumberOfSuccessfulDeliveries()
         {
             try
             {
                 var deliveries = await _dbContext.Deliveries
                     .Where(d => d.Status == "Successful")
+                    .CountAsync();
+                return deliveries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId)
+        {
+            try
+            {
+                var deliveries = await _dbContext.Deliveries
+                    .Where(d => d.RiderId == riderId && d.Status == "Delivered")
                     .CountAsync();
                 return deliveries;
             }
