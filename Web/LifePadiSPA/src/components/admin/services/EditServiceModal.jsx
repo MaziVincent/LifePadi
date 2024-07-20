@@ -35,12 +35,12 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     if(data.ServiceIcon){
       formData.append("Image",data.ServiceIcon[0])
       const result = await update(`${url}/uploadImg/${data.Id}`, formData, auth?.accessToken)
-    console.log(result.data)
+   // console.log(result.data)
     }
     
     const response = await update(`${url}/update/${data.Id}`, formData, auth?.accessToken);
 
-    console.log(response.data);
+   // console.log(response.data);
   };
 
   const { mutate } = useMutation(editService, {
@@ -69,7 +69,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
    
     const file = event.target.files[0];
 
-    console.log(file)
+    //console.log(file)
     
     if (!file || file.size > 50 * 1024) {
       setFileError(true);
@@ -138,7 +138,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     name="name"
                     id="name"
                     {...register("Name", )}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 border border-gray-300 text-grayTxt bg-graybg text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type name of Service"
                     required=""
                   />
@@ -161,7 +161,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     rows="4"
                     name="description"
                     {...register("Description", )}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="block p-2.5 w-full text-base text-grayTxt bg-graybg rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Service Descriptions here"
                   ></textarea>
                   {errors.description && (
@@ -185,12 +185,12 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                       required: "Status is required",
                     })}
                     defaultValue={"default"}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option
                       disabled
                       value="default"
-                      className="text-gray-600"
+                      className="text-grayTxt"
                     >
                       Change Status
                     </option>
@@ -250,7 +250,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
               <button
                 type="submit"
                 disabled={fileError}
-                className="inline-flex items-center text-gray-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800"
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6 text-green-600"

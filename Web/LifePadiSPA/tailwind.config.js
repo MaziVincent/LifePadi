@@ -26,7 +26,9 @@ export default {
       darkBg:"#181818",
       darkMenu:"#212121",
       darkHover:"#3D3D3D",
-      darkSecondaryText:"#AAAAAA"
+      darkSecondaryText:"#AAAAAA",
+      yellow:"#e8c115",
+      blue:"#15c5e8"
     },
     extend: {},
   },

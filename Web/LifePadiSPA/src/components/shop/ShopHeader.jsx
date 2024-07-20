@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-const ShopHeader = () => {
+const ShopHeader = ({setCart}) => {
   return (
     <div className=" dark:bg-darkMenu dark:text-primary  fixed top-0 z-40 bg-primary w-full p-4 lg:px-28 shadow-md ">
       <div className=" flex justify-between">
@@ -31,11 +31,11 @@ const ShopHeader = () => {
         </div>
         <div className=" flex items-center ">
           <div className=" flex items-center gap-4">
-            <Link className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
+            <span onClick={()=>setCart((cart) => !cart)} className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
               <div className=" text-primary">
                 <ShoppingCartOutlined />
               </div>
-            </Link>
+            </span>
             <Link className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
               <span className=" text-primary">
                 <PersonOutlined />

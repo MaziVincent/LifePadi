@@ -17,7 +17,7 @@ const CreateCategoryModal = ({ open, handleClose }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -63,7 +63,7 @@ const CreateCategoryModal = ({ open, handleClose }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu dark:text-primary sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -108,12 +108,12 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                     name="name"
                     id="name"
                     {...register("Name", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type name of Category"
                     required=""
                   />
-                  {errors.name && (
-                    <p className="text-sm text-red-400">
+                  {errors.Name && (
+                    <p className="text-sm text-red">
                       Name of Category is required
                     </p>
                   )}
@@ -131,11 +131,11 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                     rows="4"
                     name="description"
                     {...register("Description", { required: true })}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="block p-2.5 w-full text-base text-grayTxt bg-graybg rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Category Descriptions here"
                   ></textarea>
-                  {errors.description && (
-                    <p className="text-sm text-red-400">
+                  {errors.Description && (
+                    <p className="text-sm text-red">
                       Description is required
                     </p>
                   )}
@@ -146,8 +146,9 @@ const CreateCategoryModal = ({ open, handleClose }) => {
               </div>
               <button
                   type="submit"
-                  className={`inline-flex items-center text-green-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
-                >
+                  className={` cursor-pointer inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800`}
+               disabled={!isValid || isSubmitting}
+               >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"
                     fill="currentColor"
@@ -160,7 +161,8 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Create New Category
+                  {isSubmitting ? 'Submitting' : 'Create New Category' }
+                  
                 </button>
                 
             

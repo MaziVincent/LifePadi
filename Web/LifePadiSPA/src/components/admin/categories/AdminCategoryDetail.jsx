@@ -73,7 +73,7 @@ const AdminCategoryDetails = () => {
       <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/category"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Category
             </Link>
@@ -81,7 +81,7 @@ const AdminCategoryDetails = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               {data?.Name}
             </Link>
@@ -106,7 +106,7 @@ const AdminCategoryDetails = () => {
           <h2 className="text-2xl font-bold text-center p-5"> Products</h2>
         
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-graybg rounded-lg">
               {isLoading && (
                 <p className="flex items-center justify-center">
                   {" "}
@@ -135,7 +135,7 @@ const AdminCategoryDetails = () => {
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}
                   className="cursor-pointer"
-                  sx={{color:grey[400]}}
+                  
                 />
               )}
             </div>

@@ -50,23 +50,23 @@ export default function LongMenu( {view,edit, id}) {
        
           <MenuItem  selected={true} onClick={() => {
             
-            handleClose; 
+            handleClose(); 
             view(id)
             }}>
-            <div className='flex gap-2 '> <i className='line-icon-Eye text-green-700 text-xl'></i><span>View </span></div>
+            <div className='flex gap-2  '> <i className='line-icon-Eye text-lightgreen text-xl'></i><span>View </span></div>
           </MenuItem>
 
           <MenuItem onClick={ () => {
-            handleClose;
+            handleClose();
             edit({type:'edit'});
             edit({type:'id', payload:id})}}
             >
-            <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue-700 text-xl'></i><span>Edit </span></div>
+            <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue text-xl'></i><span>Edit </span></div>
           </MenuItem>
 
-          <MenuItem onClick={handleClose}>
-            <div className='flex gap-2 '> <i className='line-icon-Close text-red-700 text-xl'></i><span>Delete </span></div>
-          </MenuItem>
+          {/* <MenuItem onClick={handleClose}>
+            <div className='flex gap-2 '> <i className='line-icon-Close text-red text-xl'></i><span>Delete </span></div>
+          </MenuItem> */}
         
       </Menu>
     </div>
