@@ -5,8 +5,15 @@
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   riderDeliveriesUrl,
+=======
+import {
+  ridersCountUrl,
+  riderDeliveriesUrl,
+  riderDeliveriesWithStatus,
+>>>>>>> ed8a669 (still getting the delivery count)
   successfulDeliveriesCountUrl,
   pendingDeliveriesCountUrl,
 } from './rider_uri/RiderURI'
@@ -49,6 +56,7 @@ const RiderDashboard = () => {
     return response.data
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   const getRiderPendingDeliverisCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
@@ -57,6 +65,24 @@ const RiderDashboard = () => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
+=======
+  const getRiderDeliverisWithStatus = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+  const {
+    data: ridersCount,
+    isError: riderCountError,
+    isLoading: riderCountLoading,
+    isSuccess: riderCountSuccess,
+  } = useQuery({
+    queryKey: 'ridersCount',
+    queryFn: () => getRidersCount(ridersCountUrl),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+>>>>>>> ed8a669 (still getting the delivery count)
 
   const {
     data: riderDeliveries,
@@ -179,6 +205,28 @@ const RiderDashboard = () => {
 >>>>>>> d8a3578 (created a modal for view and update)
     }
   }
+<<<<<<< HEAD
+=======
+
+  const {
+    data: riderDeliveriesWithStatus,
+    isError: riderDeliveriesWithStatusError,
+    isLoading: riderDeliveriesWithStatusLoading,
+    isSuccess: riderDeliveriesWithStatusSuccess,
+  } = useQuery({
+    queryKey: ['deliveriesWithStatus', page, search],
+    queryFn: () =>
+      getRiderDeliverisWithStatus(
+        `${
+          riderDeliveriesWithStatus + riderId
+        }?PageNumber=${page}&SearchString=${search}`
+      ),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+  
+>>>>>>> ed8a669 (still getting the delivery count)
 
   return (
     <div className='dark:bg-darkBg bg-primary '>
