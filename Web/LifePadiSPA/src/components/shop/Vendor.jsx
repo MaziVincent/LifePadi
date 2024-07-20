@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Rice1 from "../../assets/images/rice.jpeg";
+import Cart from "./Cart"
 
 const Vendor = () => {
   const [select, setSelect] = useState(false);
@@ -35,20 +36,20 @@ const Vendor = () => {
     }
   };
   return (
-    <div className=" w-full grid grid-cols-1 lg:grid-cols-3 lg:pl-24">
-      <div className="relative col-span-2">
+    <div className=" w-full grid grid-cols-1 lg:grid-cols-3 lg:px-32 lg:justify-center ">
+      <div className="relative col-span-2 ">
         <div className=" flex flex-col w-full justify-center gap-5 px-6 ">
          
             <div>
-              <Link to="/store/restaurant" className="text-gray">
+              <Link to="/store/restaurant" className="text-gray flex gap-2 items-center">
                 <span>
                   <WestRounded fontSize="" />
                 </span>
-                <span className=" text-md">Vendors</span>
+                <span className=" text-sm ">Vendors</span>
               </Link>
             </div>
             
-              <div className=" border-2 relative z-0 w-full rounded-lg h-48">
+              <div className=" border-2 relative w-full rounded-lg h-48 ">
                 <img
                   src={Rice1}
                   alt=""
@@ -332,7 +333,7 @@ const Vendor = () => {
      
         <div className=" hidden  w-full   overflow-y-auto  lg:flex justify-center ">
 
-         
+         <Cart />
         </div>
     
     </div>

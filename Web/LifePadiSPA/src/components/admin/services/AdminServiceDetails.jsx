@@ -72,7 +72,7 @@ const AdminServiceDetails = () => {
         <Breadcrumbs aria-label="breadcrumb">
           <Link
             to="/admin/service"
-            className="hover:border-b-2 hover:border-b-green-700"
+            className="hover:border-b-2 hover:border-b-secondary dark:text-darkHover"
           >
             Services
           </Link>
@@ -132,7 +132,9 @@ const AdminServiceDetails = () => {
                 pagination: {
                   paginationModel: {
                     pageSize: 5,
+                    
                   },
+                  
                 },
               }}
               pageSizeOptions={[5]}
