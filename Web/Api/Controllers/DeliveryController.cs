@@ -245,5 +245,34 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("pending/rider/{riderId}")]
+        public async Task<IActionResult> totalNumberOfPendingDeliveriesByRider(int riderId)
+        {
+            try
+            {
+                var response = await _idelivery.totalNumberOfPendingDeliveriesByRider(riderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("successful/rider/{riderId}")]
+        public async Task<IActionResult> totalNumberOfSuccessfulDeliveriesByRider(int riderId)
+        {
+            try
+            {
+                var response = await _idelivery.totalNumberOfSuccessfulDeliveriesByRider(riderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
