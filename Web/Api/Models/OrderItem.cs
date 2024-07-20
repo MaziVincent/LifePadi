@@ -9,8 +9,10 @@ namespace Api.Models
         public Double Amount { get; set; }
         [NotMapped]
         public Double _TotalAmount { get; set; } = 0;
-        public Double TotalAmount { 
-            get {
+        public Double TotalAmount
+        {
+            get
+            {
                 return _TotalAmount;
             }
             set
