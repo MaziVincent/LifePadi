@@ -1,6 +1,12 @@
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
-import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
+import {
+  ridersCountUrl,
+  riderDeliveriesUrl,
+  riderDeliveriesWithStatus,
+  successfulDeliveriesCountUrl,
+  pendingDeliveriesCountUrl,
+} from './rider_uri/RiderURI'
 import { useQuery } from 'react-query'
 import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
@@ -19,6 +25,10 @@ const RiderDashboard = () => {
     return response.data
   }
   const getRiderDeliveris = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+  const getRiderDeliverisWithStatus = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
@@ -56,6 +66,24 @@ const RiderDashboard = () => {
   if (riderDeliveriesSuccess){
     console.log(riderDeliveries)
   }
+
+  const {
+    data: riderDeliveriesWithStatus,
+    isError: riderDeliveriesWithStatusError,
+    isLoading: riderDeliveriesWithStatusLoading,
+    isSuccess: riderDeliveriesWithStatusSuccess,
+  } = useQuery({
+    queryKey: ['deliveriesWithStatus', page, search],
+    queryFn: () =>
+      getRiderDeliverisWithStatus(
+        `${
+          riderDeliveriesWithStatus + riderId
+        }?PageNumber=${page}&SearchString=${search}`
+      ),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
   
 
   return (

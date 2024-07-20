@@ -27,14 +27,14 @@ namespace Api.Services
                 var OrderItemDto = _mapper.Map<List<OrderItemDto>>(orderItems);
                 return new DataTotalNumber
                 {
-                    TotalNumber = orderItems.Count(),
+                    TotalNumber = orderItems.Count,
                     Data = OrderItemDto.ToArray(),
                 };
 
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -50,14 +50,14 @@ namespace Api.Services
                 var OrderItemDtoLite = _mapper.Map<List<OrderItemDtoLite>>(orderItems);
                 return new DataTotalNumber
                 {
-                    TotalNumber = orderItems.Count(),
+                    TotalNumber = orderItems.Count,
                     Data = OrderItemDtoLite.ToArray(),
                 };
 
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -66,6 +66,8 @@ namespace Api.Services
             try
             {
                 var newOrderItem = _mapper.Map<OrderItem>(orderItem);
+                if (orderItem.Name == null) newOrderItem.Name = orderItem.Product!.Name;
+                if (orderItem.Description == null) newOrderItem.Description = orderItem.Product!.Description;
                 newOrderItem.SetQuantity(orderItem.Quantity);
                 newOrderItem.SetAmount(orderItem.Amount);
                 await _dbContext.OrdersItems.AddAsync(newOrderItem);
@@ -75,7 +77,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
