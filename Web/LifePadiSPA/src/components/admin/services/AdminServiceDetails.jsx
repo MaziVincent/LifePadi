@@ -21,7 +21,7 @@ const AdminServiceDetails = () => {
     {
       field: "Name",
       headerName: "Business Name",
-      width: 150,
+      width: 180,
       //editable: true,
     },
     {
@@ -34,13 +34,13 @@ const AdminServiceDetails = () => {
       field: "PhoneNumber",
       headerName: "Phonenumber",
       //type: "number",
-      width: 150,
+      width: 180,
       //editable: true,
     },
     {
       field: "ContactAddress",
       headerName: "Contact Address",
-      width: 180,
+      width: 200,
     },
   ];
 
@@ -72,7 +72,7 @@ const AdminServiceDetails = () => {
         <Breadcrumbs aria-label="breadcrumb">
           <Link
             to="/admin/service"
-            className="hover:border-b-2 hover:border-b-secondary dark:text-darkHover"
+            className="hover:border-b-2 hover:border-b-secondary dark:text-graybg"
           >
             Services
           </Link>
@@ -80,7 +80,7 @@ const AdminServiceDetails = () => {
           <Link
             to="#"
             aria-current="page"
-            className="hover:border-b-2 hover:border-b-green-700"
+            className="hover:border-b-2 hover:border-b-secondary dark:text-graybg"
           >
             {data?.Name}
           </Link>
@@ -111,7 +111,7 @@ const AdminServiceDetails = () => {
        
       </div>
       <section>
-        <div className="overflow-x-auto w-full border-2">
+        <div className="overflow-x-auto w-full border-2 bg-primary rounded-lg">
           {isLoading && (
             <p className="flex items-center justify-center">
               {" "}
@@ -119,7 +119,7 @@ const AdminServiceDetails = () => {
             </p>
           )}
           {isError && (
-            <p className="flex items-center justify-center">
+            <p className="flex items-center justify-center ">
               {" "}
               <Alert severity="error">Error Fetching Data..</Alert>
             </p>
@@ -142,7 +142,7 @@ const AdminServiceDetails = () => {
               disableRowSelectionOnClick
               getRowId={(row) => row.Id}
               className="cursor-pointer"
-              sx={{color:grey[400]}}
+              
             />
           )}
         </div>

@@ -76,7 +76,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu sm:p-5 dark:text-primary">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -121,7 +121,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     name="name"
                     id="name"
                     {...register("Name", )}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type name of Category"
                     required=""
                   />
@@ -144,7 +144,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     rows="4"
                     name="description"
                     {...register("Description", )}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="block p-2.5 w-full text-base text-grayTxt bg-graybg rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Category Descriptions here"
                   ></textarea>
                   {errors.description && (
@@ -159,7 +159,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
 
               <button
                 type="submit"
-                className="inline-flex items-center text-gray-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className=" cursor-pointer inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800"
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6 text-green-600"

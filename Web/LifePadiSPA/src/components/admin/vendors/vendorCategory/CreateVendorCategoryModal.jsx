@@ -5,18 +5,20 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from 'react-hot-toast'
+import { useState } from "react";
 
 const CreateVendorCategoryModal = ({ open, handleClose }) => {
   const post = usePost();
   const { auth } = useAuth();
   const url = `${baseUrl}vendorcategory/create`;
   const queryClient = useQueryClient();
+  const [fileError, setFileError] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -42,7 +44,18 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
   //  console.log(data)
     mutate(data);
   };
+  const handleChange = (event) => {
+   
+    const file = event.target.files[0];
 
+    //console.log(file)
+    
+    if (!file || file.size > 50 * 1024) {
+      setFileError(true);
+    }else{
+      setFileError(false)
+    }
+  };
 
   // console.log(data)
   return (
@@ -62,7 +75,7 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu dark:text-gray-50 sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -111,8 +124,8 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
                     placeholder="Type name of Category"
                     required=""
                   />
-                  {errors.name && (
-                    <p className="text-sm text-red-400">
+                  {errors.Name && (
+                    <p className="text-sm text-red">
                       Name of Vendor Category is required
                     </p>
                   )}
@@ -133,19 +146,55 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
                     className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Vendor Category Descriptions here"
                   ></textarea>
-                  {errors.description && (
-                    <p className="text-sm text-red-400">
+                  {errors.Description && (
+                    <p className="text-sm text-red">
                       Description is required
                     </p>
                   )}
                   
                 </div>
 
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="icon"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Category Icon (
+                    <span className="text-sm text-gray-500">
+                      {" "}
+                      Icon should not be above 50kb
+                    </span>
+                    )
+                  </label>
+                  <input
+                    type="file"
+                    name="icon"
+                    id="icon"
+                    accept="image/*"
+                    {...register("IconUrl", { required: true })}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Upload Category Icon"
+                    required
+                    onChange={handleChange}
+                  />
+                  {errors.IconUrl && (
+                    <p className="text-sm text-red">
+                      Category icon is required
+                    </p>
+                  )}
+                  {fileError && (
+                    <p className="text-sm text-red">
+                      {" "}
+                      File should not be above 50kb
+                    </p>
+                  )}
+                </div>
+
                  
               </div>
               <button
                   type="submit"
-                  className={`inline-flex items-center text-green-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                  className={`inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"

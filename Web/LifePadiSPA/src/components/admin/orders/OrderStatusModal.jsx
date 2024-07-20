@@ -35,8 +35,23 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
   });
 
   const handleStatus = (data) => {
+
+    switch(data.Status){
+        case "Pending":
+          mutate(data);
+            break;
+        case "Ongoing":
+          mutate(data);
+            break;
+        case "Completed":
+          mutate(data);
+            break;
+        default:
+            toast.error("Choose Order Status");
+            break;
+    }
      console.log(data)
-    mutate(data);
+    return;
   };
 
   // console.log(data)
@@ -52,12 +67,12 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
+        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full  "
       >
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu dark:text-primary sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 capitalize dark:text-gray-50">
@@ -103,8 +118,8 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
                       {...register("Status", {
                         required: "Status is required",
                       })}
-                      defaultValue={"default"}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      defaultValue={""}
+                      className="bg-graybg border border-gray text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-darkHover placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
                       <option
                         disabled
@@ -140,10 +155,10 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
                 </div>
               <button
                 type="submit"
-                disabled={isSubmitting }
+                disabled={isSubmitting || !isValid }
                 className={`inline-flex items-center ${
-                  isSubmitting || !isValid ? "text-gray-700" : "text-green-700"
-                } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 capitalize focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                  isSubmitting || !isValid ? "text-gray" : "text-background"
+                } dark:text-gray-50 bg-primary-700 hover:bg-graybg focus:ring-4 capitalize focus:outline-1 focus:ring-primary font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-background`}
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6"
@@ -157,7 +172,7 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {`Update ${name} Status`}
+                {isSubmitting ? 'Submitting...' : `Update ${name} Status`}
               </button>
             </form>
           </div>

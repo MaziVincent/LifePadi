@@ -44,50 +44,29 @@ const AdminOrderDetails = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
   return (
-    <section className=" p-2 text-gray-900 dark:text-primary">
+    <section className=" p-2 text-gray-900 dark:text-primary pb-10">
       <Breadcrumbs aria-label="breadcrumb">
-            <Link
-              to="/admin"
-              className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
-            >
-              Dashboard
-            </Link>
+        <Link
+          to="/admin"
+          className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
+        >
+          Dashboard
+        </Link>
 
-            <Link
-              to="#"
-              aria-current="page"
-              className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
-            >
-              Order Details
-            </Link>
-          </Breadcrumbs>
+        <Link
+          to="#"
+          aria-current="page"
+          className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
+        >
+          Order Details
+        </Link>
+      </Breadcrumbs>
       <h1 className="text-center text-2xl font-bold py-4"> Order Details </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 dark:bg-darkMenu ">
-        <div className="col-span-2 border-2 shadow-sm flex flex-col md:flex-row justify-between p-5 bg-white rounded-lg shadow-lightgreen">
-          {" "}
-          <div>
-            <h2 className="font-bold border-b-2 mb-2"> Order Info. </h2>
-            <p> Order Date : {new Date(data?.order.CreatedAt).toDateString()} </p>
-            <p> Order Status : {data?.order.Status} </p>
-            <p> Order Type : {data?.order.Type}</p>
-            <p> Delivery Status : {data?.order.IsDelivered ? 'Delivered' : 'Not Delivered'} </p>
-          </div>
-          <div>
-            {" "}
-            <h2 className="font-bold border-b-2 mb-2">Customer Info.</h2>
-            <p> Customer Full-Name : {data?.order.Customer.FirstName} {data?.order.Customer.LastName} </p>
-            <p> Customer Address : {data?.order.Customer.ContactAddress} </p>
-            <p> Customer Phone Number : {data?.order.Customer.PhoneNumber} </p>
-
-          </div>
-        </div>
-
-        <div className="overflow-x-auto col-span-2 bg-white shadow-sm shadow-lightyellow rounded-lg">
-          <h2 className="text-xl font-bold text-center p-2"> Order Items</h2>
-            {isLoading && (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5  ">
+      {isLoading && (
                 <p className="flex items-center justify-center">
                   {" "}
                   <CircularProgress />
@@ -100,100 +79,202 @@ const AdminOrderDetails = () => {
                 </p>
               )}
               {isSuccess && (
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Item Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Quantity
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Amount
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Total Amount
-                    </th>
-                  
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Fragile
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Weight
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Description
-                    </th>
-
-                   
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.order.OrderItems.map((item) => (
-                    <tr key={item.Id} className="border-b dark:border-gray-700">
-                      <th
-                        scope="row"
-                        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {item.Name}
-                      </th>
-                      <td className="px-4 py-3">{item.Quantity}</td>
-                      <td className="px-4 py-3">{item.Amount}</td>
-                      <td className="px-4 py-3"> {item.TotalAmount}</td>
-                      <td className="px-4 py-3"> {item.IsFragile ? 'Fragile' : 'Not Fragile'}</td>
-                      <td className="px-4 py-3"> {item.Weight}</td>
-                      <td className="px-4 py-3"> {item.Description}</td>
-
-                    </tr>
-                  ))}
-
-                </tbody>
-              </table> )}
-            </div>
-        <div className="border-2 col-span-2 bg-white p-3 shadow-sm shadow-lightcyan rounded-lg ">
+        <div className="col-span-2 border-2 dark:bg-darkMenu bg-graybg shadow-sm flex flex-col md:flex-row justify-between p-5 bg-white rounded-lg shadow-lightgreen">
           {" "}
-          <h1 className="font-bold text-center text-xl">Delivery Details </h1>{" "}
-          <p> Delivery Date : {new Date(data?.delivery.CreatedAt).toDateString()} </p>
+          <div>
+            <h2 className="font-bold border-b-2 mb-2"> Order Info. </h2>
+            <p>
+              {" "}
+              Order Date : {new Date(data?.order.CreatedAt).toDateString()}{" "}
+            </p>
+            <p> Order Status : {data?.order.Status} </p>
+            <p> Order Type : {data?.order.Type}</p>
+            <p>
+              {" "}
+              Delivery Status :{" "}
+              {data?.order.IsDelivered ? "Delivered" : "Not Delivered"}{" "}
+            </p>
+          </div>
+          <div>
+            {" "}
+            <h2 className="font-bold border-b-2 mb-2">Customer Info.</h2>
+            <p>
+              {" "}
+              Customer Full-Name : {data?.order.Customer.FirstName}{" "}
+              {data?.order.Customer.LastName}{" "}
+            </p>
+            <p> Customer Address : {data?.order.Customer.ContactAddress} </p>
+            <p> Customer Phone Number : {data?.order.Customer.PhoneNumber} </p>
+          </div>
+        </div> )}
+        {isLoading && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <CircularProgress />
+                </p>
+              )}
+              {isError && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                </p>
+              )}
+              {isSuccess && (
+        <div className="overflow-x-auto col-span-2 dark:bg-darkMenu bg-graybg shadow-sm shadow-lightyellow rounded-lg">
+          <h2 className="text-xl font-bold text-center p-2"> Order Items</h2>
+          {isLoading && (
+            <p className="flex items-center justify-center">
+              {" "}
+              <CircularProgress />
+            </p>
+          )}
+          {isError && (
+            <p className="flex items-center justify-center">
+              {" "}
+              <Alert severity="error">Error Fetching Data..</Alert>
+            </p>
+          )}
+          {isSuccess && (
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray dark:bg-darkHover dark:text-gray-400">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Item Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Quantity
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Amount
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Total Amount
+                  </th>
+
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Fragile
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Weight
+                  </th>
+
+                  <th
+                    scope="col"
+                    className="px-4 py-3"
+                  >
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.order.OrderItems.map((item) => (
+                  <tr
+                    key={item.Id}
+                    className="border-b dark:border-gray-700"
+                  >
+                    <th
+                      scope="row"
+                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.Name}
+                    </th>
+                    <td className="px-4 py-3">{item.Quantity}</td>
+                    <td className="px-4 py-3">{item.Amount}</td>
+                    <td className="px-4 py-3"> {item.TotalAmount}</td>
+                    <td className="px-4 py-3">
+                      {" "}
+                      {item.IsFragile ? "Fragile" : "Not Fragile"}
+                    </td>
+                    <td className="px-4 py-3"> {item.Weight}</td>
+                    <td className="px-4 py-3"> {item.Description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div> )}
+
+        {isLoading && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <CircularProgress />
+                </p>
+              )}
+              {isError && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                </p>
+              )}
+              {isSuccess && (
+        <div className="border-2 col-span-2 dark:bg-darkMenu bg-graybg p-3 shadow-sm shadow-lightcyan rounded-lg ">
+          {" "}
+          <h1 className="font-bold text-center text-xl">
+            Delivery Details{" "}
+          </h1>{" "}
+          <p>
+            {" "}
+            Delivery Date : {new Date(
+              data?.delivery.CreatedAt
+            ).toDateString()}{" "}
+          </p>
           <p> Delivery Fee : {data?.delivery.DeliveryFee}</p>
           <p> Pickup Address : {data?.delivery.PickupAddress}</p>
           <p> Pickup Type : {data?.delivery.PickupType}</p>
           <p> Pickup Type : {data?.delivery.Status}</p>
-          
-        </div>
-        <div className="border-2 col-span-2 p-3 bg-white shadow-sm shadow-lightemerald rounded-lg ">
+        </div> )}
+
+        {isLoading && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <CircularProgress />
+                </p>
+              )}
+              {isError && (
+                <p className="flex items-center justify-center">
+                  {" "}
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                </p>
+              )}
+              {isSuccess && (
+        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-sm shadow-lightemerald rounded-lg ">
           {" "}
           <h1 className="font-bold text-center text-xl">Rider Details </h1>{" "}
-          <p> Rider Full Name : {data?.delivery.Rider.FirstName} {data?.delivery.Rider.LastName}</p>
+          <p>
+            {" "}
+            Rider Full Name : {data?.delivery.Rider.FirstName}{" "}
+            {data?.delivery.Rider.LastName}
+          </p>
           <p> Rider Phone Number : {data?.delivery.Rider.PhoneNumber}</p>
-          <p> Rider Status : {data?.delivery.Rider.IsActive ? "Active" : " In-Active"}</p>
-
-        </div>
-        <div className="border-2 col-span-2 p-3 bg-white shadow-lg shadow-brown-200 rounded-lg">
+          <p>
+            {" "}
+            Rider Status :{" "}
+            {data?.delivery.Rider.IsActive ? "Active" : " In-Active"}
+          </p>
+        </div> )}
+        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
           {" "}
-          <h1 className="font-bold text-center text-xl">Transaction Details </h1>{" "}
+          <h1 className="font-bold text-center text-xl">
+            Transaction Details{" "}
+          </h1>{" "}
         </div>
       </div>
     </section>

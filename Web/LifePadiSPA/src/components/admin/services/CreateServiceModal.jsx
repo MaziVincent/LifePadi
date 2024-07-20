@@ -195,7 +195,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
               <button
                   type="submit"
                   disabled={fileError || isSubmitting || !isValid }
-                  className={`inline-flex items-center ${fileError ?  'text-gray-700' : 'text-secondary' } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-gray cursor-pointer`}
+                  className={` cursor-pointer inline-flex items-center ${fileError ?  'text-gray-700' : 'text-background' } dark:text-gray-50 bg-primary-700 hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-gray cursor-pointer`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"
@@ -209,7 +209,7 @@ const CreateServiceModal = ({ open, handleClose }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Create New Service
+                 {isSubmitting ? 'Submitting' : 'Create New Service'} 
                 </button>
                 
             

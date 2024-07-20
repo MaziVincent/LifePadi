@@ -149,7 +149,7 @@ const AdminService = () => {
                       onChange={(e) => {
                         setSearch(e.target.value);
                       }}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-darkHover dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Search"
                       required=""
                     />
@@ -160,9 +160,9 @@ const AdminService = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-                  className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className="flex items-center gap-1 justify-center text-background bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
-                  <i className="line-icon-Add text-secondary font-bold text-lg"></i>
+                  <i className="line-icon-Add text-background font-bold text-lg"></i>
                   Add Service
                 </button>
               </div>
@@ -246,7 +246,7 @@ const AdminService = () => {
                           </div>
                         </td>
                         <td className="px-4 py-3">{service.Description}</td>
-                        <td className="px-4 py-3">{service.IsActive ? <span className="text-green-700"> Active </span> : <span className="text-red-700"> In-Active </span>}</td>
+                        <td className="px-4 py-3">{service.IsActive ? <span className="text-background"> Active </span> : <span className="text-redborder"> In-Active </span>}</td>
 
                         <td className="px-4 py-3 flex items-center justify-end">
                           <div className="flex justify-end gap-4">

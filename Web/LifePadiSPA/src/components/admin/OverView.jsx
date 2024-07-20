@@ -62,7 +62,7 @@ const Overview = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
 
   const handlePageChange = (event, value) => {
@@ -135,7 +135,7 @@ const Overview = () => {
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
           <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div className="flex flex-col dark:bg-darkMenu md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            <div className="flex flex-col  md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
               <div className="w-full md:w-1/2">
                 <form className="flex items-center">
                   <label
@@ -333,7 +333,7 @@ const Overview = () => {
               )}
               {isSuccess && (
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs uppercase bg-gray dark:bg-darkMenu ">
                   <tr>
                     <th
                       scope="col"
@@ -370,15 +370,17 @@ const Overview = () => {
                 </thead>
                 <tbody>
                   {data?.result.map((order) => (
-                    <tr key={order.Id} className="border-b dark:border-gray-700">
+                    <tr key={order.Id} className="border-b hover:bg-graybg dark:hover:bg-darkHover">
                       <th
                         scope="row"
                         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {new Date(order.CreatedAt).toDateString()}
                       </th>
-                      <td className="px-4 py-3">{order.Status}</td>
-                      <td className="px-4 py-3">{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
+                      <td className={`px-4 py-3 ${order.Status == 'Completed' ? 'text-background'
+                        : order.Status == 'Pending' ? 'text-yellow' : 'text-lightindigo'
+                      }`}>{order.Status}</td>
+                      <td className={`px-4 py-3 ${order.IsDelivered ? 'text-lightgreen':'text-redborder'}`}>{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
                       <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
                       <td className="px-4 py-3 flex items-center justify-end ">
                         <ActionsMenu view = {handleOrderDetails} edit={dispatch} id={order.Id} />

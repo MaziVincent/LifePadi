@@ -6,17 +6,21 @@ import {
   Remove,
 } from "@mui/icons-material";
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart , setCart}) => {
   return (
     <aside
-      className={`fixed md:relative top-10 md:top-0 right-0  z-30 w-auto overflow-auto lg:w-58 h-full pb-10 dark:bg-darkMenu transition-transform  shadow-lg md:translate-x-0  dark:border-x-grayTxt ${
+      className={`fixed md:relative inset-0 col-span-2 top-10 md:top-0 right-0  z-30 w-auto overflow-auto lg:w-58 h-full pb-10  transition-transform  shadow-lg md:translate-x-0  dark:border-x-grayTxt dark:bg-darkMenu bg-primary ${
         cart ? "translate-x-0" : "-translate-x-full"
-      } rounded-lg`}
+      } rounded-lg shadow-lg border-l border-l-gray`}
       aria-label="Sidenav"
       id="drawer-navigation"
     >
-      <div className="overflow-y-auto py-10 px-2  flex flex-col   items-start justify-center  h-full bg-gray-50 dark:bg-gray-800">
-        <div className=" stick -top-16 h-lvh p-4 overflow-auto">
+      <div className="overflow-y-auto py-5 px-2  flex flex-col   items-start justify-center  h-full rounded-lg">
+        <div className=" stick -top-16 h-lvh p-4 overflow-auto ">
+          {cart && <div className="flex justify-end"> <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+</svg>
+</div>}
           <div className=" flex justify-between items-center pb-4">
             <p className=" text-sm capitalize text-secondary">Lekki's global suya spot</p>
             
