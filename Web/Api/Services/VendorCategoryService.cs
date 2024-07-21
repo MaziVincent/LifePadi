@@ -64,7 +64,11 @@ namespace Api.Services
             try
             {
                 string folderName = "VendorCategories";
-                var vendorCategory = _mapper.Map<VendorCategory>(vc);
+                var vendorCategory = new VendorCategory
+                {
+                    Name = vc.Name,
+                    Description = vc.Description,
+                };
                 var imgPath = await UploadImage.uploadImg(vc.Icon!, _cloudinary, folderName);
                 if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the vendorCategory image");
                 vendorCategory.IconUrl = imgPath;
