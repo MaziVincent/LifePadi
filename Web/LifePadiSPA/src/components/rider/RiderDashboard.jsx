@@ -10,10 +10,12 @@ import {
   riderDeliveriesUrl,
 =======
 import {
-  ridersCountUrl,
   riderDeliveriesUrl,
+<<<<<<< HEAD
   riderDeliveriesWithStatus,
 >>>>>>> ed8a669 (still getting the delivery count)
+=======
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
   successfulDeliveriesCountUrl,
   pendingDeliveriesCountUrl,
 } from './rider_uri/RiderURI'
@@ -38,6 +40,7 @@ const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
 <<<<<<< HEAD
+<<<<<<< HEAD
   
   let page = 1;
   let totalPage = 1;
@@ -47,7 +50,13 @@ const RiderDashboard = () => {
   const riderId = auth.Id
 =======
   const [page, setpage] = useState(1)
+=======
+  let page = 1;
+  let totalPage = 1;
+  let pageSize = 5;
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
   const [search, setSearch] = useState('')
+  const [isVeirfied, setIsVerified] = useState(false)
   const riderId = 3
 >>>>>>> d8a3578 (created a modal for view and update)
 
@@ -57,11 +66,15 @@ const RiderDashboard = () => {
   }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
   const getRiderPendingDeliverisCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
   const getRiderSuccessfulDeliverisCount = async (url) => {
+<<<<<<< HEAD
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
@@ -83,6 +96,11 @@ const RiderDashboard = () => {
     refetchOnMount: 'always',
   })
 >>>>>>> ed8a669 (still getting the delivery count)
+=======
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
 
   const {
     data: riderDeliveries,
@@ -117,12 +135,22 @@ const RiderDashboard = () => {
   })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (riderDeliveriesSuccess) {
     if (riderDeliveries){
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
       console.log(riderDeliveries.result);
       if (riderDeliveries?.result[0].Rider?.isVeirfied)
+=======
+  if (riderDeliveriesSuccess) {
+    console.log(riderDeliveries)
+    if (riderDeliveries){
+      totalPage = riderDeliveries.dataList.TotalPages;
+      pageSize = riderDeliveries.dataList.PageSize;
+
+      if (riderDeliveries.result[0].Rider.isVeirfied)
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
       {
         setIsVerified(true)
       }
@@ -134,6 +162,7 @@ const RiderDashboard = () => {
     isError: pendingDeliveriesCountError,
     isLoading: pendingDeliveriesCountLoading,
     isSuccess: pendingDeliveriesCountSuccess,
+<<<<<<< HEAD
   } = useQuery({
     queryKey: 'deliveriesWithStatus',
     queryFn: () =>
@@ -213,20 +242,59 @@ const RiderDashboard = () => {
     isError: riderDeliveriesWithStatusError,
     isLoading: riderDeliveriesWithStatusLoading,
     isSuccess: riderDeliveriesWithStatusSuccess,
+=======
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
   } = useQuery({
-    queryKey: ['deliveriesWithStatus', page, search],
+    queryKey: 'deliveriesWithStatus',
     queryFn: () =>
-      getRiderDeliverisWithStatus(
-        `${
-          riderDeliveriesWithStatus + riderId
-        }?PageNumber=${page}&SearchString=${search}`
+      getRiderPendingDeliverisCount(`${pendingDeliveriesCountUrl + riderId}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+
+  const {
+    data: successfulDeliveriesCount,
+    isError: successfulDeliveriesCountError,
+    isLoading: successfulDeliveriesCountLoading,
+    isSuccess: successfulDeliveriesCountSuccess,
+  } = useQuery({
+    queryKey: 'successfulDeliveriesCount',
+    queryFn: () =>
+      getRiderSuccessfulDeliverisCount(
+        `${successfulDeliveriesCountUrl + riderId}`
       ),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
+<<<<<<< HEAD
   
 >>>>>>> ed8a669 (still getting the delivery count)
+=======
+
+  if (successfulDeliveriesCountSuccess) {
+    console.log(successfulDeliveriesCount)
+  }
+  const setPage = (i) => {
+    if (i > 0 && i <= totalPage) {
+      page = i;
+      console.log(page);
+    }
+  }
+  const setNextPage = (page) => {
+    if (page <= totalPage) {
+      page += 1;
+      console.log(page);
+    }
+  }
+  const setPreviousPage = (page) => {
+    if (page > 0) {
+      page -= 1;
+      console.log(page);
+    }
+  }
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
 
   return (
     <div className='dark:bg-darkBg bg-primary '>
@@ -235,6 +303,7 @@ const RiderDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 {riderDeliveriesLoading ? (
                   <CircularProgress size={20} />
@@ -252,6 +321,13 @@ const RiderDashboard = () => {
                   : riderDeliveriesSuccess &&
                     riderDeliveries.dataList.TotalCount + 'M+'}
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                {riderDeliveriesLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  riderDeliveries && riderDeliveries.dataList.TotalCount + 'M+'
+                )}
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
@@ -263,7 +339,11 @@ const RiderDashboard = () => {
                   <CircularProgress size={20} />
                 ) : (
                   successfulDeliveriesCountSuccess &&
+<<<<<<< HEAD
                   successfulDeliveriesCount
+=======
+                  successfulDeliveriesCount + 'M+'
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -275,7 +355,11 @@ const RiderDashboard = () => {
                 {pendingDeliveriesCountLoading ? (
                   <CircularProgress size={20} />
                 ) : (
+<<<<<<< HEAD
                   pendingDeliveriesCountSuccess && pendingDeliveriesCount
+=======
+                  pendingDeliveriesCountSuccess && pendingDeliveriesCount + 'M+'
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -322,7 +406,29 @@ const RiderDashboard = () => {
                 </form>
               </div>
               <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
+<<<<<<< HEAD
                 {isVeirfied ? (
+=======
+                {
+                  (isVeirfied ? (
+                    <button
+                      type='button'
+                      className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                    >
+                      {/* <i className='line-icon-Add'></i> */}
+                      Verified
+                    </button>
+                  ) : (
+                    <button
+                      type='button'
+                      className='flex items-center justify-center text-red bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                    >
+                      {/* <i className='line-icon-Add'></i> */}
+                      Not Verified
+                    </button>
+                  ))}
+                <div className='flex items-center space-x-3 w-full md:w-auto'>
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <button
                     type='button'
                     className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
@@ -463,7 +569,6 @@ const RiderDashboard = () => {
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
                           <CircularProgress />
                         </div>
-
                       </td>
                     </tr>
                   ) : (
@@ -535,10 +640,17 @@ const RiderDashboard = () => {
                 Showing
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                   1-
                   {riderDeliveriesLoading ? (
                     <CircularProgress size={20} />
                   ) : (
+<<<<<<< HEAD
+=======
+                    // riderDeliveriesSuccess && riderDeliveries.dataList.PageSize
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                     pageSize
                   )}
                 </span>
@@ -565,12 +677,17 @@ const RiderDashboard = () => {
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <button
                     onClick={() => setPreviousPage(page)}
 =======
                   <Link
                     to='#'
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                  <button
+                    onClick={() => setPreviousPage(page)}
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -587,6 +704,7 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
+<<<<<<< HEAD
 <<<<<<< HEAD
                   </button>
                 </li>
@@ -631,6 +749,21 @@ const RiderDashboard = () => {
                 </li>
                 <li>
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                  </button>
+                </li>
+                {Array.from({ length: totalPage }, (_, i) => (
+                  <li key={i}>
+                    <button
+                      onClick={() => setPage(i + 1)}
+                      className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                    >
+                      {i + 1}
+                    </button>
+                  </li>
+                ))}
+                <li className='hidden'>
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -639,10 +772,14 @@ const RiderDashboard = () => {
                   </Link>
                 </li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <li className='hidden'>
 =======
                 <li>
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                <li className='hidden'>
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -652,12 +789,17 @@ const RiderDashboard = () => {
                 </li>
                 <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <button
                     onClick={() => setNextPage(page)}
 =======
                   <Link
                     to='#'
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                  <button
+                    onClick={() => setNextPage(page)}
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
@@ -675,10 +817,14 @@ const RiderDashboard = () => {
                       />
                     </svg>
 <<<<<<< HEAD
+<<<<<<< HEAD
                   </button>
 =======
                   </Link>
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                  </button>
+>>>>>>> 5c62a96 (showing if a rider is verified or not)
                 </li>
               </ul>
             </nav>

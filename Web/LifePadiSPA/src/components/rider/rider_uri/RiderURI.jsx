@@ -62,10 +62,14 @@ export const riderDeliveriesWithStatus = baseUrl + 'delivery/getWithStatus/{ride
 =======
 =======
 export const successfulDeliveriesCountUrl =
-  baseUrl + 'delivery/successful/rider/{riderId}'
+  baseUrl + 'delivery/successful/rider/' //add riderId from the component before using this url
 export const pendingDeliveriesCountUrl =
+<<<<<<< HEAD
   baseUrl + 'delivery/pending/rider/{riderId}'
 >>>>>>> 1387920 (still getting the delivery count)
+=======
+  baseUrl + 'delivery/pending/rider/' //add riderId from the component before using this url
+>>>>>>> 2fa258b (showing if a rider is verified or not)
 
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
 <<<<<<< HEAD
