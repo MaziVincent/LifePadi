@@ -10,7 +10,7 @@ namespace Api.DTO
         public Double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public int OrderId { get; set; }
-        public OrderDtoLite? Order { get; set; }
+        public OrderDto? Order { get; set; }
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -32,8 +32,6 @@ namespace Api.Services
                 orderList = orderList.Concat(_orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
                 return result;
-
-
             }
             catch (Exception ex)
             {
@@ -71,6 +69,7 @@ namespace Api.Services
                     newOrder.Type = order.Type;
                 }
                 newOrder.IsDelivered = false;
+                newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper();
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(newOrder);
