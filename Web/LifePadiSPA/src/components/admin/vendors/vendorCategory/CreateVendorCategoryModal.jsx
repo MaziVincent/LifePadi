@@ -27,8 +27,14 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
     for(const key in data){
       formData.append(key, data[key])
     }
+    try{
+
     const response = await post(url, formData, auth?.accessToken);
-    //console.log(response);
+
+    console.log(response.data)
+    } catch (error) {
+      throw new Error(error?.response?.data?.message || error.message);
+    }
   };
 
   const { mutate } = useMutation(create, {
@@ -38,11 +44,15 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
       reset();
       handleClose({ type: "open" });
     },
+    onError: (error) => {
+      toast.error("Vendor Category Failed to Create ");
+      console.log(error);
+    },
   });
 
   const handleCreate = (data) => {
   //  console.log(data)
-  const cat = {...data, IconUrl:data.IconUrl[0]}
+  const cat = {...data, Icon:data.Icon[0]}
     mutate(cat);
     console.log(cat)
   };
@@ -173,13 +183,13 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
                     name="icon"
                     id="icon"
                     accept="image/*"
-                    {...register("IconUrl", { required: true })}
+                    {...register("Icon", { required: true })}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Upload Category Icon"
                     required
                     onChange={handleChange}
                   />
-                  {errors.IconUrl && (
+                  {errors.Icon && (
                     <p className="text-sm text-red">
                       Category icon is required
                     </p>
@@ -210,7 +220,8 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Create New Vendor Category
+                  {isSubmitting ? "Creating..." : "Create New Vendor Category"}
+                  
                 </button>
                 
             
