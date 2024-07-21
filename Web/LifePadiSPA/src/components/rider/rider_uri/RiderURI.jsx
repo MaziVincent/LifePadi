@@ -19,9 +19,9 @@ export const riderDeliveriesWithStatusCountUrl =
   baseUrl + 'delivery/getWithStatusCount/{riderId}'
 export const riderDeliveriesWithStatusUrl = baseUrl + 'delivery/getWithStatus/{riderId}'; //add status from query params
 export const successfulDeliveriesCountUrl =
-  baseUrl + 'delivery/successful/rider/{riderId}'
+  baseUrl + 'delivery/successful/rider/' //add riderId from the component before using this url
 export const pendingDeliveriesCountUrl =
-  baseUrl + 'delivery/pending/rider/{riderId}'
+  baseUrl + 'delivery/pending/rider/' //add riderId from the component before using this url
 
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
 export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus'; //add orderId, deliveryId and deliveryStatus as query params

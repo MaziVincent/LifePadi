@@ -166,33 +166,35 @@ namespace Api.Services
             }
         }
 
-        public async Task<PagedList<Delivery>> getRidersDeliveries(int riderId, SearchPaging props)
+        public async Task<PagedList<DeliveryDto>> getRidersDeliveries(int riderId, SearchPaging props)
         {
             try
             {
-                IQueryable<Delivery> deliveryList = Enumerable.Empty<Delivery>().AsQueryable();
+                IQueryable<DeliveryDto> deliveryList = Enumerable.Empty<DeliveryDto>().AsQueryable();
                 if (props.SearchString is null)
                 {
                     var deliveries = await _dbContext.Deliveries
                         .Include(d => d.Order)
+                        .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
                         .OrderByDescending(d => d.CreatedAt)
                         .Where(d => d.RiderId == riderId)
                         .ToListAsync();
-                    deliveryList = deliveryList.Concat(deliveries);
-                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
+                    deliveryList = deliveryList.Concat(_mapper.Map<List<DeliveryDto>>(deliveries));
+                    var result = PagedList<DeliveryDto>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 else
                 {
                     var deliveries = await _dbContext.Deliveries
                         .Include(d => d.Order)
+                        .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
                         .OrderByDescending(d => d.CreatedAt)
                         .Where(d => d.RiderId == riderId && d.PickupAddress!.ToLower().Contains(props.SearchString.ToLower()))
                         .ToListAsync();
-                    deliveryList = deliveryList.Concat(deliveries);
-                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
+                    deliveryList = deliveryList.Concat(_mapper.Map<List<DeliveryDto>>(deliveries));
+                    var result = PagedList<DeliveryDto>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
                     return result;
                 }
             }
@@ -265,7 +267,7 @@ namespace Api.Services
                     .Where(d => d.RiderId == riderId && d.Status!.Contains("Pending"))
                     .CountAsync();
                 var successful = await _dbContext.Deliveries
-                    .Where(d => d.RiderId == riderId && d.Status!.Contains("Successful"))
+                    .Where(d => d.RiderId == riderId && d.Status!.Contains("Delivered"))
                     .CountAsync();
                 var unsuccessful = await _dbContext.Deliveries
                     .Where(d => d.RiderId == riderId && d.Status!.Contains("Unsuccessful"))
