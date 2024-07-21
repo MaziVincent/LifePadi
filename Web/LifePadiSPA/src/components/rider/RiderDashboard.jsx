@@ -1,9 +1,7 @@
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
 import {
-  ridersCountUrl,
   riderDeliveriesUrl,
-  riderDeliveriesWithStatus,
   successfulDeliveriesCountUrl,
   pendingDeliveriesCountUrl,
 } from './rider_uri/RiderURI'
@@ -16,34 +14,25 @@ import CircularProgress from '@mui/material/CircularProgress'
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
-  const [page, setpage] = useState(1)
+  let page = 1;
+  let totalPage = 1;
+  let pageSize = 5;
   const [search, setSearch] = useState('')
+  const [isVeirfied, setIsVerified] = useState(false)
   const riderId = 3
 
-  const getRidersCount = async (url) => {
-    const response = await fetch(url, auth.accessToken)
-    return response.data
-  }
   const getRiderDeliveris = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
-  const getRiderDeliverisWithStatus = async (url) => {
+  const getRiderPendingDeliverisCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
-  const {
-    data: ridersCount,
-    isError: riderCountError,
-    isLoading: riderCountLoading,
-    isSuccess: riderCountSuccess,
-  } = useQuery({
-    queryKey: 'ridersCount',
-    queryFn: () => getRidersCount(ridersCountUrl),
-    keepPreviousData: true,
-    staleTime: 20000,
-    refetchOnMount: 'always',
-  })
+  const getRiderSuccessfulDeliverisCount = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
 
   const {
     data: riderDeliveries,
@@ -63,28 +52,70 @@ const RiderDashboard = () => {
     refetchOnMount: 'always',
   })
 
-  if (riderDeliveriesSuccess){
+  if (riderDeliveriesSuccess) {
     console.log(riderDeliveries)
+    if (riderDeliveries){
+      totalPage = riderDeliveries.dataList.TotalPages;
+      pageSize = riderDeliveries.dataList.PageSize;
+
+      if (riderDeliveries.result[0].Rider.isVeirfied)
+      {
+        setIsVerified(true)
+      }
+    }
   }
 
   const {
-    data: riderDeliveriesWithStatus,
-    isError: riderDeliveriesWithStatusError,
-    isLoading: riderDeliveriesWithStatusLoading,
-    isSuccess: riderDeliveriesWithStatusSuccess,
+    data: pendingDeliveriesCount,
+    isError: pendingDeliveriesCountError,
+    isLoading: pendingDeliveriesCountLoading,
+    isSuccess: pendingDeliveriesCountSuccess,
   } = useQuery({
-    queryKey: ['deliveriesWithStatus', page, search],
+    queryKey: 'deliveriesWithStatus',
     queryFn: () =>
-      getRiderDeliverisWithStatus(
-        `${
-          riderDeliveriesWithStatus + riderId
-        }?PageNumber=${page}&SearchString=${search}`
+      getRiderPendingDeliverisCount(`${pendingDeliveriesCountUrl + riderId}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+
+  const {
+    data: successfulDeliveriesCount,
+    isError: successfulDeliveriesCountError,
+    isLoading: successfulDeliveriesCountLoading,
+    isSuccess: successfulDeliveriesCountSuccess,
+  } = useQuery({
+    queryKey: 'successfulDeliveriesCount',
+    queryFn: () =>
+      getRiderSuccessfulDeliverisCount(
+        `${successfulDeliveriesCountUrl + riderId}`
       ),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-  
+
+  if (successfulDeliveriesCountSuccess) {
+    console.log(successfulDeliveriesCount)
+  }
+  const setPage = (i) => {
+    if (i > 0 && i <= totalPage) {
+      page = i;
+      console.log(page);
+    }
+  }
+  const setNextPage = (page) => {
+    if (page <= totalPage) {
+      page += 1;
+      console.log(page);
+    }
+  }
+  const setPreviousPage = (page) => {
+    if (page > 0) {
+      page -= 1;
+      console.log(page);
+    }
+  }
 
   return (
     <div className='bg-darkBg'>
@@ -93,23 +124,37 @@ const RiderDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
-                {riderDeliveriesLoading
-                  ? (<CircularProgress size={20} />)
-                  : riderDeliveriesSuccess &&
-                    riderDeliveries.dataList.TotalCount + 'M+'}
+                {riderDeliveriesLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  riderDeliveries && riderDeliveries.dataList.TotalCount + 'M+'
+                )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>1B+</dt>
+              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+                {successfulDeliveriesCountLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  successfulDeliveriesCountSuccess &&
+                  successfulDeliveriesCount + 'M+'
+                )}
+              </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Successful
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>4M+</dt>
+              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+                {pendingDeliveriesCountLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  pendingDeliveriesCountSuccess && pendingDeliveriesCount + 'M+'
+                )}
+              </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Pending
               </dd>
@@ -153,13 +198,24 @@ const RiderDashboard = () => {
                 </form>
               </div>
               <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
-                <button
-                  type='button'
-                  className='flex items-center justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
-                >
-                  <i className='line-icon-Add'></i>
-                  Add product
-                </button>
+                {
+                  (isVeirfied ? (
+                    <button
+                      type='button'
+                      className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                    >
+                      {/* <i className='line-icon-Add'></i> */}
+                      Verified
+                    </button>
+                  ) : (
+                    <button
+                      type='button'
+                      className='flex items-center justify-center text-red bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                    >
+                      {/* <i className='line-icon-Add'></i> */}
+                      Not Verified
+                    </button>
+                  ))}
                 <div className='flex items-center space-x-3 w-full md:w-auto'>
                   <button
                     id='actionsDropdownButton'
@@ -309,7 +365,6 @@ const RiderDashboard = () => {
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
                           <CircularProgress />
                         </div>
-
                       </td>
                     </tr>
                   ) : (
@@ -348,7 +403,13 @@ const RiderDashboard = () => {
               <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 Showing
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
-                  1-{riderDeliveriesLoading ? (<CircularProgress size={20} />): riderDeliveriesSuccess && riderDeliveries.dataList.PageSize}
+                  1-
+                  {riderDeliveriesLoading ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    // riderDeliveriesSuccess && riderDeliveries.dataList.PageSize
+                    pageSize
+                  )}
                 </span>
                 of
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
@@ -359,8 +420,8 @@ const RiderDashboard = () => {
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
-                  <Link
-                    to='#'
+                  <button
+                    onClick={() => setPreviousPage(page)}
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -377,34 +438,19 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-                  </Link>
+                  </button>
                 </li>
-                <li>
-                  <Link
-                    to='#'
-                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    1
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='#'
-                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    2
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='#'
-                    aria-current='page'
-                    className='flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
-                  >
-                    3
-                  </Link>
-                </li>
-                <li>
+                {Array.from({ length: totalPage }, (_, i) => (
+                  <li key={i}>
+                    <button
+                      onClick={() => setPage(i + 1)}
+                      className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                    >
+                      {i + 1}
+                    </button>
+                  </li>
+                ))}
+                <li className='hidden'>
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -412,7 +458,7 @@ const RiderDashboard = () => {
                     ...
                   </Link>
                 </li>
-                <li>
+                <li className='hidden'>
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -421,8 +467,8 @@ const RiderDashboard = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to='#'
+                  <button
+                    onClick={() => setNextPage(page)}
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
@@ -439,7 +485,7 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </nav>
