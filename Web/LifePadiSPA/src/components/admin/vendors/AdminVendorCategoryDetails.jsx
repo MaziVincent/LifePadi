@@ -62,7 +62,7 @@ const AdminVendorCategoryDetails = () => {
     {
       field: "Name",
       headerName: "Business Name",
-      width: 150,
+      width: 170,
       //editable: true,
     },
     {
@@ -258,6 +258,7 @@ const AdminVendorCategoryDetails = () => {
         handleClose={dispatch}
         id={state.vendorId}
         url={`${baseUrl}vendor`}
+        name="Vendor"
       />
 
       <DeleteDialogue
@@ -276,7 +277,7 @@ const AdminVendorCategoryDetails = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-                  className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  className="flex items-center gap-1 justify-center text-background bg-primary-700 hover:bg-graybg focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-darkMenu dark:hover:bg-darkHover focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
                   Create Vendor

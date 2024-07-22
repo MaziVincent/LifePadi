@@ -191,6 +191,9 @@ const AdminVendorCategory = () => {
                     >
                       Category Name
                     </th>
+                    <th scope="col" className="px-4 py-3">
+                      Category Icon
+                    </th>
 
                     <th
                       scope="col"
@@ -220,6 +223,19 @@ const AdminVendorCategory = () => {
                       >
                         {cat.Name}
                       </th>
+                      <td className="px-4 py-3">
+                          <div className="relative h-10 w-10 flex justify-center items-center ">
+                            {cat.IconUrl ? (
+                              <img
+                                className="h-full w-full rounded-full object-cover object-center "
+                                src={cat.IconUrl}
+                                alt=""
+                              />
+                            ) : (
+                              <i className="line-icon-Settings-Window text-2xl hover:text-green-800"></i>
+                            )}
+                          </div>
+                        </td>
                       
                       <td className="px-4 py-3">{cat.Description}</td>
 
@@ -292,7 +308,7 @@ const AdminVendorCategory = () => {
               onChange={handlePageChange}
               variant="outlined"
               shape="rounded"
-              className="dark:text-gray-50 dark:bg-gray-200"
+              className="dark:text-gray-50 dark:bg-graybg"
             />
           </nav>
         </div>

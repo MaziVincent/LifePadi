@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CustomTabPanel from "../../subcomponents/CustomTabPanel";
+import SubmitButton from "../../subcomponents/SubmitButton";
 
 function a11yProps(index) {
   return {
@@ -177,7 +178,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
         className=" overflow-y-scroll overflow-x-hidden pt-28 pb-10 flex z-50 justify-center items-center  w-full  h-full "
       >
         <Toaster />
-        <div className=" overflow-y-auto relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+        <div className=" overflow-y-auto relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -624,25 +625,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                 </div>
                 
               </div>
-              <button
-                type="submit"
-                disabled={!isValid || isSubmitting}
-                className="text-gray-700 cursor-pointer dark:text-white inline-flex items-center bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                <svg
-                  className="mr-1 -ml-1 w-6 h-6 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Update Vendor
-              </button>
+              <SubmitButton isSubmitting={isSubmitting} name="Update Vendor" />
               {!isValid && (
                 <p className="text-sm text-red-400">Fill the form correctly</p>
               )}

@@ -97,7 +97,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -308,8 +308,8 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                 type="submit"
                 disabled={fileError || !isValid || isSubmitting}
                 className={`inline-flex items-center ${
-                  fileError ? "text-green-700" : "text-gray-700"
-                } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                  fileError ? "text-graybg" : "text-background"
+                } dark:text-gray-50 bg-primary-700 hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6"
@@ -323,7 +323,8 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Create New Product
+                {isSubmitting ? "Creating..." : "Create New Product"}
+                
               </button>
             </form>
           </div>

@@ -135,7 +135,7 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
         className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
       >
         <Toaster />
-        <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+        <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -376,11 +376,11 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
                     ))}
                   </select>
 
-                  {errors.IdentityType && (
-                    <span className="text-sm text-red-400">
+                  {/* {errors.IdentityType && (
+                    <span className="text-sm text-red">
                       {errors.IdentityType.message}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="sm:col-span-2">
@@ -454,7 +454,7 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
               <button
                 type="submit"
                 disabled={!isValid || isSubmitting}
-                className="text-gray-700 cursor-pointer dark:text-white inline-flex items-center bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="text-background cursor-pointer dark:text-white inline-flex items-center bg-graybg hover:bg-gray-200 hover:ring-2 focus:outline-none hover:ring-background rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6 text-green-500"
@@ -471,7 +471,7 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
                 Update Rider
               </button>
               {!isValid && (
-                <p className="text-sm text-red-400">Fill the form correctly</p>
+                <p className="text-sm text-redborder">Fill the form correctly</p>
               )}
             </CustomTabPanel>
           </form>

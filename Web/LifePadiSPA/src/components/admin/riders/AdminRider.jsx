@@ -364,7 +364,7 @@ const AdminRider = () => {
                 onChange={handlePageChange}
                 variant="outlined"
                 shape="rounded"
-                className="dark:text-gray-50 dark:bg-gray-200"
+                className="dark:text-gray-50 dark:bg-graybg"
               />
             </nav>
           </div>

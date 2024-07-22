@@ -68,7 +68,7 @@ const AdminProduct = () => {
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/vendorcategory"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Category
             </Link>
@@ -76,7 +76,7 @@ const AdminProduct = () => {
             <Link
               to={`/admin/vendor/${data?.VendorId}`}
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               Vendor
             </Link>
@@ -84,7 +84,7 @@ const AdminProduct = () => {
             <Link
               to="#"
               aria-current="page"
-              className="hover:border-b-2 hover:border-b-green-700"
+              className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
             >
               {data?.Name}
             </Link>
@@ -113,7 +113,7 @@ const AdminProduct = () => {
       <section className="bg-white dark:bg-gray-900 flex flex-col md:flex-row py-6 justify-evenly items-center ">
         <div>
           {" "}
-          <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-red-400': 'bg-green-400'} font-bold cursor-pointer`}>
+          <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-redborder': 'bg-background'} font-bold cursor-pointer`}>
             {data?.Status ? 'De-activate' : 'Activate'}
           </button>
         </div>
@@ -122,7 +122,7 @@ const AdminProduct = () => {
         </h2>
         <div>
           {" "}
-          <button onClick={() => dispatch({type:'upload'})} className="shadow-lg p-3 rounded-xl bg-blue-400 font-bold cursor-pointer">Upload Image</button>
+          <button onClick={() => dispatch({type:'upload'})} className="shadow-lg p-3 rounded-xl bg-blue font-bold cursor-pointer">Upload Image</button>
         </div>
       </section>
       <UploadImageModal

@@ -122,7 +122,7 @@ const rider = {...data, IdentityImg:file}
         className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
       >
         <Toaster />
-        <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+        <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -196,7 +196,7 @@ const rider = {...data, IdentityImg:file}
                     required=""
                   />
                   {errors.FirstName && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Name of Rider is required
                     </p>
                   )}
@@ -218,7 +218,7 @@ const rider = {...data, IdentityImg:file}
                     required=""
                   />
                   {errors.LastName && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Last Name of Rider is required
                     </p>
                   )}
@@ -240,7 +240,7 @@ const rider = {...data, IdentityImg:file}
                     required
                   />
                   {errors.PhoneNumber && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Phone Number of Rider is required
                     </p>
                   )}
@@ -262,7 +262,7 @@ const rider = {...data, IdentityImg:file}
                     required
                   />
                   {errors.EmergencyContact && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Emergency Contact of Rider is required
                     </p>
                   )}
@@ -283,7 +283,7 @@ const rider = {...data, IdentityImg:file}
                     placeholder="Write Contact Address here"
                   ></textarea>
                   {errors.ContactAddress && (
-                    <p className="text-sm text-red-400">Address is required</p>
+                    <p className="text-sm text-red">Address is required</p>
                   )}
                 </div>
               </div>
@@ -317,7 +317,7 @@ const rider = {...data, IdentityImg:file}
                     required=""
                   />
                   {errors.Email && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.Email.message}
                     </p>
                   )}
@@ -346,7 +346,7 @@ const rider = {...data, IdentityImg:file}
                   />
 
                   {errors.Password && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.Password.message}
                     </p>
                   )}
@@ -373,7 +373,7 @@ const rider = {...data, IdentityImg:file}
                   />
 
                   {errors.ConfirmPassword && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.ConfirmPassword.message}
                     </p>
                   )}
@@ -421,7 +421,7 @@ const rider = {...data, IdentityImg:file}
                   </select>
 
                   {errors.IdentityType && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.IdentityType.message}
                     </span>
                   )}
@@ -450,7 +450,7 @@ const rider = {...data, IdentityImg:file}
                     required
                   />
                   {errors.idNumber && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       ID Number of Rider is required
                     </p>
                   )}
@@ -483,13 +483,13 @@ const rider = {...data, IdentityImg:file}
                     <p className="text-sm text-red-400">{errors.IdentityImg.message}</p>
                   )} */}
                   {fileError && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {" "}
                       File should not be above 200kb
                     </p>
                   )}
                   {
-                    file && <p className="text-sm text-green-600">
+                    file && <p className="text-sm text-background">
                    Selected Image: {file.name}
                     
                   </p>
@@ -499,7 +499,7 @@ const rider = {...data, IdentityImg:file}
               <button
                 type="submit"
                 disabled={!isValid || isSubmitting }
-                className="text-gray-700 cursor-pointer dark:text-white inline-flex items-center bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="text-gray-700 cursor-pointer dark:text-white inline-flex items-center bg-graybg hover:ring-2 hover:ring-secondary focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6 text-green-500"
@@ -513,10 +513,11 @@ const rider = {...data, IdentityImg:file}
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Create new Rider
+                {isSubmitting ? "Creating..." : "Create new Rider"}
+                
               </button>
               {!isValid && (
-                <p className="text-sm text-red-400">Fill the form correctly</p>
+                <p className="text-sm text-redborder">Fill the form correctly</p>
               )}
             </CustomTabPanel>
             

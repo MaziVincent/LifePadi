@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient, useMutation } from "react-query";
 import { useEffect } from "react";
 import toast, {Toaster} from "react-hot-toast";
+import SubmitButton from "../../subcomponents/SubmitButton";
 
 
 
@@ -15,13 +16,14 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
   const update = useUpdate();
   const { auth } = useAuth();
   const url = `${baseUrl}vendorcategory`;
+  const [fileError, setFileError] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({ mode: "all" });
 
   const editService = async (data) => {
@@ -29,6 +31,7 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
     const formData = new FormData()
     formData.append("Name",data.Name)
     formData.append("Description",data.Description)
+    formData.append("Icon", data.Icon)
     
     const response = await update(`${url}/update/${data.Id}`, formData, auth?.accessToken);
 
@@ -48,7 +51,11 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
   });
 
   const handleCategory = (category) => {
+    if(category.Icon){
+      category.Icon = category.Icon[0]
+    }
     mutate(category);
+    console.log(category)
   };
 
   useEffect(() => {
@@ -57,7 +64,18 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
     });
   }, [vendorCategory, setValue]);
 
- 
+  const handleChange = (event) => {
+   
+    const file = event.target.files[0];
+
+    //console.log(file)
+    
+    if (!file || file.size > 50 * 1024) {
+      setFileError(true);
+    }else{
+      setFileError(false)
+    }
+  };
 
   return (
     <Modal
@@ -76,7 +94,7 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu sm:p-5 dark:text-primary">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -121,7 +139,7 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
                     name="name"
                     id="name"
                     {...register("Name", )}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type name of Vendor Category"
                     required=""
                   />
@@ -135,7 +153,7 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="description"
-                    className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-50"
+                    className="block mb-2 text-base font-medium  dark:text-gray-50"
                   >
                     Description
                   </label>
@@ -144,7 +162,7 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
                     rows="4"
                     name="description"
                     {...register("Description", )}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="block p-2.5 w-full text-base text-grayTxt bg-graybg rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Vendor Category Descriptions here"
                   ></textarea>
                   {errors.description && (
@@ -153,28 +171,46 @@ const EditVendorCategoryModal = ({ open, handleClose, vendorCategory }) => {
                     </p>
                   )}
                 </div>
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="icon"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Category Icon (
+                    <span className="text-sm text-gray-500">
+                      {" "}
+                      Icon should not be above 50kb
+                    </span>
+                    )
+                  </label>
+                  <input
+                    type="file"
+                    name="icon"
+                    id="icon"
+                    accept="image/*"
+                    {...register("Icon",)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Upload Category Icon"
+                    required
+                    onChange={handleChange}
+                  />
+                  {errors.Icon && (
+                    <p className="text-sm text-red">
+                      Category icon is required
+                    </p>
+                  )}
+                  {fileError && (
+                    <p className="text-sm text-red">
+                      {" "}
+                      File should not be above 50kb
+                    </p>
+                  )}
+                </div>
 
                   
               </div>
 
-              <button
-                type="submit"
-                className="inline-flex items-center text-gray-700 dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                <svg
-                  className="mr-1 -ml-1 w-6 h-6 text-green-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Update Vendor Category
-              </button>
+              <SubmitButton isSubmitting={isSubmitting} name="Update Vendor Category" />
             </form>
           </div>
         </div>
