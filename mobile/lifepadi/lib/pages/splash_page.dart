@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/widgets/loading_wheel.dart';
-import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -12,8 +12,7 @@ class SplashPage extends StatelessWidget {
       body: Stack(
         children: [
           Align(
-            child: Lottie.asset(
-              'assets/animations/comp2.json',
+            child: Assets.animations.logo.lottie(
               repeat: false,
             ),
           ),

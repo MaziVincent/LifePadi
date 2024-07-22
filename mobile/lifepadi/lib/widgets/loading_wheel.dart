@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 
 class LoadingWheel extends HookWidget {
   const LoadingWheel({super.key});
@@ -49,7 +49,7 @@ class LoadingWheel extends HookWidget {
             child: child,
           );
         },
-        child: SvgPicture.asset('assets/animations/loading_circles.svg'),
+        child: Assets.images.loadingCircles.svg(),
       ),
     );
   }

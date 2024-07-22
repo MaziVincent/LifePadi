@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 
 class Logo extends StatelessWidget {
@@ -12,8 +13,7 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Image.asset(
-          'assets/images/logo-dark.png',
+        Assets.images.logoDark.image(
           width: 32.w,
           height: 39.96.h,
         ),

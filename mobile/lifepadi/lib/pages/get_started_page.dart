@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lifepadi/utils/constants.dart';
 
 import '../router/routes.dart';
+import '../utils/assets.gen.dart';
+import '../utils/constants.dart';
 import '../widgets/logo.dart';
 
 class GetStartedPage extends StatelessWidget {
@@ -22,8 +23,7 @@ class GetStartedPage extends StatelessWidget {
               height: MediaQuery.sizeOf(context).height * .475,
               child: Stack(
                 children: [
-                  Image.asset(
-                    'assets/images/hand-pkg-to-lady.png',
+                  Assets.images.handPackageToLady.image(
                     fit: BoxFit.fill,
                     width: double.infinity,
                     height: double.infinity,

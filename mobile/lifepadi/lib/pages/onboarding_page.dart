@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 import '../widgets/onboarding_feature.dart';
@@ -18,19 +19,19 @@ class OnboardingPage extends HookWidget {
           info: 'We deliver right at your\n door step',
           description:
               'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-          image: 'assets/images/man-with-groceries.png',
+          image: Assets.images.manWithGroceries.path,
         ),
         (
           info: 'Lorem Ipsum is simply dummy text.',
           description:
               'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-          image: 'assets/images/man-with-cart.png',
+          image: Assets.images.manWithCart.path,
         ),
         (
           info: 'Lorem Ipsum is simply dummy text.',
           description:
               'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-          image: 'assets/images/sign-deliver-pkg.png',
+          image: Assets.images.signDeliverPkg.path,
         ),
       ],
     );
