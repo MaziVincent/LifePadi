@@ -22,6 +22,12 @@ class LoginPage extends HookConsumerWidget {
         );
     final textTheme = Theme.of(context).textTheme;
     final hidePassword = useState(true);
+    final usePhone = useState(true);
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+    // Create the input states
+    final email = useState('');
+    final password = useState('');
+    final phone = useState('');
 
     return Scaffold(
       body: SafeArea(
@@ -48,41 +54,114 @@ class LoginPage extends HookConsumerWidget {
                   top: 34.72.h,
                 ),
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Login',
-                        style: textTheme.titleMedium?.copyWith(
-                          color: const Color(0xFF151522),
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w600,
+                  // TODO: Validate the form inputs properly
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Login',
+                          style: textTheme.titleMedium?.copyWith(
+                            color: const Color(0xFF151522),
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      7.verticalSpace,
-                      Text(
-                        'Sign in to your account.',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF999999),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w300,
+                        7.verticalSpace,
+                        Text(
+                          'Sign in to your account.',
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF999999),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
-                      ),
-                      16.28.verticalSpace,
-                      InputField(
-                        hintText: 'Enter Phone',
-                        labelText: 'Phone',
-                        onTap: () {
-                          // TODO: Toggle email input field
-                        },
-                        keyboardType: TextInputType.phone,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 13,
-                            right: 9.76,
-                          ).r,
+                        16.28.verticalSpace,
+                        if (usePhone.value)
+                          InputField(
+                            hintText: 'Enter Phone',
+                            labelText: 'Phone',
+                            onChanged: (value) => phone.value = value,
+                            onTap: () {
+                              // Hide this, show email input field
+                              usePhone.value = false;
+                              // Remove keyboard
+                              FocusScope.of(context).unfocus();
+                              // Clear the phone input field
+                              phone.value = '';
+                            },
+                            keyboardType: TextInputType.phone,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 13,
+                                right: 9.76,
+                              ).r,
+                              child: Text(
+                                'Use Email',
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: kDarkPrimaryColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.12.r,
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          InputField(
+                            hintText: 'Enter Email',
+                            labelText: 'Email',
+                            onChanged: (value) => email.value = value,
+                            onTap: () {
+                              // Hide this, show phone number input field
+                              usePhone.value = true;
+                              // Remove keyboard
+                              FocusScope.of(context).unfocus();
+                              // Clear the email input field
+                              email.value = '';
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 13,
+                                right: 9.76,
+                              ).r,
+                              child: Text(
+                                'Use Phone',
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: kDarkPrimaryColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.12.r,
+                                ),
+                              ),
+                            ),
+                          ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Enter New Password',
+                          labelText: 'Password',
+                          onChanged: (value) => password.value = value,
+                          onTap: () => hidePassword.value = !hidePassword.value,
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          hideText: hidePassword.value,
+                          child: Icon(
+                            hidePassword.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: const Color(0xFF858585),
+                            size: 19.52.r,
+                          ),
+                        ),
+                        13.01.verticalSpace,
+                        GestureDetector(
+                          onTap: () {
+                            // TODO: Go to forgot password page
+                          },
                           child: Text(
-                            'Use Email',
+                            'Forgot Password?',
                             style: textTheme.bodySmall?.copyWith(
                               color: kDarkPrimaryColor,
                               fontSize: 14.sp,
@@ -91,55 +170,31 @@ class LoginPage extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                      ),
-                      19.verticalSpace,
-                      InputField(
-                        hintText: 'Enter New Password',
-                        labelText: 'Password',
-                        onTap: () => hidePassword.value = !hidePassword.value,
-                        keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        hideText: hidePassword.value,
-                        child: Icon(
-                          hidePassword.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: const Color(0xFF858585),
-                          size: 19.52.r,
-                        ),
-                      ),
-                      13.01.verticalSpace,
-                      GestureDetector(
-                        onTap: () {
-                          // TODO: Go to forgot password page
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: textTheme.bodySmall?.copyWith(
-                            color: kDarkPrimaryColor,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.12.r,
-                          ),
-                        ),
-                      ),
-                      25.verticalSpace,
-                      PrimaryButton(
-                        text: 'Login',
-                        onPressed: login,
-                      ),
-                      24.verticalSpace,
-                      Center(
-                        child: ToggleAuthPage(
-                          question: "Don't have an account?",
-                          action: 'Register',
+                        25.verticalSpace,
+                        PrimaryButton(
+                          text: 'Login',
                           onPressed: () {
-                            // TODO: Go to register page
+                            if (!formKey.currentState!.validate()) return;
+
+                            // TODO: Make request to login
+
+                            // For now, just call the login function
+                            login();
                           },
                         ),
-                      ),
-                      20.verticalSpace,
-                    ],
+                        24.verticalSpace,
+                        Center(
+                          child: ToggleAuthPage(
+                            question: "Don't have an account?",
+                            action: 'Register',
+                            onPressed: () {
+                              // TODO: Go to register page
+                            },
+                          ),
+                        ),
+                        20.verticalSpace,
+                      ],
+                    ),
                   ),
                 ),
               ),

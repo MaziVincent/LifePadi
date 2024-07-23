@@ -13,14 +13,24 @@ class InputField extends StatelessWidget {
     required this.keyboardType,
     this.textInputAction,
     this.hideText = false,
+    this.onChanged,
+    this.validator,
   });
 
   final Widget child;
+
+  /// Callback to be executed when the suffix icon is tapped
   final VoidCallback onTap;
   final String hintText, labelText;
   final TextInputType keyboardType;
   final TextInputAction? textInputAction;
   final bool hideText;
+
+  /// Callback to be executed when the value changes
+  final ValueChanged<String>? onChanged;
+
+  /// Validator to be executed when the value changes
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +55,7 @@ class InputField extends StatelessWidget {
       );
     }
 
-    return TextField(
+    return TextFormField(
       cursorColor: kDarkPrimaryColor,
       decoration: InputDecoration(
         border: inputBorder(),
@@ -88,6 +98,9 @@ class InputField extends StatelessWidget {
       ),
       onTapOutside: (e) => FocusScope.of(context).unfocus(),
       obscureText: hideText,
+      onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+      onChanged: onChanged,
+      validator: validator,
     );
   }
 }
