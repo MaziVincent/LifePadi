@@ -7,7 +7,6 @@ import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
 import '../widgets/logo.dart';
 import '../widgets/primary_button.dart';
-import '../widgets/toggle_auth_page.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({super.key});
@@ -21,7 +20,7 @@ class GetStartedPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * .475,
+              height: MediaQuery.sizeOf(context).height * .42,
               child: Stack(
                 children: [
                   Assets.images.handPackageToLady.image(
@@ -48,52 +47,104 @@ class GetStartedPage extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                children: [
-                  12.verticalSpace,
-                  const Logo(),
-                  10.verticalSpace,
-                  Text(
-                    'Your Innovative Digital Market and  Errand Friend',
-                    style: textTheme.headlineLarge?.copyWith(
-                      color: const Color(0xFF0F0F0F),
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.80.r,
-                    ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: Column(
+                    children: [
+                      10.verticalSpace,
+                      const Logo(),
+                      10.verticalSpace,
+                      Text(
+                        'Your Innovative Digital Market and  Errand Friend',
+                        style: textTheme.headlineLarge?.copyWith(
+                          color: const Color(0xFF0F0F0F),
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.80.r,
+                        ),
+                      ),
+                      12.verticalSpace,
+                      Text(
+                        'Let us plan your next shopping and handle all your pick-up and delivery services.',
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: kLightTextColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                  12.verticalSpace,
-                  Text(
-                    'Let us plan your next shopping and handle all your pick-up and delivery services.',
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: kLightTextColor,
-                      fontWeight: FontWeight.w400,
-                    ),
+                ),
+                20.verticalSpace,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: PrimaryButton(
+                    onTap: () => context.go(const RegisterRoute().location),
+                    text: 'Get started',
                   ),
-                ],
-              ),
+                ),
+                16.verticalSpace,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: PrimaryOutlineButton(
+                    text: 'Login',
+                    onTap: () => context.go(const LoginRoute().location),
+                  ),
+                ),
+                17.verticalSpace,
+              ],
             ),
-            16.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: PrimaryButton(
-                onPressed: () {
-                  // TODO: Go to register page
-                },
-                text: 'Get started',
-              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PrimaryOutlineButton extends StatelessWidget {
+  const PrimaryOutlineButton({
+    super.key,
+    this.onTap,
+    required this.text,
+  });
+
+  final VoidCallback? onTap;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap,
+      child: Container(
+        width: double.infinity,
+        height: 52.h,
+        padding: EdgeInsets.symmetric(
+          vertical: 16.h,
+        ),
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.r),
+            side: BorderSide(
+              color: const Color(0xFFF0F5FA),
+              width: 2.r,
             ),
-            24.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: ToggleAuthPage(
-                question: 'Already have account?',
-                action: 'Login',
-                onPressed: () => context.go(const LoginRoute().location),
-              ),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Login',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: kDarkPrimaryColor,
+                    fontWeight: FontWeight.w600,
+                    height: 0.07.r,
+                    fontSize: 16.sp,
+                    letterSpacing: -0.88.r,
+                  ),
             ),
-            20.verticalSpace,
           ],
         ),
       ),

@@ -179,7 +179,7 @@ class RegisterPage extends HookConsumerWidget {
                         25.verticalSpace,
                         PrimaryButton(
                           text: 'Register',
-                          onPressed: () {
+                          onTap: () {
                             if (!formKey.currentState!.validate()) return;
 
                             // TODO: Make request to register
