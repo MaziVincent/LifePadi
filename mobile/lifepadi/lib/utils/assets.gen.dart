@@ -46,6 +46,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/man-with-groceries.png
   AssetGenImage get manWithGroceries => const AssetGenImage('assets/images/man-with-groceries.png');
 
+  /// File path: assets/images/rider-monochrome.png
+  AssetGenImage get riderMonochrome => const AssetGenImage('assets/images/rider-monochrome.png');
+
   /// File path: assets/images/sign-deliver-pkg.png
   AssetGenImage get signDeliverPkg => const AssetGenImage('assets/images/sign-deliver-pkg.png');
 
@@ -57,6 +60,7 @@ class $AssetsImagesGen {
         logoDark,
         manWithCart,
         manWithGroceries,
+        riderMonochrome,
         signDeliverPkg
       ];
 }

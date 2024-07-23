@@ -10,6 +10,8 @@ ThemeData lightTheme() {
     textTheme: GoogleFonts.interTextTheme().apply(
       bodyColor: kDarkTextColor,
       displayColor: kDarkTextColor,
+      fontFamily: 'Inter',
+      fontFamilyFallback: ['Noto Sans', 'Roboto', 'sans-serif'],
     ),
     scaffoldBackgroundColor: Colors.white,
   );

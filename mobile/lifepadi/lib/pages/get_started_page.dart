@@ -1,12 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lifepadi/router/routes.dart';
 
-import '../router/routes.dart';
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
 import '../widgets/logo.dart';
+import '../widgets/primary_button.dart';
+import '../widgets/toggle_auth_page.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({super.key});
@@ -74,72 +75,25 @@ class GetStartedPage extends StatelessWidget {
               ),
             ),
             16.verticalSpace,
-            GestureDetector(
-              onTap: () {
-                // TODO: Go to register page
-              },
-              child: Container(
-                width: 327.w,
-                height: 51.h,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8.w,
-                  vertical: 16.h,
-                ),
-                decoration: ShapeDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft,
-                    colors: [kDarkPrimaryColor, kLightPrimaryColor],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.r),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Get started',
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        height: 0.07.r,
-                        letterSpacing: -0.88.r,
-                      ),
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: PrimaryButton(
+                onPressed: () {
+                  // TODO: Go to register page
+                },
+                text: 'Get started',
               ),
             ),
-            26.verticalSpace,
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Already have account? ',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF5F5F5F),
-                      height: 0.11.r,
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => context.go(const LoginRoute().location),
-                    text: 'Login',
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: kDarkPrimaryColor,
-                      fontWeight: FontWeight.w600,
-                      height: 0.11.r,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                ],
+            24.verticalSpace,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: ToggleAuthPage(
+                question: 'Already have account?',
+                action: 'Login',
+                onPressed: () => context.go(const LoginRoute().location),
               ),
-              textAlign: TextAlign.center,
             ),
-            10.verticalSpace,
+            20.verticalSpace,
           ],
         ),
       ),

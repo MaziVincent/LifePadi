@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
 import '../state/auth_controller.dart';
-import '../widgets/action_button.dart';
+import '../widgets/input_field.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -13,18 +20,151 @@ class LoginPage extends HookConsumerWidget {
           'myEmail',
           'myPassword',
         );
+    final textTheme = Theme.of(context).textTheme;
+    final hidePassword = useState(true);
 
     return Scaffold(
-      backgroundColor: Colors.red,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: Stack(
           children: [
-            const Text('Login Page'),
-            ActionButton(
-              onPressed: login,
-              icon: const SizedBox.shrink(),
-              label: const Text('Login'),
+            Assets.images.riderMonochrome.image(
+              height: 0.52.sh,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 0.5.sh,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(28.r),
+                  ),
+                ),
+                padding: EdgeInsets.only(
+                  left: 24.w,
+                  right: 24.w,
+                  top: 34.72.h,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Login',
+                        style: textTheme.titleMedium?.copyWith(
+                          color: const Color(0xFF151522),
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      7.verticalSpace,
+                      Text(
+                        'Sign in to your account.',
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFF999999),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      16.28.verticalSpace,
+                      InputField(
+                        hintText: 'Enter Phone',
+                        labelText: 'Phone',
+                        onTap: () {
+                          // TODO: Toggle email input field
+                        },
+                        keyboardType: TextInputType.phone,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 13,
+                            right: 9.76,
+                          ).r,
+                          child: Text(
+                            'Use Email',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: kDarkPrimaryColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.12.r,
+                            ),
+                          ),
+                        ),
+                      ),
+                      19.verticalSpace,
+                      InputField(
+                        hintText: 'Enter New Password',
+                        labelText: 'Password',
+                        onTap: () => hidePassword.value = !hidePassword.value,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        hideText: hidePassword.value,
+                        child: Icon(
+                          hidePassword.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: const Color(0xFF858585),
+                          size: 19.52.r,
+                        ),
+                      ),
+                      13.01.verticalSpace,
+                      GestureDetector(
+                        onTap: () {
+                          // TODO: Go to forgot password page
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: textTheme.bodySmall?.copyWith(
+                            color: kDarkPrimaryColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: 0.12.r,
+                          ),
+                        ),
+                      ),
+                      25.verticalSpace,
+                      PrimaryButton(
+                        text: 'Login',
+                        onPressed: login,
+                      ),
+                      24.verticalSpace,
+                      Center(
+                        child: ToggleAuthPage(
+                          question: "Don't have an account?",
+                          action: 'Register',
+                          onPressed: () {
+                            // TODO: Go to register page
+                          },
+                        ),
+                      ),
+                      20.verticalSpace,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(top: 16.h, left: 24.w),
+                child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: 18.r,
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: const Color(0x19F5F5F5),
+                    fixedSize: Size.square(34.r),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    padding: EdgeInsets.only(left: 8.r),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
