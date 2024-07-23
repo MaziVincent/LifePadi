@@ -11,7 +11,7 @@ class InputField extends StatelessWidget {
     required this.hintText,
     required this.labelText,
     required this.keyboardType,
-    this.textInputAction,
+    this.textInputAction = TextInputAction.next,
     this.hideText = false,
     this.onChanged,
     this.validator,
@@ -23,7 +23,7 @@ class InputField extends StatelessWidget {
   final VoidCallback onTap;
   final String hintText, labelText;
   final TextInputType keyboardType;
-  final TextInputAction? textInputAction;
+  final TextInputAction textInputAction;
   final bool hideText;
 
   /// Callback to be executed when the value changes
@@ -89,7 +89,7 @@ class InputField extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       keyboardType: keyboardType,
-      textInputAction: textInputAction ?? TextInputAction.next,
+      textInputAction: textInputAction,
       style: textTheme.bodyLarge?.copyWith(
         color: Colors.black,
         fontSize: 16.sp,

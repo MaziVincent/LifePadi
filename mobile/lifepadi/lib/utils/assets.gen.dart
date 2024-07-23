@@ -26,6 +26,9 @@ class $AssetsAnimationsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// Directory path: assets/images/auth-heros
+  $AssetsImagesAuthHerosGen get authHeros => const $AssetsImagesAuthHerosGen();
+
   /// File path: assets/images/deliver-package-to-lady.png
   AssetGenImage get deliverPackageToLady =>
       const AssetGenImage('assets/images/deliver-package-to-lady.png');
@@ -33,6 +36,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
+
+  /// Directory path: assets/images/icons
+  $AssetsImagesIconsGen get icons => const $AssetsImagesIconsGen();
 
   /// File path: assets/images/loading_circles.svg
   SvgGenImage get loadingCircles => const SvgGenImage('assets/images/loading_circles.svg');
@@ -46,9 +52,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/man-with-groceries.png
   AssetGenImage get manWithGroceries => const AssetGenImage('assets/images/man-with-groceries.png');
 
-  /// File path: assets/images/rider-monochrome.png
-  AssetGenImage get riderMonochrome => const AssetGenImage('assets/images/rider-monochrome.png');
-
   /// File path: assets/images/sign-deliver-pkg.png
   AssetGenImage get signDeliverPkg => const AssetGenImage('assets/images/sign-deliver-pkg.png');
 
@@ -60,9 +63,43 @@ class $AssetsImagesGen {
         logoDark,
         manWithCart,
         manWithGroceries,
-        riderMonochrome,
         signDeliverPkg
       ];
+}
+
+class $AssetsImagesAuthHerosGen {
+  const $AssetsImagesAuthHerosGen();
+
+  /// File path: assets/images/auth-heros/forgot-password.png
+  AssetGenImage get forgotPassword =>
+      const AssetGenImage('assets/images/auth-heros/forgot-password.png');
+
+  /// File path: assets/images/auth-heros/login.png
+  AssetGenImage get login => const AssetGenImage('assets/images/auth-heros/login.png');
+
+  /// File path: assets/images/auth-heros/register.png
+  AssetGenImage get register => const AssetGenImage('assets/images/auth-heros/register.png');
+
+  /// File path: assets/images/auth-heros/reset-password.png
+  AssetGenImage get resetPassword =>
+      const AssetGenImage('assets/images/auth-heros/reset-password.png');
+
+  /// File path: assets/images/auth-heros/verification.png
+  AssetGenImage get verification =>
+      const AssetGenImage('assets/images/auth-heros/verification.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [forgotPassword, login, register, resetPassword, verification];
+}
+
+class $AssetsImagesIconsGen {
+  const $AssetsImagesIconsGen();
+
+  /// File path: assets/images/icons/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/images/icons/google.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [google];
 }
 
 class Assets {

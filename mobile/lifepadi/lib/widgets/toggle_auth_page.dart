@@ -27,7 +27,6 @@ class ToggleAuthPage extends StatelessWidget {
             text: '$question ',
             style: textTheme.bodyMedium?.copyWith(
               color: const Color(0xFF5F5F5F),
-              height: 0.11.r,
               fontSize: 14.sp,
             ),
           ),
@@ -37,7 +36,6 @@ class ToggleAuthPage extends StatelessWidget {
             style: textTheme.bodyLarge?.copyWith(
               color: kDarkPrimaryColor,
               fontWeight: FontWeight.w600,
-              height: 0.11.r,
               fontSize: 16.sp,
             ),
           ),

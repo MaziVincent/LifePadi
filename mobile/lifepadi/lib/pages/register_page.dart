@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -12,8 +13,8 @@ import 'package:lifepadi/widgets/toggle_auth_page.dart';
 import '../state/auth_controller.dart';
 import '../widgets/input_field.dart';
 
-class LoginPage extends HookConsumerWidget {
-  const LoginPage({super.key});
+class RegisterPage extends HookConsumerWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +24,7 @@ class LoginPage extends HookConsumerWidget {
         );
     final textTheme = Theme.of(context).textTheme;
     final hidePassword = useState(true);
+    final hideConfirmPassword = useState(true);
     final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     // Create the input states
@@ -34,15 +36,15 @@ class LoginPage extends HookConsumerWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Assets.images.authHeros.login.image(
-              height: 0.5.sh,
+            Assets.images.authHeros.register.image(
+              height: 0.3.sh,
               width: double.infinity,
               fit: BoxFit.fill,
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 0.5.sh,
+                height: 0.7.sh,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
@@ -63,7 +65,7 @@ class LoginPage extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Login',
+                          'Register',
                           style: textTheme.titleMedium?.copyWith(
                             color: const Color(0xFF151522),
                             fontSize: 28.sp,
@@ -72,7 +74,7 @@ class LoginPage extends HookConsumerWidget {
                         ),
                         7.verticalSpace,
                         Text(
-                          'Sign in to your account.',
+                          'Signup to get started with setting up your lifepadi account. ',
                           style: textTheme.bodyMedium?.copyWith(
                             color: const Color(0xFF999999),
                             fontSize: 16.sp,
@@ -147,7 +149,6 @@ class LoginPage extends HookConsumerWidget {
                           onChanged: (value) => password.value = value,
                           onTap: () => hidePassword.value = !hidePassword.value,
                           keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
                           hideText: hidePassword.value,
                           child: Icon(
                             hidePassword.value
@@ -157,28 +158,31 @@ class LoginPage extends HookConsumerWidget {
                             size: 19.52.r,
                           ),
                         ),
-                        13.01.verticalSpace,
-                        GestureDetector(
-                          onTap: () {
-                            // TODO: Go to forgot password page
-                          },
-                          child: Text(
-                            'Forgot Password?',
-                            style: textTheme.bodySmall?.copyWith(
-                              color: kDarkPrimaryColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 0.12.r,
-                            ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Confirm Password',
+                          labelText: 'Confirm Password',
+                          onChanged: (value) => password.value = value,
+                          onTap: () => hideConfirmPassword.value =
+                              !hideConfirmPassword.value,
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          hideText: hideConfirmPassword.value,
+                          child: Icon(
+                            hideConfirmPassword.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: const Color(0xFF858585),
+                            size: 19.52.r,
                           ),
                         ),
                         25.verticalSpace,
                         PrimaryButton(
-                          text: 'Login',
+                          text: 'Register',
                           onPressed: () {
                             if (!formKey.currentState!.validate()) return;
 
-                            // TODO: Make request to login
+                            // TODO: Make request to register
 
                             // For now, just call the login function
                             login();
@@ -187,14 +191,84 @@ class LoginPage extends HookConsumerWidget {
                         17.verticalSpace,
                         Center(
                           child: ToggleAuthPage(
-                            question: "Don't have an account?",
-                            action: 'Register',
+                            question: 'Already have account?',
+                            action: 'Login',
                             onPressed: () => context.go(
-                              const RegisterRoute().location,
+                              const LoginRoute().location,
                             ),
                           ),
                         ),
-                        20.verticalSpace,
+                        15.verticalSpace,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20).w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Divider(
+                                  thickness: 0.81.r,
+                                  color: const Color(0xFFC2C8D0),
+                                ),
+                              ),
+                              13.01.horizontalSpace,
+                              Text(
+                                'OR',
+                                style: GoogleFonts.roboto(
+                                  color: const Color(0xFF2D333A),
+                                  fontSize: 9.76.sp,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.33.r,
+                                ),
+                              ),
+                              13.01.horizontalSpace,
+                              Expanded(
+                                child: Divider(
+                                  thickness: 0.81.r,
+                                  color: const Color(0xFFC2C8D0),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        16.verticalSpace,
+                        Container(
+                          width: double.infinity,
+                          height: 41.15.h,
+                          margin: const EdgeInsets.symmetric(horizontal: 28).w,
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 10.57).h,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                width: 0.81,
+                                color: Color(0xFFC2C8D0),
+                              ),
+                              borderRadius: BorderRadius.circular(44),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Assets.images.icons.google.svg(
+                                width: 16.27.r,
+                                height: 16.27.r,
+                              ),
+                              9.76.horizontalSpace,
+                              Text(
+                                'Continue with Google',
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: const Color(0xFF2D333A),
+                                  fontSize: 13.01.sp,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.12.r,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        33.85.verticalSpace,
                       ],
                     ),
                   ),

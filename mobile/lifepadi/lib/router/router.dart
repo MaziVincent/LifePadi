@@ -43,6 +43,9 @@ GoRouter router(RouterRef ref) {
     routes: $appRoutes,
     redirect: (context, state) async {
       if (isAuth.value.unwrapPrevious().hasError) {
+        // TODO: Find logic for this case
+        // if user has ever logged in before, go to get started (or login)
+        // If not, go to onboarding
         return const OnboardingRoute().location;
       }
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
@@ -66,12 +69,14 @@ GoRouter router(RouterRef ref) {
         const OnboardingRoute().location,
         const LoginRoute().location,
         const GetStartedRoute().location,
+        const RegisterRoute().location,
       ];
 
       // Check if path is in guestRoutes
       final isLoggingIn = guestRoutes.contains(state.uri.path);
       if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
+      // TODO: If user is not logged in, use the same logic as line 46, maybe extract it into a function
       return auth ? null : const OnboardingRoute().location;
     },
   );

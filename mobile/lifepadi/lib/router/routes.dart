@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/details_page.dart';
 import 'package:lifepadi/pages/get_started_page.dart';
 import 'package:lifepadi/pages/onboarding_page.dart';
+import 'package:lifepadi/pages/register_page.dart';
 
 import '../pages/admin_page.dart';
 import '../pages/home_page.dart';
@@ -86,6 +87,7 @@ class OnboardingRoute extends GoRouteData {
   path: '/get-started',
   routes: [
     TypedGoRoute<LoginRoute>(path: 'login'),
+    TypedGoRoute<RegisterRoute>(path: 'register'),
   ],
 )
 class GetStartedRoute extends GoRouteData {
@@ -103,6 +105,15 @@ class LoginRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const LoginPage();
+  }
+}
+
+class RegisterRoute extends GoRouteData {
+  const RegisterRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const RegisterPage();
   }
 }
 
