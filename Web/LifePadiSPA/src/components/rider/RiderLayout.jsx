@@ -10,7 +10,7 @@ const RiderLayout = () => {
 
   return (
     <main>
-      <div className='bg-primary dark:bg-darkBg dark:text-primary h-[100svh] '>
+      <div className='bg-primary dark:bg-darkBg dark:text-primary min-h-[130vh] '>
         <div className='flex justify-between bg-gray-50 text-primary  border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 '>
           <ClickAwayListener
             onClickAway={() => {
@@ -98,12 +98,12 @@ const RiderLayout = () => {
             <SideNav aside={aside} />
           </div>
           <div
-            className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-48 py-20 w-full h-full`}
+            className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-48 py-20 w-full min-h-screen overflow-x-auto`}
           >
             <Outlet />
           </div>
         </div>
-        <div className='footer fixed bottom-0 dark:border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 bg-gray-900 w-full '>
+        <div className='footer fixed bottom-0 dark:border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu  w-full '>
           <div className='flex justify-center '>
             <span className='text-sm text-gray-500 dark:text-gray-400'>
               &copy; 2024 Listacc All rights reserved.
