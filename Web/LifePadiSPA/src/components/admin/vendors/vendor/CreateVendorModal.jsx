@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CustomTabPanel from "../../subcomponents/CustomTabPanel";
+import SubmitButton from "../../subcomponents/SubmitButton";
 
 function a11yProps(index) {
   return {
@@ -119,7 +120,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
         className=" overflow-y-scroll overflow-x-hidden pt-28 pb-10 flex z-50 justify-center items-center  w-full  h-full "
       >
         <Toaster />
-        <div className=" overflow-y-auto relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+        <div className=" overflow-y-auto relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu dark:text-primary sm:p-5">
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -150,11 +151,14 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
             </button>
           </div>
 
-          <div className="border-b-2">
+          <div className="border-b-2 bg-graybg rounded-md">
             <Tabs
               value={value}
               onChange={handleChange}
               aria-label="basic tabs example"
+              textColor="primary"
+              indicatorColor="primary"
+              
             >
               <Tab
                 label="Business Info."
@@ -188,12 +192,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="bname"
                     id="bname"
                     {...register("Name", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Name of Business"
                     required=""
                   />
                   {errors.Name && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Name of Business is required
                     </p>
                   )}
@@ -210,12 +214,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="phoneNumber"
                     id="phoneNumber"
                     {...register("PhoneNumber", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Phone Number of Rider"
                     required
                   />
                   {errors.PhoneNumber && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Phone Number of Rider is required
                     </p>
                   )}
@@ -232,12 +236,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="tag"
                     id="tag"
                     {...register("Tag", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type a Business Tag"
                     required=""
                   />
                   {errors.Tag && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Business Tag is required
                     </p>
                   )}
@@ -254,12 +258,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="openingHours"
                     id="openingHours"
                     {...register("OpeningHours", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type a Business Opening Hours"
                     required=""
                   />
                   {errors.OpeningHours && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Business Opening hours is required
                     </p>
                   )}
@@ -277,12 +281,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="ClosingHours"
                     id="ClosingHours"
                     {...register("ClosingHours", { required: true })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type a Business ClosingHours"
                     required=""
                   />
                   {errors.ClosingHours && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Business Closing Hours is required
                     </p>
                   )}
@@ -302,7 +306,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                       required: "ID Service is required",
                     })}
                     defaultValue={"default"}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-graybg border border-gray-300 text-grayTxt text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option
                       disabled
@@ -325,7 +329,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                   </select>
 
                   {errors.ServiceId && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.ServiceId.message}
                     </span>
                   )}
@@ -349,11 +353,11 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     rows="4"
                     name="address"
                     {...register("ContactAddress", { required: true })}
-                    className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="block p-2.5 w-full text-base text-grayTxt bg-graybg rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Write Contact Address here"
                   ></textarea>
                   {errors.ContactAddress && (
-                    <p className="text-sm text-red-400">Address is required</p>
+                    <p className="text-sm text-red">Address is required</p>
                   )}
                 </div>
 
@@ -372,7 +376,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     })}
                     defaultValue={"default"}
                     onChange={(e, value) => handleStateChange(e)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option
                       disabled
@@ -394,7 +398,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                   </select>
 
                   {errors.State && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.State.message}
                     </span>
                   )}
@@ -414,7 +418,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                       required: "City is required",
                     })}
                     defaultValue={"default"}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300  text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option
                       disabled
@@ -436,7 +440,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                   </select>
 
                   {errors.City && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.City.message}
                     </span>
                   )}
@@ -456,12 +460,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     {...register("Town", {
                       required: true,
                     })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Town of Vendor"
                     required=""
                   />
                   {errors.Town && (
-                    <p className="text-sm text-red-400">Town is required</p>
+                    <p className="text-sm text-red">Town is required</p>
                   )}
                 </div>
 
@@ -477,7 +481,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="code"
                     id="code"
                     {...register("PostalCode")}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Postal Code of Vendor"
                   />
                   {/* {errors.PostalCode && (
@@ -499,7 +503,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="longitude"
                     id="longitude"
                     {...register("Longitude")}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Longitude of Vendor"
                   />
                   {/* {errors.Longitude && (
@@ -521,7 +525,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     name="latitude"
                     id="latitude"
                     {...register("Latitude")}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Latitude of Vendor"
                   />
                   {/* {errors.Latitude && (
@@ -554,12 +558,12 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                         message: "Enter a valid email address",
                       },
                     })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Email Address of Rider"
                     required=""
                   />
                   {errors.Email && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.Email.message}
                     </p>
                   )}
@@ -582,13 +586,13 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                         message: "Password must be at least 4 characters",
                       },
                     })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className=" border border-gray-300 text-grayTxt bg-graybg text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Password"
                     required
                   />
 
                   {errors.Password && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.Password.message}
                     </p>
                   )}
@@ -610,39 +614,21 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                       validate: (value) =>
                         value === watch("Password") || "Passwords do not match",
                     })}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type confirm Password "
                     required=""
                   />
 
                   {errors.ConfirmPassword && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       {errors.ConfirmPassword.message}
                     </p>
                   )}
                 </div>
               </div>
-              <button
-                type="submit"
-                disabled={!isValid || isSubmitting}
-                className="text-gray-700 cursor-pointer dark:text-white inline-flex items-center bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg font-bold text-lg px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                <svg
-                  className="mr-1 -ml-1 w-6 h-6 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Create new Vendor
-              </button>
+              <SubmitButton isSubmitting={isSubmitting} name="Create New Vendor" />
               {!isValid && (
-                <p className="text-sm text-red-400">Fill the form correctly</p>
+                <p className="text-sm text-redborder pt-3">Fill the form correctly</p>
               )}
             </CustomTabPanel>
           </form>

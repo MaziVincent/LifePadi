@@ -87,7 +87,7 @@ const DeleteDialogue = ({ open, handleClose, deleteId, url, name }) => {
             <button
               type="submit"
               onClick={() => handleDelete(deleteId)}
-              className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red dark:hover:bg-red-600 dark:focus:ring-red-900"
+              className="py-2 px-3 text-sm font-medium text-center text-white bg-redborder rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red dark:hover:bg-red-600 dark:focus:ring-red-900"
             >
               Yes, I'm sure
             </button>

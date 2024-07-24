@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using API.DTO;
 
 namespace Api.Controllers
 {
@@ -9,8 +11,10 @@ namespace Api.Controllers
     public class VendorController : ControllerBase
     {
         private readonly IVendor _ivendor;
-        public VendorController(IVendor ivendor) { 
+        private readonly IMapper _mapper;
+        public VendorController(IVendor ivendor, IMapper mapper) { 
             _ivendor = ivendor;
+            _mapper = mapper;
         }
 
         [HttpGet("get/{id}")]
@@ -28,12 +32,19 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll([FromRoute] int pageNumber = 1, [FromRoute] int pageSize = 10)
+        public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var vendors = await _ivendor.allAsync(pageNumber, pageSize);
-                return Ok(vendors);
+                var vendors = await _ivendor.allAsync(props);
+                var result = _mapper.Map<List<VendorDtoLite>>(vendors);
+                var dataList = new {
+                    vendors.PageSize,
+                    vendors.TotalPages,
+                    vendors.TotalCount,
+                    vendors.CurrentPage
+                };
+                return Ok(new {result, dataList});
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);

@@ -54,8 +54,9 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
   //  console.log(data)
   const cat = {...data, Icon:data.Icon[0]}
     mutate(cat);
-    console.log(cat)
+    //console.log(cat)
   };
+  
   const handleChange = (event) => {
    
     const file = event.target.files[0];

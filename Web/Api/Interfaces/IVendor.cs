@@ -1,11 +1,13 @@
 ﻿using Api.DTO;
 using Api.Models;
+using API.DTO;
+using API.Models;
 
 namespace Api.Interfaces
 {
     public interface IVendor
     {
-        public Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize);
+        public Task<PagedList<Vendor>> allAsync(SearchPaging props);
         public Task<IEnumerable<VendorDtoLite>> vendorsOnly();
         public Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id);
         public Task<VendorDto> uploadVendorImg(int id, IFormFile image);

@@ -5,27 +5,56 @@ import {
   InfoOutlined,
   Remove,
 } from "@mui/icons-material";
+import { Modal } from "@mui/material";
+import useCart from "../../hooks/useCart";
 
-const Cart = ({ cart , setCart}) => {
+const Cart = () => {
+  const { cartState, setCartState } = useCart();
   return (
-    <aside
-      className={`fixed md:relative inset-0 col-span-2 top-10 md:top-0 right-0  z-30 w-auto overflow-auto lg:w-58 h-full pb-10  transition-transform  shadow-lg md:translate-x-0  dark:border-x-grayTxt dark:bg-darkMenu bg-primary ${
-        cart ? "translate-x-0" : "-translate-x-full"
-      } rounded-lg shadow-lg border-l border-l-gray`}
-      aria-label="Sidenav"
-      id="drawer-navigation"
+    <Modal
+      open={cartState}
+      onClose={() => {
+        setCartState(false);
+      }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
     >
-      <div className="overflow-y-auto py-5 px-2  flex flex-col   items-start justify-center  h-full rounded-lg">
-        <div className=" stick -top-16 h-lvh p-4 overflow-auto ">
-          {cart && <div className="flex justify-end"> <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-</svg>
-</div>}
-          <div className=" flex justify-between items-center pb-4">
-            <p className=" text-sm capitalize text-secondary">Lekki's global suya spot</p>
-            
-          </div>
-          <div className=" border border-dashed border-gray rounded-lg">
+      <div
+        id="defaultModal"
+        className=" overflow-y-auto overflow-x-hidden absolute top-20  z-50 justify-center items-center  w-full h-full pb-24 "
+      >
+        <div className=" p-4 w-full max-w-xl flex flex-col  overflow-y-auto  bg-primary ">
+          {/* <!-- Modal header --> */}
+          <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
+                Create Service
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setCartState(false);
+                }}
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-toggle="defaultModal"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+            </div>
+            {/* <!-- Modal body --> */}
+            <div className=" border border-dashed border-gray rounded-lg w-full">
             <div className=" flex justify-between items-center py-2 px-2">
               <div>
                 <h3 className=" text-sm font-medium">Pack 1</h3>
@@ -38,31 +67,64 @@ const Cart = ({ cart , setCart}) => {
             </div>
             <div className=" flex justify-between items-center py-2 px-2">
               <p className=" flex flex-col items-center">
-                <span className=" text-xs text-accent">Suya spice</span>
+                <span className=" text-sm">Suya spice</span>
                 <span className=" text-gray text-xs">
                   &#8358;<span>10,000.00</span>
                 </span>
               </p>
               <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                <button className=" text-accent">
+                <span className=" ">
                   {" "}
                   <Remove fontSize="" />
-                </button>
-                <span className=" text-sm">1</span>
-                <button className=" text-accent">
+                </span>
+                <span className=" text-md">1</span>
+                <span className=" ">
                   <Add fontSize="" />
-                </button>
+                </span>
               </span>
             </div>
             <div className=" flex justify-between px-2 py-3">
-              
               <button className=" border border-dashed border-gray px-2 rounded-full">
                 <span className=" text-sm">Duplicate this pack</span>
               </button>
             </div>
           </div>
-
-          <div className="py-4">
+          <div className=" border border-dashed border-gray rounded-lg w-full">
+            <div className=" flex justify-between items-center py-2 px-2">
+              <div>
+                <h3 className=" text-sm font-medium">Pack 1</h3>
+              </div>
+              <div>
+                <span className=" text-red">
+                  <DeleteOutlined />
+                </span>
+              </div>
+            </div>
+            <div className=" flex justify-between items-center py-2 px-2">
+              <p className=" flex flex-col items-center">
+                <span className=" text-sm">Suya spice</span>
+                <span className=" text-gray text-xs">
+                  &#8358;<span>10,000.00</span>
+                </span>
+              </p>
+              <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
+                <span className=" ">
+                  {" "}
+                  <Remove fontSize="" />
+                </span>
+                <span className=" text-md">1</span>
+                <span className=" ">
+                  <Add fontSize="" />
+                </span>
+              </span>
+            </div>
+            <div className=" flex justify-between px-2 py-3">
+              <button className=" border border-dashed border-gray px-2 rounded-full">
+                <span className=" text-sm">Duplicate this pack</span>
+              </button>
+            </div>
+          </div>
+            <div className=" w-full">
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Payment Method</span>
@@ -94,14 +156,14 @@ const Cart = ({ cart , setCart}) => {
               </p>
             </div>
           </div>
-          <div className=" flex justify-between items-center border-y py-6 my-4">
+          <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
               <div className="">
-                <span className=" text-accent">
+                <span className=" text-yellow">
                   <InfoOutlined />
                 </span>
               </div>
-              <div className=" text-accent">
+              <div className=" text-gray">
                 <h1 className=" text-sm font-normal">
                   Delivery includes PIN confirmation
                 </h1>
@@ -111,22 +173,7 @@ const Cart = ({ cart , setCart}) => {
               </div>
             </div>
           </div>
-          <div>
-            <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>
-                  Sub total<span>(1 item)</span>
-                </span>
-                <span className="">&#8358;12,000</span>
-              </p>
-            </div>
-            <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Delivery fee</span>
-                <span className="">&#8358;0.0</span>
-              </p>
-            </div>
-            <div className=" py-2">
+          <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Service fee</span>
                 <span className="">&#8358;0.0</span>
@@ -156,10 +203,12 @@ const Cart = ({ cart , setCart}) => {
                 <span className=" text-background text-sm">Save for later</span>
               </button>
             </div>
-          </div>
         </div>
+        
+
       </div>
-    </aside>
+      
+    </Modal>
   );
 };
 
