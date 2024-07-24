@@ -85,6 +85,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 phone.value = '';
                               },
                               keyboardType: TextInputType.phone,
+                              hasValue: phone.value.isNotEmpty,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
@@ -115,6 +116,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 email.value = '';
                               },
                               keyboardType: TextInputType.emailAddress,
+                              hasValue: email.value.isNotEmpty,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,

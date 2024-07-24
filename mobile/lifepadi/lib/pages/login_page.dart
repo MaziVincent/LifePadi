@@ -94,6 +94,7 @@ class LoginPage extends HookConsumerWidget {
                               phone.value = '';
                             },
                             keyboardType: TextInputType.phone,
+                            hasValue: phone.value.isNotEmpty,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -124,6 +125,7 @@ class LoginPage extends HookConsumerWidget {
                               email.value = '';
                             },
                             keyboardType: TextInputType.emailAddress,
+                            hasValue: email.value.isNotEmpty,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -149,6 +151,7 @@ class LoginPage extends HookConsumerWidget {
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
                           hideText: hidePassword.value,
+                          hasValue: password.value.isNotEmpty,
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility

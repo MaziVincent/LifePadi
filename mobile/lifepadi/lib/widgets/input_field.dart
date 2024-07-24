@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 
-class InputField extends StatelessWidget {
+class InputField extends HookWidget {
   const InputField({
     super.key,
     required this.child,
@@ -11,6 +12,7 @@ class InputField extends StatelessWidget {
     required this.hintText,
     required this.labelText,
     required this.keyboardType,
+    required this.hasValue,
     this.textInputAction = TextInputAction.next,
     this.hideText = false,
     this.onChanged,
@@ -31,6 +33,7 @@ class InputField extends StatelessWidget {
 
   /// Validator to be executed when the value changes
   final String? Function(String?)? validator;
+  final bool hasValue;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,9 @@ class InputField extends StatelessWidget {
       cursorColor: kDarkPrimaryColor,
       decoration: InputDecoration(
         border: inputBorder(),
-        enabledBorder: inputBorder(),
+        enabledBorder: inputBorder(
+          color: hasValue ? const Color(0xFF21D1A5) : null,
+        ),
         focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
         errorBorder: inputBorder(color: Colors.redAccent),
         hintText: hintText,

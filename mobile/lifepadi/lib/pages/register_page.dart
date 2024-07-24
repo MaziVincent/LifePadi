@@ -92,6 +92,7 @@ class RegisterPage extends HookConsumerWidget {
                               phone.value = '';
                             },
                             keyboardType: TextInputType.phone,
+                            hasValue: phone.value.isNotEmpty,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -122,6 +123,7 @@ class RegisterPage extends HookConsumerWidget {
                               email.value = '';
                             },
                             keyboardType: TextInputType.emailAddress,
+                            hasValue: email.value.isNotEmpty,
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -146,6 +148,7 @@ class RegisterPage extends HookConsumerWidget {
                           onTap: () => hidePassword.value = !hidePassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
+                          hasValue: password.value.isNotEmpty,
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -164,6 +167,7 @@ class RegisterPage extends HookConsumerWidget {
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
                           hideText: hideConfirmPassword.value,
+                          hasValue: confirmPassword.value.isNotEmpty,
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility

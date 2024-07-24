@@ -78,6 +78,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           onTap: () => hidePassword.value = !hidePassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
+                          hasValue: password.value.isNotEmpty,
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -96,6 +97,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
                           hideText: hideConfirmPassword.value,
+                          hasValue: confirmPassword.value.isNotEmpty,
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility
