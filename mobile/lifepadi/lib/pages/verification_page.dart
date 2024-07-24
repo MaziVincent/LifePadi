@@ -196,7 +196,7 @@ class VerificationPage extends HookConsumerWidget {
                               );
 
                               // For now, just call login
-                              // login();
+                              login();
                             }
                           },
                         ),
