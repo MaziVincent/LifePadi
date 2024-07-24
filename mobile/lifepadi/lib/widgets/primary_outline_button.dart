@@ -5,17 +5,17 @@ import 'package:lifepadi/utils/constants.dart';
 class PrimaryOutlineButton extends StatelessWidget {
   const PrimaryOutlineButton({
     super.key,
-    this.onTap,
+    this.onPressed,
     required this.text,
   });
 
-  final VoidCallback? onTap;
+  final VoidCallback? onPressed;
   final String text;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPressed,
       child: Container(
         width: double.infinity,
         height: 52.h,

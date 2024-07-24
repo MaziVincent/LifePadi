@@ -10,7 +10,6 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
-import '../state/auth_controller.dart';
 import '../widgets/input_field.dart';
 
 class RegisterPage extends HookConsumerWidget {
@@ -18,10 +17,6 @@ class RegisterPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> login() => ref.read(authControllerProvider.notifier).login(
-          'myEmail',
-          'myPassword',
-        );
     final textTheme = Theme.of(context).textTheme;
     final hidePassword = useState(true);
     final hideConfirmPassword = useState(true);
@@ -179,13 +174,13 @@ class RegisterPage extends HookConsumerWidget {
                         25.verticalSpace,
                         PrimaryButton(
                           text: 'Register',
-                          onTap: () {
+                          onPressed: () {
                             if (!formKey.currentState!.validate()) return;
 
                             // TODO: Make request to register
 
-                            // For now, just call the login function
-                            login();
+                            // For now, go to code verification
+                            context.go(const VerificationRoute().location);
                           },
                         ),
                         17.verticalSpace,

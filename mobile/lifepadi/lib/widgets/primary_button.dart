@@ -5,11 +5,11 @@ import 'package:lifepadi/utils/constants.dart';
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
-    this.onTap,
+    this.onPressed,
     required this.text,
   });
 
-  final VoidCallback? onTap;
+  final VoidCallback? onPressed;
   final String text;
 
   @override
@@ -17,7 +17,7 @@ class PrimaryButton extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPressed,
       child: Container(
         width: double.infinity,
         height: 52.h,

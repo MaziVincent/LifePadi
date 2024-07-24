@@ -7,6 +7,7 @@ import 'package:lifepadi/pages/details_page.dart';
 import 'package:lifepadi/pages/get_started_page.dart';
 import 'package:lifepadi/pages/onboarding_page.dart';
 import 'package:lifepadi/pages/register_page.dart';
+import 'package:lifepadi/pages/verification_page.dart';
 
 import '../pages/admin_page.dart';
 import '../pages/home_page.dart';
@@ -87,7 +88,12 @@ class OnboardingRoute extends GoRouteData {
   path: '/get-started',
   routes: [
     TypedGoRoute<LoginRoute>(path: 'login'),
-    TypedGoRoute<RegisterRoute>(path: 'register'),
+    TypedGoRoute<RegisterRoute>(
+      path: 'register',
+      routes: [
+        TypedGoRoute<VerificationRoute>(path: 'verification'),
+      ],
+    ),
   ],
 )
 class GetStartedRoute extends GoRouteData {
@@ -114,6 +120,15 @@ class RegisterRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const RegisterPage();
+  }
+}
+
+class VerificationRoute extends GoRouteData {
+  const VerificationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const VerificationPage();
   }
 }
 

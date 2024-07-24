@@ -80,7 +80,7 @@ class GetStartedPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: PrimaryButton(
-                    onTap: () => context.go(const RegisterRoute().location),
+                    onPressed: () => context.go(const RegisterRoute().location),
                     text: 'Get started',
                   ),
                 ),
@@ -89,7 +89,7 @@ class GetStartedPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 24.w),
                   child: PrimaryOutlineButton(
                     text: 'Login',
-                    onTap: () => context.go(const LoginRoute().location),
+                    onPressed: () => context.go(const LoginRoute().location),
                   ),
                 ),
                 17.verticalSpace,

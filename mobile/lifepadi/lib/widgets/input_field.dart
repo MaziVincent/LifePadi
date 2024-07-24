@@ -61,10 +61,10 @@ class InputField extends StatelessWidget {
         border: inputBorder(),
         enabledBorder: inputBorder(),
         focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
-        errorBorder: inputBorder(color: const Color(0xFFBD5A56)),
+        errorBorder: inputBorder(color: Colors.redAccent),
         hintText: hintText,
         hintStyle: inputTextStyle(),
-        errorStyle: inputTextStyle(color: const Color(0xFFBD5A56)),
+        errorStyle: inputTextStyle(color: Colors.redAccent),
         labelStyle: inputTextStyle(
           color: const Color(0xFF858585),
           fontSize: 16.sp,
