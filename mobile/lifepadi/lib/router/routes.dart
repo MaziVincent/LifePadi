@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/pages/reset_password_page.dart';
 
 import '../pages/admin_page.dart';
 import '../pages/details_page.dart';
@@ -92,6 +93,7 @@ class OnboardingRoute extends GoRouteData {
       path: 'login',
       routes: [
         TypedGoRoute<ForgotPasswordRoute>(path: 'forgot-password'),
+        TypedGoRoute<ResetPasswordRoute>(path: 'reset-password'),
       ],
     ),
     TypedGoRoute<RegisterRoute>(
@@ -126,6 +128,15 @@ class ForgotPasswordRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ForgotPasswordPage();
+  }
+}
+
+class ResetPasswordRoute extends GoRouteData {
+  const ResetPasswordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ResetPasswordPage();
   }
 }
 

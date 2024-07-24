@@ -26,6 +26,7 @@ class RegisterPage extends HookConsumerWidget {
     final email = useState('');
     final password = useState('');
     final phone = useState('');
+    final confirmPassword = useState('');
 
     return Scaffold(
       body: SafeArea(
@@ -69,7 +70,7 @@ class RegisterPage extends HookConsumerWidget {
                         ),
                         7.verticalSpace,
                         Text(
-                          'Signup to get started with setting up your lifepadi account. ',
+                          'Signup to get started with setting up your lifepadi account.',
                           style: textTheme.bodyMedium?.copyWith(
                             color: const Color(0xFF999999),
                             fontSize: 16.sp,
@@ -157,7 +158,7 @@ class RegisterPage extends HookConsumerWidget {
                         InputField(
                           hintText: 'Confirm Password',
                           labelText: 'Confirm Password',
-                          onChanged: (value) => password.value = value,
+                          onChanged: (value) => confirmPassword.value = value,
                           onTap: () => hideConfirmPassword.value =
                               !hideConfirmPassword.value,
                           keyboardType: TextInputType.visiblePassword,

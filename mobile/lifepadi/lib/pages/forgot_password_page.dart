@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/input_field.dart';
@@ -135,6 +136,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                             text: 'Continue',
                             onPressed: () {
                               // Go to reset password page
+                              context.go(const ResetPasswordRoute().location);
                             },
                           ),
                           30.verticalSpace,
