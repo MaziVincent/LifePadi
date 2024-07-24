@@ -165,7 +165,7 @@ class VerificationPage extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Didn’t get the code?',
+                              "Didn't get the code?",
                               style: textTheme.bodyMedium?.copyWith(
                                 color: const Color(0xFF606873),
                                 fontSize: 14.sp,

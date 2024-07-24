@@ -3,18 +3,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/pages/details_page.dart';
-import 'package:lifepadi/pages/get_started_page.dart';
-import 'package:lifepadi/pages/onboarding_page.dart';
-import 'package:lifepadi/pages/register_page.dart';
-import 'package:lifepadi/pages/verification_page.dart';
 
 import '../pages/admin_page.dart';
+import '../pages/details_page.dart';
+import '../pages/forgot_password_page.dart';
+import '../pages/get_started_page.dart';
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
+import '../pages/onboarding_page.dart';
+import '../pages/register_page.dart';
 import '../pages/rider_page.dart';
 import '../pages/splash_page.dart';
 import '../pages/user_page.dart';
+import '../pages/verification_page.dart';
 import '../state/permissions.dart';
 
 part 'routes.g.dart';
@@ -87,7 +88,12 @@ class OnboardingRoute extends GoRouteData {
 @TypedGoRoute<GetStartedRoute>(
   path: '/get-started',
   routes: [
-    TypedGoRoute<LoginRoute>(path: 'login'),
+    TypedGoRoute<LoginRoute>(
+      path: 'login',
+      routes: [
+        TypedGoRoute<ForgotPasswordRoute>(path: 'forgot-password'),
+      ],
+    ),
     TypedGoRoute<RegisterRoute>(
       path: 'register',
       routes: [
@@ -111,6 +117,15 @@ class LoginRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const LoginPage();
+  }
+}
+
+class ForgotPasswordRoute extends GoRouteData {
+  const ForgotPasswordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ForgotPasswordPage();
   }
 }
 
