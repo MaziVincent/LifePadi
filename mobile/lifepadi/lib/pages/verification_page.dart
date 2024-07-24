@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -121,10 +122,8 @@ class VerificationPage extends HookConsumerWidget {
                                 hapticFeedbackType:
                                     HapticFeedbackType.lightImpact,
                                 onCompleted: (pin) {
-                                  logger.d('onCompleted: $pin');
-                                },
-                                onChanged: (value) {
-                                  logger.d('onChanged: $value');
+                                  logger.i('onCompleted: $pin');
+                                  // TODO: Validate and login if pin is correct
                                 },
                                 cursor: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -191,8 +190,13 @@ class VerificationPage extends HookConsumerWidget {
                             if (formKey.currentState!.validate()) {
                               // TODO: Log registered user into home page
 
+                              Fluttertoast.showToast(
+                                msg: 'Verified successfully',
+                                backgroundColor: Colors.black54,
+                              );
+
                               // For now, just call login
-                              login();
+                              // login();
                             }
                           },
                         ),
