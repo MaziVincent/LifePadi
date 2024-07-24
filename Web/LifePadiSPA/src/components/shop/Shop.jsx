@@ -6,8 +6,54 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Rice1 from "../../assets/images/rice.jpeg";
+import useFetch from "../../hooks/useFetch";
+import useAuth from "../../hooks/useAuth";
+import baseUrl from "../../api/baseUrl";
+import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "react-query";
+
 
 const Shop = () => {
+
+  const url = `${baseUrl}vendor`
+  const fetch = useFetch();
+  const {auth} = useAuth();
+  const [vendorCategories, setVendorCategories] = useState([])
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState("")
+  const [error, setError] = useState("")
+
+  const getVendors = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    return response.data;
+  };
+
+  const { data, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["vendors", page, search],
+    queryFn: () =>
+      getVendors(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+  });
+
+  const getVendorCategories = useCallback(async () => {
+    try {
+      const result = await fetch(`${baseUrl}vendorcategory/all`);
+      setVendorCategories(result.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setError("Error fetching services. Please try again later.");
+    }
+  }, [baseUrl]);
+
+  useEffect(() => {
+    getVendorCategories();
+    //console.log('services')
+
+  }, []);
+
   return (
     <div className="flex flex-col dark:bg-darkBg dark:text-primary gap-4 ">
       <div className=" lg:pl-32  p-4 flex flex-col gap-5">

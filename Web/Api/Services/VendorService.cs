@@ -3,6 +3,8 @@ using Api.Exceptions;
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
+using API.DTO;
+using API.Models;
 using AutoMapper;
 using CloudinaryDotNet;
 using FuzzySharp;
@@ -30,18 +32,30 @@ namespace Api.Services
              );
             _cloudinary = new Cloudinary(account);
         }
-        public async Task<IEnumerable<VendorDto>> allAsync(int pageNumber, int pageSize)
+        public async Task<PagedList<Vendor>> allAsync(SearchPaging props)
         {
             try
             {
-                var skip = (pageNumber - 1) * pageSize;
-                var vendors = await _dbContext!.Vendors.Skip(skip).Take(pageSize).OrderByDescending(v => v.CreatedAt).Include(v => v.Products).ToListAsync();
-                var allVendor = _mapper.Map<List<VendorDto>>(vendors);
-                return allVendor;
+                IQueryable<Vendor> vendorList = Enumerable.Empty<Vendor>().AsQueryable();
+
+                if (props.SearchString is null)
+                {
+                    var vendor1 = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products)
+                    .ToListAsync();
+                    vendorList = vendorList.Concat(vendor1);
+                    var result = PagedList<Vendor>.ToPagedList(vendorList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                var vendors = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products)
+                    .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .ToListAsync();
+                vendorList = vendorList.Concat(vendors);
+                var returned = PagedList<Vendor>.ToPagedList(vendorList, props.PageNumber, props.PageSize);
+                return returned;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 

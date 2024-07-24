@@ -66,7 +66,7 @@ const AdminRider = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+  //console.log(data);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -219,7 +219,7 @@ const AdminRider = () => {
                   </thead>
                   <tbody>
                     {data?.result.map((rider) => (
-                      <tr className="hover:bg-darkHover cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
+                      <tr className="dark:hover:bg-darkHover hover:bg-graybg cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
                         <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
@@ -257,7 +257,7 @@ const AdminRider = () => {
                                 Verified
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-lightindigo px-2 py-1 text-xs font-semibold text-violet-600">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-lightindigo px-2 py-1 text-xs font-semibold text-graybg">
                                 Not Verified
                               </span>
                             )}

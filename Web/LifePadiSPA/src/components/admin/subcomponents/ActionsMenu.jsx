@@ -53,7 +53,7 @@ export default function LongMenu( {view,edit, id}) {
             handleClose(); 
             view(id)
             }}>
-            <div className='flex gap-2  '> <i className='line-icon-Eye text-lightgreen text-xl'></i><span>View </span></div>
+            <div className='flex gap-2  '> <i className='line-icon-Eye text-background font-bold text-xl'></i><span>View </span></div>
           </MenuItem>
 
           <MenuItem onClick={ () => {

@@ -365,7 +365,7 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
                     >
                       Select ID type
                     </option>
-                    {/* {isError && <option> Error Loading Doctors </option>} */}
+
                     {idTypes.map((id) => (
                       <option
                         key={id.name}
@@ -376,11 +376,6 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
                     ))}
                   </select>
 
-                  {/* {errors.IdentityType && (
-                    <span className="text-sm text-red">
-                      {errors.IdentityType.message}
-                    </span>
-                  )} */}
                 </div>
 
                 <div className="sm:col-span-2">

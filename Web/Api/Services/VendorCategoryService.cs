@@ -40,13 +40,13 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
-                    var categories1 = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt)
+                    var categories1 = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt).Include(v => v.Vendors)
                     .ToListAsync();
                     categoryList = categoryList.Concat(categories1);
                     var result = PagedList<VendorCategory>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                     return result;
                 }
-                var categories = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt)
+                var categories = await _context.VendorCategories.OrderByDescending(c => c.CreatedAt).Include(v => v.Vendors)
                     .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
                 categoryList = categoryList.Concat(categories);
