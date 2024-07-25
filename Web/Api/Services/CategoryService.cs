@@ -45,8 +45,12 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
+<<<<<<< HEAD
                     var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+=======
+                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt).Include(c => c.Products)
+>>>>>>> 867b7f3 (added a route for vendorCategories)
                     .ToListAsync();
 <<<<<<< HEAD
                     categoryList = categoryList.Concat(categories1);
@@ -146,7 +150,7 @@ namespace Api.Services
 >>>>>>> 4dc5d34 (worked on product component)
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -261,7 +265,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -278,7 +282,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -294,8 +298,12 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+                throw new Exceptions.ServiceException(ex.Message);
+>>>>>>> 867b7f3 (added a route for vendorCategories)
             }
         }
 
@@ -314,6 +322,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
+<<<<<<< HEAD
             }
         }
 
@@ -326,6 +335,8 @@ namespace Api.Services
 >>>>>>> 98415b4 (done with dashboard)
             {
                 throw new Exception(ex.Message);
+=======
+>>>>>>> 867b7f3 (added a route for vendorCategories)
             }
         }
 
@@ -367,7 +378,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -423,7 +434,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -436,7 +447,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -472,15 +483,23 @@ namespace Api.Services
             try
             {
                 var vendorCategories = await _dbContext.Categories
+<<<<<<< HEAD
     .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
     .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
     .ToListAsync();
+=======
+                    .Include(c => c.Products!)
+                    .ThenInclude(p => p.Vendor)
+                    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
+                    .ToListAsync();
+>>>>>>> 867b7f3 (added a route for vendorCategories)
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
+<<<<<<< HEAD
             }
         }
 
@@ -513,6 +532,8 @@ namespace Api.Services
             {
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 867b7f3 (added a route for vendorCategories)
             }
         }
     }

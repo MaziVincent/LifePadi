@@ -205,8 +205,13 @@ namespace Api.Controllers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         [HttpGet("vendorProductCategories/{vendorId}")]
+=======
+
+        [HttpGet("vendorCategories/{vendorId}")]
+>>>>>>> 867b7f3 (added a route for vendorCategories)
         public async Task<IActionResult> vendorCategories(int vendorId)
         {
             try
@@ -218,6 +223,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpGet("{id}/products")]
         public async Task<IActionResult> getCategoryProducts(int id, [FromQuery] SearchPaging props)
@@ -255,5 +261,7 @@ namespace Api.Controllers
         }
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 867b7f3 (added a route for vendorCategories)
     }
 }

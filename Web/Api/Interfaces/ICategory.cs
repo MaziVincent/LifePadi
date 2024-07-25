@@ -67,7 +67,11 @@ namespace Api.Interfaces
 >>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<int> numberOfCategories();
         public Task<object> categoryStats();
+<<<<<<< HEAD
 >>>>>>> 98415b4 (done with dashboard)
+=======
+        public Task<IEnumerable<CategoryDto>> vendorCategories(int vendorId);
+>>>>>>> 867b7f3 (added a route for vendorCategories)
 
     }
 }

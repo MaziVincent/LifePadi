@@ -31,7 +31,10 @@
         public string? SearchString { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+<<<<<<< HEAD
         public List<ProductReview>? ProductReviews { get; set; }
         public List<Favourite>? Favourites { get; set; }
+=======
+>>>>>>> 867b7f3 (added a route for vendorCategories)
     }
 }
