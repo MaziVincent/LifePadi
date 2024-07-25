@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/entities/user_role.dart';
 import 'package:lifepadi/pages/reset_password_page.dart';
 
 import '../pages/admin_page.dart';
@@ -15,20 +16,12 @@ import '../pages/onboarding_page.dart';
 import '../pages/register_page.dart';
 import '../pages/rider_page.dart';
 import '../pages/splash_page.dart';
-import '../pages/user_page.dart';
 import '../pages/verification_page.dart';
 import '../state/permissions.dart';
 
 part 'routes.g.dart';
 
-@TypedGoRoute<HomeRoute>(
-  path: '/',
-  routes: [
-    TypedGoRoute<AdminRoute>(path: 'admin'),
-    TypedGoRoute<UserRoute>(path: 'user'),
-    TypedGoRoute<RiderRoute>(path: 'rider'),
-  ],
-)
+@TypedGoRoute<HomeRoute>(path: '/')
 class HomeRoute extends GoRouteData {
   const HomeRoute();
 
@@ -42,12 +35,12 @@ class HomeRoute extends GoRouteData {
       permissionsProvider.future,
     );
 
-    return userRole.map(
-      admin: (_) => const AdminRoute().location,
-      user: (_) => const UserRoute().location,
-      rider: (_) => const RiderRoute().location,
-      none: (_) => null,
-    );
+    return switch (userRole) {
+      Admin() => const AdminRoute().location,
+      Rider() => const RiderRoute().location,
+      Guest() => const GetStartedRoute().location,
+      _ => null,
+    };
   }
 
   @override
@@ -158,6 +151,7 @@ class VerificationRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<AdminRoute>(path: '/admin')
 class AdminRoute extends GoRouteData {
   const AdminRoute();
 
@@ -167,15 +161,7 @@ class AdminRoute extends GoRouteData {
   }
 }
 
-class UserRoute extends GoRouteData {
-  const UserRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const UserPage();
-  }
-}
-
+@TypedGoRoute<RiderRoute>(path: '/rider')
 class RiderRoute extends GoRouteData {
   const RiderRoute();
 

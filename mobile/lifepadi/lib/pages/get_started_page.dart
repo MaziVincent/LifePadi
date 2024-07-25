@@ -60,7 +60,7 @@ class GetStartedPage extends StatelessWidget {
                       Text(
                         'Your Innovative Digital Market and  Errand Friend',
                         style: textTheme.headlineLarge?.copyWith(
-                          color: const Color(0xFF0F0F0F),
+                          color: kDarkTextColor,
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.80.r,
                         ),

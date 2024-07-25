@@ -26,7 +26,7 @@ class ToggleAuthPage extends StatelessWidget {
           TextSpan(
             text: '$question ',
             style: textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF5F5F5F),
+              color: kLightTextColor,
               fontSize: 14.sp,
             ),
           ),

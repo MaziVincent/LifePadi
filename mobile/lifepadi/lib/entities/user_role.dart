@@ -8,5 +8,5 @@ class UserRole with _$UserRole {
   const factory UserRole.admin() = Admin;
   const factory UserRole.user() = User;
   const factory UserRole.rider() = Rider;
-  const factory UserRole.none() = None;
+  const factory UserRole.guest() = Guest;
 }
