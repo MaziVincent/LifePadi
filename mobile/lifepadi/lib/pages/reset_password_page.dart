@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/input_field.dart';
+import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 
 class ResetPasswordPage extends HookConsumerWidget {
@@ -113,9 +114,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                             if (formKey.currentState!.validate()) {
                               // TODO: Make request to reset password
 
-                              Fluttertoast.showToast(
-                                msg: 'Your password has been reset',
-                              );
+                              showToast('Your password has been reset');
 
                               // Send the user to login page
                               context.pop();
@@ -133,22 +132,7 @@ class ResetPasswordPage extends HookConsumerWidget {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(top: 16.h, left: 24.w),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 18.r,
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: const Color(0x19F5F5F5),
-                    fixedSize: Size.square(34.r),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    padding: EdgeInsets.only(left: 8.r),
-                  ),
-                ),
+                child: const GlassmorphicBackButton(),
               ),
             ),
           ],

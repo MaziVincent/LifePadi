@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:pinput/pinput.dart';
 
@@ -190,10 +190,7 @@ class VerificationPage extends HookConsumerWidget {
                             if (formKey.currentState!.validate()) {
                               // TODO: Log registered user into home page
 
-                              Fluttertoast.showToast(
-                                msg: 'Verified successfully',
-                                backgroundColor: Colors.black54,
-                              );
+                              showToast('Verified successfully');
 
                               // For now, just call login
                               login();
@@ -211,22 +208,7 @@ class VerificationPage extends HookConsumerWidget {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(top: 16.h, left: 24.w),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 18.r,
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: const Color(0x19F5F5F5),
-                    fixedSize: Size.square(34.r),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    padding: EdgeInsets.only(left: 8.r),
-                  ),
-                ),
+                child: const GlassmorphicBackButton(),
               ),
             ),
           ],

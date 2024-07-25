@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -48,9 +49,8 @@ class OnboardingNavigation extends StatelessWidget {
                       : const Color(0xFFC7C7C7),
                 ),
               ),
-              padding: const EdgeInsets.only(left: 4),
               child: Icon(
-                Icons.arrow_back_ios,
+                IconsaxPlusLinear.arrow_left_1,
                 color: currentPage.value != 0
                     ? kDarkPrimaryColor
                     : const Color(0xFFC7C7C7),
@@ -96,7 +96,7 @@ class OnboardingNavigation extends StatelessWidget {
                     ),
                   ),
                   child: Icon(
-                    Icons.arrow_forward_ios,
+                    IconsaxPlusLinear.arrow_right_3,
                     color: Colors.white,
                     size: 18.r,
                   ),

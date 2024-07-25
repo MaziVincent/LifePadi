@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
@@ -279,22 +280,7 @@ class RegisterPage extends HookConsumerWidget {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(top: 16.h, left: 24.w),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 18.r,
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: const Color(0x19F5F5F5),
-                    fixedSize: Size.square(34.r),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    padding: EdgeInsets.only(left: 8.r),
-                  ),
-                ),
+                child: const GlassmorphicBackButton(),
               ),
             ),
           ],

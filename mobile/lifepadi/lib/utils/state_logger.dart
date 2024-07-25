@@ -1,7 +1,7 @@
 // ignore_for_file: strict_raw_type
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 /// Useful to log state change in our application
 /// Read the logs and you'll better understand what's going on under the hood
