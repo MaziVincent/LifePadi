@@ -17,6 +17,7 @@ namespace Api.Interfaces
         public Task<CategoryDto> createAsync(CategoryDtoLite category);
         public Task<int> numberOfCategories();
         public Task<object> categoryStats();
+        public Task<IEnumerable<CategoryDto>> vendorCategories(int vendorId);
 
     }
 }

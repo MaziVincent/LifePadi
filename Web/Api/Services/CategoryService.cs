@@ -27,7 +27,7 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
-                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt).Include(c => c.Products)
                     .ToListAsync();
                     categoryList = categoryList.Concat(categories1);
                     var result = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
@@ -43,7 +43,7 @@ namespace Api.Services
             
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -196,7 +196,25 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<CategoryDto>> vendorCategories(int vendorId)
+        {
+            try
+            {
+                var vendorCategories = await _dbContext.Categories
+                    .Include(c => c.Products!)
+                    .ThenInclude(p => p.Vendor)
+                    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
+                    .ToListAsync();
+                var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
+                return categoryDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }
