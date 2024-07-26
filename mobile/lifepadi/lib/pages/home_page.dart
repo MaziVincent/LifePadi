@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../widgets/my_icon_button.dart';
@@ -14,6 +15,23 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+
+    TextStyle? inputTextStyle() {
+      return textTheme.bodyMedium?.copyWith(
+        color: const Color(0xFF878787),
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+      );
+    }
+
+    OutlineInputBorder inputBorder({Color? color}) {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.r),
+        borderSide: BorderSide(
+          color: color ?? const Color(0xFF878787),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -84,8 +102,54 @@ class HomePage extends ConsumerWidget {
           ),
         ),
       ),
-      body: const SafeArea(
-        child: Column(),
+      body: Padding(
+        padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Try searchfield package when implementing this
+            TextFormField(
+              cursorColor: kDarkPrimaryColor,
+              decoration: InputDecoration(
+                border: inputBorder(),
+                focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
+                hintText: 'Search product',
+                hintStyle: inputTextStyle(),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+                prefixIcon: const Icon(
+                  IconsaxPlusLinear.search_normal,
+                  size: 20,
+                  color: Color(0xFF878787),
+                ),
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    // TODO: Open search filter modal
+                  },
+                  child: Icon(
+                    IconsaxPlusBold.filter_search,
+                    size: 24.r,
+                    color: kDarkPrimaryColor,
+                  ),
+                ),
+              ),
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.search,
+              style: textTheme.bodyLarge?.copyWith(
+                color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.12.r,
+              ),
+              onTapOutside: (e) => FocusScope.of(context).unfocus(),
+              onFieldSubmitted: (String? value) {
+                logger
+                  ..i('Search value:')
+                  ..i(value);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
