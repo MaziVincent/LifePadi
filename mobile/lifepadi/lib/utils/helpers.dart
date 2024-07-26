@@ -46,3 +46,7 @@ extension WidgetIterableExtension on Iterable<Widget> {
     return result;
   }
 }
+
+extension TextThemeExtension on BuildContext {
+  TextTheme get textTheme => Theme.of(this).textTheme;
+}

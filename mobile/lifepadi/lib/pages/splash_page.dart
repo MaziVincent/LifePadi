@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/loading_wheel.dart';
 
 class SplashPage extends StatelessWidget {
@@ -25,13 +26,13 @@ class SplashPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   'Easy Life with padi',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: const Color(0xFFC7C7C7),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 8.98.sp,
-                        letterSpacing: 2.64.r,
-                        height: 0.25.r,
-                      ),
+                  style: context.textTheme.titleSmall?.copyWith(
+                    color: const Color(0xFFC7C7C7),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 8.98.sp,
+                    letterSpacing: 2.64.r,
+                    height: 0.25.r,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

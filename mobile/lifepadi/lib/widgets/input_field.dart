@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 class InputField extends StatelessWidget {
   const InputField({
@@ -36,10 +37,8 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     TextStyle? inputTextStyle({Color? color, double? fontSize}) {
-      return textTheme.bodySmall?.copyWith(
+      return context.textTheme.bodySmall?.copyWith(
         color: color ?? const Color(0xFFC2C8D0),
         fontSize: fontSize ?? 14.sp,
         fontWeight: FontWeight.w400,
@@ -94,7 +93,7 @@ class InputField extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      style: textTheme.bodyLarge?.copyWith(
+      style: context.textTheme.bodyLarge?.copyWith(
         color: Colors.black,
         fontSize: 16.sp,
         fontWeight: FontWeight.w400,

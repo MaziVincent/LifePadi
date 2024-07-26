@@ -20,7 +20,7 @@ class OnboardingFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
     final (:info, :description, :image) = feature;
 
     return Column(

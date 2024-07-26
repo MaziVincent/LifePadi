@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 class ToggleAuthPage extends StatelessWidget {
   const ToggleAuthPage({
@@ -18,7 +19,7 @@ class ToggleAuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
 
     return RichText(
       text: TextSpan(

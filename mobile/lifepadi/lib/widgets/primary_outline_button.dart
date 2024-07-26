@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 class PrimaryOutlineButton extends StatelessWidget {
   const PrimaryOutlineButton({
@@ -38,13 +39,13 @@ class PrimaryOutlineButton extends StatelessWidget {
           children: [
             Text(
               'Login',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: kDarkPrimaryColor,
-                    fontWeight: FontWeight.w600,
-                    height: 0.07.r,
-                    fontSize: 16.sp,
-                    letterSpacing: -0.88.r,
-                  ),
+              style: context.textTheme.bodyLarge?.copyWith(
+                color: kDarkPrimaryColor,
+                fontWeight: FontWeight.w600,
+                height: 0.07.r,
+                fontSize: 16.sp,
+                letterSpacing: -0.88.r,
+              ),
             ),
           ],
         ),

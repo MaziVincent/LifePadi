@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 class VendorCard extends StatelessWidget {
   const VendorCard({
@@ -65,12 +66,12 @@ class VendorCard extends StatelessWidget {
             padding: EdgeInsets.only(left: 7.58.r, right: 8.05.r),
             child: Text(
               name,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: const Color(0xFF2D4379),
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              style: context.textTheme.bodySmall?.copyWith(
+                color: const Color(0xFF2D4379),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                overflow: TextOverflow.ellipsis,
+              ),
               textAlign: TextAlign.center,
             ),
           ),

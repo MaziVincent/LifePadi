@@ -14,7 +14,7 @@ class ResetPasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
     final hidePassword = useState(true);
     final hideConfirmPassword = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);

@@ -23,7 +23,7 @@ class LoginPage extends HookConsumerWidget {
           'myEmail',
           'myPassword',
         );
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
     final hidePassword = useState(true);
     final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);

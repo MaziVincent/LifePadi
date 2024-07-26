@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
@@ -14,8 +15,6 @@ class GetStartedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -59,7 +58,7 @@ class GetStartedPage extends StatelessWidget {
                       10.verticalSpace,
                       Text(
                         'Your Innovative Digital Market and  Errand Friend',
-                        style: textTheme.headlineLarge?.copyWith(
+                        style: context.textTheme.headlineLarge?.copyWith(
                           color: kDarkTextColor,
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.80.r,
@@ -68,7 +67,7 @@ class GetStartedPage extends StatelessWidget {
                       12.verticalSpace,
                       Text(
                         'Let us plan your next shopping and handle all your pick-up and delivery services.',
-                        style: textTheme.bodyLarge?.copyWith(
+                        style: context.textTheme.bodyLarge?.copyWith(
                           color: kLightTextColor,
                           fontWeight: FontWeight.w400,
                         ),

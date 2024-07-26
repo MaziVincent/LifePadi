@@ -67,10 +67,10 @@ class OnboardingNavigation extends StatelessWidget {
                 },
                 child: Text(
                   'Skip',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: kDarkPrimaryColor,
-                      ),
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: kDarkPrimaryColor,
+                  ),
                 ),
               ),
               10.horizontalSpace,

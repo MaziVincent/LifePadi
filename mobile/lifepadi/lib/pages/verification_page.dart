@@ -14,7 +14,7 @@ class VerificationPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
     const focusedBorderColor = Color(0xFF21D1A5);
     const borderColor = Color(0xFFD9DFE6);
     final pinController = TextEditingController();

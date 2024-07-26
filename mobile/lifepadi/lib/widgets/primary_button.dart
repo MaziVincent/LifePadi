@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -14,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
 
     return GestureDetector(
       onTap: onPressed,

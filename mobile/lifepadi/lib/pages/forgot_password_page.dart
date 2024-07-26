@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/input_field.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
@@ -15,7 +16,6 @@ class ForgotPasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
     final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     // Create the input states
@@ -56,7 +56,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                         children: [
                           Text(
                             'Forgot password?',
-                            style: textTheme.titleMedium?.copyWith(
+                            style: context.textTheme.titleMedium?.copyWith(
                               color: const Color(0xFF151522),
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w600,
@@ -65,7 +65,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                           10.28.verticalSpace,
                           Text(
                             "Don't worry! It happens. Please enter the email/phone number associated with your account.",
-                            style: textTheme.bodyMedium?.copyWith(
+                            style: context.textTheme.bodyMedium?.copyWith(
                               color: const Color(0xFF999999),
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w300,
@@ -94,7 +94,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 ).r,
                                 child: Text(
                                   'Use Email',
-                                  style: textTheme.bodySmall?.copyWith(
+                                  style: context.textTheme.bodySmall?.copyWith(
                                     color: kDarkPrimaryColor,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
@@ -125,7 +125,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 ).r,
                                 child: Text(
                                   'Use Phone',
-                                  style: textTheme.bodySmall?.copyWith(
+                                  style: context.textTheme.bodySmall?.copyWith(
                                     color: kDarkPrimaryColor,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
