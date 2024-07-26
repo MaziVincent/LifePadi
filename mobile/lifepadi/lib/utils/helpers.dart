@@ -28,3 +28,21 @@ Future<bool?> showToast(
     gravity: gravity,
   );
 }
+
+extension WidgetIterableExtension on Iterable<Widget> {
+  /// Add a specified widget between each pair of widgets.
+  List<Widget> addBetween(Widget child) {
+    final iterator = this.iterator;
+    final result = <Widget>[];
+
+    if (iterator.moveNext()) result.add(iterator.current);
+
+    while (iterator.moveNext()) {
+      result
+        ..add(child)
+        ..add(iterator.current);
+    }
+
+    return result;
+  }
+}

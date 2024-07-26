@@ -3,11 +3,13 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../widgets/my_icon_button.dart';
+import '../widgets/vendor_card.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -147,6 +149,36 @@ class HomePage extends ConsumerWidget {
                   ..i('Search value:')
                   ..i(value);
               },
+            ),
+            16.verticalSpace,
+            Text(
+              'Stores and Vendors',
+              style: textTheme.bodyLarge?.copyWith(
+                color: const Color(0xFF0F0F0F),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            16.verticalSpace,
+            Row(
+              children: [
+                VendorCard(
+                  name: 'McDonald',
+                  image: Assets.images.mcdonald.provider(),
+                ),
+                VendorCard(
+                  name: 'Shoprite',
+                  image: Assets.images.shoprite.provider(),
+                ),
+                VendorCard(
+                  name: "Domino's Pizza",
+                  image: Assets.images.dominosPizza.provider(),
+                ),
+                const VendorCard(
+                  name: 'See more',
+                  icon: IconsaxPlusLinear.element_plus,
+                ),
+              ].addBetween(10.horizontalSpace),
             ),
           ],
         ),
