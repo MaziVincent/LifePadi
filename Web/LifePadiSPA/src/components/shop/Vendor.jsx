@@ -36,8 +36,8 @@ const reducer = (state, action) => {
       return { ...state, productCategories: action.payload };
     case "product":
       return { ...state, product: action.payload };
-    case "totalAmount":
-      return { ...state, totalAmount: action.payload };
+    case "subTotal":
+      return { ...state, subTotal: action.payload };
 
     default:
       throw new Error();
@@ -59,7 +59,7 @@ const Vendor = () => {
     products: [],
     productCategories: [],
     product: {},
-    totalAmount: 0,
+    subTotal: 0,
   });
 
   const getVendor = async (url) => {
@@ -97,17 +97,21 @@ const Vendor = () => {
   }, [baseUrl]);
 
   const calculateTotalAmount = () => {
-
-    if(cart){
+    if (cart) {
       const total = cart.reduce((total, item) => {
         return total + item.Amount;
       }, 0);
-  
-      dispatch({ type: "totalAmount", payload: total });
+
+      dispatch({ type: "subTotal", payload: total });
     }
 
     return;
-    
+  };
+
+  const handleIncrement = (item) => {
+    item.Quantity = item.Quantity + 1;
+
+    console.log(item);
   };
 
   useEffect(() => {
@@ -120,7 +124,7 @@ const Vendor = () => {
     calculateTotalAmount();
   }, [cart]);
   console.log(cart);
-  console.log(state.totalAmount)
+  //console.log(state.subTotal);
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
@@ -420,14 +424,16 @@ const Vendor = () => {
                   </span>
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                  <span className="shadow-md cursor-pointer rounded-lg px-1 ">
+                  <button className="shadow-md cursor-pointer rounded-lg px-1 ">
                     {" "}
                     <Remove fontSize="" />
-                  </span>
+                  </button>
                   <span className=" text-md">{item.Quantity}</span>
-                  <span className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                  <button 
+                  //onClick={handleIncrement(item)}
+                  className=" shadow-lg cursor-pointer rounded-lg px-1 ">
                     <Add fontSize="" />
-                  </span>
+                  </button>
                 </span>
               </div>
               <div className=" flex justify-between px-2 py-3">
@@ -493,7 +499,7 @@ const Vendor = () => {
                 <span>
                   Sub total <span>({cart.length} item)</span>
                 </span>
-                <span className="">&#8358;12,000</span>
+                <span className="">&#8358;{state.subTotal}</span>
               </p>
             </div>
             <div className=" py-2">
