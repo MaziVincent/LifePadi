@@ -1,12 +1,11 @@
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
-
 import { useQuery } from 'react-query'
 import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
-import FadeMenu from './FadeMenu'
+// import FadeMenu from './FadeMenu'
 import CircularProgress from '@mui/material/CircularProgress'
-import { vendorProductsUrl } from '../../api/baseUrl'
+import { vendorProductsUrl } from './vendorUri/VendorURI'
 
 const VendorDashboard = () => {
   const fetch = useFetch()
@@ -17,7 +16,7 @@ const VendorDashboard = () => {
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
   const vendorId = 3
-  vendorProductsUrl = vendorProductsUrl.replace(':id', vendorId)
+  const vendorProductsURL = vendorProductsUrl.replace(':id', vendorId)
 
   const getVendorProducts = async (url) => {
     const response = await fetch(url, auth.accessToken)
@@ -33,9 +32,7 @@ const VendorDashboard = () => {
     queryKey: ['vendorProducts', page, search],
     queryFn: () =>
       getVendorProducts(
-        `${
-          vendorProductsUrl
-        }?PageNumber=${page}&SearchString=${search}`
+        `${vendorProductsURL}?PageNumber=${page}&SearchString=${search}`
       ),
     keepPreviousData: true,
     staleTime: 20000,
@@ -110,7 +107,7 @@ const VendorDashboard = () => {
                       </svg>
                     </div>
                     <input
-                      onKeyUp={(e) => setSearch(e.target.value)}
+                    //   onKeyUp={(e) => setSearch(e.target.value)}
                       type='text'
                       id='simple-search'
                       className='bg-gray-50 border border-gray-300 text-darkBg text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
@@ -347,7 +344,7 @@ const VendorDashboard = () => {
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
                   <button
-                    onClick={() => setPreviousPage(page)}
+                    // onClick={() => setPreviousPage(page)}
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -378,7 +375,7 @@ const VendorDashboard = () => {
                 {/* ))} */}
                 <li>
                   <button
-                    onClick={}
+                    // onClick={}
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     1
@@ -402,7 +399,7 @@ const VendorDashboard = () => {
                 </li>
                 <li>
                   <button
-                    onClick={() => setNextPage(page)}
+                    // onClick={() => setNextPage(page)}
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
