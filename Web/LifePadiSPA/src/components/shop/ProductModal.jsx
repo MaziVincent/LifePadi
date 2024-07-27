@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 const ProductModal = ({ open, handleClose, product }) => {
 const {cart, setCart} = useCart();
  const [itemCount, setItemCount] = useState(1)
+ const [amount, setAmount] = useState(product.Price)
 
  const handleIncrement = () => {
   setItemCount(itemCount + 1)
@@ -29,7 +30,7 @@ const {cart, setCart} = useCart();
   if (exist) {
     toast.error("Product already in cart");
   } else {
-    const newCart = [...cart, { ...item, Quantity: itemCount }];
+    const newCart = [...cart, { ...item, Quantity: itemCount, Amount : product.Price * itemCount }];
     setCart(newCart);
     toast.success("Product added to cart");
     handleClose({ type: "open" });

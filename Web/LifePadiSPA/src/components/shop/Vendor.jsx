@@ -36,6 +36,8 @@ const reducer = (state, action) => {
       return { ...state, productCategories: action.payload };
     case "product":
       return { ...state, product: action.payload };
+    case "totalAmount":
+      return { ...state, totalAmount: action.payload };
 
     default:
       throw new Error();
@@ -57,6 +59,7 @@ const Vendor = () => {
     products: [],
     productCategories: [],
     product: {},
+    totalAmount: 0,
   });
 
   const getVendor = async (url) => {
@@ -93,13 +96,31 @@ const Vendor = () => {
     }
   }, [baseUrl]);
 
+  const calculateTotalAmount = () => {
+
+    if(cart){
+      const total = cart.reduce((total, item) => {
+        return total + item.Amount;
+      }, 0);
+  
+      dispatch({ type: "totalAmount", payload: total });
+    }
+
+    return;
+    
+  };
+
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
     //console.log('services')
   }, []);
-  console.log(cart);
 
+  useEffect(() => {
+    calculateTotalAmount();
+  }, [cart]);
+  console.log(cart);
+  console.log(state.totalAmount)
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
