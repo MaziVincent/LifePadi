@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -13,11 +14,13 @@ import '../widgets/section_title.dart';
 import '../widgets/service_card.dart';
 import '../widgets/vendor_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends HookWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final activeCategory = useState(0);
+
     TextStyle? inputTextStyle() {
       return context.textTheme.bodyMedium?.copyWith(
         color: const Color(0xFF878787),
@@ -35,107 +38,140 @@ class HomePage extends StatelessWidget {
       );
     }
 
+    const categories = [
+      'All',
+      'Fashion',
+      'Agro-product',
+      'Stationary',
+      'Pharmaceutical',
+      'Furniture',
+    ];
+
     return Scaffold(
       appBar: _buildHomeAppBar(context.textTheme),
       body: Padding(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Try searchfield package when implementing this
-            TextFormField(
-              cursorColor: kDarkPrimaryColor,
-              decoration: InputDecoration(
-                border: inputBorder(),
-                enabledBorder: inputBorder(),
-                focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
-                hintText: 'Search product',
-                hintStyle: inputTextStyle(),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
-                prefixIcon: const Icon(
-                  IconsaxPlusLinear.search_normal,
-                  size: 20,
-                  color: Color(0xFF878787),
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    // TODO: Open search filter modal
-                  },
-                  child: Icon(
-                    IconsaxPlusBold.filter_search,
-                    size: 24.r,
-                    color: kDarkPrimaryColor,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Try searchfield package when implementing this
+              TextFormField(
+                cursorColor: kDarkPrimaryColor,
+                decoration: InputDecoration(
+                  border: inputBorder(),
+                  enabledBorder: inputBorder(),
+                  focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
+                  hintText: 'Search product',
+                  hintStyle: inputTextStyle(),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+                  prefixIcon: const Icon(
+                    IconsaxPlusLinear.search_normal,
+                    size: 20,
+                    color: Color(0xFF878787),
+                  ),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      // TODO: Open search filter modal
+                    },
+                    child: Icon(
+                      IconsaxPlusBold.filter_search,
+                      size: 24.r,
+                      color: kDarkPrimaryColor,
+                    ),
                   ),
                 ),
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.search,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.12.r,
+                ),
+                onTapOutside: (e) => FocusScope.of(context).unfocus(),
+                onFieldSubmitted: (String? value) {
+                  logger
+                    ..i('Search value:')
+                    ..i(value);
+                },
               ),
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.search,
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: Colors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 0.12.r,
+              16.verticalSpace,
+              const SectionTitle('Stores and Vendors'),
+              16.verticalSpace,
+              Row(
+                children: [
+                  VendorCard(
+                    name: 'McDonald',
+                    image: Assets.images.mcdonald.provider(),
+                  ),
+                  VendorCard(
+                    name: 'Shoprite',
+                    image: Assets.images.shoprite.provider(),
+                  ),
+                  VendorCard(
+                    name: "Domino's Pizza",
+                    image: Assets.images.dominosPizza.provider(),
+                  ),
+                  const VendorCard(
+                    name: 'See more',
+                    icon: IconsaxPlusLinear.element_plus,
+                  ),
+                ].addBetween(10.horizontalSpace),
               ),
-              onTapOutside: (e) => FocusScope.of(context).unfocus(),
-              onFieldSubmitted: (String? value) {
-                logger
-                  ..i('Search value:')
-                  ..i(value);
-              },
-            ),
-            16.verticalSpace,
-            const SectionTitle('Stores and Vendors'),
-            16.verticalSpace,
-            Row(
-              children: [
-                VendorCard(
-                  name: 'McDonald',
-                  image: Assets.images.mcdonald.provider(),
+              16.verticalSpace,
+              HeaderWithSeeAll(
+                title: 'Service Errands',
+                onSeeAllTap: () {
+                  // TODO: Go to errands page
+                },
+              ),
+              16.verticalSpace,
+              Row(
+                children: [
+                  ServiceCard(
+                    name: 'Cooking gas',
+                    image: Assets.icons.gasTank.path,
+                  ),
+                  ServiceCard(
+                    name: 'Food',
+                    image: Assets.icons.restaurant.path,
+                  ),
+                  ServiceCard(
+                    name: 'Petrol/Fuel',
+                    image: Assets.icons.fuelStation.path,
+                  ),
+                  ServiceCard(
+                    name: 'Laundry',
+                    image: Assets.icons.laundry.path,
+                  ),
+                ].addBetween(10.horizontalSpace),
+              ),
+              16.verticalSpace,
+              HeaderWithSeeAll(
+                title: 'Categories',
+                onSeeAllTap: () {
+                  // TODO: Go to categories page
+                },
+              ),
+              13.87.verticalSpace,
+              SizedBox(
+                height: 43.h,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) => CategoryTab(
+                    isActive: index == activeCategory.value,
+                    name: categories[index],
+                    onTap: () => activeCategory.value = index,
+                  ),
+                  separatorBuilder: (context, index) => 6.93.horizontalSpace,
                 ),
-                VendorCard(
-                  name: 'Shoprite',
-                  image: Assets.images.shoprite.provider(),
-                ),
-                VendorCard(
-                  name: "Domino's Pizza",
-                  image: Assets.images.dominosPizza.provider(),
-                ),
-                const VendorCard(
-                  name: 'See more',
-                  icon: IconsaxPlusLinear.element_plus,
-                ),
-              ].addBetween(10.horizontalSpace),
-            ),
-            16.verticalSpace,
-            HeaderWithSeeAll(
-              title: 'Service Errands',
-              onSeeAllTap: () {
-                // TODO: Go to errands page
-              },
-            ),
-            16.verticalSpace,
-            Row(
-              children: [
-                ServiceCard(
-                  name: 'Cooking gas',
-                  image: Assets.icons.gasTank.path,
-                ),
-                ServiceCard(
-                  name: 'Food',
-                  image: Assets.icons.restaurant.path,
-                ),
-                ServiceCard(
-                  name: 'Petrol/Fuel',
-                  image: Assets.icons.fuelStation.path,
-                ),
-                ServiceCard(
-                  name: 'Laundry',
-                  image: Assets.icons.laundry.path,
-                ),
-              ].addBetween(10.horizontalSpace),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -207,6 +243,52 @@ class HomePage extends StatelessWidget {
             ),
             18.horizontalSpace,
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryTab extends StatelessWidget {
+  const CategoryTab({
+    super.key,
+    this.isActive = false,
+    required this.name,
+    required this.onTap,
+  });
+
+  final bool isActive;
+  final String name;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 42.41.h,
+        decoration: ShapeDecoration(
+          color: isActive ? const Color(0x0F8662FF) : Colors.white,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 0.69.r,
+              color: const Color(0xFFBAC2D6),
+            ),
+            borderRadius: BorderRadius.circular(4.16.r),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.8.w),
+        child: Center(
+          child: Text(
+            name.toUpperCase(),
+            style: context.textTheme.bodySmall?.copyWith(
+              color:
+                  isActive ? const Color(0xFFFDAA06) : const Color(0xFF19202D),
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.24,
+            ),
+          ),
         ),
       ),
     );
