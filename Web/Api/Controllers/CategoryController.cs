@@ -134,7 +134,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("vendorCategories/{vendorId}")]
+        [HttpGet("vendorProductCategories/{vendorId}")]
         public async Task<IActionResult> vendorCategories(int vendorId)
         {
             try

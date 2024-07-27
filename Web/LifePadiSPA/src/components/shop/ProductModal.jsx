@@ -5,49 +5,38 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
-import Rice1 from "../../assets/images/rice.jpeg";
+import { useState, useRef } from "react";
+import useCart from "../../hooks/useCart";
 import { Clear } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-const ProductModal = ({ open, handleClose }) => {
-  // const post = usePost();
-  // const { auth } = useAuth();
-  // const url = `${baseUrl}category/create`;
-  // const queryClient = useQueryClient();
+const ProductModal = ({ open, handleClose, product }) => {
+const {cart, setCart} = useCart();
+ const [itemCount, setItemCount] = useState(1)
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   reset,
-  //   formState: { errors },
-  // } = useForm({ mode: "all" });
+ const handleIncrement = () => {
+  setItemCount(itemCount + 1)
+ }
 
-  // const create = async (data) => {
-  //   const formData = new FormData()
+ const handleDecrement = () => {
+  if(itemCount > 1){
+    setItemCount(itemCount - 1)
+  }
+ }
 
-  //   for(const key in data){
-  //     formData.append(key, data[key])
-  //   }
-  //   const response = await post(url, formData, auth?.accessToken);
-  //   //console.log(response);
-  // };
+ const handleCart = (item) => {
+  const exist = cart.find((x) => x.Id === item.Id);
+  if (exist) {
+    toast.error("Product already in cart");
+  } else {
+    const newCart = [...cart, { ...item, Quantity: itemCount }];
+    setCart(newCart);
+    toast.success("Product added to cart");
+    handleClose({ type: "open" });
+    setItemCount(1)
+  }
+ }
 
-  // const { mutate } = useMutation(create, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries("categories");
-  //     toast.success("Category Created Successfully");
-  //     reset();
-  //     handleClose({ type: "open" });
-  //   },
-  // });
-
-  // const handleCreate = (category) => {
-  // //  console.log(data)
-  //   mutate(category);
-  // };
-
-  // console.log(data)
   return (
     <Modal
       open={open}
@@ -62,6 +51,7 @@ const ProductModal = ({ open, handleClose }) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
       >
+        <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
@@ -98,9 +88,9 @@ const ProductModal = ({ open, handleClose }) => {
             <div className=" w-full bg-cover overflow-y-auto overflow-x-hidden justify-center pb-8">
               <div className=" bg-primary p-4 rounded-2xl ">
                 <div className=" w-full h-full">
-                  <div className=" w-full h-60">
+                  <div className=" w-full h-60 shadow-lg border-b-gray">
                     <img
-                      src={Rice1}
+                      src={product.ProductImgUrl}
                       alt=""
                       className=" w-full h-full rounded-md    "
                     />
@@ -108,33 +98,39 @@ const ProductModal = ({ open, handleClose }) => {
                   <div className=" flex justify-between py-3">
                     <h2 className=" flex flex-col">
                       <span className=" text-xl font-normal capitalize text-background">
-                        Rice and chicken
+                        {product.Name}
                       </span>
                       <span className=" text-md text-grayTxt font-light">
-                        Rice, Stew and Chicken
+                       {product.Tag}
                       </span>
                     </h2>
                     <span className=" text-secondary font-semibold">
-                      &#8358;6,500
+                      &#8358;{product.Price}
                     </span>
                   </div>
 
                   <div className=" flex justify-between gap-4 w-full pt-2">
                     <span className=" rounded bg-primary  justify-center py-3 flex gap-1">
-                      <button className=" text-background text-2xl font-bold cursor-pointer shadow-sm hover:bg-graybg px-2 rounded-xl">
+                      <button 
+                      onClick={handleDecrement}
+                      className=" text-background text-2xl font-bold cursor-pointer shadow-sm hover:bg-graybg px-2 rounded-xl">
                         {" "}
                         -
                       </button>
                       <span className=" text-background text-2xl font-bold">
-                        1
+                        {itemCount}
                       </span>
-                      <button className=" text-background text-xl font-bold cursor-pointer shadow-sm hover:bg-graybg px-2 rounded-xl">
+                      <button 
+                      onClick={handleIncrement}
+                      className=" text-background text-xl font-bold cursor-pointer shadow-sm hover:bg-graybg px-2 rounded-xl">
                         +
                       </button>
                     </span>
-                    <button className=" bg-secondary px-4 rounded-lg text-lg cursor-pointer ">
+                    <button 
+                    onClick={() => handleCart(product)}
+                    className=" bg-secondary px-4 rounded-lg text-lg cursor-pointer ">
                       <span className="font-semibold">
-                        add <span>1</span> item to my order
+                        add <span>{itemCount}</span> item to my order
                       </span>
                     </button>
                   </div>

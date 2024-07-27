@@ -11,12 +11,16 @@ import {
   WatchLaterOutlined,
   WestRounded,
 } from "@mui/icons-material";
-import { useState, useReducer } from "react";
-import { Link } from "react-router-dom";
+import { useState, useReducer, useEffect, useCallback } from "react";
+import { Link, useParams } from "react-router-dom";
 import Rice1 from "../../assets/images/rice.jpeg";
 import Cart from "./Cart";
-import useCart from "../../hooks/useCart"
+import useCart from "../../hooks/useCart";
 import ProductModal from "./ProductModal";
+import useFetch from "../../hooks/useFetch";
+import useAuth from "../../hooks/useAuth";
+import baseUrl from "../../api/baseUrl";
+import { useQuery } from "react-query";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -24,6 +28,14 @@ const reducer = (state, action) => {
       return { ...state, open: !state.open };
     case "edit":
       return { ...state, edit: !state.edit };
+    case "error":
+      return { ...state, error: action.payload };
+    case "products":
+      return { ...state, products: action.payload };
+    case "productCategories":
+      return { ...state, productCategories: action.payload };
+    case "product":
+      return { ...state, product: action.payload };
 
     default:
       throw new Error();
@@ -31,13 +43,63 @@ const reducer = (state, action) => {
 };
 
 const Vendor = () => {
-  const [select, setSelect] = useState(false);
+  const { id } = useParams();
+  const fetch = useFetch();
+  const [products, setProducts] = useState(null);
+  const auth = useAuth();
+  const url = `${baseUrl}vendor`;
+  const { cart, setCart } = useCart();
+
   const [state, dispatch] = useReducer(reducer, {
     open: false,
     edit: false,
+    error: "",
+    products: [],
+    productCategories: [],
+    product: {},
   });
-  const {cartState} = useCart()
-  //console.log(cartState)
+
+  const getVendor = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    dispatch({ type: "products", payload: response.data.Products });
+
+    return response.data;
+  };
+
+  const { data, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["vendor", id],
+    queryFn: () => getVendor(`${url}/get/${id}`),
+    //keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+  });
+
+  //console.log(state.products)
+
+  const getProductCategory = useCallback(async () => {
+    try {
+      const result = await fetch(
+        `${baseUrl}category/vendorProductCategories/${id}`
+      );
+      setProducts(result);
+      dispatch({ type: "productCategories", payload: result.data });
+    } catch (error) {
+      console.error("Error fetching product categories:", error);
+      dispatch({
+        type: "error",
+        payload: "Error fetching products. Please try again later.",
+      });
+    }
+  }, [baseUrl]);
+
+  useEffect(() => {
+    getProductCategory();
+    //setVendors(data?.result);
+    //console.log('services')
+  }, []);
+  console.log(cart);
+
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
@@ -57,7 +119,7 @@ const Vendor = () => {
 
             <div className=" border-2 relative w-full rounded-lg h-48 ">
               <img
-                src={Rice1}
+                src={data?.VendorImgUrl}
                 alt=""
                 className=" w-full rounded-lg h-full"
               />
@@ -70,7 +132,7 @@ const Vendor = () => {
             </div>
             <div>
               <div className=" flex justify-between items-center py-2">
-                <h2 className=" text-xl font-bold">Food and Liquor</h2>
+                <h2 className=" text-xl font-bold">{data?.Name}</h2>
                 <span className=" flex items-center gap-1 text-sm text-lightgreen">
                   <span className=" text-grayTxt">4.3</span>{" "}
                   <StarOutlined fontSize="" />
@@ -79,10 +141,10 @@ const Vendor = () => {
 
               <div className=" flex flex-col  ">
                 <span className=" text-gray text-md font-medium">
-                  8:00 am - 10:00 pm
+                  {data?.OpeningHours} - {data?.ClosingHours}
                 </span>
                 <span className=" capitalize text-secondary text-md font-medium">
-                  meat
+                  {data?.Tag}
                 </span>
               </div>
             </div>
@@ -98,76 +160,57 @@ const Vendor = () => {
             </div>
 
             <div className=" flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
-              <Link className=" px-3 py-1 bg-secondary capitalize rounded-lg shadow-md">
+              <Link
+                onClick={() =>
+                  dispatch({ type: "products", payload: data?.Products })
+                }
+                className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md"
+              >
                 All
               </Link>
-              <Link className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md">
-                Jellof rice
-              </Link>
-              <Link className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md">
-                Pepper soup
-              </Link>
-              <Link className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md">
-                Pepper soup
-              </Link>
-              <Link className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md">
-                Pepper soup
-              </Link>
+
+              {state.productCategories.map((cat) => (
+                <Link
+                  key={cat.Id}
+                  onClick={() =>
+                    dispatch({ type: "products", payload: cat.Products })
+                  }
+                  className=" px-3 py-1 bg-secondary capitalize rounded-lg shadow-md "
+                >
+                  {cat.Name}
+                </Link>
+              ))}
             </div>
 
             <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
-              <Link onClick={() => dispatch({type:"open"})}>
-                <div className=" flex justify-between items-center border border-gray rounded-lg p-4 ">
-                  <div className=" flex flex-col">
-                    <h3 className=" text-base font-semibold capitalize">
-                      Suya Spice
-                    </h3>
-                    <p className=" text-sm text-gray">Suya spice</p>
-                    <span className=" text-secondary">&#8358;15,000</span>
+              {state.products.map((prod) => (
+                <Link
+                  key={prod.Id}
+                  onClick={() => {
+                    dispatch({ type: "open" });
+                    dispatch({ type: "product", payload: prod });
+                  }}
+                >
+                  <div className=" flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-darkHover shadow-lg ">
+                    <div className=" flex flex-col">
+                      <h3 className=" text-base font-semibold capitalize">
+                        {prod.Name}
+                      </h3>
+                      <p className=" text-sm text-gray">{prod.Tag}</p>
+                      <span className=" text-secondary">
+                        &#8358;{prod.Price}
+                      </span>
+                    </div>
+                    <div className=" w-20 h-20 rounded-md">
+                      <img
+                        src={prod.ProductImgUrl}
+                        alt=""
+                        className=" w-full h-full rounded-md"
+                      />
+                    </div>
                   </div>
-                  <div className=" w-20 h-20 rounded-md">
-                    <img
-                      src={Rice1}
-                      alt=""
-                      className=" w-full h-full rounded-md"
-                    />
-                  </div>
-                </div>
-              </Link>
-              <Link>
-                <div className=" flex justify-between items-center border border-gray rounded-lg p-4 ">
-                  <div className=" flex flex-col">
-                    <h3 className=" text-base font-semibold capitalize">
-                      Suya Spice
-                    </h3>
-                    <p className=" text-sm text-gray">Suya spice</p>
-                    <span className=" text-secondary">&#8358;15,000</span>
-                  </div>
-                  <div className=" w-20 h-20">
-                    <img
-                      src={Rice1}
-                      alt=""
-                      className=" w-full h-full"
-                    />
-                  </div>
-                </div>
-              </Link>
-              <Link>
-                <div className=" flex justify-between items-center border border-gray rounded-lg p-4 ">
-                  <div className=" flex flex-col">
-                    <h3 className=" text-base font-semibold">Suya Spice</h3>
-                    <p className=" text-sm text-gray">Suya spice</p>
-                    <span className=" text-secondary">&#8358;15,000</span>
-                  </div>
-                  <div className=" w-20 h-20">
-                    <img
-                      src={Rice1}
-                      alt=""
-                      className=" w-full h-full"
-                    />
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
 
             <div className=" hidden w-2/6 stick -top-16 h-lvh p-4 overflow-auto">
@@ -331,47 +374,48 @@ const Vendor = () => {
           </div>
         </div>
         <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-1 py-5 px-2 lg:flex flex-col   items-start justify-center  h-full rounded-lg">
-        
           <div className=" flex justify-between items-center pb-4">
-            <p className=" text-base capitalize text-secondary">
-              Lekki's global suya spot
-            </p>
+            <p className=" text-base capitalize text-secondary">{data?.Name}</p>
           </div>
-          <div className=" border border-dashed border-gray rounded-lg w-full">
-            <div className=" flex justify-between items-center py-2 px-2">
-              <div>
-                <h3 className=" text-sm font-medium">Pack 1</h3>
+          {cart?.map((item, index) => (
+            <div className=" border border-dashed border-gray rounded-lg w-full mb-3">
+              <div className=" flex justify-between items-center py-2 px-2">
+                <div>
+                  <h3 className=" text-sm font-medium">{`Item ${
+                    index + 1
+                  }`}</h3>
+                </div>
+                <div>
+                  <span className=" text-red">
+                    <DeleteOutlined />
+                  </span>
+                </div>
               </div>
-              <div>
-                <span className=" text-red">
-                  <DeleteOutlined />
+              <div className=" flex justify-between items-center py-2 px-2">
+                <p className=" flex flex-col items-start">
+                  <span className=" text-sm">{item.Name}</span>
+                  <span className=" text-gray text-xs">
+                    &#8358;<span>{item.Price}</span>
+                  </span>
+                </p>
+                <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
+                  <span className="shadow-md cursor-pointer rounded-lg px-1 ">
+                    {" "}
+                    <Remove fontSize="" />
+                  </span>
+                  <span className=" text-md">{item.Quantity}</span>
+                  <span className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                    <Add fontSize="" />
+                  </span>
                 </span>
               </div>
+              <div className=" flex justify-between px-2 py-3">
+                <button className=" border border-dashed border-gray px-2 rounded-full">
+                  <span className=" text-sm">Duplicate this pack</span>
+                </button>
+              </div>
             </div>
-            <div className=" flex justify-between items-center py-2 px-2">
-              <p className=" flex flex-col items-center">
-                <span className=" text-sm">Suya spice</span>
-                <span className=" text-gray text-xs">
-                  &#8358;<span>10,000.00</span>
-                </span>
-              </p>
-              <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                <span className=" ">
-                  {" "}
-                  <Remove fontSize="" />
-                </span>
-                <span className=" text-md">1</span>
-                <span className=" ">
-                  <Add fontSize="" />
-                </span>
-              </span>
-            </div>
-            <div className=" flex justify-between px-2 py-3">
-              <button className=" border border-dashed border-gray px-2 rounded-full">
-                <span className=" text-sm">Duplicate this pack</span>
-              </button>
-            </div>
-          </div>
+          ))}
 
           <div className=" w-full">
             <div className=" py-2">
@@ -426,7 +470,7 @@ const Vendor = () => {
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>
-                  Sub total<span>(1 item)</span>
+                  Sub total <span>({cart.length} item)</span>
                 </span>
                 <span className="">&#8358;12,000</span>
               </p>
@@ -476,9 +520,13 @@ const Vendor = () => {
           </button>
         </div> */}
       </div>
-      <Cart  /> 
+      <Cart />
 
-       <ProductModal open={state.open} handleClose={dispatch} /> 
+      <ProductModal
+        open={state.open}
+        handleClose={dispatch}
+        product={state.product}
+      />
     </main>
   );
 };

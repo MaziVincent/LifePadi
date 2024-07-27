@@ -31,7 +31,7 @@ const Shop = () => {
 
   const getVendors = async (url) => {
     const response = await fetch(url, auth.accessToken);
-
+    setVendors(response.data?.result);
     return response.data;
   };
 
@@ -57,7 +57,7 @@ const Shop = () => {
 
   useEffect(() => {
     getVendorCategories();
-    setVendors(data?.result);
+    //setVendors(data?.result);
     //console.log('services')
   }, []);
 
@@ -70,7 +70,7 @@ const Shop = () => {
       <div className=" lg:pl-32  p-4 flex flex-col gap-5">
         <h1 className=" text-2xl font-normal">Explore Categories</h1>
         <div className="categories flex items-center gap-8 overflow-auto w-full ">
-          {vendorCategories.result?.map((category, index) => (
+          {vendorCategories?.result?.map((category, index) => (
             <div
             key={category.Id}
               className={` flex flex-col min-w-32 justify-center items-center ${catBackgrounds[index]} bg-opacity-20 py-4 px-2 rounded-lg shadow-md `}
