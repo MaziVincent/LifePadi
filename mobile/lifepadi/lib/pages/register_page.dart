@@ -253,7 +253,7 @@ class RegisterPage extends HookConsumerWidget {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Assets.images.icons.google.svg(
+                              Assets.icons.google.svg(
                                 width: 16.27.r,
                                 height: 16.27.r,
                               ),

@@ -50,7 +50,7 @@ flutter:
     - assets/animations/
     - assets/images/
     - assets/images/auth-heros/
-    - assets/images/icons/
+    - assets/icons/
 
 flutter_gen:
   output: lib/utils/

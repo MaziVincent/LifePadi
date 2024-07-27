@@ -23,6 +23,28 @@ class $AssetsAnimationsGen {
   List<LottieGenImage> get values => [logo];
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/fuel-station.png
+  AssetGenImage get fuelStation => const AssetGenImage('assets/icons/fuel-station.png');
+
+  /// File path: assets/icons/gas-tank.png
+  AssetGenImage get gasTank => const AssetGenImage('assets/icons/gas-tank.png');
+
+  /// File path: assets/icons/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
+
+  /// File path: assets/icons/laundry.png
+  AssetGenImage get laundry => const AssetGenImage('assets/icons/laundry.png');
+
+  /// File path: assets/icons/restaurant.png
+  AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
+
+  /// List of all assets
+  List<dynamic> get values => [fuelStation, gasTank, google, laundry, restaurant];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -39,9 +61,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
-
-  /// Directory path: assets/images/icons
-  $AssetsImagesIconsGen get icons => const $AssetsImagesIconsGen();
 
   /// File path: assets/images/loading_circles.svg
   SvgGenImage get loadingCircles => const SvgGenImage('assets/images/loading_circles.svg');
@@ -104,20 +123,11 @@ class $AssetsImagesAuthHerosGen {
   List<AssetGenImage> get values => [forgotPassword, login, register, resetPassword, verification];
 }
 
-class $AssetsImagesIconsGen {
-  const $AssetsImagesIconsGen();
-
-  /// File path: assets/images/icons/google.svg
-  SvgGenImage get google => const SvgGenImage('assets/images/icons/google.svg');
-
-  /// List of all assets
-  List<SvgGenImage> get values => [google];
-}
-
 class Assets {
   Assets._();
 
   static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

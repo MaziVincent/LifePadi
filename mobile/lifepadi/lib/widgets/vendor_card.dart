@@ -62,18 +62,15 @@ class VendorCard extends StatelessWidget {
             ),
           ),
           6.5.verticalSpace,
-          Padding(
-            padding: EdgeInsets.only(left: 7.58.r, right: 8.05.r),
-            child: Text(
-              name,
-              style: context.textTheme.bodySmall?.copyWith(
-                color: const Color(0xFF2D4379),
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                overflow: TextOverflow.ellipsis,
-              ),
-              textAlign: TextAlign.center,
+          Text(
+            name,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF2D4379),
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              overflow: TextOverflow.ellipsis,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:remixicon/remixicon.dart';
 
+import '../widgets/header_with_see_all.dart';
 import '../widgets/my_icon_button.dart';
+import '../widgets/section_title.dart';
+import '../widgets/service_card.dart';
 import '../widgets/vendor_card.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final textTheme = Theme.of(context).textTheme;
-
+  Widget build(BuildContext context) {
     TextStyle? inputTextStyle() {
-      return textTheme.bodyMedium?.copyWith(
+      return context.textTheme.bodyMedium?.copyWith(
         color: const Color(0xFF878787),
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,
@@ -30,13 +30,13 @@ class HomePage extends ConsumerWidget {
       return OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.r),
         borderSide: BorderSide(
-          color: color ?? const Color(0xFF878787),
+          color: color ?? const Color(0xFFD6D6D6),
         ),
       );
     }
 
     return Scaffold(
-      appBar: _buildHomeAppBar(textTheme),
+      appBar: _buildHomeAppBar(context.textTheme),
       body: Padding(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
         child: Column(
@@ -47,6 +47,7 @@ class HomePage extends ConsumerWidget {
               cursorColor: kDarkPrimaryColor,
               decoration: InputDecoration(
                 border: inputBorder(),
+                enabledBorder: inputBorder(),
                 focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
                 hintText: 'Search product',
                 hintStyle: inputTextStyle(),
@@ -70,7 +71,7 @@ class HomePage extends ConsumerWidget {
               ),
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
-              style: textTheme.bodyLarge?.copyWith(
+              style: context.textTheme.bodyLarge?.copyWith(
                 color: Colors.black,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
@@ -84,14 +85,7 @@ class HomePage extends ConsumerWidget {
               },
             ),
             16.verticalSpace,
-            Text(
-              'Stores and Vendors',
-              style: textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF0F0F0F),
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            const SectionTitle('Stores and Vendors'),
             16.verticalSpace,
             Row(
               children: [
@@ -110,6 +104,42 @@ class HomePage extends ConsumerWidget {
                 const VendorCard(
                   name: 'See more',
                   icon: IconsaxPlusLinear.element_plus,
+                ),
+              ].addBetween(10.horizontalSpace),
+            ),
+            16.verticalSpace,
+            HeaderWithSeeAll(
+              title: 'Service Errands',
+              onSeeAllTap: () {
+                // TODO: Go to errands page
+              },
+            ),
+            16.verticalSpace,
+            Row(
+              children: [
+                ServiceCard(
+                  name: 'Cooking gas',
+                  outerColor: const Color(0xFFE7F1FE),
+                  innerColor: const Color(0xFFB2D5FF),
+                  image: Assets.icons.gasTank.path,
+                ),
+                ServiceCard(
+                  name: 'Food',
+                  outerColor: const Color(0xFFFFE9E9),
+                  innerColor: const Color(0xFFFFB2B2),
+                  image: Assets.icons.restaurant.path,
+                ),
+                ServiceCard(
+                  name: 'Petrol/Fuel',
+                  outerColor: const Color(0xFFE5FFED),
+                  innerColor: const Color(0xFFB2FFD1),
+                  image: Assets.icons.fuelStation.path,
+                ),
+                ServiceCard(
+                  name: 'Laundry',
+                  outerColor: const Color(0xFFFEEDD5),
+                  innerColor: const Color(0xFFFFF2B2),
+                  image: Assets.icons.laundry.path,
                 ),
               ].addBetween(10.horizontalSpace),
             ),
