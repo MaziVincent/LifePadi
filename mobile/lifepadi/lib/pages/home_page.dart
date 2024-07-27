@@ -119,26 +119,18 @@ class HomePage extends StatelessWidget {
               children: [
                 ServiceCard(
                   name: 'Cooking gas',
-                  outerColor: const Color(0xFFE7F1FE),
-                  innerColor: const Color(0xFFB2D5FF),
                   image: Assets.icons.gasTank.path,
                 ),
                 ServiceCard(
                   name: 'Food',
-                  outerColor: const Color(0xFFFFE9E9),
-                  innerColor: const Color(0xFFFFB2B2),
                   image: Assets.icons.restaurant.path,
                 ),
                 ServiceCard(
                   name: 'Petrol/Fuel',
-                  outerColor: const Color(0xFFE5FFED),
-                  innerColor: const Color(0xFFB2FFD1),
                   image: Assets.icons.fuelStation.path,
                 ),
                 ServiceCard(
                   name: 'Laundry',
-                  outerColor: const Color(0xFFFEEDD5),
-                  innerColor: const Color(0xFFFFF2B2),
                   image: Assets.icons.laundry.path,
                 ),
               ].addBetween(10.horizontalSpace),

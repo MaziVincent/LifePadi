@@ -6,17 +6,16 @@ class ServiceCard extends StatelessWidget {
   const ServiceCard({
     super.key,
     required this.name,
-    required this.outerColor,
-    required this.innerColor,
     required this.image,
   });
 
   final String name;
-  final Color outerColor, innerColor;
   final String image;
 
   @override
   Widget build(BuildContext context) {
+    final (:outerColor, :innerColor) = _generateColors();
+
     return SizedBox(
       height: 100.13.r,
       width: 73.63.r,
@@ -61,5 +60,31 @@ class ServiceCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _colorFromHash({
+    required double brightness,
+    required double saturation,
+  }) {
+    final hash = name.hashCode;
+    final hue = (hash % 360).toDouble(); // Base hue from 0 to 360
+    return HSVColor.fromAHSV(1, hue, saturation, brightness).toColor();
+  }
+
+  ({Color outerColor, Color innerColor}) _generateColors() {
+    const baseBrightness = 1.0;
+    const baseSaturation = 0.2;
+
+    // Generate outer and inner colors by slightly varying the hue
+    final outerColor = _colorFromHash(
+      brightness: baseBrightness,
+      saturation: baseSaturation,
+    );
+    final innerColor = _colorFromHash(
+      brightness: baseBrightness - 0.05,
+      saturation: baseSaturation + 0.2,
+    );
+
+    return (outerColor: outerColor, innerColor: innerColor);
   }
 }
