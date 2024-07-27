@@ -340,5 +340,36 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
             }
         }
+
+        public async Task<PagedList<ProductDto>> getVendorProducts(int id, SearchPaging props)
+        {
+            try
+            {
+                IQueryable<ProductDto> productList = Enumerable.Empty<ProductDto>().AsQueryable();
+                if (props.SearchString is null)
+                {
+                    var products = await _dbContext!.Products
+                        .Where(p => p.VendorId == id)
+                        .Include(p => p.Category)
+                        .OrderByDescending(p => p.CreatedAt)
+                        .ToListAsync();
+                    productList = productList.Concat(_mapper.Map<List<ProductDto>>(products));
+                    var result = PagedList<ProductDto>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                var products1 = await _dbContext!.Products
+                    .Where(p => p.VendorId == id)
+                    .Include(p => p.Category)
+                    .Where(p => p.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToListAsync();
+                productList = productList.Concat(_mapper.Map<List<ProductDto>>(products1));
+                var returned = PagedList<ProductDto>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                return returned;
+            }catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
     }
 }

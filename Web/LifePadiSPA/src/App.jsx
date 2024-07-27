@@ -25,6 +25,8 @@ import Page404 from './components/Page404'
 import ShopLayout from './components/shop/ShopLayout'
 import Shop from './components/shop/Shop'
 import Vendor from './components/shop/Vendor'
+import VendorDashboard from './components/vendor/VendorDashboard'
+import VendorLayout from './components/vendor/VendorLayout'
 
 
 function App() {
@@ -72,6 +74,10 @@ function App() {
       </Route>
       <Route path='/rider' element={<RiderLayout />}>
         <Route index element={<RiderdDashboard />} />
+      </Route>
+      
+      <Route path='/vendor' element={<VendorLayout />}>
+        <Route index element={<VendorDashboard />} />
       </Route>
 
 
