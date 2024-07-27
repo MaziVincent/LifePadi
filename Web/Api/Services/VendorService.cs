@@ -114,7 +114,9 @@ namespace Api.Services
         {
             try
             {
-                var vendor = await _dbContext!.Vendors.Where(v => v.Id == id).Include(v => v.Addresses!.Where(a => a.UserId == id)).FirstOrDefaultAsync();
+                var vendor = await _dbContext!.Vendors.Where(v => v.Id == id)
+                                .Include(p => p.Products)
+                                .Include(v => v.Addresses!.Where(a => a.UserId == id)).FirstOrDefaultAsync();
                 if (vendor == null) return null!;
                 var address = vendor.Addresses!.FirstOrDefault();
                 if (address == null)
@@ -131,8 +133,9 @@ namespace Api.Services
                         ServiceId = vendor.ServiceId,
                         VendorCategoryId = vendor.VendorCategoryId,
                         ContactAddress = vendor.ContactAddress,
-                        VendorImgUrl = vendor.VendorImgUrl
-                       
+                        VendorImgUrl = vendor.VendorImgUrl,
+                        Products = _mapper.Map<List<ProductDtoLite>>(vendor.Products)
+
                     };
 
 
@@ -159,6 +162,7 @@ namespace Api.Services
                     PostalCode = address.PostalCode,
                     Longitude = address.Longitude,
                     Latitude = address.Latitude,
+                    Products = _mapper.Map<List<ProductDtoLite>>(vendor.Products)
                 };
 
 

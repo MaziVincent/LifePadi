@@ -18,7 +18,7 @@ const useFetch = () => {
       });
 
       controller.abort();
-
+      
       return  {data:response.data} ;
       // console.log(data)
     } catch (error) {

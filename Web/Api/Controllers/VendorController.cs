@@ -8,18 +8,13 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VendorController : ControllerBase
+    public class VendorController(IVendor ivendor, IMapper mapper) : ControllerBase
     {
-        private readonly IVendor _ivendor;
-        private readonly IMapper _mapper;
-        public VendorController(IVendor ivendor, IMapper mapper) { 
-            _ivendor = ivendor;
-            _mapper = mapper;
-        }
+        private readonly IVendor _ivendor = ivendor;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet("get/{id}")]
-        public async Task<IActionResult> get(int id)
-        {
+        public async Task<IActionResult> get(int id){
             try
             {
                 var vendor = await _ivendor.getAsync(id);

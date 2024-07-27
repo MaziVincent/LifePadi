@@ -53,6 +53,7 @@ namespace Api.DTO
         public string? VendorImgUrl { get; set; }
         public int? ServiceId { get; set; }
         public int? VendorCategoryId {get; set;}
+        public List<ProductDtoLite>? Products { get; set; }
     }
 
     public class AuthVendorDtoLite

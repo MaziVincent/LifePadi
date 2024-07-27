@@ -133,5 +133,18 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("vendorProductCategories/{vendorId}")]
+        public async Task<IActionResult> vendorCategories(int vendorId)
+        {
+            try
+            {
+                var categories = await _icategory.vendorCategories(vendorId);
+                return Ok(categories);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
