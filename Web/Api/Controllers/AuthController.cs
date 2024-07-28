@@ -39,7 +39,10 @@ namespace Api.Controllers
                     Type = user.Type
                 };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
+                var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
                 var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
+                dbUser!.RefreshToken = refreshToken;
+                await _context.SaveChangesAsync();
                 //put refreshToken in a cookie
                 Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
                 {
