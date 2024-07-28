@@ -108,11 +108,30 @@ const Vendor = () => {
     return;
   };
 
-  const handleIncrement = (item) => {
-    item.Quantity = item.Quantity + 1;
+  const handleCartIncrement = (item) => {
 
-    console.log(item);
+    setCart(cart.map((prod)=>(
+      prod.Id === item.Id ? {...prod, Quantity: prod.Quantity + 1, Amount : (item.Quantity + 1) * item.Price} : prod
+    )));
+
+    calculateTotalAmount();
+
+   // console.log(item);
   };
+
+  const handleCartDecrement = (item) => {
+
+    if(item.Quantity > 1){
+      setCart(cart.map((prod) => (
+        prod.Id === item.Id ? {...prod, Quantity : prod.Quantity - 1, Amount : (item.Quantity + 1) * item.Price } : prod
+      )))
+
+      calculateTotalAmount();
+    }
+
+    return;
+    
+  }
 
   useEffect(() => {
     getProductCategory();
@@ -132,7 +151,7 @@ const Vendor = () => {
           <div className=" flex flex-col  w-full justify-center gap-5 px-2">
             <div>
               <Link
-                to="/store/restaurant"
+                to="/shop"
                 className="text-gray flex gap-2 items-center"
               >
                 <span>
@@ -403,7 +422,7 @@ const Vendor = () => {
             <p className=" text-base capitalize text-secondary">{data?.Name}</p>
           </div>
           {cart?.map((item, index) => (
-            <div className=" border border-dashed border-gray rounded-lg w-full mb-3">
+            <div key={item.Id} className=" border border-dashed border-gray rounded-lg w-full mb-3">
               <div className=" flex justify-between items-center py-2 px-2">
                 <div>
                   <h3 className=" text-sm font-medium">{`Item ${
@@ -424,13 +443,15 @@ const Vendor = () => {
                   </span>
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                  <button className="shadow-md cursor-pointer rounded-lg px-1 ">
+                  <button 
+                  onClick={()=> handleCartDecrement(item)}
+                  className="shadow-md cursor-pointer rounded-lg px-1 ">
                     {" "}
                     <Remove fontSize="" />
                   </button>
                   <span className=" text-md">{item.Quantity}</span>
                   <button 
-                  //onClick={handleIncrement(item)}
+                  onClick={()=>handleCartIncrement(item)}
                   className=" shadow-lg cursor-pointer rounded-lg px-1 ">
                     <Add fontSize="" />
                   </button>

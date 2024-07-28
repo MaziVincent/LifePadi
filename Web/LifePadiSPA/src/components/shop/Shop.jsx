@@ -1,16 +1,15 @@
 import {
   FavoriteBorder,
   StarOutlined,
-  StoreRounded,
   WatchLaterOutlined,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import Rice1 from "../../assets/images/rice.jpeg";
 import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
+import CategorySkeleton from "../shared/CategorySkeleton";
 
 const catBackgrounds = [
   "bg-lightcyan",
@@ -69,27 +68,30 @@ const Shop = () => {
     <div className="flex flex-col dark:bg-darkBg dark:text-primary gap-4 ">
       <div className=" lg:pl-32  p-4 flex flex-col gap-5">
         <h1 className=" text-2xl font-normal">Explore Categories</h1>
-        <div className="categories flex items-center gap-8 overflow-auto w-full ">
-          {vendorCategories?.result?.map((category, index) => (
-            <div
-            key={category.Id}
-              className={` flex flex-col min-w-32 justify-center items-center ${catBackgrounds[index]} bg-opacity-20 py-4 px-2 rounded-lg shadow-md `}
-              onClick={() => handleVendors(category.Vendors)}
+        {isLoading && <div className="flex items-center gap-8 w-full"> <CategorySkeleton /> <CategorySkeleton /> </div>}
+        {isSuccess && (
+          <div className="categories flex items-center gap-8 overflow-auto w-full ">
+            {vendorCategories?.result?.map((category, index) => (
+              <div
+                key={category.Id}
+                className={` flex flex-col min-w-32 justify-center items-center ${catBackgrounds[index]} bg-opacity-20 py-4 px-2 rounded-lg shadow-md `}
+                onClick={() => handleVendors(category.Vendors)}
+              >
+                <Link className="flex flex-col items-center cursor-pointer">
+                  <span className="w-20">
+                    <img
+                      src={category.IconUrl}
+                      className="w-full"
+                      alt="category icon"
+                    />
+                  </span>
+                  <p>{category.Name} </p>
+                </Link>
+              </div>
+            ))}
             
-            >
-              <Link className="flex flex-col items-center cursor-pointer">
-                <span className="w-20">
-                  <img
-                    src={category.IconUrl}
-                    className="w-full"
-                    alt="category icon"
-                  />
-                </span>
-                <p>{category.Name} </p>
-              </Link>
-            </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="p-4 lg:pl-32 flex flex-col">
@@ -98,7 +100,10 @@ const Shop = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 w-full p-1 max-w-7xl">
           {vendors.map((vendor) => (
-            <div key={vendor.Id} className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg  hover:shadow-md">
+            <div
+              key={vendor.Id}
+              className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg  hover:shadow-md"
+            >
               <Link
                 to={`/shop/vendor/${vendor.Id}`}
                 className=" w-full p-2"
@@ -130,7 +135,6 @@ const Shop = () => {
                     </span>
                   </div>
                   <div className=" flex flex-row gap-4 py-2 text-secondary">
-                    
                     <span className=" uppercase  text-sm font-medium">
                       {vendor.Tag}
                     </span>
@@ -139,7 +143,6 @@ const Shop = () => {
               </Link>
             </div>
           ))}
-
         </div>
         <div className=" w-full flex justify-center p-4">
           <button className=" py-2 px-2 border border-background rounded-lg">
