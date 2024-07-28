@@ -36,6 +36,7 @@ namespace Api.Controllers
                 {
                     Id = user.Id,
                     Email = user.Email,
+                    Type = user.Type
                 };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
                 var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
@@ -69,7 +70,7 @@ namespace Api.Controllers
                 {
                     throw new Exceptions.ServiceException("Invalid email or password");
                 }
-                
+                var Type = new StripType().Strip(user.GetType().ToString());
                 return new LoggedInUserDto
                 {
                     Id = user.Id,
@@ -77,12 +78,62 @@ namespace Api.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ContactAddress = user.ContactAddress,
+                    Type = Type
                 };
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
+        }
+
+        [HttpGet("refreshToken")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            try
+            {
+                var refreshToken = Request.Cookies["refreshToken"];
+                if (string.IsNullOrEmpty(refreshToken))
+                {
+                    return BadRequest("Invalid refresh token");
+                }
+                var genTokenDTO = new GenerateToken(_config).validateRefreshToken(refreshToken);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == genTokenDTO!.Id);
+                if (user == null)
+                {
+                    return BadRequest("User not found");
+                }
+                var loggedInUser = new LoggedInUserDto
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ContactAddress = user.ContactAddress,
+                    Type = genTokenDTO!.Type
+                };
+                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
+                loggedInUser.AccessToken = accessToken;
+                return Ok(loggedInUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("LogOut")]
+        public IActionResult LogOut()
+        {
+            Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Domain = "localhost"
+
+            });
+            return Ok("Logout Successfully");
         }
     }
 }
