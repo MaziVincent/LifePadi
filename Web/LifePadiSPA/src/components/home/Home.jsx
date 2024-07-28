@@ -1,4 +1,57 @@
+import { useState, useEffect } from "react";
+import getLocation from "../../services/getLocation";
+import GOOGLE_API_KEY from "../../api/googleApiKey";
+
 const Home = () => {
+  
+  // const [location, setLocation] = useState(null);
+  // const [address, setAddress] = useState(null);
+  // const [error, setError] = useState(null);
+
+  // const getLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const { latitude, longitude } = position.coords;
+  //         setLocation({longitude, latitude });
+  //         setError(null);
+  //         getAddress(longitude, latitude)
+  //       },
+  //       (err) => {
+  //         setError(err.message);
+  //       }
+  //     );
+  //   } else {
+  //     setError("Geolocation is not supported by this browser.");
+  //   }
+  // };
+
+  // const getAddress = async ( longitude, latitude) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`
+  //     );
+  //     const data = await response.json();
+  //    console.log(data)
+  //     if (data.status === 'OK') {
+  //       const address = data.results[0].formatted_address;
+  //       setAddress(address);
+  //     } else {
+  //       setError('Unable to retrieve address');
+  //     }
+  //   } catch (error) {
+  //     setError('Failed to fetch address');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getLocation()
+
+  // },[])
+
+  // console.log(location)
+  // console.log(address)
+
   return (
     <section class="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-md text-center lg:py-16 lg:px-12">

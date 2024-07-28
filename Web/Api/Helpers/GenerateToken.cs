@@ -26,7 +26,7 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    // new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -56,13 +56,13 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    // new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(Claims),
-                    Expires = DateTime.Now.AddDays(1),
+                    Expires = DateTime.Now.AddDays(2),
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();

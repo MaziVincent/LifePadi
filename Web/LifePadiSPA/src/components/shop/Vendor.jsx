@@ -36,8 +36,8 @@ const reducer = (state, action) => {
       return { ...state, productCategories: action.payload };
     case "product":
       return { ...state, product: action.payload };
-    case "totalAmount":
-      return { ...state, totalAmount: action.payload };
+    case "subTotal":
+      return { ...state, subTotal: action.payload };
 
     default:
       throw new Error();
@@ -59,7 +59,7 @@ const Vendor = () => {
     products: [],
     productCategories: [],
     product: {},
-    totalAmount: 0,
+    subTotal: 0,
   });
 
   const getVendor = async (url) => {
@@ -97,18 +97,41 @@ const Vendor = () => {
   }, [baseUrl]);
 
   const calculateTotalAmount = () => {
-
-    if(cart){
+    if (cart) {
       const total = cart.reduce((total, item) => {
         return total + item.Amount;
       }, 0);
-  
-      dispatch({ type: "totalAmount", payload: total });
+
+      dispatch({ type: "subTotal", payload: total });
+    }
+
+    return;
+  };
+
+  const handleCartIncrement = (item) => {
+
+    setCart(cart.map((prod)=>(
+      prod.Id === item.Id ? {...prod, Quantity: prod.Quantity + 1, Amount : (item.Quantity + 1) * item.Price} : prod
+    )));
+
+    calculateTotalAmount();
+
+   // console.log(item);
+  };
+
+  const handleCartDecrement = (item) => {
+
+    if(item.Quantity > 1){
+      setCart(cart.map((prod) => (
+        prod.Id === item.Id ? {...prod, Quantity : prod.Quantity - 1, Amount : (item.Quantity + 1) * item.Price } : prod
+      )))
+
+      calculateTotalAmount();
     }
 
     return;
     
-  };
+  }
 
   useEffect(() => {
     getProductCategory();
@@ -120,7 +143,7 @@ const Vendor = () => {
     calculateTotalAmount();
   }, [cart]);
   console.log(cart);
-  console.log(state.totalAmount)
+  //console.log(state.subTotal);
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
@@ -128,7 +151,7 @@ const Vendor = () => {
           <div className=" flex flex-col  w-full justify-center gap-5 px-2">
             <div>
               <Link
-                to="/store/restaurant"
+                to="/shop"
                 className="text-gray flex gap-2 items-center"
               >
                 <span>
@@ -399,7 +422,7 @@ const Vendor = () => {
             <p className=" text-base capitalize text-secondary">{data?.Name}</p>
           </div>
           {cart?.map((item, index) => (
-            <div className=" border border-dashed border-gray rounded-lg w-full mb-3">
+            <div key={item.Id} className=" border border-dashed border-gray rounded-lg w-full mb-3">
               <div className=" flex justify-between items-center py-2 px-2">
                 <div>
                   <h3 className=" text-sm font-medium">{`Item ${
@@ -420,14 +443,18 @@ const Vendor = () => {
                   </span>
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                  <span className="shadow-md cursor-pointer rounded-lg px-1 ">
+                  <button 
+                  onClick={()=> handleCartDecrement(item)}
+                  className="shadow-md cursor-pointer rounded-lg px-1 ">
                     {" "}
                     <Remove fontSize="" />
-                  </span>
+                  </button>
                   <span className=" text-md">{item.Quantity}</span>
-                  <span className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                  <button 
+                  onClick={()=>handleCartIncrement(item)}
+                  className=" shadow-lg cursor-pointer rounded-lg px-1 ">
                     <Add fontSize="" />
-                  </span>
+                  </button>
                 </span>
               </div>
               <div className=" flex justify-between px-2 py-3">
@@ -493,7 +520,7 @@ const Vendor = () => {
                 <span>
                   Sub total <span>({cart.length} item)</span>
                 </span>
-                <span className="">&#8358;12,000</span>
+                <span className="">&#8358;{state.subTotal}</span>
               </p>
             </div>
             <div className=" py-2">
