@@ -1,24 +1,33 @@
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 
 const SideNav = ({aside}) => {
-    const links = [
+  const [pagePath, setPagePath] = useState("/rider")
+  let links = []
+  if(window.location.pathname === "/rider"){
+    links = [
+      {
+        to: '/rider',
+        icon: 'line-icon-Pie-Chart3 text-2xl hover:text-green-800',
+        text: 'Overview',
+      },
+    ]
+  }
+  else if(window.location.pathname === "/vendor"){
+    links = [
         {
-        to: "/admin",
-        icon: "line-icon-Pie-Chart3 text-2xl hover:text-green-800",
-        text: "Overview",
-        },
-        {
-        to: "/admin/service",
+        to: "/vendor",
         icon: "line-icon-Settings-Window text-2xl hover:text-green-800",
         text: "Services",
         },
         {
-        to:"/admin/category",
+        to:"/vendor/addProduct",
         icon:"line-icon-Align-JustifyAll text-2xl hover:text-green-800",
         text:"Categories"
         }
     ]
+  }
   return (
     <div
       className={`fixed top-0 left-0 z-40 lg:w-58 h-screen pt-8 pb-10 dark:bg-darkMenu text-primary transition-transform border-r border-darkMenu md:translate-x-0 ${

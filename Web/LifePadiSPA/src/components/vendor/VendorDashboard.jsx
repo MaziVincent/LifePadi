@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 // import FadeMenu from './FadeMenu'
 import CircularProgress from '@mui/material/CircularProgress'
 import { vendorProductsUrl } from './vendorUri/VendorURI'
+import VendorActions from './VendorActions'
 
 const VendorDashboard = () => {
   const fetch = useFetch()
@@ -15,7 +16,7 @@ const VendorDashboard = () => {
   let pageSize = 5
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
-  const vendorId = 3
+  const vendorId = 2
   const vendorProductsURL = vendorProductsUrl.replace(':id', vendorId)
 
   const getVendorProducts = async (url) => {
@@ -39,6 +40,10 @@ const VendorDashboard = () => {
     refetchOnMount: 'always',
   })
 
+  if (vendorProductsSuccess) {
+    console.log(vendorProducts);
+  }
+  console.log(window.location.pathname);
   const setPage = (i) => {
     if (i > 0 && i <= totalPage) {
       page = i
@@ -61,9 +66,15 @@ const VendorDashboard = () => {
         <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 '>
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>4M+</dt>
+              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+                {vendorProductsIsLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  vendorProducts && vendorProducts.dataList.TotalCount + 'M+'
+                )}
+              </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
-                Total Deliveries
+                Total Products
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
@@ -107,7 +118,7 @@ const VendorDashboard = () => {
                       </svg>
                     </div>
                     <input
-                    //   onKeyUp={(e) => setSearch(e.target.value)}
+                      //   onKeyUp={(e) => setSearch(e.target.value)}
                       type='text'
                       id='simple-search'
                       className='bg-gray-50 border border-gray-300 text-darkBg text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
@@ -248,25 +259,22 @@ const VendorDashboard = () => {
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                   <tr>
                     <th scope='col' className='px-4 py-3'>
-                      Pick Up Address
+                      Category Name
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Delivery Fee
+                      Product Name
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Delivery Status
+                      Price
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Order Status
+                      Tag
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      IsDelivered
+                      Description
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Customer Name
-                    </th>
-                    <th scope='col' className='px-4 py-3'>
-                      Customer Phone
+                      Status
                     </th>
                     <th scope='col' className='px-4 py-3'>
                       <span className=''>Actions</span>
@@ -274,7 +282,7 @@ const VendorDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {riderDeliveriesLoading ? (
+                  {vendorProductsIsLoading ? (
                     <tr className=''>
                       <td colSpan={6} className=''>
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
@@ -282,40 +290,30 @@ const VendorDashboard = () => {
                         </div>
                       </td>
                     </tr>
-                  ) : (
-                    riderDeliveries.result.map((delivery) => (
+                  ) : (vendorProductsSuccess && vendorProducts.result.map((product) => (
                       <tr
                         className='border-b dark:border-gray-700'
-                        key={delivery.Id}
+                        key={product.Id}
                       >
                         <th
                           scope='row'
                           className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                         >
-                          {delivery.PickupAddress}
+                          {product.Category.Name}
                         </th>
+                        <td className='px-4 py-3'>{product.Name}</td>
+                        <td className='px-4 py-3'>&#x20A6; {product.Price}</td>
+                        <td className='px-4 py-3'>{product.Tag}</td>
                         <td className='px-4 py-3'>
-                          &#x20A6; {delivery.DeliveryFee}
+                          {product.Description.slice(0, 50)}...
                         </td>
-                        <td className='px-4 py-3'>{delivery.Status}</td>
-                        <td className='px-4 py-3'>{delivery.Order.Status}</td>
-                        <td className='px-4 py-3'>
-                          {delivery.Order?.IsDelivered ? 'True' : 'False'}
-                        </td>
-                        <td className='px-4 py-3'>
-                          {delivery.Order.Customer.LastName +
-                            ' ' +
-                            delivery.Order.Customer.FirstName}
-                        </td>
-                        <td className='px-4 py-3'>
-                          {delivery.Order.Customer.PhoneNumber}
-                        </td>
+                        <td className={`px-4 py-3 ${product.Status ? 'text-lightgreen' : 'text-red'}`}>{product.Status ? 'Active' : 'Not Active'}</td>
                         <td className='px-4 py-3 flex items-center justify-end dropdown'>
-                          <FadeMenu delivery={delivery} />
+                          {<VendorActions product={product} />}
                         </td>
                       </tr>
                     ))
-                  )} */}
+                  )}
                 </tbody>
               </table>
             </div>
