@@ -1,19 +1,37 @@
 import ResponsiveLogo from "../shared/ResponsiveLogo";
 import {
   ExpandMore,
-  HomeOutlined,
   LocationOn,
   PersonOutlined,
-  SearchOffOutlined,
-  SearchOutlined,
-  ShoppingCart,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCart from "../../hooks/useCart";
+import useAuth from "../../hooks/useAuth";
+import UserLogin from "../auth/UserLogin";
+import { useReducer } from "react";
+
+
+const reducer = (state, action)=>{
+
+  switch(action.type){
+    case "login" :
+      return {...state, login : !state.login }
+    default:
+      throw new Error();
+  }
+
+}
 
 const ShopHeader = () => {
   const {cartState, setCartState} = useCart()
+  const {auth} = useAuth()
+  const navigate = useNavigate()
+
+  const [state, dispatch] = useReducer(reducer, {
+    login : false
+  })
+
   return (
     <div className=" dark:bg-darkMenu dark:text-primary  fixed top-0 z-40 bg-primary w-full p-4 lg:px-28 shadow-md ">
       <div className=" flex justify-between">
@@ -38,7 +56,11 @@ const ShopHeader = () => {
                 <ShoppingCartOutlined />
               </div>
             </span>
-            <Link className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
+            <Link 
+            onClick={
+              auth.user ? ()=> navigate("/user") : ()=>dispatch({type:'login'})
+            }
+            className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
               <span className=" text-primary">
                 <PersonOutlined />
               </span>
@@ -46,6 +68,7 @@ const ShopHeader = () => {
           </div>
         </div>
       </div>
+      <UserLogin open={state.login} handleClose={dispatch} />
       {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">
         <span className=" absolute z-10 top-2 left-1">
           <SearchOutlined />
@@ -58,18 +81,7 @@ const ShopHeader = () => {
           />
         </div>
       </div> */}
-      {/* <div className=" relative max-lg:w-full hidden max-lg:block py-2">
-        <span className=" absolute z-10 top-3 left-0">
-          <SearchOutlined />
-        </span>
-        <div className=" w-full block">
-          <input
-            type="text"
-            placeholder="search the store"
-            className=" w-full pl-6 py-2 relative z-0 bg-primary focus:outline-secondary"
-          />
-        </div>
-      </div> */}
+     
     </div>
   );
 };

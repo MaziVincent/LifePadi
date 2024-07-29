@@ -26,7 +26,7 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    // new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -56,7 +56,7 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    // new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -74,6 +74,37 @@ namespace Api.Helpers
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public GenTokenDto? validateRefreshToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_config!.GetSection("Jwt:Key").Value!);
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var genTokenDTO = new GenTokenDto
+                {
+                    Id = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value),
+                    Email = jwtToken.Claims.First(x => x.Type == "email").Value,
+                    Type = jwtToken.Claims.First(x => x.Type == "role").Value,
+                };
+
+                return genTokenDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }
