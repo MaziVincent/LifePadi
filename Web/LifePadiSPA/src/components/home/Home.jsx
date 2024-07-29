@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import getLocation from "../../services/getLocation";
-import GOOGLE_API_KEY from "../../api/googleApiKey";
+//import getLocation from "../../services/getLocation";
+//import GOOGLE_API_KEY from "../../api/googleApiKey";
 
 const Home = () => {
-  
+
   // const [location, setLocation] = useState(null);
   // const [address, setAddress] = useState(null);
   // const [error, setError] = useState(null);

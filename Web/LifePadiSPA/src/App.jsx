@@ -27,6 +27,7 @@ import Shop from './components/shop/Shop'
 import Vendor from './components/shop/Vendor'
 import VendorDashboard from './components/vendor/VendorDashboard'
 import VendorLayout from './components/vendor/VendorLayout'
+import UserDashboard from './components/customer/UserDashboard'
 
 
 function App() {
@@ -47,8 +48,10 @@ function App() {
         <Route index element={<Shop />} />
       </Route>
 
-
-
+      
+      
+      {/* USER ROUTES */}
+      <Route path='/user' element={<UserDashboard />} />
 
 
       {/*PROTECTED ROUTES ADMIN */}
