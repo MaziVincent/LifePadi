@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 /// Onboarding Feature information.
@@ -31,7 +32,7 @@ Future<bool?> showToast(
 
 extension WidgetIterableExtension on Iterable<Widget> {
   /// Add a specified widget between each pair of widgets.
-  List<Widget> addBetween(Widget child) {
+  List<Widget> separatedBy(Widget child) {
     final iterator = this.iterator;
     final result = <Widget>[];
 
@@ -50,3 +51,9 @@ extension WidgetIterableExtension on Iterable<Widget> {
 extension TextThemeExtension on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
 }
+
+final formatCurrency = NumberFormat.currency(
+  locale: 'en_US',
+  symbol: '\u20a6', // naira unicode character
+  decimalDigits: 0,
+);

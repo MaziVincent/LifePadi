@@ -51,6 +51,9 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/auth-heros
   $AssetsImagesAuthHerosGen get authHeros => const $AssetsImagesAuthHerosGen();
 
+  /// File path: assets/images/bnb-blender.png
+  AssetGenImage get bnbBlender => const AssetGenImage('assets/images/bnb-blender.png');
+
   /// File path: assets/images/deliver-package-to-lady.png
   AssetGenImage get deliverPackageToLady =>
       const AssetGenImage('assets/images/deliver-package-to-lady.png');
@@ -58,12 +61,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/dominos-pizza.png
   AssetGenImage get dominosPizza => const AssetGenImage('assets/images/dominos-pizza.png');
 
+  /// File path: assets/images/greeny-wheel.svg
+  SvgGenImage get greenyWheel => const SvgGenImage('assets/images/greeny-wheel.svg');
+
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
-
-  /// File path: assets/images/loading_circles.svg
-  SvgGenImage get loadingCircles => const SvgGenImage('assets/images/loading_circles.svg');
 
   /// File path: assets/images/logo-dark.png
   AssetGenImage get logoDark => const AssetGenImage('assets/images/logo-dark.png');
@@ -77,6 +80,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/mcdonald.png
   AssetGenImage get mcdonald => const AssetGenImage('assets/images/mcdonald.png');
 
+  /// File path: assets/images/orangey-wheel.svg
+  SvgGenImage get orangeyWheel => const SvgGenImage('assets/images/orangey-wheel.svg');
+
   /// File path: assets/images/shoprite.png
   AssetGenImage get shoprite => const AssetGenImage('assets/images/shoprite.png');
 
@@ -85,14 +91,16 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
+        bnbBlender,
         deliverPackageToLady,
         dominosPizza,
+        greenyWheel,
         handPackageToLady,
-        loadingCircles,
         logoDark,
         manWithCart,
         manWithGroceries,
         mcdonald,
+        orangeyWheel,
         shoprite,
         signDeliverPkg
       ];

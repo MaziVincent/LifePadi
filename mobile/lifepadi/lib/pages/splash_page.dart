@@ -20,7 +20,7 @@ class SplashPage extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const LoadingWheel(),
+              const GreenyLoadingWheel(),
               16.verticalSpace,
               Align(
                 alignment: Alignment.bottomCenter,

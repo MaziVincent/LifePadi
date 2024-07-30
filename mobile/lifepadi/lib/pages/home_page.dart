@@ -6,10 +6,13 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/loading_wheel.dart';
 import 'package:remixicon/remixicon.dart';
 
+import '../widgets/category_tab.dart';
 import '../widgets/header_with_see_all.dart';
 import '../widgets/my_icon_button.dart';
+import '../widgets/product_card.dart';
 import '../widgets/section_title.dart';
 import '../widgets/service_card.dart';
 import '../widgets/vendor_card.dart';
@@ -52,7 +55,6 @@ class HomePage extends HookWidget {
       body: Padding(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -119,7 +121,7 @@ class HomePage extends HookWidget {
                     name: 'See more',
                     icon: IconsaxPlusLinear.element_plus,
                   ),
-                ].addBetween(10.horizontalSpace),
+                ].separatedBy(10.horizontalSpace),
               ),
               16.verticalSpace,
               HeaderWithSeeAll(
@@ -147,7 +149,7 @@ class HomePage extends HookWidget {
                     name: 'Laundry',
                     image: Assets.icons.laundry.path,
                   ),
-                ].addBetween(10.horizontalSpace),
+                ].separatedBy(10.horizontalSpace),
               ),
               16.verticalSpace,
               HeaderWithSeeAll(
@@ -169,6 +171,45 @@ class HomePage extends HookWidget {
                   ),
                   separatorBuilder: (context, index) => 6.93.horizontalSpace,
                 ),
+              ),
+              22.72.verticalSpace,
+              HeaderWithSeeAll(
+                title: 'Products Near You',
+                onSeeAllTap: () {
+                  // TODO: Go to products page with the current active category id passed in state
+                  // If the category id is null, it should default to All
+                },
+              ),
+              16.verticalSpace,
+              Column(
+                children: [
+                  ...[
+                    ProductCard(
+                      image: Assets.images.bnbBlender.provider(),
+                      name: 'BNB Blender',
+                      vendor: 'Shoprite Stores',
+                      price: 33000,
+                      isInWishlist: false,
+                    ),
+                    ProductCard(
+                      image: Assets.images.bnbBlender.provider(),
+                      name: 'Oil Perfumes',
+                      vendor: 'Beauty Collection',
+                      price: 500,
+                      isInWishlist: true,
+                    ),
+                    ProductCard(
+                      image: Assets.images.bnbBlender.provider(),
+                      name: 'Plain Tees',
+                      vendor: 'Korede Store',
+                      price: 5000,
+                      isInWishlist: false,
+                    ),
+                  ].separatedBy(11.verticalSpace),
+                  19.67.verticalSpace,
+                  const OrangeyLoadingWheel(),
+                  15.verticalSpace,
+                ],
               ),
             ],
           ),
@@ -243,52 +284,6 @@ class HomePage extends HookWidget {
             ),
             18.horizontalSpace,
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CategoryTab extends StatelessWidget {
-  const CategoryTab({
-    super.key,
-    this.isActive = false,
-    required this.name,
-    required this.onTap,
-  });
-
-  final bool isActive;
-  final String name;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 42.41.h,
-        decoration: ShapeDecoration(
-          color: isActive ? const Color(0x0F8662FF) : Colors.white,
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              width: 0.69.r,
-              color: const Color(0xFFBAC2D6),
-            ),
-            borderRadius: BorderRadius.circular(4.16.r),
-          ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 20.8.w),
-        child: Center(
-          child: Text(
-            name.toUpperCase(),
-            style: context.textTheme.bodySmall?.copyWith(
-              color:
-                  isActive ? const Color(0xFFFDAA06) : const Color(0xFF19202D),
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              letterSpacing: -0.24,
-            ),
-          ),
         ),
       ),
     );

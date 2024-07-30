@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 
-class LoadingWheel extends HookWidget {
+abstract class LoadingWheel extends HookWidget {
   const LoadingWheel({super.key});
+
+  Widget getWheelImage() {
+    throw UnimplementedError();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,26 @@ class LoadingWheel extends HookWidget {
             child: child,
           );
         },
-        child: Assets.images.loadingCircles.svg(),
+        child: getWheelImage(),
       ),
     );
+  }
+}
+
+class GreenyLoadingWheel extends LoadingWheel {
+  const GreenyLoadingWheel({super.key});
+
+  @override
+  Widget getWheelImage() {
+    return Assets.images.greenyWheel.svg();
+  }
+}
+
+class OrangeyLoadingWheel extends LoadingWheel {
+  const OrangeyLoadingWheel({super.key});
+
+  @override
+  Widget getWheelImage() {
+    return Assets.images.orangeyWheel.svg();
   }
 }
