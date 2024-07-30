@@ -10,6 +10,7 @@ import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 import UserLogin from "../auth/UserLogin";
 import { useReducer } from "react";
+import Cart from "./Cart"
 
 
 const reducer = (state, action)=>{
@@ -31,7 +32,7 @@ const ShopHeader = () => {
   const [state, dispatch] = useReducer(reducer, {
     login : false
   })
-
+console.log(cartState)
   return (
     <div className=" dark:bg-darkMenu dark:text-primary  fixed top-0 z-40 bg-primary w-full p-4 lg:px-28 shadow-md ">
       <div className=" flex justify-between">
@@ -51,24 +52,25 @@ const ShopHeader = () => {
         </div>
         <div className=" flex items-center ">
           <div className=" flex items-center gap-4">
-            <span onClick={()=>setCartState((cart) => !cart)} className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
+            <span onClick={()=>{setCartState((cart) => !cart)}} className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
               <div className=" text-primary">
                 <ShoppingCartOutlined />
               </div>
             </span>
-            <Link 
+            <span 
             onClick={
-              auth.user ? ()=> navigate("/user") : ()=>dispatch({type:'login'})
+              auth.user ? ()=> { navigate("/shop/user")} : ()=>dispatch({type:'login'})
             }
             className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10">
               <span className=" text-primary">
                 <PersonOutlined />
               </span>
-            </Link>
+            </span>
           </div>
         </div>
       </div>
       <UserLogin open={state.login} handleClose={dispatch} />
+      <Cart />
       {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">
         <span className=" absolute z-10 top-2 left-1">
           <SearchOutlined />
