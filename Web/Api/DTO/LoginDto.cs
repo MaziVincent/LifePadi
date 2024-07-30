@@ -17,9 +17,8 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Type { get; set; }
+        public string? Role { get; set; }
         public string? ContactAddress { get; set; }
-        public string? AccessToken { get; set; }
 
     }
 }

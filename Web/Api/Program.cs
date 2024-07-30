@@ -59,6 +59,7 @@ builder.Services.AddScoped<ITransaction, TransactionService>();
 builder.Services.AddScoped<IDelivery, DeliveryService>();
 builder.Services.AddScoped<IVoucher, VoucherService>();
 builder.Services.AddScoped<IVendorCategory, VendorCategoryService>();
+builder.Services.AddScoped<IOtherService, OtherService>();
 
 
 

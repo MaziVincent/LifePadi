@@ -7,6 +7,7 @@ using Api.Helpers;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Api.Interfaces;
 
 namespace Api.Controllers
 {
@@ -16,10 +17,12 @@ namespace Api.Controllers
     {
         private readonly DBContext _context;
         private readonly IConfiguration _config;
-        public AuthController(DBContext context, IConfiguration config)
+        private readonly IOtherService _oService;
+        public AuthController(DBContext context, IConfiguration config, IOtherService oService)
         {
             _context = context;
             _config = config;
+            _oService = oService;
         }
 
         [HttpPost("login")]
@@ -36,7 +39,7 @@ namespace Api.Controllers
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    Type = user.Type
+                    Role = user.Role
                 };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
                 var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
@@ -47,11 +50,15 @@ namespace Api.Controllers
                 Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
                 {
                     HttpOnly = true,
-                    SameSite = SameSiteMode.Strict,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true
                 });
-                user.AccessToken = accessToken;
-                return Ok(user);
+                var token = new {
+                    user = user,
+                    accessToken = accessToken
+                };
+                return Ok(token);
             }
             catch (Exception ex)
             {
@@ -73,7 +80,8 @@ namespace Api.Controllers
                 {
                     throw new Exceptions.ServiceException("Invalid email or password");
                 }
-                var Type = new StripType().Strip(user.GetType().ToString());
+                var Type = _oService.Strip(user.GetType().ToString());
+                //_oService.Strip(user.GetType().ToString());
                 return new LoggedInUserDto
                 {
                     Id = user.Id,
@@ -81,7 +89,7 @@ namespace Api.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ContactAddress = user.ContactAddress,
-                    Type = Type
+                    Role = Type
                 };
             }
             catch (Exception ex)
@@ -113,11 +121,14 @@ namespace Api.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ContactAddress = user.ContactAddress,
-                    Type = genTokenDTO!.Type
+                    Role = genTokenDTO!.Role
                 };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
-                loggedInUser.AccessToken = accessToken;
-                return Ok(loggedInUser);
+                var token = new {
+                    user = loggedInUser,
+                    accessToken = accessToken
+                };
+                return Ok(token);
             }
             catch (Exception ex)
             {

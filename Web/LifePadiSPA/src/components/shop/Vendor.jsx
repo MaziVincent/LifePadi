@@ -568,7 +568,7 @@ const Vendor = () => {
           </button>
         </div> */}
       </div>
-      <Cart />
+      
 
       <ProductModal
         open={state.open}

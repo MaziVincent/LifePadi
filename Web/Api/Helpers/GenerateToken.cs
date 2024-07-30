@@ -26,7 +26,7 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -56,7 +56,7 @@ namespace Api.Helpers
                 var Claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
-                    new Claim(ClaimTypes.Role, genTokenDTO!.Type!),
+                    new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -97,7 +97,7 @@ namespace Api.Helpers
                 {
                     Id = int.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value),
                     Email = jwtToken.Claims.First(x => x.Type == "email").Value,
-                    Type = jwtToken.Claims.First(x => x.Type == "role").Value,
+                    Role = jwtToken.Claims.First(x => x.Type == "role").Value,
                 };
 
                 return genTokenDTO;
