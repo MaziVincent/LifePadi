@@ -175,6 +175,9 @@ namespace Api.Services
                 {
                     var deliveries = await _dbContext.Deliveries
                         .Include(d => d.Order)
+                        .ThenInclude(o => o!.OrderItems)!
+                        .ThenInclude(oi => oi.Product)
+                        .Include(d => d.Order)
                         .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
                         .OrderByDescending(d => d.CreatedAt)
@@ -187,6 +190,8 @@ namespace Api.Services
                 else
                 {
                     var deliveries = await _dbContext.Deliveries
+                        .Include(d => d.Order)
+                        .ThenInclude(o => o!.OrderItems)
                         .Include(d => d.Order)
                         .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
