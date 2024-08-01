@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends HookWidget {
   const ProductCard({
     super.key,
     required this.image,
     required this.name,
     required this.vendor,
     required this.price,
-    required this.isInWishlist,
   });
 
   final ImageProvider<Object> image;
   final String name, vendor;
   final double price;
-  final bool isInWishlist;
 
   @override
   Widget build(BuildContext context) {
+    final isInWishlist = useState(false);
+
     return Container(
       height: 127.36.h,
       width: double.infinity,
@@ -124,10 +125,14 @@ class ProductCard extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          // TODO: Add to wishlist
+                          isInWishlist.value = !isInWishlist.value;
+
+                          // TODO: Toggle in wishlist
                         },
                         icon: Icon(
-                          isInWishlist ? MdiIcons.heart : MdiIcons.heartOutline,
+                          isInWishlist.value
+                              ? MdiIcons.heart
+                              : MdiIcons.heartOutline,
                           color: const Color(0xFFF14336),
                         ),
                         iconSize: 20.r,
