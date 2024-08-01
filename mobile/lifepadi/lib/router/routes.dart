@@ -72,8 +72,8 @@ class HomeRoute extends GoRouteData {
   }
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const HomePage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: HomePage());
   }
 }
 
@@ -81,8 +81,8 @@ class OrdersRoute extends GoRouteData {
   const OrdersRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const OrdersPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: OrdersPage());
   }
 }
 
@@ -90,8 +90,8 @@ class ErrandsRoute extends GoRouteData {
   const ErrandsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const ErrandsPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: ErrandsPage());
   }
 }
 
@@ -99,8 +99,8 @@ class LogisticsRoute extends GoRouteData {
   const LogisticsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const LogisticsPage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: LogisticsPage());
   }
 }
 
@@ -108,8 +108,8 @@ class ProfileRoute extends GoRouteData {
   const ProfileRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const ProfilePage();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: ProfilePage());
   }
 }
 
