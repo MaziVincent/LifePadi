@@ -249,13 +249,13 @@ class HomePage extends HookWidget {
                       price: 33000,
                     ),
                     ProductCard(
-                      image: Assets.images.bnbBlender.provider(),
+                      image: Assets.images.oilPerfumes.provider(),
                       name: 'Oil Perfumes',
                       vendor: 'Beauty Collection',
                       price: 500,
                     ),
                     ProductCard(
-                      image: Assets.images.bnbBlender.provider(),
+                      image: Assets.images.plainTees.provider(),
                       name: 'Plain Tees',
                       vendor: 'Korede Store',
                       price: 5000,

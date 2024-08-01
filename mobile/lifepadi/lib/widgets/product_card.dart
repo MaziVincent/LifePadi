@@ -8,13 +8,13 @@ import 'package:lifepadi/utils/helpers.dart';
 class ProductCard extends HookWidget {
   const ProductCard({
     super.key,
-    required this.image,
+    this.image,
     required this.name,
     required this.vendor,
     required this.price,
   });
 
-  final ImageProvider<Object> image;
+  final ImageProvider<Object>? image;
   final String name, vendor;
   final double price;
 
@@ -50,14 +50,16 @@ class ProductCard extends HookWidget {
             width: 103.26.h,
             height: 103.26.h,
             decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.fill,
-              ),
+              color: const Color(0xFFB9B9B9),
+              image: image != null
+                  ? DecorationImage(
+                      image: image!,
+                      fit: BoxFit.fill,
+                    )
+                  : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10).r,
               ),
-              color: const Color(0xFFB9B9B9),
             ),
           ),
           13.77.horizontalSpace,

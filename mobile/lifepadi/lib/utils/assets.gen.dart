@@ -83,8 +83,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/mcdonald.png
   AssetGenImage get mcdonald => const AssetGenImage('assets/images/mcdonald.png');
 
+  /// File path: assets/images/oil-perfumes.png
+  AssetGenImage get oilPerfumes => const AssetGenImage('assets/images/oil-perfumes.png');
+
   /// File path: assets/images/orangey-wheel.svg
   SvgGenImage get orangeyWheel => const SvgGenImage('assets/images/orangey-wheel.svg');
+
+  /// File path: assets/images/plain-tees.png
+  AssetGenImage get plainTees => const AssetGenImage('assets/images/plain-tees.png');
 
   /// File path: assets/images/shoprite.png
   AssetGenImage get shoprite => const AssetGenImage('assets/images/shoprite.png');
@@ -103,7 +109,9 @@ class $AssetsImagesGen {
         manWithCart,
         manWithGroceries,
         mcdonald,
+        oilPerfumes,
         orangeyWheel,
+        plainTees,
         shoprite,
         signDeliverPkg
       ];
