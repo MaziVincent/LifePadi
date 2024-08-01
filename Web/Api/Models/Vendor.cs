@@ -9,6 +9,7 @@
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }
         public int? VendorCategoryId { get; set; }
+        public string? TimeTakesToPurchase { get; set; }
         public VendorCategory? VendorCategory { get; set; }
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
