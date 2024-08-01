@@ -19,25 +19,33 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.textStyle,
     this.selectedColor = Colors.black,
-  });
+    this.bottom,
+    this.height,
+  }) : assert(
+          bottom == null || height != null,
+          'Height must be provided when bottom is not null',
+        );
 
   final TitleType title;
   final List<Widget>? actions;
   final TextStyle? textStyle;
   final Color selectedColor;
+  final PreferredSizeWidget? bottom;
+  final double? height;
 
   @override
-  Size get preferredSize => Size.fromHeight(75.h);
+  Size get preferredSize => Size.fromHeight(height ?? 75.h);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 16.h, bottom: 17.h, right: 20.w, left: 4.w),
+      padding: EdgeInsets.only(top: 16.h, bottom: 17.h, right: 16.w, left: 4.w),
       child: AppBar(
         title: _buildTitle(context),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         actions: actions,
+        bottom: bottom,
       ),
     );
   }
