@@ -6,16 +6,16 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/category_tab.dart';
+import 'package:lifepadi/widgets/header_with_see_all.dart';
 import 'package:lifepadi/widgets/loading_wheel.dart';
+import 'package:lifepadi/widgets/my_app_bar.dart';
+import 'package:lifepadi/widgets/my_icon_button.dart';
+import 'package:lifepadi/widgets/product_card.dart';
+import 'package:lifepadi/widgets/section_title.dart';
+import 'package:lifepadi/widgets/service_card.dart';
+import 'package:lifepadi/widgets/vendor_card.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../widgets/category_tab.dart';
-import '../widgets/header_with_see_all.dart';
-import '../widgets/my_icon_button.dart';
-import '../widgets/product_card.dart';
-import '../widgets/section_title.dart';
-import '../widgets/service_card.dart';
-import '../widgets/vendor_card.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});
@@ -51,7 +51,65 @@ class HomePage extends HookWidget {
     ];
 
     return Scaffold(
-      appBar: _buildHomeAppBar(context.textTheme),
+      appBar: MyAppBar(
+        title: Row(
+          children: [
+            MyIconButton(
+              icon: Remix.map_pin_5_line,
+              onPressed: () {
+                // TODO: Display a modal bottom sheet with a form to update the user's delivery location.
+                // The modal should have a drag handle.
+              },
+              backgroundColor: const Color(0x194FAF5A),
+              iconColor: kDarkPrimaryColor,
+            ),
+            8.horizontalSpace,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Current location',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: kLightTextColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                        letterSpacing: 0.16,
+                      ),
+                    ),
+                  ],
+                ),
+                4.verticalSpace,
+                Text(
+                  'Soja, Lekki Lagos',
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: kDarkTextColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          MyIconButton(
+            icon: IconsaxPlusLinear.shopping_cart,
+            onPressed: () {
+              // TODO: Go to cart page.
+            },
+          ),
+          6.horizontalSpace,
+          MyIconButton(
+            onPressed: () {
+              // TODO: Go to notifications page.
+            },
+            icon: MdiIcons.bellBadgeOutline,
+            showBadge: true,
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
         child: SingleChildScrollView(
@@ -210,77 +268,6 @@ class HomePage extends HookWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  PreferredSize _buildHomeAppBar(TextTheme textTheme) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(75.h),
-      child: Padding(
-        padding: EdgeInsets.only(top: 16.h, bottom: 17.h),
-        child: AppBar(
-          title: Row(
-            children: [
-              MyIconButton(
-                icon: Remix.map_pin_5_line,
-                onPressed: () {
-                  // TODO: Display a modal bottom sheet with a form to update the user's delivery location.
-                  // The modal should have a drag handle.
-                },
-                backgroundColor: const Color(0x194FAF5A),
-                iconColor: kDarkPrimaryColor,
-              ),
-              8.horizontalSpace,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        'Current location',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: kLightTextColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          letterSpacing: 0.16,
-                        ),
-                      ),
-                    ],
-                  ),
-                  4.verticalSpace,
-                  Text(
-                    'Soja, Lekki Lagos',
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: kDarkTextColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          actions: [
-            MyIconButton(
-              icon: IconsaxPlusLinear.shopping_cart,
-              onPressed: () {
-                // TODO: Go to cart page.
-              },
-            ),
-            6.horizontalSpace,
-            MyIconButton(
-              onPressed: () {
-                // TODO: Go to notifications page.
-              },
-              icon: MdiIcons.bellBadgeOutline,
-              showBadge: true,
-            ),
-            18.horizontalSpace,
-          ],
         ),
       ),
     );

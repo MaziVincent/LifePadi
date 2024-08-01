@@ -14,7 +14,6 @@ class SectionTitle extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: const Color(0xFF0F0F0F),
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
