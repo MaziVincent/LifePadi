@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
@@ -17,32 +21,51 @@ class ScaffoldWithNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Orders',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.run_circle),
-            label: 'Errands',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_shipping),
-            label: 'Logistics',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar: SalomonBottomBar(
+        itemPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         currentIndex: _calculateSelectedIndex(context),
         onTap: (int idx) => _onItemTapped(idx, context),
-        type: BottomNavigationBarType.fixed,
+        items: [
+          /// Home
+          SalomonBottomBarItem(
+            icon: const Icon(IconsaxPlusLinear.home_2),
+            activeIcon: const Icon(IconsaxPlusBold.home_2),
+            title: const Text('Home'),
+          ),
+
+          /// Orders
+          SalomonBottomBarItem(
+            icon: const Icon(IconsaxPlusLinear.shopping_bag),
+            activeIcon: const Icon(IconsaxPlusBold.shopping_bag),
+            title: const Text('Orders'),
+          ),
+
+          /// Errands
+          SalomonBottomBarItem(
+            icon: Assets.icons.errandBoy.svg(),
+            activeIcon: Assets.icons.errandBoy.svg(
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).primaryColor,
+                BlendMode.srcIn,
+              ),
+            ),
+            title: const Text('Errands'),
+          ),
+
+          /// Logistics
+          SalomonBottomBarItem(
+            icon: const Icon(IconsaxPlusLinear.truck_fast),
+            activeIcon: const Icon(IconsaxPlusBold.truck_fast),
+            title: const Text('Logistics'),
+          ),
+
+          /// Profile
+          SalomonBottomBarItem(
+            icon: const Icon(IconsaxPlusLinear.user),
+            activeIcon: const Icon(IconsaxPlusBold.user),
+            title: const Text('Profile'),
+          ),
+        ],
       ),
     );
   }
