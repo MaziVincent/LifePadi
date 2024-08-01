@@ -4,24 +4,52 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/entities/user_role.dart';
+import 'package:lifepadi/pages/admin_page.dart';
+import 'package:lifepadi/pages/details_page.dart';
+import 'package:lifepadi/pages/errands_page.dart';
+import 'package:lifepadi/pages/forgot_password_page.dart';
+import 'package:lifepadi/pages/get_started_page.dart';
+import 'package:lifepadi/pages/home_page.dart';
+import 'package:lifepadi/pages/login_page.dart';
+import 'package:lifepadi/pages/logistics_page.dart';
+import 'package:lifepadi/pages/onboarding_page.dart';
+import 'package:lifepadi/pages/orders_page.dart';
+import 'package:lifepadi/pages/profile_page.dart';
+import 'package:lifepadi/pages/register_page.dart';
 import 'package:lifepadi/pages/reset_password_page.dart';
-
-import '../pages/admin_page.dart';
-import '../pages/details_page.dart';
-import '../pages/forgot_password_page.dart';
-import '../pages/get_started_page.dart';
-import '../pages/home_page.dart';
-import '../pages/login_page.dart';
-import '../pages/onboarding_page.dart';
-import '../pages/register_page.dart';
-import '../pages/rider_page.dart';
-import '../pages/splash_page.dart';
-import '../pages/verification_page.dart';
-import '../state/permissions.dart';
+import 'package:lifepadi/pages/rider_page.dart';
+import 'package:lifepadi/pages/splash_page.dart';
+import 'package:lifepadi/pages/verification_page.dart';
+import 'package:lifepadi/state/permissions.dart';
+import 'package:lifepadi/widgets/scaffold_with_nav_bar.dart';
 
 part 'routes.g.dart';
 
-@TypedGoRoute<HomeRoute>(path: '/')
+final GlobalKey<NavigatorState> rootNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> shellNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shell');
+
+@TypedShellRoute<HomeShellRoute>(
+  routes: [
+    TypedGoRoute<HomeRoute>(path: '/home'),
+    TypedGoRoute<OrdersRoute>(path: '/orders'),
+    TypedGoRoute<ErrandsRoute>(path: '/errands'),
+    TypedGoRoute<LogisticsRoute>(path: '/logistics'),
+    TypedGoRoute<ProfileRoute>(path: '/profile'),
+  ],
+)
+class HomeShellRoute extends ShellRouteData {
+  const HomeShellRoute();
+
+  @override
+  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
+    return ScaffoldWithNavBar(child: navigator);
+  }
+
+  static final GlobalKey<NavigatorState> $navigatorKey = shellNavigatorKey;
+}
+
 class HomeRoute extends GoRouteData {
   const HomeRoute();
 
@@ -46,6 +74,42 @@ class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const HomePage();
+  }
+}
+
+class OrdersRoute extends GoRouteData {
+  const OrdersRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const OrdersPage();
+  }
+}
+
+class ErrandsRoute extends GoRouteData {
+  const ErrandsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ErrandsPage();
+  }
+}
+
+class LogisticsRoute extends GoRouteData {
+  const LogisticsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LogisticsPage();
+  }
+}
+
+class ProfileRoute extends GoRouteData {
+  const ProfileRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ProfilePage();
   }
 }
 

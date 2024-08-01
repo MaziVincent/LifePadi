@@ -21,7 +21,6 @@ part 'router.g.dart';
 /// but that's up to your case and out of this scope.
 @riverpod
 GoRouter router(RouterRef ref) {
-  final routerKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
   final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
   ref
     ..onDispose(isAuth.dispose) // don't forget to clean after yourselves (:
@@ -36,7 +35,7 @@ GoRouter router(RouterRef ref) {
     );
 
   final router = GoRouter(
-    navigatorKey: routerKey,
+    navigatorKey: rootNavigatorKey,
     refreshListenable: isAuth,
     initialLocation: const SplashRoute().location,
     debugLogDiagnostics: true,
