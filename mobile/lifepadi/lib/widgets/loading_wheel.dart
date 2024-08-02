@@ -64,7 +64,7 @@ class GreenyLoadingWheel extends LoadingWheel {
 
   @override
   Widget getWheelImage() {
-    return Assets.images.greenyWheel.svg();
+    return Assets.images.loadingWheel.svg();
   }
 }
 
@@ -73,6 +73,8 @@ class OrangeyLoadingWheel extends LoadingWheel {
 
   @override
   Widget getWheelImage() {
-    return Assets.images.orangeyWheel.svg();
+    return Assets.images.loadingWheel.svg(
+      colorFilter: const ColorFilter.mode(Color(0xFFFFC727), BlendMode.srcIn),
+    );
   }
 }
