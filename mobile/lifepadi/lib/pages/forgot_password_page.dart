@@ -87,6 +87,10 @@ class ForgotPasswordPage extends HookConsumerWidget {
                               },
                               keyboardType: TextInputType.phone,
                               hasValue: phone.value.isNotEmpty,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.telephoneNumber,
+                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
@@ -96,7 +100,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                   'Use Email',
                                   style: context.textTheme.bodySmall?.copyWith(
                                     color: kDarkPrimaryColor,
-                                    fontSize: 14.sp,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 0.12.r,
                                   ),
@@ -118,6 +122,10 @@ class ForgotPasswordPage extends HookConsumerWidget {
                               },
                               keyboardType: TextInputType.emailAddress,
                               hasValue: email.value.isNotEmpty,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.email,
+                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
@@ -127,7 +135,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                   'Use Phone',
                                   style: context.textTheme.bodySmall?.copyWith(
                                     color: kDarkPrimaryColor,
-                                    fontSize: 14.sp,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 0.12.r,
                                   ),

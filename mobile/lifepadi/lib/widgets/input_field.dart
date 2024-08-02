@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
+/// A custom input field widget
 class InputField extends StatelessWidget {
   const InputField({
     super.key,
-    required this.child,
-    required this.onChildTap,
+    this.child,
+    this.onChildTap,
     required this.hintText,
     required this.labelText,
     required this.keyboardType,
@@ -17,23 +18,38 @@ class InputField extends StatelessWidget {
     this.hideText = false,
     this.onChanged,
     this.validator,
+    this.autofillHints,
   });
 
-  final Widget child;
+  /// The child widget to be displayed as the suffix icon
+  final Widget? child;
 
   /// Callback to be executed when the suffix icon is tapped
-  final VoidCallback onChildTap;
+  final VoidCallback? onChildTap;
+
+  /// The hint and label texts to be displayed in the input field
   final String hintText, labelText;
+
+  /// The type of keyboard to be displayed
   final TextInputType keyboardType;
+
+  /// The action to be performed when the user submits the input field
   final TextInputAction textInputAction;
+
+  /// Check if the input field should hide the text
   final bool hideText;
+
+  /// Check if the input field has a value
+  final bool hasValue;
 
   /// Callback to be executed when the value changes
   final ValueChanged<String>? onChanged;
 
   /// Validator to be executed when the value changes
   final String? Function(String?)? validator;
-  final bool hasValue;
+
+  /// Autofill hints to be displayed in the input field
+  final Iterable<String>? autofillHints;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +86,6 @@ class InputField extends StatelessWidget {
         errorStyle: inputTextStyle(color: Colors.redAccent),
         labelStyle: inputTextStyle(
           color: const Color(0xFF858585),
-          fontSize: 16.sp,
         ),
         labelText: labelText,
         floatingLabelStyle: GoogleFonts.roboto(
@@ -85,10 +100,12 @@ class InputField extends StatelessWidget {
           right: 9.76,
           bottom: 13,
         ).r,
-        suffixIcon: GestureDetector(
-          onTap: onChildTap,
-          child: child,
-        ),
+        suffixIcon: child != null
+            ? GestureDetector(
+                onTap: onChildTap,
+                child: child,
+              )
+            : null,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       keyboardType: keyboardType,
@@ -104,6 +121,7 @@ class InputField extends StatelessWidget {
       onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
       onChanged: onChanged,
       validator: validator,
+      autofillHints: autofillHints,
     );
   }
 }

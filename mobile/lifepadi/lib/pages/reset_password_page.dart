@@ -81,6 +81,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
+                          autofillHints: const [AutofillHints.newPassword],
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -100,6 +101,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           textInputAction: TextInputAction.done,
                           hideText: hideConfirmPassword.value,
                           hasValue: confirmPassword.value.isNotEmpty,
+                          autofillHints: const [AutofillHints.newPassword],
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility

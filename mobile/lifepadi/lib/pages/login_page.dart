@@ -37,14 +37,14 @@ class LoginPage extends HookConsumerWidget {
         child: Stack(
           children: [
             Assets.images.authHeros.login.image(
-              height: 0.5.sh,
+              height: 0.49.sh,
               width: double.infinity,
               fit: BoxFit.fill,
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 0.5.sh,
+                height: 0.51.sh,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
@@ -97,6 +97,10 @@ class LoginPage extends HookConsumerWidget {
                             },
                             keyboardType: TextInputType.phone,
                             hasValue: phone.value.isNotEmpty,
+                            autofillHints: const [
+                              AutofillHints.username,
+                              AutofillHints.telephoneNumber,
+                            ],
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -106,7 +110,7 @@ class LoginPage extends HookConsumerWidget {
                                 'Use Email',
                                 style: textTheme.bodySmall?.copyWith(
                                   color: kDarkPrimaryColor,
-                                  fontSize: 14.sp,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.12.r,
                                 ),
@@ -128,6 +132,10 @@ class LoginPage extends HookConsumerWidget {
                             },
                             keyboardType: TextInputType.emailAddress,
                             hasValue: email.value.isNotEmpty,
+                            autofillHints: const [
+                              AutofillHints.username,
+                              AutofillHints.email,
+                            ],
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -137,7 +145,7 @@ class LoginPage extends HookConsumerWidget {
                                 'Use Phone',
                                 style: textTheme.bodySmall?.copyWith(
                                   color: kDarkPrimaryColor,
-                                  fontSize: 14.sp,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.12.r,
                                 ),
@@ -146,7 +154,7 @@ class LoginPage extends HookConsumerWidget {
                           ),
                         19.verticalSpace,
                         InputField(
-                          hintText: 'Enter New Password',
+                          hintText: 'Enter Password',
                           labelText: 'Password',
                           onChanged: (value) => password.value = value,
                           onChildTap: () =>
@@ -155,6 +163,7 @@ class LoginPage extends HookConsumerWidget {
                           textInputAction: TextInputAction.done,
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
+                          autofillHints: const [AutofillHints.password],
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility

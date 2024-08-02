@@ -64,7 +64,7 @@ class OnboardingPage extends HookWidget {
               pageController: pageController,
               features: features,
             ),
-            const Spacer(),
+            const Spacer(flex: 4),
           ],
         ),
       ),

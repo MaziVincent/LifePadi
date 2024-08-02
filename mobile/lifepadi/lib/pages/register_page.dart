@@ -95,6 +95,10 @@ class RegisterPage extends HookConsumerWidget {
                             },
                             keyboardType: TextInputType.phone,
                             hasValue: phone.value.isNotEmpty,
+                            autofillHints: const [
+                              AutofillHints.newUsername,
+                              AutofillHints.telephoneNumber,
+                            ],
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -104,7 +108,7 @@ class RegisterPage extends HookConsumerWidget {
                                 'Use Email',
                                 style: textTheme.bodySmall?.copyWith(
                                   color: kDarkPrimaryColor,
-                                  fontSize: 14.sp,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.12.r,
                                 ),
@@ -126,6 +130,10 @@ class RegisterPage extends HookConsumerWidget {
                             },
                             keyboardType: TextInputType.emailAddress,
                             hasValue: email.value.isNotEmpty,
+                            autofillHints: const [
+                              AutofillHints.newUsername,
+                              AutofillHints.email,
+                            ],
                             child: Padding(
                               padding: const EdgeInsets.only(
                                 top: 13,
@@ -135,7 +143,7 @@ class RegisterPage extends HookConsumerWidget {
                                 'Use Phone',
                                 style: textTheme.bodySmall?.copyWith(
                                   color: kDarkPrimaryColor,
-                                  fontSize: 14.sp,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.12.r,
                                 ),
@@ -152,6 +160,7 @@ class RegisterPage extends HookConsumerWidget {
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
+                          autofillHints: const [AutofillHints.newPassword],
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -171,6 +180,7 @@ class RegisterPage extends HookConsumerWidget {
                           textInputAction: TextInputAction.done,
                           hideText: hideConfirmPassword.value,
                           hasValue: confirmPassword.value.isNotEmpty,
+                          autofillHints: const [AutofillHints.newPassword],
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility
