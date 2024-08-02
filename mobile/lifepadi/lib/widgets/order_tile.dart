@@ -20,7 +20,6 @@ class OrderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 132.h,
       width: double.infinity,
       decoration: const BoxDecoration(
         border: Border(
