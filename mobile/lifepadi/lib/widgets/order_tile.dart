@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+
+enum OrderStatus {
+  ongoing,
+  completed,
+}
 
 class OrderTile extends StatelessWidget {
   const OrderTile({
     super.key,
+    required this.status,
   });
+
+  final OrderStatus status;
 
   @override
   Widget build(BuildContext context) {
@@ -95,26 +104,7 @@ class OrderTile extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: 16.h,
-                        width: 16.w,
-                        child: const CircularProgressIndicator(
-                          backgroundColor: Color(0xFFF0CE9B),
-                          color: Color(0xFFD98404),
-                          strokeWidth: 2,
-                        ),
-                      ),
-                      8.horizontalSpace,
-                      Text(
-                        'ongoing',
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: const Color(0xFFD98404),
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                    children: _buildOrderStatus(context),
                   ),
                 ),
               ],
@@ -123,5 +113,40 @@ class OrderTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildOrderStatus(BuildContext context) {
+    return switch (status) {
+      OrderStatus.ongoing => [
+          SizedBox(
+            height: 16.h,
+            width: 16.w,
+            child: const CircularProgressIndicator(
+              backgroundColor: Color(0xFFF0CE9B),
+              color: Color(0xFFD98404),
+              strokeWidth: 2,
+            ),
+          ),
+          8.horizontalSpace,
+          Text(
+            'ongoing',
+            style: context.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFFD98404),
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      OrderStatus.completed => [
+          Text(
+            'Completed',
+            style: context.textTheme.bodySmall?.copyWith(
+              color: kDarkPrimaryColor,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+    };
   }
 }

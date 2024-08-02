@@ -65,7 +65,9 @@ class OrdersPage extends StatelessWidget {
                     child: ListView.separated(
                       itemCount: 3,
                       itemBuilder: (context, index) {
-                        return const OrderTile();
+                        return const OrderTile(
+                          status: OrderStatus.ongoing,
+                        );
                       },
                       separatorBuilder: (context, index) => 18.verticalSpace,
                     ),
@@ -73,7 +75,25 @@ class OrdersPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Center(child: Text('Completed Orders')),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  10.verticalSpace,
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return const OrderTile(
+                          status: OrderStatus.completed,
+                        );
+                      },
+                      separatorBuilder: (context, index) => 18.verticalSpace,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
