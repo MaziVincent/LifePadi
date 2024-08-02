@@ -77,7 +77,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                               hintText: 'Enter Phone',
                               labelText: 'Phone',
                               onChanged: (value) => phone.value = value,
-                              onTap: () {
+                              onChildTap: () {
                                 // Hide this, show email input field
                                 usePhone.value = false;
                                 // Remove keyboard
@@ -108,7 +108,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                               hintText: 'Enter Email',
                               labelText: 'Email',
                               onChanged: (value) => email.value = value,
-                              onTap: () {
+                              onChildTap: () {
                                 // Hide this, show phone number input field
                                 usePhone.value = true;
                                 // Remove keyboard

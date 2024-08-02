@@ -8,7 +8,7 @@ class InputField extends StatelessWidget {
   const InputField({
     super.key,
     required this.child,
-    required this.onTap,
+    required this.onChildTap,
     required this.hintText,
     required this.labelText,
     required this.keyboardType,
@@ -22,7 +22,7 @@ class InputField extends StatelessWidget {
   final Widget child;
 
   /// Callback to be executed when the suffix icon is tapped
-  final VoidCallback onTap;
+  final VoidCallback onChildTap;
   final String hintText, labelText;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -86,7 +86,7 @@ class InputField extends StatelessWidget {
           bottom: 13,
         ).r,
         suffixIcon: GestureDetector(
-          onTap: onTap,
+          onTap: onChildTap,
           child: child,
         ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,

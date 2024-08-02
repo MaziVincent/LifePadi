@@ -76,7 +76,8 @@ class ResetPasswordPage extends HookConsumerWidget {
                           hintText: 'Enter New Password',
                           labelText: 'Password',
                           onChanged: (value) => password.value = value,
-                          onTap: () => hidePassword.value = !hidePassword.value,
+                          onChildTap: () =>
+                              hidePassword.value = !hidePassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
@@ -93,7 +94,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           hintText: 'Confirm Password',
                           labelText: 'Confirm Password',
                           onChanged: (value) => confirmPassword.value = value,
-                          onTap: () => hideConfirmPassword.value =
+                          onChildTap: () => hideConfirmPassword.value =
                               !hideConfirmPassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,

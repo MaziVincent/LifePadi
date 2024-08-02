@@ -85,7 +85,7 @@ class RegisterPage extends HookConsumerWidget {
                             hintText: 'Enter Phone',
                             labelText: 'Phone',
                             onChanged: (value) => phone.value = value,
-                            onTap: () {
+                            onChildTap: () {
                               // Hide this, show email input field
                               usePhone.value = false;
                               // Remove keyboard
@@ -116,7 +116,7 @@ class RegisterPage extends HookConsumerWidget {
                             hintText: 'Enter Email',
                             labelText: 'Email',
                             onChanged: (value) => email.value = value,
-                            onTap: () {
+                            onChildTap: () {
                               // Hide this, show phone number input field
                               usePhone.value = true;
                               // Remove keyboard
@@ -147,7 +147,8 @@ class RegisterPage extends HookConsumerWidget {
                           hintText: 'Enter New Password',
                           labelText: 'Password',
                           onChanged: (value) => password.value = value,
-                          onTap: () => hidePassword.value = !hidePassword.value,
+                          onChildTap: () =>
+                              hidePassword.value = !hidePassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
@@ -164,7 +165,7 @@ class RegisterPage extends HookConsumerWidget {
                           hintText: 'Confirm Password',
                           labelText: 'Confirm Password',
                           onChanged: (value) => confirmPassword.value = value,
-                          onTap: () => hideConfirmPassword.value =
+                          onChildTap: () => hideConfirmPassword.value =
                               !hideConfirmPassword.value,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
