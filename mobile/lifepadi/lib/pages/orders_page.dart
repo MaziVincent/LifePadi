@@ -5,6 +5,8 @@ import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 
+import '../widgets/order_tile.dart';
+
 class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
 
@@ -54,11 +56,22 @@ class OrdersPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Column(
-              children: [
-                16.verticalSpace,
-                const Text('Ongoing Orders'),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  10.verticalSpace,
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return const OrderTile();
+                      },
+                      separatorBuilder: (context, index) => 18.verticalSpace,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const Center(child: Text('Completed Orders')),
           ],

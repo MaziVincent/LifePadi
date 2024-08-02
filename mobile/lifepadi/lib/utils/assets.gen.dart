@@ -64,12 +64,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/dominos-pizza.png
   AssetGenImage get dominosPizza => const AssetGenImage('assets/images/dominos-pizza.png');
 
-  /// File path: assets/images/greeny-wheel.svg
-  SvgGenImage get greenyWheel => const SvgGenImage('assets/images/greeny-wheel.svg');
-
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
+
+  /// File path: assets/images/loading-wheel.svg
+  SvgGenImage get loadingWheel => const SvgGenImage('assets/images/loading-wheel.svg');
 
   /// File path: assets/images/logo-dark.png
   AssetGenImage get logoDark => const AssetGenImage('assets/images/logo-dark.png');
@@ -86,9 +86,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/oil-perfumes.png
   AssetGenImage get oilPerfumes => const AssetGenImage('assets/images/oil-perfumes.png');
 
-  /// File path: assets/images/orangey-wheel.svg
-  SvgGenImage get orangeyWheel => const SvgGenImage('assets/images/orangey-wheel.svg');
-
   /// File path: assets/images/plain-tees.png
   AssetGenImage get plainTees => const AssetGenImage('assets/images/plain-tees.png');
 
@@ -103,14 +100,13 @@ class $AssetsImagesGen {
         bnbBlender,
         deliverPackageToLady,
         dominosPizza,
-        greenyWheel,
         handPackageToLady,
+        loadingWheel,
         logoDark,
         manWithCart,
         manWithGroceries,
         mcdonald,
         oilPerfumes,
-        orangeyWheel,
         plainTees,
         shoprite,
         signDeliverPkg
