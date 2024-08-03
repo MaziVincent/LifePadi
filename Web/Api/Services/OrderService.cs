@@ -286,6 +286,9 @@ namespace Api.Services
                 initialOrder.CustomerId = order.CustomerId;
                 initialOrder.UpdatedAt = DateTime.UtcNow;
                 initialOrder.IsDelivered = order.IsDelivered;
+                initialOrder.Type = order.Type;
+                initialOrder.Instruction = order.Instruction;
+                initialOrder.SearchString = initialOrder.Status!.ToUpper() + " " + initialOrder.Type!.ToUpper();
                 _dbContext.Orders.Attach(initialOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(initialOrder);

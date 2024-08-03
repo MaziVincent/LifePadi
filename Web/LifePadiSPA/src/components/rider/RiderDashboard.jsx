@@ -56,7 +56,7 @@ const RiderDashboard = () => {
     if (riderDeliveries){
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
-
+      console.log(riderDeliveries.result);
       if (riderDeliveries.result[0].Rider.isVeirfied)
       {
         setIsVerified(true)
@@ -357,7 +357,7 @@ const RiderDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {riderDeliveriesLoading ? (
+                  {riderDeliveriesLoading && (
                     <tr className=''>
                       <td colSpan={6} className=''>
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
@@ -365,7 +365,8 @@ const RiderDashboard = () => {
                         </div>
                       </td>
                     </tr>
-                  ) : (
+                  )}
+                  {riderDeliveries && (
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -421,7 +422,7 @@ const RiderDashboard = () => {
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
                   {riderDeliveriesLoading
                     ? 'Loading'
-                    : riderDeliveries.dataList.TotalCount}
+                    : riderDeliveries?.dataList?.TotalCount}
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>

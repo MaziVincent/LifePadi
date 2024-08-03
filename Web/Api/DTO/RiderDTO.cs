@@ -18,6 +18,7 @@ namespace Api.DTO
         public bool? IsVerified { get; set; }
         public string? Password { get; set; }
         public List<OrderDtoLite>? Orders { get; set; }
+        public List<RiderReview>? RiderReviews { get; set; }
     }
 
     public class GetRiderDto
@@ -35,6 +36,7 @@ namespace Api.DTO
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
         public List<DeliveryDtoLite>? Deliveries { get; set; }
+        public List<RiderReview>? RiderReviews { get; set; }
     }
 
     public class RiderDtoLite

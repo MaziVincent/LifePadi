@@ -254,6 +254,7 @@ namespace Api.Services
                 initialVendor.ServiceId = vendor.ServiceId;
                 initialVendor.OpeningHours = vendor.OpeningHours;
                 initialVendor.ClosingHours = vendor.ClosingHours;
+                initialVendor.TimeTakesToPurchase = vendor.TimeTakesToPurchase;
                 initialVendor.UpdatedAt = DateTime.UtcNow;
                 currentAddress!.Name = vendor.ContactAddress;
                 currentAddress.Town = vendor.Town;

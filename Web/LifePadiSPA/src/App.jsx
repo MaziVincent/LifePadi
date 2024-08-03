@@ -32,6 +32,8 @@ import UserLayout from "./components/customer/UserLayout";
 import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
+import ViewDelivery from './components/rider/ViewDelivery'
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -177,6 +179,28 @@ function App() {
             />
           </Route>
         </Route>
+          <Route
+            path="/admin/order/:id"
+            element={<AdminOrderDetails />}
+          />
+          <Route
+            path="/admin/voucher"
+            element={<AdminVoucher />}
+          />
+          <Route
+            path="/admin/admin"
+            element={<Admin />}
+          />
+        </Route>
+        <Route
+          path="/rider"
+          element={<RiderLayout />}
+        >
+          <Route
+            index
+            element={<RiderdDashboard />}
+          />
+        <Route path='/rider/delivery/:id' element={<ViewDelivery />} />
         </Route>
 
         {/* PROTECTED ROUTES FOR VENDOR */}

@@ -136,6 +136,11 @@ namespace Api.Services
             {
                 var delivery = await _dbContext.Deliveries
                     .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p!.Vendor)
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
                     .FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
@@ -177,6 +182,7 @@ namespace Api.Services
                         .Include(d => d.Order)
                         .ThenInclude(o => o!.OrderItems)!
                         .ThenInclude(oi => oi.Product)
+                        .ThenInclude(p => p!.Vendor)
                         .Include(d => d.Order)
                         .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
