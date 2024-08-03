@@ -19,6 +19,7 @@ namespace Api.DTO
         public string? ClosingHours { get; set; }
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
+        public List<VendorReview>? VendorReviews { get; set; }
     }
 
     public class VendorDtoLite
@@ -35,6 +36,7 @@ namespace Api.DTO
         public string? ClosingHours { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public List<VendorReview>? VendorReviews { get; set; }
     }
 
     public class AuthVendorDto

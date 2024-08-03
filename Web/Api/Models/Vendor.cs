@@ -14,5 +14,6 @@
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
         public List<Product>? Products { get; set; }
+        public List<VendorReview>? VendorReviews { get; set; }
     }
 }
