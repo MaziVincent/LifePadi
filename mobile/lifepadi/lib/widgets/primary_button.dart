@@ -35,9 +35,8 @@ class PrimaryButton extends StatelessWidget {
           ),
           decoration: ShapeDecoration(
             gradient: const LinearGradient(
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
               colors: [kDarkPrimaryColor, kLightPrimaryColor],
+              stops: [0.125, 1.0],
             ),
             shape: roundedRectangleBorder,
           ),
