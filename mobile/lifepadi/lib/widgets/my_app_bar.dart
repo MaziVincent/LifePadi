@@ -39,9 +39,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 16.h, bottom: 17.h, right: 16.w, left: 4.w),
+      padding: EdgeInsets.only(top: 16.h, bottom: 16.h, right: 24.w),
       child: AppBar(
         title: _buildTitle(context),
+        titleSpacing: 24.w,
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         actions: actions,
