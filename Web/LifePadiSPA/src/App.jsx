@@ -29,6 +29,8 @@ import VendorDashboard from "./components/vendor/VendorDashboard";
 import VendorLayout from "./components/vendor/VendorLayout";
 import UserDashboard from "./components/customer/UserDashboard";
 import Unauthorized from "./components/Unauthorized";
+import ViewDelivery from './components/rider/ViewDelivery'
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -149,6 +151,7 @@ function App() {
             index
             element={<RiderdDashboard />}
           />
+        <Route path='/rider/delivery/:id' element={<ViewDelivery />} />
         </Route>
 
         <Route
