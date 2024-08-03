@@ -6,11 +6,15 @@ import MenuItem from '@mui/material/MenuItem'
 import Fade from '@mui/material/Fade'
 import { Link } from 'react-router-dom'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { UpdateModal } from './RiderModal'
 
 const FadeMenu = ({delivery}) => {
 =======
 import { ViewModal, UpdateModal } from './RiderModal'
+=======
+import { UpdateModal } from './RiderModal'
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
 
 const FadeMenu = ({delivery}) => {
     console.log(delivery.Id);
@@ -67,8 +71,12 @@ const FadeMenu = ({delivery}) => {
 =======
         <MenuItem onClick={handleClose}>{delivery.Id}</MenuItem>
         <MenuItem onClick={handleClose}>
+<<<<<<< HEAD
           <Link to='#' onClick={handleOpenViewModal}>
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+          <Link to={`delivery/${delivery.Id}`} >
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
             View
           </Link>
         </MenuItem>
@@ -77,10 +85,14 @@ const FadeMenu = ({delivery}) => {
         </MenuItem>
       </Menu>
 <<<<<<< HEAD
+<<<<<<< HEAD
       {/* <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} /> */}
 =======
       <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} />
 >>>>>>> d8a3578 (created a modal for view and update)
+=======
+      {/* <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} /> */}
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
       <UpdateModal delivery={delivery} openUpdateModal={openUpdateModal} setOpenUpdateModal={setOpenUpdateModal} />
     </div>
   )

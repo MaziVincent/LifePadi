@@ -141,6 +141,7 @@ const RiderDashboard = () => {
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
       console.log(riderDeliveries.result);
+<<<<<<< HEAD
       if (riderDeliveries?.result[0].Rider?.isVeirfied)
 =======
   if (riderDeliveriesSuccess) {
@@ -149,6 +150,8 @@ const RiderDashboard = () => {
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
 
+=======
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
       if (riderDeliveries.result[0].Rider.isVeirfied)
 >>>>>>> 5c62a96 (showing if a rider is verified or not)
       {
@@ -549,6 +552,7 @@ const RiderDashboard = () => {
                 <tbody>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {riderDeliveriesLoading && (
                     <tr className=''>
                       <td colSpan={8} className=''>
@@ -564,6 +568,9 @@ const RiderDashboard = () => {
 >>>>>>> d8a3578 (created a modal for view and update)
 =======
                   {riderDeliveriesLoading ? (
+=======
+                  {riderDeliveriesLoading && (
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
                     <tr className=''>
                       <td colSpan={6} className=''>
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
@@ -571,8 +578,13 @@ const RiderDashboard = () => {
                         </div>
                       </td>
                     </tr>
+<<<<<<< HEAD
                   ) : (
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+                  )}
+                  {riderDeliveries && (
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -659,6 +671,7 @@ const RiderDashboard = () => {
                   {riderDeliveriesLoading
                     ? 'Loading'
                     : riderDeliveries?.dataList?.TotalCount}
+<<<<<<< HEAD
 =======
                   1-10
                 </span>
@@ -672,6 +685,8 @@ const RiderDashboard = () => {
                     ? 'Loading'
                     : riderDeliveries.dataList.TotalCount}
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>

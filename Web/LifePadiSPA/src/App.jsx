@@ -31,8 +31,10 @@ import VendorLayout from "./components/vendor/VendorLayout";
 import UserDashboard from "./components/customer/UserDashboard";
 import UserLayout from "./components/customer/UserLayout";
 import Unauthorized from "./components/Unauthorized";
+<<<<<<< HEAD
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
+<<<<<<< HEAD
 import ViewDelivery from "./components/rider/ViewDelivery";
 import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
@@ -78,6 +80,12 @@ import Admin from './components/admin/admins/Admin'
 >>>>>>> a2698f4 (Finishing touches on the admin portal)
 
 >>>>>>> 4dc5d34 (worked on product component)
+=======
+=======
+import ViewDelivery from './components/rider/ViewDelivery'
+
+>>>>>>> c113a33 (added a view page for vewing delivery)
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
 
 function App() {
   const queryClient = new QueryClient();
@@ -313,6 +321,22 @@ function App() {
             </Route>
           </Route>
         </Route>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+        <Route
+          path="/rider"
+          element={<RiderLayout />}
+        >
+          <Route
+            index
+            element={<RiderdDashboard />}
+          />
+        <Route path='/rider/delivery/:id' element={<ViewDelivery />} />
+>>>>>>> c113a33 (added a view page for vewing delivery)
+        </Route>
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
 
         {/* PROTECTED ROUTES FOR RIDER */}
         <Route element={<PersistLogin />}>

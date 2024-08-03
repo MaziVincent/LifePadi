@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useParams } from 'react-router-dom'
 import { getDeliveryUrl } from './rider_uri/RiderURI'
 import { CircularProgress } from '@mui/material'
@@ -456,6 +457,13 @@ const ViewDelivery = () => {
         </div>
       </section>
     </div>
+=======
+import React from 'react'
+
+const ViewDelivery = () => {
+  return (
+    <div>ViewDelivery</div>
+>>>>>>> 556b5a3 (added a view page for vewing delivery)
   )
 }
 
