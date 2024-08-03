@@ -19,6 +19,8 @@ class InputField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.autofillHints,
+    this.maxLines = 1,
+    this.maxLength,
   });
 
   /// The child widget to be displayed as the suffix icon
@@ -50,6 +52,9 @@ class InputField extends StatelessWidget {
 
   /// Autofill hints to be displayed in the input field
   final Iterable<String>? autofillHints;
+
+  /// The maximum number of lines and characters allowed in the input field
+  final int? maxLines, maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +99,12 @@ class InputField extends StatelessWidget {
           fontWeight: FontWeight.w400,
           letterSpacing: 0.33.r,
         ),
-        contentPadding: const EdgeInsets.only(
-          top: 13,
-          left: 13.01,
-          right: 9.76,
-          bottom: 13,
-        ).r,
+        contentPadding: EdgeInsets.only(
+          top: 13.h,
+          left: 13.01.w,
+          right: 9.76.w,
+          bottom: 13.h,
+        ),
         suffixIcon: child != null
             ? GestureDetector(
                 onTap: onChildTap,
@@ -122,6 +127,8 @@ class InputField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       autofillHints: autofillHints,
+      maxLength: maxLength,
+      maxLines: maxLines,
     );
   }
 }

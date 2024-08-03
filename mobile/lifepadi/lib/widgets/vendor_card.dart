@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 class VendorCard extends StatelessWidget {
@@ -41,7 +42,7 @@ class VendorCard extends StatelessWidget {
               width: 58.47.r,
               height: 58.47.r,
               decoration: ShapeDecoration(
-                color: image == null ? const Color(0xFF5F5F5F) : null,
+                color: image == null ? kLightTextColor : null,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(19.49.r),
                 ),

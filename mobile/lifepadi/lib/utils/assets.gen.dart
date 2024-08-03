@@ -26,6 +26,9 @@ class $AssetsAnimationsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/arrow-right.svg
+  SvgGenImage get arrowRight => const SvgGenImage('assets/icons/arrow-right.svg');
+
   /// File path: assets/icons/errand-boy.svg
   SvgGenImage get errandBoy => const SvgGenImage('assets/icons/errand-boy.svg');
 
@@ -41,11 +44,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/laundry.png
   AssetGenImage get laundry => const AssetGenImage('assets/icons/laundry.png');
 
+  /// File path: assets/icons/location.svg
+  SvgGenImage get location => const SvgGenImage('assets/icons/location.svg');
+
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
   /// List of all assets
-  List<dynamic> get values => [errandBoy, fuelStation, gasTank, google, laundry, restaurant];
+  List<dynamic> get values =>
+      [arrowRight, errandBoy, fuelStation, gasTank, google, laundry, location, restaurant];
 }
 
 class $AssetsImagesGen {
