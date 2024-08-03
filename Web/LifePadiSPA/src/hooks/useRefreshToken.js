@@ -9,14 +9,14 @@ const useRefreshToken = () => {
 
     const refresh = async () => {
 
-        const response = await axios.get('refresh',{
+        const response = await axios.get('auth/refreshToken',{
             withCredentials:true,
             headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
             credentials: "include",
             
         });
 
-        //console.log(response.data);
+        console.log(response.data);
         setAuth(response.data);
    
     return response.data.accessToken;

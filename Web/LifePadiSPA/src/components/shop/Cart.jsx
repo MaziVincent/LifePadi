@@ -7,9 +7,32 @@ import {
 } from "@mui/icons-material";
 import { Modal } from "@mui/material";
 import useCart from "../../hooks/useCart";
+import {useReducer} from "react"
 
-const Cart = () => {
-  const { cartState, setCartState } = useCart();
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "address":
+      return { ...state, address: !state.address };
+    case "instruction":
+      return { ...state, instruction: !state.instruction };
+    case "error":
+      return { ...state, error: action.payload };
+
+    default:
+      throw new Error();
+  }
+};
+
+const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handleCartItemDelete}) => {
+  const { cartState, setCartState, cart, setCart } = useCart();
+  const [state, dispatch] = useReducer(reducer, {
+    address: false,
+    instruction: false,
+    error: "",
+  });
+
+
   return (
     <Modal
       open={cartState}
@@ -25,9 +48,9 @@ const Cart = () => {
       >
         <div className=" p-4 w-full max-w-xl flex flex-col  overflow-y-auto  bg-primary ">
           {/* <!-- Modal header --> */}
-          <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
-                Create Service
+          <div className="flex justify-between items-center pb-4 mb-4 rounded-t  sm:mb-5 dark:border-gray-600">
+              <h3 className="text-lg font-semibold text-secondary dark:text-gray-50">
+                {vendor?.Name}
               </h3>
               <button
                 type="button"
@@ -54,107 +77,106 @@ const Cart = () => {
               </button>
             </div>
             {/* <!-- Modal body --> */}
-            <div className=" border border-dashed border-gray rounded-lg w-full">
-            <div className=" flex justify-between items-center py-2 px-2">
-              <div>
-                <h3 className=" text-sm font-medium">Pack 1</h3>
+            {cart?.map((item, index) => (
+            <div key={item.Id} className=" border border-dashed border-gray rounded-lg w-full mb-3">
+              <div className=" flex justify-between items-center py-2 px-2">
+                <div>
+                  <h3 className=" text-sm font-medium">{`Item ${
+                    index + 1
+                  }`}</h3>
+                </div>
+                <button onClick={()=> handleCartItemDelete(item)}>
+                  <span className=" text-red hover:text-redborder">
+                    <DeleteOutlined />
+                  </span>
+                </button>
               </div>
-              <div>
-                <span className=" text-red">
-                  <DeleteOutlined />
-                </span>
-              </div>
-            </div>
-            <div className=" flex justify-between items-center py-2 px-2">
-              <p className=" flex flex-col items-center">
-                <span className=" text-sm">Suya spice</span>
-                <span className=" text-gray text-xs">
-                  &#8358;<span>10,000.00</span>
-                </span>
-              </p>
-              <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                <span className=" ">
-                  {" "}
-                  <Remove fontSize="" />
-                </span>
-                <span className=" text-md">1</span>
-                <span className=" ">
-                  <Add fontSize="" />
-                </span>
-              </span>
-            </div>
-            <div className=" flex justify-between px-2 py-3">
-              <button className=" border border-dashed border-gray px-2 rounded-full">
-                <span className=" text-sm">Duplicate this pack</span>
-              </button>
-            </div>
-          </div>
-          <div className=" border border-dashed border-gray rounded-lg w-full">
-            <div className=" flex justify-between items-center py-2 px-2">
-              <div>
-                <h3 className=" text-sm font-medium">Pack 1</h3>
-              </div>
-              <div>
-                <span className=" text-red">
-                  <DeleteOutlined />
+              <div className=" flex justify-between items-center py-2 px-2">
+                <p className=" flex flex-col items-start">
+                  <span className=" text-sm">{item.Name}</span>
+                  <span className=" text-gray text-xs">
+                    &#8358;<span>{item.Price}</span>
+                  </span>
+                </p>
+                <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
+                  <button 
+                  onClick={()=> handleCartDecrement(item)}
+                  className="shadow-md cursor-pointer rounded-lg px-1 ">
+                    {" "}
+                    <Remove fontSize="" />
+                  </button>
+                  <span className=" text-md">{item.Quantity}</span>
+                  <button 
+                  onClick={()=>handleCartIncrement(item)}
+                  className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                    <Add fontSize="" />
+                  </button>
                 </span>
               </div>
+              {/* <div className=" flex justify-between px-2 py-3">
+                <button className=" border border-dashed border-gray px-2 rounded-full">
+                  <span className=" text-sm">Duplicate this pack</span>
+                </button>
+              </div> */}
             </div>
-            <div className=" flex justify-between items-center py-2 px-2">
-              <p className=" flex flex-col items-center">
-                <span className=" text-sm">Suya spice</span>
-                <span className=" text-gray text-xs">
-                  &#8358;<span>10,000.00</span>
-                </span>
-              </p>
-              <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                <span className=" ">
-                  {" "}
-                  <Remove fontSize="" />
-                </span>
-                <span className=" text-md">1</span>
-                <span className=" ">
-                  <Add fontSize="" />
-                </span>
-              </span>
-            </div>
-            <div className=" flex justify-between px-2 py-3">
-              <button className=" border border-dashed border-gray px-2 rounded-full">
-                <span className=" text-sm">Duplicate this pack</span>
-              </button>
-            </div>
-          </div>
-            <div className=" w-full">
-            <div className=" py-2">
+          ))}
+          <div className=" w-full">
+            {/* <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Payment Method</span>
                 <button className=" text-background">Choose</button>
               </p>
-            </div>
-            <div className=" py-2">
+            </div> */}
+            {/* <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Promo code</span>
                 <button className=" text-background">Choose</button>
               </p>
-            </div>
+            </div> */}
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Choose Address</span>
-                <button className=" text-background">Change</button>
+                {
+                  state.address ? <button onClick={()=> dispatch({type:"address"})} className=" text-background cursor-pointer">Close</button> :
+                  <button onClick={()=> dispatch({type:"address"})} className=" text-background cursor-pointer">Change</button>
+                }
+                
               </p>
+            </div>
+            <div className={`${state.address ? "block" : "hidden"} border-2 rounded-lg border-graybg`}>
+              <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
+                <input type="radio" name="address" /> <label htmlFor="address"> No 1 something street</label>
+              </div>
+              <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
+                <input type="radio" name="address" /> <label htmlFor="address"> No 1 something street</label>
+              </div>
+              <div className="text-sm flex justify-end px-2 py-2">
+                <button className="text-background border p-2 rounded-xl border-gray cursor-pointer"> Add new Address </button>
+              </div>
             </div>
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery instructions</span>
-                <button className=" text-background">Add</button>
+                {
+                  state.instruction ? <button onClick={() => dispatch({type:"instruction"})} className=" text-background">Close</button> :
+                  <button onClick={() => dispatch({type:"instruction"})} className=" text-background">Add</button>
+                }
+                
               </p>
+              <div className={`flex flex-col ${state.instruction ? "block" : "hidden"}`}>
+                <textarea name="instructions" id="" cols="30" rows="5" className="border rounded-lg border-gray bg-graybg px-1 " placeholder="e.g  give it to the receptionist" ></textarea>
+              <div className="flex justify-end text-sm text-background">
+                <button className="p-2 cursor-pointer"> Add instructions </button>
+              </div>
+              </div>
+
             </div>
-            <div className=" py-2">
+            {/* <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Vendor instructions</span>
                 <button className=" text-background">Add</button>
               </p>
-            </div>
+            </div> */}
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -173,7 +195,22 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <div className=" py-2">
+          <div className="w-full">
+            <div className=" py-2">
+              <p className=" flex justify-between items-center text-sm font-normal">
+                <span>
+                  Sub total <span>({cart.length} item)</span>
+                </span>
+                <span className="">&#8358;{subTotal}</span>
+              </p>
+            </div>
+            <div className=" py-2">
+              <p className=" flex justify-between items-center text-sm font-normal">
+                <span>Delivery fee</span>
+                <span className="">&#8358;0.0</span>
+              </p>
+            </div>
+            <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Service fee</span>
                 <span className="">&#8358;0.0</span>
@@ -203,6 +240,8 @@ const Cart = () => {
                 <span className=" text-background text-sm">Save for later</span>
               </button>
             </div>
+          </div>
+            
         </div>
         
 

@@ -66,10 +66,11 @@ builder.Services.AddScoped<IOtherService, OtherService>();
 //enable CORS
 builder.Services.AddCors(c =>
 {
-    c.AddPolicy("AllowAllOrigin", options => options.AllowAnyOrigin()
+    c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("http://localhost:5173")
     .AllowAnyHeader()
     .AllowAnyMethod()
-    .AllowAnyHeader());
+    .AllowAnyHeader()
+    .AllowCredentials());
 });
 
 

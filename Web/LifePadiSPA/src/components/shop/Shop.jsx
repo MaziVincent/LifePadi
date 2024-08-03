@@ -43,7 +43,7 @@ const Shop = () => {
     refetchOnMount: "always",
   });
 
-  console.log(data);
+ // console.log(data);
   const getVendorCategories = useCallback(async () => {
     try {
       const result = await fetch(`${baseUrl}vendorcategory/all`);
@@ -63,7 +63,7 @@ const Shop = () => {
   const handleVendors = (data) => {
     setVendors(data);
   };
-  console.log(vendorCategories);
+  //console.log(vendorCategories);
   return (
     <div className="flex flex-col dark:bg-darkBg dark:text-primary gap-4 ">
       <div className=" lg:pl-32  p-4 flex flex-col gap-5">

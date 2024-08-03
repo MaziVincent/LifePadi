@@ -1,25 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../api/baseUrl";
+import useAuth from "../../hooks/useAuth"
+import useLocation from "../../hooks/useLocation";
 //import getLocation from "../../services/getLocation";
 //import GOOGLE_API_KEY from "../../api/googleApiKey";
 
 const Home = () => {
 
-  // const [location, setLocation] = useState(null);
-  // const [address, setAddress] = useState(null);
-  // const [error, setError] = useState(null);
+  const url = `${baseUrl}googlemaps`
+ // const [location, setLocation] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [error, setError] = useState(null);
+  const fetch = useFetch();
+  const {location, setLocation} = useAuth()
+  const getLocation = useLocation();
+
+
 
   // const getLocation = () => {
   //   if (navigator.geolocation) {
   //     navigator.geolocation.getCurrentPosition(
   //       (position) => {
   //         const { latitude, longitude } = position.coords;
-  //         setLocation({longitude, latitude });
+  //         setLocation((prev) => ({...prev, longitude, latitude }));
   //         setError(null);
-  //         getAddress(longitude, latitude)
+  //         console.log(position.coords)
   //       },
   //       (err) => {
   //         setError(err.message);
-  //       }
+  //       },
+  //       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
   //     );
   //   } else {
   //     setError("Geolocation is not supported by this browser.");
@@ -44,10 +55,24 @@ const Home = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   getLocation()
+  // const getAddress = useCallback(async () => {
+  //   try {
+  //     const result = await fetch(`${url}/address?Longitude=${location.longitude}&Latitude=${location.latitude}`);
+  //     setAddress(result.data);
+  //     setLocation((prev) => ({...prev, address : result.data}))
+  //     console.log(result.data)
+  //   } catch (error) {
+  //     console.error("Error fetching address:", error);
+  //     setError("Error fetching address. Please try again later.");
+  //   }
+  // }, [location]);
 
-  // },[])
+  useEffect(() => {
+    getLocation()
+    
+   console.log(location);
+
+  },[])
 
   // console.log(location)
   // console.log(address)
@@ -71,6 +96,7 @@ const Home = () => {
         <p className="font-light text-gray-500 md:text-lg xl:text-xl dark:text-gray-400">
           Our Developers are doing everything possible to finish this wonderful project .
         </p>
+        <button onClick={()=>getAddress()}>get address</button>
       </div>
     </section>
   );

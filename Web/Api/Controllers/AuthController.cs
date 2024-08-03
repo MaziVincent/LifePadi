@@ -47,13 +47,14 @@ namespace Api.Controllers
                 dbUser!.RefreshToken = refreshToken;
                 await _context.SaveChangesAsync();
                 //put refreshToken in a cookie
-                Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
-                {
+                var cookieOptions = new CookieOptions{
                     HttpOnly = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTime.UtcNow.AddDays(7),
+                    SameSite =  SameSiteMode.None,
+                     Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true
-                });
+                };
+                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+
                 var token = new {
                     user = user,
                     accessToken = accessToken

@@ -11,8 +11,8 @@ import axios from "axios";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 
-const Login = ({ open, handleClose }) => {
-  const { auth, setAuth, persist, setPersist } = useAuth();
+const Login = () => {
+  const { auth, setAuth, persist, setPersist, login, setLogin  } = useAuth();
   const url = `${baseUrl}auth/login`;
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,13 +27,15 @@ const Login = ({ open, handleClose }) => {
     mode: "all",
   });
 
-  const login = async (data) => {
+  const UserLogin = async (data) => {
     setIsLoading(true);
 
     try {
       const response = await axios.post(url, data, {
-        headers: { "Content-Type": "application/json" },
-        //withCredentials: true,
+        headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
+        credentials: "include",
+        withCredentials: true,
+
       });
 
       console.log(response.data);
@@ -43,7 +45,8 @@ const Login = ({ open, handleClose }) => {
       setTimeout(() => {
         switch (role) {
           case "Customer":
-            handleClose({ type: "login" });
+            setLogin(false);
+            //navigate(from, {replace: true })
             break;
           default:
             navigate("/unauthorized");
@@ -79,28 +82,29 @@ const Login = ({ open, handleClose }) => {
 
   return (
     <Modal
-      open={open}
+      open={login}
       onClose={() => {
-        handleClose({ type: "login" });
+        setLogin(false);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      
     >
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-auto "
+        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
       >
         <Toaster />
-        <div className="relative p-4 w-full max-w-2xl h-auto ">
+        <div className="relative p-4 w-full h-auto  ">
           <section className="  ">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0">
-              <div className="w-full bg-primary rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:border-gray-700">
-                <div className="flex justify-between items-center p-4  dark:border-gray-600">
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
+              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu ">
+                <div className="flex justify-between items-center p-4  ">
                   <button
                     type="button"
                     onClick={() => {
-                      handleClose({ type: "login" });
+                      setLogin(false);
                     }}
                     className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-toggle="defaultModal"
@@ -127,7 +131,7 @@ const Login = ({ open, handleClose }) => {
                   </h1>
                   <form
                     className="space-y-4 md:space-y-6"
-                    onSubmit={handleSubmit(login)}
+                    onSubmit={handleSubmit(UserLogin)}
                   >
                     <div>
                       <label
