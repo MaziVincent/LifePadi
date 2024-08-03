@@ -109,29 +109,46 @@ const Vendor = () => {
   };
 
   const handleCartIncrement = (item) => {
-
-    setCart(cart.map((prod)=>(
-      prod.Id === item.Id ? {...prod, Quantity: prod.Quantity + 1, Amount : (item.Quantity + 1) * item.Price} : prod
-    )));
+    setCart(
+      cart.map((prod) =>
+        prod.Id === item.Id
+          ? {
+              ...prod,
+              Quantity: prod.Quantity + 1,
+              Amount: (item.Quantity + 1) * item.Price,
+            }
+          : prod
+      )
+    );
 
     calculateTotalAmount();
 
-   // console.log(item);
+    // console.log(item);
   };
 
   const handleCartDecrement = (item) => {
-
-    if(item.Quantity > 1){
-      setCart(cart.map((prod) => (
-        prod.Id === item.Id ? {...prod, Quantity : prod.Quantity - 1, Amount : (item.Quantity + 1) * item.Price } : prod
-      )))
+    if (item.Quantity > 1) {
+      setCart(
+        cart.map((prod) =>
+          prod.Id === item.Id
+            ? {
+                ...prod,
+                Quantity: prod.Quantity - 1,
+                Amount: (item.Quantity - 1) * item.Price,
+              }
+            : prod
+        )
+      );
 
       calculateTotalAmount();
     }
 
     return;
-    
-  }
+  };
+
+  const handleCartItemDelete = (item) => {
+    setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
+  };
 
   useEffect(() => {
     getProductCategory();
@@ -422,18 +439,21 @@ const Vendor = () => {
             <p className=" text-base capitalize text-secondary">{data?.Name}</p>
           </div>
           {cart?.map((item, index) => (
-            <div key={item.Id} className=" border border-dashed border-gray rounded-lg w-full mb-3">
+            <div
+              key={item.Id}
+              className=" border border-dashed border-gray rounded-lg w-full mb-3"
+            >
               <div className=" flex justify-between items-center py-2 px-2">
                 <div>
                   <h3 className=" text-sm font-medium">{`Item ${
                     index + 1
                   }`}</h3>
                 </div>
-                <div>
-                  <span className=" text-red">
+                <button onClick={() => handleCartItemDelete(item)}>
+                  <span className=" text-red hover:text-redborder">
                     <DeleteOutlined />
                   </span>
-                </div>
+                </button>
               </div>
               <div className=" flex justify-between items-center py-2 px-2">
                 <p className=" flex flex-col items-start">
@@ -443,16 +463,18 @@ const Vendor = () => {
                   </span>
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                  <button 
-                  onClick={()=> handleCartDecrement(item)}
-                  className="shadow-md cursor-pointer rounded-lg px-1 ">
+                  <button
+                    onClick={() => handleCartDecrement(item)}
+                    className="shadow-md cursor-pointer rounded-lg px-1 "
+                  >
                     {" "}
                     <Remove fontSize="" />
                   </button>
                   <span className=" text-md">{item.Quantity}</span>
-                  <button 
-                  onClick={()=>handleCartIncrement(item)}
-                  className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                  <button
+                    onClick={() => handleCartIncrement(item)}
+                    className=" shadow-lg cursor-pointer rounded-lg px-1 "
+                  >
                     <Add fontSize="" />
                   </button>
                 </span>
@@ -568,7 +590,13 @@ const Vendor = () => {
           </button>
         </div> */}
       </div>
-      
+      <Cart
+        vendor={data}
+        subTotal={state.subTotal}
+        handleCartDecrement={handleCartDecrement}
+        handleCartIncrement={handleCartIncrement}
+        handleCartItemDelete = {handleCartItemDelete}
+      />
 
       <ProductModal
         open={state.open}

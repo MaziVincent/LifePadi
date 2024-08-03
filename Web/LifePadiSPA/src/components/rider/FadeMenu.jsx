@@ -5,7 +5,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Fade from '@mui/material/Fade'
 import { Link } from 'react-router-dom'
-import { ViewModal, UpdateModal } from './RiderModal'
+import { UpdateModal } from './RiderModal'
 
 const FadeMenu = ({delivery}) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -51,7 +51,7 @@ const FadeMenu = ({delivery}) => {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={handleClose}>
-          <Link to='#' onClick={handleOpenViewModal}>
+          <Link to={`delivery/${delivery.Id}`} >
             View
           </Link>
         </MenuItem>
@@ -59,7 +59,7 @@ const FadeMenu = ({delivery}) => {
           <Link to='#' onClick={handleOpenUpdateModal}>Update</Link>
         </MenuItem>
       </Menu>
-      <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} />
+      {/* <ViewModal delivery={delivery} openViewModal={openViewModal} setOpenViewModal={setOpenViewModal} /> */}
       <UpdateModal delivery={delivery} openUpdateModal={openUpdateModal} setOpenUpdateModal={setOpenUpdateModal} />
     </div>
   )

@@ -15,6 +15,7 @@ namespace Api.DTO
         public CategoryDtoLite? Category { get; set; }
         public int VendorId { get; set; }
         public VendorDtoLite? Vendor { get; set; }
+        public List<ProductReview>? ProductReviews { get; set; }
 
     }
 
