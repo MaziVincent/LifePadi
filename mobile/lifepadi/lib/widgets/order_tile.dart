@@ -5,8 +5,10 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 enum OrderStatus {
+  pending,
   ongoing,
   completed,
+  canceled,
 }
 
 class OrderTile extends StatelessWidget {
@@ -116,6 +118,16 @@ class OrderTile extends StatelessWidget {
 
   List<Widget> _buildOrderStatus(BuildContext context) {
     return switch (status) {
+      OrderStatus.pending => [
+          Text(
+            'Pending',
+            style: context.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFFD98404),
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       OrderStatus.ongoing => [
           SizedBox(
             height: 16.h,
@@ -141,6 +153,16 @@ class OrderTile extends StatelessWidget {
             'Completed',
             style: context.textTheme.bodySmall?.copyWith(
               color: kDarkPrimaryColor,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      OrderStatus.canceled => [
+          Text(
+            'Canceled',
+            style: context.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFFF52311),
               fontSize: 12.sp,
               fontWeight: FontWeight.w600,
             ),

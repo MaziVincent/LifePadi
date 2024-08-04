@@ -5,6 +5,7 @@ import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 
+import '../widgets/my_order_list.dart';
 import '../widgets/order_tile.dart';
 
 class OrdersPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class OrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 4,
       child: Scaffold(
         appBar: MyAppBar(
           title: Text(
@@ -34,8 +35,10 @@ class OrdersPage extends StatelessWidget {
           height: 126.h,
           bottom: TabBar(
             tabs: [
+              Tab(text: 'Pending', height: 39.h),
               Tab(text: 'Ongoing', height: 39.h),
               Tab(text: 'Completed', height: 39.h),
+              Tab(text: 'Canceled', height: 39.h),
             ],
             dividerHeight: 0,
             tabAlignment: TabAlignment.fill,
@@ -54,45 +57,23 @@ class OrdersPage extends StatelessWidget {
             indicatorSize: TabBarIndicatorSize.tab,
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  10.verticalSpace,
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return const OrderTile(
-                          status: OrderStatus.ongoing,
-                        );
-                      },
-                      separatorBuilder: (context, index) => 18.verticalSpace,
-                    ),
-                  ),
-                ],
-              ),
+            MyOrderList(
+              status: OrderStatus.pending,
+              numberOfOrders: 2,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  10.verticalSpace,
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return const OrderTile(
-                          status: OrderStatus.completed,
-                        );
-                      },
-                      separatorBuilder: (context, index) => 18.verticalSpace,
-                    ),
-                  ),
-                ],
-              ),
+            MyOrderList(
+              status: OrderStatus.ongoing,
+              numberOfOrders: 3,
+            ),
+            MyOrderList(
+              status: OrderStatus.completed,
+              numberOfOrders: 4,
+            ),
+            MyOrderList(
+              status: OrderStatus.canceled,
+              numberOfOrders: 1,
             ),
           ],
         ),
