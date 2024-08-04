@@ -67,18 +67,18 @@ const Home = () => {
   //   }
   // }, [location]);
 
-  useEffect(() => {
-    getLocation()
+  // useEffect(() => {
+  //   getLocation()
     
-   console.log(location);
+  //  console.log(location);
 
-  },[])
+  // },[])
 
   // console.log(location)
   // console.log(address)
 
   return (
-    <section class="bg-white dark:bg-gray-900">
+    <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-md text-center lg:py-16 lg:px-12">
         <svg
           className="mx-auto mb-4 w-10 h-10 text-gray-400"
@@ -96,7 +96,7 @@ const Home = () => {
         <p className="font-light text-gray-500 md:text-lg xl:text-xl dark:text-gray-400">
           Our Developers are doing everything possible to finish this wonderful project .
         </p>
-        <button onClick={()=>getAddress()}>get address</button>
+        {/* <button onClick={()=>getAddress()}>get address</button> */}
       </div>
     </section>
   );
