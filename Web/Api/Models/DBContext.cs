@@ -24,5 +24,8 @@ namespace Api.Models
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<VendorCategory> VendorCategories { get; set; }
+        public DbSet<VendorReview> VendorReviews { get; set; }
+        public DbSet<RiderReview> RiderReviews { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
     }
 }
