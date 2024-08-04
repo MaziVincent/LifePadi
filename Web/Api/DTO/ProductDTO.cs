@@ -30,6 +30,7 @@ namespace Api.DTO
         public string? Tag { get; set; }
         public int? CategoryId {get; set;}
         public int? VendorId {get; set;}
+        public VendorDtoLite? Vendor { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
