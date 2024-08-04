@@ -110,7 +110,7 @@ const RiderDashboard = () => {
   }
 
   return (
-    <div className='bg-darkBg h-auto'>
+    <div className='dark:bg-darkBg bg-primary h-auto'>
       <section className='bg-white dark:bg-gray-900 mb-5'>
         <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 '>
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
@@ -154,7 +154,7 @@ const RiderDashboard = () => {
           </dl>
         </div>
       </section>
-      <section className='bg-darkMenu dark:bg-gray-900 p-3 sm:p-5'>
+      <section className='dark:bg-darkMenu bg-primary dark:bg-gray-900 p-3 sm:p-5'>
         <div className='mx-auto max-w-screen-xl px-2 lg:px-12'>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
