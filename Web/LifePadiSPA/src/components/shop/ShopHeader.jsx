@@ -2,6 +2,7 @@ import ResponsiveLogo from "../shared/ResponsiveLogo";
 import useLocation from "../../hooks/useLocation";
 import useAddress from "../../hooks/useAddress";
 import { useEffect } from "react";
+import useFetch from "../../hooks/useFetch";
 import {
   ExpandMore,
   LocationOn,
@@ -29,29 +30,40 @@ const ShopHeader = () => {
   const { auth, setLogin, location, setLocation } = useAuth();
   const navigate = useNavigate();
   const getLocation = useLocation();
+  const fetch = useFetch();
   const getAddress = useAddress();
 
   const [state, dispatch] = useReducer(reducer, {
     login: false,
   });
   const handleLocation = async () => {
-    if (!location || location.accuracy > 100) {
-      await getLocation();
-      console.log(location)
-      // setTimeout(() => {
-      //   const result =  getAddress();
-      //   console.log(result.data);
-      // }, 1000);
+    if (!location?.longitude || !location?.latitude  || location?.accuracy > 100) {
+     const {data, error} =  await getLocation();
+     console.log(data)
+     if(error){
+      console.log(error)
+      return;
+     }
+
+     setLocation(data);
+     
+      
     } else {
-      const result = getAddress();
       console.log(result.data);
     }
   };
 
+  
+
   useEffect(()=> {
-    handleLocation();
+    // handleLocation();
+
+    // console.log(location);  
+   
   },[])
-  // console.log(cartState);
+
+  
+  
   return (
     <div className=" dark:bg-darkMenu dark:text-primary  fixed top-0 z-40 bg-primary w-full p-4 lg:px-28 shadow-md ">
       <div className=" flex justify-between">
@@ -63,7 +75,7 @@ const ShopHeader = () => {
                 <LocationOn />
               </span>
               {location ? (
-                <span> {location.address} </span>
+                <span> {location.address}  </span>
               ) : (
                 <>
                   <span className="">Enter address</span>
