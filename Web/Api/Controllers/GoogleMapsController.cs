@@ -29,6 +29,10 @@ namespace Api.Controllers
             var longitude = coordinates.Longitude;
             var latitude = coordinates.Latitude;
 
+            if(longitude is null  || latitude is null ){
+                return BadRequest();
+            }
+
             var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
             var requestUri = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={apiKey}";
 
@@ -47,7 +51,7 @@ namespace Api.Controllers
             }
 
             var address = json["results"]?[0]?["formatted_address"]?.ToString();
-            return Ok(new { address });
+            return Ok(address );
         }
 
         [HttpGet("coordinates")]

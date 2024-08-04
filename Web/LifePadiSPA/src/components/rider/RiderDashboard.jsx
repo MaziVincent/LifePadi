@@ -366,7 +366,7 @@ const RiderDashboard = () => {
                       </td>
                     </tr>
                   )}
-                  {riderDeliveries && (
+                  {riderDeliveries ? (
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -399,6 +399,10 @@ const RiderDashboard = () => {
                         </td>
                       </tr>
                     ))
+                  ): (
+                    <tr>
+                      <td colSpan={6} className='text-center'>No data found</td>
+                    </tr>
                   )}
                 </tbody>
               </table>
@@ -414,7 +418,6 @@ const RiderDashboard = () => {
                   {riderDeliveriesLoading ? (
                     <CircularProgress size={20} />
                   ) : (
-                    // riderDeliveriesSuccess && riderDeliveries.dataList.PageSize
                     pageSize
                   )}
                 </span>

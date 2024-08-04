@@ -33,6 +33,7 @@ import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
 import ViewDelivery from './components/rider/ViewDelivery'
+import Login from "./components/auth/Login";
 
 
 function App() {
@@ -58,6 +59,10 @@ function App() {
             element={<Home />}
           />
         </Route>
+
+        {/* AUTH */}
+
+        <Route path="/login" element={<Login />} />
 
         {/* SHOP ROUTES */}
 
