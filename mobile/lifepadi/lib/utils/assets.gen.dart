@@ -61,6 +61,9 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/auth-heros
   $AssetsImagesAuthHerosGen get authHeros => const $AssetsImagesAuthHerosGen();
 
+  /// File path: assets/images/avatar.png
+  AssetGenImage get avatar => const AssetGenImage('assets/images/avatar.png');
+
   /// File path: assets/images/bnb-blender.png
   AssetGenImage get bnbBlender => const AssetGenImage('assets/images/bnb-blender.png');
 
@@ -104,6 +107,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
+        avatar,
         bnbBlender,
         deliverPackageToLady,
         dominosPizza,
