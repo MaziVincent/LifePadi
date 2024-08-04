@@ -83,6 +83,7 @@ import Admin from './components/admin/admins/Admin'
 =======
 =======
 import ViewDelivery from './components/rider/ViewDelivery'
+import Login from "./components/auth/Login";
 
 >>>>>>> c113a33 (added a view page for vewing delivery)
 >>>>>>> 556b5a3 (added a view page for vewing delivery)
@@ -139,6 +140,13 @@ function App() {
         </Route>
 
         {/* AUTH */}
+<<<<<<< HEAD
+=======
+
+        <Route path="/login" element={<Login />} />
+
+        {/* SHOP ROUTES */}
+>>>>>>> d189281 (worked on Login)
 
 <<<<<<< HEAD
         <Route

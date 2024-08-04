@@ -1,6 +1,7 @@
 import ResponsiveLogo from "../shared/ResponsiveLogo";
 import useLocation from "../../hooks/useLocation";
 import { useEffect } from "react";
+import useFetch from "../../hooks/useFetch";
 import {
   LocationOn,
   PersonOutlined,
@@ -26,6 +27,7 @@ const ShopHeader = () => {
   const { auth,login, setLogin, location, setLocation } = useAuth();
   const navigate = useNavigate();
   const getLocation = useLocation();
+<<<<<<< HEAD
   const {coordinates, error, loading } = useCoordinates()
   const {address, error:addError, loading:addLoading } = useAddress(coordinates.latitude, coordinates.longitude);
 
@@ -35,6 +37,42 @@ const ShopHeader = () => {
     setLocation({coordinates, address})
     //dispatch({type:"setAddress", payload: address })
   },[address])
+=======
+  const fetch = useFetch();
+  const getAddress = useAddress();
+
+  const [state, dispatch] = useReducer(reducer, {
+    login: false,
+  });
+  const handleLocation = async () => {
+    if (!location?.longitude || !location?.latitude  || location?.accuracy > 100) {
+     const {data, error} =  await getLocation();
+     console.log(data)
+     if(error){
+      console.log(error)
+      return;
+     }
+
+     setLocation(data);
+     
+      
+    } else {
+      console.log(result.data);
+    }
+  };
+
+  
+
+  useEffect(()=> {
+    // handleLocation();
+
+    // console.log(location);  
+   
+  },[])
+
+  
+  
+>>>>>>> d189281 (worked on Login)
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
       <div className=" flex justify-between w-full lg:w-10/12">
@@ -45,6 +83,7 @@ const ShopHeader = () => {
               <span className=" text-secondary">
                 <LocationOn />
               </span>
+<<<<<<< HEAD
               {
                 addLoading && <>
                 <svg
@@ -69,6 +108,18 @@ const ShopHeader = () => {
               {address && 
                 <span className="line-clamp-2"> {address }  </span>
                }
+=======
+              {location ? (
+                <span> {location.address}  </span>
+              ) : (
+                <>
+                  <span className="">Enter address</span>
+                  <span>
+                    <ExpandMore />
+                  </span>{" "}
+                </>
+              )}
+>>>>>>> d189281 (worked on Login)
             </Link>
           </div>
         </div>

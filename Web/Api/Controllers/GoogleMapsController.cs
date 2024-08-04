@@ -29,8 +29,12 @@ namespace Api.Controllers
             var longitude = coordinates.Longitude;
             var latitude = coordinates.Latitude;
 
+<<<<<<< HEAD
             if (longitude is null || latitude is null)
             {
+=======
+            if(longitude is null  || latitude is null ){
+>>>>>>> d189281 (worked on Login)
                 return BadRequest();
             }
 
@@ -52,7 +56,11 @@ namespace Api.Controllers
             }
 
             var address = json["results"]?[0]?["formatted_address"]?.ToString();
+<<<<<<< HEAD
             return Ok(address);
+=======
+            return Ok(address );
+>>>>>>> d189281 (worked on Login)
         }
 
         [HttpGet("coordinates")]

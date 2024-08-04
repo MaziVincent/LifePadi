@@ -11,9 +11,13 @@ import useAuth from "../../hooks/useAuth";
 //import useCart from "../../hooks/useCart";
 
 const UserLogin = () => {
+<<<<<<< HEAD
   const { auth, setAuth, persist, setPersist, login, setLogin, setRegister } =
     useAuth();
   //const {dispatch} = useCart();
+=======
+  const { auth, setAuth, persist, setPersist, login, setLogin  } = useAuth();
+>>>>>>> d189281 (worked on Login)
   const url = `${baseUrl}auth/login`;
   const navigate = useNavigate();
   const location = useLocation();

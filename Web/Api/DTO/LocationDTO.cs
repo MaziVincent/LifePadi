@@ -16,6 +16,7 @@ namespace Api.DTO
     {
         public double? Longitude {get; set;}
         public double? Latitude {get; set;}
+<<<<<<< HEAD
     }
 
     public class Distance{
@@ -30,5 +31,7 @@ namespace Api.DTO
         public string? RiderId { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
+=======
+>>>>>>> d189281 (worked on Login)
     }
 }
