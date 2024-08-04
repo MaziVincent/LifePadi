@@ -25,3 +25,5 @@ export const pendingDeliveriesCountUrl =
 
 export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId from the component before using this url
 export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus'; //add orderId, deliveryId and deliveryStatus as query params
+
+export const getDeliveryUrl = baseUrl + 'delivery/get/{id}';
