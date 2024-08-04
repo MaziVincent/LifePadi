@@ -196,7 +196,7 @@ class LoginPage extends HookConsumerWidget {
                             // TODO: Make request to login
 
                             // For now, just call the login function
-                            showToast('Logging in ...');
+                            showToast('Logging in');
                             login();
                           },
                         ),

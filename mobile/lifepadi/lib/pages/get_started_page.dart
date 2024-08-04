@@ -89,6 +89,7 @@ class GetStartedPage extends StatelessWidget {
                   child: PrimaryOutlineButton(
                     text: 'Login',
                     onPressed: () => context.go(const LoginRoute().location),
+                    height: 52.h,
                   ),
                 ),
                 17.verticalSpace,

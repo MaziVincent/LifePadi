@@ -11,8 +11,11 @@ sealed class Auth with _$Auth {
     required String email,
     required String token,
   }) = SignedIn;
+
   const Auth._();
+
   const factory Auth.signedOut() = SignedOut;
+
   bool get isAuth => switch (this) {
         SignedIn() => true,
         SignedOut() => false,

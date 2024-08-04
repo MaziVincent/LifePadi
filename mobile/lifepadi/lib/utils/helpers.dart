@@ -13,7 +13,7 @@ Logger logger = Logger(
 );
 
 Future<bool?> showToast(
-  String msg, {
+  String message, {
   Toast? toastLength,
   Color? backgroundColor,
   double? fontSize,
@@ -21,7 +21,7 @@ Future<bool?> showToast(
   ToastGravity? gravity,
 }) {
   return Fluttertoast.showToast(
-    msg: msg,
+    msg: message,
     backgroundColor: backgroundColor ?? Colors.black54,
     toastLength: toastLength,
     fontSize: fontSize,

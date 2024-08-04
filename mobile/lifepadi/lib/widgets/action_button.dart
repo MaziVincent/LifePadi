@@ -5,6 +5,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../hooks/use_side_effect.dart';
 import 'loading_spinner.dart';
 
+// TODO: Consider creating PrimaryActionButton and PrimaryOutlineActionButton based on this.
+// Show a loading spinner while the action is being processed.
+// Show toast instead of snackbar for errors.
 class ActionButton extends HookWidget {
   const ActionButton({
     super.key,
@@ -40,7 +43,8 @@ class ActionButton extends HookWidget {
           _ => pressButton,
         },
         icon: switch (snapshot) {
-          AsyncSnapshot(connectionState: ConnectionState.waiting) => const LoadingSpinner(),
+          AsyncSnapshot(connectionState: ConnectionState.waiting) =>
+            const LoadingSpinner(),
           _ => icon,
         },
         label: label,

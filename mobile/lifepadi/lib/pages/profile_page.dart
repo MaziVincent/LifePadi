@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/logout_button.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 
 import '../widgets/profile_image_and_location.dart';
+import '../widgets/settings_panel.dart';
+import '../widgets/settings_tile.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -57,20 +60,65 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(
-              left: 24.w,
-              right: 24.w,
-              bottom: 24.h,
-              top: 14.h,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => Container(
-                  color: Colors.blue[100 * (index % 9)],
-                  child: Text('Item $index'),
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
+            sliver: SliverList.list(
+              children: [
+                SettingsPanel(
+                  title: 'Personal Details',
+                  child: Column(
+                    children: [
+                      for (final _ in Iterable<int>.generate(5))
+                        const Text('lorem ipsum dolor sit amet'),
+                    ],
+                  ),
                 ),
-                childCount: 100,
-              ),
+                SettingsPanel(
+                  title: 'Account management',
+                  child: Column(
+                    children: [
+                      for (final _ in Iterable<int>.generate(3))
+                        const Text('lorem ipsum dolor sit amet'),
+                    ],
+                  ),
+                ),
+                SettingsTile(
+                  title: 'Wishlist',
+                  onTap: () {
+                    // TODO: Go to wishlist page.
+                  },
+                ),
+                SettingsTile(
+                  title: 'Chats',
+                  onTap: () {
+                    // TODO: Go to chats page.
+                  },
+                ),
+                SettingsTile(
+                  title: 'Wallets',
+                  onTap: () {
+                    // TODO: Go to wallets page.
+                  },
+                ),
+                SettingsTile(
+                  title: 'Customer support',
+                  onTap: () {
+                    // TODO: Go to support page.
+                  },
+                ),
+                SettingsTile(
+                  title: 'Settings',
+                  onTap: () {
+                    // TODO: Go to settings page.
+                  },
+                ),
+              ].separatedBy(5.verticalSpace),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h)
+                .copyWith(top: 12.h),
+            sliver: const SliverToBoxAdapter(
+              child: LogoutButton(),
             ),
           ),
         ],

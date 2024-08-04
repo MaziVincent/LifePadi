@@ -42,7 +42,7 @@ GoRouter router(RouterRef ref) {
     routes: $appRoutes,
     redirect: (context, state) async {
       if (isAuth.value.unwrapPrevious().hasError) {
-        // TODO: Find logic for this redirect case
+        // TODO: Update logic for this redirect case
         // if user has ever logged in before, go to get started
         // If not, go to onboarding
         return const OnboardingRoute().location;
