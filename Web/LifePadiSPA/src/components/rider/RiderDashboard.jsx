@@ -583,8 +583,12 @@ const RiderDashboard = () => {
 >>>>>>> 1795118 (still working on updating delivery status)
 =======
                   )}
+<<<<<<< HEAD
                   {riderDeliveries && (
 >>>>>>> 556b5a3 (added a view page for vewing delivery)
+=======
+                  {riderDeliveries ? (
+>>>>>>> f6e3ad5 (small changes)
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -660,9 +664,12 @@ const RiderDashboard = () => {
                     <CircularProgress size={20} />
                   ) : (
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                     // riderDeliveriesSuccess && riderDeliveries.dataList.PageSize
 >>>>>>> 5c62a96 (showing if a rider is verified or not)
+=======
+>>>>>>> f6e3ad5 (small changes)
                     pageSize
                   )}
                 </span>

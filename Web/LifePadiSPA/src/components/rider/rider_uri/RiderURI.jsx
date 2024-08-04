@@ -79,5 +79,13 @@ export const riderDeliveriesUrl = baseUrl + 'delivery/rider/'; //add riderId fro
 =======
 =======
 export const updateDeliveryOrderStatusUrl = baseUrl + 'delivery/updateBothStatus'; //add orderId, deliveryId and deliveryStatus as query params
+<<<<<<< HEAD
 >>>>>>> 06231f6 (still working on updating delivery status)
+<<<<<<< HEAD
 >>>>>>> 1795118 (still working on updating delivery status)
+=======
+=======
+
+export const getDeliveryUrl = baseUrl + 'delivery/get/{id}';
+>>>>>>> cd160e0 (small changes)
+>>>>>>> f6e3ad5 (small changes)
