@@ -82,7 +82,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{customerId}/customer-addresses")]
+        [HttpGet("customer-addresses/{customerId}")]
         public async Task<IActionResult> getCustomersAddresses([FromRoute] int customerId)
         {
             try
