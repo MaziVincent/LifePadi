@@ -4,8 +4,9 @@ import { useState } from "react"
 
 const SideNav = ({aside}) => {
   const [pagePath, setPagePath] = useState("/rider")
+  const pathname = window.location.pathname
   let links = []
-  if(window.location.pathname === "/rider"){
+  if(pathname === "/rider" || pathname.includes("/rider")){
     links = [
       {
         to: '/rider',
@@ -14,7 +15,7 @@ const SideNav = ({aside}) => {
       },
     ]
   }
-  else if(window.location.pathname === "/vendor"){
+  else if(pathname === "/vendor"){
     links = [
         {
         to: "/vendor",
