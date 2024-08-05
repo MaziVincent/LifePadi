@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.DTO;
 using Api.Models;
-using API.DTO;
-using API.Models;
+using Api.Services;
 
 namespace Api.Interfaces
 {

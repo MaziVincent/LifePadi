@@ -1,4 +1,4 @@
-namespace API.DTO
+namespace Api.DTO
 {
     public class SearchPaging
     {

@@ -1,8 +1,6 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
-using API.DTO;
-using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
