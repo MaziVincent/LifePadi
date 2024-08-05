@@ -2,7 +2,6 @@
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using API.DTO;
 
 namespace Api.Controllers
 {
