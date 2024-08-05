@@ -14,12 +14,13 @@ import CircularProgress from '@mui/material/CircularProgress'
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
+  
   let page = 1;
   let totalPage = 1;
   let pageSize = 5;
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
-  const riderId = 3
+  const riderId = auth.user.Id
 
   const getRiderDeliveris = async (url) => {
     const response = await fetch(url, auth.accessToken)
@@ -155,7 +156,7 @@ const RiderDashboard = () => {
         </div>
       </section>
       <section className='dark:bg-darkMenu bg-primary dark:bg-gray-900 p-3 sm:p-5'>
-        <div className='mx-auto max-w-screen-xl px-2 lg:px-12'>
+        <div className='mx-auto max-w-screen-xl '>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
               <div className='w-full md:w-1/2'>
@@ -359,7 +360,7 @@ const RiderDashboard = () => {
                 <tbody>
                   {riderDeliveriesLoading && (
                     <tr className=''>
-                      <td colSpan={6} className=''>
+                      <td colSpan={8} className=''>
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
                           <CircularProgress />
                         </div>
@@ -394,7 +395,7 @@ const RiderDashboard = () => {
                         <td className='px-4 py-3'>
                           {delivery.Order.Customer.PhoneNumber}
                         </td>
-                        <td className='px-4 py-3 flex items-center justify-end dropdown'>
+                        <td className='px-5 py-3 flex items-center justify-end dropdown'>
                           <FadeMenu delivery={delivery} />
                         </td>
                       </tr>

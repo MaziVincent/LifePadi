@@ -2,8 +2,6 @@
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
-using API.DTO;
-using API.Models;
 using AutoMapper;
 using CloudinaryDotNet;
 using FuzzySharp;

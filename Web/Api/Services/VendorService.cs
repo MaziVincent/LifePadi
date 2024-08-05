@@ -3,8 +3,6 @@ using Api.Exceptions;
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
-using API.DTO;
-using API.Models;
 using AutoMapper;
 using CloudinaryDotNet;
 using FuzzySharp;
@@ -79,6 +77,7 @@ namespace Api.Services
                     Name = vendor.ContactAddress,
                     Town = vendor.Town!,
                     City = vendor.City!,
+                    LocalGovt = vendor.LocalGovt,
                     State = vendor.State!,
                     PostalCode = vendor.PostalCode!,
                     Longitude = vendor.Longitude!,
@@ -158,6 +157,7 @@ namespace Api.Services
                     VendorImgUrl = vendor.VendorImgUrl,
                     Town = address!.Town,
                     City = address.City,
+                    LocalGovt = address.LocalGovt,
                     State = address.State,
                     PostalCode = address.PostalCode,
                     Longitude = address.Longitude,

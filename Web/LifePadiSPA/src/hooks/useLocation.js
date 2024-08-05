@@ -47,7 +47,7 @@ const useLocation =  () => {
               error: err.message
             })
           },
-          { enableHighAccuracy: true, maximumAge: 0 }
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
         );
 
       } else {

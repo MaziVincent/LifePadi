@@ -5,6 +5,7 @@ import {
   DeleteOutlined,
   ExpandLessRounded,
   ExpandMoreRounded,
+  FormatColorResetSharp,
   InfoOutlined,
   Remove,
   StarOutlined,
@@ -21,6 +22,7 @@ import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
+import AddAddressModal from "./AddAddressModal"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,6 +40,9 @@ const reducer = (state, action) => {
       return { ...state, product: action.payload };
     case "subTotal":
       return { ...state, subTotal: action.payload };
+    
+    case "newAddress":
+      return { ...state, newAddress : !state.newAddress };
 
     default:
       throw new Error();
@@ -60,6 +65,7 @@ const Vendor = () => {
     productCategories: [],
     product: {},
     subTotal: 0,
+    newAddress : false
   });
 
   const getVendor = async (url) => {
@@ -435,7 +441,7 @@ const Vendor = () => {
           </div>
         </div>
         <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-1 py-5 px-2 lg:flex flex-col   items-start justify-center  h-full rounded-lg">
-          <div className=" flex justify-between items-center pb-4">
+          <div className=" flex justify-between items-center pb-4" >
             <p className=" text-base capitalize text-secondary">{data?.Name}</p>
           </div>
           {cart?.map((item, index) => (
@@ -596,6 +602,7 @@ const Vendor = () => {
         handleCartDecrement={handleCartDecrement}
         handleCartIncrement={handleCartIncrement}
         handleCartItemDelete = {handleCartItemDelete}
+        handleNewAddress = {dispatch}
       />
 
       <ProductModal
@@ -603,6 +610,7 @@ const Vendor = () => {
         handleClose={dispatch}
         product={state.product}
       />
+      <AddAddressModal open={state.edit} handleClose={dispatch} />
     </main>
   );
 };

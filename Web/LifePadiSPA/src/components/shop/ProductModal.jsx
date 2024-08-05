@@ -1,14 +1,8 @@
-// import usePost from "../../../hooks/usePost";
-// import useAuth from "../../../hooks/useAuth";
-// import baseUrl from "../../../api/baseUrl";
+
 import Modal from "@mui/material/Modal";
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useRef } from "react";
 import useCart from "../../hooks/useCart";
-import { Clear } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 
 const ProductModal = ({ open, handleClose, product }) => {
 const {cart, setCart} = useCart();

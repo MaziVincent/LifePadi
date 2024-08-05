@@ -1,18 +1,25 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getDeliveryUrl } from './rider_uri/RiderURI'
 import { CircularProgress } from '@mui/material'
 import useFetch from '../../hooks/useFetch'
 import useAuth from '../../hooks/useAuth'
 import { useQuery } from 'react-query'
+import DateFormater from '../shared/DateFormater'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+
 
 const ViewDelivery = () => {
     const { auth } = useAuth()
     const fetch = useFetch()
+    let totalMoney = 0
 
     const { id } = useParams()
-    console.log(id)
     const url = getDeliveryUrl.replace('{id}', id)
-    console.log(url);
+
+    const addMoney = (money) => {
+        totalMoney += money
+    }
     
     const geDelivery = async (url) => {
         const response = await fetch(url, auth.accessToken)
@@ -39,12 +46,156 @@ const ViewDelivery = () => {
 
   return (
     <div>
-      <section className='bg-darkMenu dark:bg-gray-900 p-3 sm:p-5'>
-        <div className='mx-auto max-w-screen-xl px-2 lg:px-12'>
+      <section className='bg-darkMenu dark:bg-gray-900 p-1 sm:p-5'>
+        <div className='mx-auto max-w-screen-xl px-2 lg:px-3'>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
-              <div className='w-full md:w-1/2'></div>
-              <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'></div>
+              <div className='w-full md:w-1/2'>
+                <Box className='bg-darkHover rounded-md'>
+                  <Typography
+                    id='modal-modal-title'
+                    variant='h6'
+                    component='h2'
+                    className='pl-2 pt-2'
+                  >
+                    Delivery details
+                  </Typography>
+                  <Box className='h-72 p-3'>
+                    {isError && (
+                      <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+                        <span className='text-red-600'>An error occurred</span>
+                      </Typography>
+                    )}
+                    {delivery && (
+                      <>
+                        <Typography id='modal-modal-description'>
+                          <span className='text-lg font-bold'>
+                            Pickup Address:{' '}
+                          </span>{' '}
+                          <span className='text-sm'>
+                            {delivery.PickupAddress}
+                          </span>
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Delivery Fee:{' '}
+                          </span>{' '}
+                          &#x20A6;
+                          {delivery.DeliveryFee}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Delivery Status:{' '}
+                          </span>{' '}
+                          {delivery.Status == 'Delivered' ? (<span className='text-lightgreen'>{delivery.Status}</span>): (delivery.Status)}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Delivery Type:{' '}
+                          </span>{' '}
+                          {delivery.PickupType}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Delivery Time:{' '}
+                          </span>{' '}
+                          {DateFormater(delivery.CreatedAt)}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Ordered Date:{' '}
+                          </span>{' '}
+                          <span className='text-sm'>
+                            {DateFormater(delivery.Order.CreatedAt)}
+                          </span>
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Order Status:{' '}
+                          </span>{' '}
+                          <span className='text-sm'>
+                            {delivery.Order.Status}
+                          </span>
+                        </Typography>
+                        {delivery.Order.IsDelivered ? (
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Delivery time:{' '}
+                            </span>{' '}
+                            <span className='text-sm'>
+                              {DateFormater(delivery.UpdatedAt)}
+                            </span>
+                          </Typography>
+                        ) : (
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Delivery time:{' '}
+                            </span>{' '}
+                            <span className='text-red-600'>
+                              Not yet delivered
+                            </span>
+                          </Typography>
+                        )}
+                      </>
+                    )}
+                  </Box>
+                </Box>
+              </div>
+              <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
+                <Box className='bg-darkHover rounded-md'>
+                  <Typography
+                    id='modal-modal-title'
+                    variant='h6'
+                    component='h2'
+                    className='pl-2 pt-2'
+                  >
+                    Customer details
+                  </Typography>
+                  <Box className='h-72 p-3'>
+                    {isError && (
+                      <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+                        <span className='text-red-600'>An error occurred</span>
+                      </Typography>
+                    )}
+                    {delivery && (
+                      <>
+                        <Typography id='modal-modal-description'>
+                          <span className='text-lg font-bold'>
+                            Customer FirstName:{' '}
+                          </span>{' '}
+                          <span className='text-sm'>
+                            {delivery.Order.Customer.FirstName}
+                          </span>
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Customer LastName:{' '}
+                          </span>{' '}
+                          {delivery.Order.Customer.LastName}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Customer Phone:{' '}
+                          </span>{' '}
+                          {delivery.Order.Customer.PhoneNumber}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Customer Address:{' '}
+                          </span>{' '}
+                          {delivery.Order.Customer.ContactAddress}
+                        </Typography>
+                        <Typography>
+                          <span className='text-lg font-bold'>
+                            Customer Email:{' '}
+                          </span>{' '}
+                          {delivery.Order.Customer.Email}
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
+                </Box>
+              </div>
             </div>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
@@ -75,10 +226,10 @@ const ViewDelivery = () => {
                       Vendor Address
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Weight
+                      Item Name
                     </th>
                     <th scope='col' className='px-4 py-3'>
-                      Item Name
+                      Weight
                     </th>
                     <th scope='col' className='px-4 py-3'>
                       Item Description
@@ -91,7 +242,7 @@ const ViewDelivery = () => {
                 <tbody>
                   {isLoading && (
                     <tr className=''>
-                      <td colSpan={6} className=''>
+                      <td colSpan={10} className=''>
                         <div className='p-3 flex flex-row justify-center items-center w-full'>
                           <CircularProgress />
                         </div>
@@ -114,13 +265,38 @@ const ViewDelivery = () => {
                         </td>
                         <td className='px-4 py-3'>{o.Quantity}</td>
                         <td className='px-4 py-3'>&#x20A6; {o.TotalAmount}</td>
-                        <td className='px-4 py-3'>Vendor Name</td>
-                        <td className='px-4 py-3'>Vendor Address</td>
-                        <td className='px-4 py-3'>{o.Weight}</td>
-                        <td className='px-4 py-3'>{o.Name}</td>
-                        <td className='px-4 py-3'>{o.Description}</td>
+                        {addMoney(o.TotalAmount)}
+                        <td className='px-4 py-3'>{o.Product.Vendor.Name}</td>
                         <td className='px-4 py-3'>
-                          {o?.IsFragile ? <span className='text-lightgreen'>True</span> : <span className='text-red'>False</span>}
+                          {o.Product.Vendor.ContactAddress}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {o.Name ? (
+                            o.Name
+                          ) : (
+                            <span className='text-red'>Null</span>
+                          )}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {o.Weight ? (
+                            o.Weight
+                          ) : (
+                            <span className='text-red'>Null</span>
+                          )}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {o.Description ? (
+                            o.Description
+                          ) : (
+                            <span className='text-red'>Null</span>
+                          )}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {o?.IsFragile ? (
+                            <span className='text-lightgreen'>True</span>
+                          ) : (
+                            <span className='text-red'>False</span>
+                          )}
                         </td>
                       </tr>
                     ))
@@ -133,6 +309,18 @@ const ViewDelivery = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className='flex justify-end'>
+            <div className='p-4'>
+              <div className='flex justify-between'>
+                <h3 className='text-lg font-semibold'>Total Amount: </h3>
+                <h3 className='text-lg font-semibold ml-1'>
+                  &#x20A6; {totalMoney}
+                </h3>
+              </div>
             </div>
           </div>
         </div>

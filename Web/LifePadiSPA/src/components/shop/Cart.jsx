@@ -7,8 +7,11 @@ import {
 } from "@mui/icons-material";
 import { Modal } from "@mui/material";
 import useCart from "../../hooks/useCart";
-import {useReducer} from "react"
-
+import { useReducer } from "react";
+import { useQuery } from "react-query";
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../api/baseUrl";
+import useAuth from "../../hooks/useAuth";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -18,19 +21,61 @@ const reducer = (state, action) => {
       return { ...state, instruction: !state.instruction };
     case "error":
       return { ...state, error: action.payload };
+    case "setAddresses":
+      return { ...state, addresses: action.payload };
 
     default:
       throw new Error();
   }
 };
 
-const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handleCartItemDelete}) => {
+const Cart = ({
+  vendor,
+  subTotal,
+  handleCartDecrement,
+  handleCartIncrement,
+  handleCartItemDelete,
+  handleNewAddress
+}) => {
   const { cartState, setCartState, cart, setCart } = useCart();
   const [state, dispatch] = useReducer(reducer, {
     address: false,
     instruction: false,
     error: "",
+    addresses : []
   });
+  const { auth, login, setLogin } = useAuth();
+  const fetch = useFetch();
+
+  const getAddresses = async (url) => {
+    const result = await fetch(url, auth.accessToken);
+    dispatch({type : "setAddresses", payload : result.data });
+    console.log (result.data);
+  };
+  // const { data : addresses , isError, isLoading, isSuccess } = useQuery({
+  //   queryKey: ["addresses"],
+  //   queryFn: () =>
+  //     getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`),
+  //   keepPreviousData: true,
+  //   staleTime: 20000,
+  //   refetchOnMount: "always",
+  // });
+
+  //console.log(addresses);
+
+  const handleAddressChange = () => {
+    if(!auth.user){
+      setCartState(false);
+      setLogin(true)
+
+      return
+
+    }
+
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`)
+    dispatch({ type: "address" })
+
+  }
 
 
   return (
@@ -49,43 +94,46 @@ const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handl
         <div className=" p-4 w-full max-w-xl flex flex-col  overflow-y-auto  bg-primary ">
           {/* <!-- Modal header --> */}
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t  sm:mb-5 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-secondary dark:text-gray-50">
-                {vendor?.Name}
-              </h3>
-              <button
-                type="button"
-                onClick={() => {
-                  setCartState(false);
-                }}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-toggle="defaultModal"
+            <h3 className="text-lg font-semibold text-secondary dark:text-gray-50">
+              {vendor?.Name}
+            </h3>
+            <button
+              type="button"
+              onClick={() => {
+                setCartState(false);
+              }}
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-toggle="defaultModal"
+            >
+              <svg
+                aria-hidden="true"
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="sr-only">Close modal</span>
-              </button>
-            </div>
-            {/* <!-- Modal body --> */}
-            {cart?.map((item, index) => (
-            <div key={item.Id} className=" border border-dashed border-gray rounded-lg w-full mb-3">
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+              <span className="sr-only">Close modal</span>
+            </button>
+          </div>
+          {/* <!-- Modal body --> */}
+          {cart?.map((item, index) => (
+            <div
+              key={item.Id}
+              className=" border border-dashed border-gray rounded-lg w-full mb-3"
+            >
               <div className=" flex justify-between items-center py-2 px-2">
                 <div>
                   <h3 className=" text-sm font-medium">{`Item ${
                     index + 1
                   }`}</h3>
                 </div>
-                <button onClick={()=> handleCartItemDelete(item)}>
+                <button onClick={() => handleCartItemDelete(item)}>
                   <span className=" text-red hover:text-redborder">
                     <DeleteOutlined />
                   </span>
@@ -99,16 +147,18 @@ const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handl
                   </span>
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                  <button 
-                  onClick={()=> handleCartDecrement(item)}
-                  className="shadow-md cursor-pointer rounded-lg px-1 ">
+                  <button
+                    onClick={() => handleCartDecrement(item)}
+                    className="shadow-md cursor-pointer rounded-lg px-1 "
+                  >
                     {" "}
                     <Remove fontSize="" />
                   </button>
                   <span className=" text-md">{item.Quantity}</span>
-                  <button 
-                  onClick={()=>handleCartIncrement(item)}
-                  className=" shadow-lg cursor-pointer rounded-lg px-1 ">
+                  <button
+                    onClick={() => handleCartIncrement(item)}
+                    className=" shadow-lg cursor-pointer rounded-lg px-1 "
+                  >
                     <Add fontSize="" />
                   </button>
                 </span>
@@ -136,40 +186,92 @@ const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handl
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Choose Address</span>
-                {
-                  state.address ? <button onClick={()=> dispatch({type:"address"})} className=" text-background cursor-pointer">Close</button> :
-                  <button onClick={()=> dispatch({type:"address"})} className=" text-background cursor-pointer">Change</button>
-                }
-                
+                {state.address ? (
+                  <button
+                    onClick={() => dispatch({ type: "address" })}
+                    className=" text-background cursor-pointer"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() =>
+                      handleAddressChange()
+                    }
+                    className=" text-background cursor-pointer"
+                  >
+                    Change
+                  </button>
+                )}
               </p>
             </div>
-            <div className={`${state.address ? "block" : "hidden"} border-2 rounded-lg border-graybg`}>
+            <div
+              className={`${
+                state.address ? "block" : "hidden"
+              } border-2 rounded-lg border-graybg`}
+            >
               <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
-                <input type="radio" name="address" /> <label htmlFor="address"> No 1 something street</label>
+                <input
+                  type="radio"
+                  name="address"
+                />{" "}
+                <label htmlFor="address"> No 1 something street</label>
               </div>
               <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
-                <input type="radio" name="address" /> <label htmlFor="address"> No 1 something street</label>
+                <input
+                  type="radio"
+                  name="address"
+                />{" "}
+                <label htmlFor="address"> No 1 something street</label>
               </div>
               <div className="text-sm flex justify-end px-2 py-2">
-                <button className="text-background border p-2 rounded-xl border-gray cursor-pointer"> Add new Address </button>
+                <button
+                onClick={() => handleNewAddress({type: "edit"})}
+                className="text-background border p-2 rounded-xl border-gray cursor-pointer">
+                  {" "}
+                  Add new Address{" "}
+                </button>
               </div>
             </div>
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery instructions</span>
-                {
-                  state.instruction ? <button onClick={() => dispatch({type:"instruction"})} className=" text-background">Close</button> :
-                  <button onClick={() => dispatch({type:"instruction"})} className=" text-background">Add</button>
-                }
-                
+                {state.instruction ? (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Add
+                  </button>
+                )}
               </p>
-              <div className={`flex flex-col ${state.instruction ? "block" : "hidden"}`}>
-                <textarea name="instructions" id="" cols="30" rows="5" className="border rounded-lg border-gray bg-graybg px-1 " placeholder="e.g  give it to the receptionist" ></textarea>
-              <div className="flex justify-end text-sm text-background">
-                <button className="p-2 cursor-pointer"> Add instructions </button>
+              <div
+                className={`flex flex-col ${
+                  state.instruction ? "block" : "hidden"
+                }`}
+              >
+                <textarea
+                  name="instructions"
+                  id=""
+                  cols="30"
+                  rows="5"
+                  className="border rounded-lg border-gray bg-graybg px-1 "
+                  placeholder="e.g  give it to the receptionist"
+                ></textarea>
+                <div className="flex justify-end text-sm text-background">
+                  <button className="p-2 cursor-pointer">
+                    {" "}
+                    Add instructions{" "}
+                  </button>
+                </div>
               </div>
-              </div>
-
             </div>
             {/* <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
@@ -241,12 +343,8 @@ const Cart = ({vendor, subTotal, handleCartDecrement, handleCartIncrement, handl
               </button>
             </div>
           </div>
-            
         </div>
-        
-
       </div>
-      
     </Modal>
   );
 };
