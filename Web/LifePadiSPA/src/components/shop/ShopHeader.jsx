@@ -16,26 +16,13 @@ import UserLogin from "../auth/UserLogin";
 import { useReducer } from "react";
 import Cart from "./Cart";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "login":
-      return { ...state, login: !state.login };
-    default:
-      throw new Error();
-  }
-};
 
 const ShopHeader = () => {
   const { cartState, setCartState } = useCart();
-  const { auth, setLogin, location, setLocation } = useAuth();
+  const { auth,login, setLogin, location, setLocation } = useAuth();
   const navigate = useNavigate();
   const getLocation = useLocation();
-  const fetch = useFetch();
-  const getAddress = useAddress();
 
-  const [state, dispatch] = useReducer(reducer, {
-    login: false,
-  });
   const handleLocation = async () => {
     if (!location?.longitude || !location?.latitude  || location?.accuracy > 100) {
      const {data, error} =  await getLocation();
@@ -116,10 +103,7 @@ const ShopHeader = () => {
           </div>
         </div>
       </div>
-      <UserLogin
-        open={state.login}
-        handleClose={dispatch}
-      />
+      <UserLogin />
       <Cart />
       {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">
         <span className=" absolute z-10 top-2 left-1">

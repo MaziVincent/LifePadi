@@ -25,7 +25,7 @@ const UserLogin = () => {
     mode: "all",
   });
 
-  const UserLogin = async (data) => {
+  const Login = async (data) => {
     setIsLoading(true);
 
     try {
@@ -129,7 +129,7 @@ const UserLogin = () => {
                   </h1>
                   <form
                     className="space-y-4 md:space-y-6"
-                    onSubmit={handleSubmit(UserLogin)}
+                    onSubmit={handleSubmit(Login)}
                   >
                     <div>
                       <label
