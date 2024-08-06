@@ -29,20 +29,23 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow-right.svg
   SvgGenImage get arrowRight => const SvgGenImage('assets/icons/arrow-right.svg');
 
+  /// File path: assets/icons/cooking-gas.png
+  AssetGenImage get cookingGas => const AssetGenImage('assets/icons/cooking-gas.png');
+
   /// File path: assets/icons/errand-boy.svg
   SvgGenImage get errandBoy => const SvgGenImage('assets/icons/errand-boy.svg');
-
-  /// File path: assets/icons/expand-more.svg
-  SvgGenImage get expandMore => const SvgGenImage('assets/icons/expand-more.svg');
 
   /// File path: assets/icons/fuel-station.png
   AssetGenImage get fuelStation => const AssetGenImage('assets/icons/fuel-station.png');
 
-  /// File path: assets/icons/gas-tank.png
-  AssetGenImage get gasTank => const AssetGenImage('assets/icons/gas-tank.png');
+  /// File path: assets/icons/gas-filling.png
+  AssetGenImage get gasFilling => const AssetGenImage('assets/icons/gas-filling.png');
 
   /// File path: assets/icons/google.svg
   SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
+
+  /// File path: assets/icons/grocery-store.png
+  AssetGenImage get groceryStore => const AssetGenImage('assets/icons/grocery-store.png');
 
   /// File path: assets/icons/laundry.png
   AssetGenImage get laundry => const AssetGenImage('assets/icons/laundry.png');
@@ -56,11 +59,12 @@ class $AssetsIconsGen {
   /// List of all assets
   List<dynamic> get values => [
         arrowRight,
+        cookingGas,
         errandBoy,
-        expandMore,
         fuelStation,
-        gasTank,
+        gasFilling,
         google,
+        groceryStore,
         laundry,
         location,
         restaurant

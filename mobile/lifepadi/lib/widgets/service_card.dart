@@ -73,7 +73,7 @@ class ServiceCard extends StatelessWidget {
 
   ({Color outerColor, Color innerColor}) _generateColors() {
     const baseBrightness = 1.0;
-    const baseSaturation = 0.2;
+    const baseSaturation = 0.1;
 
     // Generate outer and inner colors by slightly varying the hue
     final outerColor = _colorFromHash(

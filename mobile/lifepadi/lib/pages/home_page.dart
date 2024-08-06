@@ -191,22 +191,8 @@ class HomePage extends HookWidget {
               16.verticalSpace,
               Row(
                 children: [
-                  ServiceCard(
-                    name: 'Cooking gas',
-                    image: Assets.icons.gasTank.path,
-                  ),
-                  ServiceCard(
-                    name: 'Food',
-                    image: Assets.icons.restaurant.path,
-                  ),
-                  ServiceCard(
-                    name: 'Petrol/Fuel',
-                    image: Assets.icons.fuelStation.path,
-                  ),
-                  ServiceCard(
-                    name: 'Laundry',
-                    image: Assets.icons.laundry.path,
-                  ),
+                  for (final (:name, :image) in services.take(4))
+                    ServiceCard(name: name, image: image),
                 ].separatedBy(10.horizontalSpace),
               ),
               16.verticalSpace,
