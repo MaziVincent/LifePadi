@@ -5,6 +5,11 @@ import Modal from '@mui/material/Modal'
 import DateFormater from '../shared/DateFormater'
 import useUpdate from '../../hooks/useUpdate'
 import useAuth from '../../hooks/useAuth'
+import useFetch from '../../hooks/useFetch'
+import { useQuery } from 'react-query'
+import { getCategoriesUrl, createProductUrl } from './vendorUri/VendorURI'
+import { useState } from 'react'
+import usePost from '../../hooks/usePost'
 
 
 const style = {
@@ -168,6 +173,239 @@ export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) 
             >
               No
             </button>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  )
+}
+
+
+const addProductStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxWidth: '80%',
+  maxHeight: '80%',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 5,
+}
+
+
+export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
+  const { auth } = useAuth()
+  const fetchdata = useFetch()
+  const handleCloseAddProductModal = () => setOpenAddProductModal(false)
+  const [category, setCategory] = useState(null)
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [description, setDescription] = useState('')
+  const [tag, setTag] = useState('')
+  const [image, setImage] = useState(null)
+  let vendoId = auth.user.Id
+  const postData = usePost()
+  const [response, setResponse] = useState(null)
+
+
+  const fetchCategories = async (url) => {
+    const response = await fetchdata(url, auth.accessToken)
+    return response.data
+  }
+
+  const { data: categories, isError, isLoading, isSuccess } = useQuery({
+    queryKey: 'categories',
+    queryFn: () => fetchCategories(getCategoriesUrl),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+  if (categories) {
+    console.log(categories)
+
+  }
+  const handleAddProduct = async (e) => {
+    e.preventDefault()
+    console.log(name, price, description, tag, category, vendoId, image);
+    console.log(image);
+
+    const formData = new FormData()
+    formData.append('Image', image)
+    formData.append('Name', name)
+    formData.append('Price', Number(price))
+    formData.append('Description', description)
+    formData.append('Tag', tag)
+    formData.append('CategoryId', Number(category))
+    formData.append('VendorId', vendoId)
+    
+    let result = await postData( createProductUrl, formData, auth.accessToken)
+    console.log("result", result);
+    setResponse(result)
+    setTimeout(() => {
+      handleCloseAddProductModal()
+    }, 3000);
+  }
+  return (
+    <div>
+      <Modal
+        open={openAddProductModal}
+        onClose={handleCloseAddProductModal}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={addProductStyle}>
+          {/* {result && <div>{result}</div>} */}
+          {response && (
+            <div className='bg-lightgreen'>
+              <h4>Successfuly added</h4>
+            </div>
+          )}
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Add Product
+          </Typography>
+          {/* <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Are you sure you want to add this product?
+          </Typography> */}
+          <div className='mt-2'>
+            <form onSubmit={(e) => handleAddProduct(e)} method='post'>
+              <div className=''>
+                <label
+                  htmlFor='product-name'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Name
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='name'
+                    id='product-name'
+                    autoComplete='product-name'
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-price'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Price
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='number'
+                    name='price'
+                    onChange={(e) => setPrice(e.target.value)}
+                    id='product-price'
+                    autoComplete='product-price'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-description'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Description
+                </label>
+                <div className='mt-1'>
+                  <textarea
+                    name='description'
+                    onChange={(e) => setDescription(e.target.value)}
+                    id='product-description'
+                    autoComplete='product-description'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  ></textarea>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-tag'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Tag
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='tag'
+                    onChange={(e) => setTag(e.target.value)}
+                    id='product-tag'
+                    autoComplete='product-tag'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-category'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Category
+                </label>
+                <div className='mt-1'>
+                  <select
+                    name='category'
+                    onChange={(e) => setCategory(e.target.value)}
+                    id='product-category'
+                    autoComplete='product-category'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  >
+                    {isLoading ? (
+                      <option>Loading...</option>
+                    ) : (
+                      <option value=''>Select Category</option>
+                    )}
+
+                    {categories &&
+                      categories.map((category) => (
+                        <option key={category.Id} value={category.Id}>
+                          {category.Name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-image'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Image
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='file'
+                    name='image'
+                    onChange={(e) => setImage(e.target.files[0])}
+                    id='product-image'
+                    autoComplete='product-image'
+                    accept='image/png, image/jpeg'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='flex justify-end mt-3 gap-2'>
+                <button
+                  type='submit'
+                  className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
+                >
+                  Create Product
+                </button>
+              </div>
+            </form>
           </div>
         </Box>
       </Modal>

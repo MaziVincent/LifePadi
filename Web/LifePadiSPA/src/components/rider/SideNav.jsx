@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
 
-
 const SideNav = ({aside}) => {
   const [pagePath, setPagePath] = useState("/rider")
   const pathname = window.location.pathname
@@ -20,12 +19,12 @@ const SideNav = ({aside}) => {
         {
         to: "/vendor",
         icon: "line-icon-Settings-Window text-2xl hover:text-green-800",
-        text: "Services",
+        text: "Overview",
         },
         {
         to:"/vendor/addProduct",
         icon:"line-icon-Align-JustifyAll text-2xl hover:text-green-800",
-        text:"Categories"
+        text:"Profile"
         }
     ]
   }

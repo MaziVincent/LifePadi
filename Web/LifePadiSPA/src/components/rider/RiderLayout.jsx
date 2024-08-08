@@ -98,7 +98,7 @@ const RiderLayout = () => {
             <SideNav aside={aside} />
           </div>
           <div
-            className={`p-2 pl-1 ml-1 md:ml-20 lg:ml-44 py-20 w-full min-h-screen overflow-x-auto`}
+            className={`p-2 pl-1 ml-1 md:ml-20 lg:ml-44 py-20 w-full min-h-screen overflow-hidden`}
           >
             <Outlet />
           </div>
