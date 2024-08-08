@@ -141,6 +141,27 @@ namespace Api.Services
             }
         }
 
+
+        public async Task<object> getVendorProductStat(int vendorId)
+        {
+            try
+            {
+                var products = await _dbContext.Products.Where(p => p.VendorId == vendorId).AsQueryable().ToListAsync();
+                if (products == null) return null!;
+                var totalProducts = products.Count;
+                var totalActiveProducts = products.Count(p => p.Status == true);
+                var totalInactiveProducts = products.Count(p => p.Status == false);
+                return new {
+                    TotalProducts = totalProducts,
+                    TotalActiveProducts = totalActiveProducts,
+                    TotalInactiveProducts = totalInactiveProducts
+                };
+            }catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<ProductDto>> searchProduct(string searchString)
         {
             try
