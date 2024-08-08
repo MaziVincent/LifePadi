@@ -259,6 +259,23 @@ namespace Api.Services
             }
         }
 
+        public async Task<string> toogleProductStatus(int id)
+        {
+            try
+            {
+                var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+                if (product == null) return null!;
+                product.Status = !product.Status;
+                product.SearchString = product.Name!.ToUpper() + " " + product.Price + " " + product.Status;
+                _dbContext.Products.Attach(product);
+                await _dbContext.SaveChangesAsync();
+                return "Product status updated";
+            }catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<int> totalNumberOfProducts()
         {
             try
@@ -331,7 +348,7 @@ namespace Api.Services
                 var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
                 var imgPath = await UploadImage.uploadImg(productImg, _cloudinary, folderName);
-                if (imgPath == null) throw new Exception("Can not upload the product image");
+                if (imgPath == null) throw new Exceptions.ServiceException("Can not upload the product image");
                 product.ProductImgUrl = imgPath;
                 _dbContext.Products.Attach(product);
                 await _dbContext.SaveChangesAsync();
