@@ -12,24 +12,25 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class GoogleMapsController : ControllerBase
     {
-         private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private IConfiguration _config;
-        
-        public GoogleMapsController( HttpClient httpClient, IConfiguration configuration)
+
+        public GoogleMapsController(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _config = configuration;
         }
-        
-   
 
-     [HttpGet("address")]
+
+
+        [HttpGet("address")]
         public async Task<IActionResult> GetAddressFromCoordinates([FromQuery] Coordinates coordinates)
         {
             var longitude = coordinates.Longitude;
             var latitude = coordinates.Latitude;
 
-            if(longitude is null  || latitude is null ){
+            if (longitude is null || latitude is null)
+            {
                 return BadRequest();
             }
 
@@ -51,7 +52,7 @@ namespace Api.Controllers
             }
 
             var address = json["results"]?[0]?["formatted_address"]?.ToString();
-            return Ok(address );
+            return Ok(address);
         }
 
         [HttpGet("coordinates")]
@@ -80,5 +81,34 @@ namespace Api.Controllers
 
             return Ok(new { latitude, longitude });
         }
-}
+
+         [HttpGet("distance")]
+        public async Task<IActionResult> GetDistance([FromQuery] Distance _distance)
+        {
+            var origin = _distance.Origin;
+            var destination = _distance.Destination;
+            
+            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
+           string requestUri = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origin+"&destinations="+destination+"&key="+apiKey;
+
+            var response = await _httpClient.GetAsync(requestUri);
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(content);
+
+            if (json["status"]!.ToString() != "OK")
+            {
+                return BadRequest(json["status"]!.ToString());
+            }
+
+            var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["text"]?.ToString();
+            var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"]?.ToString();
+
+            return Ok(new { distance, duration });
+        }
+    }
 }

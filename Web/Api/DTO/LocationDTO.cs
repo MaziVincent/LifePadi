@@ -17,4 +17,11 @@ namespace Api.DTO
         public double? Longitude {get; set;}
         public double? Latitude {get; set;}
     }
+
+    public class Distance{
+
+        public string? Origin {get; set;}  
+        public string? Destination {get; set;}  
+
+    }
 }

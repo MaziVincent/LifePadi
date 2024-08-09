@@ -55,7 +55,7 @@ const Vendor = () => {
   const [products, setProducts] = useState(null);
   const auth = useAuth();
   const url = `${baseUrl}vendor`;
-  const { cart, setCart } = useCart();
+  const { cart, setCart, deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction } = useCart();
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -156,6 +156,14 @@ const Vendor = () => {
     setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
   };
 
+  const handleDeliveryAddress = (e) => {
+    e.preventDefault()
+   setDeliveryAddress(e.target.value)
+
+    console.log(deliveryAddress)
+  }
+
+
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
@@ -165,7 +173,7 @@ const Vendor = () => {
   useEffect(() => {
     calculateTotalAmount();
   }, [cart]);
-  console.log(cart);
+ console.log(deliveryInstruction);
   //console.log(state.subTotal);
   return (
     <main className=" flex justify-center  ">
@@ -603,6 +611,8 @@ const Vendor = () => {
         handleCartIncrement={handleCartIncrement}
         handleCartItemDelete = {handleCartItemDelete}
         handleNewAddress = {dispatch}
+        handleDeliveryAddress = {handleDeliveryAddress}
+        handleDeliveryInstruction = {setDeliveryInstruction}
       />
 
       <ProductModal

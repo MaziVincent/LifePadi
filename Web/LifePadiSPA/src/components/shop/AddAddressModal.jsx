@@ -89,12 +89,12 @@ const AddAddressModal = ({ open, handleClose }) => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-55 justify-center items-center  w-full  h-auto "
+        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-55 justify-center items-center  w-full  h-full "
       >
         <Toaster />
 
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
-          <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu ">
+          <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu overflow-y-auto ">
             <div className="flex justify-between items-center   ">
               <button
                 type="button"
