@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import CircularProgress from '@mui/material/CircularProgress'
 import { vendorProductsUrl } from './vendorUri/VendorURI'
 import VendorActions from './VendorActions'
+import { AddProductModal } from './VendorModals'
 
 const VendorDashboard = () => {
   const fetch = useFetch()
@@ -16,8 +17,10 @@ const VendorDashboard = () => {
   let pageSize = 5
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
-  const vendorId = 2
-  const vendorProductsURL = vendorProductsUrl.replace(':id', vendorId)
+  const vendorId = auth.user.Id
+  const vendorProductsURL = vendorProductsUrl.replace('{id}', vendorId)
+  const [openAddProductModal, setOpenAddProductModal] = useState(false)
+  const handleOpenAddProductModal = () => setOpenAddProductModal(true)
 
   const getVendorProducts = async (url) => {
     const response = await fetch(url, auth.accessToken)
@@ -39,11 +42,11 @@ const VendorDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-
+  console.log(vendorProductsURL);
+  
   if (vendorProductsSuccess) {
     console.log(vendorProducts);
   }
-  console.log(window.location.pathname);
   const setPage = (i) => {
     if (i > 0 && i <= totalPage) {
       page = i
@@ -132,126 +135,11 @@ const VendorDashboard = () => {
                 <button
                   type='button'
                   className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                  onClick={handleOpenAddProductModal}
                 >
                   <i className='line-icon-Add'></i>
                   Add Product
                 </button>
-                <div className='flex items-center space-x-3 w-full md:w-auto'>
-                  <button
-                    id='actionsDropdownButton'
-                    data-dropdown-toggle='actionsDropdown'
-                    className='w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
-                    type='button'
-                  >
-                    <svg
-                      className='-ml-1 mr-1.5 w-5 h-5'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                      xmlns='http://www.w3.org/2000/svg'
-                      aria-hidden='true'
-                    >
-                      <path
-                        clipRule='evenodd'
-                        fillRule='evenodd'
-                        d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                      />
-                    </svg>
-                    Actions
-                  </button>
-                  <div
-                    id='actionsDropdown'
-                    className='hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
-                  >
-                    <ul
-                      className='py-1 text-sm text-gray-700 dark:text-gray-200'
-                      aria-labelledby='actionsDropdownButton'
-                    >
-                      <li>
-                        <Link
-                          to='#'
-                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                        >
-                          Mass Edit
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                  <button
-                    id='filterDropdownButton'
-                    data-dropdown-toggle='filterDropdown'
-                    className='w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
-                    type='button'
-                  >
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      aria-hidden='true'
-                      className='h-4 w-4 mr-2 text-gray-400'
-                      viewBox='0 0 20 20'
-                      fill='currentColor'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
-                    Filter
-                    <svg
-                      className='-mr-1 ml-1.5 w-5 h-5'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                      xmlns='http://www.w3.org/2000/svg'
-                      aria-hidden='true'
-                    >
-                      <path
-                        clipRule='evenodd'
-                        fillRule='evenodd'
-                        d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                      />
-                    </svg>
-                  </button>
-                  <div
-                    id='filterDropdown'
-                    className='z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700'
-                  >
-                    <h6 className='mb-3 text-sm font-medium text-gray-900 dark:text-white'>
-                      Choose brand
-                    </h6>
-                    <ul
-                      className='space-y-2 text-sm'
-                      aria-labelledby='filterDropdownButton'
-                    >
-                      <li className='flex items-center'>
-                        <input
-                          id='apple'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='apple'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Apple (56)
-                        </label>
-                      </li>
-                      <li className='flex items-center'>
-                        <input
-                          id='fitbit'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='fitbit'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Microsoft (16)
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
               </div>
             </div>
             <div className='overflow-x-auto'>
@@ -290,7 +178,9 @@ const VendorDashboard = () => {
                         </div>
                       </td>
                     </tr>
-                  ) : (vendorProductsSuccess && vendorProducts.result.map((product) => (
+                  ) : (
+                    vendorProductsSuccess &&
+                    vendorProducts.result.map((product) => (
                       <tr
                         className='border-b dark:border-gray-700'
                         key={product.Id}
@@ -307,7 +197,13 @@ const VendorDashboard = () => {
                         <td className='px-4 py-3'>
                           {product.Description.slice(0, 50)}...
                         </td>
-                        <td className={`px-4 py-3 ${product.Status ? 'text-lightgreen' : 'text-red'}`}>{product.Status ? 'Active' : 'Not Active'}</td>
+                        <td
+                          className={`px-4 py-3 ${
+                            product.Status ? 'text-lightgreen' : 'text-red'
+                          }`}
+                        >
+                          {product.Status ? 'Active' : 'Inactive'}
+                        </td>
                         <td className='px-4 py-3 flex items-center justify-end dropdown'>
                           {<VendorActions product={product} />}
                         </td>
@@ -421,6 +317,7 @@ const VendorDashboard = () => {
           </div>
         </div>
       </section>
+      <AddProductModal openAddProductModal={openAddProductModal} setOpenAddProductModal={setOpenAddProductModal} />
     </div>
   )
 }
