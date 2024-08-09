@@ -25,12 +25,27 @@ const Cart = ({
   handleCartIncrement,
   handleCartItemDelete,
   handleNewAddress,
+<<<<<<< HEAD
   handleGift,
   handleDeliveryFee
   //distance,
   //handleDeliveryInstruction,
 }) => {
   const { cartState, setCartState, cart, setCart, state, dispatch } = useCart();
+=======
+  handleDeliveryAddress,
+  handleDeliveryInstruction,
+}) => {
+  const { cartState, setCartState, cart, setCart } = useCart();
+  const [state, dispatch] = useReducer(reducer, {
+    address: false,
+    instruction: false,
+    error: "",
+    addresses: [],
+  });
+  const { auth, login, setLogin } = useAuth();
+  const fetch = useFetch();
+>>>>>>> 0ab4b1c (Google Maps Controller)
 
   const { auth, setLogin, location } = useAuth();
   const [origin, setOrigin] = useState("");
@@ -45,8 +60,12 @@ const Cart = ({
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
     dispatch({ type: "setAddresses", payload: result.data });
+<<<<<<< HEAD
     //console.log(state.addresses);
     return result.data;
+=======
+    console.log(state.addresses);
+>>>>>>> 0ab4b1c (Google Maps Controller)
   };
 
   const {
@@ -64,13 +83,18 @@ const Cart = ({
   });
 
   const handleAddressChange = () => {
+<<<<<<< HEAD
     if (!auth.accessToken) {
+=======
+    if (!auth.user) {
+>>>>>>> 0ab4b1c (Google Maps Controller)
       setCartState(false);
       setLogin(true);
 
       return;
     }
 
+<<<<<<< HEAD
     getAddresses(`${baseUrl}address/customer-addresses/${auth?.Id}`);
     dispatch({ type: "address" });
   };
@@ -92,6 +116,11 @@ const Cart = ({
     dispatch({ type: "address" });
     dispatch({ type: "error", payload: "" });
   };
+=======
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    dispatch({ type: "address" });
+  };
+>>>>>>> 0ab4b1c (Google Maps Controller)
 
   const handleLocation = () => {
     // console.log(location);
@@ -326,6 +355,7 @@ const Cart = ({
                 state.address ? "block" : "hidden"
               } border-2 rounded-lg border-graybg`}
             >
+<<<<<<< HEAD
               {isLoading && (
                 <div className="flex justify-center items-center">
                   {" "}
@@ -366,6 +396,31 @@ const Cart = ({
                   Use Current Location{" "}
                 </button>
                 <button
+=======
+              {state.addresses.map((ad) => (
+                <div
+                  key={ad.Id}
+                  className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                >
+                 {" "}
+                  <label htmlFor="address">
+                  <input
+                    type="radio"
+                    name="address"
+                    value={`${ad.Name} ${ad.Town} ${ad.City}`}
+                    onChange={(e) =>{ 
+                      e.stopPropagation();
+                      handleDeliveryAddress(e)}}
+                  />
+                    {" "}
+                    {ad.Name} {ad.Town}
+                  </label>
+                </div>
+              ))}
+
+              <div className="text-sm flex justify-end px-2 py-2">
+                <button
+>>>>>>> 0ab4b1c (Google Maps Controller)
                   onClick={() => handleNewAddress({ type: "edit" })}
                   className="text-background border p-2 rounded-xl border-gray cursor-pointer"
                 >
@@ -405,6 +460,7 @@ const Cart = ({
                   rows="3"
                   className="border rounded-lg border-gray bg-graybg p-3 "
                   placeholder="e.g  give it to the receptionist"
+<<<<<<< HEAD
                   onChange={(e) => handleDeliveryInstruction(e)}
                 ></textarea>
               </div>
@@ -462,6 +518,11 @@ const Cart = ({
                  
                   </button>{" "}
                 </div>
+=======
+                  onChange={(e) => handleDeliveryInstruction(e.target.value)}
+                ></textarea>
+               
+>>>>>>> 0ab4b1c (Google Maps Controller)
               </div>
             </div>
           </div>

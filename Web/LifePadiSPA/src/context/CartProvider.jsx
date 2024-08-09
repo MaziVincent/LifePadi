@@ -79,11 +79,17 @@ export const CartProvider = ({ children }) => {
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
+  const [deliveryAddress, setDeliveryAddress ] = useState("");
+  const [deliveryInstruction, setDeliveryInstruction ] = useState("");
 
   return (
+<<<<<<< HEAD
     <CartContext.Provider
       value={{ cart, setCart, cartState, setCartState, state, dispatch }}
     >
+=======
+    <CartContext.Provider value={{ cart, setCart, cartState, setCartState,deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction }}>
+>>>>>>> 0ab4b1c (Google Maps Controller)
       {children}
     </CartContext.Provider>
   );

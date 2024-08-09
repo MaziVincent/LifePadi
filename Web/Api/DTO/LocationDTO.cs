@@ -34,4 +34,11 @@ namespace Api.DTO
 =======
 >>>>>>> d189281 (worked on Login)
     }
+
+    public class Distance{
+
+        public string? Origin {get; set;}  
+        public string? Destination {get; set;}  
+
+    }
 }

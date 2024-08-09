@@ -68,6 +68,7 @@ const Vendor = () => {
   const [orderLoading, setOrderLoading] = useState(false);
   const { auth, setLogin, location } = useAuth();
   const url = `${baseUrl}vendor`;
+<<<<<<< HEAD
   const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
@@ -80,6 +81,9 @@ const Vendor = () => {
     state: cartState,
     dispatch: cartDispatch,
   } = useCart();
+=======
+  const { cart, setCart, deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction } = useCart();
+>>>>>>> 0ab4b1c (Google Maps Controller)
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -205,6 +209,7 @@ const Vendor = () => {
     setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
   };
 
+<<<<<<< HEAD
   const handleAddressChange = () => {
     if (!auth.accessToken) {
       setCartState(false);
@@ -395,6 +400,16 @@ const Vendor = () => {
     cartDispatch({ type: "total", payload: totalAmount });
   };
 
+=======
+  const handleDeliveryAddress = (e) => {
+    e.preventDefault()
+   setDeliveryAddress(e.target.value)
+
+    console.log(deliveryAddress)
+  }
+
+
+>>>>>>> 0ab4b1c (Google Maps Controller)
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
@@ -422,6 +437,7 @@ const Vendor = () => {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart]);
+<<<<<<< HEAD
 
   useEffect(() => {
     setOrigin(
@@ -444,6 +460,10 @@ const Vendor = () => {
 
   //console.log(distance);
   //console.log(cartState.vendor);
+=======
+ console.log(deliveryInstruction);
+  //console.log(state.subTotal);
+>>>>>>> 0ab4b1c (Google Maps Controller)
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 lg:w-10/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
@@ -887,6 +907,7 @@ const Vendor = () => {
           <EmptyCartDesktop />
         )}
       </div>
+<<<<<<< HEAD
 
       {cart.length >= 1 ? (
         <Cart
@@ -905,6 +926,18 @@ const Vendor = () => {
       ) : (
         <EmptyCart />
       )}
+=======
+      <Cart
+        vendor={data}
+        subTotal={state.subTotal}
+        handleCartDecrement={handleCartDecrement}
+        handleCartIncrement={handleCartIncrement}
+        handleCartItemDelete = {handleCartItemDelete}
+        handleNewAddress = {dispatch}
+        handleDeliveryAddress = {handleDeliveryAddress}
+        handleDeliveryInstruction = {setDeliveryInstruction}
+      />
+>>>>>>> 0ab4b1c (Google Maps Controller)
 
       <ProductModal
         open={state.open}

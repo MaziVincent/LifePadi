@@ -30,11 +30,16 @@ namespace Api.Controllers
             var latitude = coordinates.Latitude;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (longitude is null || latitude is null)
             {
 =======
             if(longitude is null  || latitude is null ){
 >>>>>>> d189281 (worked on Login)
+=======
+            if (longitude is null || latitude is null)
+            {
+>>>>>>> 0ab4b1c (Google Maps Controller)
                 return BadRequest();
             }
 
@@ -57,10 +62,14 @@ namespace Api.Controllers
 
             var address = json["results"]?[0]?["formatted_address"]?.ToString();
 <<<<<<< HEAD
+<<<<<<< HEAD
             return Ok(address);
 =======
             return Ok(address );
 >>>>>>> d189281 (worked on Login)
+=======
+            return Ok(address);
+>>>>>>> 0ab4b1c (Google Maps Controller)
         }
 
         [HttpGet("coordinates")]
@@ -91,8 +100,13 @@ namespace Api.Controllers
         }
 
          [HttpGet("distance")]
+<<<<<<< HEAD
         public async Task<IActionResult> GetDistance([FromQuery] Distance _distance){
         
+=======
+        public async Task<IActionResult> GetDistance([FromQuery] Distance _distance)
+        {
+>>>>>>> 0ab4b1c (Google Maps Controller)
             var origin = _distance.Origin;
             var destination = _distance.Destination;
             
@@ -113,6 +127,7 @@ namespace Api.Controllers
                 return BadRequest(json["status"]!.ToString());
             }
 
+<<<<<<< HEAD
             var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["value"];
             var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"];
 
@@ -138,5 +153,12 @@ namespace Api.Controllers
 
 
 
+=======
+            var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["text"]?.ToString();
+            var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"]?.ToString();
+
+            return Ok(new { distance, duration });
+        }
+>>>>>>> 0ab4b1c (Google Maps Controller)
     }
 }

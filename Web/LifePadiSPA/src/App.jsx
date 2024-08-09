@@ -35,6 +35,7 @@ import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import ViewDelivery from "./components/rider/ViewDelivery";
 import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
@@ -82,12 +83,19 @@ import Admin from './components/admin/admins/Admin'
 >>>>>>> 4dc5d34 (worked on product component)
 =======
 =======
+>>>>>>> 0ab4b1c (Google Maps Controller)
+=======
 import ViewDelivery from './components/rider/ViewDelivery'
 import Login from "./components/auth/Login";
 
 >>>>>>> c113a33 (added a view page for vewing delivery)
 >>>>>>> 556b5a3 (added a view page for vewing delivery)
 
+=======
+import ViewDelivery from "./components/rider/ViewDelivery";
+import Login from "./components/auth/Login";
+
+>>>>>>> fd293ff (Google Maps Controller)
 function App() {
   const queryClient = new QueryClient();
 
@@ -143,9 +151,13 @@ function App() {
 <<<<<<< HEAD
 =======
 
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
         {/* SHOP ROUTES */}
+<<<<<<< HEAD
 >>>>>>> d189281 (worked on Login)
 
 <<<<<<< HEAD
@@ -182,6 +194,8 @@ function App() {
 >>>>>>> a2698f4 (Finishing touches on the admin portal)
 
         {/* SHOP ROUTES */}
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
         <Route element={<PersistLogin />}>
           <Route
             path="/shop"
@@ -192,6 +206,7 @@ function App() {
               element={<Vendor />}
             />
             <Route
+<<<<<<< HEAD
               path="/shop/payment-response"
               element={<PaymentResponse />}
             />
@@ -200,6 +215,8 @@ function App() {
               element={<TryLogistics />}
             />
             <Route
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
               index
               element={<Shop />}
             />
@@ -217,6 +234,7 @@ function App() {
                 index
                 element={<UserDashboard />}
               />
+<<<<<<< HEAD
               <Route
                 path="/user/address"
                 element={<Address />}
@@ -238,13 +256,19 @@ function App() {
                 path="/user/track/:status"
                 element={<TrackOrder />}
               />
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
             </Route>
           </Route>
         </Route>
 
         {/*PROTECTED ROUTES ADMIN */}
         <Route element={<PersistLogin />}>
+<<<<<<< HEAD
           <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
+=======
+          <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
+>>>>>>> 0ab4b1c (Google Maps Controller)
             <Route
               path="/admin"
               element={<AdminLayout />}
@@ -314,6 +338,7 @@ function App() {
                 path="/admin/admin"
                 element={<Admin />}
               />
+<<<<<<< HEAD
               <Route
                 path="/admin/order/:id"
                 element={<AdminOrderDetails />}
@@ -326,9 +351,12 @@ function App() {
                 path="/admin/admin"
                 element={<Admin />}
               />
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
             </Route>
           </Route>
         </Route>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
@@ -344,11 +372,20 @@ function App() {
         <Route path='/rider/delivery/:id' element={<ViewDelivery />} />
 >>>>>>> c113a33 (added a view page for vewing delivery)
         </Route>
+<<<<<<< HEAD
 >>>>>>> 556b5a3 (added a view page for vewing delivery)
 
         {/* PROTECTED ROUTES FOR RIDER */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuthAdmin allowedRole={ROLES.rider} />}>
+=======
+=======
+>>>>>>> fd293ff (Google Maps Controller)
+
+        {/* PROTECTED ROUTES FOR RIDER */}
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRole={ROLES.rider} />}>
+>>>>>>> 0ab4b1c (Google Maps Controller)
             <Route
               path="/rider"
               element={<RiderLayout />}
@@ -357,17 +394,56 @@ function App() {
                 index
                 element={<RiderdDashboard />}
               />
+<<<<<<< HEAD
               <Route
                 path="/rider/delivery/:id"
                 element={<ViewDelivery />}
               />
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
             </Route>
           </Route>
+<<<<<<< HEAD
         </Route>
+<<<<<<< HEAD
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuthAdmin allowedRole={ROLES.vendor} />}>
+=======
+=======
+          <Route
+            path="/admin/order/:id"
+            element={<AdminOrderDetails />}
+          />
+          <Route
+            path="/admin/voucher"
+            element={<AdminVoucher />}
+          />
+          <Route
+            path="/admin/admin"
+            element={<Admin />}
+          />
+        </Route>
+        <Route
+          path="/rider"
+          element={<RiderLayout />}
+        >
+          <Route
+            index
+            element={<RiderdDashboard />}
+          />
+          <Route
+            path="/rider/delivery/:id"
+            element={<ViewDelivery />}
+          />
+>>>>>>> fd293ff (Google Maps Controller)
+        </Route>
+
+        {/* PROTECTED ROUTES FOR VENDOR */}
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRole={ROLES.vendor} />}>
+>>>>>>> 0ab4b1c (Google Maps Controller)
             <Route
               path="/vendor"
               element={<VendorLayout />}
@@ -376,10 +452,13 @@ function App() {
                 index
                 element={<VendorDashboard />}
               />
+<<<<<<< HEAD
               <Route
                 path="/vendor/product/:id"
                 element={<VendorViewProduct />}
               />
+=======
+>>>>>>> 0ab4b1c (Google Maps Controller)
             </Route>
           </Route>
         </Route>
