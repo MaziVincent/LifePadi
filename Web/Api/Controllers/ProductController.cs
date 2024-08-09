@@ -187,5 +187,33 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("toogleStatus/{id}")]
+        public async Task<IActionResult> toogleStatus(int id)
+        {
+            try
+            {
+                var response = await _iproduct!.toogleProductStatus(id);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("vendorStat/{vendorId}")]
+        public async Task<IActionResult> vendorStat(int vendorId)
+        {
+            try
+            {
+                var response = await _iproduct!.getVendorProductStat(vendorId);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

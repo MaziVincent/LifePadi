@@ -20,6 +20,8 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfProducts();
         public Task<int> totalNumberOfProductsByVendor(int vendorId);
         public Task<int> totalNumberOfProductsByCategory(int categoryId);
+        public Task<string> toogleProductStatus(int id);
+        public Task<object> getVendorProductStat(int vendorId);
 
     }
 }

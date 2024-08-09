@@ -32,9 +32,8 @@ import UserLayout from "./components/customer/UserLayout";
 import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
-import ViewDelivery from './components/rider/ViewDelivery'
+import ViewDelivery from "./components/rider/ViewDelivery";
 import Login from "./components/auth/Login";
-
 
 function App() {
   const queryClient = new QueryClient();
@@ -62,128 +61,132 @@ function App() {
 
         {/* AUTH */}
 
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
         {/* SHOP ROUTES */}
-
-        <Route
-          path="/shop"
-          element={<ShopLayout />}
-        >
+        <Route element={<PersistLogin />}>
           <Route
-            path="/shop/vendor/:id"
-            element={<Vendor />}
-          />
-          <Route
-            index
-            element={<Shop />}
-          />
+            path="/shop"
+            element={<ShopLayout />}
+          >
+            <Route
+              path="/shop/vendor/:id"
+              element={<Vendor />}
+            />
+            <Route
+              index
+              element={<Shop />}
+            />
+          </Route>
         </Route>
 
         {/* USER ROUTES */}
         <Route element={<PersistLogin />}>
-        <Route element={<RequireAuth allowedRole={ROLES.customer} />}>
-          <Route
-            path="/user"
-            element={<UserLayout />}
-          >
+          <Route element={<RequireAuth allowedRole={ROLES.customer} />}>
             <Route
-              index
-              element={<UserDashboard />}
-            />
+              path="/user"
+              element={<UserLayout />}
+            >
+              <Route
+                index
+                element={<UserDashboard />}
+              />
+            </Route>
           </Route>
-        </Route>
         </Route>
 
         {/*PROTECTED ROUTES ADMIN */}
         <Route element={<PersistLogin />}>
-        <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
-          <Route
-            path="/admin"
-            element={<AdminLayout />}
-          >
+          <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
             <Route
-              index
-              element={<Overview />}
-            />
-            <Route
-              path="/admin/service"
-              element={<AdminService />}
-            />
-            <Route
-              path="/admin/service/:id"
-              element={<AdminServiceDetails />}
-            />
-            <Route
-              path="/admin/category"
-              element={<AdminCategory />}
-            />
-            <Route
-              path="/admin/category/:id"
-              element={<AdminCategoryDetails />}
-            />
-            <Route
-              path="/admin/rider"
-              element={<AdminRider />}
-            />
-            <Route
-              path="/admin/rider/:id"
-              element={<AdminRiderDetails />}
-            />
-            <Route
-              path="/admin/customer"
-              element={<AdminCustomer />}
-            />
-            <Route
-              path="/admin/customer/:id"
-              element={<AdminCustomerDetails />}
-            />
-            <Route
-              path="/admin/vendorcategory"
-              element={<AdminVendorCategory />}
-            />
-            <Route
-              path="/admin/vendorcategory/:id"
-              element={<AdminVendorCategoryDetails />}
-            />
-            <Route
-              path="/admin/vendor/:id"
-              element={<AdminVendorDetails />}
-            />
-            <Route
-              path="/admin/product/:id"
-              element={<AdminProduct />}
-            />
+              path="/admin"
+              element={<AdminLayout />}
+            >
+              <Route
+                index
+                element={<Overview />}
+              />
+              <Route
+                path="/admin/service"
+                element={<AdminService />}
+              />
+              <Route
+                path="/admin/service/:id"
+                element={<AdminServiceDetails />}
+              />
+              <Route
+                path="/admin/category"
+                element={<AdminCategory />}
+              />
+              <Route
+                path="/admin/category/:id"
+                element={<AdminCategoryDetails />}
+              />
+              <Route
+                path="/admin/rider"
+                element={<AdminRider />}
+              />
+              <Route
+                path="/admin/rider/:id"
+                element={<AdminRiderDetails />}
+              />
+              <Route
+                path="/admin/customer"
+                element={<AdminCustomer />}
+              />
+              <Route
+                path="/admin/customer/:id"
+                element={<AdminCustomerDetails />}
+              />
+              <Route
+                path="/admin/vendorcategory"
+                element={<AdminVendorCategory />}
+              />
+              <Route
+                path="/admin/vendorcategory/:id"
+                element={<AdminVendorCategoryDetails />}
+              />
+              <Route
+                path="/admin/vendor/:id"
+                element={<AdminVendorDetails />}
+              />
+              <Route
+                path="/admin/product/:id"
+                element={<AdminProduct />}
+              />
 
-            <Route
-              path="/admin/order/:id"
-              element={<AdminOrderDetails />}
-            />
-            <Route
-              path="/admin/voucher"
-              element={<AdminVoucher />}
-            />
-            <Route
-              path="/admin/admin"
-              element={<Admin />}
-            />
+              <Route
+                path="/admin/order/:id"
+                element={<AdminOrderDetails />}
+              />
+              <Route
+                path="/admin/voucher"
+                element={<AdminVoucher />}
+              />
+              <Route
+                path="/admin/admin"
+                element={<Admin />}
+              />
+            </Route>
           </Route>
-        </Route>
         </Route>
 
         {/* PROTECTED ROUTES FOR RIDER */}
         <Route element={<PersistLogin />}>
-        <Route element={<RequireAuth allowedRole={ROLES.rider} />}>
-          <Route
-            path="/rider"
-            element={<RiderLayout />}
-          >
+          <Route element={<RequireAuth allowedRole={ROLES.rider} />}>
             <Route
-              index
-              element={<RiderdDashboard />}
-            />
+              path="/rider"
+              element={<RiderLayout />}
+            >
+              <Route
+                index
+                element={<RiderdDashboard />}
+              />
+            </Route>
           </Route>
-        </Route>
           <Route
             path="/admin/order/:id"
             element={<AdminOrderDetails />}
@@ -205,22 +208,25 @@ function App() {
             index
             element={<RiderdDashboard />}
           />
-        <Route path='/rider/delivery/:id' element={<ViewDelivery />} />
+          <Route
+            path="/rider/delivery/:id"
+            element={<ViewDelivery />}
+          />
         </Route>
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>
-        <Route element={<RequireAuth allowedRole={ROLES.vendor} />}>
-          <Route
-            path="/vendor"
-            element={<VendorLayout />}
-          >
+          <Route element={<RequireAuth allowedRole={ROLES.vendor} />}>
             <Route
-              index
-              element={<VendorDashboard />}
-            />
+              path="/vendor"
+              element={<VendorLayout />}
+            >
+              <Route
+                index
+                element={<VendorDashboard />}
+              />
+            </Route>
           </Route>
-        </Route>
         </Route>
 
         <Route

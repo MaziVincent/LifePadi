@@ -141,6 +141,27 @@ namespace Api.Services
             }
         }
 
+
+        public async Task<object> getVendorProductStat(int vendorId)
+        {
+            try
+            {
+                var products = await _dbContext.Products.Where(p => p.VendorId == vendorId).AsQueryable().ToListAsync();
+                if (products == null) return null!;
+                var totalProducts = products.Count;
+                var totalActiveProducts = products.Count(p => p.Status == true);
+                var totalInactiveProducts = products.Count(p => p.Status == false);
+                return new {
+                    TotalProducts = totalProducts,
+                    TotalActiveProducts = totalActiveProducts,
+                    TotalInactiveProducts = totalInactiveProducts
+                };
+            }catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<ProductDto>> searchProduct(string searchString)
         {
             try
@@ -259,6 +280,23 @@ namespace Api.Services
             }
         }
 
+        public async Task<string> toogleProductStatus(int id)
+        {
+            try
+            {
+                var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+                if (product == null) return null!;
+                product.Status = !product.Status;
+                product.SearchString = product.Name!.ToUpper() + " " + product.Price + " " + product.Status;
+                _dbContext.Products.Attach(product);
+                await _dbContext.SaveChangesAsync();
+                return "Product status updated";
+            }catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<int> totalNumberOfProducts()
         {
             try
@@ -331,7 +369,7 @@ namespace Api.Services
                 var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
                 var imgPath = await UploadImage.uploadImg(productImg, _cloudinary, folderName);
-                if (imgPath == null) throw new Exception("Can not upload the product image");
+                if (imgPath == null) throw new Exceptions.ServiceException("Can not upload the product image");
                 product.ProductImgUrl = imgPath;
                 _dbContext.Products.Attach(product);
                 await _dbContext.SaveChangesAsync();

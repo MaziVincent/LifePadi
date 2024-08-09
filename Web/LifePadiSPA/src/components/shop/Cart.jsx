@@ -35,22 +35,24 @@ const Cart = ({
   handleCartDecrement,
   handleCartIncrement,
   handleCartItemDelete,
-  handleNewAddress
+  handleNewAddress,
+  handleDeliveryAddress,
+  handleDeliveryInstruction,
 }) => {
   const { cartState, setCartState, cart, setCart } = useCart();
   const [state, dispatch] = useReducer(reducer, {
     address: false,
     instruction: false,
     error: "",
-    addresses : []
+    addresses: [],
   });
   const { auth, login, setLogin } = useAuth();
   const fetch = useFetch();
 
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
-    dispatch({type : "setAddresses", payload : result.data });
-    console.log (result.data);
+    dispatch({ type: "setAddresses", payload: result.data });
+    console.log(state.addresses);
   };
   // const { data : addresses , isError, isLoading, isSuccess } = useQuery({
   //   queryKey: ["addresses"],
@@ -64,19 +66,16 @@ const Cart = ({
   //console.log(addresses);
 
   const handleAddressChange = () => {
-    if(!auth.user){
+    if (!auth.user) {
       setCartState(false);
-      setLogin(true)
+      setLogin(true);
 
-      return
-
+      return;
     }
 
-    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`)
-    dispatch({ type: "address" })
-
-  }
-
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    dispatch({ type: "address" });
+  };
 
   return (
     <Modal
@@ -195,9 +194,7 @@ const Cart = ({
                   </button>
                 ) : (
                   <button
-                    onClick={() =>
-                      handleAddressChange()
-                    }
+                    onClick={() => handleAddressChange()}
                     className=" text-background cursor-pointer"
                   >
                     Change
@@ -210,24 +207,32 @@ const Cart = ({
                 state.address ? "block" : "hidden"
               } border-2 rounded-lg border-graybg`}
             >
-              <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
-                <input
-                  type="radio"
-                  name="address"
-                />{" "}
-                <label htmlFor="address"> No 1 something street</label>
-              </div>
-              <div className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2">
-                <input
-                  type="radio"
-                  name="address"
-                />{" "}
-                <label htmlFor="address"> No 1 something street</label>
-              </div>
+              {state.addresses.map((ad) => (
+                <div
+                  key={ad.Id}
+                  className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                >
+                 {" "}
+                  <label htmlFor="address">
+                  <input
+                    type="radio"
+                    name="address"
+                    value={`${ad.Name} ${ad.Town} ${ad.City}`}
+                    onChange={(e) =>{ 
+                      e.stopPropagation();
+                      handleDeliveryAddress(e)}}
+                  />
+                    {" "}
+                    {ad.Name} {ad.Town}
+                  </label>
+                </div>
+              ))}
+
               <div className="text-sm flex justify-end px-2 py-2">
                 <button
-                onClick={() => handleNewAddress({type: "edit"})}
-                className="text-background border p-2 rounded-xl border-gray cursor-pointer">
+                  onClick={() => handleNewAddress({ type: "edit" })}
+                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                >
                   {" "}
                   Add new Address{" "}
                 </button>
@@ -260,17 +265,13 @@ const Cart = ({
                 <textarea
                   name="instructions"
                   id=""
-                  cols="30"
-                  rows="5"
-                  className="border rounded-lg border-gray bg-graybg px-1 "
+                  //cols="30"
+                  rows="3"
+                  className="border rounded-lg border-gray bg-graybg p-3 "
                   placeholder="e.g  give it to the receptionist"
+                  onChange={(e) => handleDeliveryInstruction(e.target.value)}
                 ></textarea>
-                <div className="flex justify-end text-sm text-background">
-                  <button className="p-2 cursor-pointer">
-                    {" "}
-                    Add instructions{" "}
-                  </button>
-                </div>
+               
               </div>
             </div>
             {/* <div className=" py-2">
