@@ -224,7 +224,7 @@ const VendorDashboard = () => {
                         <td className='px-4 py-3'>{product.Name}</td>
                         <td className='px-4 py-3'>&#x20A6; {product.Price}</td>
                         <td className='px-4 py-3'>{product.Tag}</td>
-                        <td className='px-4 py-3'>
+                        <td className='px-4 py-3' title={product.Description}>
                           {product.Description.slice(0, 50)}...
                         </td>
                         <td

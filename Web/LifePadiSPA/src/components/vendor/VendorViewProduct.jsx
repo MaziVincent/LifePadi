@@ -54,9 +54,9 @@ const VendorViewProduct = () => {
                       </Typography>
                     )}
                     {isLoading && (
-                        <div className='p-3 flex flex-row justify-center items-center w-full'>
-                            <CircularProgress size={20} />
-                        </div>
+                      <div className='p-3 flex flex-row justify-center items-center w-full'>
+                        <CircularProgress size={20} />
+                      </div>
                     )}
                     {product && (
                       <>
@@ -75,12 +75,12 @@ const VendorViewProduct = () => {
                           <span className='text-lg font-bold'>
                             Product Status:{' '}
                           </span>{' '}
-                          {product.Status == 'Delivered' ? (
+                          {product.Status ? (
                             <span className='text-lightgreen'>
-                              {product.Status}
+                              <i>Active</i>
                             </span>
                           ) : (
-                            product.Status
+                            <span className='text-red'><i>Inactive</i></span>
                           )}
                         </Typography>
                         <Typography>
@@ -117,9 +117,9 @@ const VendorViewProduct = () => {
                       </Typography>
                     )}
                     {isLoading && (
-                        <div className='p-3 flex flex-row justify-center items-center w-full'>
-                            <CircularProgress size={20} />
-                        </div>
+                      <div className='p-3 flex flex-row justify-center items-center w-full'>
+                        <CircularProgress size={20} />
+                      </div>
                     )}
                     {product && (
                       <>
@@ -137,7 +137,7 @@ const VendorViewProduct = () => {
               </div>
             </div>
             <div className='overflow-x-auto'>
-                <h3 className='text-lg font-semibold p-4'>Product Reviews</h3>
+              <h3 className='text-lg font-semibold p-4'>Product Reviews</h3>
               <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                   <tr>
@@ -165,20 +165,19 @@ const VendorViewProduct = () => {
                       </td>
                     </tr>
                   )}
-                  {product && (
+                  {product &&
                     product.ProductReview?.map((pr) => (
                       <tr className='border-b dark:border-gray-700' key={pr.Id}>
                         <th scope='row' className='px-4 py-3'>
-                          {pr.Customer.FirstName}  {pr.Customer.LastName}
+                          {pr.Customer.FirstName} {pr.Customer.LastName}
                         </th>
                         <th scope='row' className='px-4 py-3'>
                           {pr.Customer.Email}
                         </th>
                         <td className='px-4 py-3'>{pr.Rating}</td>
-                        <td className='px-4 py-3'>{pr.Review}</td>
+                        <td className='px-4 py-3'>{pr.Body}</td>
                       </tr>
-                    ))
-                  )}
+                    ))}
                 </tbody>
               </table>
             </div>
