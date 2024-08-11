@@ -88,6 +88,7 @@ const VendorViewProduct = () => {
                     )}
                     {isLoading && (
 <<<<<<< HEAD
+<<<<<<< HEAD
                       <div className='p-3 flex flex-row justify-center items-center w-full'>
                         <CircularProgress size={20} />
                       </div>
@@ -96,6 +97,11 @@ const VendorViewProduct = () => {
                             <CircularProgress size={20} />
                         </div>
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+                      <div className='p-3 flex flex-row justify-center items-center w-full'>
+                        <CircularProgress size={20} />
+                      </div>
+>>>>>>> 8979de1 (done with update product by vendor)
                     )}
                     {product && (
                       <>
@@ -115,6 +121,7 @@ const VendorViewProduct = () => {
                             Product Status:{' '}
                           </span>{' '}
 <<<<<<< HEAD
+<<<<<<< HEAD
                           {product.Status ? (
                             <span className='text-lightgreen'>
                               <i>Active</i>
@@ -125,12 +132,19 @@ const VendorViewProduct = () => {
                             </span>
 =======
                           {product.Status == 'Delivered' ? (
+=======
+                          {product.Status ? (
+>>>>>>> 8979de1 (done with update product by vendor)
                             <span className='text-lightgreen'>
-                              {product.Status}
+                              <i>Active</i>
                             </span>
                           ) : (
+<<<<<<< HEAD
                             product.Status
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+                            <span className='text-red'><i>Inactive</i></span>
+>>>>>>> 8979de1 (done with update product by vendor)
                           )}
                         </Typography>
                         <Typography>
@@ -168,6 +182,7 @@ const VendorViewProduct = () => {
                     )}
                     {isLoading && (
 <<<<<<< HEAD
+<<<<<<< HEAD
                       <div className='p-3 flex flex-row justify-center items-center w-full'>
                         <CircularProgress size={20} />
                       </div>
@@ -176,6 +191,11 @@ const VendorViewProduct = () => {
                             <CircularProgress size={20} />
                         </div>
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+                      <div className='p-3 flex flex-row justify-center items-center w-full'>
+                        <CircularProgress size={20} />
+                      </div>
+>>>>>>> 8979de1 (done with update product by vendor)
                     )}
                     {product && (
                       <>
@@ -194,10 +214,14 @@ const VendorViewProduct = () => {
             </div>
             <div className='overflow-x-auto'>
 <<<<<<< HEAD
+<<<<<<< HEAD
               <h3 className='text-lg font-semibold p-4'>Product Reviews</h3>
 =======
                 <h3 className='text-lg font-semibold p-4'>Product Reviews</h3>
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+              <h3 className='text-lg font-semibold p-4'>Product Reviews</h3>
+>>>>>>> 8979de1 (done with update product by vendor)
               <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                   <tr>
@@ -226,6 +250,7 @@ const VendorViewProduct = () => {
                     </tr>
                   )}
 <<<<<<< HEAD
+<<<<<<< HEAD
                   {product &&
                     product.ProductReview?.map((pr) => (
                       <tr className='border-b dark:border-gray-700' key={pr.Id}>
@@ -238,11 +263,19 @@ const VendorViewProduct = () => {
                         <th scope='row' className='px-4 py-3'>
                           {pr.Customer.FirstName}  {pr.Customer.LastName}
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+                  {product &&
+                    product.ProductReview?.map((pr) => (
+                      <tr className='border-b dark:border-gray-700' key={pr.Id}>
+                        <th scope='row' className='px-4 py-3'>
+                          {pr.Customer.FirstName} {pr.Customer.LastName}
+>>>>>>> 8979de1 (done with update product by vendor)
                         </th>
                         <th scope='row' className='px-4 py-3'>
                           {pr.Customer.Email}
                         </th>
                         <td className='px-4 py-3'>{pr.Rating}</td>
+<<<<<<< HEAD
 <<<<<<< HEAD
                         <td className='px-4 py-3'>{pr.Body}</td>
                       </tr>
@@ -253,6 +286,11 @@ const VendorViewProduct = () => {
                     ))
                   )}
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+                        <td className='px-4 py-3'>{pr.Body}</td>
+                      </tr>
+                    ))}
+>>>>>>> 8979de1 (done with update product by vendor)
                 </tbody>
               </table>
             </div>

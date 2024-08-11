@@ -14,16 +14,22 @@ import {
   toggolProductStatusUrl,
   deleteProductUrl,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8979de1 (done with update product by vendor)
   updateProductUrl,
 } from './vendorUri/VendorURI'
 import { useState } from 'react'
 import usePost from '../../hooks/usePost'
 import { WindowSharp } from '@mui/icons-material'
+<<<<<<< HEAD
 =======
 } from './vendorUri/VendorURI'
 import { useState } from 'react'
 import usePost from '../../hooks/usePost'
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+>>>>>>> 8979de1 (done with update product by vendor)
 
 const style = {
   position: 'absolute',
@@ -104,7 +110,11 @@ export const UpdateModal = ({
   const [tag, setTag] = useState(product.Tag)
   const [imgUrl] = useState(product.ProductImgUrl)
   const [image, setImage] = useState(null)
+<<<<<<< HEAD
   let vendoId = auth.Id
+=======
+  let vendoId = auth.user.Id
+>>>>>>> 8979de1 (done with update product by vendor)
   const [response, setResponse] = useState(null)
 
   const fetchCategories = async (url) => {
@@ -128,6 +138,9 @@ export const UpdateModal = ({
   const handleUpdateProduct = async (productId) => {
     console.log(productId)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8979de1 (done with update product by vendor)
     const formData = new FormData()
     formData.append('Image', image)
     formData.append('Name', name)
@@ -136,6 +149,7 @@ export const UpdateModal = ({
     formData.append('Tag', tag)
     formData.append('CategoryId', Number(productCategory))
     formData.append('VendorId', vendoId)
+<<<<<<< HEAD
     const updatePUrl = updateProductUrl.replace('{id}', productId)
     try {
       const res = await updateData(updatePUrl, formData, auth.accessToken)
@@ -162,6 +176,20 @@ export const UpdateModal = ({
       //   console.log(response)
       // console.log(deliveryId, orderId);
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+      const updatePUrl = updateProductUrl.replace("{id}", productId)
+    try {
+        const res = await updateData(
+          updatePUrl,
+          formData,
+          auth.accessToken
+        )
+        setResponse(res.data)
+        setTimeout(() => {
+          handleCloseUpdateModal()
+          Window.location.refresh()
+        }, 2000);
+>>>>>>> 8979de1 (done with update product by vendor)
     } catch (error) {
       console.log(error)
     }
@@ -176,6 +204,7 @@ export const UpdateModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+<<<<<<< HEAD
 <<<<<<< HEAD
           {response && <span className='text-lightgreen p-2'>{response}</span>}
           {isError && <span className='text-red p-2'>{isError}</span>}
@@ -198,6 +227,176 @@ export const UpdateModal = ({
             >
               X
             </button>
+=======
+        {response && <span className='text-lightgreen p-2'>{response}</span>}
+        {isError && <span className='text-red p-2'>{isError}</span>}
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Update Product
+          </Typography>
+          <div className='mt-2'>
+            <form onSubmit={(e) => handleUpdateProduct(e)} method='post'>
+              <div className=''>
+                <label
+                  htmlFor='product-name'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Name
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='name'
+                    id='product-name'
+                    autoComplete='product-name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-price'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Price
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='number'
+                    name='price'
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    id='product-price'
+                    autoComplete='product-price'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-description'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Description
+                </label>
+                <div className='mt-1'>
+                  <textarea
+                    name='description'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    id='product-description'
+                    autoComplete='product-description'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  ></textarea>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-tag'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Tag
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='tag'
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    id='product-tag'
+                    autoComplete='product-tag'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-category'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Category
+                </label>
+                <div className='mt-1'>
+                  <select
+                    name='category'
+                    onChange={(e) => setProductCategory(e.target.value)}
+                    id='product-category'
+                    autoComplete='product-category'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  >
+                    {isLoading && <option>Loading...</option>}
+                    {categories &&
+                      categories.map((category) => (
+                        <>
+                          {Number(category.Id) === Number(productCategory) ? (
+                            <option
+                              key={category.Id}
+                              value={category.Id}
+                              selected
+                            >
+                              {category.Name}
+                            </option>
+                          ) : (
+                            <option key={category.Id} value={category.Id}>
+                              {category.Name}
+                            </option>
+                          )}
+                        </>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-image'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Image
+                </label>
+                <div className='mt-1 flex justify-center items-center gap-2'>
+                  <div>
+                    <input
+                      type='file'
+                      name='image'
+                      onChange={(e) => setImage(e.target.files[0])}
+                      id='product-image'
+                      autoComplete='product-image'
+                      accept='image/png, image/jpeg'
+                      required
+                      className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                    />
+                  </div>
+                  <div className='w-56 '>
+                    <span className='block text-center'>Current Image</span>
+                    <div className=''>
+                      <img src={imgUrl} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='flex justify-end mt-3 gap-2'>
+                <button
+                  type='submit'
+                  className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
+                >
+                  Create Product
+                </button>
+                <button
+                  type='button'
+                  className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
+                  onClick={handleCloseUpdateModal}
+                >
+                  Cancle
+                </button>
+              </div>
+            </form>
+>>>>>>> 8979de1 (done with update product by vendor)
           </div>
           <div className='mt-2'>
             <form
@@ -605,10 +804,13 @@ export const AddProductModal = ({
   const handleAddProduct = async (e) => {
     e.preventDefault()
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     console.log(name, price, description, tag, category, vendoId, image)
     console.log(image)
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+>>>>>>> 8979de1 (done with update product by vendor)
 
     const formData = new FormData()
     formData.append('Image', image)
