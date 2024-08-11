@@ -4,13 +4,18 @@ import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import DateFormater from '../shared/DateFormater'
 import useUpdate from '../../hooks/useUpdate'
+import useDelete from '../../hooks/useDelete'
 import useAuth from '../../hooks/useAuth'
 import useFetch from '../../hooks/useFetch'
 import { useQuery } from 'react-query'
-import { getCategoriesUrl, createProductUrl } from './vendorUri/VendorURI'
+import {
+  getCategoriesUrl,
+  createProductUrl,
+  toggolProductStatusUrl,
+  deleteProductUrl,
+} from './vendorUri/VendorURI'
 import { useState } from 'react'
 import usePost from '../../hooks/usePost'
-
 
 const style = {
   position: 'absolute',
@@ -84,22 +89,22 @@ export const UpdateModal = ({
   const { auth } = useAuth()
 
   const handleUpdateProduct = async (productId) => {
-    console.log(productId);
+    console.log(productId)
     // const url =
     //   updateDeliveryOrderStatusUrl +
     //   `?orderId=${delivery.Order.Id}&deliveryId=${delivery.Id}&deliveryStatus=Delivered`
     // const deliveryStatus = 'Delivered'
     try {
-    //   const response = await updateData(
-    //     url,
-    //     {
-    //       deliveryId,
-    //       orderId,
-    //       deliveryStatus,
-    //     },
-    //     auth.accessToken
-    //   )
-    //   console.log(response)
+      //   const response = await updateData(
+      //     url,
+      //     {
+      //       deliveryId,
+      //       orderId,
+      //       deliveryStatus,
+      //     },
+      //     auth.accessToken
+      //   )
+      //   console.log(response)
       // console.log(deliveryId, orderId);
     } catch (error) {
       console.log(error)
@@ -123,7 +128,6 @@ export const UpdateModal = ({
             Are you sure you want to update this product?
           </Typography>
           <div className='flex justify-end mt-3 gap-2'>
-            
             <button
               type='button'
               className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
@@ -138,11 +142,25 @@ export const UpdateModal = ({
   )
 }
 
-export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) => {
-    const handleCloseDeleteModal = () => setOpenDeleteModal(false)
-    const handleDeleteProduct = (productId) => {
-        console.log(productId);
-    }
+export const DeleteModal = ({
+  productId,
+  openDeleteModal,
+  setOpenDeleteModal,
+}) => {
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false)
+  const [result, setResult] = useState(null)
+  const deleteData = useDelete()
+  const { auth } = useAuth()
+  const handleDeleteProduct = async (productId) => {
+    const url = deleteProductUrl.replace('{id}', productId)
+    const response = await deleteData(url, auth.accessToken)
+    console.log(response.data)
+    setResult(response.data)
+    setTimeout(() => {
+      handleCloseDeleteModal()
+      window.location.reload()
+    }, 2000)
+  }
   return (
     <div>
       <Modal
@@ -152,6 +170,7 @@ export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) 
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+          {result && <p className='text-lightgreen'>{result}</p>}
           <Typography id='modal-modal-title' variant='h6' component='h2'>
             Delete Product
           </Typography>
@@ -180,6 +199,63 @@ export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) 
   )
 }
 
+export const ToggleStatusModal = ({
+  product,
+  openToggleStatusModal,
+  setOpenToggleStatusModal,
+}) => {
+  const handleCloseToggleModal = () => setOpenToggleStatusModal(false)
+  const [response, setResponse] = useState(null)
+  const updateData = useUpdate()
+  const { auth } = useAuth()
+  const handleToggleProductStatus = async (productId) => {
+    const url = toggolProductStatusUrl.replace('{id}', productId)
+    const res = await updateData(url, null, auth.accessToken)
+    // console.log(res.data)
+    setResponse(res.data)
+    setTimeout(() => {
+      handleCloseToggleModal()
+      window.location.reload()
+    }, 2000);
+  }
+  return (
+    <div>
+      <Modal
+        open={openToggleStatusModal}
+        onClose={handleCloseToggleModal}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={style}>
+          {response && (<p className='text-lightgreen'>{response}</p>)}
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            {product.Status ? 'Deactivate' : 'Activate'} Product
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Are you sure you want to{' '}
+            {product.Status ? 'deactivate' : 'activate'} this product?
+          </Typography>
+          <div className='flex justify-end mt-3 gap-2'>
+            <button
+              type='button'
+              className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
+              onClick={() => handleToggleProductStatus(product.Id)}
+            >
+              Yes
+            </button>
+            <button
+              type='button'
+              className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
+              onClick={handleCloseToggleModal}
+            >
+              No
+            </button>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  )
+}
 
 const addProductStyle = {
   position: 'absolute',
@@ -195,8 +271,10 @@ const addProductStyle = {
   borderRadius: 5,
 }
 
-
-export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
+export const AddProductModal = ({
+  openAddProductModal,
+  setOpenAddProductModal,
+}) => {
   const { auth } = useAuth()
   const fetchdata = useFetch()
   const handleCloseAddProductModal = () => setOpenAddProductModal(false)
@@ -210,13 +288,17 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
   const postData = usePost()
   const [response, setResponse] = useState(null)
 
-
   const fetchCategories = async (url) => {
     const response = await fetchdata(url, auth.accessToken)
     return response.data
   }
 
-  const { data: categories, isError, isLoading, isSuccess } = useQuery({
+  const {
+    data: categories,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useQuery({
     queryKey: 'categories',
     queryFn: () => fetchCategories(getCategoriesUrl),
     keepPreviousData: true,
@@ -225,12 +307,11 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
   })
   if (categories) {
     console.log(categories)
-
   }
   const handleAddProduct = async (e) => {
     e.preventDefault()
-    console.log(name, price, description, tag, category, vendoId, image);
-    console.log(image);
+    console.log(name, price, description, tag, category, vendoId, image)
+    console.log(image)
 
     const formData = new FormData()
     formData.append('Image', image)
@@ -240,13 +321,13 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
     formData.append('Tag', tag)
     formData.append('CategoryId', Number(category))
     formData.append('VendorId', vendoId)
-    
-    let result = await postData( createProductUrl, formData, auth.accessToken)
-    console.log("result", result);
+
+    let result = await postData(createProductUrl, formData, auth.accessToken)
+    console.log('result', result)
     setResponse(result)
     setTimeout(() => {
       handleCloseAddProductModal()
-    }, 3000);
+    }, 3000)
   }
   return (
     <div>
