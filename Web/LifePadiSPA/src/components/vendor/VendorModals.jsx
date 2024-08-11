@@ -13,11 +13,17 @@ import {
   createProductUrl,
   toggolProductStatusUrl,
   deleteProductUrl,
+<<<<<<< HEAD
   updateProductUrl,
 } from './vendorUri/VendorURI'
 import { useState } from 'react'
 import usePost from '../../hooks/usePost'
 import { WindowSharp } from '@mui/icons-material'
+=======
+} from './vendorUri/VendorURI'
+import { useState } from 'react'
+import usePost from '../../hooks/usePost'
+>>>>>>> 6248978 (added product view page for vendor)
 
 const style = {
   position: 'absolute',
@@ -121,6 +127,7 @@ export const UpdateModal = ({
 
   const handleUpdateProduct = async (productId) => {
     console.log(productId)
+<<<<<<< HEAD
     const formData = new FormData()
     formData.append('Image', image)
     formData.append('Name', name)
@@ -137,6 +144,24 @@ export const UpdateModal = ({
         handleCloseUpdateModal()
         Window.location.refresh()
       }, 2000)
+=======
+    // const url =
+    //   updateDeliveryOrderStatusUrl +
+    //   `?orderId=${delivery.Order.Id}&deliveryId=${delivery.Id}&deliveryStatus=Delivered`
+    // const deliveryStatus = 'Delivered'
+    try {
+      //   const response = await updateData(
+      //     url,
+      //     {
+      //       deliveryId,
+      //       orderId,
+      //       deliveryStatus,
+      //     },
+      //     auth.accessToken
+      //   )
+      //   console.log(response)
+      // console.log(deliveryId, orderId);
+>>>>>>> 6248978 (added product view page for vendor)
     } catch (error) {
       console.log(error)
     }
@@ -151,12 +176,22 @@ export const UpdateModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+<<<<<<< HEAD
           {response && <span className='text-lightgreen p-2'>{response}</span>}
           {isError && <span className='text-red p-2'>{isError}</span>}
           <div className='flex justify-between items-center w-full '>
             <Typography id='modal-modal-title' variant='h6' component='h2'>
               Update Product
             </Typography>
+=======
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Update Product
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Are you sure you want to update this product?
+          </Typography>
+          <div className='flex justify-end mt-3 gap-2'>
+>>>>>>> 6248978 (added product view page for vendor)
             <button
               onClick={() => setOpenUpdateModal(false)}
               className='py-2 px-4 rounded-md bg-graybg text-darkBg'
@@ -338,12 +373,17 @@ export const UpdateModal = ({
 }
 
 export const DeleteModal = ({
+<<<<<<< HEAD
   product,
+=======
+  productId,
+>>>>>>> 6248978 (added product view page for vendor)
   openDeleteModal,
   setOpenDeleteModal,
 }) => {
   const handleCloseDeleteModal = () => setOpenDeleteModal(false)
   const [result, setResult] = useState(null)
+<<<<<<< HEAD
   const [deleteLoading, setDeleteLoading] = useState(false)
   const deleteData = useDelete()
   const { auth } = useAuth()
@@ -365,6 +405,16 @@ export const DeleteModal = ({
     setResult(response)
     setTimeout(() => {
       setDeleteLoading(false)
+=======
+  const deleteData = useDelete()
+  const { auth } = useAuth()
+  const handleDeleteProduct = async (productId) => {
+    const url = deleteProductUrl.replace('{id}', productId)
+    const response = await deleteData(url, auth.accessToken)
+    console.log(response.data)
+    setResult(response.data)
+    setTimeout(() => {
+>>>>>>> 6248978 (added product view page for vendor)
       handleCloseDeleteModal()
       window.location.reload()
     }, 2000)
@@ -379,6 +429,7 @@ export const DeleteModal = ({
       >
         <Box sx={style}>
           {result && <p className='text-lightgreen'>{result}</p>}
+<<<<<<< HEAD
           <div className='flex justify-between items-center w-full '>
             <Typography id='modal-modal-title' variant='h6' component='h2'>
               Delete Product
@@ -390,6 +441,11 @@ export const DeleteModal = ({
               X
             </button>
           </div>
+=======
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Delete Product
+          </Typography>
+>>>>>>> 6248978 (added product view page for vendor)
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
             Are you sure you want to delete this product?
           </Typography>
@@ -433,7 +489,11 @@ export const ToggleStatusModal = ({
     setTimeout(() => {
       handleCloseToggleModal()
       window.location.reload()
+<<<<<<< HEAD
     }, 2000)
+=======
+    }, 2000);
+>>>>>>> 6248978 (added product view page for vendor)
   }
   return (
     <div>
@@ -444,6 +504,7 @@ export const ToggleStatusModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+<<<<<<< HEAD
           {response && <p className='text-lightgreen'>{response}</p>}
 
           <div className='flex justify-between items-center w-full '>
@@ -457,6 +518,12 @@ export const ToggleStatusModal = ({
               X
             </button>
           </div>
+=======
+          {response && (<p className='text-lightgreen'>{response}</p>)}
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            {product.Status ? 'Deactivate' : 'Activate'} Product
+          </Typography>
+>>>>>>> 6248978 (added product view page for vendor)
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
             Are you sure you want to{' '}
             {product.Status ? 'deactivate' : 'activate'} this product?
@@ -537,6 +604,11 @@ export const AddProductModal = ({
 
   const handleAddProduct = async (e) => {
     e.preventDefault()
+<<<<<<< HEAD
+=======
+    console.log(name, price, description, tag, category, vendoId, image)
+    console.log(image)
+>>>>>>> 6248978 (added product view page for vendor)
 
     const formData = new FormData()
     formData.append('Image', image)

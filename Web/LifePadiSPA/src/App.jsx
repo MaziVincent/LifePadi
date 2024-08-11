@@ -93,6 +93,7 @@ import Login from "./components/auth/Login";
 
 =======
 import ViewDelivery from "./components/rider/ViewDelivery";
+import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
 
 >>>>>>> fd293ff (Google Maps Controller)
@@ -453,12 +454,16 @@ function App() {
                 element={<VendorDashboard />}
               />
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Route
                 path="/vendor/product/:id"
                 element={<VendorViewProduct />}
               />
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+          <Route path='/vendor/product/:id' element={<VendorViewProduct />} />
+>>>>>>> 6248978 (added product view page for vendor)
             </Route>
           </Route>
         </Route>
