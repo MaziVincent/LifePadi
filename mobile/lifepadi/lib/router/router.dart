@@ -9,11 +9,9 @@ import 'routes.dart';
 part 'router.g.dart';
 
 bool hasLoggedInBefore() {
-  final storage = NativeStorage();
-  final hasLoggedIn = storage.read('hasLoggedInBefore');
+  final hasLoggedIn = NativeStorage().read('hasEverLoggedIn');
 
   if (hasLoggedIn == null) {
-    storage.write('hasLoggedInBefore', 'true');
     return false;
   }
 
@@ -82,9 +80,8 @@ GoRouter router(RouterRef ref) {
         // awaiting the loading animation on the splash screen
         return Future.delayed(
           const Duration(seconds: 4),
-          () => auth
-              ? const HomeRoute().location
-              : const OnboardingRoute().location,
+          () =>
+              auth ? const HomeRoute().location : locationBasedOnPreviousLogin,
         );
       }
 

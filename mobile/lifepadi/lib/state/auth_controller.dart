@@ -61,6 +61,7 @@ class AuthController extends _$AuthController {
       () => _dummyUser,
     );
     state = AsyncData(result);
+    NativeStorage().write('hasEverLoggedIn', 'true');
   }
 
   /// Mock of a login request performed with a saved token.
