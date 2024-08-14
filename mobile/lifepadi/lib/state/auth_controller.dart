@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:native_storage/native_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entities/auth.dart';
 
@@ -19,12 +19,13 @@ const _dummyUser = Auth.signedIn(
 /// This controller is an [AsyncNotifier] that holds and handles our authentication state
 @riverpod
 class AuthController extends _$AuthController {
-  late SharedPreferences _sharedPreferences;
-  static const _sharedPrefsKey = 'token';
+  late final IsolatedNativeStorage _secureStorage;
+  static const _storageKey = 'token';
 
   @override
   Future<Auth> build() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
+    final storage = NativeStorage();
+    _secureStorage = storage.secure.isolated;
 
     _persistenceRefreshLogic();
 
@@ -33,16 +34,16 @@ class AuthController extends _$AuthController {
 
   /// Tries to perform a login with the saved token on the persistant storage.
   /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
-  Future<Auth> _loginRecoveryAttempt() {
+  Future<Auth> _loginRecoveryAttempt() async {
     try {
-      final savedToken = _sharedPreferences.getString(_sharedPrefsKey);
+      final savedToken = await _secureStorage.read(_storageKey);
       if (savedToken == null) {
         throw const UnauthorizedException('No auth token found');
       }
 
       return _loginWithToken(savedToken);
     } catch (_, __) {
-      _sharedPreferences.remove(_sharedPrefsKey).ignore();
+      _secureStorage.delete(_storageKey).ignore();
       return Future.value(const Auth.signedOut());
     }
   }
@@ -83,16 +84,14 @@ class AuthController extends _$AuthController {
     ref.listenSelf((_, next) {
       if (next.isLoading) return;
       if (next.hasError) {
-        _sharedPreferences.remove(_sharedPrefsKey);
+        _secureStorage.delete(_storageKey).ignore();
         return;
       }
 
       next.requireValue.map<void>(
-        signedIn: (signedIn) =>
-            _sharedPreferences.setString(_sharedPrefsKey, signedIn.token),
-        signedOut: (signedOut) {
-          _sharedPreferences.remove(_sharedPrefsKey);
-        },
+        signedIn: (signedIn) async =>
+            _secureStorage.write(_storageKey, signedIn.token),
+        signedOut: (signedOut) async => _secureStorage.delete(_storageKey),
       );
     });
   }
