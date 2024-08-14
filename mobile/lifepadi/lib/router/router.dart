@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:native_storage/native_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../state/auth_controller.dart';
 import 'routes.dart';
 
 part 'router.g.dart';
+
+bool hasLoggedInBefore() {
+  final storage = NativeStorage();
+  final hasLoggedIn = storage.read('hasLoggedInBefore');
+
+  if (hasLoggedIn == null) {
+    storage.write('hasLoggedInBefore', 'true');
+    return false;
+  }
+
+  return true;
+}
 
 /// Exposes a [GoRouter] that uses a [Listenable] to refresh its internal state.
 ///
@@ -51,12 +64,12 @@ GoRouter router(RouterRef ref) {
         const ResetPasswordRoute().location,
       ];
       final isLoggingIn = guestRoutes.contains(state.uri.path);
+      final locationBasedOnPreviousLogin = hasLoggedInBefore()
+          ? const GetStartedRoute().location
+          : const OnboardingRoute().location;
 
       if (isAuth.value.unwrapPrevious().hasError) {
-        // TODO: Update logic for this redirect case
-        // if user has ever logged in before, go to get started
-        // If not, go to onboarding
-        return isLoggingIn ? null : const OnboardingRoute().location;
+        return isLoggingIn ? null : locationBasedOnPreviousLogin;
       }
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
         return const SplashRoute().location;
@@ -78,8 +91,7 @@ GoRouter router(RouterRef ref) {
       // Check if path is in guestRoutes
       if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
-      // TODO: If user is not logged in, use the same logic as line 46, maybe extract it into a function
-      return auth ? null : const OnboardingRoute().location;
+      return auth ? null : locationBasedOnPreviousLogin;
     },
   );
   ref.onDispose(router.dispose); // always clean up after yourselves (:
