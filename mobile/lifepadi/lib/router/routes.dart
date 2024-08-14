@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/entities/user_role.dart';
 import 'package:lifepadi/pages/admin_page.dart';
+import 'package:lifepadi/pages/cart_page.dart';
 import 'package:lifepadi/pages/details_page.dart';
 import 'package:lifepadi/pages/errands_page.dart';
 import 'package:lifepadi/pages/forgot_password_page.dart';
@@ -247,6 +248,19 @@ class DetailsRoute extends GoRouteData {
     return DetailsPage(
       id,
       isNuclearCode: isNuke,
+    );
+  }
+}
+
+@TypedGoRoute<CartRoute>(path: '/cart')
+class CartRoute extends GoRouteData {
+  const CartRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final extra = state.extra as Map<String, dynamic>?;
+    return CartPage(
+      previousPage: extra?['from'] as String?,
     );
   }
 }

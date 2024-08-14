@@ -55,5 +55,5 @@ extension TextThemeExtension on BuildContext {
 final formatCurrency = NumberFormat.currency(
   locale: 'en_US',
   symbol: '\u20a6', // naira unicode character
-  decimalDigits: 0,
+  decimalDigits: 2,
 );

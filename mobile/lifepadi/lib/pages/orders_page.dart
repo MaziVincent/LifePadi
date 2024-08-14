@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
@@ -27,9 +29,12 @@ class OrdersPage extends StatelessWidget {
           actions: [
             MyIconButton(
               icon: IconsaxPlusLinear.shopping_cart,
-              onPressed: () {
-                // TODO: Go to cart page.
-              },
+              onPressed: () => context.go(
+                const CartRoute().location,
+                extra: {
+                  'from': const OrdersRoute().location,
+                },
+              ),
             ),
           ],
           height: 126.h,

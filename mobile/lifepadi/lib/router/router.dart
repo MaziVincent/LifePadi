@@ -41,11 +41,22 @@ GoRouter router(RouterRef ref) {
     debugLogDiagnostics: true,
     routes: $appRoutes,
     redirect: (context, state) async {
+      final guestRoutes = [
+        const OnboardingRoute().location,
+        const LoginRoute().location,
+        const GetStartedRoute().location,
+        const RegisterRoute().location,
+        const VerificationRoute().location,
+        const ForgotPasswordRoute().location,
+        const ResetPasswordRoute().location,
+      ];
+      final isLoggingIn = guestRoutes.contains(state.uri.path);
+
       if (isAuth.value.unwrapPrevious().hasError) {
         // TODO: Update logic for this redirect case
         // if user has ever logged in before, go to get started
         // If not, go to onboarding
-        return const OnboardingRoute().location;
+        return isLoggingIn ? null : const OnboardingRoute().location;
       }
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
         return const SplashRoute().location;
@@ -64,18 +75,7 @@ GoRouter router(RouterRef ref) {
         );
       }
 
-      final guestRoutes = [
-        const OnboardingRoute().location,
-        const LoginRoute().location,
-        const GetStartedRoute().location,
-        const RegisterRoute().location,
-        const VerificationRoute().location,
-        const ForgotPasswordRoute().location,
-        const ResetPasswordRoute().location,
-      ];
-
       // Check if path is in guestRoutes
-      final isLoggingIn = guestRoutes.contains(state.uri.path);
       if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
       // TODO: If user is not logged in, use the same logic as line 46, maybe extract it into a function

@@ -1,0 +1,177 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/location_card.dart';
+import 'package:lifepadi/widgets/my_app_bar.dart';
+import 'package:lifepadi/widgets/my_icon_button.dart';
+import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/section_title.dart';
+import 'package:remixicon/remixicon.dart';
+
+import '../widgets/cart_discount.dart';
+import '../widgets/cart_item.dart';
+import '../widgets/cart_total.dart';
+
+class CartPage extends HookWidget {
+  const CartPage({super.key, this.previousPage});
+
+  final String? previousPage;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectAll = useState(false);
+
+    return Scaffold(
+      appBar: MyAppBar(
+        title: 'Cart',
+        actions: [
+          MyIconButton(
+            icon: Remix.more_2_fill,
+            onPressed: () {
+              // TODO: YAGNI! Just keeping this for now because it's in the design.
+            },
+          ),
+        ],
+        withBackButton: true,
+        onBackButtonPressed: () => context.go(
+          previousPage ?? const HomeRoute().location,
+        ),
+      ),
+      body: Stack(
+        children: [
+          ListView(
+            padding: EdgeInsets.symmetric(horizontal: 24.w).copyWith(top: 12.h),
+            children: [
+              const SectionTitle('Location'),
+              12.verticalSpace,
+              LocationCard(
+                onTap: () {
+                  // TODO: Open bottom sheet to update location
+                },
+                place: '3RD FLOOR DREAMLINK CONCEPTS',
+                phoneNumber: '0701 234 5678',
+              ),
+              18.verticalSpace,
+              const SectionTitle('Items in Cart'),
+              8.verticalSpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Transform.scale(
+                        scale: 1.3,
+                        child: SizedBox(
+                          height: 24.h,
+                          width: 24.h,
+                          child: Checkbox.adaptive(
+                            value: selectAll.value,
+                            onChanged: (bool? value) =>
+                                selectAll.value = value ?? false,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            side: const BorderSide(
+                              color: Color(0xFFDCDCE2),
+                            ),
+                            activeColor: kDarkPrimaryColor,
+                          ),
+                        ),
+                      ),
+                      8.horizontalSpace,
+                      Text(
+                        'Select all',
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF27272A),
+                        ),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // TODO: Clear cart
+                      // Just clear cart or show a confirmation dialog first?..TBH, I don't know yet. TBD!
+                    },
+                    icon: const Icon(
+                      IconsaxPlusLinear.trash,
+                    ),
+                    iconSize: 24.sp,
+                  ),
+                ],
+              ),
+              4.verticalSpace,
+              const Divider(
+                color: Color(0xFFEBEBF0),
+                height: 1,
+              ),
+              16.verticalSpace,
+              ...[
+                CartItem(
+                  image: Assets.images.bnbBlender.provider(),
+                  price: 33000,
+                  name: 'BNB Blender',
+                ),
+                CartItem(
+                  image: Assets.images.miniBlender.provider(),
+                  price: 5000,
+                  name: 'Mini BNB Blender',
+                ),
+                CartItem(
+                  image: Assets.images.miniBlender.provider(),
+                  price: 5000,
+                  name: 'Mini BNB Blender',
+                ),
+              ].separatedBy(14.verticalSpace),
+              31.verticalSpace,
+              247.verticalSpace,
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: double.infinity,
+              height: 247.h,
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    color: Color(0xFFD6D6D6),
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.r),
+                    topRight: Radius.circular(32.r),
+                  ),
+                ),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
+              child: Column(
+                children: [
+                  const CartDiscount(),
+                  const Divider(
+                    color: Color(0xFFEBEBF0),
+                    height: 1,
+                  ),
+                  const CartTotal(),
+                  PrimaryButton(
+                    text: 'Proceed to checkout',
+                    onPressed: () {
+                      // TODO: Go to checkout page
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -96,9 +98,7 @@ class HomePage extends HookWidget {
         actions: [
           MyIconButton(
             icon: IconsaxPlusLinear.shopping_cart,
-            onPressed: () {
-              // TODO: Go to cart page.
-            },
+            onPressed: () => context.go(const CartRoute().location),
           ),
           6.horizontalSpace,
           MyIconButton(

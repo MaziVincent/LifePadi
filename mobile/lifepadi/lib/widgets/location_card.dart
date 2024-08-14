@@ -74,7 +74,7 @@ class LocationCard extends StatelessWidget {
                 ],
               ),
             ),
-            Assets.icons.arrowRight.svg(width: 24.r, height: 24.r),
+            Assets.icons.arrowRight.svg(width: 24.sp, height: 24.sp),
           ],
         ),
       ),

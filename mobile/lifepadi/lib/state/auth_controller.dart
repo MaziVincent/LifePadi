@@ -98,7 +98,7 @@ class AuthController extends _$AuthController {
   }
 }
 
-/// Simple mock of a 401 exception
+/// Exception thrown when a request is unauthorized.
 class UnauthorizedException implements Exception {
   const UnauthorizedException(this.message);
   final String message;

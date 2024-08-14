@@ -47,6 +47,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/grocery-store.png
   AssetGenImage get groceryStore => const AssetGenImage('assets/icons/grocery-store.png');
 
+  /// File path: assets/icons/info.svg
+  SvgGenImage get info => const SvgGenImage('assets/icons/info.svg');
+
   /// File path: assets/icons/laundry.png
   AssetGenImage get laundry => const AssetGenImage('assets/icons/laundry.png');
 
@@ -55,6 +58,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
+
+  /// File path: assets/icons/voucher.svg
+  SvgGenImage get voucher => const SvgGenImage('assets/icons/voucher.svg');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -65,9 +71,11 @@ class $AssetsIconsGen {
         gasFilling,
         google,
         groceryStore,
+        info,
         laundry,
         location,
-        restaurant
+        restaurant,
+        voucher
       ];
 }
 
@@ -109,6 +117,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/mcdonald.png
   AssetGenImage get mcdonald => const AssetGenImage('assets/images/mcdonald.png');
 
+  /// File path: assets/images/mini-blender.png
+  AssetGenImage get miniBlender => const AssetGenImage('assets/images/mini-blender.png');
+
   /// File path: assets/images/oil-perfumes.png
   AssetGenImage get oilPerfumes => const AssetGenImage('assets/images/oil-perfumes.png');
 
@@ -133,6 +144,7 @@ class $AssetsImagesGen {
         manWithCart,
         manWithGroceries,
         mcdonald,
+        miniBlender,
         oilPerfumes,
         plainTees,
         shoprite,

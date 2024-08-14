@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 
 /// 0xFF629D03
@@ -21,3 +22,8 @@ List<({String name, String image})> services = [
   (name: 'Groceries', image: Assets.icons.groceryStore.path),
   (name: 'Gas filling', image: Assets.icons.gasFilling.path),
 ];
+
+/// This horizontal padding is used in many places in the app, I decided to
+/// create it as a constant to avoid repetition.
+EdgeInsetsGeometry get kHorizontalPadding =>
+    EdgeInsets.symmetric(horizontal: 24.w);
