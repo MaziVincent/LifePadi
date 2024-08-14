@@ -68,7 +68,7 @@ class CartItem extends StatelessWidget {
                 ),
                 4.verticalSpace,
                 Text(
-                  formatCurrency.format(price),
+                  price.currency,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,

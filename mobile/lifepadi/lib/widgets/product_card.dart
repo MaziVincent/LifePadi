@@ -118,7 +118,7 @@ class ProductCard extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        formatCurrency.format(price),
+                        price.currency,
                         style: context.textTheme.bodyLarge?.copyWith(
                           color: const Color(0xFF1BAC4B),
                           fontSize: 16.sp,

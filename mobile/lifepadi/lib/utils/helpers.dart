@@ -52,8 +52,16 @@ extension TextThemeExtension on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
 }
 
-final formatCurrency = NumberFormat.currency(
+final currencyFormatter = NumberFormat.currency(
   locale: 'en_US',
   symbol: '\u20a6', // naira unicode character
-  decimalDigits: 2,
+  decimalDigits: 0,
 );
+
+/// Extension on [num] to format currency.
+extension Currency on num {
+  /// Format a number as currency.
+  ///
+  /// You can add an optional parameter [digits] to specify the number of decimal places.
+  String get currency => currencyFormatter.format(this);
+}

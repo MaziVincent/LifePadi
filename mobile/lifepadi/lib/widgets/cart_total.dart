@@ -27,7 +27,7 @@ class CartTotal extends StatelessWidget {
           Row(
             children: [
               Text(
-                formatCurrency.format(43000),
+                43000.currency,
                 style: context.textTheme.bodyLarge?.copyWith(
                   fontSize: 24.sp,
                   color: const Color(0xFF27272A),
