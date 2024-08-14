@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -23,7 +24,7 @@ class CartItem extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEBEBF0),
+            color: kStrokeColor,
           ),
         ),
       ),

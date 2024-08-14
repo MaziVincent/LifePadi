@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/utils/constants.dart';
 
 class SettingsTile extends StatelessWidget {
   const SettingsTile({
@@ -25,7 +26,7 @@ class SettingsTile extends StatelessWidget {
         ),
         decoration: const BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: Color(0xFFEBEBF0)),
+            bottom: BorderSide(color: kStrokeColor),
           ),
         ),
         child: Row(

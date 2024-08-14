@@ -26,7 +26,7 @@ class OrderTile extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color(0xFFEBEBF0),
+            color: kStrokeColor,
           ),
         ),
       ),

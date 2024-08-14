@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -76,7 +77,7 @@ class ProfileImageAndLocation extends StatelessWidget {
             Icon(
               Remix.map_pin_5_line,
               size: 18.r,
-              color: const Color(0xFFEBEBF0),
+              color: kStrokeColor,
             ),
             4.horizontalSpace,
             GestureDetector(
@@ -86,7 +87,7 @@ class ProfileImageAndLocation extends StatelessWidget {
               child: Text(
                 'Soja, Lekki, Lagos',
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: const Color(0xFFEBEBF0),
+                  color: kStrokeColor,
                   fontWeight: FontWeight.w400,
                   fontSize: 12.sp,
                 ),

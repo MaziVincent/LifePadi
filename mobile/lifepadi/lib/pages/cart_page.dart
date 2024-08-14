@@ -109,7 +109,7 @@ class CartPage extends HookWidget {
               ),
               4.verticalSpace,
               const Divider(
-                color: Color(0xFFEBEBF0),
+                color: kStrokeColor,
                 height: 1,
               ),
               16.verticalSpace,
@@ -156,7 +156,7 @@ class CartPage extends HookWidget {
                 children: [
                   const CartDiscount(),
                   const Divider(
-                    color: Color(0xFFEBEBF0),
+                    color: kStrokeColor,
                     height: 1,
                   ),
                   const CartTotal(),

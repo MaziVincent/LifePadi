@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 class LocationCard extends StatelessWidget {
@@ -18,7 +19,7 @@ class LocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ShapeBorder roundedRectangleBorder = RoundedRectangleBorder(
-      side: const BorderSide(color: Color(0xFFEBEBF0)),
+      side: const BorderSide(color: kStrokeColor),
       borderRadius: BorderRadius.circular(8.r),
     );
 

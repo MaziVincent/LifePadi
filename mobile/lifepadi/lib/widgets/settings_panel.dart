@@ -4,6 +4,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/utils/constants.dart';
 
 class SettingsPanel extends StatelessWidget {
   const SettingsPanel({
@@ -37,7 +38,7 @@ class SettingsPanel extends StatelessWidget {
                 ),
                 decoration: const BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Color(0xFFEBEBF0)),
+                    bottom: BorderSide(color: kStrokeColor),
                   ),
                 ),
                 child: Row(

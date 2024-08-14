@@ -14,6 +14,9 @@ const Color kDarkTextColor = Color(0xFF0F0F0F);
 /// 0xFF5F5F5F
 const Color kLightTextColor = Color(0xFF5F5F5F);
 
+/// 0xFFEBEBF0
+const Color kStrokeColor = Color(0xFFEBEBF0);
+
 List<({String name, String image})> services = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
   (name: 'Food', image: Assets.icons.restaurant.path),
