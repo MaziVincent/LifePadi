@@ -83,8 +83,8 @@ namespace Api.Controllers
         }
 
          [HttpGet("distance")]
-        public async Task<IActionResult> GetDistance([FromQuery] Distance _distance)
-        {
+        public async Task<IActionResult> GetDistance([FromQuery] Distance _distance){
+        
             var origin = _distance.Origin;
             var destination = _distance.Destination;
             
@@ -105,10 +105,10 @@ namespace Api.Controllers
                 return BadRequest(json["status"]!.ToString());
             }
 
-            var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["text"]?.ToString();
-            var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"]?.ToString();
+            var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["value"];
+            var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"];
 
-            return Ok(new { distance, duration });
+            return Ok(new { distance, duration, json });
         }
     }
 }

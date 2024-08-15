@@ -5,7 +5,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Fade from '@mui/material/Fade'
 import { Link } from 'react-router-dom'
-import { ViewModal, UpdateModal, DeleteModal } from './VendorModals'
+import { ViewModal, UpdateModal, DeleteModal, ToggleStatusModal } from './VendorModals'
 
 const VendorActions = ({ product }) => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -22,6 +22,9 @@ const VendorActions = ({ product }) => {
   const handleOpenUpdateModal = () => setOpenUpdateModal(true)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const handleOpenDeleteModal = () => setOpenDeleteModal(true)
+  const [openToggleStatusModal, setOpenToggleStatusModal] = useState(false)
+  const handleOpenToggleStatusModal = () => setOpenToggleStatusModal(true)
+
   return (
     <div>
       <Button
@@ -53,8 +56,13 @@ const VendorActions = ({ product }) => {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={handleClose}>
-          <Link to='#' onClick={handleOpenViewModal}>
+          <Link to={`/vendor/product/${product.Id}`} >
             View
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to='#' onClick={handleOpenToggleStatusModal}>
+            {product.Status ? 'Deactivate' : 'Activate'}
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
@@ -82,6 +90,11 @@ const VendorActions = ({ product }) => {
         product={product}
         openDeleteModal={openDeleteModal}
         setOpenDeleteModal={setOpenDeleteModal}
+      />
+      <ToggleStatusModal
+        product={product}
+        openToggleStatusModal={openToggleStatusModal}
+        setOpenToggleStatusModal={setOpenToggleStatusModal}
       />
     </div>
   )

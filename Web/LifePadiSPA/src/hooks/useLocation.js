@@ -33,34 +33,29 @@ const useLocation =  () => {
 
            const address = await handleAddress(longitude, latitude);
            //console.log(address)
-            setData({
-              data: {latitude, longitude, accuracy, address },
-              error: null
-            })
+            setData({latitude, longitude, accuracy, address })
             
             
           },
           (err) => {
             console.log( err.message);
             setData({
-              data: null,
               error: err.message
             })
           },
           { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
         );
-
+        return data;
       } else {
         
 
          setData({
-          data: null,
           error: "Geolocation is not supported by this browser."
         })
          
       }
 
-     return data; 
+     
     
   };
 

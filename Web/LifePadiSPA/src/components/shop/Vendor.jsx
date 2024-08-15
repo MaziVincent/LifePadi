@@ -55,7 +55,7 @@ const Vendor = () => {
   const [products, setProducts] = useState(null);
   const auth = useAuth();
   const url = `${baseUrl}vendor`;
-  const { cart, setCart, deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction } = useCart();
+  const { cart, setCart, } = useCart();
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -84,7 +84,7 @@ const Vendor = () => {
     refetchOnMount: "always",
   });
 
-  //console.log(state.products)
+  //console.log(data)
 
   const getProductCategory = useCallback(async () => {
     try {
@@ -156,12 +156,7 @@ const Vendor = () => {
     setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
   };
 
-  const handleDeliveryAddress = (e) => {
-    e.preventDefault()
-   setDeliveryAddress(e.target.value)
 
-    console.log(deliveryAddress)
-  }
 
 
   useEffect(() => {
@@ -173,7 +168,8 @@ const Vendor = () => {
   useEffect(() => {
     calculateTotalAmount();
   }, [cart]);
- console.log(deliveryInstruction);
+
+ //console.log(deliveryInstruction);
   //console.log(state.subTotal);
   return (
     <main className=" flex justify-center  ">
@@ -611,8 +607,8 @@ const Vendor = () => {
         handleCartIncrement={handleCartIncrement}
         handleCartItemDelete = {handleCartItemDelete}
         handleNewAddress = {dispatch}
-        handleDeliveryAddress = {handleDeliveryAddress}
-        handleDeliveryInstruction = {setDeliveryInstruction}
+        //distance={handleDistance}
+        //handleDeliveryInstruction = {setDeliveryInstruction}
       />
 
       <ProductModal

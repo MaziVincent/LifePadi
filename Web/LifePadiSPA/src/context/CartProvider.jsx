@@ -1,15 +1,57 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useReducer } from "react";
 
 const CartContext = createContext({});
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setAddress":
+      return { ...state, deliveryAddress: action.payload };
+    case "setInstruction":
+      return { ...state, deliveryInstruction: action.payload };
+    case "address":
+      return { ...state, address: !state.address };
+    case "instruction":
+      return { ...state, instruction: !state.instruction };
+    case "error":
+      return { ...state, error: action.payload };
+    case "setAddresses":
+      return { ...state, addresses: action.payload };
+    case "vendor":
+      return { ...state, vendor: action.payload };
+    case "empty":
+      return { ...state, empty: !state.empty };
+    case "deliveryFee":
+      return { ...state, deliveryFee: action.payload };
+    case "total":
+      return { ...state, total: action.payload };
+    case "CLEAR_CART":
+      return [];
+    default:
+      return state;
+  }
+};
+
 export const CartProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, {
+    deliveryAddress: "",
+    deliveryInstruction: "",
+    address: false,
+    instruction: false,
+    error: "",
+    addresses: [],
+    vendor: null,
+    empty: false,
+    deliveryFee: 1500,
+    total: 0,
+  });
+
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
-  const [deliveryAddress, setDeliveryAddress ] = useState("");
-  const [deliveryInstruction, setDeliveryInstruction ] = useState("");
 
   return (
-    <CartContext.Provider value={{ cart, setCart, cartState, setCartState,deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction }}>
+    <CartContext.Provider
+      value={{ cart, setCart, cartState, setCartState, state, dispatch }}
+    >
       {children}
     </CartContext.Provider>
   );

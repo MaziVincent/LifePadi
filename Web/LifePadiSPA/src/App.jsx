@@ -33,6 +33,7 @@ import Unauthorized from "./components/Unauthorized";
 import RequireAuth from "./hooks/RequireAuth";
 import PersistLogin from "./components/shared/PersistLogin";
 import ViewDelivery from "./components/rider/ViewDelivery";
+import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
 
 function App() {
@@ -225,6 +226,7 @@ function App() {
                 index
                 element={<VendorDashboard />}
               />
+          <Route path='/vendor/product/:id' element={<VendorViewProduct />} />
             </Route>
           </Route>
         </Route>

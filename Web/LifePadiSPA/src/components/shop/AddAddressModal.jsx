@@ -41,7 +41,7 @@ const AddAddressModal = ({ open, handleClose }) => {
   const { mutate } = useMutation(create, {
     onSuccess: () => {
       queryClient.invalidateQueries("addresses");
-      toast.success("Category Created Successfully");
+      toast.success("Address Added Successfully");
       reset();
       handleClose({ type: "edit" });
     },
