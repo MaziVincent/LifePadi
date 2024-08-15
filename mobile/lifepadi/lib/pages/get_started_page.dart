@@ -50,7 +50,7 @@ class GetStartedPage extends StatelessWidget {
             Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: kHorizontalPadding,
                   child: Column(
                     children: [
                       10.verticalSpace,
@@ -77,7 +77,7 @@ class GetStartedPage extends StatelessWidget {
                 ),
                 20.verticalSpace,
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: kHorizontalPadding,
                   child: PrimaryButton(
                     onPressed: () => context.go(const RegisterRoute().location),
                     text: 'Get started',
@@ -85,7 +85,7 @@ class GetStartedPage extends StatelessWidget {
                 ),
                 16.verticalSpace,
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  padding: kHorizontalPadding,
                   child: PrimaryOutlineButton(
                     text: 'Login',
                     onPressed: () => context.go(const LoginRoute().location),

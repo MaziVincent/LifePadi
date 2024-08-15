@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -40,7 +38,7 @@ class CartPage extends HookWidget {
       body: Stack(
         children: [
           ListView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w).copyWith(top: 12.h),
+            padding: kHorizontalPadding.copyWith(top: 12.h),
             children: [
               const SectionTitle('Location'),
               12.verticalSpace,

@@ -26,7 +26,6 @@ List<({String name, String image})> services = [
   (name: 'Gas filling', image: Assets.icons.gasFilling.path),
 ];
 
-/// This horizontal padding is used in many places in the app, I decided to
-/// create it as a constant to avoid repetition.
-EdgeInsetsGeometry get kHorizontalPadding =>
-    EdgeInsets.symmetric(horizontal: 24.w);
+/// This horizontal padding is used in many places in the app, I
+/// decided to create a getter for it to avoid repetition.
+EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
