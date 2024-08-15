@@ -15,7 +15,9 @@ namespace Api.DTO
         public CategoryDtoLite? Category { get; set; }
         public int VendorId { get; set; }
         public VendorDtoLite? Vendor { get; set; }
-        public List<ProductReview>? ProductReviews { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public List<ProductReviewDto>? ProductReviews { get; set; }
 
     }
 

@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
 // import FadeMenu from './FadeMenu'
 import CircularProgress from '@mui/material/CircularProgress'
-import { vendorProductsUrl } from './vendorUri/VendorURI'
+import { vendorProductsUrl, vendorProductStatUrl } from './vendorUri/VendorURI'
 import VendorActions from './VendorActions'
 import { AddProductModal } from './VendorModals'
 
@@ -42,15 +42,33 @@ const VendorDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-  console.log(vendorProductsURL);
+  // console.log(vendorProductsURL);
   
-  if (vendorProductsSuccess) {
-    console.log(vendorProducts);
-  }
   const setPage = (i) => {
     if (i > 0 && i <= totalPage) {
       page = i
     }
+  }
+
+  const getVendorProductStats = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
+
+  const {
+    data: vendorProductStats,
+    isError: vendorProductStatsError,
+    isLoading: vendorProductStatsIsLoading,
+    isSuccess: vendorProductStatsSuccess,
+  } = useQuery({
+    queryKey: ['vendorProductStats', vendorId],
+    queryFn: () => getVendorProductStats(vendorProductStatUrl.replace('{id}', vendorId)),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
+  if (vendorProductStats){
+    console.log(vendorProductStats);
   }
   const setNextPage = (page) => {
     if (page <= totalPage) {
@@ -70,10 +88,10 @@ const VendorDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
-                {vendorProductsIsLoading ? (
+                {vendorProductStatsIsLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  vendorProducts && vendorProducts.dataList.TotalCount + 'M+'
+                  vendorProductStats && vendorProductStats.TotalProducts + 'M+'
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -81,15 +99,27 @@ const VendorDashboard = () => {
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>5M+</dt>
+              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+                {vendorProductStatsIsLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  vendorProductStats && vendorProductStats.TotalActiveProducts + 'M+'
+                )}
+              </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
-                Successful
+                Active Products
               </dd>
             </div>
             <div className='flex flex-col items-center justify-center'>
-              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>3M+</dt>
+              <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
+                {vendorProductStatsIsLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  vendorProductStats && vendorProductStats.TotalInactiveProducts + 'M+'
+                )}
+              </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
-                Pending
+                Inactive Products
               </dd>
             </div>
           </dl>
@@ -194,7 +224,7 @@ const VendorDashboard = () => {
                         <td className='px-4 py-3'>{product.Name}</td>
                         <td className='px-4 py-3'>&#x20A6; {product.Price}</td>
                         <td className='px-4 py-3'>{product.Tag}</td>
-                        <td className='px-4 py-3'>
+                        <td className='px-4 py-3' title={product.Description}>
                           {product.Description.slice(0, 50)}...
                         </td>
                         <td
@@ -317,7 +347,10 @@ const VendorDashboard = () => {
           </div>
         </div>
       </section>
-      <AddProductModal openAddProductModal={openAddProductModal} setOpenAddProductModal={setOpenAddProductModal} />
+      <AddProductModal
+        openAddProductModal={openAddProductModal}
+        setOpenAddProductModal={setOpenAddProductModal}
+      />
     </div>
   )
 }

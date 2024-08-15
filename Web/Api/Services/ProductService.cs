@@ -115,6 +115,8 @@ namespace Api.Services
                 var product = await _dbContext.Products
                     .Include(p => p.Vendor)
                     .Include(p => p.Category)
+                    .Include(p => p.ProductReviews)!
+                    .ThenInclude(pr => pr.Customer)
                     .FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
                 var ProductDto = _mapper.Map<ProductDto>(product);

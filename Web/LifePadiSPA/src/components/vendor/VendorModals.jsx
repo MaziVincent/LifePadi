@@ -4,13 +4,20 @@ import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import DateFormater from '../shared/DateFormater'
 import useUpdate from '../../hooks/useUpdate'
+import useDelete from '../../hooks/useDelete'
 import useAuth from '../../hooks/useAuth'
 import useFetch from '../../hooks/useFetch'
 import { useQuery } from 'react-query'
-import { getCategoriesUrl, createProductUrl } from './vendorUri/VendorURI'
+import {
+  getCategoriesUrl,
+  createProductUrl,
+  toggolProductStatusUrl,
+  deleteProductUrl,
+  updateProductUrl,
+} from './vendorUri/VendorURI'
 import { useState } from 'react'
 import usePost from '../../hooks/usePost'
-
+import { WindowSharp } from '@mui/icons-material'
 
 const style = {
   position: 'absolute',
@@ -82,29 +89,60 @@ export const UpdateModal = ({
   const handleCloseUpdateModal = () => setOpenUpdateModal(false)
   const updateData = useUpdate()
   const { auth } = useAuth()
+  const fetchdata = useFetch()
+  const [productCategory, setProductCategory] = useState(product.Category.Id)
+  const [name, setName] = useState(product.Name)
+  const [price, setPrice] = useState(product.Price)
+  const [description, setDescription] = useState(product.Description)
+  const [tag, setTag] = useState(product.Tag)
+  const [imgUrl] = useState(product.ProductImgUrl)
+  const [image, setImage] = useState(null)
+  let vendoId = auth.user.Id
+  const [response, setResponse] = useState(null)
+
+  const fetchCategories = async (url) => {
+    const response = await fetchdata(url, auth.accessToken)
+    return response.data
+  }
+
+  const {
+    data: categories,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: 'categories',
+    queryFn: () => fetchCategories(getCategoriesUrl),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
 
   const handleUpdateProduct = async (productId) => {
-    console.log(productId);
-    // const url =
-    //   updateDeliveryOrderStatusUrl +
-    //   `?orderId=${delivery.Order.Id}&deliveryId=${delivery.Id}&deliveryStatus=Delivered`
-    // const deliveryStatus = 'Delivered'
+    console.log(productId)
+    const formData = new FormData()
+    formData.append('Image', image)
+    formData.append('Name', name)
+    formData.append('Price', Number(price))
+    formData.append('Description', description)
+    formData.append('Tag', tag)
+    formData.append('CategoryId', Number(productCategory))
+    formData.append('VendorId', vendoId)
+      const updatePUrl = updateProductUrl.replace("{id}", productId)
     try {
-    //   const response = await updateData(
-    //     url,
-    //     {
-    //       deliveryId,
-    //       orderId,
-    //       deliveryStatus,
-    //     },
-    //     auth.accessToken
-    //   )
-    //   console.log(response)
-      // console.log(deliveryId, orderId);
+        const res = await updateData(
+          updatePUrl,
+          formData,
+          auth.accessToken
+        )
+        setResponse(res.data)
+        setTimeout(() => {
+          handleCloseUpdateModal()
+          Window.location.refresh()
+        }, 2000);
     } catch (error) {
       console.log(error)
     }
-    handleCloseUpdateModal()
   }
 
   return (
@@ -116,21 +154,174 @@ export const UpdateModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+        {response && <span className='text-lightgreen p-2'>{response}</span>}
+        {isError && <span className='text-red p-2'>{isError}</span>}
           <Typography id='modal-modal-title' variant='h6' component='h2'>
             Update Product
           </Typography>
-          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Are you sure you want to update this product?
-          </Typography>
-          <div className='flex justify-end mt-3 gap-2'>
-            
-            <button
-              type='button'
-              className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
-              onClick={handleCloseUpdateModal}
-            >
-              No
-            </button>
+          <div className='mt-2'>
+            <form onSubmit={(e) => handleUpdateProduct(e)} method='post'>
+              <div className=''>
+                <label
+                  htmlFor='product-name'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Name
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='name'
+                    id='product-name'
+                    autoComplete='product-name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-price'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Price
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='number'
+                    name='price'
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    id='product-price'
+                    autoComplete='product-price'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-description'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Description
+                </label>
+                <div className='mt-1'>
+                  <textarea
+                    name='description'
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    id='product-description'
+                    autoComplete='product-description'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  ></textarea>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-tag'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Tag
+                </label>
+                <div className='mt-1'>
+                  <input
+                    type='text'
+                    name='tag'
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    id='product-tag'
+                    autoComplete='product-tag'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  />
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-category'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Category
+                </label>
+                <div className='mt-1'>
+                  <select
+                    name='category'
+                    onChange={(e) => setProductCategory(e.target.value)}
+                    id='product-category'
+                    autoComplete='product-category'
+                    required
+                    className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                  >
+                    {isLoading && <option>Loading...</option>}
+                    {categories &&
+                      categories.map((category) => (
+                        <>
+                          {Number(category.Id) === Number(productCategory) ? (
+                            <option
+                              key={category.Id}
+                              value={category.Id}
+                              selected
+                            >
+                              {category.Name}
+                            </option>
+                          ) : (
+                            <option key={category.Id} value={category.Id}>
+                              {category.Name}
+                            </option>
+                          )}
+                        </>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div className='mt-4'>
+                <label
+                  htmlFor='product-image'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  Product Image
+                </label>
+                <div className='mt-1 flex justify-center items-center gap-2'>
+                  <div>
+                    <input
+                      type='file'
+                      name='image'
+                      onChange={(e) => setImage(e.target.files[0])}
+                      id='product-image'
+                      autoComplete='product-image'
+                      accept='image/png, image/jpeg'
+                      required
+                      className='shadow-sm text-lg px-5 py-2 sm:text-sm focus:ring-primary focus:border-primary block w-full border-gray-300 rounded-md'
+                    />
+                  </div>
+                  <div className='w-56 '>
+                    <span className='block text-center'>Current Image</span>
+                    <div className=''>
+                      <img src={imgUrl} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='flex justify-end mt-3 gap-2'>
+                <button
+                  type='submit'
+                  className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
+                >
+                  Create Product
+                </button>
+                <button
+                  type='button'
+                  className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
+                  onClick={handleCloseUpdateModal}
+                >
+                  Cancle
+                </button>
+              </div>
+            </form>
           </div>
         </Box>
       </Modal>
@@ -138,11 +329,25 @@ export const UpdateModal = ({
   )
 }
 
-export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) => {
-    const handleCloseDeleteModal = () => setOpenDeleteModal(false)
-    const handleDeleteProduct = (productId) => {
-        console.log(productId);
-    }
+export const DeleteModal = ({
+  productId,
+  openDeleteModal,
+  setOpenDeleteModal,
+}) => {
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false)
+  const [result, setResult] = useState(null)
+  const deleteData = useDelete()
+  const { auth } = useAuth()
+  const handleDeleteProduct = async (productId) => {
+    const url = deleteProductUrl.replace('{id}', productId)
+    const response = await deleteData(url, auth.accessToken)
+    console.log(response.data)
+    setResult(response.data)
+    setTimeout(() => {
+      handleCloseDeleteModal()
+      window.location.reload()
+    }, 2000)
+  }
   return (
     <div>
       <Modal
@@ -152,6 +357,7 @@ export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) 
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
+          {result && <p className='text-lightgreen'>{result}</p>}
           <Typography id='modal-modal-title' variant='h6' component='h2'>
             Delete Product
           </Typography>
@@ -180,6 +386,63 @@ export const DeleteModal = ({ productId, openDeleteModal, setOpenDeleteModal }) 
   )
 }
 
+export const ToggleStatusModal = ({
+  product,
+  openToggleStatusModal,
+  setOpenToggleStatusModal,
+}) => {
+  const handleCloseToggleModal = () => setOpenToggleStatusModal(false)
+  const [response, setResponse] = useState(null)
+  const updateData = useUpdate()
+  const { auth } = useAuth()
+  const handleToggleProductStatus = async (productId) => {
+    const url = toggolProductStatusUrl.replace('{id}', productId)
+    const res = await updateData(url, null, auth.accessToken)
+    // console.log(res.data)
+    setResponse(res.data)
+    setTimeout(() => {
+      handleCloseToggleModal()
+      window.location.reload()
+    }, 2000);
+  }
+  return (
+    <div>
+      <Modal
+        open={openToggleStatusModal}
+        onClose={handleCloseToggleModal}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={style}>
+          {response && (<p className='text-lightgreen'>{response}</p>)}
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            {product.Status ? 'Deactivate' : 'Activate'} Product
+          </Typography>
+          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+            Are you sure you want to{' '}
+            {product.Status ? 'deactivate' : 'activate'} this product?
+          </Typography>
+          <div className='flex justify-end mt-3 gap-2'>
+            <button
+              type='button'
+              className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
+              onClick={() => handleToggleProductStatus(product.Id)}
+            >
+              Yes
+            </button>
+            <button
+              type='button'
+              className='bg-graybg text-darkBg hover:bg-red hover:text-primary font-bold py-2 px-4 rounded'
+              onClick={handleCloseToggleModal}
+            >
+              No
+            </button>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  )
+}
 
 const addProductStyle = {
   position: 'absolute',
@@ -195,8 +458,10 @@ const addProductStyle = {
   borderRadius: 5,
 }
 
-
-export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
+export const AddProductModal = ({
+  openAddProductModal,
+  setOpenAddProductModal,
+}) => {
   const { auth } = useAuth()
   const fetchdata = useFetch()
   const handleCloseAddProductModal = () => setOpenAddProductModal(false)
@@ -210,13 +475,17 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
   const postData = usePost()
   const [response, setResponse] = useState(null)
 
-
   const fetchCategories = async (url) => {
     const response = await fetchdata(url, auth.accessToken)
     return response.data
   }
 
-  const { data: categories, isError, isLoading, isSuccess } = useQuery({
+  const {
+    data: categories,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useQuery({
     queryKey: 'categories',
     queryFn: () => fetchCategories(getCategoriesUrl),
     keepPreviousData: true,
@@ -225,12 +494,9 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
   })
   if (categories) {
     console.log(categories)
-
   }
   const handleAddProduct = async (e) => {
     e.preventDefault()
-    console.log(name, price, description, tag, category, vendoId, image);
-    console.log(image);
 
     const formData = new FormData()
     formData.append('Image', image)
@@ -240,13 +506,13 @@ export const AddProductModal = ({ openAddProductModal, setOpenAddProductModal })
     formData.append('Tag', tag)
     formData.append('CategoryId', Number(category))
     formData.append('VendorId', vendoId)
-    
-    let result = await postData( createProductUrl, formData, auth.accessToken)
-    console.log("result", result);
+
+    let result = await postData(createProductUrl, formData, auth.accessToken)
+    console.log('result', result)
     setResponse(result)
     setTimeout(() => {
       handleCloseAddProductModal()
-    }, 3000);
+    }, 3000)
   }
   return (
     <div>
