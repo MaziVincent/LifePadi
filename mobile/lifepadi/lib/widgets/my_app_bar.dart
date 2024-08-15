@@ -24,15 +24,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.selectedColor = Colors.black,
     this.bottom,
     this.height,
-    this.withBackButton = false,
-    this.onBackButtonPressed,
-  })  : assert(
+  }) : assert(
           bottom == null || height != null,
           'Height must be provided when bottom is not null',
-        ),
-        assert(
-          withBackButton || onBackButtonPressed == null,
-          'onBackButtonPressed must be provided when withBackButton is true',
         );
 
   final TitleType title;
@@ -41,8 +35,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color selectedColor;
   final PreferredSizeWidget? bottom;
   final double? height;
-  final bool withBackButton;
-  final VoidCallback? onBackButtonPressed;
 
   @override
   Size get preferredSize => Size.fromHeight(height ?? 75.h);
@@ -50,28 +42,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = ModalRoute.of(context)?.canPop ?? false;
-    final hasBackButton = withBackButton || canPop;
 
     return Padding(
       padding: EdgeInsets.only(
         top: 16.h,
         bottom: 16.h,
         right: 24.w,
-        left: hasBackButton ? 24.w : 0,
+        left: canPop ? 24.w : 0,
       ),
       child: AppBar(
         title: _buildTitle(context),
-        titleSpacing: hasBackButton ? 14.w : 24.w,
+        titleSpacing: canPop ? 14.w : 24.w,
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         actions: actions,
         bottom: bottom,
-        leading: hasBackButton
+        leading: canPop
             ? MyIconButton(
                 icon: IconsaxPlusLinear.arrow_left_1,
-                onPressed: () => withBackButton
-                    ? onBackButtonPressed?.call()
-                    : context.pop(),
+                onPressed: () => context.pop(),
               )
             : null,
         leadingWidth: 38.w,

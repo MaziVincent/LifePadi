@@ -29,12 +29,7 @@ class OrdersPage extends StatelessWidget {
           actions: [
             MyIconButton(
               icon: IconsaxPlusLinear.shopping_cart,
-              onPressed: () => context.go(
-                const CartRoute().location,
-                extra: {
-                  'from': const OrdersRoute().location,
-                },
-              ),
+              onPressed: () => context.push(CartRoute().location),
             ),
           ],
           height: 126.h,

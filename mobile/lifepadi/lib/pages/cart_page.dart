@@ -19,9 +19,7 @@ import '../widgets/cart_item.dart';
 import '../widgets/cart_total.dart';
 
 class CartPage extends HookWidget {
-  const CartPage({super.key, this.previousPage});
-
-  final String? previousPage;
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +36,6 @@ class CartPage extends HookWidget {
             },
           ),
         ],
-        withBackButton: true,
-        onBackButtonPressed: () => context.go(
-          previousPage ?? const HomeRoute().location,
-        ),
       ),
       body: Stack(
         children: [

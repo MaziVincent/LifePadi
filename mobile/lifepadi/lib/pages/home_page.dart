@@ -98,13 +98,11 @@ class HomePage extends HookWidget {
         actions: [
           MyIconButton(
             icon: IconsaxPlusLinear.shopping_cart,
-            onPressed: () => context.go(const CartRoute().location),
+            onPressed: () => context.go(CartRoute().location),
           ),
           6.horizontalSpace,
           MyIconButton(
-            onPressed: () {
-              // TODO: Go to notifications page.
-            },
+            onPressed: () => context.go(NotificationRoute().location),
             icon: MdiIcons.bellBadgeOutline,
             showBadge: true,
           ),

@@ -85,9 +85,6 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/auth-heros
   $AssetsImagesAuthHerosGen get authHeros => const $AssetsImagesAuthHerosGen();
 
-  /// File path: assets/images/avatar.png
-  AssetGenImage get avatar => const AssetGenImage('assets/images/avatar.png');
-
   /// File path: assets/images/bnb-blender.png
   AssetGenImage get bnbBlender => const AssetGenImage('assets/images/bnb-blender.png');
 
@@ -101,6 +98,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
+
+  /// File path: assets/images/john-doe-avatar.png
+  AssetGenImage get johnDoeAvatar => const AssetGenImage('assets/images/john-doe-avatar.png');
 
   /// File path: assets/images/loading-wheel.svg
   SvgGenImage get loadingWheel => const SvgGenImage('assets/images/loading-wheel.svg');
@@ -126,6 +126,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/plain-tees.png
   AssetGenImage get plainTees => const AssetGenImage('assets/images/plain-tees.png');
 
+  /// File path: assets/images/profile-avatar.png
+  AssetGenImage get profileAvatar => const AssetGenImage('assets/images/profile-avatar.png');
+
   /// File path: assets/images/shoprite.png
   AssetGenImage get shoprite => const AssetGenImage('assets/images/shoprite.png');
 
@@ -134,11 +137,11 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        avatar,
         bnbBlender,
         deliverPackageToLady,
         dominosPizza,
         handPackageToLady,
+        johnDoeAvatar,
         loadingWheel,
         logoDark,
         manWithCart,
@@ -147,6 +150,7 @@ class $AssetsImagesGen {
         miniBlender,
         oilPerfumes,
         plainTees,
+        profileAvatar,
         shoprite,
         signDeliverPkg
       ];

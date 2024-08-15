@@ -23,10 +23,10 @@ class LogoutButton extends ConsumerWidget {
 
         // * For now, just logout:
         showToast('Logging out').ignore();
-        await ref
-            .read(authControllerProvider.notifier)
-            .logout()
-            .then((_) => context.go(const LoginRoute().location));
+
+        await ref.read(authControllerProvider.notifier).logout().then((_) {
+          if (context.mounted) context.go(const LoginRoute().location);
+        });
       },
       textStyle: context.textTheme.bodyLarge?.copyWith(
         color: const Color(0xFFF52311),

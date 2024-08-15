@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/logout_button.dart';
@@ -110,6 +112,10 @@ class ProfilePage extends StatelessWidget {
                   onTap: () {
                     // TODO: Go to settings page.
                   },
+                ),
+                SettingsTile(
+                  title: 'Notifications',
+                  onTap: () => context.push(NotificationRoute().location),
                 ),
               ].separatedBy(5.verticalSpace),
             ),

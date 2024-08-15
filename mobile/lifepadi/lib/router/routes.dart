@@ -13,6 +13,7 @@ import 'package:lifepadi/pages/get_started_page.dart';
 import 'package:lifepadi/pages/home_page.dart';
 import 'package:lifepadi/pages/login_page.dart';
 import 'package:lifepadi/pages/logistics_page.dart';
+import 'package:lifepadi/pages/notification_page.dart';
 import 'package:lifepadi/pages/onboarding_page.dart';
 import 'package:lifepadi/pages/orders_page.dart';
 import 'package:lifepadi/pages/profile_page.dart';
@@ -33,7 +34,13 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
 
 @TypedShellRoute<HomeShellRoute>(
   routes: [
-    TypedGoRoute<HomeRoute>(path: '/home'),
+    TypedGoRoute<HomeRoute>(
+      path: '/home',
+      routes: [
+        TypedGoRoute<CartRoute>(path: 'cart'),
+        TypedGoRoute<NotificationRoute>(path: 'notifications'),
+      ],
+    ),
     TypedGoRoute<OrdersRoute>(path: '/orders'),
     TypedGoRoute<ErrandsRoute>(path: '/errands'),
     TypedGoRoute<LogisticsRoute>(path: '/logistics'),
@@ -252,15 +259,24 @@ class DetailsRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<CartRoute>(path: '/cart')
 class CartRoute extends GoRouteData {
-  const CartRoute();
+  CartRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final extra = state.extra as Map<String, dynamic>?;
-    return CartPage(
-      previousPage: extra?['from'] as String?,
-    );
+    return const CartPage();
   }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class NotificationRoute extends GoRouteData {
+  NotificationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NotificationPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }

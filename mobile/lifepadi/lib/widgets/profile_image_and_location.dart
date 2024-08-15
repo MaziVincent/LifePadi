@@ -30,7 +30,7 @@ class ProfileImageAndLocation extends StatelessWidget {
                   color: const Color(0xFFB9B9B9),
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: Assets.images.avatar.provider(),
+                    image: Assets.images.profileAvatar.provider(),
                     fit: BoxFit.fill,
                   ),
                 ),
