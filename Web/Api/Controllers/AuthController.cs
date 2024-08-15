@@ -137,7 +137,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("LogOut")]
+        [HttpGet("logOut")]
         public IActionResult LogOut()
         {
             Response.Cookies.Delete("refreshToken", new CookieOptions

@@ -1,22 +1,34 @@
 import baseUrl from "../api/baseUrl";
-const useAddress = () => {
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-    const url = `${baseUrl}GoogleMaps`
+export const useAddress = (latitude, longitude) => {
+  const [address, setAddress] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const getAddress = async (longitude, latitude ) => {
-        try {
-          const result = await fetch(`${url}/address?Longitude=${longitude}&Latitude=${latitude}`);
-          
-          return {data : result.data};
-         
-        } catch (error) {
-          console.error("Error fetching address:", error);
-          return { error : error.message };
-        }
-      };
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}googlemaps/address`, {
+          params: { latitude, longitude },
+        });
+        setAddress(response.data);
+      } catch (err) {
+        setError(err.message || 'Error fetching address');
+      } finally {
+        setLoading(false);
+      }
+    };
 
- return getAddress
-}
+    if (latitude && longitude) {
+      fetchAddress();
+    }
+  }, [latitude, longitude]);
+
+  return { address, error, loading };
+};
+
 
 
 

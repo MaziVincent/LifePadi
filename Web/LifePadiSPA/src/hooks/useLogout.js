@@ -9,7 +9,7 @@ const useLogout = () => {
     const logout = async () => {
          setAuth({});
          try{
-            const response = await axios.get('logout', {
+            const response = await axios.get('auth/logOut', {
                 withCredentials:true,
                 headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
 

@@ -15,11 +15,13 @@ export const AuthProvider = ({ children }) => {
   const persistValue = getPersistValue();
   const [persist, setPersist] = useState(persistValue);
   const [login, setLogin] = useState(false);
+  const [reg, setRegister] = useState(false);
   const [location, setLocation] = useState({});
+  const [verify, setVerify] = useState(false)
 
   return (
     <AuthContext.Provider
-      value={{ auth, setAuth, persist, setPersist, login, setLogin, location, setLocation }}
+      value={{ auth, setAuth, persist, setPersist, login, setLogin, location, setLocation, reg, setRegister, verify, setVerify }}
     >
       {children}
     </AuthContext.Provider>
