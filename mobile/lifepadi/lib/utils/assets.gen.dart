@@ -56,6 +56,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/location.svg
   SvgGenImage get location => const SvgGenImage('assets/icons/location.svg');
 
+  /// File path: assets/icons/map-pin.svg
+  SvgGenImage get mapPin => const SvgGenImage('assets/icons/map-pin.svg');
+
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
@@ -74,6 +77,7 @@ class $AssetsIconsGen {
         info,
         laundry,
         location,
+        mapPin,
         restaurant,
         voucher
       ];
@@ -114,6 +118,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/man-with-groceries.png
   AssetGenImage get manWithGroceries => const AssetGenImage('assets/images/man-with-groceries.png');
 
+  /// File path: assets/images/map.png
+  AssetGenImage get map => const AssetGenImage('assets/images/map.png');
+
   /// File path: assets/images/mcdonald.png
   AssetGenImage get mcdonald => const AssetGenImage('assets/images/mcdonald.png');
 
@@ -146,6 +153,7 @@ class $AssetsImagesGen {
         logoDark,
         manWithCart,
         manWithGroceries,
+        map,
         mcdonald,
         miniBlender,
         oilPerfumes,

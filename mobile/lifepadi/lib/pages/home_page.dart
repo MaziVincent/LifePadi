@@ -61,6 +61,9 @@ class HomePage extends HookWidget {
               onPressed: () {
                 // TODO: Display a modal bottom sheet with a form to update the user's delivery location.
                 // The modal should have a drag handle.
+
+                // For now, navigate to the new location page
+                context.go(NewLocationRoute().location);
               },
               backgroundColor: const Color(0x194FAF5A),
               iconColor: kDarkPrimaryColor,

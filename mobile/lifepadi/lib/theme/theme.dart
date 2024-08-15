@@ -12,7 +12,7 @@ ThemeData lightTheme() {
       bodyColor: kDarkTextColor,
       displayColor: kDarkTextColor,
       fontFamily: 'Inter',
-      fontFamilyFallback: ['Noto Sans', 'Roboto', 'sans-serif'],
+      fontFamilyFallback: ['Roboto', 'Noto Sans', 'sans-serif'],
     ),
     scaffoldBackgroundColor: Colors.white,
     pageTransitionsTheme: const PageTransitionsTheme(

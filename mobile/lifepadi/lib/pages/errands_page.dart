@@ -12,7 +12,7 @@ class ErrandsPage extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(title: 'Service Errands'),
       body: Padding(
-        padding: k.copyWith(top: 8.h),
+        padding: kHorizontalPadding.copyWith(top: 8.h),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
