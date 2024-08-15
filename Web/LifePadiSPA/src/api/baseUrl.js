@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 const baseUrl = "https://lifepadi-948405839190.us-east1.run.app/api/";
 //const baseUrl ='https://localhost:7216/api/'
@@ -11,6 +12,8 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 =======
 =======
 >>>>>>> 8979de1 (done with update product by vendor)
+=======
+>>>>>>> 36b043e (updated origins)
 const baseUrl = "https://localhost:7216/api/"
 =======
 <<<<<<< HEAD
@@ -24,6 +27,9 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 >>>>>>> 1bbdebe (done with update product by vendor)
 const baseUrl =
   'https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/'
+=======
+const baseUrl ='https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/'
+>>>>>>> efa50b4 (updated origins)
 //"https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 //"https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 //const baseUrl = 'https://localhost:7216/api/'

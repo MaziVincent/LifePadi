@@ -139,7 +139,11 @@ builder.Services.AddScoped<IVoucher, VoucherService>();
 builder.Services.AddCors(c =>
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("https://lifepadi.com", "http://localhost:5173", "https://www.lifepadi.com")
+=======
+    c.AddPolicy("AllowAllOrigin", options => options.WithOrigins(["http://localhost:5173", "https://lifepadi.com/"])
+>>>>>>> 36b043e (updated origins)
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyHeader()
