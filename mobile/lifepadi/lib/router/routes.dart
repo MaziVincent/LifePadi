@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/pages/product_details_page.dart';
 
 import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
@@ -37,7 +38,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
 @TypedShellRoute<HomeShellRoute>(
   routes: [
     TypedGoRoute<HomeRoute>(
-      path: '/home',
+      path: '/',
       routes: [
         TypedGoRoute<CartRoute>(path: 'cart'),
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
@@ -262,6 +263,17 @@ class DetailsRoute extends GoRouteData {
       id,
       isNuclearCode: isNuke,
     );
+  }
+}
+
+@TypedGoRoute<ProductDetailsRoute>(path: '/products/:id')
+class ProductDetailsRoute extends GoRouteData {
+  const ProductDetailsRoute(this.id);
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProductDetailsPage(id: id);
   }
 }
 

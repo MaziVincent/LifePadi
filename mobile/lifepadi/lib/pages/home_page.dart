@@ -230,18 +230,21 @@ class HomePage extends HookWidget {
                 children: [
                   ...[
                     ProductCard(
+                      id: 1,
                       image: Assets.images.bnbBlender.provider(),
                       name: 'BNB Blender',
                       vendor: 'Shoprite Stores',
                       price: 33000,
                     ),
                     ProductCard(
+                      id: 2,
                       image: Assets.images.oilPerfumes.provider(),
                       name: 'Oil Perfumes',
                       vendor: 'Beauty Collection',
                       price: 500,
                     ),
                     ProductCard(
+                      id: 3,
                       image: Assets.images.plainTees.provider(),
                       name: 'Plain Tees',
                       vendor: 'Korede Store',

@@ -24,6 +24,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.selectedColor = Colors.black,
     this.bottom,
     this.height,
+    this.backgroundColor,
+    this.surfaceTintColor,
   }) : assert(
           bottom == null || height != null,
           'Height must be provided when bottom is not null',
@@ -35,6 +37,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color selectedColor;
   final PreferredSizeWidget? bottom;
   final double? height;
+  final Color? backgroundColor, surfaceTintColor;
 
   @override
   Size get preferredSize => Size.fromHeight(height ?? 75.h);
@@ -42,6 +45,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = ModalRoute.of(context)?.canPop ?? false;
+    const backgroundColorBase = Colors.white;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -53,8 +57,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         title: _buildTitle(context),
         titleSpacing: canPop ? 14.w : 24.w,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: backgroundColor ?? backgroundColorBase,
+        surfaceTintColor:
+            surfaceTintColor ?? backgroundColor ?? backgroundColorBase,
         actions: actions,
         bottom: bottom,
         leading: canPop
@@ -63,7 +68,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: () => context.pop(),
               )
             : null,
-        leadingWidth: 38.w,
+        leadingWidth: 41.w,
       ),
     );
   }

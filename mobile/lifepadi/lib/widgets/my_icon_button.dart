@@ -9,15 +9,20 @@ class MyIconButton extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor,
     this.iconColor,
-    required this.icon,
+    this.icon,
     this.showBadge = false,
-  });
+    this.iconWidget,
+  }) : assert(
+          icon != null || iconWidget != null,
+          'Icon Widget or IconData must be provided',
+        );
 
-  final IconData icon;
+  final IconData? icon;
   final VoidCallback onPressed;
   final Color? backgroundColor;
   final Color? iconColor;
   final bool showBadge;
+  final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,11 @@ class MyIconButton extends StatelessWidget {
       onPressed: onPressed,
       icon: Stack(
         children: [
-          Icon(
-            icon,
-            color: iconColor,
-          ),
+          iconWidget ??
+              Icon(
+                icon,
+                color: iconColor,
+              ),
           if (showBadge)
             Positioned(
               right: 2.r,
@@ -52,7 +58,7 @@ class MyIconButton extends StatelessWidget {
         ),
         fixedSize: Size.square(34.r),
       ),
-      iconSize: 18.r,
+      iconSize: 18.sp,
     );
   }
 }
