@@ -61,7 +61,9 @@ final currencyFormatter = NumberFormat.currency(
 /// Extension on [num] to format currency.
 extension Currency on num {
   /// Format a number as currency.
-  ///
-  /// You can add an optional parameter [digits] to specify the number of decimal places.
   String get currency => currencyFormatter.format(this);
+
+  /// Format a number as currency without the currency symbol.
+  String get currencyWithoutSymbol =>
+      currencyFormatter.format(this).substring(1);
 }

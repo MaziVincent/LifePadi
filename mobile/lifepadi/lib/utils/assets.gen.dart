@@ -62,6 +62,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
+  /// File path: assets/icons/share.png
+  AssetGenImage get share => const AssetGenImage('assets/icons/share.png');
+
+  /// File path: assets/icons/star.png
+  AssetGenImage get star => const AssetGenImage('assets/icons/star.png');
+
+  /// File path: assets/icons/star_half.png
+  AssetGenImage get starHalf => const AssetGenImage('assets/icons/star_half.png');
+
   /// File path: assets/icons/voucher.svg
   SvgGenImage get voucher => const SvgGenImage('assets/icons/voucher.svg');
 
@@ -79,6 +88,9 @@ class $AssetsIconsGen {
         location,
         mapPin,
         restaurant,
+        share,
+        star,
+        starHalf,
         voucher
       ];
 }
@@ -88,6 +100,9 @@ class $AssetsImagesGen {
 
   /// Directory path: assets/images/auth-heros
   $AssetsImagesAuthHerosGen get authHeros => const $AssetsImagesAuthHerosGen();
+
+  /// File path: assets/images/bnb-blender-lg.png
+  AssetGenImage get bnbBlenderLg => const AssetGenImage('assets/images/bnb-blender-lg.png');
 
   /// File path: assets/images/bnb-blender.png
   AssetGenImage get bnbBlender => const AssetGenImage('assets/images/bnb-blender.png');
@@ -144,6 +159,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
+        bnbBlenderLg,
         bnbBlender,
         deliverPackageToLady,
         dominosPizza,

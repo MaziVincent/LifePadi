@@ -6,7 +6,7 @@ import 'package:lifepadi/utils/helpers.dart';
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     required this.text,
   });
 
