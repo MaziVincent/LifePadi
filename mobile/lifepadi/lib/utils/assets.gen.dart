@@ -114,9 +114,6 @@ class $AssetsImagesGen {
   AssetGenImage get deliverPackageToLady =>
       const AssetGenImage('assets/images/deliver-package-to-lady.png');
 
-  /// File path: assets/images/dominos-pizza.png
-  AssetGenImage get dominosPizza => const AssetGenImage('assets/images/dominos-pizza.png');
-
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
@@ -139,9 +136,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/map.png
   AssetGenImage get map => const AssetGenImage('assets/images/map.png');
 
-  /// File path: assets/images/mcdonald.png
-  AssetGenImage get mcdonald => const AssetGenImage('assets/images/mcdonald.png');
-
   /// File path: assets/images/mini-blender.png
   AssetGenImage get miniBlender => const AssetGenImage('assets/images/mini-blender.png');
 
@@ -154,18 +148,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/profile-avatar.png
   AssetGenImage get profileAvatar => const AssetGenImage('assets/images/profile-avatar.png');
 
-  /// File path: assets/images/shoprite.png
-  AssetGenImage get shoprite => const AssetGenImage('assets/images/shoprite.png');
-
   /// File path: assets/images/sign-deliver-pkg.png
   AssetGenImage get signDeliverPkg => const AssetGenImage('assets/images/sign-deliver-pkg.png');
+
+  /// Directory path: assets/images/vendors
+  $AssetsImagesVendorsGen get vendors => const $AssetsImagesVendorsGen();
 
   /// List of all assets
   List<dynamic> get values => [
         bnbBlenderLg,
         bnbBlender,
         deliverPackageToLady,
-        dominosPizza,
         handPackageToLady,
         johnDoeAvatar,
         loadingWheel,
@@ -173,12 +166,10 @@ class $AssetsImagesGen {
         manWithCart,
         manWithGroceries,
         map,
-        mcdonald,
         miniBlender,
         oilPerfumes,
         plainTees,
         profileAvatar,
-        shoprite,
         signDeliverPkg
       ];
 }
@@ -263,6 +254,22 @@ class $AssetsImagesCategoriesGen {
         pharmaceutical,
         vegetable
       ];
+}
+
+class $AssetsImagesVendorsGen {
+  const $AssetsImagesVendorsGen();
+
+  /// File path: assets/images/vendors/dominos-pizza.png
+  AssetGenImage get dominosPizza => const AssetGenImage('assets/images/vendors/dominos-pizza.png');
+
+  /// File path: assets/images/vendors/mcdonald.png
+  AssetGenImage get mcdonald => const AssetGenImage('assets/images/vendors/mcdonald.png');
+
+  /// File path: assets/images/vendors/shoprite.png
+  AssetGenImage get shoprite => const AssetGenImage('assets/images/vendors/shoprite.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [dominosPizza, mcdonald, shoprite];
 }
 
 class Assets {

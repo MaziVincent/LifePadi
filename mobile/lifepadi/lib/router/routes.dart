@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/product_details_page.dart';
+import 'package:lifepadi/pages/vendors_page.dart';
 
 import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
@@ -48,6 +49,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
           path: 'new-location',
         ),
         TypedGoRoute<CategoriesRoute>(path: 'categories'),
+        TypedGoRoute<VendorsRoute>(path: 'vendors'),
       ],
     ),
     TypedGoRoute<OrdersRoute>(path: '/orders'),
@@ -318,6 +320,17 @@ class CategoriesRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CategoriesPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class VendorsRoute extends GoRouteData {
+  VendorsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const VendorsPage();
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

@@ -45,11 +45,26 @@ List<({String name, String image})> categories = [
   (name: 'Agro', image: Assets.images.categories.agro.path),
 ];
 
-List<({Color outer, Color inner})> colorSet = [
-  (outer: const Color(0xFFE6F2EA), inner: const Color(0xFF28B446)),
-  (outer: const Color(0xFFFFE9E5), inner: const Color(0xFFF76449)),
-  (outer: const Color(0xFFF3EFFA), inner: const Color(0xFFAE7FFF)),
-  (outer: const Color(0xFFDCF4F5), inner: const Color(0xFF0CD3DB)),
-  (outer: const Color(0xFFFFE8F1), inner: const Color(0xFFFF7DB5)),
-  (outer: const Color(0xFFD1EEFF), inner: const Color(0xFF1AACFF)),
+List<({String name, ImageProvider<Object> image})> vendors = [
+  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
+  (
+    name: "Domino's Pizza",
+    image: Assets.images.vendors.dominosPizza.provider()
+  ),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
+  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
+  (
+    name: "Domino's Pizza",
+    image: Assets.images.vendors.dominosPizza.provider()
+  ),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
+  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
+  (
+    name: "Domino's Pizza",
+    image: Assets.images.vendors.dominosPizza.provider()
+  ),
+  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
 ];

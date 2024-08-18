@@ -164,21 +164,18 @@ class HomePage extends HookWidget {
               16.verticalSpace,
               Row(
                 children: [
+                  for (final v in vendors.take(3))
+                    VendorCard(
+                      name: v.name,
+                      image: v.image,
+                      onTap: () {
+                        // TODO: Go to vendors single
+                      },
+                    ),
                   VendorCard(
-                    name: 'McDonald',
-                    image: Assets.images.mcdonald.provider(),
-                  ),
-                  VendorCard(
-                    name: 'Shoprite',
-                    image: Assets.images.shoprite.provider(),
-                  ),
-                  VendorCard(
-                    name: "Domino's Pizza",
-                    image: Assets.images.dominosPizza.provider(),
-                  ),
-                  const VendorCard(
                     name: 'See more',
                     icon: IconsaxPlusLinear.element_plus,
+                    onTap: () => VendorsRoute().go(context),
                   ),
                 ].separatedBy(10.horizontalSpace),
               ),
