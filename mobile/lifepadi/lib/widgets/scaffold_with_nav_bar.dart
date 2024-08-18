@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -75,11 +76,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
     final location = GoRouterState.of(context).uri.path;
 
     return switch (location) {
-      final String l when l.startsWith('/home') => 0,
-      final String l when l.startsWith('/orders') => 1,
-      final String l when l.startsWith('/errands') => 2,
-      final String l when l.startsWith('/logistics') => 3,
-      final String l when l.startsWith('/profile') => 4,
+      final String l when l == const HomeRoute().location => 0,
+      final String l when l == const OrdersRoute().location => 1,
+      final String l when l == const ErrandsRoute().location => 2,
+      final String l when l == const LogisticsRoute().location => 3,
+      final String l when l == const ProfileRoute().location => 4,
       _ => 0,
     };
   }
@@ -87,22 +88,22 @@ class ScaffoldWithNavBar extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        context.go('/home');
+        context.go(const HomeRoute().location);
         break;
       case 1:
-        context.go('/orders');
+        context.go(const OrdersRoute().location);
         break;
       case 2:
-        context.go('/errands');
+        context.go(const ErrandsRoute().location);
         break;
       case 3:
-        context.go('/logistics');
+        context.go(const LogisticsRoute().location);
         break;
       case 4:
-        context.go('/profile');
+        context.go(const ProfileRoute().location);
         break;
       default:
-        context.go('/home');
+        context.go(const HomeRoute().location);
     }
   }
 }
