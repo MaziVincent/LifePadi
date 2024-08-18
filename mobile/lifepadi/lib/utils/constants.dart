@@ -17,6 +17,10 @@ const Color kLightTextColor = Color(0xFF5F5F5F);
 /// 0xFFEBEBF0
 const Color kStrokeColor = Color(0xFFEBEBF0);
 
+/// This horizontal padding is used in many places in the app, I
+/// decided to create a getter for it to avoid repetition.
+EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
+
 List<({String name, String image})> services = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
   (name: 'Food', image: Assets.icons.restaurant.path),
@@ -26,6 +30,26 @@ List<({String name, String image})> services = [
   (name: 'Gas filling', image: Assets.icons.gasFilling.path),
 ];
 
-/// This horizontal padding is used in many places in the app, I
-/// decided to create a getter for it to avoid repetition.
-EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
+List<({String name, String image})> categories = [
+  (name: 'Vegetables', image: Assets.images.categories.vegetable.path),
+  (name: 'Fruits', image: Assets.images.categories.fruit.path),
+  (name: 'Beverages', image: Assets.images.categories.beverage.path),
+  (name: 'Grocery', image: Assets.images.categories.grocery.path),
+  (name: 'Edible Oil', image: Assets.images.categories.edibleOil.path),
+  (name: 'Household', image: Assets.images.categories.household.path),
+  (name: 'Babycare', image: Assets.images.categories.babycare.path),
+  (name: 'Electronics', image: Assets.images.categories.electronic.path),
+  (name: 'Fashion', image: Assets.images.categories.fashion.path),
+  (name: 'Pharmaceutical', image: Assets.images.categories.pharmaceutical.path),
+  (name: 'Furniture', image: Assets.images.categories.furniture.path),
+  (name: 'Agro', image: Assets.images.categories.agro.path),
+];
+
+List<({Color outer, Color inner})> colorSet = [
+  (outer: const Color(0xFFE6F2EA), inner: const Color(0xFF28B446)),
+  (outer: const Color(0xFFFFE9E5), inner: const Color(0xFFF76449)),
+  (outer: const Color(0xFFF3EFFA), inner: const Color(0xFFAE7FFF)),
+  (outer: const Color(0xFFDCF4F5), inner: const Color(0xFF0CD3DB)),
+  (outer: const Color(0xFFFFE8F1), inner: const Color(0xFFFF7DB5)),
+  (outer: const Color(0xFFD1EEFF), inner: const Color(0xFF1AACFF)),
+];

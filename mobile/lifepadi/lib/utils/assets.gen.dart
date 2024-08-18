@@ -107,6 +107,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/bnb-blender.png
   AssetGenImage get bnbBlender => const AssetGenImage('assets/images/bnb-blender.png');
 
+  /// Directory path: assets/images/categories
+  $AssetsImagesCategoriesGen get categories => const $AssetsImagesCategoriesGen();
+
   /// File path: assets/images/deliver-package-to-lady.png
   AssetGenImage get deliverPackageToLady =>
       const AssetGenImage('assets/images/deliver-package-to-lady.png');
@@ -203,6 +206,63 @@ class $AssetsImagesAuthHerosGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [forgotPassword, login, register, resetPassword, verification];
+}
+
+class $AssetsImagesCategoriesGen {
+  const $AssetsImagesCategoriesGen();
+
+  /// File path: assets/images/categories/agro.png
+  AssetGenImage get agro => const AssetGenImage('assets/images/categories/agro.png');
+
+  /// File path: assets/images/categories/babycare.png
+  AssetGenImage get babycare => const AssetGenImage('assets/images/categories/babycare.png');
+
+  /// File path: assets/images/categories/beverage.png
+  AssetGenImage get beverage => const AssetGenImage('assets/images/categories/beverage.png');
+
+  /// File path: assets/images/categories/edible-oil.png
+  AssetGenImage get edibleOil => const AssetGenImage('assets/images/categories/edible-oil.png');
+
+  /// File path: assets/images/categories/electronic.png
+  AssetGenImage get electronic => const AssetGenImage('assets/images/categories/electronic.png');
+
+  /// File path: assets/images/categories/fashion.png
+  AssetGenImage get fashion => const AssetGenImage('assets/images/categories/fashion.png');
+
+  /// File path: assets/images/categories/fruit.png
+  AssetGenImage get fruit => const AssetGenImage('assets/images/categories/fruit.png');
+
+  /// File path: assets/images/categories/furniture.png
+  AssetGenImage get furniture => const AssetGenImage('assets/images/categories/furniture.png');
+
+  /// File path: assets/images/categories/grocery.png
+  AssetGenImage get grocery => const AssetGenImage('assets/images/categories/grocery.png');
+
+  /// File path: assets/images/categories/household.png
+  AssetGenImage get household => const AssetGenImage('assets/images/categories/household.png');
+
+  /// File path: assets/images/categories/pharmaceutical.png
+  AssetGenImage get pharmaceutical =>
+      const AssetGenImage('assets/images/categories/pharmaceutical.png');
+
+  /// File path: assets/images/categories/vegetable.png
+  AssetGenImage get vegetable => const AssetGenImage('assets/images/categories/vegetable.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        agro,
+        babycare,
+        beverage,
+        edibleOil,
+        electronic,
+        fashion,
+        fruit,
+        furniture,
+        grocery,
+        household,
+        pharmaceutical,
+        vegetable
+      ];
 }
 
 class Assets {

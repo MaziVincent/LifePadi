@@ -58,6 +58,7 @@ flutter:
     - assets/animations/
     - assets/images/
     - assets/images/auth-heros/
+    - assets/images/categories/
     - assets/icons/
 
 flutter_gen:

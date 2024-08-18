@@ -185,9 +185,7 @@ class HomePage extends HookWidget {
               16.verticalSpace,
               HeaderWithSeeAll(
                 title: 'Service Errands',
-                onSeeAllTap: () {
-                  // TODO: Go to errands page
-                },
+                onSeeAllTap: () => context.go(const ErrandsRoute().location),
               ),
               16.verticalSpace,
               Row(
@@ -199,9 +197,7 @@ class HomePage extends HookWidget {
               16.verticalSpace,
               HeaderWithSeeAll(
                 title: 'Categories',
-                onSeeAllTap: () {
-                  // TODO: Go to categories page
-                },
+                onSeeAllTap: () => context.go(CategoriesRoute().location),
               ),
               13.87.verticalSpace,
               SizedBox(

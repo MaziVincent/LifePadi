@@ -8,6 +8,7 @@ import 'package:lifepadi/pages/product_details_page.dart';
 import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
 import '../pages/cart_page.dart';
+import '../pages/categories_page.dart';
 import '../pages/details_page.dart';
 import '../pages/errands_page.dart';
 import '../pages/forgot_password_page.dart';
@@ -46,6 +47,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
           // FIXME: Should be /locations/new, for now, this is just a placeholder
           path: 'new-location',
         ),
+        TypedGoRoute<CategoriesRoute>(path: 'categories'),
       ],
     ),
     TypedGoRoute<OrdersRoute>(path: '/orders'),
@@ -305,6 +307,17 @@ class NewLocationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const NewLocationPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class CategoriesRoute extends GoRouteData {
+  CategoriesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CategoriesPage();
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
