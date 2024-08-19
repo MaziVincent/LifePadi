@@ -35,6 +35,9 @@ import PersistLogin from "./components/shared/PersistLogin";
 import ViewDelivery from "./components/rider/ViewDelivery";
 import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
+import Address from "./components/customer/Address";
+import Gift from "./components/customer/Gift";
+import Favourite from "./components/customer/Favourite";
 
 function App() {
   const queryClient = new QueryClient();
@@ -95,6 +98,9 @@ function App() {
                 index
                 element={<UserDashboard />}
               />
+              <Route path="/user/address" element={<Address />} />
+              <Route path="/user/gift" element={<Gift />} />
+              <Route path="/user/favourite" element={<Favourite />} />
             </Route>
           </Route>
         </Route>

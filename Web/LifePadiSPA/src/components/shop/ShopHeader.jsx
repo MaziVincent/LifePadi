@@ -17,6 +17,7 @@ import Cart from "./Cart";
 import { useCoordinates } from "../../hooks/useCoordinates";
 import useAddress from "../../hooks/useAddress";
 import EmptyCart from "./EmptyCart";
+import VerifyCode from "../auth/VerifyCode";
 
 
 const ShopHeader = () => {
@@ -103,6 +104,7 @@ const ShopHeader = () => {
       <Cart />
       <EmptyCart />
       <Register />
+      <VerifyCode />
       {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">
         <span className=" absolute z-10 top-2 left-1">
           <SearchOutlined />

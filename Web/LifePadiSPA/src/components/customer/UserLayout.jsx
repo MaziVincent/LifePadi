@@ -1,17 +1,31 @@
-
-import { Outlet } from "react-router-dom";
 import { useState } from "react";
-const UserLayout = () => {
-  //const [cart, setCart] = useState(false);
-  return (
-      <main className="dark:bg-darkBg dark:text-primary w-full">
-       
-        <div className="pt-28">
-          <Outlet  />
-        </div>
+import { Link, Outlet } from "react-router-dom";
+import UserHeader from "./UserHeader";
+import Aside from "./Aside";
+import UserFooter from "./UserFooter";
 
-        
-      </main>
+
+const UserLayout = () => {
+    const [aside, setAside] = useState(false);
+  return (
+    <main className="">
+      {" "}
+      <div className=" bg-primary dark:bg-darkBg dark:text-primary border-3 border-red h-full ">
+        <UserHeader setAside={setAside} />
+
+        {/* <!-- Sidebar --> */}
+
+        <Aside
+          aside={aside}
+          setAside={setAside}
+        />
+
+        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-56 py-20 border-3 h-full border-red min-h-screen`}>
+          <Outlet />
+        </div>
+        <UserFooter />
+      </div>{" "}
+    </main>
   );
 };
 

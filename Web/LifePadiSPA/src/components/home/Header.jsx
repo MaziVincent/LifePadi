@@ -18,7 +18,7 @@ const Header = () => {
     setShowDiv(!showDiv);
   };
   return (
-    <header className=" fixed bg-inherit z-40 flex justify-between items-center px-4 w-full top-0 py-4">
+    <header className=" fixed z-40 flex justify-between items-center px-4 w-full top-0 py-4">
       <div className="w-40">
         <Link to="/" className=" px-6 py-2 w rounded-full flex items-center gap-4 text-primary font-semibold">
           <img src={logo} alt="logo" />

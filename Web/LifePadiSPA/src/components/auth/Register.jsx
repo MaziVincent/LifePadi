@@ -9,9 +9,9 @@ import axios from "axios";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 //import useCart from "../../hooks/useCart";
-
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 const Register = () => {
-  const { reg, setRegister } = useAuth();
+  const { reg, setRegister, verify, setVerify } = useAuth();
   //const {dispatch} = useCart();
   const url = `${baseUrl}customer/create`;
   const navigate = useNavigate();
@@ -43,13 +43,24 @@ const Register = () => {
 
       setRegister(false);
       reset();
+      //setVerify(true)
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
     },
   });
 
   const handleCreate = (data) => {
-    //console.log(vendor)
-    mutate(data);
+    console.log(data)
+   // mutate(data);
+    setRegister(false)
+    setVerify(true)
   };
+
+  const handleClickAway = () => {
+    setRegister(false);
+  
+  }
 
   return (
     <Modal
@@ -63,13 +74,14 @@ const Register = () => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
+        className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
-        <div className="relative p-4 w-full h-auto  ">
-          <section className="  ">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
-              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu ">
-                <div className="flex justify-between items-center p-4  ">
+        <Toaster />
+            
+            <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
+              <ClickAwayListener onClickAway={handleClickAway}>
+              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu overflow-y-auto max-h-screen pb-10 ">
+                <div className="flex justify-between items-center p-4 sticky top-0 ">
                   <button
                     type="button"
                     onClick={() => {
@@ -94,7 +106,7 @@ const Register = () => {
                     <span className="sr-only">Close modal</span>
                   </button>
                 </div>
-                <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <div className="p-6 space-y-4 md:space-y-6 sm:p-8 overflow-y-scroll">
                   <h1 className="text-xl font-bold leading-tight tracking-tight text-darkBg md:text-2xl dark:text-primary">
                     Sign Up
                   </h1>
@@ -257,9 +269,9 @@ const Register = () => {
                   </form>
                 </div>
               </div>
+              </ClickAwayListener>
             </div>
-          </section>
-        </div>
+        
       </div>
     </Modal>
   );
