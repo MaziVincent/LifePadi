@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
+<<<<<<< HEAD
 import { motion } from "framer-motion";
 import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
 import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
@@ -43,12 +44,21 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
+=======
+import HeroAnimation1 from "../../assets/lottie/HeroAnimation1.json"
+import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json"
+import Hero1 from "../../assets/lottie/Hero1.json"
+
+
+const Home = () => {
+>>>>>>> eda1965 (User Dashboard and Landing Page)
   const lottieStyle = {
     position: "relative",
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
+<<<<<<< HEAD
     zIndex: 10,
     padding: 0,
     margin: 0,
@@ -497,6 +507,20 @@ const Home = () => {
         </div>
       </section>
     </main>
+=======
+    zIndex: -1,
+    padding:0,
+    margin:0,
+    border:"2px solid red"
+  };
+  return (
+    <section className="bg-white dark:bg-gray-900">
+      <div className=" w-screen h-5/6  text-center">
+        <Lottie animationData={HeroAnimation2} loop={true} autoPlay={true} style={lottieStyle}  ></Lottie>
+        {/* <button onClick={()=>getAddress()}>get address</button> */}
+      </div>
+    </section>
+>>>>>>> eda1965 (User Dashboard and Landing Page)
   );
 };
 

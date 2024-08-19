@@ -61,7 +61,11 @@ const Address = () => {
       const { data, isError, isLoading, isSuccess } = useQuery({
         queryKey: ["addresses", page, search],
         queryFn: () =>
+<<<<<<< HEAD
           getAddresses(`${url}/${auth?.Id}`),
+=======
+          getAddresses(`${url}/${auth?.user.Id}`),
+>>>>>>> eda1965 (User Dashboard and Landing Page)
         keepPreviousData: true,
         staleTime: 20000,
         refetchOnMount: "always",
@@ -180,8 +184,12 @@ const Address = () => {
                       <Alert severity="error">Error Fetching Data..</Alert>
                     </p>
                   )}
+<<<<<<< HEAD
                 
                   {isSuccess && data.length > 0 ? (
+=======
+                  {isSuccess && (
+>>>>>>> eda1965 (User Dashboard and Landing Page)
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                       <thead className="text-xs  uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
                         <tr>
@@ -305,11 +313,14 @@ const Address = () => {
                         ))}
                       </tbody>
                     </table>
+<<<<<<< HEAD
                   ) : (
                     <p className="flex items-center justify-center">
                       {" "}
                       <Alert severity="info"> You currently have no Address </Alert>
                     </p>
+=======
+>>>>>>> eda1965 (User Dashboard and Landing Page)
                   )}
                 </div>
                 {/* <nav

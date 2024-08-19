@@ -95,6 +95,9 @@ import Login from "./components/auth/Login";
 import ViewDelivery from "./components/rider/ViewDelivery";
 import VendorViewProduct from "./components/vendor/VendorViewProduct";
 import Login from "./components/auth/Login";
+import Address from "./components/customer/Address";
+import Gift from "./components/customer/Gift";
+import Favourite from "./components/customer/Favourite";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -236,6 +239,7 @@ function App() {
                 element={<UserDashboard />}
               />
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Route
                 path="/user/address"
                 element={<Address />}
@@ -259,6 +263,11 @@ function App() {
               />
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+              <Route path="/user/address" element={<Address />} />
+              <Route path="/user/gift" element={<Gift />} />
+              <Route path="/user/favourite" element={<Favourite />} />
+>>>>>>> eda1965 (User Dashboard and Landing Page)
             </Route>
           </Route>
         </Route>

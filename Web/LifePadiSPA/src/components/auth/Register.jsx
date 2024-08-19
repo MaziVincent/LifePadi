@@ -7,6 +7,7 @@ import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
 //import useCart from "../../hooks/useCart";
+<<<<<<< HEAD
 import LoadingGif from "../shared/LodingGif";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 const Register = () => {
@@ -21,6 +22,11 @@ const Register = () => {
     verificationInfo,
     setVerificationInfo,
   } = useAuth();
+=======
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+const Register = () => {
+  const { reg, setRegister, verify, setVerify } = useAuth();
+>>>>>>> eda1965 (User Dashboard and Landing Page)
   //const {dispatch} = useCart();
   const post = usePost();
   const url = `${baseUrl}customer/send-otp`;
@@ -72,6 +78,7 @@ const Register = () => {
 
   const checkForEmailAndPhone = async (email, phone) => {
 
+<<<<<<< HEAD
     setPhoneError("")
     setEmailError("")
 
@@ -128,7 +135,28 @@ const Register = () => {
       setIcon(false);
       setType("password");
     }
+=======
+      setRegister(false);
+      reset();
+      //setVerify(true)
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    },
+  });
+
+  const handleCreate = (data) => {
+    console.log(data)
+   // mutate(data);
+    setRegister(false)
+    setVerify(true)
+>>>>>>> eda1965 (User Dashboard and Landing Page)
   };
+
+  const handleClickAway = () => {
+    setRegister(false);
+  
+  }
 
   return (
     <Modal
@@ -142,6 +170,7 @@ const Register = () => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
+<<<<<<< HEAD
         className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center outline-none items-center  w-full "
       >
         <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-svh ">
@@ -203,6 +232,71 @@ const Register = () => {
                         </p>
                       )}
                     </div>
+=======
+        className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
+      >
+        <Toaster />
+            
+            <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
+              <ClickAwayListener onClickAway={handleClickAway}>
+              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu overflow-y-auto max-h-screen pb-10 ">
+                <div className="flex justify-between items-center p-4 sticky top-0 ">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRegister(false);
+                    }}
+                    className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-toggle="defaultModal"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                    <span className="sr-only">Close modal</span>
+                  </button>
+                </div>
+                <div className="p-6 space-y-4 md:space-y-6 sm:p-8 overflow-y-scroll">
+                  <h1 className="text-xl font-bold leading-tight tracking-tight text-darkBg md:text-2xl dark:text-primary">
+                    Sign Up
+                  </h1>
+                  <form
+                    className="space-y-4 md:space-y-6"
+                    onSubmit={handleSubmit(handleCreate)}
+                  >
+                    <div className="grid gap-4 mb-4 sm:grid-cols-2">
+                      <div className="sm:col-span-1">
+                        <label
+                          htmlFor="fname"
+                          className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                        >
+                          First Name
+                        </label>
+                        <input
+                          type="text"
+                          name="fname"
+                          id="fname"
+                          {...register("FirstName", { required: true })}
+                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Type First Name"
+                          required=""
+                        />
+                        {errors.FirstName && (
+                          <p className="text-sm text-redborder">
+                            First Name is required
+                          </p>
+                        )}
+                      </div>
+>>>>>>> eda1965 (User Dashboard and Landing Page)
 
                     <div className="sm:col-span-1">
                       <label
@@ -389,9 +483,14 @@ const Register = () => {
                     </p>
                 </form>
               </div>
+              </ClickAwayListener>
             </div>
+<<<<<<< HEAD
           </ClickAwayListener>
         </div>
+=======
+        
+>>>>>>> eda1965 (User Dashboard and Landing Page)
       </div>
     </Modal>
   );

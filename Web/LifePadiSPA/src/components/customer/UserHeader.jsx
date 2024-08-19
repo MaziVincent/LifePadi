@@ -68,7 +68,11 @@ const UserHeader = ({ setAside }) => {
             </button>
           </ClickAwayListener>
           <Link
+<<<<<<< HEAD
             to="/"
+=======
+            to="/admin"
+>>>>>>> eda1965 (User Dashboard and Landing Page)
             className="flex items-center justify-between gap-5 mr-4"
           >
             <div className="w-10 h-12">
@@ -80,10 +84,17 @@ const UserHeader = ({ setAside }) => {
               />{" "}
             </div>
             <div className="flex flex-col">
+<<<<<<< HEAD
             <span className="self-center text-gray-700 text-xl md:text-2xl font-semibold whitespace-nowrap  dark:text-white">
                Hi, {auth?.FirstName}!
             </span>
             {/* <span className=" self-end dark:text-gray">{auth?.Email}</span> */}
+=======
+            <span className="self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white">
+              <i className="line-icon-User text-graybg"></i> {auth?.user.FirstName} {auth?.user.LastName}
+            </span>
+            <span className=" self-end dark:text-gray">{auth?.user.Email}</span>
+>>>>>>> eda1965 (User Dashboard and Landing Page)
             </div>
            
           </Link>

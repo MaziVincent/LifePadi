@@ -28,10 +28,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("get/{id}")]
 =======
         [HttpGet("{id}/get")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpGet("get/{id}")]
+>>>>>>> eda1965 (User Dashboard and Landing Page)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -73,6 +77,9 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eda1965 (User Dashboard and Landing Page)
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] AddressDto address, int id)
 =======
@@ -92,10 +99,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
 =======
         [HttpDelete("{id}/delete")]
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        [HttpDelete("delete/{id}")]
+>>>>>>> eda1965 (User Dashboard and Landing Page)
         public async Task<IActionResult> delete(int id)
         {
             try

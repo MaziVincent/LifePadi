@@ -197,6 +197,7 @@ namespace Api.Controllers
                 var authCustomer = await _icustomer!.createAsync(customer);
                 return Ok(authCustomer);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             }
             catch (Exception ex)
@@ -206,6 +207,9 @@ namespace Api.Controllers
                     return StatusCode(409, ex.Message);
                 }
 =======
+=======
+
+>>>>>>> eda1965 (User Dashboard and Landing Page)
             }catch(Exception ex)
             {
 >>>>>>> ee48634 (done with service, category and product controllers.)

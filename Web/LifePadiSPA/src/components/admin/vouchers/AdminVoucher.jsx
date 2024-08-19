@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import CreateVoucher from "./CreateVoucher";
   // import EditServiceModal from "./EditServiceModal";
@@ -366,9 +367,25 @@ import CreateVoucher from "./CreateVoucher";
 
 export default AdminVoucher;
 =======
-const AdminVoucher = () => {
-    return ( <div className="flex items-center justify-center">
+=======
 
+
+
+>>>>>>> eda1965 (User Dashboard and Landing Page)
+const AdminVoucher = () => {
+  return (
+    <div className="flex items-center justify-center">
+      <div>
+        <h1 className="text-3xl text-green-500 font-bold">
+          {" "}
+          Vouchers Coming soon ...{" "}
+        </h1>
+      </div>
+    </div>
+  );
+};
+
+<<<<<<< HEAD
         <div><h1 className="text-3xl text-green-500 font-bold"> Vouchers Coming soon ... </h1></div>
 
     </div> );
@@ -376,3 +393,6 @@ const AdminVoucher = () => {
  
 export default AdminVoucher;
 >>>>>>> a2698f4 (Finishing touches on the admin portal)
+=======
+export default AdminVoucher;
+>>>>>>> eda1965 (User Dashboard and Landing Page)

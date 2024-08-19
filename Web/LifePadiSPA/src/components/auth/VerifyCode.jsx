@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useRef, useEffect } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
@@ -29,6 +30,16 @@ const VerifyCode = ({ otpLength = 4, }) => {
   } = useAuth();
 
   //console.log(verificationInfo);
+=======
+import React, { useState, useRef } from "react";
+import { Modal } from "@mui/material";
+import useAuth from "../../hooks/useAuth";
+
+const VerifyCode = ({ otpLength = 4 }) => {
+  const [otp, setOtp] = useState(Array(otpLength).fill(""));
+  const inputsRef = useRef([]);
+  const { verify, setVerify } = useAuth();
+>>>>>>> eda1965 (User Dashboard and Landing Page)
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -55,6 +66,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
     }
   };
 
+<<<<<<< HEAD
   const handleSubmit = async () => {
     setIsLoading(true);
     const code = otp.join("");
@@ -90,6 +102,10 @@ const VerifyCode = ({ otpLength = 4, }) => {
       isLoading(false)
     }
   
+=======
+  const handleSubmit = () => {
+    console.log(otp.join(""));
+>>>>>>> eda1965 (User Dashboard and Landing Page)
   };
 
   const create = async (data) => {
@@ -169,10 +185,16 @@ const VerifyCode = ({ otpLength = 4, }) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
       >
+<<<<<<< HEAD
         <Toaster />
         <div className="relative p-4 w-full h-auto  ">
           <section className=" h-screen flex justify-center items-center ">
             <div className="flex flex-col items-center bg-primary dark:bg-darkMenu dark:text-primary w-3/4 md:w-2/4 pb-4 rounded-xl">
+=======
+        <div className="relative p-4 w-full h-auto  ">
+          <section className=" h-screen flex justify-center items-center ">
+            <div className="flex flex-col items-center bg-primary dark:bg-darkMenu w-3/4 md:w-2/4 pb-4 rounded-xl">
+>>>>>>> eda1965 (User Dashboard and Landing Page)
               <div className="flex justify-end items-center p-4 w-full ">
                 <button
                   type="button"
@@ -198,8 +220,13 @@ const VerifyCode = ({ otpLength = 4, }) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
+<<<<<<< HEAD
               <h2 className="text-2xl font-semibold mb-4">Verify Phone Number</h2>
               <p className="text-darkHover dark:text-gray">Please Enter the code sent to your Phone Number </p>
+=======
+              <h2 className="text-2xl font-semibold mb-4">Verify Phonenumber</h2>
+              <p className="text-darkHover">Please Enter the code sent to your phone Number</p>
+>>>>>>> eda1965 (User Dashboard and Landing Page)
               <div className="flex space-x-2 m-4">
                 {otp.map((digit, index) => (
                   <input
@@ -210,6 +237,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
                     onChange={(e) => handleChange(e.target, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (inputsRef.current[index] = el)}
+<<<<<<< HEAD
                     className="w-10 h-12 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-background bg-graybg text-accent"
                   />
                 ))}
@@ -228,6 +256,17 @@ const VerifyCode = ({ otpLength = 4, }) => {
                 isLoading ? <LoadingGif /> : 'Complete Sign Up '
               }
                 
+=======
+                    className="w-10 h-12 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-background bg-graybg"
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-secondary text-white rounded-lg shadow hover:bg-background transition duration-200"
+              >
+                Complete Sign Up 
+>>>>>>> eda1965 (User Dashboard and Landing Page)
               </button>
             </div>
           </section>
