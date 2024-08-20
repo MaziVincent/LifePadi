@@ -43,10 +43,12 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
     TypedGoRoute<HomeRoute>(
       path: '/',
       routes: [
-        TypedGoRoute<CartRoute>(path: 'cart', routes: [
-
-        TypedGoRoute<CheckoutRoute>(path: 'checkout'),
-        ]),
+        TypedGoRoute<CartRoute>(
+          path: 'cart',
+          routes: [
+            TypedGoRoute<CheckoutRoute>(path: 'checkout'),
+          ],
+        ),
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
         TypedGoRoute<NewLocationRoute>(
           // FIXME: Should be /locations/new, for now, this is just a placeholder
