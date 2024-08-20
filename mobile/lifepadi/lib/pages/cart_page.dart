@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -14,7 +15,8 @@ import 'package:remixicon/remixicon.dart';
 
 import '../widgets/cart_discount.dart';
 import '../widgets/cart_item.dart';
-import '../widgets/cart_total.dart';
+import '../widgets/my_divider.dart';
+import '../widgets/payment_total.dart';
 
 class CartPage extends HookWidget {
   const CartPage({super.key});
@@ -100,10 +102,7 @@ class CartPage extends HookWidget {
                 ],
               ),
               4.verticalSpace,
-              const Divider(
-                color: kStrokeColor,
-                height: 1,
-              ),
+              const MyDivider(),
               16.verticalSpace,
               ...[
                 CartItem(
@@ -147,16 +146,15 @@ class CartPage extends HookWidget {
               child: Column(
                 children: [
                   const CartDiscount(),
-                  const Divider(
-                    color: kStrokeColor,
-                    height: 1,
+                  const MyDivider(),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    child: const PaymentTotal(totalPrice: 43000),
                   ),
-                  const CartTotal(),
                   PrimaryButton(
                     text: 'Proceed to checkout',
-                    onPressed: () {
-                      // TODO: Go to checkout page
-                    },
+                    onPressed: () => CheckoutRoute().go(context),
                   ),
                 ],
               ),

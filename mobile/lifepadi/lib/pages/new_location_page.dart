@@ -6,6 +6,7 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
+import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -135,10 +136,7 @@ class NewLocationPage extends StatelessWidget {
                     ),
                   ),
                   16.verticalSpace,
-                  const Divider(
-                    color: kStrokeColor,
-                    height: 1,
-                  ),
+                  const MyDivider(),
                   12.22.verticalSpace,
                   PrimaryButton(
                     text: 'Confirm Address',

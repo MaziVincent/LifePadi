@@ -59,6 +59,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/map-pin.svg
   SvgGenImage get mapPin => const SvgGenImage('assets/icons/map-pin.svg');
 
+  /// File path: assets/icons/mastercard.png
+  AssetGenImage get mastercard => const AssetGenImage('assets/icons/mastercard.png');
+
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
@@ -70,6 +73,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/star_half.png
   AssetGenImage get starHalf => const AssetGenImage('assets/icons/star_half.png');
+
+  /// File path: assets/icons/verve.png
+  AssetGenImage get verve => const AssetGenImage('assets/icons/verve.png');
 
   /// File path: assets/icons/voucher.svg
   SvgGenImage get voucher => const SvgGenImage('assets/icons/voucher.svg');
@@ -87,10 +93,12 @@ class $AssetsIconsGen {
         laundry,
         location,
         mapPin,
+        mastercard,
         restaurant,
         share,
         star,
         starHalf,
+        verve,
         voucher
       ];
 }

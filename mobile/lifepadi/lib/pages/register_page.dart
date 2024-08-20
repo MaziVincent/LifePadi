@@ -8,6 +8,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
@@ -217,10 +218,9 @@ class RegisterPage extends HookConsumerWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Divider(
-                                  thickness: 0.81.r,
-                                  color: const Color(0xFFC2C8D0),
+                              const Expanded(
+                                child: MyDivider(
+                                  color: Color(0xFFC2C8D0),
                                 ),
                               ),
                               13.01.horizontalSpace,
@@ -234,10 +234,9 @@ class RegisterPage extends HookConsumerWidget {
                                 ),
                               ),
                               13.01.horizontalSpace,
-                              Expanded(
-                                child: Divider(
-                                  thickness: 0.81.r,
-                                  color: const Color(0xFFC2C8D0),
+                              const Expanded(
+                                child: MyDivider(
+                                  color: Color(0xFFC2C8D0),
                                 ),
                               ),
                             ],

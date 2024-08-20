@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/input_field.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
+import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 
 import '../widgets/location_card.dart';
@@ -95,9 +96,8 @@ class LogisticsPage extends HookWidget {
                 phoneNumber: '0701 234 5678',
               ),
               16.verticalSpace,
-              const Divider(
+              const MyDivider(
                 color: Color(0xFFECECEC),
-                height: 1,
               ),
               40.verticalSpace,
               PrimaryButton(text: 'Proceed to Checkout', onPressed: () {}),

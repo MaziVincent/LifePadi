@@ -5,15 +5,6 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 
-/// Customer app bar title that can either be a [String] or a [Widget].
-typedef TitleType = Object;
-
-/// Extension on [TitleType] to determine its type.
-extension TitleTypeExtension on TitleType {
-  bool get isString => this is String;
-  bool get isWidget => this is Widget;
-}
-
 /// Custom app bar for the application.
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
@@ -26,12 +17,16 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.height,
     this.backgroundColor,
     this.surfaceTintColor,
-  }) : assert(
+  })  : assert(
           bottom == null || height != null,
           'Height must be provided when bottom is not null',
+        ),
+        assert(
+          title is String || title is Widget,
+          'Title must be either a String or a Widget',
         );
 
-  final TitleType title;
+  final Object title;
   final List<Widget>? actions;
   final TextStyle? textStyle;
   final Color selectedColor;
@@ -74,21 +69,21 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   /// Builds the title of the app bar.
-  Widget _buildTitle(BuildContext context) {
+  Widget? _buildTitle(BuildContext context) {
     final defaultStyle = context.textTheme.titleLarge?.copyWith(
       fontSize: 20.sp,
       fontWeight: FontWeight.w700,
     );
 
-    if (title.isString) {
+    if (title is String) {
       return Text(
         title as String,
         style: textStyle ?? defaultStyle,
       );
-    } else if (title.isWidget) {
+    } else if (title is Widget) {
       return title as Widget;
-    } else {
-      throw ArgumentError('Title must be either a String or a Widget');
     }
+
+    return null;
   }
 }

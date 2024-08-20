@@ -10,6 +10,7 @@ import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/categories_page.dart';
+import '../pages/checkout_page.dart';
 import '../pages/details_page.dart';
 import '../pages/errands_page.dart';
 import '../pages/forgot_password_page.dart';
@@ -42,7 +43,10 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
     TypedGoRoute<HomeRoute>(
       path: '/',
       routes: [
-        TypedGoRoute<CartRoute>(path: 'cart'),
+        TypedGoRoute<CartRoute>(path: 'cart', routes: [
+
+        TypedGoRoute<CheckoutRoute>(path: 'checkout'),
+        ]),
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
         TypedGoRoute<NewLocationRoute>(
           // FIXME: Should be /locations/new, for now, this is just a placeholder
@@ -331,6 +335,17 @@ class VendorsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const VendorsPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class CheckoutRoute extends GoRouteData {
+  CheckoutRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CheckoutPage();
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
