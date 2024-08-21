@@ -32,6 +32,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/cooking-gas.png
   AssetGenImage get cookingGas => const AssetGenImage('assets/icons/cooking-gas.png');
 
+  /// File path: assets/icons/download.svg
+  SvgGenImage get download => const SvgGenImage('assets/icons/download.svg');
+
   /// File path: assets/icons/errand-boy.svg
   SvgGenImage get errandBoy => const SvgGenImage('assets/icons/errand-boy.svg');
 
@@ -74,6 +77,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/star_half.png
   AssetGenImage get starHalf => const AssetGenImage('assets/icons/star_half.png');
 
+  /// File path: assets/icons/success.svg
+  SvgGenImage get success => const SvgGenImage('assets/icons/success.svg');
+
   /// File path: assets/icons/verve.png
   AssetGenImage get verve => const AssetGenImage('assets/icons/verve.png');
 
@@ -84,6 +90,7 @@ class $AssetsIconsGen {
   List<dynamic> get values => [
         arrowRight,
         cookingGas,
+        download,
         errandBoy,
         fuelStation,
         gasFilling,
@@ -98,6 +105,7 @@ class $AssetsIconsGen {
         share,
         star,
         starHalf,
+        success,
         verve,
         voucher
       ];

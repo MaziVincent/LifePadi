@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/pages/product_details_page.dart';
-import 'package:lifepadi/pages/vendors_page.dart';
 
 import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
@@ -22,11 +20,14 @@ import '../pages/new_location_page.dart';
 import '../pages/notification_page.dart';
 import '../pages/onboarding_page.dart';
 import '../pages/orders_page.dart';
+import '../pages/product_details_page.dart';
 import '../pages/profile_page.dart';
+import '../pages/receipt_page.dart';
 import '../pages/register_page.dart';
 import '../pages/reset_password_page.dart';
 import '../pages/rider_page.dart';
 import '../pages/splash_page.dart';
+import '../pages/vendors_page.dart';
 import '../pages/verification_page.dart';
 import '../state/permissions.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
@@ -56,6 +57,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
         ),
         TypedGoRoute<CategoriesRoute>(path: 'categories'),
         TypedGoRoute<VendorsRoute>(path: 'vendors'),
+        TypedGoRoute<ReceiptRoute>(path: 'receipts/:id'),
       ],
     ),
     TypedGoRoute<OrdersRoute>(path: '/orders'),
@@ -348,6 +350,19 @@ class CheckoutRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CheckoutPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class ReceiptRoute extends GoRouteData {
+  ReceiptRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ReceiptPage(id: id);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

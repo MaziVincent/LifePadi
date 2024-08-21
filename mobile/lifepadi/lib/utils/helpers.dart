@@ -67,3 +67,9 @@ extension Currency on num {
   String get currencyWithoutSymbol =>
       currencyFormatter.format(this).substring(1);
 }
+
+extension ReadableDateTime on DateTime {
+  String get readable {
+    return DateFormat('d MMM yyyy, hh:mm a').format(this);
+  }
+}

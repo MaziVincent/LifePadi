@@ -21,6 +21,13 @@ const Color kStrokeColor = Color(0xFFEBEBF0);
 /// decided to create a getter for it to avoid repetition.
 EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
 
+const kRadialGradient = RadialGradient(
+  colors: [Color(0xFF90DB19), kDarkPrimaryColor],
+  radius: 0.85,
+  center: Alignment(0.7386, -0.668),
+  stops: [0.0, 1.0],
+);
+
 List<({String name, String image})> services = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
   (name: 'Food', image: Assets.icons.restaurant.path),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
@@ -148,8 +150,11 @@ class CheckoutPage extends HookWidget {
           30.verticalSpace,
           PrimaryButton(
             text: 'Proceed to Pay',
-            onPressed: () {
+            onPressed: () async {
               // TODO: Call payment provider to process payment.
+
+              // After that, go to receipt page
+              await context.push(ReceiptRoute(id: 1).location);
             },
           ),
         ],

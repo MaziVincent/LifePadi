@@ -38,12 +38,7 @@ class ProfilePage extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: const BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [Color(0xFF90DB19), kDarkPrimaryColor],
-                    radius: 0.85,
-                    center: Alignment(0.7386, -0.668),
-                    stops: [0.0, 1.0],
-                  ),
+                  gradient: kRadialGradient,
                 ),
                 padding: EdgeInsets.only(top: 75.h),
                 child: const ProfileImageAndLocation(),

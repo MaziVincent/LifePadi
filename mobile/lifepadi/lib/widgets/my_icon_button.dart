@@ -56,9 +56,9 @@ class MyIconButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
         ),
-        fixedSize: Size.square(34.r),
+        fixedSize: Size.square(34.h),
       ),
-      iconSize: 18.sp,
+      iconSize: 20.sp,
     );
   }
 }
