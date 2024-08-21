@@ -6,6 +6,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/section_title.dart';
 
 /// Navigation buttons for the onboarding page.
 class OnboardingNavigation extends StatelessWidget {
@@ -65,12 +66,9 @@ class OnboardingNavigation extends StatelessWidget {
                 onTap: () {
                   context.go(const GetStartedRoute().location);
                 },
-                child: Text(
+                child: const SectionTitle(
                   'Skip',
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: kDarkPrimaryColor,
-                  ),
+                  color: kDarkPrimaryColor,
                 ),
               ),
               10.horizontalSpace,

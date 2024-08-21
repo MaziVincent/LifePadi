@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/input_field.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/section_title.dart';
 
 import '../widgets/location_card.dart';
 
@@ -27,13 +27,9 @@ class LogisticsPage extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               8.verticalSpace,
-              Text(
+              const SectionTitle(
                 'Item Details',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1C1C20),
-                ),
+                color: Color(0xFF1C1C20),
               ),
               16.verticalSpace,
               InputField(
@@ -62,13 +58,9 @@ class LogisticsPage extends HookWidget {
                 maxLength: 100,
               ),
               8.verticalSpace,
-              Text(
+              const SectionTitle(
                 'Pickup Location',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1C1C20),
-                ),
+                color: Color(0xFF1C1C20),
               ),
               16.verticalSpace,
               LocationCard(
@@ -79,13 +71,9 @@ class LogisticsPage extends HookWidget {
                 phoneNumber: '0901 234 5678',
               ),
               16.verticalSpace,
-              Text(
+              const SectionTitle(
                 'Drop-off Location',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1C1C20),
-                ),
+                color: Color(0xFF1C1C20),
               ),
               16.verticalSpace,
               LocationCard(

@@ -11,6 +11,7 @@ import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../widgets/bottom_panel.dart';
+import '../widgets/section_title.dart';
 
 class NewLocationPage extends StatelessWidget {
   const NewLocationPage({super.key});
@@ -73,13 +74,9 @@ class NewLocationPage extends StatelessWidget {
                           color: kDarkPrimaryColor,
                         ),
                         5.horizontalSpace,
-                        Text(
+                        const SectionTitle(
                           'Lekki, Lagos',
-                          style: context.textTheme.bodyLarge?.copyWith(
-                            color: const Color(0xFF1C1C20),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          color: Color(0xFF1C1C20),
                         ),
                       ],
                     ),
@@ -87,7 +84,7 @@ class NewLocationPage extends StatelessWidget {
                     /// Search icon
                     IconButton(
                       onPressed: () {
-                        // TODO: Implement map.
+                        // TODO: Implement map
                       },
                       icon: Icon(
                         IconsaxPlusLinear.search_normal,

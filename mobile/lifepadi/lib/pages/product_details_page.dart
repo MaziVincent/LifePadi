@@ -15,6 +15,7 @@ import 'package:remixicon/remixicon.dart';
 
 import '../router/routes.dart';
 import '../widgets/category_pill.dart';
+import '../widgets/section_title.dart';
 import '../widgets/store_name_with_wishlist_and_share.dart';
 
 class ProductDetailsPage extends StatelessWidget {
@@ -57,13 +58,9 @@ class ProductDetailsPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 5.h),
           ),
           16.verticalSpace,
-          Text(
+          const SectionTitle(
             'BNB Blender',
-            style: context.textTheme.titleMedium?.copyWith(
-              color: const Color(0xFF1C1C20),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            color: Color(0xFF1C1C20),
           ),
           8.verticalSpace,
           _buildPrice(),
@@ -80,13 +77,9 @@ class ProductDetailsPage extends StatelessWidget {
             ),
           ),
           8.verticalSpace,
-          Text(
+          const SectionTitle(
             'Description',
-            style: context.textTheme.bodyLarge?.copyWith(
-              color: const Color(0xFF27272A),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-            ),
+            color: Color(0xFF27272A),
           ),
           3.verticalSpace,
           Text.rich(
