@@ -158,7 +158,6 @@ class ProductDetailsPage extends StatelessWidget {
               Text(
                 '(20.6k reviews)',
                 style: context.textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF0F0F0F),
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                 ),

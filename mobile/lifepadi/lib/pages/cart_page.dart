@@ -13,6 +13,7 @@ import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 import 'package:remixicon/remixicon.dart';
 
+import '../widgets/bottom_panel.dart';
 import '../widgets/cart_discount.dart';
 import '../widgets/cart_item.dart';
 import '../widgets/my_divider.dart';
@@ -125,39 +126,21 @@ class CartPage extends HookWidget {
               247.verticalSpace,
             ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              height: 247.h,
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: Color(0xFFD6D6D6),
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32.r),
-                    topRight: Radius.circular(32.r),
-                  ),
+          BottomPanel(
+            child: Column(
+              children: [
+                const CartDiscount(),
+                const MyDivider(),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  child: const PaymentTotal(totalPrice: 43000),
                 ),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
-              child: Column(
-                children: [
-                  const CartDiscount(),
-                  const MyDivider(),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                    child: const PaymentTotal(totalPrice: 43000),
-                  ),
-                  PrimaryButton(
-                    text: 'Proceed to checkout',
-                    onPressed: () => CheckoutRoute().go(context),
-                  ),
-                ],
-              ),
+                PrimaryButton(
+                  text: 'Proceed to checkout',
+                  onPressed: () => CheckoutRoute().go(context),
+                ),
+              ],
             ),
           ),
         ],

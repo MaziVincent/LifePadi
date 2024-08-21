@@ -9,6 +9,7 @@ import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/payment_total.dart';
+import 'package:lifepadi/widgets/price_breakdown_item.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 
 import '../widgets/payment_method_checkbox.dart';
@@ -74,68 +75,16 @@ class CheckoutPage extends HookWidget {
                       ),
                     ),
                     ...<Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total items',
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Text(
-                            43000.currency,
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      const PriceBreakdownItem(
+                        title: 'Total items',
+                        price: 43000,
+                        isFirst: true,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Logistics',
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Text(
-                            1300.currency,
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Sub total',
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          Text(
-                            (43000 + 1300).currency,
-                            style: TextStyle(
-                              color: const Color(0xFF27272A),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
+                      const PriceBreakdownItem(title: 'Logistics', price: 300),
+                      const PriceBreakdownItem(
+                        title: 'Sub total',
+                        price: 43300,
+                        isFinal: true,
                       ),
                     ].separatedBy(const MyDivider()),
                   ].separatedBy(8.verticalSpace),

@@ -19,6 +19,7 @@ import '../pages/logistics_page.dart';
 import '../pages/new_location_page.dart';
 import '../pages/notification_page.dart';
 import '../pages/onboarding_page.dart';
+import '../pages/order_details_page.dart';
 import '../pages/orders_page.dart';
 import '../pages/product_details_page.dart';
 import '../pages/profile_page.dart';
@@ -60,7 +61,12 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
         TypedGoRoute<ReceiptRoute>(path: 'receipts/:id'),
       ],
     ),
-    TypedGoRoute<OrdersRoute>(path: '/orders'),
+    TypedGoRoute<OrdersRoute>(
+      path: '/orders',
+      routes: [
+        TypedGoRoute<OrderDetailsRoute>(path: ':id'),
+      ],
+    ),
     TypedGoRoute<ErrandsRoute>(path: '/errands'),
     TypedGoRoute<LogisticsRoute>(path: '/logistics'),
     TypedGoRoute<ProfileRoute>(path: '/profile'),
@@ -287,6 +293,19 @@ class ProductDetailsRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProductDetailsPage(id: id);
   }
+}
+
+class OrderDetailsRoute extends GoRouteData {
+  const OrderDetailsRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return OrderDetailsPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 
 class CartRoute extends GoRouteData {

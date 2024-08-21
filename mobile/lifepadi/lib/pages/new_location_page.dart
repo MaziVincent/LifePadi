@@ -10,6 +10,8 @@ import 'package:lifepadi/widgets/my_divider.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:remixicon/remixicon.dart';
 
+import '../widgets/bottom_panel.dart';
+
 class NewLocationPage extends StatelessWidget {
   const NewLocationPage({super.key});
   @override
@@ -55,97 +57,80 @@ class NewLocationPage extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              height: 240.h,
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: Color(0xFFD6D6D6),
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32.r),
-                    topRight: Radius.circular(32.r),
+          BottomPanel(
+            height: 240.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Remix.map_pin_5_line,
+                          size: 18.sp,
+                          color: kDarkPrimaryColor,
+                        ),
+                        5.horizontalSpace,
+                        Text(
+                          'Lekki, Lagos',
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            color: const Color(0xFF1C1C20),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// Search icon
+                    IconButton(
+                      onPressed: () {
+                        // TODO: Implement map.
+                      },
+                      icon: Icon(
+                        IconsaxPlusLinear.search_normal,
+                        size: 20.sp,
+                        color: const Color(0xFF878787),
+                      ),
+                    ),
+                  ],
+                ),
+                10.verticalSpace,
+                Text(
+                  'Drag map to set your delivery location ',
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: const Color(0xFF5F5F5F),
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Remix.map_pin_5_line,
-                            size: 18.sp,
-                            color: kDarkPrimaryColor,
-                          ),
-                          5.horizontalSpace,
-                          Text(
-                            'Lekki, Lagos',
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              color: const Color(0xFF1C1C20),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      /// Search icon
-                      IconButton(
-                        onPressed: () {
-                          // TODO: Implement map.
-                        },
-                        icon: Icon(
-                          IconsaxPlusLinear.search_normal,
-                          size: 20.sp,
-                          color: const Color(0xFF878787),
-                        ),
-                      ),
-                    ],
-                  ),
-                  10.verticalSpace,
-                  Text(
-                    'Drag map to set your delivery location ',
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF5F5F5F),
-                      fontSize: 12.sp,
+                16.verticalSpace,
+                GestureDetector(
+                  onTap: () {
+                    // TODO: Show dialog/input to add phone number
+                  },
+                  child: Text(
+                    'Add a phone number to this location',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      color: const Color(0xFF629D03),
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  16.verticalSpace,
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: Show dialog/input to add phone number
-                    },
-                    child: Text(
-                      'Add a phone number to this location',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.roboto(
-                        color: const Color(0xFF629D03),
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  16.verticalSpace,
-                  const MyDivider(),
-                  12.22.verticalSpace,
-                  PrimaryButton(
-                    text: 'Confirm Address',
-                    onPressed: () {
-                      // TODO: Save location to user's locations
-                    },
-                  ),
-                ],
-              ),
+                ),
+                16.verticalSpace,
+                const MyDivider(),
+                12.22.verticalSpace,
+                PrimaryButton(
+                  text: 'Confirm Address',
+                  onPressed: () {
+                    // TODO: Save location to user's locations
+                  },
+                ),
+              ],
             ),
           ),
         ],

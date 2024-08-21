@@ -6,20 +6,18 @@ import 'package:lifepadi/utils/helpers.dart';
 class PrimaryOutlineButton extends StatelessWidget {
   const PrimaryOutlineButton({
     super.key,
-    this.onPressed,
+    required this.onPressed,
     required this.text,
     this.iconColor = kDarkPrimaryColor,
     this.icon,
     this.textStyle,
-    this.height,
   });
 
-  final VoidCallback? onPressed;
+  final VoidCallback onPressed;
   final String text;
   final Color iconColor;
   final IconData? icon;
   final TextStyle? textStyle;
-  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +33,7 @@ class PrimaryOutlineButton extends StatelessWidget {
         customBorder: roundedRectangleBorder,
         child: Ink(
           width: double.infinity,
-          height: height,
+          height: 52.h,
           padding: EdgeInsets.symmetric(
             vertical: 16.h,
           ),
@@ -61,7 +59,7 @@ class PrimaryOutlineButton extends StatelessWidget {
               if (icon != null) 6.horizontalSpace,
               Text(
                 text,
-                style: textStyle ??
+                style: textStyle?.copyWith(height: 0.07.r) ??
                     context.textTheme.bodyLarge?.copyWith(
                       color: kDarkPrimaryColor,
                       fontWeight: FontWeight.w600,
