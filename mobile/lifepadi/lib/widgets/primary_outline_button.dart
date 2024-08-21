@@ -34,9 +34,6 @@ class PrimaryOutlineButton extends StatelessWidget {
         child: Ink(
           width: double.infinity,
           height: 52.h,
-          padding: EdgeInsets.symmetric(
-            vertical: 16.h,
-          ),
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: roundedRectangleBorder.copyWith(
@@ -59,13 +56,12 @@ class PrimaryOutlineButton extends StatelessWidget {
               if (icon != null) 6.horizontalSpace,
               Text(
                 text,
-                style: textStyle?.copyWith(height: 0.07.r) ??
+                style: textStyle ??
                     context.textTheme.bodyLarge?.copyWith(
                       color: kDarkPrimaryColor,
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
                       letterSpacing: -0.88.r,
-                      height: 0.07.r,
                     ),
               ),
             ],

@@ -30,9 +30,6 @@ class PrimaryButton extends StatelessWidget {
         child: Ink(
           width: double.infinity,
           height: 52.h,
-          padding: EdgeInsets.symmetric(
-            vertical: 16.h,
-          ),
           decoration: ShapeDecoration(
             gradient: const LinearGradient(
               colors: [kDarkPrimaryColor, kLightPrimaryColor],
@@ -49,7 +46,6 @@ class PrimaryButton extends StatelessWidget {
                 style: textTheme.bodyLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
-                  height: 0.07.r,
                   fontSize: 16.sp,
                   letterSpacing: -0.88.r,
                 ),
