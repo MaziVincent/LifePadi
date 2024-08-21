@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/bottom_panel.dart';
@@ -168,8 +170,6 @@ class OrderDetailsPage extends StatelessWidget {
               ),
               10.verticalSpace,
               182.verticalSpace,
-
-              /// Action buttons - Track Order, Buy Again
             ].separatedBy(14.verticalSpace),
           ),
           BottomPanel(
@@ -177,9 +177,7 @@ class OrderDetailsPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 PrimaryOutlineButton(
-                  onPressed: () {
-                    // TODO: Go to order tracking page
-                  },
+                  onPressed: () => context.go(TrackOrderRoute(id: id).location),
                   text: 'Track Order',
                 ),
                 PrimaryButton(

@@ -29,11 +29,20 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow-right.svg
   SvgGenImage get arrowRight => const SvgGenImage('assets/icons/arrow-right.svg');
 
+  /// File path: assets/icons/box-closed.svg
+  SvgGenImage get boxClosed => const SvgGenImage('assets/icons/box-closed.svg');
+
+  /// File path: assets/icons/box-open.svg
+  SvgGenImage get boxOpen => const SvgGenImage('assets/icons/box-open.svg');
+
   /// File path: assets/icons/cooking-gas.png
   AssetGenImage get cookingGas => const AssetGenImage('assets/icons/cooking-gas.png');
 
   /// File path: assets/icons/download.svg
   SvgGenImage get download => const SvgGenImage('assets/icons/download.svg');
+
+  /// File path: assets/icons/empty-trolley.svg
+  SvgGenImage get emptyTrolley => const SvgGenImage('assets/icons/empty-trolley.svg');
 
   /// File path: assets/icons/errand-boy.svg
   SvgGenImage get errandBoy => const SvgGenImage('assets/icons/errand-boy.svg');
@@ -65,17 +74,29 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mastercard.png
   AssetGenImage get mastercard => const AssetGenImage('assets/icons/mastercard.png');
 
+  /// File path: assets/icons/path-to-location.svg
+  SvgGenImage get pathToLocation => const SvgGenImage('assets/icons/path-to-location.svg');
+
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
+  /// File path: assets/icons/scan.svg
+  SvgGenImage get scan => const SvgGenImage('assets/icons/scan.svg');
+
   /// File path: assets/icons/share.png
   AssetGenImage get share => const AssetGenImage('assets/icons/share.png');
+
+  /// File path: assets/icons/speed-bus.svg
+  SvgGenImage get speedBus => const SvgGenImage('assets/icons/speed-bus.svg');
 
   /// File path: assets/icons/star.png
   AssetGenImage get star => const AssetGenImage('assets/icons/star.png');
 
   /// File path: assets/icons/star_half.png
   AssetGenImage get starHalf => const AssetGenImage('assets/icons/star_half.png');
+
+  /// File path: assets/icons/success-check-open.svg
+  SvgGenImage get successCheckOpen => const SvgGenImage('assets/icons/success-check-open.svg');
 
   /// File path: assets/icons/success.svg
   SvgGenImage get success => const SvgGenImage('assets/icons/success.svg');
@@ -89,8 +110,11 @@ class $AssetsIconsGen {
   /// List of all assets
   List<dynamic> get values => [
         arrowRight,
+        boxClosed,
+        boxOpen,
         cookingGas,
         download,
+        emptyTrolley,
         errandBoy,
         fuelStation,
         gasFilling,
@@ -101,10 +125,14 @@ class $AssetsIconsGen {
         location,
         mapPin,
         mastercard,
+        pathToLocation,
         restaurant,
+        scan,
         share,
+        speedBus,
         star,
         starHalf,
+        successCheckOpen,
         success,
         verve,
         voucher
@@ -133,6 +161,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/hand-package-to-lady.png
   AssetGenImage get handPackageToLady =>
       const AssetGenImage('assets/images/hand-package-to-lady.png');
+
+  /// File path: assets/images/john-bayo.png
+  AssetGenImage get johnBayo => const AssetGenImage('assets/images/john-bayo.png');
 
   /// File path: assets/images/john-doe-avatar.png
   AssetGenImage get johnDoeAvatar => const AssetGenImage('assets/images/john-doe-avatar.png');
@@ -176,6 +207,7 @@ class $AssetsImagesGen {
         bnbBlender,
         deliverPackageToLady,
         handPackageToLady,
+        johnBayo,
         johnDoeAvatar,
         loadingWheel,
         logoDark,

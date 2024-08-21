@@ -12,6 +12,7 @@ import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
 import '../state/auth_controller.dart';
+import '../widgets/glassmorphic_back_button.dart';
 import '../widgets/input_field.dart';
 
 class LoginPage extends HookConsumerWidget {

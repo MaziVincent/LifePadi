@@ -9,6 +9,8 @@ import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:pinput/pinput.dart';
 
+import '../widgets/glassmorphic_back_button.dart';
+
 class VerificationPage extends HookConsumerWidget {
   const VerificationPage({super.key});
 

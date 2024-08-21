@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/pages/track_order_page.dart';
 
 import '../entities/user_role.dart';
 import '../pages/admin_page.dart';
@@ -65,6 +66,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
       path: '/orders',
       routes: [
         TypedGoRoute<OrderDetailsRoute>(path: ':id'),
+        TypedGoRoute<TrackOrderRoute>(path: 'track/:id'),
       ],
     ),
     TypedGoRoute<ErrandsRoute>(path: '/errands'),
@@ -303,6 +305,19 @@ class OrderDetailsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return OrderDetailsPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class TrackOrderRoute extends GoRouteData {
+  const TrackOrderRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TrackOrderPage(id: id);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

@@ -11,6 +11,8 @@ import 'package:lifepadi/widgets/input_field.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 
+import '../widgets/glassmorphic_back_button.dart';
+
 class ForgotPasswordPage extends HookConsumerWidget {
   const ForgotPasswordPage({super.key});
 
