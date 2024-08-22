@@ -18,8 +18,8 @@ const Header = () => {
     setShowDiv(!showDiv);
   };
   return (
-    <header className=" fixed bg-inherit z-40 flex justify-between items-center px-4 w-full top-0 py-4">
-      <div className="w-40">
+    <header className=" fixed z-40 flex justify-between items-center px-4 w-full top-0 py-4">
+      <div className="w-40 bg-primary rounded-xl">
         <Link to="/" className=" px-6 py-2 w rounded-full flex items-center gap-4 text-primary font-semibold">
           <img src={logo} alt="logo" />
         </Link>
@@ -28,7 +28,7 @@ const Header = () => {
         <ul className=" flex items-center list-none gap-4 max-lg:hidden">
           <li>
             <Link className=" bg-primary px-10 py-3 rounded-full font-medium shadow-lg">
-              About
+              Stores
             </Link>
           </li>
           <li>
@@ -38,7 +38,13 @@ const Header = () => {
           </li>
           <li>
             <Link className=" bg-primary px-10 py-3 rounded-full font-medium shadow-lg">
-              Order now
+              About
+            </Link>
+          </li>
+
+          <li>
+            <Link className=" bg-primary px-10 py-3 rounded-full font-medium shadow-lg">
+              Contacts
             </Link>
           </li>
         </ul>

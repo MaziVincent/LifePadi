@@ -78,6 +78,7 @@ namespace Api.Controllers
                 if (!ModelState.IsValid) return BadRequest("Some form values are not correct");
                 var authCustomer = await _icustomer!.createAsync(customer);
                 return Ok(authCustomer);
+
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);

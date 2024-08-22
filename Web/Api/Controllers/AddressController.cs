@@ -27,7 +27,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/get")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -54,7 +54,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] AddressDto address, int id)
         {
             try
@@ -68,7 +68,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -96,7 +96,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{userId}/user-addresses")]
+        [HttpGet("user-addresses/{userId}")]
         public async Task<IActionResult> getUsersAddress([FromRoute] int userId)
         {
             try

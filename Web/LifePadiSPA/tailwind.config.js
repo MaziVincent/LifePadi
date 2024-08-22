@@ -28,7 +28,8 @@ export default {
       darkHover:"#3D3D3D",
       darkSecondaryText:"#AAAAAA",
       yellow:"#e8c115",
-      blue:"#15c5e8"
+      blue:"#15c5e8",
+      lightGray:"#f1f2f3"
     },
     extend: {},
   },
