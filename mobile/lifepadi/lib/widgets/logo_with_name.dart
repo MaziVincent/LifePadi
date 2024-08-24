@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 
-class Logo extends StatelessWidget {
-  const Logo({
+class LogoWithName extends StatelessWidget {
+  const LogoWithName({
     super.key,
   });
 

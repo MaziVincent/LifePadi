@@ -6,7 +6,7 @@ import 'package:lifepadi/utils/helpers.dart';
 
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
-import '../widgets/logo.dart';
+import '../widgets/logo_with_name.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/primary_outline_button.dart';
 
@@ -54,7 +54,7 @@ class GetStartedPage extends StatelessWidget {
                   child: Column(
                     children: [
                       10.verticalSpace,
-                      const Logo(),
+                      const LogoWithName(),
                       10.verticalSpace,
                       Text(
                         'Your Innovative Digital Market and  Errand Friend',

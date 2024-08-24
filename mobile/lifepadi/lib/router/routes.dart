@@ -3,34 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/pages/track_order_page.dart';
+import 'package:lifepadi/pages/pages.dart';
 
 import '../entities/user_role.dart';
-import '../pages/admin_page.dart';
-import '../pages/cart_page.dart';
-import '../pages/categories_page.dart';
-import '../pages/checkout_page.dart';
-import '../pages/details_page.dart';
-import '../pages/errands_page.dart';
-import '../pages/forgot_password_page.dart';
-import '../pages/get_started_page.dart';
-import '../pages/home_page.dart';
-import '../pages/login_page.dart';
-import '../pages/logistics_page.dart';
-import '../pages/new_location_page.dart';
-import '../pages/notification_page.dart';
-import '../pages/onboarding_page.dart';
-import '../pages/order_details_page.dart';
-import '../pages/orders_page.dart';
-import '../pages/product_details_page.dart';
-import '../pages/profile_page.dart';
-import '../pages/receipt_page.dart';
-import '../pages/register_page.dart';
-import '../pages/reset_password_page.dart';
-import '../pages/rider_page.dart';
-import '../pages/splash_page.dart';
-import '../pages/vendors_page.dart';
-import '../pages/verification_page.dart';
 import '../state/permissions.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 
@@ -400,4 +375,14 @@ class ReceiptRoute extends GoRouteData {
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+@TypedGoRoute<ChatsRoute>(path: '/chats')
+class ChatsRoute extends GoRouteData {
+  const ChatsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ChatsPage();
+  }
 }

@@ -86,9 +86,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SettingsTile(
                   title: 'Chats',
-                  onTap: () {
-                    // TODO: Go to chats page.
-                  },
+                  onTap: () => context.push(const ChatsRoute().location),
                 ),
                 SettingsTile(
                   title: 'Wallets',

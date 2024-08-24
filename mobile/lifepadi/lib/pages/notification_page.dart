@@ -5,7 +5,7 @@ import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
 import 'package:remixicon/remixicon.dart';
 
-import '../widgets/notification_card.dart';
+import '../widgets/notification_tile.dart';
 
 class NotificationPage extends HookWidget {
   const NotificationPage({super.key});
@@ -26,7 +26,7 @@ class NotificationPage extends HookWidget {
       ),
       body: ListView(
         children: [
-          NotificationCard(
+          NotificationTile(
             title: 'Payment Top-up Alert!',
             description:
                 'We wanted to notify you that a payment top-up has been processed on your account. Please make payment so we can proceed with your shopping.',
@@ -34,14 +34,14 @@ class NotificationPage extends HookWidget {
             primaryAction: (text: 'Make Payment', onTap: () {}),
             secondaryAction: (text: 'Decline', onTap: () {}),
           ),
-          NotificationCard(
+          NotificationTile(
             title: 'Patrick added a review on an item you purchased.',
             description:
                 'Looks perfect, bought it for my technical workshop tomorrow!',
             time: '8h',
-            image: Assets.images.johnDoeAvatar.image(),
+            image: Assets.images.johnDoeAvatar.provider(),
           ),
-          NotificationCard(
+          NotificationTile(
             title: 'New Feature Alert!',
             description:
                 "We're pleased to introduce the latest enhancements in our delivery experience.",
