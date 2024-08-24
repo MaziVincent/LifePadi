@@ -163,6 +163,7 @@ class HomePage extends HookWidget {
               const SectionTitle('Stores and Vendors'),
               16.verticalSpace,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (final v in vendors.take(3))
                     VendorCard(
@@ -186,6 +187,7 @@ class HomePage extends HookWidget {
               ),
               16.verticalSpace,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (final (:name, :image) in services.take(4))
                     ServiceCard(name: name, image: image),
