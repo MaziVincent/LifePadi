@@ -7,8 +7,15 @@ import LandingPageSlide from "./LandingPageSlide";
 import AppStore from "../../assets/images/app-store-white.svg";
 import PlayStore from "../../assets/images/app-store-black.svg";
 import iphone from "../../assets/images/iphone.png";
+import vendor2 from "../../assets/images/vendor2.png";
+import rider from "../../assets/images/rider.png";
+import delivery from "../../assets/images/delivery.png";
 import rice from "../../assets/images/rice.jpeg";
-
+import burger from "../../assets/images/burger.png";
+import { Link } from "react-router-dom";
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import MopedIcon from '@mui/icons-material/Moped';
+import Groups3Icon from '@mui/icons-material/Groups3';
 
 import {
   ArrowBack,
@@ -17,6 +24,7 @@ import {
   ChevronRight,
   ShoppingCart,
 } from "@mui/icons-material";
+import { green } from "@mui/material/colors";
 
 const Home = () => {
   const lottieStyle = {
@@ -30,7 +38,7 @@ const Home = () => {
     margin: 0,
   };
   return (
-    <main className="scroll-smooth">
+    <main className="scroll-smooth ">
       <section className="bg-white dark:bg-gray-900">
         <div className=" w-screen h-5/6  text-center">
           <Lottie
@@ -42,15 +50,15 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="flex justify-center">
+      <section className="flex justify-center px-4">
         <div className=" md:flex w-full lg:w-3/4 ">
           <div className=" md:w-1/2 flex flex-col justify-center ">
-            <div>
+            <div className="">
               <div className=" py-8 text-center md:text-start text-6xl max-md:text-3xl font-bold">
-                <h2 className="text-center">Try the app</h2>
+                <h2 className="text-center ">Try the app</h2>
               </div>
               <div className=" pb-8">
-                <p className=" text-center font-normal text-lg px-5">
+                <p className=" text-center font-normal text-lg px-5 text-grayTxt">
                   Experience the convenience of swift delivery from numerous
                   restaurants, featuring a broad spectrum of cuisines, including
                   African, Continental, and many more! Your cravings will be
@@ -87,7 +95,7 @@ const Home = () => {
       <section className="pb-20">
         <div className=" ">
           <div className=" py-8">
-            <h1 className=" flex justify-center items-center text-5xl max-lg:text-3xl max-md:text-2xl max-lg:font-normal font-medium text-gray text-center">
+            <h1 className=" flex justify-center items-center text-5xl max-lg:text-3xl max-md:text-2xl max-lg:font-normal font-medium text-grayTxt text-center px-3">
               There is a Padi for your every need
               <span className=" pt-5 max-lg:pt-2">
                 <svg
@@ -108,28 +116,30 @@ const Home = () => {
             </h1>
           </div>
           <section className=" flex justify-center ">
-            <div className="grid grid-cols-1 md:w-9/12 lg:grid-cols-3 gap-4">
-              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded p-4 ">
-                <div className="h-40 rounded-xl bg-gradient-to-b from-secondary to-background flex items-center justify-center">
+            <div className="grid grid-cols-1 md:w-9/12 md:grid-cols-2 xl:w-8/12 lg:grid-cols-3 gap-4">
+              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded-lg p-2 ">
+                <div className="rounded-xl  flex items-center justify-center ">
                   <img
-                    src={rice}
-                    alt=""
-                    className=" w-11/12 h-full rounded-xl"
+                    src={vendor2}
+                    alt="vendor"
+                    className=" w-6/12 h-full rounded-xl"
+                    loading="lazy"
                   />
                 </div>
-                <div className=" ">
-                  <span>icon</span>
-                  <h2>Text</h2>
-                  <p className="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Facere eaque obcaecati neque sequi architecto, est non error
-                    distinctio, voluptates qui quia, enim deserunt quas
-                    doloribus consectetur temporibus. Mollitia ipsam culpa
-                    deserunt quo iusto fugit, dolorem, atque perferendis,
-                    facilis impedit a?
+                <div className=" px-4 ">
+                  <div className=" flex gap-2 justify-center">
+                  <span>
+                  <StorefrontIcon sx={{color:green[600]}} />
+                  </span>
+                  <h2 className="text-2xl font-semibold">Are you a Vendor? </h2>
+                  </div>
+                  <p className="text-justify ">
+                    Grow with Padi! Are you a vendor looking to grow your business ? 
+                    Our technology and user base will help you increase sales, reach 
+                    new customers and unlock new opportunities. 
                   </p>
-                  <button className=" my-4 p-2 rounded-xl">
-                    <span className=" font-medium text-lg">
+                  <button className=" my-4 rounded-xl">
+                    <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
@@ -138,27 +148,28 @@ const Home = () => {
                   </button>
                 </div>
               </div>
-              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded p-4">
-                <div className="h-40 rounded-xl border">
+              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded-lg p-2 ">
+                <div className="rounded-xl  flex items-center justify-center ">
                   <img
-                    src=""
-                    alt=""
-                    className=" w-full"
+                    src={rider}
+                    alt="vendor"
+                    className=" w-6/12 h-full rounded-xl"
+                    loading="lazy"
                   />
                 </div>
-                <div className=" ">
-                  <span>icon</span>
-                  <h2>Text</h2>
-                  <p className="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Facere eaque obcaecati neque sequi architecto, est non error
-                    distinctio, voluptates qui quia, enim deserunt quas
-                    doloribus consectetur temporibus. Mollitia ipsam culpa
-                    deserunt quo iusto fugit, dolorem, atque perferendis,
-                    facilis impedit a?
+                <div className=" px-4 ">
+                  <div className=" flex gap-2 justify-center">
+                  <span>
+                  <MopedIcon sx={{color:green[600]}} />
+                  </span>
+                  <h2 className="text-2xl font-semibold">Become a Padi </h2>
+                  </div>
+                  <p className="text-justify ">
+                    Enjoy flexibility, freedom and deliver happiness to customers while 
+                    while earning to achieve your dreams. 
                   </p>
-                  <button className=" my-4 p-2 rounded-xl">
-                    <span className=" font-medium text-lg">
+                  <button className=" my-4 rounded-xl">
+                    <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
@@ -167,27 +178,28 @@ const Home = () => {
                   </button>
                 </div>
               </div>
-              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded p-4">
-                <div className="h-40 rounded-xl border">
+              <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded-lg p-2 ">
+                <div className="rounded-xl  flex items-center justify-center ">
                   <img
-                    src=""
-                    alt=""
-                    className=" w-full"
+                    src={delivery}
+                    alt="vendor"
+                    className=" w-6/12 h-full rounded-xl"
+                    loading="lazy"
                   />
                 </div>
-                <div className=" ">
-                  <span>icon</span>
-                  <h2>Text</h2>
-                  <p className="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Facere eaque obcaecati neque sequi architecto, est non error
-                    distinctio, voluptates qui quia, enim deserunt quas
-                    doloribus consectetur temporibus. Mollitia ipsam culpa
-                    deserunt quo iusto fugit, dolorem, atque perferendis,
-                    facilis impedit a?
+                <div className=" px-4 ">
+                  <div className=" flex gap-2 justify-center">
+                  <span>
+                  <Groups3Icon sx={{color:green[600]}} />
+                  </span>
+                  <h2 className="text-2xl font-semibold">Build with us </h2>
+                  </div>
+                  <p className="text-justify ">
+                    Are you passionate about helping us achieve our goal to make
+                    life easy for our customers, we would like to hear from you. 
                   </p>
-                  <button className=" my-4 p-2 rounded-xl">
-                    <span className=" font-medium text-lg">
+                  <button className=" my-4 rounded-xl">
+                    <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
@@ -201,31 +213,252 @@ const Home = () => {
         </div>
       </section>
       <LandingPageSlide />
-      <section>
-      <div>
-        {/* <svg
+      <section className="pb-16">
+        <div className=" ">
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 320"
           >
             <path
               fill="#9ec81d"
-              fill-opacity="1"
+              fillOpacity="1"
               d="M0,64L60,58.7C120,53,240,43,360,48C480,53,600,75,720,101.3C840,128,960,160,1080,160C1200,160,1320,128,1380,112L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
             ></path>
             
           </svg> */}
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-        >
-          <path
-            fill="#609963"
-            fill-opacity="1"
-            d="M0,64L60,58.7C120,53,240,43,360,48C480,53,600,75,720,101.3C840,128,960,160,1080,160C1200,160,1320,128,1380,112L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-          ></path>
-        </svg>
-      </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 170"
+          >
+            <path
+              fill="#609963"
+              fillOpacity="1"
+              d="M0,64L60,58.7C120,53,240,43,360,48C480,53,600,75,720,101.3C840,128,960,160,1080,160C1200,160,1320,128,1380,112L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
+            ></path>
+          </svg>
+        </div>
+        <div className="flex flex-col items-center gap-20">
+          <h2 className="text-2xl lg:text-4xl font-bold"> Our Top Vendors </h2>
+          <div className="grid grid-cols-2 lg:grid-cols-3 justify-center items-center gap-6 lg:w-4/6 ">
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center border-background border-4"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center border-background border-4"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+
+            <div className="flex flex-col items-center justify-center ">
+              <div
+                className="relative w-40 h-40 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${rice})`,
+                  clipPath: `polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%)`,
+                }}
+              >
+                {/* Optional content inside the blob */}
+              </div>
+              <h3 className=" text-xl text-center text-gray-800">
+                Your Text Here
+              </h3>
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-5">
+            <h2 className="text-3xl font-bold text-center">
+              We Deliver Everything
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-4 lg:w-4/6">
+              <div className="flex flex-col items-center h-48 ">
+                <div
+                  className="h-2/3 w-36 bg-cover bg-repeat bg-center "
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1000 1000%22 xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3CclipPath id=%22a%22%3E%3Cpath fill=%22currentColor%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg clip-path=%22url(%23a)%22%3E%3Cpath fill=%22%23609963%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")`,
+                  }}
+                >
+                  <img
+                    src={burger}
+                    alt=""
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <p className="h-1/3 px-5 text-center">
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aspernatur neque nulla hic obcaecati quod.
+                </p>
+              </div>
+              <div className="flex flex-col items-center h-48 ">
+                <div
+                  className="h-2/3 w-36 bg-cover bg-repeat bg-center "
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1000 1000%22 xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3CclipPath id=%22a%22%3E%3Cpath fill=%22currentColor%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg clip-path=%22url(%23a)%22%3E%3Cpath fill=%22%23609963%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")`,
+                  }}
+                >
+                  <img
+                    src={burger}
+                    alt=""
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <p className="h-1/3 px-5 text-center">
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aspernatur neque nulla hic obcaecati quod.
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center h-48 ">
+                <div
+                  className="h-2/3 w-36 bg-cover bg-repeat bg-center "
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1000 1000%22 xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3CclipPath id=%22a%22%3E%3Cpath fill=%22currentColor%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg clip-path=%22url(%23a)%22%3E%3Cpath fill=%22%23609963%22 d=%22M772.5 652Q675 804 507 792T196.5 640Q54 500 167.5 310.5t328-182Q710 136 790 318t-17.5 334Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")`,
+                  }}
+                >
+                  <img
+                    src={burger}
+                    alt=""
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <p className="h-1/3 px-5 text-center">
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aspernatur neque nulla hic obcaecati quod.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className=" bg-accent">
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 320"
+          >
+            <path
+              fill="#ffffff"
+              fillOpacity="1"
+              d="M0,96L48,80C96,64,192,32,288,26.7C384,21,480,43,576,58.7C672,75,768,85,864,112C960,139,1056,181,1152,170.7C1248,160,1344,96,1392,64L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+            ></path>
+          </svg>
+        </div>
+
+         <div className=' bg-accent h-auto pt-20 pb-10'>
+                <div className=' px-4 max-lg:px-8 h-auto mb-12'>
+                    <div className='grid grid-cols-2 max-lg:grid-cols-1 gap-6 max-lg:flex max-lg:justify-center'>
+                        <div className=' bg-background rounded-3xl relative max-lg:w-11/12 max-sm:w-full'>
+                            <h1 className=' text-6xl max-md:text-3xl max-md:pr-10 font-bold p-8 pr-32'>Place your order in second</h1>
+                            <div className=' p-8'>
+                                <div className=' flex items-start gap-4 flex-col max-md:flex-row'>
+                                    <Link className=' bg-primary py-3 px-2 rounded-lg flex items-center gap-2 max-md:rounded-full max-md:px-3'>
+                                        <span className=' max-md:flex max-md:item-center max-md:justify-center'>
+                                            <img src={PlayStore} alt="" className=' w-8 h-8' />
+                                        </span>
+                                        <span className=' max-md:hidden text-background'>
+                                            Download on Googleplay
+                                        </span>
+                                    </Link>
+                                    <Link className=' bg-primary py-3 px-2 rounded-lg flex items-center gap-2 max-md:rounded-full max-md:px-3'>
+                                        <span className=' max-md:flex max-md:item-center max-md:justify-center'>
+                                            <img src={AppStore} alt="" className=' w-8 h-8' />
+                                        </span>
+                                        <span className=' max-md:hidden text-background'>
+                                            Download on App Store
+                                        </span>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className=' mt-12 px-8 max-lg:pb-4'>
+                                <div className=' flex items-start flex-col gap-4'>
+                                    <img src={rice} alt=""  />
+                                    <div>
+                                        <p className=' border w-32 flex items-center py-3 gap-2 px-3 rounded-lg bg-secondary'>
+                                            <span className=' border-4 rounded-full p-1 bg-background'></span>
+                                            <span className=' font-semibold'>LGHDEN</span>
+                                        </p>
+                                        <p className=' text-xl max-md:text-sm font-normal pr-40 max-md:pr-10'>Get <span className=' font-medium text-secondary'>&#8358;300 off</span> your first order when you use this promo code</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='h-96 max-md:h-48 max-sm:h-32 p-0 m-0 absolute right-3 bottom-2'>
+                                <img src={iphone} alt="" className='h-full' />
+                            </div>
+                        </div>
+                        <div className=' max-lg:hidden'>
+                            <img src={iphone} alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
       </section>
     </main>
   );
