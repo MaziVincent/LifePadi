@@ -172,6 +172,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/john-doe-avatar.png
   AssetGenImage get johnDoeAvatar => const AssetGenImage('assets/images/john-doe-avatar.png');
 
+  /// File path: assets/images/john-lukman.png
+  AssetGenImage get johnLukman => const AssetGenImage('assets/images/john-lukman.png');
+
   /// File path: assets/images/loading-wheel.svg
   SvgGenImage get loadingWheel => const SvgGenImage('assets/images/loading-wheel.svg');
 
@@ -213,6 +216,7 @@ class $AssetsImagesGen {
         handPackageToLady,
         johnBayo,
         johnDoeAvatar,
+        johnLukman,
         loadingWheel,
         logoDark,
         manWithCart,

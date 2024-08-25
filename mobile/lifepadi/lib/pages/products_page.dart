@@ -63,14 +63,14 @@ class ProductsPage extends HookWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ProductCard(
+                    ProductTile(
                       id: 1,
                       image: Assets.images.bnbBlender.provider(),
                       name: 'BNB Blender',
                       vendor: 'Shoprite Stores',
                       price: 33000,
                     ),
-                    ProductCard(
+                    ProductTile(
                       id: 2,
                       image: Assets.images.oilPerfumes.provider(),
                       name: 'Oil Perfumes',
@@ -78,7 +78,7 @@ class ProductsPage extends HookWidget {
                       price: 500,
                     ),
                     for (final i in [3, 4, 5])
-                      ProductCard(
+                      ProductTile(
                         id: i,
                         image: Assets.images.plainTees.provider(),
                         name: 'Plain Tees',

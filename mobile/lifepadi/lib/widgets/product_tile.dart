@@ -7,8 +7,8 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 
-class ProductCard extends HookWidget {
-  const ProductCard({
+class ProductTile extends HookWidget {
+  const ProductTile({
     super.key,
     this.image,
     required this.name,

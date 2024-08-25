@@ -9,13 +9,13 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/category_tab.dart';
+import 'package:lifepadi/widgets/errand_card.dart';
 import 'package:lifepadi/widgets/header_with_see_all.dart';
 import 'package:lifepadi/widgets/loading_wheel.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
-import 'package:lifepadi/widgets/product_card.dart';
+import 'package:lifepadi/widgets/product_tile.dart';
 import 'package:lifepadi/widgets/section_title.dart';
-import 'package:lifepadi/widgets/service_card.dart';
 import 'package:lifepadi/widgets/vendor_card.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -181,7 +181,13 @@ class HomePage extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (final (:name, :image) in services.take(4))
-                    ServiceCard(name: name, image: image),
+                    ErrandCard(
+                      name: name,
+                      image: image,
+                      onTap: () => context.push(
+                        const SingleErrandRoute(id: 1).location,
+                      ),
+                    ),
                 ].separatedBy(10.horizontalSpace),
               ),
               16.verticalSpace,
@@ -214,21 +220,21 @@ class HomePage extends HookWidget {
               Column(
                 children: [
                   ...[
-                    ProductCard(
+                    ProductTile(
                       id: 1,
                       image: Assets.images.bnbBlender.provider(),
                       name: 'BNB Blender',
                       vendor: 'Shoprite Stores',
                       price: 33000,
                     ),
-                    ProductCard(
+                    ProductTile(
                       id: 2,
                       image: Assets.images.oilPerfumes.provider(),
                       name: 'Oil Perfumes',
                       vendor: 'Beauty Collection',
                       price: 500,
                     ),
-                    ProductCard(
+                    ProductTile(
                       id: 3,
                       image: Assets.images.plainTees.provider(),
                       name: 'Plain Tees',

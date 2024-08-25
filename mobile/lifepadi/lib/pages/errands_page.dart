@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/widgets/errand_card.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/service_card.dart';
 
 class ErrandsPage extends StatelessWidget {
   const ErrandsPage({super.key});
@@ -22,9 +24,10 @@ class ErrandsPage extends StatelessWidget {
           ),
           itemCount: services.length,
           itemBuilder: (context, index) {
-            return ServiceCard(
+            return ErrandCard(
               name: services[index].name,
               image: services[index].image,
+              onTap: () => context.go(const SingleErrandRoute(id: 1).location),
             );
           },
         ),

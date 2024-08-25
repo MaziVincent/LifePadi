@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/pages.dart';
 import 'package:lifepadi/pages/products_page.dart';
 import 'package:lifepadi/pages/single_chat_page.dart';
+import 'package:lifepadi/pages/single_errand_page.dart';
 
 import '../entities/user_role.dart';
 import '../state/permissions.dart';
@@ -46,7 +47,12 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
         TypedGoRoute<TrackOrderRoute>(path: 'track/:id'),
       ],
     ),
-    TypedGoRoute<ErrandsRoute>(path: '/errands'),
+    TypedGoRoute<ErrandsRoute>(
+      path: '/errands',
+      routes: [
+        TypedGoRoute<SingleErrandRoute>(path: ':id'),
+      ],
+    ),
     TypedGoRoute<LogisticsRoute>(path: '/logistics'),
     TypedGoRoute<ProfileRoute>(path: '/profile'),
   ],
@@ -417,4 +423,17 @@ class ProductsRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProductsPage(categoryId: categoryId);
   }
+}
+
+class SingleErrandRoute extends GoRouteData {
+  const SingleErrandRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SingleErrandPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
