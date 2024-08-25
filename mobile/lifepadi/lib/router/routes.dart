@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/pages.dart';
+import 'package:lifepadi/pages/single_chat_page.dart';
 
 import '../entities/user_role.dart';
 import '../state/permissions.dart';
@@ -377,12 +378,28 @@ class ReceiptRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 
-@TypedGoRoute<ChatsRoute>(path: '/chats')
+@TypedGoRoute<ChatsRoute>(
+  path: '/chats',
+  routes: [
+    TypedGoRoute<SingleChatRoute>(path: ':id'),
+  ],
+)
 class ChatsRoute extends GoRouteData {
   const ChatsRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ChatsPage();
+  }
+}
+
+class SingleChatRoute extends GoRouteData {
+  const SingleChatRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SingleChatPage(id: id);
   }
 }

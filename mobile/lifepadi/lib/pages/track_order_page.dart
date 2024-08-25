@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/bottom_panel.dart';
@@ -132,12 +134,7 @@ class TrackOrderPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '1.2 km away',
-                              style: urbanistStyle,
-                            ),
-                            Text(
-                              '|',
-                              textAlign: TextAlign.center,
+                              '1.2 km away |',
                               style: urbanistStyle,
                             ),
                             Assets.icons.star.image(
@@ -154,9 +151,8 @@ class TrackOrderPage extends StatelessWidget {
                     ),
                   ),
                   MyOutlineIconButton(
-                    onPressed: () {
-                      // TODO: Go to chat page for this rider
-                    },
+                    onPressed: () =>
+                        context.push(const SingleChatRoute(id: 1).location),
                     icon: IconsaxPlusLinear.messages_2,
                   ),
                   MyOutlineIconButton(

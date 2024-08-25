@@ -9,7 +9,7 @@ class Avatar extends StatelessWidget {
   /// If the image is null, it will show the logo as default.
   const Avatar({
     super.key,
-    required this.image,
+    this.image,
     this.size,
   });
 

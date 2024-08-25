@@ -177,7 +177,8 @@ class OrderDetailsPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 PrimaryOutlineButton(
-                  onPressed: () => context.go(TrackOrderRoute(id: id).location),
+                  onPressed: () =>
+                      context.push(TrackOrderRoute(id: id).location),
                   text: 'Track Order',
                 ),
                 PrimaryButton(

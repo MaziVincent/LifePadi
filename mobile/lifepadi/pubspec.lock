@@ -553,10 +553,10 @@ packages:
     dependency: transitive
     description:
       name: jni
-      sha256: "85cf3fbc8ce837e09b4cfe59d688c0249a5b9f4cc9a9a5be38e2823f218988a8"
+      sha256: f377c585ea9c08d48b427dc2e03780af2889d1bb094440da853c6883c1acba4b
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.3"
+    version: "0.10.1"
   js:
     dependency: transitive
     description:
@@ -681,10 +681,10 @@ packages:
     dependency: "direct main"
     description:
       name: native_storage
-      sha256: "635598d338b6f8773e6993c52412a3f6b09770848ed94e8afae2e7ad53e06a01"
+      sha256: "0cdf8c75cfe38c6c820546d57954e35ecdc8918017b24fad4e7c7f8b9dd50fbf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.7"
+    version: "0.2.0"
   package_config:
     dependency: transitive
     description:

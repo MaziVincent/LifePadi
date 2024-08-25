@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
@@ -24,9 +26,7 @@ class ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // TODO: Go to the chat screen
-      },
+      onTap: () => context.go(const SingleChatRoute(id: 1).location),
       child: Ink(
         width: double.infinity,
         decoration: const BoxDecoration(
