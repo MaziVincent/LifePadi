@@ -3,16 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class SenderMessage extends StatelessWidget {
   const SenderMessage({
     super.key,
-    required this.content,
-    required this.time,
+    this.content = '',
+    this.time = 'Just now',
+    this.isTyping = false,
   });
 
   final String content;
   final String time;
+  final bool isTyping;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class SenderMessage extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: 15.w,
-                vertical: 10.h,
+                vertical: isTyping ? 13.h : 10.h,
               ),
               margin: EdgeInsets.only(left: 10.w),
               constraints: BoxConstraints(maxWidth: 0.7.sw),
@@ -39,24 +42,30 @@ class SenderMessage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(
-                content,
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: Colors.white,
-                  fontSize: 16.sp,
+              child: isTyping
+                  ? const TypingLoader(
+                      color: Color(0xDFFFFFFF),
+                    )
+                  : Text(
+                      content,
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+            ),
+            if (!isTyping) ...[
+              5.verticalSpace,
+              Text(
+                time,
+                style: GoogleFonts.sourceSans3(
+                  color: const Color(0x660D082C),
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            5.verticalSpace,
-            Text(
-              time,
-              style: GoogleFonts.sourceSans3(
-                color: const Color(0x660D082C),
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            ],
           ],
         ),
       ],

@@ -8,12 +8,14 @@ import 'package:lifepadi/widgets/widgets.dart';
 class ReceiverMessage extends StatelessWidget {
   const ReceiverMessage({
     super.key,
-    required this.content,
-    required this.time,
+    this.content = '',
+    this.time = 'Just now',
+    this.isTyping = false,
   });
 
   final String content;
   final String time;
+  final bool isTyping;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class ReceiverMessage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 15.w,
-                  vertical: 10.h,
+                  vertical: isTyping ? 13.h : 10.h,
                 ),
                 decoration: ShapeDecoration(
                   color: const Color(0xFFF1F7FF),
@@ -46,24 +48,28 @@ class ReceiverMessage extends StatelessWidget {
                   ),
                 ),
                 margin: EdgeInsets.only(right: 10.w),
-                child: Text(
-                  content,
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF0D082B),
-                    fontSize: 16.sp,
+                child: isTyping
+                    ? const TypingLoader()
+                    : Text(
+                        content,
+                        style: context.textTheme.bodyLarge?.copyWith(
+                          color: const Color(0xFF0D082B),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+              ),
+              if (!isTyping) ...[
+                5.verticalSpace,
+                Text(
+                  time,
+                  style: GoogleFonts.sourceSans3(
+                    color: const Color(0x660D082C),
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-              5.verticalSpace,
-              Text(
-                time,
-                style: GoogleFonts.sourceSans3(
-                  color: const Color(0x660D082C),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              ],
             ],
           ),
         ),

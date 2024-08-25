@@ -54,11 +54,12 @@ class SingleChatPage extends StatelessWidget {
                 const SenderMessage(
                   content:
                       'Please, can you help with the price tag of all the product?',
-                  time: 'Just now',
                 ),
                 const ReceiverMessage(
-                  content: 'Yh',
-                  time: '08:16 AM',
+                  isTyping: true,
+                ),
+                const SenderMessage(
+                  isTyping: true,
                 ),
               ].separatedBy(21.verticalSpace),
             ),

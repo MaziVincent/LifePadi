@@ -49,5 +49,6 @@ export 'settings_tile.dart';
 export 'store_name_with_wishlist_and_share.dart';
 export 'toggle_auth_page.dart';
 export 'track_tile.dart';
+export 'typing_loader.dart';
 export 'user_title.dart';
 export 'vendor_card.dart';
