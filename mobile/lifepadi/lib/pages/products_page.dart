@@ -36,53 +36,61 @@ class ProductsPage extends HookWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: Padding(
         padding: kHorizontalPadding.copyWith(top: 5.h, bottom: 30.h),
-        children: [
-          HeaderWithSeeAll(
-            title: 'Categories',
-            onSeeAllTap: () => context.go(CategoriesRoute().location),
-          ),
-          13.87.verticalSpace,
-          SizedBox(
-            height: 43.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: featuredCategories.length,
-              itemBuilder: (context, index) => CategoryTab(
-                isActive: index + 1 == activeCategory.value,
-                name: featuredCategories[index],
-                onTap: () => activeCategory.value = index + 1,
+        child: Column(
+          children: [
+            HeaderWithSeeAll(
+              title: 'Categories',
+              onSeeAllTap: () => context.go(CategoriesRoute().location),
+            ),
+            13.87.verticalSpace,
+            SizedBox(
+              height: 43.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: featuredCategories.length,
+                itemBuilder: (context, index) => CategoryTab(
+                  isActive: index + 1 == activeCategory.value,
+                  name: featuredCategories[index],
+                  onTap: () => activeCategory.value = index + 1,
+                ),
+                separatorBuilder: (context, index) => 6.93.horizontalSpace,
               ),
-              separatorBuilder: (context, index) => 6.93.horizontalSpace,
             ),
-          ),
-          17.72.verticalSpace,
-          ...[
-            ProductCard(
-              id: 1,
-              image: Assets.images.bnbBlender.provider(),
-              name: 'BNB Blender',
-              vendor: 'Shoprite Stores',
-              price: 33000,
-            ),
-            ProductCard(
-              id: 2,
-              image: Assets.images.oilPerfumes.provider(),
-              name: 'Oil Perfumes',
-              vendor: 'Beauty Collection',
-              price: 500,
-            ),
-            for (final i in [3, 4, 5])
-              ProductCard(
-                id: i,
-                image: Assets.images.plainTees.provider(),
-                name: 'Plain Tees',
-                vendor: 'Korede Store',
-                price: 5000,
+            17.72.verticalSpace,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ProductCard(
+                      id: 1,
+                      image: Assets.images.bnbBlender.provider(),
+                      name: 'BNB Blender',
+                      vendor: 'Shoprite Stores',
+                      price: 33000,
+                    ),
+                    ProductCard(
+                      id: 2,
+                      image: Assets.images.oilPerfumes.provider(),
+                      name: 'Oil Perfumes',
+                      vendor: 'Beauty Collection',
+                      price: 500,
+                    ),
+                    for (final i in [3, 4, 5])
+                      ProductCard(
+                        id: i,
+                        image: Assets.images.plainTees.provider(),
+                        name: 'Plain Tees',
+                        vendor: 'Korede Store',
+                        price: 5000,
+                      ),
+                  ].separatedBy(11.verticalSpace),
+                ),
               ),
-          ].separatedBy(11.verticalSpace),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
