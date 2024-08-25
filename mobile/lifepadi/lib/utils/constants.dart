@@ -37,6 +37,15 @@ List<({String name, String image})> services = [
   (name: 'Gas filling', image: Assets.icons.gasFilling.path),
 ];
 
+const featuredCategories = [
+  'All',
+  'Fashion',
+  'Agro-product',
+  'Stationary',
+  'Pharmaceutical',
+  'Furniture',
+];
+
 List<({String name, String image})> categories = [
   (name: 'Vegetables', image: Assets.images.categories.vegetable.path),
   (name: 'Fruits', image: Assets.images.categories.fruit.path),

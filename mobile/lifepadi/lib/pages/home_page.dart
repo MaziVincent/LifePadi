@@ -24,7 +24,7 @@ class HomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeCategory = useState(0);
+    final activeCategory = useState(1);
 
     TextStyle? inputTextStyle() {
       return context.textTheme.bodyMedium?.copyWith(
@@ -42,15 +42,6 @@ class HomePage extends HookWidget {
         ),
       );
     }
-
-    const categories = [
-      'All',
-      'Fashion',
-      'Agro-product',
-      'Stationary',
-      'Pharmaceutical',
-      'Furniture',
-    ];
 
     return Scaffold(
       appBar: MyAppBar(
@@ -203,22 +194,21 @@ class HomePage extends HookWidget {
                 height: 43.h,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
+                  itemCount: featuredCategories.length,
                   itemBuilder: (context, index) => CategoryTab(
-                    isActive: index == activeCategory.value,
-                    name: categories[index],
-                    onTap: () => activeCategory.value = index,
+                    isActive: index + 1 == activeCategory.value,
+                    name: featuredCategories[index],
+                    onTap: () => activeCategory.value = index + 1,
                   ),
                   separatorBuilder: (context, index) => 6.93.horizontalSpace,
                 ),
               ),
               22.72.verticalSpace,
               HeaderWithSeeAll(
-                title: 'Products Near You',
-                onSeeAllTap: () {
-                  // TODO: Go to products page with the current active category id passed in state
-                  // If the category id is null, it should default to All
-                },
+                title: 'Products',
+                onSeeAllTap: () => context.push(
+                  ProductsRoute(categoryId: activeCategory.value).location,
+                ),
               ),
               16.verticalSpace,
               Column(
