@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/widgets.dart';
 
-class SenderMessage extends StatelessWidget {
-  const SenderMessage({
+class SenderChatBubble extends StatelessWidget {
+  const SenderChatBubble({
     super.key,
     this.content = '',
     this.time = 'Just now',
@@ -42,18 +41,14 @@ class SenderMessage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: isTyping
-                  ? const TypingLoader(
-                      color: Color(0xDFFFFFFF),
-                    )
-                  : Text(
-                      content,
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+              child: Text(
+                content,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
             if (!isTyping) ...[
               5.verticalSpace,

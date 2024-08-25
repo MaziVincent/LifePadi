@@ -5,8 +5,8 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class ReceiverMessage extends StatelessWidget {
-  const ReceiverMessage({
+class ReceiverChatBubble extends StatelessWidget {
+  const ReceiverChatBubble({
     super.key,
     this.content = '',
     this.time = 'Just now',

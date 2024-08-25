@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class SingleChatPage extends StatelessWidget {
+class SingleChatPage extends HookWidget {
   const SingleChatPage({super.key, required this.id});
 
   final int id;
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     return Scaffold(
       appBar: MyAppBar(
         title: 'John Bayo',
@@ -21,48 +24,64 @@ class SingleChatPage extends StatelessWidget {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 40.w).copyWith(top: 22.h),
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: Text(
-                  'A live chat interface that allows for seamless, natural communication with lifepadi agents',
-                  textAlign: TextAlign.center,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: const Color(0xFF757575),
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+      resizeToAvoidBottomInset: true,
+      body: Column(
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ListView(
+                controller: scrollController,
+                padding: EdgeInsets.symmetric(horizontal: 30.w).copyWith(
+                  top: 30.h,
+                  bottom: 16.h,
                 ),
+                reverse: true,
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Text(
+                      'A live chat interface that allows for seamless, natural communication with lifepadi agents',
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: const Color(0xFF757575),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  const SenderChatBubble(
+                    content: 'Hello, Sir?',
+                    time: '08:15 AM',
+                  ),
+                  const ReceiverChatBubble(
+                    content: 'hello Mabel',
+                    time: '08:16 AM',
+                  ),
+                  const SenderChatBubble(
+                    content:
+                        'Please, can you help with the price tag of all the product?',
+                  ),
+                  for (final i in List.generate(10, (index) => index))
+                    i.isEven
+                        ? const SenderChatBubble(
+                            content: 'Hello, Sir?',
+                            time: '08:15 AM',
+                          )
+                        : const ReceiverChatBubble(
+                            content: 'hello Mabel',
+                            time: '08:16 AM',
+                          ),
+                  const ReceiverChatBubble(
+                    isTyping: true,
+                  ),
+                ].separatedBy(21.verticalSpace).reversed.toList(),
               ),
             ),
           ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
-            sliver: SliverList.list(
-              children: [
-                const SenderMessage(
-                  content: 'Hello, Sir?',
-                  time: '08:15 AM',
-                ),
-                const ReceiverMessage(
-                  content: 'hello Mabel',
-                  time: '08:16 AM',
-                ),
-                const SenderMessage(
-                  content:
-                      'Please, can you help with the price tag of all the product?',
-                ),
-                const ReceiverMessage(
-                  isTyping: true,
-                ),
-                const SenderMessage(
-                  isTyping: true,
-                ),
-              ].separatedBy(21.verticalSpace),
-            ),
+          ChatReply(
+            scrollController: scrollController,
           ),
         ],
       ),
