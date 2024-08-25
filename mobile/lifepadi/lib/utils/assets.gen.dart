@@ -59,6 +59,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/grocery-store.png
   AssetGenImage get groceryStore => const AssetGenImage('assets/icons/grocery-store.png');
 
+  /// File path: assets/icons/image-attachment.png
+  AssetGenImage get imageAttachment => const AssetGenImage('assets/icons/image-attachment.png');
+
   /// File path: assets/icons/info.svg
   SvgGenImage get info => const SvgGenImage('assets/icons/info.svg');
 
@@ -120,6 +123,7 @@ class $AssetsIconsGen {
         gasFilling,
         google,
         groceryStore,
+        imageAttachment,
         info,
         laundry,
         location,

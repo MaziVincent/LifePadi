@@ -63,16 +63,6 @@ class SingleChatPage extends HookWidget {
                     content:
                         'Please, can you help with the price tag of all the product?',
                   ),
-                  for (final i in List.generate(10, (index) => index))
-                    i.isEven
-                        ? const SenderChatBubble(
-                            content: 'Hello, Sir?',
-                            time: '08:15 AM',
-                          )
-                        : const ReceiverChatBubble(
-                            content: 'hello Mabel',
-                            time: '08:16 AM',
-                          ),
                   const ReceiverChatBubble(
                     isTyping: true,
                   ),
