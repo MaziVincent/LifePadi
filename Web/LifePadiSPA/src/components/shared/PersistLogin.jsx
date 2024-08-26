@@ -3,7 +3,14 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth"
 import useRefreshToken from "../../hooks/useRefreshToken";
+<<<<<<< HEAD
 import logo from "../../assets/images/Logonamedark.svg"
+=======
+import CircularProgress from '@mui/material/CircularProgress';
+import logo from "../../assets/images/Logonamedark.svg"
+
+
+>>>>>>> 43afb5b (Landing page and about page)
 
 
 const PersistLogin = () => {

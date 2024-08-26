@@ -30,6 +30,7 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
 const Logistics = () => {
+<<<<<<< HEAD
   const slides = [
     {
       text: "Get Your Package Ready!",
@@ -258,3 +259,13 @@ const Logistics = () => {
 };
 
 export default Logistics;
+=======
+    return ( <>
+
+    <div> Logistics </div>
+    
+    </> );
+}
+ 
+export default Logistics;
+>>>>>>> 43afb5b (Landing page and about page)

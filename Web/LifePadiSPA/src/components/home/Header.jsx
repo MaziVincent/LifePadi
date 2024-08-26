@@ -62,14 +62,23 @@ const Header = () => {
           </li>
         </ul>
         <Link
+<<<<<<< HEAD
           to="/shop"
           className=" bg-primary text-background flex cursor-pointer justify-center items-center p-2 rounded-full shadow-lg"
+=======
+          to="/store"
+          className=" bg-primary text-secondary flex cursor-pointer justify-center items-center p-2 rounded-full shadow-lg"
+>>>>>>> 43afb5b (Landing page and about page)
         >
           <ShoppingCartOutlined />
         </Link>
         <button
           onClick={handleShowDiv}
+<<<<<<< HEAD
           className=" lg:hidden  flex justify-center items-center cursor-pointer bg-background text-primary rounded-full p-2 max-lg:block shadow-lg"
+=======
+          className=" max-2xl:hidden flex justify-center items-center cursor-pointer bg-secondary text-primary rounded-full p-2 max-lg:block shadow-lg"
+>>>>>>> 43afb5b (Landing page and about page)
         >
           <MenuIcon fontSize="medium" />
         </button>
@@ -96,7 +105,11 @@ const Header = () => {
           <div className="menu pt-24 overflow-y-auto h-screen">
             <ul className="flex items-center flex-col list-none w-full">
               <li className=" w-full border-y border-grayTxt hover:bg-darkHover hover:bg-opacity-20">
+<<<<<<< HEAD
                 <Link to="/shop" onClick={() => handleClick('/shop')} className=" py-6 px-4 flex w-full text-2xl text-primary items-center gap-3">
+=======
+                <Link onClick={() => handleClick('/shop')} className=" py-6 px-4 flex w-full text-2xl text-primary items-center gap-3">
+>>>>>>> 43afb5b (Landing page and about page)
                   <i className="line-icon-Shop-3 text-background"> </i> <span>Stores</span>
                 </Link>
               </li>
