@@ -1,3 +1,5 @@
+
+
 import  { useEffect, useState } from 'react';
 import logoDark from "../../assets/images/Logonamedark.svg";
 import logoLight from "../../assets/images/Logo+name (light).svg";
@@ -5,35 +7,35 @@ import logoSmallDark from "../../assets/images/Logo(dark).svg"
 import logoSmallLight from "../../assets/images/Logo (light).svg"
 import { Link } from 'react-router-dom';
 
-const ResponsiveLogo = () => {
+const Logo = () => {
     //const [logoSrc, setLogoSrc] = useState(logoLight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [isDarkMode, setIsDarkMode] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  //const [isDarkMode, setIsDarkMode] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
 
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleDarkModeChange = (e) => setIsDarkMode(e.matches);
-    darkModeMediaQuery.addEventListener('change', handleDarkModeChange);
+    // const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    // const handleDarkModeChange = (e) => setIsDarkMode(e.matches);
+    // darkModeMediaQuery.addEventListener('change', handleDarkModeChange);
     
     // Cleanup event listeners
     return () => {
       window.removeEventListener('resize', handleResize);
-      darkModeMediaQuery.removeEventListener('change', handleDarkModeChange);
+      //darkModeMediaQuery.removeEventListener('change', handleDarkModeChange);
     };
   }, []);
 
-  let logoSrc = logoLight;
-  if (isDarkMode) {
-    logoSrc = logoDark;
-  }
+  let logoSrc = logoDark;
+//   if (isDarkMode) {
+//     logoSrc = logoDark;
+//   }
 
   if (windowWidth <= 768) {
-    logoSrc = isDarkMode ? logoSmallLight : logoSmallDark;
+    logoSrc =  logoSmallDark;
   } else {
-    logoSrc = isDarkMode ? logoLight : logoDark;
+    logoSrc = logoDark;
   }
 
   return (
@@ -46,4 +48,4 @@ const ResponsiveLogo = () => {
   );
 };
 
-export default ResponsiveLogo;
+export default Logo;

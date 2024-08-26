@@ -38,6 +38,8 @@ import Login from "./components/auth/Login";
 import Address from "./components/customer/Address";
 import Gift from "./components/customer/Gift";
 import Favourite from "./components/customer/Favourite";
+import About from "./components/home/About";
+import Contact from "./components/home/Contact";
 
 function App() {
   const queryClient = new QueryClient();
@@ -57,6 +59,8 @@ function App() {
           path="/"
           element={<Layout />}
         >
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
           <Route
             index
             element={<Home />}

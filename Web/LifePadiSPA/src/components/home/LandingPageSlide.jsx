@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Delivery2 from "../../assets/images/Delivery2.png";
 import Pharmaceuticals from "../../assets/images/Pharmaceuticals.png";
 import buyingfood from "../../assets/images/buyingfood.png";
+import grocery from "../../assets/images/grocery.png";
+import Fillinggas from "../../assets/images/Fillinggas.png";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Swiper, SwiperSlide } from "../shared/Swiper";
 import {
@@ -20,18 +22,26 @@ import "swiper/css/effect-fade";
 const LandingPageSlide = () => {
   const pictures = [
     {
-      text: "delivery",
+      text: "Fast Delivery",
       src: Delivery2,
     },
 
     {
-      text: "pharma",
+      text: "Buying Drugs",
       src: Pharmaceuticals,
     },
 
     {
-      text: "food",
+      text: "Buying Food",
       src: buyingfood,
+    },
+    {
+      text: "Filling Gas",
+      src: Fillinggas,
+    },
+    {
+      text: "Grocery Shopping",
+      src: grocery,
     },
   ];
   return (
@@ -54,15 +64,15 @@ const LandingPageSlide = () => {
             >
               {pictures.map((pic) => (
                 <SwiperSlide key={pic.text}>
-                  <div className=" h-80 lg:h-80 w-full bg-accent rounded-xl border-4 relative ">
+                  <div className=" h-80 lg:h-96 w-full bg-accent rounded-xl border-4 relative ">
                     <img
                       src={pic.src}
                       alt={pic.text}
                       className="w-full h-full object-fill rounded-xl"
                     />
-                    <p className=" absolute bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
+                    <p className=" absolute text-xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
                       {" "}
-                      FOOD{" "}
+                      {pic.text}{" "}
                     </p>
                   </div>
                 </SwiperSlide>
@@ -72,13 +82,13 @@ const LandingPageSlide = () => {
         </div>
       </section>
       <div className="bg-background flex justify-center">
-        <div className=" grid grid-cols-1 md:grid-cols-2   gap-8 w-5/6 ">
+        <div className=" grid grid-cols-1 md:grid-cols-2   gap-8 w-10/12 md:w-4/6 ">
           <h1 className=" text-5xl max-lg:text-3xl font-bold text-primary">
-            Your life needs a Padi
+            Your life need a Padi
           </h1>
           <p className=" text-2xl text-justify max-lg:text-base font-normal text-primary">
-            Are you Hungry? Not fit to cook? Have visitors, or u wan just chop
-            life? Download chowdeck lets deliver happiness to your doorstep in
+            Are you Hungry? Do you want to buy drugs? Do you want to fill your gas?, or 
+            you want to shop for groceries? Padi dey for you, lets make your life easier in
             minutes
           </p>
         </div>
