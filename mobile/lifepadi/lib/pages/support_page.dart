@@ -39,7 +39,14 @@ class SupportPage extends HookWidget {
           33.verticalSpace,
           PrimaryButton(
             text: 'Submit Compliant',
-            onPressed: () {},
+            onPressed: () {
+              // TODO: Submit the compliant
+              // Use current user's name and email address if they are required
+
+              // Clear the input fields
+
+              // Show a success dialog
+            },
           ),
         ].separatedBy(16.verticalSpace),
       ),
