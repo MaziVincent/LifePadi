@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/pages.dart';
-import 'package:lifepadi/pages/products_page.dart';
-import 'package:lifepadi/pages/single_chat_page.dart';
-import 'package:lifepadi/pages/single_errand_page.dart';
 
 import '../entities/user_role.dart';
 import '../state/permissions.dart';
@@ -436,4 +433,14 @@ class SingleErrandRoute extends GoRouteData {
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+@TypedGoRoute<WishlistRoute>(path: '/wishlist')
+class WishlistRoute extends GoRouteData {
+  const WishlistRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WishlistPage();
+  }
 }

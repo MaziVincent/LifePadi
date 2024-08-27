@@ -36,20 +36,18 @@ class SingleErrandPage extends StatelessWidget {
         children: [
           const SectionTitle('People Near You'),
           16.verticalSpace,
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (final i in [1, 2, 3])
-                    ErrandTile(
-                      id: i,
-                      image: Assets.images.johnLukman.provider(),
-                      name: 'John Lukman',
-                      errand: 'Cooking gas',
-                      price: 33000,
-                    ),
-                ].separatedBy(11.verticalSpace),
-              ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                for (final i in [1, 2, 3])
+                  ErrandTile(
+                    id: i,
+                    image: Assets.images.johnLukman.provider(),
+                    name: 'John Lukman',
+                    errand: 'Cooking gas',
+                    price: 33000,
+                  ),
+              ].separatedBy(11.verticalSpace),
             ),
           ),
         ],

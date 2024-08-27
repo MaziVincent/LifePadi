@@ -129,9 +129,7 @@ class ProfilePage extends HookWidget {
                 ),
                 SettingsTile(
                   title: 'Wishlist',
-                  onTap: () {
-                    // TODO: Go to wishlist page.
-                  },
+                  onTap: () => context.push(const WishlistRoute().location),
                 ),
                 SettingsTile(
                   title: 'Chats',

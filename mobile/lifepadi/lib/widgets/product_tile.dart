@@ -15,16 +15,18 @@ class ProductTile extends HookWidget {
     required this.vendor,
     required this.price,
     required this.id,
+    this.isInWishlistInitial = false,
   });
 
   final ImageProvider<Object>? image;
   final String name, vendor;
   final double price;
   final int id;
+  final bool isInWishlistInitial;
 
   @override
   Widget build(BuildContext context) {
-    final isInWishlist = useState(false);
+    final isInWishlist = useState(isInWishlistInitial);
 
     return InkWell(
       onTap: () async => ProductDetailsRoute(id).push(context),
