@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import ShopHeader from "./ShopHeader";
-import Footer from "../home/Footer";
+import Footer from "./ShopFooter";
 import { useState } from "react";
 import { CartProvider } from "../../context/CartProvider";
 const ShopLayout = () => {
@@ -9,7 +9,7 @@ const ShopLayout = () => {
     <CartProvider>
       <main className="dark:bg-darkBg dark:text-primary w-full">
         <ShopHeader />
-        <div className="pt-28">
+        <div className="py-28">
           <Outlet  />
         </div>
 

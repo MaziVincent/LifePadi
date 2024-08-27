@@ -3,9 +3,6 @@ import {
   BookmarkBorderOutlined,
   Clear,
   DeleteOutlined,
-  ExpandLessRounded,
-  ExpandMoreRounded,
-  FormatColorResetSharp,
   InfoOutlined,
   Remove,
   StarOutlined,
@@ -14,8 +11,8 @@ import {
 } from "@mui/icons-material";
 import { useState, useReducer, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
-import Rice1 from "../../assets/images/rice.jpeg";
 import Cart from "./Cart";
+import EmptyCart from "./EmptyCart";
 import useCart from "../../hooks/useCart";
 import ProductModal from "./ProductModal";
 import useFetch from "../../hooks/useFetch";
@@ -173,7 +170,7 @@ const Vendor = () => {
   //console.log(state.subTotal);
   return (
     <main className=" flex justify-center  ">
-      <div className=" w-11/12 grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
+      <div className=" w-11/12 lg:w-9/12  grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
         <div className=" w-full  col-span-2">
           <div className=" flex flex-col  w-full justify-center gap-5 px-2">
             <div>
@@ -600,6 +597,10 @@ const Vendor = () => {
           </button>
         </div> */}
       </div>
+
+      {
+        cart.length >= 1 ? 
+      
       <Cart
         vendor={data}
         subTotal={state.subTotal}
@@ -609,12 +610,14 @@ const Vendor = () => {
         handleNewAddress = {dispatch}
         //distance={handleDistance}
         //handleDeliveryInstruction = {setDeliveryInstruction}
-      />
+      /> : <EmptyCart /> 
+}
 
       <ProductModal
         open={state.open}
         handleClose={dispatch}
         product={state.product}
+        vendor={data}
       />
       <AddAddressModal open={state.edit} handleClose={dispatch} />
     </main>

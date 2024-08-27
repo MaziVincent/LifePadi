@@ -21,11 +21,11 @@ const SideNav = ({aside}) => {
         icon: "line-icon-Settings-Window text-2xl hover:text-green-800",
         text: "Overview",
         },
-        {
-        to:"/vendor/addProduct",
-        icon:"line-icon-Align-JustifyAll text-2xl hover:text-green-800",
-        text:"Profile"
-        }
+        // {
+        // to:"/vendor/addProduct",
+        // icon:"line-icon-Align-JustifyAll text-2xl hover:text-green-800",
+        // text:"Profile"
+        // }
     ]
   }
   return (

@@ -7,7 +7,6 @@ namespace Api.Models
 {
     public class ProductReview : Review
     {
-        public ProductReview() : base() { }
         public int ProductId { get; set; }
         public Product? Product { get; set; }
     }

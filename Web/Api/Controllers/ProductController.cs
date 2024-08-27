@@ -15,13 +15,14 @@ namespace Api.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
+        public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
         {
             try
             {
                 var products = await _iproduct!.allAsync(pageNumber, pageSize, searchString);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -34,7 +35,8 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.allProductLiteAsync();
                 return Ok(products);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -48,7 +50,8 @@ namespace Api.Controllers
                 if (!ModelState.IsValid) return BadRequest("Please fill in the form correctly");
                 var newProduct = await _iproduct!.createAsync(product);
                 return Ok(newProduct);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -62,7 +65,8 @@ namespace Api.Controllers
                 var response = await _iproduct!.deleteAsync(id);
                 if (response == null) return NotFound();
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -76,7 +80,8 @@ namespace Api.Controllers
                 var product = await _iproduct!.getAsync(id);
                 if (product == null) return NotFound();
                 return Ok(product);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -89,7 +94,8 @@ namespace Api.Controllers
             {
                 var vendor = await _iproduct!.getProductVendor(id);
                 return Ok(vendor);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -102,7 +108,8 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.searchProduct(searchString);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -115,7 +122,8 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.searchProductByAll(pageNumber, pageSize, name);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -128,7 +136,8 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.searchProductByCategory(pageNumber, pageSize, categoryName);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -141,7 +150,8 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.searchProductByService(pageNumber, pageSize, serviceName);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -154,21 +164,23 @@ namespace Api.Controllers
             {
                 var products = await _iproduct!.searchProductByVendor(pageNumber, pageSize, vendorName);
                 return Ok(products);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> update([FromForm] ProductDto product ,int id)
+        public async Task<IActionResult> update([FromForm] ProductDto product, int id)
         {
             try
             {
                 var updatedProduct = await _iproduct!.updateAsync(product, id);
                 if (updatedProduct == null) return NotFound();
                 return Ok(updatedProduct);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -182,7 +194,8 @@ namespace Api.Controllers
                 var product = await _iproduct!.uploadProductImg(id, productImage.Image!);
                 if (product == null) return NotFound();
                 return Ok(product);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -196,7 +209,8 @@ namespace Api.Controllers
                 var response = await _iproduct!.toogleProductStatus(id);
                 if (response == null) return NotFound();
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -210,7 +224,8 @@ namespace Api.Controllers
                 var response = await _iproduct!.getVendorProductStat(vendorId);
                 if (response == null) return NotFound();
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
