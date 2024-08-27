@@ -103,7 +103,6 @@ class ReceiptPage extends StatelessWidget {
               left: 'Narration',
               right:
                   'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur',
-              wrap: true,
             ),
             const MyDivider(),
             32.82.verticalSpace,

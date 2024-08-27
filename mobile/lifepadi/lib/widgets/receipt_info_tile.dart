@@ -7,11 +7,9 @@ class ReceiptInfoTile extends StatelessWidget {
     super.key,
     required this.left,
     required this.right,
-    this.wrap = false,
   });
 
   final String left, right;
-  final bool wrap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +34,10 @@ class ReceiptInfoTile extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 9.64.h),
-      child: wrap
-          ? Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              children: children,
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: children,
-            ),
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        children: children,
+      ),
     );
   }
 }
