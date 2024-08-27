@@ -120,7 +120,7 @@ const RiderDashboard = () => {
                 {riderDeliveriesLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  riderDeliveries && riderDeliveries.dataList.TotalCount + 'M+'
+                  riderDeliveries?.dataList?.TotalCount
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -133,7 +133,7 @@ const RiderDashboard = () => {
                   <CircularProgress size={20} />
                 ) : (
                   successfulDeliveriesCountSuccess &&
-                  successfulDeliveriesCount + 'M+'
+                  successfulDeliveriesCount
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -145,7 +145,7 @@ const RiderDashboard = () => {
                 {pendingDeliveriesCountLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  pendingDeliveriesCountSuccess && pendingDeliveriesCount + 'M+'
+                  pendingDeliveriesCountSuccess && pendingDeliveriesCount
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
