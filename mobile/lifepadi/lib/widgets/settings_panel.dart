@@ -41,30 +41,41 @@ class SettingsPanel extends StatelessWidget {
                     bottom: BorderSide(color: kStrokeColor),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16.sp,
-                            color: const Color(0xFF19202D),
-                            letterSpacing: 0.32,
+                child: Builder(
+                  builder: (context) {
+                    final controller =
+                        ExpandableController.of(context, required: true);
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          title,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp,
+                                    color: controller!.expanded
+                                        ? kLightPrimaryColor
+                                        : const Color(0xFF19202D),
+                                    letterSpacing: 0.32,
+                                  ),
+                        ),
+                        ExpandableIcon(
+                          theme: ExpandableThemeData(
+                            expandIcon: IconsaxPlusLinear.arrow_right_3,
+                            collapseIcon: IconsaxPlusLinear.arrow_down,
+                            iconSize: 28.r,
+                            iconColor: controller.expanded
+                                ? kLightPrimaryColor
+                                : const Color(0xFF808089),
+                            iconRotationAngle: math.pi / 2,
+                            iconPadding: EdgeInsets.zero,
                           ),
-                    ),
-                    ExpandableIcon(
-                      theme: ExpandableThemeData(
-                        expandIcon: IconsaxPlusLinear.arrow_right_3,
-                        collapseIcon: IconsaxPlusLinear.arrow_down,
-                        iconSize: 28.r,
-                        iconColor: const Color(0xFF808089),
-                        iconRotationAngle: math.pi / 2,
-                        iconPadding: EdgeInsets.zero,
-                        // hasIcon: false,
-                      ),
-                    ),
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
               collapsed: const SizedBox.shrink(),

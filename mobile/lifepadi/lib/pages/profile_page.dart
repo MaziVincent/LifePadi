@@ -60,12 +60,31 @@ class ProfilePage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
             sliver: SliverList.list(
               children: [
-                SettingsPanel(
+                const SettingsPanel(
                   title: 'Personal Details',
                   child: Column(
                     children: [
-                      for (final _ in Iterable<int>.generate(5))
-                        const Text('lorem ipsum dolor sit amet'),
+                      ProfileDetailInfo(
+                        name: 'Email',
+                        value: 'tobechijacobs@gmail.com',
+                      ),
+                      ProfileDetailInfo(
+                        name: 'Phone Number',
+                        value: '07012345678',
+                      ),
+                      ProfileDetailInfo(
+                        name: 'Date of birth',
+                        value: '20-05-1900',
+                      ),
+                      ProfileDetailInfo(
+                        name: 'Gender',
+                        value: 'Male',
+                      ),
+                      ProfileDetailInfo(
+                        name: 'Address',
+                        value: '3A, Ikota estate, eti-osa, Lagos, NG',
+                        long: true,
+                      ),
                     ],
                   ),
                 ),
@@ -95,20 +114,16 @@ class ProfilePage extends StatelessWidget {
                   },
                 ),
                 SettingsTile(
-                  title: 'Customer support',
-                  onTap: () {
-                    // TODO: Go to support page.
-                  },
-                ),
-                SettingsTile(
                   title: 'Settings',
                   onTap: () {
                     // TODO: Go to settings page.
                   },
                 ),
                 SettingsTile(
-                  title: 'Notifications',
-                  onTap: () => context.push(NotificationRoute().location),
+                  title: 'Customer support',
+                  onTap: () {
+                    // TODO: Go to support page.
+                  },
                 ),
               ].separatedBy(5.verticalSpace),
             ),
@@ -118,6 +133,70 @@ class ProfilePage extends StatelessWidget {
                 .copyWith(top: 12.h),
             sliver: const SliverToBoxAdapter(
               child: LogoutButton(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileDetailInfo extends StatelessWidget {
+  const ProfileDetailInfo({
+    super.key,
+    required this.name,
+    required this.value,
+    this.long = false,
+  });
+
+  final String name, value;
+  final bool long;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 20.w,
+        right: 20.w,
+        top: 5.h,
+        bottom: 10.64.h,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: const Color(0xFFF9F9FF),
+            width: 1.21.h,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 10.w,
+              runSpacing: 5.h,
+              runAlignment: WrapAlignment.spaceBetween,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: const Color(0xFF1A202E),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: const Color(0xFF7F7F89),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
