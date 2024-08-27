@@ -1,3 +1,4 @@
+export 'account_management_tile.dart';
 export 'avatar.dart';
 export 'bottom_panel.dart';
 export 'cart_discount.dart';
@@ -40,6 +41,7 @@ export 'primary_button.dart';
 export 'primary_outline_button.dart';
 export 'primary_rectangle_button.dart';
 export 'product_tile.dart';
+export 'profile_detail_info.dart';
 export 'profile_image_and_location.dart';
 export 'receipt_info_tile.dart';
 export 'receiver_chat_bubble.dart';

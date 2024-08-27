@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/logout_button.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
-import '../widgets/profile_image_and_location.dart';
-import '../widgets/settings_panel.dart';
-import '../widgets/settings_tile.dart';
-
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends HookWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final showNotifications = useState(true);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -83,7 +81,6 @@ class ProfilePage extends StatelessWidget {
                       ProfileDetailInfo(
                         name: 'Address',
                         value: '3A, Ikota estate, eti-osa, Lagos, NG',
-                        long: true,
                       ),
                     ],
                   ),
@@ -92,8 +89,41 @@ class ProfilePage extends StatelessWidget {
                   title: 'Account management',
                   child: Column(
                     children: [
-                      for (final _ in Iterable<int>.generate(3))
-                        const Text('lorem ipsum dolor sit amet'),
+                      AccountManagementTile(
+                        name: 'Update Location',
+                        onTap: () {
+                          // TODO: Go to location page
+                        },
+                      ),
+                      AccountManagementTile(
+                        name: 'Payment Information',
+                        onTap: () {
+                          // TODO: Go to tentative page
+                        },
+                      ),
+                      AccountManagementTile(
+                        name: 'Notification',
+                        child: SizedBox(
+                          height: 40.53.h,
+                          width: 30.83.w,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Switch.adaptive(
+                              value: showNotifications.value,
+                              onChanged: (value) {
+                                // TODO: Update notification settings
+
+                                // For now, just update the UI
+                                showNotifications.value = value;
+                              },
+                              activeTrackColor: kLightPrimaryColor,
+                              trackOutlineWidth:
+                                  const WidgetStatePropertyAll(1),
+                              inactiveTrackColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -133,70 +163,6 @@ class ProfilePage extends StatelessWidget {
                 .copyWith(top: 12.h),
             sliver: const SliverToBoxAdapter(
               child: LogoutButton(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProfileDetailInfo extends StatelessWidget {
-  const ProfileDetailInfo({
-    super.key,
-    required this.name,
-    required this.value,
-    this.long = false,
-  });
-
-  final String name, value;
-  final bool long;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 20.w,
-        right: 20.w,
-        top: 5.h,
-        bottom: 10.64.h,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: const Color(0xFFF9F9FF),
-            width: 1.21.h,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 10.w,
-              runSpacing: 5.h,
-              runAlignment: WrapAlignment.spaceBetween,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    color: const Color(0xFF1A202E),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    color: const Color(0xFF7F7F89),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
             ),
           ),
         ],
