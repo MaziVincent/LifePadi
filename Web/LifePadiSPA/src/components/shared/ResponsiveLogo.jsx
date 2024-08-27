@@ -37,7 +37,7 @@ const ResponsiveLogo = () => {
   }
 
   return (
-    <div className="flex justify-center w-14 h-14 md:w-44 min-w-20 ">
+    <div className="flex justify-start w-14 h-14 md:w-44 min-w-20 ">
         <Link to="/">
         <img src={logoSrc} alt="Logo" className=" h-full w-full max-w-44 mx-auto" />
 

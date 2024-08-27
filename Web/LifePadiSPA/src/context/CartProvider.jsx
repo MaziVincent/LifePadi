@@ -20,6 +20,8 @@ const reducer = (state, action) => {
       return { ...state, vendor: action.payload };
     case "empty":
       return { ...state, empty: !state.empty };
+    case "vendorChange":
+      return { ...state, vendorChange: !state.vendorChange };
     case "deliveryFee":
       return { ...state, deliveryFee: action.payload };
     case "total":
@@ -41,7 +43,8 @@ export const CartProvider = ({ children }) => {
     addresses: [],
     vendor: null,
     empty: false,
-    deliveryFee: 1500,
+    vendorChange: false,
+    deliveryFee: 0,
     total: 0,
   });
 

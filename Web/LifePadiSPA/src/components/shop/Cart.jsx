@@ -22,6 +22,7 @@ const Cart = ({
   handleCartIncrement,
   handleCartItemDelete,
   handleNewAddress,
+  
   //distance,
   //handleDeliveryInstruction,
 }) => {
@@ -64,9 +65,23 @@ const Cart = ({
     dispatch({ type: "address" });
   };
 
+  
+
+  const handleDeliveryFee = () => {
+    
+    if(distance == null || distance == 0){
+      const deliveryFee = 1500;
+      dispatch({type:'deliveryFee', payload:deliveryFee})
+    }else{
+    const deliveryFee = 1500 + (200 * (distance/1000))
+    dispatch({type:'deliveryFee', payload:deliveryFee})
+    }
+  }
+
   const handleClick = async (e) => {
     console.log(e.target.value);
     dispatch({ type: "setAddress", payload: e.target.value });
+    handleDeliveryFee();
     dispatch({type:"address"})
  
   };
@@ -74,16 +89,38 @@ const Cart = ({
   const handleLocation = () => {
     console.log(location)
     dispatch({ type: "setAddress", payload: location.address });
-
+    handleDeliveryFee();
     console.log(state.deliveryAddress)
     dispatch({type:"address"})
   }
+
+  const handleTotalAmount = () => {
+    const totalAmount = subTotal + state.deliveryFee
+    dispatch({type:'total', payload:totalAmount })
+
+    
+  }
+
+  const handleDeliveryInstruction = (e) => {
+    dispatch({type:'setInstruction', payload:e.target.value})
+  }
+
+  const clearCart = () => {
+    setCart([])
+    dispatch({type:'setInstruction', payload:""})
+    setCartState(false)
+    dispatch({type:'empty'})
+  }
+
 
   useEffect(()=> {
     setOrigin( `${vendor?.ContactAddress}, ${vendor?.Town}, ${vendor?.City}, ${vendor?.State}`)
   }, [vendor ])
 
   const {distance, loading:disLoading } = useDistance(origin, state.deliveryAddress)
+ useEffect(() => {
+  handleTotalAmount();
+ },[subTotal, distance, state.deliveryFee, cart])
 
   console.log(distance)
   return (
@@ -103,7 +140,7 @@ const Cart = ({
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t  sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-secondary dark:text-gray-50">
-                {vendor?.Name}
+                {state.vendor?.Name}
               </h3>
               <button
                 type="button"
@@ -295,7 +332,7 @@ const Cart = ({
                     rows="3"
                     className="border rounded-lg border-gray bg-graybg p-3 "
                     placeholder="e.g  give it to the receptionist"
-                    onChange={(e) => handleDeliveryInstruction(e.target.value)}
+                    onChange={(e) => handleDeliveryInstruction(e)}
                   ></textarea>
                 </div>
               </div>
@@ -336,12 +373,12 @@ const Cart = ({
               <div className=" py-2">
                 <p className=" flex justify-between items-center text-sm font-normal">
                   <span>Delivery fee</span>
-                  <span className="">&#8358;0.0</span>
+                  
                   {
                     disLoading && <span> distance loading... </span>
                   }
                   {
-                    distance && <span> {distance } </span>
+                    state.deliveryFee && <span className="">&#8358;{state.deliveryFee}</span>
                   }
                 </p>
               </div>
@@ -354,17 +391,17 @@ const Cart = ({
               <div className=" py-2">
                 <p className=" flex justify-between items-center text-sm font-semibold">
                   <span className="">Total</span>
-                  <span className="">&#8358;12,000</span>
+                  <span className="">&#8358;{state.total}</span>
                 </p>
               </div>
               <div className=" pt-3 text-center w-full">
                 <button className=" w-full bg-background py-4 px-3 rounded">
-                  <span className=" text-primary">Place order</span>
+                  <span className=" text-primary">Place Order</span>
                 </button>
               </div>
               <div className=" pt-3 text-center w-full">
-                <button className=" w-full bg-redborder py-4 px-3 rounded">
-                  <span className=" text-red">Clear order</span>
+                <button onClick={clearCart} className=" w-full bg-redborder py-4 px-3 rounded">
+                  <span className=" text-red">Clear Order</span>
                 </button>
               </div>
               <div className=" w-full">

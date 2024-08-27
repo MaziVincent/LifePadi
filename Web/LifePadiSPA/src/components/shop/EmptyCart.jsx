@@ -1,5 +1,6 @@
 import useCart from "../../hooks/useCart";
 import { Modal } from "@mui/material";
+import emptyCart from "../../assets/images/empty cart.svg"
 
 
 const EmptyCart = () => {
@@ -17,10 +18,10 @@ const EmptyCart = () => {
         
         <div
           id="defaultModal"
-          className=" overflow-y-auto overflow-x-hidden absolute top-20  z-50 justify-center items-center  w-full h-full pb-24 "
+          className=" overflow-y-auto overflow-x-hidden absolute  top-20  z-50 justify-center items-center  w-full h-full pb-24 "
         >
             
-            <div className=" p-4 w-full max-w-xl flex flex-col  overflow-y-auto  bg-primary ">
+            <div className=" p-4 w-full max-w-xl flex flex-col  overflow-y-auto  bg-primary dark:bg-darkBg rounded-xl dark:text-primary ">
               {/* <!-- Modal header --> */}
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t  sm:mb-5 dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-secondary dark:text-gray-50">
@@ -54,6 +55,7 @@ const EmptyCart = () => {
              
               <div className=" w-full">
                 The cart is empty 
+                <img src={emptyCart} alt="" />
               
               </div>
               

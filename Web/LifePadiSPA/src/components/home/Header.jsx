@@ -34,7 +34,7 @@ const Header = () => {
         </Link>
       </div>
       <div className=" flex items-center gap-4">
-        <ul className=" flex items-center list-none gap-4 max-lg:hidden">
+        <ul className=" lg:flex items-center list-none gap-4 hidden">
           <li>
             <Link to="/shop" className=" bg-primary px-10 py-3 rounded-full font-medium shadow-lg">
               Stores
@@ -59,13 +59,13 @@ const Header = () => {
         </ul>
         <Link
           to="/store"
-          className=" bg-primary text-secondary flex cursor-pointer justify-center items-center p-2 rounded-full shadow-lg"
+          className=" bg-primary text-background flex cursor-pointer justify-center items-center p-2 rounded-full shadow-lg"
         >
           <ShoppingCartOutlined />
         </Link>
         <button
           onClick={handleShowDiv}
-          className=" max-2xl:hidden flex justify-center items-center cursor-pointer bg-secondary text-primary rounded-full p-2 max-lg:block shadow-lg"
+          className=" lg:hidden  flex justify-center items-center cursor-pointer bg-background text-primary rounded-full p-2 max-lg:block shadow-lg"
         >
           <MenuIcon fontSize="medium" />
         </button>
@@ -92,7 +92,7 @@ const Header = () => {
           <div className="menu pt-24 overflow-y-auto h-screen">
             <ul className="flex items-center flex-col list-none w-full">
               <li className=" w-full border-y border-grayTxt hover:bg-darkHover hover:bg-opacity-20">
-                <Link onClick={() => handleClick('/shop')} className=" py-6 px-4 flex w-full text-2xl text-primary items-center gap-3">
+                <Link to="/shop" onClick={() => handleClick('/shop')} className=" py-6 px-4 flex w-full text-2xl text-primary items-center gap-3">
                   <i className="line-icon-Shop-3 text-background"> </i> <span>Stores</span>
                 </Link>
               </li>

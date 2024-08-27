@@ -32,11 +32,11 @@ const ShopHeader = () => {
 //   console.log(coordinates)
   useEffect(() => {
     setLocation({coordinates, address})
-    dispatch({type:"setAddress", payload: address })
+    //dispatch({type:"setAddress", payload: address })
   },[address])
   return (
-    <div className=" dark:bg-darkMenu dark:text-primary  fixed top-0 z-40 bg-primary w-full p-4 lg:px-28 shadow-md ">
-      <div className=" flex justify-between">
+    <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
+      <div className=" flex justify-between lg:w-9/12">
         <div className=" flex items-center md:gap-10 w-1/2">
           <ResponsiveLogo />
           <div className="min-w-36">
@@ -101,8 +101,12 @@ const ShopHeader = () => {
         </div>
       </div>
       <UserLogin />
-      <Cart />
-      <EmptyCart />
+
+      {
+        cart.length >= 1 ? <Cart /> : <EmptyCart />
+      }
+      
+      
       <Register />
       <VerifyCode />
       {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">

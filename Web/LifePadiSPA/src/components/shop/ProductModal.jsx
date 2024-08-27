@@ -1,13 +1,16 @@
 
 import Modal from "@mui/material/Modal";
 import toast, { Toaster } from "react-hot-toast";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import useCart from "../../hooks/useCart";
+import VendorChangeDialogue from "./VendorChangeDialogue";
 
-const ProductModal = ({ open, handleClose, product }) => {
-const {cart, setCart} = useCart();
+const ProductModal = ({ open, handleClose, product, vendor }) => {
+const {cart, setCart, state, dispatch } = useCart();
  const [itemCount, setItemCount] = useState(1)
  const [amount, setAmount] = useState(product.Price)
+
+
 
  const handleIncrement = () => {
   setItemCount(itemCount + 1)
@@ -19,24 +22,49 @@ const {cart, setCart} = useCart();
   }
  }
 
+ const addToCart = (item) => {
+  const newCart = [...cart, { ...item, Quantity: itemCount, Amount : product.Price * itemCount }];
+  setCart(newCart);
+  toast.success("Product added to cart");
+  handleClose({ type: "open" });
+  setItemCount(1)
+ }
+
+ const addItem = (item) => {
+  const newCart = [{ ...item, Quantity: itemCount, Amount : product.Price * itemCount }];
+  setCart(newCart);
+  toast.success("Product added to cart");
+  handleClose({ type: "open" });
+  setItemCount(1)
+ }
+
  const handleCart = (item) => {
   const exist = cart.find((x) => x.Id === item.Id);
   if (exist) {
     toast.error("Product already in cart");
-  } else {
-    const newCart = [...cart, { ...item, Quantity: itemCount, Amount : product.Price * itemCount }];
-    setCart(newCart);
-    toast.success("Product added to cart");
-    handleClose({ type: "open" });
-    setItemCount(1)
+    return
+  } 
+  if(!state.vendor){
+    addToCart(item);
+    dispatch({type:'vendor', payload:vendor})
+    return;
   }
+  if(state.vendor?.Id === vendor.Id){
+    addToCart(item)
+  }
+  else{
+    dispatch({type:"vendorChange"})
+  }
+
  }
+
 
   return (
     <Modal
       open={open}
       onClose={() => {
         handleClose({ type: "open" });
+        setItemCount(1)
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -49,7 +77,7 @@ const {cart, setCart} = useCart();
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+          <div className="relative p-4 bg-primary dark:bg-darkMenu dark:text-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -59,6 +87,7 @@ const {cart, setCart} = useCart();
                 type="button"
                 onClick={() => {
                   handleClose({ type: "open" });
+                  setItemCount(1)
                 }}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
@@ -81,7 +110,7 @@ const {cart, setCart} = useCart();
             </div>
             {/* <!-- Modal body --> */}
             <div className=" w-full bg-cover overflow-y-auto overflow-x-hidden justify-center pb-8">
-              <div className=" bg-primary p-4 rounded-2xl ">
+              <div className=" bg-primary dark:bg-darkMenu p-4 rounded-2xl ">
                 <div className=" w-full h-full">
                   <div className=" w-full h-60 shadow-lg border-b-gray">
                     <img
@@ -95,7 +124,7 @@ const {cart, setCart} = useCart();
                       <span className=" text-xl font-normal capitalize text-background">
                         {product.Name}
                       </span>
-                      <span className=" text-md text-grayTxt font-light">
+                      <span className=" text-md text-grayTxt dark:text-graybg font-light">
                        {product.Tag}
                       </span>
                     </h2>
@@ -105,7 +134,7 @@ const {cart, setCart} = useCart();
                   </div>
 
                   <div className=" flex justify-between gap-4 w-full pt-2">
-                    <span className=" rounded bg-primary  justify-center py-3 flex gap-1">
+                    <span className=" rounded bg-primary dark:bg-darkMenu  justify-center py-3 flex gap-1">
                       <button 
                       onClick={handleDecrement}
                       className=" text-background text-2xl font-bold cursor-pointer shadow-sm hover:bg-graybg px-2 rounded-xl">
@@ -124,7 +153,7 @@ const {cart, setCart} = useCart();
                     <button 
                     onClick={() => handleCart(product)}
                     className=" bg-secondary px-4 rounded-lg text-lg cursor-pointer ">
-                      <span className="font-semibold">
+                      <span className="font-semibold dark:text-accent">
                         add <span>{itemCount}</span> item to my order
                       </span>
                     </button>
@@ -133,6 +162,7 @@ const {cart, setCart} = useCart();
               </div>
             </div>
           </div>
+          <VendorChangeDialogue addToCart={addItem} product={product} vendor={vendor}  />
         </div>
       </div>
     </Modal>
