@@ -11,6 +11,7 @@ const VendorViewProduct = () => {
     const { auth } = useAuth()
     const { id } = useParams()
     const fetch = useFetch()
+    
     const getProduct = async (url) => {
         const response = await fetch(url, auth.accessToken)
         return response.data
