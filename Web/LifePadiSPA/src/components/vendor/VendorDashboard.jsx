@@ -67,9 +67,7 @@ const VendorDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-  if (vendorProductStats){
-    console.log(vendorProductStats);
-  }
+
   const setNextPage = (page) => {
     if (page <= totalPage) {
       page += 1
@@ -91,7 +89,7 @@ const VendorDashboard = () => {
                 {vendorProductStatsIsLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  vendorProductStats && vendorProductStats.TotalProducts + 'M+'
+                  vendorProductStats && vendorProductStats.TotalProducts
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -103,7 +101,7 @@ const VendorDashboard = () => {
                 {vendorProductStatsIsLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  vendorProductStats && vendorProductStats.TotalActiveProducts + 'M+'
+                  vendorProductStats && vendorProductStats.TotalActiveProducts
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -115,7 +113,7 @@ const VendorDashboard = () => {
                 {vendorProductStatsIsLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  vendorProductStats && vendorProductStats.TotalInactiveProducts + 'M+'
+                  vendorProductStats && vendorProductStats.TotalInactiveProducts
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>

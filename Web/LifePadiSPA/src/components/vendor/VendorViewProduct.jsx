@@ -1,35 +1,33 @@
-import { useParams } from "react-router-dom"
+import { useParams } from 'react-router-dom'
 import { getCategoriesUrl, getProductUrl } from './vendorUri/VendorURI'
-import useFetch from "../../hooks/useFetch"
-import { CircularProgress, Typography, Box } from "@mui/material"
-import DateFormater from "../shared/DateFormater"
-import useAuth from "../../hooks/useAuth"
-import { useQuery } from "react-query"
-
+import useFetch from '../../hooks/useFetch'
+import { CircularProgress, Typography, Box } from '@mui/material'
+import DateFormater from '../shared/DateFormater'
+import useAuth from '../../hooks/useAuth'
+import { useQuery } from 'react-query'
 
 const VendorViewProduct = () => {
-    const { auth } = useAuth()
-    const { id } = useParams()
-    const fetch = useFetch()
-    const getProduct = async (url) => {
-        const response = await fetch(url, auth.accessToken)
-        return response.data
-    }
+  const { auth } = useAuth()
+  const { id } = useParams()
+  const fetch = useFetch()
 
-    const {
-      data : product,
-      isLoading,
-      isError,
-      isSuccess,
-    } = useQuery({
-      queryKey: ['product', getProductUrl + id],
-      queryFn: () => getProduct(getProductUrl.replace('{id}', id)),
-      keepPreviousData: true,
-      staleTime: 20000,
-      refetchOnMount: 'always',
-    })
+  const getProduct = async (url) => {
+    const response = await fetch(url, auth.accessToken)
+    return response.data
+  }
 
-
+  const {
+    data: product,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['product', getProductUrl + id],
+    queryFn: () => getProduct(getProductUrl.replace('{id}', id)),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: 'always',
+  })
 
   return (
     <div>
@@ -80,7 +78,9 @@ const VendorViewProduct = () => {
                               <i>Active</i>
                             </span>
                           ) : (
-                            <span className='text-red'><i>Inactive</i></span>
+                            <span className='text-red'>
+                              <i>Inactive</i>
+                            </span>
                           )}
                         </Typography>
                         <Typography>

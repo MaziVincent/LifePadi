@@ -26,7 +26,8 @@ namespace Api.Controllers
                 var customer = await _icustomer!.getAsync(id);
                 if (customer == null) return NotFound();
                 return Ok(customer);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -49,7 +50,8 @@ namespace Api.Controllers
                 };
 
                 return Ok(new { result, dataList });
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -93,7 +95,8 @@ namespace Api.Controllers
                 var updateCustomer = await _icustomer!.updateAsync(customer, id);
                 if (updateCustomer == null) return NotFound();
                 return Ok(updateCustomer);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -106,7 +109,8 @@ namespace Api.Controllers
             {
                 var customerOders = await _icustomer!.getCustomerOders(id);
                 return Ok(customerOders);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -119,7 +123,8 @@ namespace Api.Controllers
             {
                 var customersAddresses = await _icustomer!.customerAddresses(id);
                 return Ok(customersAddresses);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -132,7 +137,22 @@ namespace Api.Controllers
             {
                 var response = await _icustomer!.search(searchString);
                 return Ok(response);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("verify-Phone")]
+        public async Task<IActionResult> verifyPhone([FromForm] string phone)
+        {
+            try
+            {
+                var response = await _icustomer!.sendOtp(phone);
+                return Ok(response);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

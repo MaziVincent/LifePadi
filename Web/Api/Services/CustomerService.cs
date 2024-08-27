@@ -5,6 +5,9 @@ using AutoMapper;
 using FuzzySharp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using RestSharp;
+using static RestSharp.RestClient;
 using Customer = Api.Models.Customer;
 
 namespace Api.Services
@@ -13,10 +16,12 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-        public CustomerService(DBContext dBContext, IMapper mapper)
+        private readonly IConfiguration _config;
+        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+            _config = config;
         }
 
         public async Task<AuthUserDto> createAsync(CustomerDto customer)
@@ -33,7 +38,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -48,7 +53,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -64,7 +69,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -98,7 +103,7 @@ namespace Api.Services
 
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -125,7 +130,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -140,7 +145,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -153,7 +158,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -187,7 +192,43 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<object> sendOtp(string phoneNumber)
+        {
+            try
+            {
+                RestSharp.RestClient restClient = new RestSharp.RestClient(_config["Termii:SendOtp_Url"]!);
+
+                JObject objectBody = new JObject();
+                objectBody.Add("api_key", _config["Termii:Api_Key"]!);
+                objectBody.Add("message_type", "ALPHANUMERIC");
+                objectBody.Add("to", phoneNumber);
+                objectBody.Add("from", "Listacc");
+                objectBody.Add("channel", "dnd");
+                objectBody.Add("pin_attempts", 3);
+                objectBody.Add("pin_time_to_live", 10);
+                objectBody.Add("pin_length", 6);
+                objectBody.Add("pin_placeholder", "< 1234 >");
+                objectBody.Add("message_text", "Your pin is < 1234 >");
+                objectBody.Add("pin_type", "ALPHANUMERIC");
+
+                RestRequest restRequest = new RestRequest("POST");
+                restRequest.AddHeader("Content-Type", "application/json");
+                restRequest.AddParameter("application/json", objectBody, ParameterType.RequestBody);
+                RestResponse restResponse = await restClient.ExecuteAsync(restRequest);
+                
+                if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exceptions.ServiceException("Failed to send OTP");
+                }
+                return restResponse.Content!;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -212,8 +253,13 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
+        }
+
+        public Task<object> verifyOtp(string pinId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

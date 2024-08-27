@@ -4,9 +4,19 @@ import { Outlet } from 'react-router-dom'
 import { ClickAwayListener } from '@mui/material'
 import { useState } from 'react'
 import logo from '../../assets/images/Logo(dark).svg'
+import useLogout from '../../hooks/useLogout'
 
 const RiderLayout = () => {
   const [aside, setAside] = useState(false)
+  const logout = useLogout()
+
+  const handleLogout = async () => {
+    const res = await logout()
+    console.log(res)
+    if (res.status === 'success') {
+      console.log('logged out')
+    }
+  }
 
   return (
     <main>
@@ -71,7 +81,7 @@ const RiderLayout = () => {
             </Link>
           </div>
           <div className='flex  justify-end w-auto items-center'>
-            <button className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'>
+            <button onClick={handleLogout} className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'>
               <svg
                 className='w-6 h-6 text-red-500 dark:text-red-500'
                 aria-hidden='true'

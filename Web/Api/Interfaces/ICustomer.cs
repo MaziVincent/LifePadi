@@ -16,5 +16,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<AddressDtoLite>> customerAddresses(int id);
         public Task<IEnumerable<OrderDtoLite>> getCustomerOders(int id);
         public Task<int> numberOfCustomers();
+        public Task<object> sendOtp(string phoneNumber);
+        public Task<object> verifyOtp(string pinId);
     }
 }
