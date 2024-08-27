@@ -25,6 +25,7 @@ export 'rider_page.dart';
 export 'single_chat_page.dart';
 export 'single_errand_page.dart';
 export 'splash_page.dart';
+export 'support_page.dart';
 export 'track_order_page.dart';
 export 'vendors_page.dart';
 export 'verification_page.dart';

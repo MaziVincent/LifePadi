@@ -52,10 +52,11 @@ class LogisticsPage extends HookWidget {
                 hintText: 'Enter description',
                 labelText: 'Description',
                 onChanged: (value) => description.value = value,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.multiline,
                 hasValue: description.value.isNotEmpty,
                 maxLines: 3,
                 maxLength: 100,
+                textInputAction: TextInputAction.newline,
               ),
               8.verticalSpace,
               const SectionTitle(

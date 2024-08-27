@@ -149,9 +149,7 @@ class ProfilePage extends HookWidget {
                 ),
                 SettingsTile(
                   title: 'Customer support',
-                  onTap: () {
-                    // TODO: Go to support page.
-                  },
+                  onTap: () => context.push(const SupportRoute().location),
                 ),
               ].separatedBy(5.verticalSpace),
             ),

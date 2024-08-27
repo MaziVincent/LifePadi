@@ -444,3 +444,13 @@ class WishlistRoute extends GoRouteData {
     return const WishlistPage();
   }
 }
+
+@TypedGoRoute<SupportRoute>(path: '/support')
+class SupportRoute extends GoRouteData {
+  const SupportRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SupportPage();
+  }
+}
