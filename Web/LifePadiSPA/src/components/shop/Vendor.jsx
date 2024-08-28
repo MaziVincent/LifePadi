@@ -251,6 +251,7 @@ const Vendor = () => {
 
       }
 
+      cartDispatch({type:'order', payload:response.data})
       const result = await post(orderItemUrl, orderItem, auth.accessToken)
      console.log(result.data)
     }
