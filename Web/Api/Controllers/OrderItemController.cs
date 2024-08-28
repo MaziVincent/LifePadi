@@ -43,6 +43,7 @@ namespace Api.Controllers
         [HttpPost("create")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create(OrderItemDto orderItem)
 =======
         public async Task<IActionResult> create([FromForm] OrderItemDTO orderItem)
@@ -50,6 +51,9 @@ namespace Api.Controllers
 =======
         public async Task<IActionResult> create([FromForm] OrderItemDto orderItem)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public async Task<IActionResult> create(OrderItemDto orderItem)
+>>>>>>> 38d66ec (Order and Order Items)
         {
             try
             {

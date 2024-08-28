@@ -15,9 +15,12 @@ import useAuth from "../../hooks/useAuth";
 import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import usePost from "../../hooks/usePost";
+<<<<<<< HEAD
 import { addAddressToDb } from "./services/services";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
+=======
+>>>>>>> 38d66ec (Order and Order Items)
 
 const Cart = ({
   subTotal,
@@ -45,6 +48,7 @@ const Cart = ({
   });
   const { auth, login, setLogin } = useAuth();
   const fetch = useFetch();
+<<<<<<< HEAD
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
   const { auth, setLogin, location } = useAuth();
@@ -57,6 +61,12 @@ const Cart = ({
   const orderItemUrl = `${baseUrl}orderitem/create`;
 
   
+=======
+  const post = usePost();
+  const addressUrl = `${baseUrl}address/customer-addresses`;
+  const orderUrl = `${baseUrl}order/create`
+  const orderItemUrl = `${baseUrl}orderitem/create`
+>>>>>>> 38d66ec (Order and Order Items)
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
     dispatch({ type: "setAddresses", payload: result.data });
@@ -149,6 +159,7 @@ const Cart = ({
   };
 
   const handleOrder = async () => {
+<<<<<<< HEAD
     if (!state.deliveryAddress) {
       dispatch({
         type: "error",
@@ -156,6 +167,34 @@ const Cart = ({
       });
       return;
     }
+=======
+    const order = {
+      CustomerId:auth?.user.Id,
+      Instruction: state.deliveryInstruction
+    }
+    const response = await post(orderUrl,order,auth.accessToken);
+
+    console.log(response.data);
+
+    for(let item of cart){
+      const orderItem = {
+        Amount: item.Price,
+        Quantity: item.Quantity,
+        TotalAmount: item.Amount,
+        Name: item.Name,
+        Description:item.Description,
+        ProductId: item.Id,
+        OrderId:response.data?.Id
+
+      }
+
+      const result = await post(orderItemUrl, orderItem, auth.accessToken)
+      console.log(result.data)
+    }
+    
+  }
+
+>>>>>>> 38d66ec (Order and Order Items)
 
     if (!auth.accessToken) {
       setCartState(false);
@@ -300,12 +339,36 @@ const Cart = ({
                   </span>
                 </button>
               </div>
+<<<<<<< HEAD
               <div className=" flex justify-between items-center py-2 px-2">
                 <p className=" flex flex-col items-start">
                   <span className=" text-sm">{item.Name}</span>
                   <span className=" text-gray text-xs">
                     &#8358;<span>{item.Price}</span>
                   </span>
+=======
+            ))}
+            <div className=" w-full">
+            
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Choose Address: {state.deliveryAddress} </span>
+                  {state.address ? (
+                    <button
+                      onClick={() => dispatch({ type: "address" })}
+                      className=" text-background cursor-pointer"
+                    >
+                      Close
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleAddressChange()}
+                      className=" text-background cursor-pointer"
+                    >
+                      Change
+                    </button>
+                  )}
+>>>>>>> 38d66ec (Order and Order Items)
                 </p>
                 <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
                   <button
@@ -500,6 +563,7 @@ const Cart = ({
                       payload: e.target.value,
                     })
                   }
+<<<<<<< HEAD
                 />
                 <div className="flex justify-between">
                   {state.voucherError && (
@@ -523,6 +587,44 @@ const Cart = ({
                 ></textarea>
                
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+                  {
+                    state.deliveryFee && <span className="">&#8358;{state.deliveryFee}</span>
+                  }
+                </p>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Service fee</span>
+                  <span className="">&#8358;0.0</span>
+                </p>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-semibold">
+                  <span className="">Total</span>
+                  <span className="">&#8358;{state.total}</span>
+                </p>
+              </div>
+              <div className=" pt-3 text-center w-full">
+                <button onClick={handleOrder} className=" w-full bg-background py-4 px-3 rounded">
+                  <span className=" text-primary">Place Order</span>
+                </button>
+              </div>
+              <div className=" pt-3 text-center w-full">
+                <button onClick={clearCart} className=" w-full bg-redborder py-4 px-3 rounded">
+                  <span className=" text-red">Clear Order</span>
+                </button>
+              </div>
+              <div className=" w-full">
+                <button className=" w-full py-2 px-3">
+                  <span className=" text-background">
+                    <BookmarkBorderOutlined fontSize="" />
+                  </span>
+                  <span className=" text-background text-sm">
+                    Save for later
+                  </span>
+                </button>
+>>>>>>> 38d66ec (Order and Order Items)
               </div>
             </div>
           </div>

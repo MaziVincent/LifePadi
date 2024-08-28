@@ -99,6 +99,7 @@ namespace Api.Controllers
         [HttpPost("create")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create(OrderDto order)
         {
             try
@@ -116,6 +117,9 @@ namespace Api.Controllers
 =======
         public async Task<IActionResult> create([FromForm] OrderDto order)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public async Task<IActionResult> create( OrderDto order)
+>>>>>>> 38d66ec (Order and Order Items)
         {
             try
             {

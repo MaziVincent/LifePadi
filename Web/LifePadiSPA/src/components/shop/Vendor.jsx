@@ -20,6 +20,7 @@ import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
 import AddAddressModal from "./AddAddressModal";
+<<<<<<< HEAD
 import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
@@ -30,6 +31,8 @@ import ProductSkeleton from "../shared/ProductSkeleton";
 import useUpdate from "../../hooks/useUpdate";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Alert } from "@mui/material";
+=======
+>>>>>>> 38d66ec (Order and Order Items)
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -64,6 +67,7 @@ const Vendor = () => {
   const post = usePost();
   const update = useUpdate();
   const [products, setProducts] = useState(null);
+<<<<<<< HEAD
   const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
   const { auth, setLogin, location } = useAuth();
@@ -84,6 +88,11 @@ const Vendor = () => {
 =======
   const { cart, setCart, deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction } = useCart();
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+  const {auth, setLogin} = useAuth();
+  const url = `${baseUrl}vendor`;
+  const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
+>>>>>>> 38d66ec (Order and Order Items)
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -94,7 +103,10 @@ const Vendor = () => {
     product: {},
     subTotal: 0,
     newAddress: false,
+<<<<<<< HEAD
     loading: false,
+=======
+>>>>>>> 38d66ec (Order and Order Items)
   });
 
   const getVendor = async (url) => {
@@ -210,6 +222,7 @@ const Vendor = () => {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const handleAddressChange = () => {
     if (!auth.accessToken) {
       setCartState(false);
@@ -255,8 +268,21 @@ const Vendor = () => {
       }
 
     
+=======
+  const handleAddressChange = () => {
+    if (!auth.user) {
+      setCartState(false);
+      setLogin(true);
+>>>>>>> 38d66ec (Order and Order Items)
 
+      return;
+    }
 
+<<<<<<< HEAD
+=======
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    cartDispatch({ type: "address" });
+>>>>>>> 38d66ec (Order and Order Items)
   };
 
   const handleDeliveryFee = ( ) => {
@@ -439,6 +465,7 @@ const Vendor = () => {
   }, [cart]);
 <<<<<<< HEAD
 
+<<<<<<< HEAD
   useEffect(() => {
     setOrigin(
       `${cartState.vendor?.ContactAddress}, ${cartState.vendor?.Town}, ${cartState.vendor?.City}, ${cartState.vendor?.State}`
@@ -464,6 +491,10 @@ const Vendor = () => {
  console.log(deliveryInstruction);
   //console.log(state.subTotal);
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+  //console.log(deliveryInstruction);
+  //console.log(cartState.vendor);
+>>>>>>> 38d66ec (Order and Order Items)
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 lg:w-10/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
@@ -687,6 +718,7 @@ const Vendor = () => {
                     {" "}
                     <LoadingGif />{" "}
                   </div>
+<<<<<<< HEAD
                 )}
                 <form>
                   {cartState.addresses.map((ad) => (
@@ -714,6 +746,142 @@ const Vendor = () => {
                 </form>
 
                 <div className="text-sm flex justify-between px-2 py-2">
+=======
+                </div>
+              </Link>
+              <div className="py-4">
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Payment Method</span>
+                    <button className=" text-background">Choose</button>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Promo code</span>
+                    <button className=" text-background">Choose</button>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Choose Address</span>
+                    <button className=" text-background">Change</button>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Delivery instructions</span>
+                    <button className=" text-background">Add</button>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Vendor instructions</span>
+                    <button className=" text-background">Add</button>
+                  </p>
+                </div>
+              </div>
+              <div className=" flex justify-between items-center border-y py-6 my-4">
+                <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
+                  <div className="">
+                    <span className=" text-accent">
+                      <InfoOutlined />
+                    </span>
+                  </div>
+                  <div className=" text-accent">
+                    <h1 className=" text-sm font-normal">
+                      Delivery includes PIN confirmation
+                    </h1>
+                    <p className=" text-xs">
+                      This helps ensure that your order is given to the right
+                      person
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>
+                      Sub total<span>(1 item)</span>
+                    </span>
+                    <span className="">&#8358;12,000</span>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Delivery fee</span>
+                    <span className="">&#8358;0.0</span>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-normal">
+                    <span>Service fee</span>
+                    <span className="">&#8358;0.0</span>
+                  </p>
+                </div>
+                <div className=" py-2">
+                  <p className=" flex justify-between items-center text-sm font-semibold">
+                    <span className="">Total</span>
+                    <span className="">&#8358;12,000</span>
+                  </p>
+                </div>
+                <div className=" pt-3 text-center w-full">
+                  <button className=" w-full bg-background py-4 px-3 rounded">
+                    <span className=" text-primary">Place order</span>
+                  </button>
+                </div>
+                <div className=" pt-3 text-center w-full">
+                  <button className=" w-full bg-redborder py-4 px-3 rounded">
+                    <span className=" text-red">Clear order</span>
+                  </button>
+                </div>
+                <div className=" w-full">
+                  <button className=" w-full py-2 px-3">
+                    <span className=" text-background">
+                      <BookmarkBorderOutlined fontSize="" />
+                    </span>
+                    <span className=" text-background text-sm">
+                      Save for later
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-1 py-5 px-2 lg:flex flex-col   items-start justify-center  h-full rounded-lg">
+          <div className=" flex justify-between items-center pb-4">
+            <p className=" text-base capitalize text-secondary">
+              {cartState.vendor?.Name}
+            </p>
+          </div>
+          {cart?.map((item, index) => (
+            <div
+              key={item.Id}
+              className=" border border-dashed border-gray rounded-lg w-full mb-3"
+            >
+              <div className=" flex justify-between items-center py-2 px-2">
+                <div>
+                  <h3 className=" text-sm font-medium">{`Item ${
+                    index + 1
+                  }`}</h3>
+                </div>
+                <button onClick={() => handleCartItemDelete(item)}>
+                  <span className=" text-red hover:text-redborder">
+                    <DeleteOutlined />
+                  </span>
+                </button>
+              </div>
+              <div className=" flex justify-between items-center py-2 px-2">
+                <p className=" flex flex-col items-start">
+                  <span className=" text-sm">{item.Name}</span>
+                  <span className=" text-gray text-xs">
+                    &#8358;<span>{item.Price}</span>
+                  </span>
+                </p>
+                <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
+>>>>>>> 38d66ec (Order and Order Items)
                   <button
                     onClick={() => handleLocation()}
                     className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer"
@@ -730,6 +898,7 @@ const Vendor = () => {
                   </button>
                 </div>
               </div>
+<<<<<<< HEAD
               <div className=" py-2">
                 <p className=" flex justify-between items-center text-sm font-normal">
                   <span>Delivery instructions</span>
@@ -902,6 +1071,126 @@ const Vendor = () => {
                 </button>
               </div>
             </div>
+=======
+            </div>
+          ))}
+
+          <div className=" w-full">
+            <div className=" py-2">
+              <p className=" flex justify-between items-center text-sm font-normal">
+                <span>Choose Address: {cartState.deliveryAddress} </span>
+                {state.address ? (
+                  <button
+                    onClick={() => cartDispatch({ type: "address" })}
+                    className=" text-background cursor-pointer"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddressChange()}
+                    className=" text-background cursor-pointer"
+                  >
+                    Change
+                  </button>
+                )}
+              </p>
+            </div>
+            <div
+              className={`${
+                state.address ? "block" : "hidden"
+              } border-2 rounded-lg border-graybg`}
+            >
+              {isLoading && (
+                <div className="flex justify-center items-center">
+                  {" "}
+                  <LoadingGif />{" "}
+                </div>
+              )}
+              <form>
+                {state.addresses.map((ad) => (
+                  <div
+                    key={ad.Id}
+                    className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                  >
+                    {" "}
+                    <input
+                      type="radio"
+                      name="address"
+                      id={`address${ad.Id}`}
+                      value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
+                      onChange={(e) => {
+                        handleClick(e);
+                        //handleDeliveryAddress(e)
+                      }}
+                    />
+                    <label htmlFor={`address${ad.Id}`}>
+                      {" "}
+                      {ad.Name} {ad.Town}
+                    </label>
+                  </div>
+                ))}
+              </form>
+
+              <div className="text-sm flex justify-between px-2 py-2">
+                <button
+                  onClick={() => handleLocation()}
+                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                >
+                  {" "}
+                  Use Current Location{" "}
+                </button>
+                <button
+                  onClick={() => handleNewAddress({ type: "edit" })}
+                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                >
+                  {" "}
+                  Add new Address{" "}
+                </button>
+              </div>
+            </div>
+            <div className=" py-2">
+              <p className=" flex justify-between items-center text-sm font-normal">
+                <span>Delivery instructions</span>
+                {state.instruction ? (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Add
+                  </button>
+                )}
+              </p>
+              <div
+                className={`flex flex-col ${
+                  state.instruction ? "block" : "hidden"
+                }`}
+              >
+                <textarea
+                  name="instructions"
+                  id=""
+                  //cols="30"
+                  rows="3"
+                  className="border rounded-lg border-gray bg-graybg p-3 "
+                  placeholder="e.g  give it to the receptionist"
+                  onChange={(e) => handleDeliveryInstruction(e)}
+                ></textarea>
+              </div>
+            </div>
+            {/* <div className=" py-2">
+            <p className=" flex justify-between items-center text-sm font-normal">
+              <span>Vendor instructions</span>
+              <button className=" text-background">Add</button>
+            </p>
+          </div> */}
+>>>>>>> 38d66ec (Order and Order Items)
           </div>
         ) : (
           <EmptyCartDesktop />
@@ -917,15 +1206,19 @@ const Vendor = () => {
           handleCartIncrement={handleCartIncrement}
           handleCartItemDelete={handleCartItemDelete}
           handleNewAddress={dispatch}
+<<<<<<< HEAD
           handleGift={handleGift}
           handleDeliveryFee={handleDeliveryFee}
          // handleTotalAmount={handleTotalAmount}
+=======
+>>>>>>> 38d66ec (Order and Order Items)
           //distance={handleDistance}
           //handleDeliveryInstruction = {setDeliveryInstruction}
         />
       ) : (
         <EmptyCart />
       )}
+<<<<<<< HEAD
 =======
       <Cart
         vendor={data}
@@ -938,6 +1231,8 @@ const Vendor = () => {
         handleDeliveryInstruction = {setDeliveryInstruction}
       />
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+>>>>>>> 38d66ec (Order and Order Items)
 
       <ProductModal
         open={state.open}
