@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
-import HeroAnimation1 from "../../assets/lottie/HeroAnimation1.json";
+import HeroAnimation from "../../assets/lottie/HeroAnimation.json";
 import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
 import Hero1 from "../../assets/lottie/Hero1.json";
 import LandingPageSlide from "./LandingPageSlide";
@@ -79,7 +79,7 @@ const Home = () => {
       <section className="bg-white dark:bg-gray-900">
         <div className=" w-screen h-5/6  text-center">
           <Lottie
-            animationData={HeroAnimation2}
+            animationData={HeroAnimation}
             loop={true}
             autoPlay={true}
             style={lottieStyle}
@@ -123,7 +123,7 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <div className="md:w-1/2 flex justify-center items-start  h-3/5 md:h-auto p-6 md:p-4">
+          <div className="md:w-1/2 flex justify-center items-start  md:h-auto p-6 md:p-4">
             <img
               src={iphone}
               alt=""

@@ -94,7 +94,7 @@ const AddAddressModal = ({ open, handleClose }) => {
         <Toaster />
 
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
-          <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu overflow-y-auto ">
+          <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md  dark:bg-darkMenu  dark:text-primary overflow-y-auto ">
             <div className="flex justify-between items-center   ">
               <button
                 type="button"

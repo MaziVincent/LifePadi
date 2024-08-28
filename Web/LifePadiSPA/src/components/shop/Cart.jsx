@@ -178,7 +178,7 @@ const Cart = ({
                 onClick={() => {
                   setCartState(false);
                 }}
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-background rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
               >
                 <svg
@@ -239,11 +239,7 @@ const Cart = ({
                     </button>
                   </span>
                 </div>
-                {/* <div className=" flex justify-between px-2 py-3">
-                <button className=" border border-dashed border-gray px-2 rounded-full">
-                  <span className=" text-sm">Duplicate this pack</span>
-                </button>
-              </div> */}
+               
               </div>
             ))}
             <div className=" w-full">

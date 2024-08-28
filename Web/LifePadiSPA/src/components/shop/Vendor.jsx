@@ -21,6 +21,9 @@ import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
 import AddAddressModal from "./AddAddressModal";
 import LoadingGif from "../shared/LodingGif";
+import { useDistance } from "../../hooks/useDistance";
+import EmptyCartDesktop from "./EmptyCartDesktop";
+import usePost from "../../hooks/usePost";
 
 
 const reducer = (state, action) => {
@@ -51,10 +54,14 @@ const reducer = (state, action) => {
 const Vendor = () => {
   const { id } = useParams();
   const fetch = useFetch();
+  const post = usePost()
   const [products, setProducts] = useState(null);
-  const {auth, setLogin} = useAuth();
+  const [orderLoading, setOrderLoading] = useState(false);
+  const {auth, setLogin, location} = useAuth();
   const url = `${baseUrl}vendor`;
   const addressUrl = `${baseUrl}address/customer-addresses`;
+  const orderUrl = `${baseUrl}order/create`
+  const orderItemUrl = `${baseUrl}orderitem/create`
 
   const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
 
@@ -105,7 +112,7 @@ const Vendor = () => {
 
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
-    dispatch({ type: "setAddresses", payload: result.data });
+    cartDispatch({ type: "setAddresses", payload: result.data });
     //console.log(state.addresses);
     return result.data;
   };
@@ -190,6 +197,79 @@ const Vendor = () => {
     cartDispatch({ type: "address" });
   };
 
+  const handleDeliveryInstruction = (e) => {
+    cartDispatch({type:'setInstruction', payload:e.target.value})
+  }
+
+  const handleDeliveryFee = () => {
+    
+    if(distance == null || distance == 0){
+      const deliveryFee = 1500;
+      cartDispatch({type:'deliveryFee', payload:deliveryFee})
+    }else{
+    const deliveryFee = 1500 + (200 * (distance/1000))
+    cartDispatch({type:'deliveryFee', payload:deliveryFee})
+    }
+  }
+
+  const handleLocation = () => {
+    console.log(location)
+    cartDispatch({ type: "setAddress", payload: location.address });
+    handleDeliveryFee();
+    console.log(cartState.deliveryAddress)
+    cartDispatch({type:"address"})
+  }
+
+  const handleClick = async (e) => {
+    console.log(e.target.value);
+    cartDispatch({ type: "setAddress", payload: e.target.value });
+    handleDeliveryFee();
+    cartDispatch({type:"address"})
+ 
+  };
+
+
+  const handleOrder = async () => {
+     setOrderLoading(true)
+    const order = {
+      CustomerId:auth?.user.Id,
+      Instruction: cartState.deliveryInstruction
+    }
+    const response = await post(orderUrl,order,auth.accessToken);
+
+    console.log(response.data);
+
+    for(let item of cart){
+      const orderItem = {
+        Amount: item.Price,
+        Quantity: item.Quantity,
+        TotalAmount: item.Amount,
+        Name: item.Name,
+        Description:item.Description,
+        ProductId: item.Id,
+        OrderId: response.data?.Id
+
+      }
+
+      const result = await post(orderItemUrl, orderItem, auth.accessToken)
+     console.log(result.data)
+    }
+
+    setOrderLoading(false)
+    cartDispatch({type:'checkOut'})
+    
+  }
+
+  const clearCart = () => {
+    setCart([])
+    cartDispatch({type:'setInstruction', payload:""})
+    cartDispatch({type:'total', payload:0})
+    setCartState(false)
+    //cartDispatch({type:'empty'})
+  }
+
+  const {distance, loading:disLoading } = useDistance(origin, state.deliveryAddress)
+
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
@@ -204,8 +284,8 @@ const Vendor = () => {
   //console.log(cartState.vendor);
   return (
     <main className=" flex justify-center  ">
-      <div className=" w-11/12 lg:w-9/12  grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
-        <div className=" w-full  col-span-2">
+      <div className=" w-11/12 lg:w-9/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
+        <div className=" w-full  col-span-8">
           <div className=" flex flex-col  w-full justify-center gap-5 px-2">
             <div>
               <Link
@@ -315,167 +395,10 @@ const Vendor = () => {
               ))}
             </div>
 
-            <div className=" hidden w-2/6 stick -top-16 h-lvh p-4 overflow-auto">
-              <div className=" flex justify-between items-center pb-4">
-                <p className=" text-sm text-secondary">
-                  Lekki's global suya spot
-                </p>
-                <button className=" py-1 px-3 rounded-full bg-background">
-                  <span className=" text-sm font-normal text-primary">
-                    + Add another pack
-                  </span>
-                </button>
-              </div>
-              <div className=" border border-dashed border-gray rounded-lg">
-                <div className=" flex justify-between items-center py-2 px-2">
-                  <div>
-                    <h3 className=" text-sm font-medium">Pack 1</h3>
-                  </div>
-                  <div>
-                    <span className=" text-red">
-                      <DeleteOutlined />
-                    </span>
-                  </div>
-                </div>
-                <div className=" flex justify-between items-center py-2 px-2">
-                  <p className=" flex flex-col items-center">
-                    <span className=" text-xs text-accent">Suya spice</span>
-                    <span className=" text-gray text-xs">
-                      &#8358;<span>10,000.00</span>
-                    </span>
-                  </p>
-                  <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-                    <button className=" text-accent">
-                      {" "}
-                      <Remove fontSize="" />
-                    </button>
-                    <span className=" text-sm">1</span>
-                    <button className=" text-accent">
-                      <Add fontSize="" />
-                    </button>
-                  </span>
-                </div>
-                <div className=" flex justify-between px-2 py-3">
-                  <button className=" border border-gray px-2 rounded-full">
-                    <span className=" text-sm">+ Add to this pack</span>
-                  </button>
-                  <button className=" border border-dashed border-gray px-2 rounded-full">
-                    <span className=" text-sm">Duplicate this pack</span>
-                  </button>
-                </div>
-              </div>
-              <Link>
-                <div className=" flex justify-between items-center border-y py-4 my-4">
-                  <div>
-                    <input
-                      type="radio"
-                      className=" focus:bg-grayTxt cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </Link>
-              <div className="py-4">
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Payment Method</span>
-                    <button className=" text-background">Choose</button>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Promo code</span>
-                    <button className=" text-background">Choose</button>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Choose Address</span>
-                    <button className=" text-background">Change</button>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Delivery instructions</span>
-                    <button className=" text-background">Add</button>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Vendor instructions</span>
-                    <button className=" text-background">Add</button>
-                  </p>
-                </div>
-              </div>
-              <div className=" flex justify-between items-center border-y py-6 my-4">
-                <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
-                  <div className="">
-                    <span className=" text-accent">
-                      <InfoOutlined />
-                    </span>
-                  </div>
-                  <div className=" text-accent">
-                    <h1 className=" text-sm font-normal">
-                      Delivery includes PIN confirmation
-                    </h1>
-                    <p className=" text-xs">
-                      This helps ensure that your order is given to the right
-                      person
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>
-                      Sub total<span>(1 item)</span>
-                    </span>
-                    <span className="">&#8358;12,000</span>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Delivery fee</span>
-                    <span className="">&#8358;0.0</span>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-normal">
-                    <span>Service fee</span>
-                    <span className="">&#8358;0.0</span>
-                  </p>
-                </div>
-                <div className=" py-2">
-                  <p className=" flex justify-between items-center text-sm font-semibold">
-                    <span className="">Total</span>
-                    <span className="">&#8358;12,000</span>
-                  </p>
-                </div>
-                <div className=" pt-3 text-center w-full">
-                  <button className=" w-full bg-background py-4 px-3 rounded">
-                    <span className=" text-primary">Place order</span>
-                  </button>
-                </div>
-                <div className=" pt-3 text-center w-full">
-                  <button className=" w-full bg-redborder py-4 px-3 rounded">
-                    <span className=" text-red">Clear order</span>
-                  </button>
-                </div>
-                <div className=" w-full">
-                  <button className=" w-full py-2 px-3">
-                    <span className=" text-background">
-                      <BookmarkBorderOutlined fontSize="" />
-                    </span>
-                    <span className=" text-background text-sm">
-                      Save for later
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-1 py-5 px-2 lg:flex flex-col   items-start justify-center  h-full rounded-lg">
+        {
+          cart.length > 0 ? <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-4 py-10 px-2 lg:flex flex-col   items-start   h-full rounded-lg">
           <div className=" flex justify-between items-center pb-4">
             <p className=" text-base capitalize text-secondary">
               {cartState.vendor?.Name}
@@ -529,7 +452,7 @@ const Vendor = () => {
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Choose Address: {cartState.deliveryAddress} </span>
-                {state.address ? (
+                {cartState.address ? (
                   <button
                     onClick={() => cartDispatch({ type: "address" })}
                     className=" text-background cursor-pointer"
@@ -585,14 +508,14 @@ const Vendor = () => {
               <div className="text-sm flex justify-between px-2 py-2">
                 <button
                   onClick={() => handleLocation()}
-                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                  className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer"
                 >
                   {" "}
                   Use Current Location{" "}
                 </button>
                 <button
-                  onClick={() => handleNewAddress({ type: "edit" })}
-                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                  onClick={() => dispatch({ type: "edit" })}
+                  className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer"
                 >
                   {" "}
                   Add new Address{" "}
@@ -602,16 +525,16 @@ const Vendor = () => {
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery instructions</span>
-                {state.instruction ? (
+                {cartState.instruction ? (
                   <button
-                    onClick={() => dispatch({ type: "instruction" })}
+                    onClick={() => cartDispatch({ type: "instruction" })}
                     className=" text-background"
                   >
                     Close
                   </button>
                 ) : (
                   <button
-                    onClick={() => dispatch({ type: "instruction" })}
+                    onClick={() => cartDispatch({ type: "instruction" })}
                     className=" text-background"
                   >
                     Add
@@ -620,7 +543,7 @@ const Vendor = () => {
               </p>
               <div
                 className={`flex flex-col ${
-                  state.instruction ? "block" : "hidden"
+                  cartState.instruction ? "block" : "hidden"
                 }`}
               >
                 <textarea
@@ -628,18 +551,13 @@ const Vendor = () => {
                   id=""
                   //cols="30"
                   rows="3"
-                  className="border rounded-lg border-gray bg-graybg p-3 "
+                  className="border rounded-lg border-gray bg-graybg text-accent p-3 "
                   placeholder="e.g  give it to the receptionist"
                   onChange={(e) => handleDeliveryInstruction(e)}
                 ></textarea>
               </div>
             </div>
-            {/* <div className=" py-2">
-            <p className=" flex justify-between items-center text-sm font-normal">
-              <span>Vendor instructions</span>
-              <button className=" text-background">Add</button>
-            </p>
-          </div> */}
+           
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -670,7 +588,7 @@ const Vendor = () => {
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery fee</span>
-                <span className="">&#8358;0.0</span>
+                <span className="">&#8358;{cartState.deliveryFee}</span>
               </p>
             </div>
             <div className=" py-2">
@@ -682,17 +600,17 @@ const Vendor = () => {
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-semibold">
                 <span className="">Total</span>
-                <span className="">&#8358;12,000</span>
+                <span className="">&#8358;{cartState.total}</span>
               </p>
             </div>
             <div className=" pt-3 text-center w-full">
-              <button className=" w-full bg-background py-4 px-3 rounded">
-                <span className=" text-primary">Place order</span>
+              <button onClick={handleOrder} className=" w-full bg-background py-4 px-3 rounded">
+                <span className=" text-primary">Place Order</span>
               </button>
             </div>
             <div className=" pt-3 text-center w-full">
-              <button className=" w-full bg-redborder py-4 px-3 rounded">
-                <span className=" text-red">Clear order</span>
+              <button onClick={clearCart} className=" w-full bg-redborder py-4 px-3 rounded">
+                <span className=" text-red">Clear Order</span>
               </button>
             </div>
             <div className=" w-full">
@@ -705,12 +623,10 @@ const Vendor = () => {
             </div>
           </div>
         </div>
-        {/* <div className="fixed bottom-10 md:hidden w-full px-5">
-          <button className="flex justify-between w-full bg-background p-3 rounded-lg shadow-md">
-            <span> Proceed to order 2 items</span>
-            <span className="text-base">&#8358;30000 </span>
-          </button>
-        </div> */}
+        : <EmptyCartDesktop />
+        }
+        
+
       </div>
 
       {cart.length >= 1 ? (

@@ -68,7 +68,7 @@ const UserHeader = ({ setAside }) => {
             </button>
           </ClickAwayListener>
           <Link
-            to="/admin"
+            to="/"
             className="flex items-center justify-between gap-5 mr-4"
           >
             <div className="w-10 h-12">
