@@ -64,7 +64,7 @@ const LandingPageSlide = () => {
             >
               {pictures.map((pic) => (
                 <SwiperSlide key={pic.text}>
-                  <div className=" h-80 lg:h-96 w-full bg-accent rounded-xl border-4 relative ">
+                  <div className=" h-80 lg:h-[40rem] w-full bg-accent rounded-xl border-4 relative ">
                     <img
                       src={pic.src}
                       alt={pic.text}
