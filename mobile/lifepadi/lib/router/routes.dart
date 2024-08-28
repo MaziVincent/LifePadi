@@ -454,3 +454,13 @@ class SupportRoute extends GoRouteData {
     return const SupportPage();
   }
 }
+
+@TypedGoRoute<SettingsRoute>(path: '/settings')
+class SettingsRoute extends GoRouteData {
+  const SettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsPage();
+  }
+}

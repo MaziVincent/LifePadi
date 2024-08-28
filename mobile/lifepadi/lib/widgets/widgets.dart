@@ -48,6 +48,7 @@ export 'receiver_chat_bubble.dart';
 export 'scaffold_with_nav_bar.dart';
 export 'section_title.dart';
 export 'sender_chat_bubble.dart';
+export 'setting_tile.dart';
 export 'settings_panel.dart';
 export 'settings_tile.dart';
 export 'store_name_with_wishlist_and_share.dart';
