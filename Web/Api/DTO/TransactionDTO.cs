@@ -63,7 +63,7 @@ namespace Api.DTO
         public string? currency { get; set; }
         public Customer_Info? customer { get; set; }
         public Customizations? customizations { get; set; }
-        public Meta? meta {  get; set; }
+        public Meta? meta { get; set; }
     }
 
     public class Meta
