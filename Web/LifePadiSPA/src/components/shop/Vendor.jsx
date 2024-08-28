@@ -20,6 +20,8 @@ import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
 import AddAddressModal from "./AddAddressModal";
+import LoadingGif from "../shared/LodingGif";
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,6 +54,8 @@ const Vendor = () => {
   const [products, setProducts] = useState(null);
   const {auth, setLogin} = useAuth();
   const url = `${baseUrl}vendor`;
+  const addressUrl = `${baseUrl}address/customer-addresses`;
+
   const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
 
   const [state, dispatch] = useReducer(reducer, {
@@ -98,6 +102,27 @@ const Vendor = () => {
       });
     }
   }, [baseUrl]);
+
+  const getAddresses = async (url) => {
+    const result = await fetch(url, auth.accessToken);
+    dispatch({ type: "setAddresses", payload: result.data });
+    //console.log(state.addresses);
+    return result.data;
+  };
+
+  const {
+    data: addresses,
+    isError:addressError,
+    isLoading:loadingAddress,
+    isSuccess:addressSuccess,
+  } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => getAddresses(`${addressUrl}/${auth?.user.Id}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+    enabled: state.address,
+  });
 
   const calculateTotalAmount = () => {
     if (cart) {
@@ -523,17 +548,17 @@ const Vendor = () => {
             </div>
             <div
               className={`${
-                state.address ? "block" : "hidden"
+                cartState.address ? "block" : "hidden"
               } border-2 rounded-lg border-graybg`}
             >
-              {isLoading && (
+              {loadingAddress && (
                 <div className="flex justify-center items-center">
                   {" "}
                   <LoadingGif />{" "}
                 </div>
               )}
               <form>
-                {state.addresses.map((ad) => (
+                {cartState.addresses.map((ad) => (
                   <div
                     key={ad.Id}
                     className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
