@@ -19,7 +19,7 @@ import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
-import AddAddressModal from "./AddAddressModal"
+import AddAddressModal from "./AddAddressModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -37,9 +37,9 @@ const reducer = (state, action) => {
       return { ...state, product: action.payload };
     case "subTotal":
       return { ...state, subTotal: action.payload };
-    
+
     case "newAddress":
-      return { ...state, newAddress : !state.newAddress };
+      return { ...state, newAddress: !state.newAddress };
 
     default:
       throw new Error();
@@ -50,9 +50,9 @@ const Vendor = () => {
   const { id } = useParams();
   const fetch = useFetch();
   const [products, setProducts] = useState(null);
-  const auth = useAuth();
+  const {auth, setLogin} = useAuth();
   const url = `${baseUrl}vendor`;
-  const { cart, setCart, } = useCart();
+  const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -62,7 +62,7 @@ const Vendor = () => {
     productCategories: [],
     product: {},
     subTotal: 0,
-    newAddress : false
+    newAddress: false,
   });
 
   const getVendor = async (url) => {
@@ -153,8 +153,17 @@ const Vendor = () => {
     setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
   };
 
+  const handleAddressChange = () => {
+    if (!auth.user) {
+      setCartState(false);
+      setLogin(true);
 
+      return;
+    }
 
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    cartDispatch({ type: "address" });
+  };
 
   useEffect(() => {
     getProductCategory();
@@ -166,8 +175,8 @@ const Vendor = () => {
     calculateTotalAmount();
   }, [cart]);
 
- //console.log(deliveryInstruction);
-  //console.log(state.subTotal);
+  //console.log(deliveryInstruction);
+  //console.log(cartState.vendor);
   return (
     <main className=" flex justify-center  ">
       <div className=" w-11/12 lg:w-9/12  grid grid-cols-1 lg:grid-cols-3 justify-center gap-8">
@@ -442,8 +451,10 @@ const Vendor = () => {
           </div>
         </div>
         <div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-1 py-5 px-2 lg:flex flex-col   items-start justify-center  h-full rounded-lg">
-          <div className=" flex justify-between items-center pb-4" >
-            <p className=" text-base capitalize text-secondary">{data?.Name}</p>
+          <div className=" flex justify-between items-center pb-4">
+            <p className=" text-base capitalize text-secondary">
+              {cartState.vendor?.Name}
+            </p>
           </div>
           {cart?.map((item, index) => (
             <div
@@ -486,45 +497,124 @@ const Vendor = () => {
                   </button>
                 </span>
               </div>
-              <div className=" flex justify-between px-2 py-3">
-                <button className=" border border-dashed border-gray px-2 rounded-full">
-                  <span className=" text-sm">Duplicate this pack</span>
-                </button>
-              </div>
             </div>
           ))}
 
           <div className=" w-full">
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Payment Method</span>
-                <button className=" text-background">Choose</button>
+                <span>Choose Address: {cartState.deliveryAddress} </span>
+                {state.address ? (
+                  <button
+                    onClick={() => cartDispatch({ type: "address" })}
+                    className=" text-background cursor-pointer"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddressChange()}
+                    className=" text-background cursor-pointer"
+                  >
+                    Change
+                  </button>
+                )}
               </p>
             </div>
-            <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Promo code</span>
-                <button className=" text-background">Choose</button>
-              </p>
-            </div>
-            <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Choose Address</span>
-                <button className=" text-background">Change</button>
-              </p>
+            <div
+              className={`${
+                state.address ? "block" : "hidden"
+              } border-2 rounded-lg border-graybg`}
+            >
+              {isLoading && (
+                <div className="flex justify-center items-center">
+                  {" "}
+                  <LoadingGif />{" "}
+                </div>
+              )}
+              <form>
+                {state.addresses.map((ad) => (
+                  <div
+                    key={ad.Id}
+                    className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                  >
+                    {" "}
+                    <input
+                      type="radio"
+                      name="address"
+                      id={`address${ad.Id}`}
+                      value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
+                      onChange={(e) => {
+                        handleClick(e);
+                        //handleDeliveryAddress(e)
+                      }}
+                    />
+                    <label htmlFor={`address${ad.Id}`}>
+                      {" "}
+                      {ad.Name} {ad.Town}
+                    </label>
+                  </div>
+                ))}
+              </form>
+
+              <div className="text-sm flex justify-between px-2 py-2">
+                <button
+                  onClick={() => handleLocation()}
+                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                >
+                  {" "}
+                  Use Current Location{" "}
+                </button>
+                <button
+                  onClick={() => handleNewAddress({ type: "edit" })}
+                  className="text-background border p-2 rounded-xl border-gray cursor-pointer"
+                >
+                  {" "}
+                  Add new Address{" "}
+                </button>
+              </div>
             </div>
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery instructions</span>
-                <button className=" text-background">Add</button>
+                {state.instruction ? (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => dispatch({ type: "instruction" })}
+                    className=" text-background"
+                  >
+                    Add
+                  </button>
+                )}
               </p>
+              <div
+                className={`flex flex-col ${
+                  state.instruction ? "block" : "hidden"
+                }`}
+              >
+                <textarea
+                  name="instructions"
+                  id=""
+                  //cols="30"
+                  rows="3"
+                  className="border rounded-lg border-gray bg-graybg p-3 "
+                  placeholder="e.g  give it to the receptionist"
+                  onChange={(e) => handleDeliveryInstruction(e)}
+                ></textarea>
+              </div>
             </div>
-            <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Vendor instructions</span>
-                <button className=" text-background">Add</button>
-              </p>
-            </div>
+            {/* <div className=" py-2">
+            <p className=" flex justify-between items-center text-sm font-normal">
+              <span>Vendor instructions</span>
+              <button className=" text-background">Add</button>
+            </p>
+          </div> */}
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -598,20 +688,20 @@ const Vendor = () => {
         </div> */}
       </div>
 
-      {
-        cart.length >= 1 ? 
-      
-      <Cart
-        vendor={data}
-        subTotal={state.subTotal}
-        handleCartDecrement={handleCartDecrement}
-        handleCartIncrement={handleCartIncrement}
-        handleCartItemDelete = {handleCartItemDelete}
-        handleNewAddress = {dispatch}
-        //distance={handleDistance}
-        //handleDeliveryInstruction = {setDeliveryInstruction}
-      /> : <EmptyCart /> 
-}
+      {cart.length >= 1 ? (
+        <Cart
+          vendor={data}
+          subTotal={state.subTotal}
+          handleCartDecrement={handleCartDecrement}
+          handleCartIncrement={handleCartIncrement}
+          handleCartItemDelete={handleCartItemDelete}
+          handleNewAddress={dispatch}
+          //distance={handleDistance}
+          //handleDeliveryInstruction = {setDeliveryInstruction}
+        />
+      ) : (
+        <EmptyCart />
+      )}
 
       <ProductModal
         open={state.open}
@@ -619,7 +709,10 @@ const Vendor = () => {
         product={state.product}
         vendor={data}
       />
-      <AddAddressModal open={state.edit} handleClose={dispatch} />
+      <AddAddressModal
+        open={state.edit}
+        handleClose={dispatch}
+      />
     </main>
   );
 };
