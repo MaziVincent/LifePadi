@@ -51,7 +51,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] OrderDto order)
+        public async Task<IActionResult> create( OrderDto order)
         {
             try
             {

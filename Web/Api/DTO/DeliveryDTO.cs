@@ -18,6 +18,7 @@ namespace Api.DTO
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 //Delivery Dto Lite
+
     public class DeliveryDtoLite
     {
         public int Id { get; set; }

@@ -75,6 +75,7 @@ namespace Api.Services
                 var OrderItemDto = _mapper.Map<OrderItemDto>(newOrderItem);
                 return OrderItemDto;
             }
+            
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
