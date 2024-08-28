@@ -21,6 +21,7 @@ import baseUrl from "../../api/baseUrl";
 import { useQuery } from "react-query";
 import AddAddressModal from "./AddAddressModal";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
@@ -33,6 +34,10 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Alert } from "@mui/material";
 =======
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+import LoadingGif from "../shared/LodingGif";
+
+>>>>>>> 360c46c (vendor)
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,6 +96,8 @@ const Vendor = () => {
 =======
   const {auth, setLogin} = useAuth();
   const url = `${baseUrl}vendor`;
+  const addressUrl = `${baseUrl}address/customer-addresses`;
+
   const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
 >>>>>>> 38d66ec (Order and Order Items)
 
@@ -143,17 +150,24 @@ const Vendor = () => {
     }
   }, [baseUrl]);
 
+<<<<<<< HEAD
   //console.log(state.productCategories)
 
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
     cartDispatch({ type: "setAddresses", payload: result.data });
+=======
+  const getAddresses = async (url) => {
+    const result = await fetch(url, auth.accessToken);
+    dispatch({ type: "setAddresses", payload: result.data });
+>>>>>>> 360c46c (vendor)
     //console.log(state.addresses);
     return result.data;
   };
 
   const {
     data: addresses,
+<<<<<<< HEAD
     isError: addressError,
     isLoading: loadingAddress,
     isSuccess: addressSuccess,
@@ -164,6 +178,18 @@ const Vendor = () => {
     staleTime: 20000,
     refetchOnMount: "always",
     enabled: cartState.address,
+=======
+    isError:addressError,
+    isLoading:loadingAddress,
+    isSuccess:addressSuccess,
+  } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => getAddresses(`${addressUrl}/${auth?.user.Id}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+    enabled: state.address,
+>>>>>>> 360c46c (vendor)
   });
 
   const calculateTotalAmount = () => {
@@ -1098,17 +1124,17 @@ const Vendor = () => {
             </div>
             <div
               className={`${
-                state.address ? "block" : "hidden"
+                cartState.address ? "block" : "hidden"
               } border-2 rounded-lg border-graybg`}
             >
-              {isLoading && (
+              {loadingAddress && (
                 <div className="flex justify-center items-center">
                   {" "}
                   <LoadingGif />{" "}
                 </div>
               )}
               <form>
-                {state.addresses.map((ad) => (
+                {cartState.addresses.map((ad) => (
                   <div
                     key={ad.Id}
                     className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
