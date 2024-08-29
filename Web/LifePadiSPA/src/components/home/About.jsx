@@ -3,7 +3,7 @@ import MarqueeComp from "./MarqueeComp";
 
 const About = () => {
   return (
-    <div className="w-screen">
+    <div className="w-full">
       <div
         className="h-screen flex justify-center items-center "
         style={{
@@ -29,23 +29,23 @@ const About = () => {
         </section>
       </div>
       <div className="bg-gray-100 py-10">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24">
+        <div className=" mx-auto px-6 md:px-12 lg:px-24">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-800">
-              We are your Padi <i className="line-icon-Thumbs-UpSmiley"></i>{" "}
+              We are your Padi <i className="line-icon-Thumbs-UpSmiley text-background"></i>{" "}
             </h1>
             <p className="text-lg mt-4 text-gray-600">
               Delivering Excellence Across the Nation
             </p>
           </div>
 
-          <div className="mt-10 md:flex md:justify-between">
+          <div className="mt-10 md:flex md:justify-between gap-5 ">
             <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0">
               <h2 className="text-2xl font-semibold text-gray-800">
                 Our Mission
               </h2>
               <p className="mt-4 text-gray-600">
-                At [Your Company Name], our mission is to provide reliable,
+                At LifePadi, our mission is to provide reliable,
                 fast, and affordable delivery services across the country. We
                 strive to ensure every package is delivered on time, every time,
                 with the utmost care.
@@ -771,7 +771,8 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section className="bg-accent h-72 flex justify-center items-center">
+      <section className="bg-accent h-72 flex justify-center items-center mt-10">
+        
         <MarqueeComp />
       </section>
     </div>

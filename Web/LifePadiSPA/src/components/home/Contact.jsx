@@ -1,14 +1,35 @@
 import logo from "../../assets/images/Logonamedark.svg";
-
+import motorbike from "../../assets/images/vintage-green-motorbike.avif";
+import MarqueeComp from "./MarqueeComp";
 const Contact = () => {
   return (
     <div>
-      <div className="bg-secondary h-80">
-        <h1> Contact Us </h1>
+     <div
+        className="h-screen flex justify-center items-center "
+        style={{
+          backgroundImage: `url(${motorbike})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <section className=" dark:bg-gray-900">
+          <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+            <div className="mr-auto place-self-center lg:col-span-7">
+              <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
+                We would love to hear from you
+              </h1>
+              <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                Padi makes your life easy by providing reliable, fast, and
+                affordable delivery and errand services.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
 
       <section className="bg-white dark:bg-gray-900">
-        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md border-4 rounded-lg">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
             Contact Us
           </h2>
@@ -22,7 +43,7 @@ const Contact = () => {
           >
             <div>
               <label
-                for="email"
+                htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Your email
@@ -37,7 +58,7 @@ const Contact = () => {
             </div>
             <div>
               <label
-                for="subject"
+                htmlFor="subject"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Subject
@@ -52,7 +73,7 @@ const Contact = () => {
             </div>
             <div className="sm:col-span-2">
               <label
-                for="message"
+                htmlFor="message"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
               >
                 Your message
@@ -66,12 +87,16 @@ const Contact = () => {
             </div>
             <button
               type="submit"
-              className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-secondary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
               Send message
             </button>
           </form>
         </div>
+      </section>
+      <section className="bg-accent h-72 flex justify-center items-center mt-10">
+        
+        <MarqueeComp />
       </section>
     </div>
   );
