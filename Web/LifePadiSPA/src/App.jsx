@@ -42,6 +42,7 @@ import About from "./components/home/About";
 import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
+import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 
 function App() {
   const queryClient = new QueryClient();
@@ -116,7 +117,7 @@ function App() {
 
         {/*PROTECTED ROUTES ADMIN */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
+          <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
             <Route
               path="/admin"
               element={<AdminLayout />}
