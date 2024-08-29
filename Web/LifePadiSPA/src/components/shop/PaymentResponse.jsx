@@ -27,7 +27,7 @@ const PaymentResponse = () => {
             // console.log(res)
             if (res.status === 200) {
                 setPaymentStatus('success')
-                navigate('/shop')
+                navigate('/user')
             } else {
             setPaymentStatus('failed')
             }
