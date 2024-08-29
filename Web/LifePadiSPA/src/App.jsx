@@ -102,6 +102,7 @@ import About from "./components/home/About";
 import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
+import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -287,10 +288,14 @@ function App() {
         {/*PROTECTED ROUTES ADMIN */}
         <Route element={<PersistLogin />}>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
 =======
           <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+          <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
+>>>>>>> 9174884 (require auth commit)
             <Route
               path="/admin"
               element={<AdminLayout />}

@@ -97,10 +97,14 @@ const LandingPageSlide = () => {
                       loading="lazy"
                     />
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
 =======
                     <p className=" absolute text-xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+                    <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
+>>>>>>> 9174884 (require auth commit)
                       {" "}
                       {pic.text}{" "}
                     </p>

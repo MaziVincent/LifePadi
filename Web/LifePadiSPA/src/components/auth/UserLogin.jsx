@@ -153,7 +153,11 @@ const UserLogin = () => {
                     onClick={() => {
                       setLogin(false);
                     }}
+<<<<<<< HEAD
                     className="dark:text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+=======
+                    className="text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+>>>>>>> 9174884 (require auth commit)
                     data-modal-toggle="defaultModal"
                   >
                     <svg
@@ -182,7 +186,11 @@ const UserLogin = () => {
                   >
                     <div>
                       <label
+<<<<<<< HEAD
                         htmlFor="input"
+=======
+                        htmlFor="email"
+>>>>>>> 9174884 (require auth commit)
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
                         Your Phone number or email
