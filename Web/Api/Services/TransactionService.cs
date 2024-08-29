@@ -50,6 +50,11 @@ namespace Api.Services
         {
             try
             {
+                var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transaction_id));
+                if (transaction != null)
+                {
+                    throw new Exceptions.ServiceException("Transaction already confirmed");
+                }
                 //this is the uri
                 var request = new HttpRequestMessage(HttpMethod.Get,
                 $"https://api.flutterwave.com/v3/transactions/{transaction_id}/verify");
@@ -76,8 +81,13 @@ namespace Api.Services
                         transaction.PaymentId = (BigInteger)paymentRes.Data!.Id!;
                         transaction.TotalAmount = paymentRes.Data!.Meta!.totalAmount;
                         transaction.OrderId = (int)paymentRes.Data!.Meta.orderId!;
-                        var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
-                        transaction.VoucherId = voucher.Id;
+                        if (paymentRes.Data!.Meta.voucherCode != null)
+                        {
+                            var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
+                            transaction.VoucherId = voucher.Id;
+                        }
+                        // var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
+                        // transaction.VoucherId = voucher.Id;
 
                         await _dbContext.Transactions.AddAsync(transaction);
                         await _dbContext.SaveChangesAsync();
@@ -164,7 +174,8 @@ namespace Api.Services
                 var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePayment.OrderId);
                 if (order == null) throw new Exceptions.ServiceException("Order not found");
                 var tx_ref = GenerateTxRef.genTx_rf();
-                string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+                // string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+                string redirectUrl = _config["Base_Url:Frontend"] + "/shop/payment-response";
                 Customer_Info customer = new Customer_Info();
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;
