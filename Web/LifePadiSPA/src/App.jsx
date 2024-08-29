@@ -40,6 +40,7 @@ import Gift from "./components/customer/Gift";
 import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
+import Logistics from "./components/home/Logistics"
 
 function App() {
   const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ function App() {
         >
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="logistics" element={<Logistics />} />
           <Route
             index
             element={<Home />}

@@ -37,7 +37,7 @@ const ShopHeader = () => {
   },[address])
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
-      <div className=" flex justify-between lg:w-9/12">
+      <div className=" flex justify-between w-full lg:w-9/12">
         <div className=" flex items-center md:gap-10 w-1/2">
           <ResponsiveLogo />
           <div className="min-w-36">
@@ -78,7 +78,7 @@ const ShopHeader = () => {
               onClick={() => {
                 !cart.length ? dispatch({type:"empty"}) :  setCartState((cart) => !cart);
               }}
-              className=" bg-secondary rounded-full flex justify-center items-center h-10 w-10"
+              className=" lg:hidden bg-secondary rounded-full flex justify-center items-center h-10 w-10"
             >
               <div className=" text-primary">
                 <ShoppingCartOutlined />

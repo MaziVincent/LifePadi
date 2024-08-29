@@ -26,6 +26,8 @@ const reducer = (state, action) => {
       return { ...state, deliveryFee: action.payload };
     case "total":
       return { ...state, total: action.payload };
+    case "order":
+      return { ...state, order: action.payload };
     case "checkOut":
       return { ...state, checkOut: !state.checkOut };
     case "CLEAR_CART":
@@ -48,7 +50,8 @@ export const CartProvider = ({ children }) => {
     vendorChange: false,
     deliveryFee: 0,
     total: 0,
-    checkOut: false
+    checkOut: false,
+    order: null
   });
 
   const [cart, setCart] = useState([]);
