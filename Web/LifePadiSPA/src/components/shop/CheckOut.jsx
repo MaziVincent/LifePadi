@@ -9,7 +9,7 @@ import { useState } from 'react'
 const CheckOut = () => {
   const { state, dispatch } = useCart()
   const postData = usePost()
-  const url = `${baseUrl}/transaction/initiate`
+  const url = `${baseUrl}transaction/initiate`
   const { auth } = useAuth()
   const [loading, setLoading] = useState(false)
   // console.log(state);

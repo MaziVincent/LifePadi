@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import baseUrl from '../../api/baseUrl'
 
 const PaymentResponse = () => {
@@ -13,7 +13,7 @@ const PaymentResponse = () => {
       const status = queryParams.get('status')
       const transactionId = queryParams.get('transaction_id')
       const tx_ref = queryParams.get('tx_ref')
-      const url = `${baseUrl}/transaction/confirmPayment?tx_ref=${tx_ref}&transaction_id=${transactionId}&status=${status}`
+      const url = `${baseUrl}transaction/confirmPayment?tx_ref=${tx_ref}&transaction_id=${transactionId}&status=${status}`
 
 
       // Verify the transaction status with your server
@@ -24,18 +24,41 @@ const PaymentResponse = () => {
                     'Content-Type': 'application/json',
                 },
             })
-            console.log(res)
+            // console.log(res)
             if (res.status === 200) {
                 setPaymentStatus('success')
+                navigate('/shop')
             } else {
             setPaymentStatus('failed')
             }
         }
         verifyTransaction()
-    }, [location.search])
-  return <div>
-    {paymentStatus === 'success' ? <h1>Payment was successful</h1> : <h1>Payment was not successful</h1>}
-  </div>
+    }, [location.search, navigate])
+  return (
+    <div>
+      {paymentStatus === 'success' ? (
+        <div className='h-screen py-5 px-36'>
+          <h1>Payment was successful</h1>
+          <p>
+            Go back to{' '}
+            <Link to='/shop' className='text-lightgreen border px-1 rounded-md'>
+              shop
+            </Link>
+          </p>
+        </div>
+      ) : (
+        <div className='h-screen py-5 px-36'>
+          <h1 className=''>Payment was not successful</h1>
+          <p>
+            Go back to{' '}
+            <Link to='/shop' className='text-lightgreen border px-1 rounded-md'>
+              shop
+            </Link>
+          </p>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default PaymentResponse
