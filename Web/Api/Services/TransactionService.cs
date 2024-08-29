@@ -175,7 +175,7 @@ namespace Api.Services
                 if (order == null) throw new Exceptions.ServiceException("Order not found");
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
-                string redirectUrl = _config["Base_Url:Frontend"] + "/shop/payment-response";
+                string redirectUrl = _config["Base_Url:Frontend_local"] + "/shop/payment-response";
                 Customer_Info customer = new Customer_Info();
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;
