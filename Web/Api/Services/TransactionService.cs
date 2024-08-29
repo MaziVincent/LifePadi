@@ -50,8 +50,8 @@ namespace Api.Services
         {
             try
             {
-                var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transaction_id));
-                if (transaction != null)
+                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transaction_id));
+                if (initial_transaction != null)
                 {
                     throw new Exceptions.ServiceException("Transaction already confirmed");
                 }
