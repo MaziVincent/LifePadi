@@ -138,8 +138,20 @@ namespace Api.Controllers
         }
 
         [HttpGet("logOut")]
-        public IActionResult LogOut()
+        public async Task<IActionResult> LogOut()
         {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return BadRequest("Invalid refresh token");
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+            if (user != null)
+            {
+                user!.RefreshToken = null;
+                _context.Users.Attach(user);
+                await _context.SaveChangesAsync();
+            }
             Response.Cookies.Delete("refreshToken", new CookieOptions
             {
                 HttpOnly = true,
