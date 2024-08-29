@@ -100,6 +100,7 @@ import Gift from "./components/customer/Gift";
 import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
+import Logistics from "./components/home/Logistics"
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -122,6 +123,7 @@ function App() {
         >
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="logistics" element={<Logistics />} />
           <Route
             path="about"
             element={<About />}

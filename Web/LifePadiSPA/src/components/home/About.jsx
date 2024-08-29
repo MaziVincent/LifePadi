@@ -8,6 +8,7 @@ import MarqueeComp from "./MarqueeComp";
 const About = () => {
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div className="w-full">
       <div
         className="h-screen flex justify-center items-center "
@@ -15,6 +16,9 @@ const About = () => {
           backgroundImage: `url(${background1})`,
 =======
     <div>
+=======
+    <div className="w-full">
+>>>>>>> 3f80dfc (latest commit)
       <div
         className="h-screen flex justify-center items-center "
         style={{
@@ -42,6 +46,7 @@ const About = () => {
       </div>
       <div className="bg-gray-100 py-10">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className=" mx-auto px-6 md:px-12 lg:px-24">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-800">
@@ -53,12 +58,19 @@ const About = () => {
             <h1 className="text-4xl font-bold text-gray-800">
               We are your Padi <i className="line-icon-Thumbs-UpSmiley"></i>{" "}
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+        <div className=" mx-auto px-6 md:px-12 lg:px-24">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-800">
+              We are your Padi <i className="line-icon-Thumbs-UpSmiley text-background"></i>{" "}
+>>>>>>> 3f80dfc (latest commit)
             </h1>
             <p className="text-lg mt-4 text-gray-600">
               Delivering Excellence Across the Nation
             </p>
           </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
           <div className="mt-10 md:flex md:justify-between gap-5 ">
             <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0 flex flex-col items-center">
@@ -116,12 +128,15 @@ const About = () => {
               <p className="mt-4 text-darkHover text-center">
 =======
           <div className="mt-10 md:flex md:justify-between">
+=======
+          <div className="mt-10 md:flex md:justify-between gap-5 ">
+>>>>>>> 3f80dfc (latest commit)
             <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0">
               <h2 className="text-2xl font-semibold text-gray-800">
                 Our Mission
               </h2>
               <p className="mt-4 text-gray-600">
-                At [Your Company Name], our mission is to provide reliable,
+                At LifePadi, our mission is to provide reliable,
                 fast, and affordable delivery services across the country. We
                 strive to ensure every package is delivered on time, every time,
                 with the utmost care.
@@ -313,6 +328,7 @@ const About = () => {
           </div>
         </div>
       </section>
+<<<<<<< HEAD
       <h2 className="mb-4 text-4xl text-center tracking-tight font-extrabold text-accent dark:text-white">
         Our Core Values
       </h2>
@@ -562,6 +578,10 @@ const About = () => {
 </section>
       <section className="bg-accent h-72 flex justify-center items-center">
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+      <section className="bg-accent h-72 flex justify-center items-center mt-10">
+        
+>>>>>>> 3f80dfc (latest commit)
         <MarqueeComp />
       </section>
     </div>

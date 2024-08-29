@@ -37,8 +37,11 @@ import { Alert } from "@mui/material";
 =======
 import LoadingGif from "../shared/LodingGif";
 
+<<<<<<< HEAD
 >>>>>>> 360c46c (vendor)
 
+=======
+>>>>>>> 3f80dfc (latest commit)
 const reducer = (state, action) => {
   switch (action.type) {
     case "open":
@@ -70,12 +73,16 @@ const Vendor = () => {
   const { id } = useParams();
   const fetch = useFetch();
   const post = usePost();
+<<<<<<< HEAD
   const update = useUpdate();
+=======
+>>>>>>> 3f80dfc (latest commit)
   const [products, setProducts] = useState(null);
 <<<<<<< HEAD
   const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
   const { auth, setLogin, location } = useAuth();
+<<<<<<< HEAD
   const url = `${baseUrl}vendor`;
 <<<<<<< HEAD
   const addressUrl = `${baseUrl}address/`;
@@ -100,6 +107,20 @@ const Vendor = () => {
 
   const { cart, setCart, setCartState, state: cartState, dispatch: cartDispatch } = useCart();
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+  const url = `${baseUrl}vendor`;
+  const addressUrl = `${baseUrl}address/customer-addresses`;
+  const orderUrl = `${baseUrl}order/create`;
+  const orderItemUrl = `${baseUrl}orderitem/create`;
+
+  const {
+    cart,
+    setCart,
+    setCartState,
+    state: cartState,
+    dispatch: cartDispatch,
+  } = useCart();
+>>>>>>> 3f80dfc (latest commit)
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -168,6 +189,7 @@ const Vendor = () => {
   const {
     data: addresses,
 <<<<<<< HEAD
+<<<<<<< HEAD
     isError: addressError,
     isLoading: loadingAddress,
     isSuccess: addressSuccess,
@@ -182,6 +204,11 @@ const Vendor = () => {
     isError:addressError,
     isLoading:loadingAddress,
     isSuccess:addressSuccess,
+=======
+    isError: addressError,
+    isLoading: loadingAddress,
+    isSuccess: addressSuccess,
+>>>>>>> 3f80dfc (latest commit)
   } = useQuery({
     queryKey: ["addresses"],
     queryFn: () => getAddresses(`${addressUrl}/${auth?.user.Id}`),
@@ -265,6 +292,7 @@ const Vendor = () => {
     cartDispatch({ type: "setInstruction", payload: e.target.value });
   };
 
+<<<<<<< HEAD
   const handleGift = async () => {
     cartDispatch({type:"voucherError", payload:""})
 
@@ -355,6 +383,24 @@ const Vendor = () => {
     cartDispatch({ type: "address" });
     cartDispatch({ type: "error", payload: "" });
     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth?.Id);
+=======
+  const handleDeliveryFee = () => {
+    if (distance == null || distance == 0) {
+      const deliveryFee = 1500;
+      cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+    } else {
+      const deliveryFee = 1500 + 200 * (distance / 1000);
+      cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+    }
+  };
+
+  const handleLocation = () => {
+    console.log(location);
+    cartDispatch({ type: "setAddress", payload: location.address });
+    handleDeliveryFee();
+    console.log(cartState.deliveryAddress);
+    cartDispatch({ type: "address" });
+>>>>>>> 3f80dfc (latest commit)
   };
 
   const handleClick = async (e) => {
@@ -362,6 +408,7 @@ const Vendor = () => {
     cartDispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     cartDispatch({ type: "address" });
+<<<<<<< HEAD
     cartDispatch({ type: "error", payload: "" });
   };
 
@@ -437,12 +484,46 @@ const Vendor = () => {
     }
   };
 
+=======
+  };
+
+  const handleOrder = async () => {
+    setOrderLoading(true);
+    const order = {
+      CustomerId: auth?.user.Id,
+      Instruction: cartState.deliveryInstruction,
+    };
+    const response = await post(orderUrl, order, auth.accessToken);
+
+    console.log(response.data);
+
+    for (let item of cart) {
+      const orderItem = {
+        Amount: item.Price,
+        Quantity: item.Quantity,
+        TotalAmount: item.Amount,
+        Name: item.Name,
+        Description: item.Description,
+        ProductId: item.Id,
+        OrderId: response.data?.Id,
+      };
+
+      cartDispatch({ type: "order", payload: response.data });
+      const result = await post(orderItemUrl, orderItem, auth.accessToken);
+      console.log(result.data);
+    }
+
+    setOrderLoading(false);
+    cartDispatch({ type: "checkOut" });
+  };
+>>>>>>> 3f80dfc (latest commit)
 
   const clearCart = () => {
     setCart([]);
     cartDispatch({ type: "setInstruction", payload: "" });
     cartDispatch({ type: "total", payload: 0 });
     setCartState(false);
+<<<<<<< HEAD
     localStorage.setItem("cart", JSON.stringify([]));
   };
 
@@ -460,6 +541,15 @@ const Vendor = () => {
     console.log(deliveryAddress)
   }
 
+=======
+    //cartDispatch({type:'empty'})
+  };
+
+  const { distance, loading: disLoading } = useDistance(
+    origin,
+    state.deliveryAddress
+  );
+>>>>>>> 3f80dfc (latest commit)
 
 >>>>>>> 0ab4b1c (Google Maps Controller)
   useEffect(() => {
@@ -644,6 +734,7 @@ const Vendor = () => {
                         />
                       </div>
                     </div>
+<<<<<<< HEAD
                   </span>
                 ))}
               </div>
@@ -657,6 +748,19 @@ const Vendor = () => {
                 <ProductSkeleton />
               </div>
             )}
+=======
+                    <div className=" w-20 h-20 rounded-md">
+                      <img
+                        src={prod.ProductImgUrl}
+                        alt=""
+                        className=" w-full h-full rounded-md"
+                      />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+>>>>>>> 3f80dfc (latest commit)
           </div>
         </div>
         {cart.length > 0 ? (
@@ -664,6 +768,7 @@ const Vendor = () => {
             <div className=" flex justify-between items-center pb-4">
               <p className=" text-base capitalize text-secondary">
                 {cartState.vendor?.Name}
+<<<<<<< HEAD
               </p>
             </div>
             {cart?.map((item, index) => (
@@ -1217,6 +1322,236 @@ const Vendor = () => {
             </p>
           </div> */}
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+              </p>
+            </div>
+            {cart?.map((item, index) => (
+              <div
+                key={item.Id}
+                className=" border border-dashed border-gray rounded-lg w-full mb-3"
+              >
+                <div className=" flex justify-between items-center py-2 px-2">
+                  <div>
+                    <h3 className=" text-sm font-medium">{`Item ${
+                      index + 1
+                    }`}</h3>
+                  </div>
+                  <button onClick={() => handleCartItemDelete(item)}>
+                    <span className=" text-red hover:text-redborder">
+                      <DeleteOutlined />
+                    </span>
+                  </button>
+                </div>
+                <div className=" flex justify-between items-center py-2 px-2">
+                  <p className=" flex flex-col items-start">
+                    <span className=" text-sm">{item.Name}</span>
+                    <span className=" text-gray text-xs">
+                      &#8358;<span>{item.Price}</span>
+                    </span>
+                  </p>
+                  <span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
+                    <button
+                      onClick={() => handleCartDecrement(item)}
+                      className="shadow-md cursor-pointer rounded-lg px-1 "
+                    >
+                      {" "}
+                      <Remove fontSize="" />
+                    </button>
+                    <span className=" text-md">{item.Quantity}</span>
+                    <button
+                      onClick={() => handleCartIncrement(item)}
+                      className=" shadow-lg cursor-pointer rounded-lg px-1 "
+                    >
+                      <Add fontSize="" />
+                    </button>
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            <div className=" w-full">
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Choose Address: {cartState.deliveryAddress} </span>
+                  {cartState.address ? (
+                    <button
+                      onClick={() => cartDispatch({ type: "address" })}
+                      className=" text-background cursor-pointer"
+                    >
+                      Close
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleAddressChange()}
+                      className=" text-background cursor-pointer"
+                    >
+                      Change
+                    </button>
+                  )}
+                </p>
+              </div>
+              <div
+                className={`${
+                  cartState.address ? "block" : "hidden"
+                } border-2 rounded-lg border-graybg`}
+              >
+                {loadingAddress && (
+                  <div className="flex justify-center items-center">
+                    {" "}
+                    <LoadingGif />{" "}
+                  </div>
+                )}
+                <form>
+                  {cartState.addresses.map((ad) => (
+                    <div
+                      key={ad.Id}
+                      className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                    >
+                      {" "}
+                      <input
+                        type="radio"
+                        name="address"
+                        id={`address${ad.Id}`}
+                        value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
+                        onChange={(e) => {
+                          handleClick(e);
+                          //handleDeliveryAddress(e)
+                        }}
+                      />
+                      <label htmlFor={`address${ad.Id}`}>
+                        {" "}
+                        {ad.Name} {ad.Town}
+                      </label>
+                    </div>
+                  ))}
+                </form>
+
+                <div className="text-sm flex justify-between px-2 py-2">
+                  <button
+                    onClick={() => handleLocation()}
+                    className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer"
+                  >
+                    {" "}
+                    Use Current Location{" "}
+                  </button>
+                  <button
+                    onClick={() => dispatch({ type: "edit" })}
+                    className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer"
+                  >
+                    {" "}
+                    Add new Address{" "}
+                  </button>
+                </div>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Delivery instructions</span>
+                  {cartState.instruction ? (
+                    <button
+                      onClick={() => cartDispatch({ type: "instruction" })}
+                      className=" text-background"
+                    >
+                      Close
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => cartDispatch({ type: "instruction" })}
+                      className=" text-background"
+                    >
+                      Add
+                    </button>
+                  )}
+                </p>
+                <div
+                  className={`flex flex-col ${
+                    cartState.instruction ? "block" : "hidden"
+                  }`}
+                >
+                  <textarea
+                    name="instructions"
+                    id=""
+                    //cols="30"
+                    rows="3"
+                    className="border rounded-lg border-gray bg-graybg text-accent p-3 "
+                    placeholder="e.g  give it to the receptionist"
+                    onChange={(e) => handleDeliveryInstruction(e)}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div className=" flex justify-between items-center border-y ">
+              <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
+                <div className="">
+                  <span className=" text-yellow">
+                    <InfoOutlined />
+                  </span>
+                </div>
+                <div className=" text-gray">
+                  <h1 className=" text-sm font-normal">
+                    Delivery includes PIN confirmation
+                  </h1>
+                  <p className=" text-xs">
+                    This helps ensure that your order is given to the right
+                    person
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="w-full">
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>
+                    Sub total <span>({cart.length} item)</span>
+                  </span>
+                  <span className="">&#8358;{state.subTotal}</span>
+                </p>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Delivery fee</span>
+                  <span className="">&#8358;{cartState.deliveryFee}</span>
+                </p>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal">
+                  <span>Service fee</span>
+                  <span className="">&#8358;0.0</span>
+                </p>
+              </div>
+              <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-semibold">
+                  <span className="">Total</span>
+                  <span className="">&#8358;{cartState.total}</span>
+                </p>
+              </div>
+              <div className=" pt-3 text-center w-full">
+                <button
+                  onClick={handleOrder}
+                  className=" w-full bg-background py-4 px-3 rounded"
+                >
+                  <span className=" text-primary">Place Order</span>
+                </button>
+              </div>
+              <div className=" pt-3 text-center w-full">
+                <button
+                  onClick={clearCart}
+                  className=" w-full bg-redborder py-4 px-3 rounded"
+                >
+                  <span className=" text-red">Clear Order</span>
+                </button>
+              </div>
+              <div className=" w-full">
+                <button className=" w-full py-2 px-3">
+                  <span className=" text-background">
+                    <BookmarkBorderOutlined fontSize="" />
+                  </span>
+                  <span className=" text-background text-sm">
+                    Save for later
+                  </span>
+                </button>
+              </div>
+            </div>
+>>>>>>> 3f80dfc (latest commit)
           </div>
         ) : (
           <EmptyCartDesktop />
