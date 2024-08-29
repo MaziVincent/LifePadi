@@ -101,6 +101,7 @@ import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
+import PaymentResponse from "./components/shop/PaymentResponse";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -215,6 +216,7 @@ function App() {
               path="/shop/vendor/:id"
               element={<Vendor />}
             />
+            <Route path="/shop/payment-response" element={<PaymentResponse />} />
             <Route
 <<<<<<< HEAD
               path="/shop/payment-response"
@@ -273,7 +275,11 @@ function App() {
               <Route path="/user/address" element={<Address />} />
               <Route path="/user/gift" element={<Gift />} />
               <Route path="/user/favourite" element={<Favourite />} />
+<<<<<<< HEAD
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+              
+>>>>>>> 7a64a18 (created a payment response page)
             </Route>
           </Route>
         </Route>
