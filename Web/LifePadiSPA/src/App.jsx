@@ -41,6 +41,8 @@ import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
+import PaymentResponse from "./components/shop/PaymentResponse";
+import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 
 function App() {
   const queryClient = new QueryClient();
@@ -86,6 +88,7 @@ function App() {
               path="/shop/vendor/:id"
               element={<Vendor />}
             />
+            <Route path="/shop/payment-response" element={<PaymentResponse />} />
             <Route
               index
               element={<Shop />}
@@ -107,13 +110,14 @@ function App() {
               <Route path="/user/address" element={<Address />} />
               <Route path="/user/gift" element={<Gift />} />
               <Route path="/user/favourite" element={<Favourite />} />
+              
             </Route>
           </Route>
         </Route>
 
         {/*PROTECTED ROUTES ADMIN */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRole={ROLES.admin} />}>
+          <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
             <Route
               path="/admin"
               element={<AdminLayout />}

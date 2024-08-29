@@ -42,7 +42,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -50,6 +50,11 @@ namespace Api.Services
         {
             try
             {
+                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transaction_id));
+                if (initial_transaction != null)
+                {
+                    throw new Exceptions.ServiceException("Transaction already confirmed");
+                }
                 //this is the uri
                 var request = new HttpRequestMessage(HttpMethod.Get,
                 $"https://api.flutterwave.com/v3/transactions/{transaction_id}/verify");
@@ -76,21 +81,26 @@ namespace Api.Services
                         transaction.PaymentId = (BigInteger)paymentRes.Data!.Id!;
                         transaction.TotalAmount = paymentRes.Data!.Meta!.totalAmount;
                         transaction.OrderId = (int)paymentRes.Data!.Meta.orderId!;
-                        var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
-                        transaction.VoucherId = voucher.Id;
+                        if (paymentRes.Data!.Meta.voucherCode != null)
+                        {
+                            var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
+                            transaction.VoucherId = voucher.Id;
+                        }
+                        // var voucher = await _ivoucher.searchWithCode(paymentRes.Data!.Meta.voucherCode!);
+                        // transaction.VoucherId = voucher.Id;
 
                         await _dbContext.Transactions.AddAsync(transaction);
                         await _dbContext.SaveChangesAsync();
 
                         return paymentRes;
                     }
-                    throw new Exception(paymentRes.Status);
+                    throw new Exceptions.ServiceException(paymentRes.Status!);
                 }
-                throw new Exception("Response not Ok");
+                throw new Exceptions.ServiceException("Response not Ok");
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -105,14 +115,14 @@ namespace Api.Services
             {
                 var transaction = await _dbContext.Transactions
                     .FirstOrDefaultAsync(t => t.Id == id);
-                if (transaction == null) throw new Exception("Transaction not found");
+                if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
                 _dbContext.Transactions.Remove(transaction);
                 await _dbContext.SaveChangesAsync();
                 return "Transaction deleted";
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -124,13 +134,13 @@ namespace Api.Services
                     .Include(t => t.Order)
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.Id == id);
-                if (transaction == null) throw new Exception("Transaction not found");
+                if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -142,13 +152,13 @@ namespace Api.Services
                     .Include(t => t.Order)
                     .ThenInclude(o => o!.Customer)
                     .FirstOrDefaultAsync(t => t.PaymentId == transactionId);
-                if (transaction == null) throw new Exception("Transaction not found");
+                if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
                 var transactionDTO = _mapper.Map<TransactionDto>(transaction);
                 return transactionDTO;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -159,12 +169,13 @@ namespace Api.Services
                 var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePayment.OrderId);
                 if (payment != null)
                 {
-                    throw new Exception("Already paid for this order");
+                    throw new Exceptions.ServiceException("Already paid for this order");
                 }
                 var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePayment.OrderId);
-                if (order == null) throw new Exception("Order not found");
+                if (order == null) throw new Exceptions.ServiceException("Order not found");
                 var tx_ref = GenerateTxRef.genTx_rf();
-                string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+                // string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
+                string redirectUrl = _config["Base_Url:Frontend_local"] + "/shop/payment-response";
                 Customer_Info customer = new Customer_Info();
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;
@@ -172,7 +183,7 @@ namespace Api.Services
                 Customizations customizations = new Customizations();
                 customizations.title = "LifePadi";
                 customizations.description = "Service payment";
-                customizations.logo = "https://res.cloudinary.com/dkk8x5qzl/image/upload/v1704877092/logo/e4et2rgmldcyq8hasmvj.jpg";
+                customizations.logo = "https://res.cloudinary.com/dbxapeqzu/image/upload/v1724785015/LifePadi/logo/Logo_dark_ndhilz.svg";
 
                 Meta meta = new Meta();
                 meta.totalAmount = (Double)initiatePayment.TotalAmount!;
@@ -221,14 +232,14 @@ namespace Api.Services
                             link = paymentRes.data!.link
                         };
                     }
-                    throw new Exception("Payment not successful");
+                    throw new Exceptions.ServiceException("Payment not successful");
                 }
-                throw new Exception(response.StatusCode.ToString());
+                throw new Exceptions.ServiceException(response.StatusCode.ToString());
 
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -241,7 +252,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -253,7 +264,7 @@ namespace Api.Services
                 return transactions;
             }catch(Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -266,7 +277,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -279,7 +290,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
@@ -298,7 +309,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exceptions.ServiceException(ex.Message);
             }
         }
 

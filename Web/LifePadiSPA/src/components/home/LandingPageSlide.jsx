@@ -12,6 +12,7 @@ import {
   EffectFade,
   Pagination,
   EffectCube,
+  EffectCoverflow,
 } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -48,18 +49,19 @@ const LandingPageSlide = () => {
     <>
       <section className="bg-gradient-to-b from-secondary to-background pb-10  ">
         <div className="flex flex-col items-center">
-          <div className=" w-10/12 md:w-4/6  -mt-10 rounded-xl">
+          <div className=" w-10/12 md:w-4/6 -mt-10 rounded-xl">
             <Swiper
-              modules={[Autoplay, Pagination]}
+              modules={[Autoplay, Pagination, EffectFade]}
               slidesPerView={1}
               loop={true}
-              autoplay={{ delay: 3000, disableOnInteraction: false }}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
               spaceBetween={30}
               breakpoints={{
-                1200: { slidesPerView: 2 },
+                1200: { slidesPerView: 1 },
                 768: { slidesPerView: 1 },
                 320: { slidesPerView: 1 },
               }}
+              effect="fade"
               pagination={{ clickable: true }}
             >
               {pictures.map((pic) => (
@@ -70,7 +72,7 @@ const LandingPageSlide = () => {
                       alt={pic.text}
                       className="w-full h-full object-fill rounded-xl"
                     />
-                    <p className=" absolute text-xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
+                    <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
                       {" "}
                       {pic.text}{" "}
                     </p>

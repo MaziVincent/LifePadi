@@ -107,7 +107,7 @@ const UserLogin = () => {
                     onClick={() => {
                       setLogin(false);
                     }}
-                    className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-toggle="defaultModal"
                   >
                     <svg
@@ -137,7 +137,7 @@ const UserLogin = () => {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
                         Your email
                       </label>
@@ -160,7 +160,7 @@ const UserLogin = () => {
                     <div>
                       <label
                         htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
                         Password
                       </label>
@@ -195,7 +195,7 @@ const UserLogin = () => {
                         <div className="ml-3 text-sm">
                           <label
                             htmlFor="remember"
-                            className="text-darkMenu dark:text-gray-300"
+                            className="text-darkMenu dark:text-lightGray"
                           >
                             Remember me
                           </label>
@@ -237,7 +237,7 @@ const UserLogin = () => {
                         " Sign in"
                       )}
                     </button>
-                    <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    <p className="text-sm font-light text-gray-500 dark:text-lightGray">
                       Don’t have an account yet?{" "}
                       <Link
                         onClick={() => {

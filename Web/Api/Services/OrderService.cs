@@ -119,10 +119,10 @@ namespace Api.Services
         {
             try
             {
-                var order = await _dbContext!.Orders.Where(o => o.Id == id)
+                var order = await _dbContext!.Orders
                     .Include(o => o.Customer)
                     .Include(o => o.OrderItems)!.ThenInclude(i => i.Product)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(o => o.Id == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<OrderDto>(order);
                 return OrderDto;
