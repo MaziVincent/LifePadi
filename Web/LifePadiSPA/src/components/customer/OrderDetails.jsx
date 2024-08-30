@@ -21,10 +21,17 @@ const OrderDetails = () => {
     return response.data;
   };
 
+<<<<<<< HEAD
   const getData = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
     //console.log(response);
+=======
+  const getDelivery = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    console.log(response);
+>>>>>>> 7fa87ff (user dashboard commit)
     return response.data;
   };
 
@@ -48,12 +55,17 @@ const OrderDetails = () => {
     isLoading: deliveryLoading,
   } = useQuery({
     queryKey: ["delivery"],
+<<<<<<< HEAD
     queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
+=======
+    queryFn: () => getDelivery(`${baseUrl}delivery/order/get/${id}`),
+>>>>>>> 7fa87ff (user dashboard commit)
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
   });
 
+<<<<<<< HEAD
   const {
     data: transaction,
     isError: transactionError,
@@ -84,6 +96,8 @@ const OrderDetails = () => {
 
   console.log(logistics);
 
+=======
+>>>>>>> 7fa87ff (user dashboard commit)
 
   return (
     <section className=" p-2 text-gray-900 dark:text-primary pb-10">
@@ -94,7 +108,11 @@ const OrderDetails = () => {
         >
           Dashboard
         </Link>
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 7fa87ff (user dashboard commit)
         <Link
           to="#"
           aria-current="page"
@@ -245,7 +263,11 @@ const OrderDetails = () => {
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
+<<<<<<< HEAD
             <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
+=======
+            <Alert severity="error">Error Fetching Delivery Data..</Alert>
+>>>>>>> 7fa87ff (user dashboard commit)
           </p>
         )}
         {deliverySuccess && (
@@ -274,9 +296,15 @@ const OrderDetails = () => {
           </p>
         )}
         {deliveryError && (
+<<<<<<< HEAD
           <p className="flex items-center justify-center ">
             {" "}
             <Alert severity="error">Rider is yet to be assigned..</Alert>
+=======
+          <p className="flex items-center justify-center">
+            {" "}
+            <Alert severity="error">Error Fetching Rider Data..</Alert>
+>>>>>>> 7fa87ff (user dashboard commit)
           </p>
         )}
         {deliverySuccess && (
@@ -287,6 +315,7 @@ const OrderDetails = () => {
             </h1>{" "}
             <p>
               {" "}
+<<<<<<< HEAD
               Rider Full Name : {delivery.Rider?.FirstName}{" "}
               {delivery.Rider?.LastName}
             </p>
@@ -384,6 +413,24 @@ const OrderDetails = () => {
         }
 
 
+=======
+              Rider Full Name : {delivery.Rider.FirstName}{" "}
+              {delivery.Rider.LastName}
+            </p>
+            <p> Rider Phone Number : {delivery.Rider.PhoneNumber}</p>
+            <p>
+              {" "}
+              Rider Status : {delivery.Rider.IsActive ? "Active" : " In-Active"}
+            </p>
+          </div>
+        )}
+        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+          {" "}
+          <h1 className="font-bold text-center text-xl">
+            Transaction Details{" "}
+          </h1>{" "}
+        </div>
+>>>>>>> 7fa87ff (user dashboard commit)
       </div>
     </section>
   );

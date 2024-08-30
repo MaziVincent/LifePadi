@@ -227,15 +227,21 @@ namespace Api.Services
         }
         
 
-        public async Task<IEnumerable<OrderDto>> customerOrders(int customerId)
+        public async Task<PagedList<Order>> customerOrders(int id, SearchPaging props)
         {
             try
             {
+<<<<<<< HEAD
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+                IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
+
+>>>>>>> 7fa87ff (user dashboard commit)
                 var orders = await _dbContext!.Orders
                     .Include(o => o.OrderItems)
                     .Include(o => o.Customer)
                     .OrderByDescending(o => o.CreatedAt)
+<<<<<<< HEAD
 <<<<<<< HEAD
                     .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString.ToLower()))
                     .AsSplitQuery()
@@ -265,9 +271,13 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
 =======
                     .Where(o => o.CustomerId == customerId)
+=======
+                    .Where(o => o.CustomerId == id)
+>>>>>>> 7fa87ff (user dashboard commit)
                     .ToListAsync();
-                var OrderDto = _mapper.Map<List<OrderDto>>(orders);
-                return OrderDto;
+                orderList = orderList.Concat(orders);
+                var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                return result;
             }
             catch (Exception ex)
             {

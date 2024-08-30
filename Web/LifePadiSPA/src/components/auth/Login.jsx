@@ -214,7 +214,7 @@ const Login = () => {
 >>>>>>> d189281 (worked on Login)
 =======
   return (
-    <div>
+    <div className="dark:bg-darkBg">
       <Toaster />
       <div className="relative p-4 w-full h-auto  ">
         <section className="  ">
@@ -320,10 +320,14 @@ const Login = () => {
                       <div className="ml-3 text-sm">
                         <label
 <<<<<<< HEAD
+<<<<<<< HEAD
                           htmlFor="remember"
 =======
                           for="remember"
 >>>>>>> 9174884 (require auth commit)
+=======
+                          htmlFor="remember"
+>>>>>>> 7fa87ff (user dashboard commit)
                           className="text-darkMenu dark:text-graybg"
                         >
                           Remember me
@@ -421,7 +425,7 @@ export default Login;
                       <>
                         <svg
                           aria-hidden="true"
-                          class="w-8 h-8 text-graybg animate-spin dark:text-darkHover fill-background"
+                          className="w-8 h-8 text-graybg animate-spin dark:text-darkHover fill-background"
                           viewBox="0 0 100 101"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -435,7 +439,7 @@ export default Login;
                             fill="currentFill"
                           />
                         </svg>
-                        <span class="sr-only">Loading...</span>{" "}
+                        <span className="sr-only">Loading...</span>{" "}
                       </>
                     ) : (
                       " Sign in"

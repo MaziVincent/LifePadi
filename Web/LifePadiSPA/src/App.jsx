@@ -103,6 +103,7 @@ import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
+import OrderDetails from "./components/customer/OrderDetails";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -277,8 +278,12 @@ function App() {
               <Route path="/user/gift" element={<Gift />} />
               <Route path="/user/favourite" element={<Favourite />} />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> eda1965 (User Dashboard and Landing Page)
 =======
+=======
+              <Route path="/user/details/:id" element={<OrderDetails />} />
+>>>>>>> 7fa87ff (user dashboard commit)
               
 >>>>>>> 7a64a18 (created a payment response page)
             </Route>

@@ -37,8 +37,12 @@ namespace Api.Interfaces
 =======
         public Task<OrderDto> getAsync(int id);
         public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
+<<<<<<< HEAD
         public Task<IEnumerable<OrderDto>> customerOrders(int customerId);
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<PagedList<Order>> customerOrders(int id, SearchPaging props);
+>>>>>>> 7fa87ff (user dashboard commit)
         //public Task<IEnumerable<OrderDto>> riderOrders(int riderId);
         public Task<OrderDto> updateOrderStatus(int id, string status);
         public Task<int> totalNumberOfOrders();

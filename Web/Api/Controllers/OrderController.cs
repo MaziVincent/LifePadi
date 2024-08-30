@@ -133,6 +133,7 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("customer/{id}")]
         public async Task<IActionResult> customerOrders(int id, [FromQuery] SearchPaging props)
         {
@@ -160,6 +161,25 @@ namespace Api.Controllers
                 return Ok(orders);
             }catch (Exception ex)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        [HttpGet("customer/{id}")]
+        public async Task<IActionResult> customerOrders(int id,[FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var orders = await _iorder.customerOrders(id,props);
+                var result = _mapper.Map<List<OrderDto>>(orders);
+                var dataList = new
+                {
+                    orders.PageSize,
+                    orders.TotalPages,
+                    orders.TotalCount,
+                    orders.CurrentPage
+                };
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+>>>>>>> 7fa87ff (user dashboard commit)
             {
                 return BadRequest(ex.Message);
             }

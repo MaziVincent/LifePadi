@@ -62,11 +62,14 @@ export default function LongMenu( {view,dispatch, id}) {
             view(id)
             }}>
             <div className='flex gap-2  '> <i className='line-icon-Eye text-background font-bold text-xl'></i><span>View Order </span></div>
+<<<<<<< HEAD
 =======
         {options.map((option) => (
           <MenuItem key={option.text} selected={option.text === 'View'} onClick={handleClose}>
             <div className='flex gap-2 '> <i className={`${option.icon}`}></i><span>{option.text}</span></div>
 >>>>>>> 55ba6ae (Admin service)
+=======
+>>>>>>> 7fa87ff (user dashboard commit)
           </MenuItem>
 
           <MenuItem onClick={ () => {
