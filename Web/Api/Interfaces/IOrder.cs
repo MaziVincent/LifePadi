@@ -13,7 +13,7 @@ namespace Api.Interfaces
         public Task<string> deleteAsync(int id);
         public Task<OrderDto> getAsync(int id);
         public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
-        public Task<IEnumerable<OrderDto>> customerOrders(int customerId);
+        public Task<PagedList<Order>> customerOrders(int id, SearchPaging props);
         //public Task<IEnumerable<OrderDto>> riderOrders(int riderId);
         public Task<OrderDto> updateOrderStatus(int id, string status);
         public Task<int> totalNumberOfOrders();

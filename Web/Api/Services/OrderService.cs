@@ -80,18 +80,21 @@ namespace Api.Services
         }
         
 
-        public async Task<IEnumerable<OrderDto>> customerOrders(int customerId)
+        public async Task<PagedList<Order>> customerOrders(int id, SearchPaging props)
         {
             try
             {
+                IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
+
                 var orders = await _dbContext!.Orders
                     .Include(o => o.OrderItems)
                     .Include(o => o.Customer)
                     .OrderByDescending(o => o.CreatedAt)
-                    .Where(o => o.CustomerId == customerId)
+                    .Where(o => o.CustomerId == id)
                     .ToListAsync();
-                var OrderDto = _mapper.Map<List<OrderDto>>(orders);
-                return OrderDto;
+                orderList = orderList.Concat(orders);
+                var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                return result;
             }
             catch (Exception ex)
             {

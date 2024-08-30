@@ -43,6 +43,7 @@ import Contact from "./components/home/Contact";
 import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
+import OrderDetails from "./components/customer/OrderDetails";
 
 function App() {
   const queryClient = new QueryClient();
@@ -110,6 +111,7 @@ function App() {
               <Route path="/user/address" element={<Address />} />
               <Route path="/user/gift" element={<Gift />} />
               <Route path="/user/favourite" element={<Favourite />} />
+              <Route path="/user/details/:id" element={<OrderDetails />} />
               
             </Route>
           </Route>

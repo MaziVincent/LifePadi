@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import baseUrl from "../../api/baseUrl";
@@ -7,15 +8,12 @@ import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Alert } from "@mui/material";
-import AssignRider from "./subcomponents/AssignRider";
-import { useState } from "react";
 
-const AdminOrderDetails = () => {
+const OrderDetails = () => {
   const { id } = useParams();
   const fetch = useFetch();
   const { auth } = useAuth();
   const url = `${baseUrl}order`;
-  const [assignRider, setAssignRider] = useState(false);
 
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);
@@ -56,16 +54,12 @@ const AdminOrderDetails = () => {
     refetchOnMount: "always",
   });
 
-const handleAssignRider = () => {
-setAssignRider(true)
-}
-
 
   return (
     <section className=" p-2 text-gray-900 dark:text-primary pb-10">
       <Breadcrumbs aria-label="breadcrumb">
         <Link
-          to="/admin"
+          to="/user"
           className="hover:border-b-2 dark:text-primary hover:border-b-secondary"
         >
           Dashboard
@@ -79,31 +73,7 @@ setAssignRider(true)
           Order Details
         </Link>
       </Breadcrumbs>
-      <div className="flex justify-end">
-        {" "}
-        {
-          delivery &&  <button
-          type="button"
-          onClick={handleAssignRider}
-          className={`inline-flex items-center  dark:text-primary bg-background hover:bg-secondary hover:text-accent focus:ring-4 focus:outline-none focus:ring-darkSecondaryText font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
-        >
-          <svg
-            className="mr-1 -ml-1 w-6 h-6"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-          Assign Rider
-        </button>
-        }
-       
-      </div>
+     
       <h1 className="text-center text-2xl font-bold py-4"> Order Details </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5  ">
         {orderLoading && (
@@ -132,17 +102,7 @@ setAssignRider(true)
                 {order.IsDelivered ? "Delivered" : "Not Delivered"}{" "}
               </p>
             </div>
-            <div>
-              {" "}
-              <h2 className="font-bold border-b-2 mb-2">Customer Info.</h2>
-              <p>
-                {" "}
-                Customer Full-Name : {order.Customer.FirstName}{" "}
-                {order.Customer.LastName}{" "}
-              </p>
-              <p> Customer Address : {order.Customer.ContactAddress} </p>
-              <p> Customer Phone Number : {order.Customer.PhoneNumber} </p>
-            </div>
+           
           </div>
         )}
         {orderLoading && (
@@ -314,15 +274,8 @@ setAssignRider(true)
           </h1>{" "}
         </div>
       </div>
-      {delivery && (
-        <AssignRider
-          id={delivery.Id}
-          open={assignRider}
-          handleClose={setAssignRider}
-        />
-      )}
     </section>
   );
 };
 
-export default AdminOrderDetails;
+export default OrderDetails;

@@ -16,6 +16,8 @@ const reducer = (state, action) => {
       return { ...state, open: !state.open };
     case "edit":
       return { ...state, edit: !state.edit };
+    case "rider":
+      return { ...state, rider: !state.rider };
     case "activate":
       return { ...state, activate: !state.activate };
     case "delete":
@@ -41,6 +43,7 @@ const Overview = () => {
   const [state, dispatch] = useReducer(reducer, {
     open: false,
     edit: false,
+    rider: false,
     activate: false,
     delete: false,
     category: {},
@@ -132,6 +135,7 @@ const Overview = () => {
         </div>
       </section>
       <OrderStatusModal open={state.edit} handleClose={dispatch} url={url} id={state.id} name="orders" />
+     
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
           <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -383,7 +387,7 @@ const Overview = () => {
                       <td className={`px-4 py-3 ${order.IsDelivered ? 'text-lightgreen':'text-redborder'}`}>{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
                       <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
                       <td className="px-4 py-3 flex items-center justify-end ">
-                        <ActionsMenu view = {handleOrderDetails} edit={dispatch} id={order.Id} />
+                        <ActionsMenu view = {handleOrderDetails} dispatch={dispatch} id={order.Id} />
                       </td>
                     </tr>
                   ))}

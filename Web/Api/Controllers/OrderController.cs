@@ -67,13 +67,21 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("customer/{customerId}")]
-        public async Task<IActionResult> customerOrders(int customerId)
+        [HttpGet("customer/{id}")]
+        public async Task<IActionResult> customerOrders(int id,[FromQuery] SearchPaging props)
         {
             try
             {
-                var orders = await _iorder.customerOrders(customerId);
-                return Ok(orders);
+                var orders = await _iorder.customerOrders(id,props);
+                var result = _mapper.Map<List<OrderDto>>(orders);
+                var dataList = new
+                {
+                    orders.PageSize,
+                    orders.TotalPages,
+                    orders.TotalCount,
+                    orders.CurrentPage
+                };
+                return Ok(new { result, dataList });
             }
             catch (Exception ex)
             {
