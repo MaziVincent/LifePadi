@@ -14,7 +14,7 @@ import { green } from '@mui/material/colors';
 
 // const ITEM_HEIGHT = 48;
 
-export default function LongMenu( {view,edit, id}) {
+export default function LongMenu( {view,dispatch, id}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -53,16 +53,23 @@ export default function LongMenu( {view,edit, id}) {
             handleClose(); 
             view(id)
             }}>
-            <div className='flex gap-2  '> <i className='line-icon-Eye text-background font-bold text-xl'></i><span>View </span></div>
+            <div className='flex gap-2  '> <i className='line-icon-Eye text-background font-bold text-xl'></i><span>View Order </span></div>
           </MenuItem>
 
           <MenuItem onClick={ () => {
             handleClose();
-            edit({type:'edit'});
-            edit({type:'id', payload:id})}}
+            dispatch({type:'edit'});
+            dispatch({type:'id', payload:id})}}
             >
-            <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue text-xl'></i><span>Edit </span></div>
+            <div className='flex gap-2 '> <i className='line-icon-Pen-5 text-blue text-xl'></i><span>Edit Status </span></div>
           </MenuItem>
+          {/* <MenuItem onClick={ () => {
+            handleClose();
+            dispatch({type:'rider'});
+            dispatch({type:'id', payload:id})}}
+            >
+            <div className='flex gap-2 '> <i className='line-icon-Scooter text-lightindigo text-xl'></i><span>Assign Rider </span></div>
+          </MenuItem> */}
 
           {/* <MenuItem onClick={handleClose}>
             <div className='flex gap-2 '> <i className='line-icon-Close text-red text-xl'></i><span>Delete </span></div>

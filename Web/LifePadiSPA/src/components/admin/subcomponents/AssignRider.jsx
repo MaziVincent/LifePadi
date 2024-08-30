@@ -1,15 +1,15 @@
-import usePost from "../../../../hooks/usePost";
-import useFetch from "../../../../hooks/useFetch";
-import useAuth from "../../../../hooks/useAuth";
-import baseUrl from "../../../../api/baseUrl";
+import useUpdate from "../../../hooks/useUpdate";
+import useFetch from "../../../hooks/useFetch";
+import useAuth from "../../../hooks/useAuth";
+import baseUrl from "../../../api/baseUrl";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
-import { useState, useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
-const AssignRider = () => ({ open, handleClose, vendorId }) => {
-    const post = usePost();
+const AssignRider = ({ id, open, handleClose }) =>{
+    const update = useUpdate();
     const fetch = useFetch();
     const { auth } = useAuth();
     const url = `${baseUrl}rider/all`;
@@ -23,13 +23,12 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
 
     const { data, isError, isLoading, isSuccess } = useQuery({
       queryKey: ["riders"],
-      queryFn: () => getRiders(`${baseUrl}category/all?PageSize=10`),
+      queryFn: () => getRiders(url),
       keepPreviousData: true,
       staleTime: 20000,
       refetchOnMount: "always",
     });
 
-    // console.log(vendorId);
     const {
       register,
       handleSubmit,
@@ -39,26 +38,27 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
     } = useForm({ mode: "all" });
 
     const create = async (data) => {
-      // console.log(vendor)
-      const formData = new FormData();
-      for (const key in data) {
-        formData.append(key, data[key]);
-      }
-      const response = await post(url, formData, auth?.accessToken);
-      //console.log(response.data);
+       
+      const info = {riderId: data.RiderId, id}
+      //const formData = new FormData();
+      // for (const key in data) {
+      //   formData.append(key, data[key]);
+      // }
+     const response = await update(`${baseUrl}delivery/assignRider/${id}/${data.RiderId}`, info, auth?.accessToken);
+      console.log(response.data);
     };
 
     const { mutate } = useMutation(create, {
       onSuccess: () => {
         queryClient.invalidateQueries("orders");
         toast.success("Rider Assigned Successfully");
-        handleClose({ type: "open" });
+        handleClose(false);
         reset();
       },
     });
 
     const handleCreate = (data) => {
-      //console.log(prod);
+      //console.log(data);
       mutate(data);
     };
 
@@ -66,7 +66,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
       <Modal
         open={open}
         onClose={() => {
-          handleClose({ type: "open" });
+          handleClose(false)
         }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -79,7 +79,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
           <Toaster />
           <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
             {/* <!-- Modal content --> */}
-            <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
+            <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-darkMenu dark:text-primary sm:p-5">
               {/* <!-- Modal header --> */}
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -88,7 +88,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    handleClose({ type: "open" });
+                    handleClose(false)
                   }}
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-toggle="defaultModal"
@@ -112,7 +112,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
               {/* <!-- Modal body --> */}
               <form onSubmit={handleSubmit(handleCreate)}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                  <div className="sm:col-span-1">
+                  <div className="sm:col-span-2">
                     <label
                       htmlFor="rider"
                       className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -126,7 +126,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
                         required: "Rider is required",
                       })}
                       defaultValue={"default"}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-grayTxt dark:bg-darkHover placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
                       <option
                         disabled
@@ -138,12 +138,12 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
                       {isError && <option> Error Loading Category </option>}
                       {isLoading && <option> Loading Category... </option>}
 
-                      {data?.result?.map((rider) => (
+                      { isSuccess &&  data?.result?.map((rider) => (
                         <option
                           key={rider.Id}
                           value={rider.Id}
                         >
-                          {rider.Name}
+                          {rider.FirstName} {rider.LastName}
                         </option>
                       ))}
                     </select>
@@ -159,8 +159,8 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
                   type="submit"
                   disabled={!isValid || isSubmitting}
                   className={`inline-flex items-center ${
-                    isValid ? "text-green-700" : "text-gray-700"
-                  } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+                    isValid ? "text-background" : "text-gray"
+                  } dark:text-gray-50 bg-primary-700 hover:bg-secondary hover:text-accent focus:ring-4 focus:outline-none focus:ring-darkSecondaryText font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
                 >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"
@@ -174,7 +174,7 @@ const AssignRider = () => ({ open, handleClose, vendorId }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Assign Rider
+                { isSubmitting ? <CircularProgress /> : 'Assign Rider'}  
                 </button>
               </form>
             </div>
