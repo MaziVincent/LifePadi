@@ -58,7 +58,7 @@ const Header = () => {
           </li>
         </ul>
         <Link
-          to="/store"
+          to="/shop"
           className=" bg-primary text-background flex cursor-pointer justify-center items-center p-2 rounded-full shadow-lg"
         >
           <ShoppingCartOutlined />
