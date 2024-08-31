@@ -47,15 +47,17 @@ namespace Api.Controllers
                 dbUser!.RefreshToken = refreshToken;
                 await _context.SaveChangesAsync();
                 //put refreshToken in a cookie
-                var cookieOptions = new CookieOptions{
+                var cookieOptions = new CookieOptions
+                {
                     HttpOnly = true,
-                    SameSite =  SameSiteMode.None,
-                     Expires = DateTime.UtcNow.AddDays(7),
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true
                 };
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
-                var token = new {
+                var token = new
+                {
                     user = user,
                     accessToken = accessToken
                 };
@@ -72,7 +74,7 @@ namespace Api.Controllers
             try
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Email!.ToLower() == loginDTO.Email!.ToLower());
-                if(user == null)
+                if (user == null)
                 {
                     throw new Exceptions.ServiceException("User not found");
                 }
@@ -125,7 +127,8 @@ namespace Api.Controllers
                     Role = genTokenDTO!.Role
                 };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
-                var token = new {
+                var token = new
+                {
                     user = loggedInUser,
                     accessToken = accessToken
                 };
@@ -155,9 +158,9 @@ namespace Api.Controllers
             Response.Cookies.Delete("refreshToken", new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
                 SameSite = SameSiteMode.None,
-                Domain = "localhost"
+                Expires = DateTime.UtcNow.AddDays(7),
+                Secure = true
 
             });
             return Ok("Logout Successfully");

@@ -13,6 +13,7 @@ const AdminHeader = ({ setAside }) => {
   const handleLogout = async () => {
     const result = await logout();
     toast.success("Logged out successfully");
+    console.log(result)
     setTimeout(() => {
       navigate("/login");
     }, 2000);

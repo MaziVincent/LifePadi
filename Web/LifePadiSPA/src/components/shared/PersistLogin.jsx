@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth"
 import useRefreshToken from "../../hooks/useRefreshToken";
-import CircularProgress from '@mui/material/CircularProgress';
 import logo from "../../assets/images/Logonamedark.svg"
 
 
