@@ -8,7 +8,7 @@ namespace Api.Interfaces
     {
         public Task<AuthUserDto> createAsync(CustomerDto customer);
         public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
-
+        public Task<Customer> getByEmail(string email);
         public Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id);
         public Task<string> deleteAsync(int id);
         public Task<CustomerDto> getAsync(int id);

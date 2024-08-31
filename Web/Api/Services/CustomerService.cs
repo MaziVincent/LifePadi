@@ -28,6 +28,8 @@ namespace Api.Services
         {
             try
             {
+                var initialCustomer = await getByEmail(customer.Email!);
+                if (initialCustomer != null) throw new Exceptions.ServiceException("Email already exists");
                 var newCustomer = _mapper.Map<Customer>(customer);
                 newCustomer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(customer.Password);
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
@@ -134,6 +136,19 @@ namespace Api.Services
             }
         }
 
+        public async Task<Customer> getByEmail(string email)
+        {
+            try
+            {
+                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
+                return customer!;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<OrderDtoLite>> getCustomerOders(int id)
         {
             try
@@ -219,7 +234,7 @@ namespace Api.Services
                 restRequest.AddHeader("Content-Type", "application/json");
                 restRequest.AddParameter("application/json", objectBody, ParameterType.RequestBody);
                 RestResponse restResponse = await restClient.ExecuteAsync(restRequest);
-                
+
                 if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     throw new Exceptions.ServiceException("Failed to send OTP");
