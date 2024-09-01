@@ -9,6 +9,12 @@ namespace Api.Interfaces
 {
     public interface IProductReview
     {
-        public Task<PagedList<ProductReviewDto>> allAsync(SearchPaging props);
+        public Task<List<ProductReviewDto>> allAsync();
+        public Task<ProductReviewDto> findAsync(int id);
+        public Task<ProductReviewDto> createAsync(ProductReviewDto productReviewDto);
+        public Task<ProductReviewDto> updateAsync(int id, ProductReviewDto productReviewDto);
+        public Task<string> deleteAsync(int id);
+        public Task<List<ProductReviewDto>> allByProductAsync(int productId);
+        public Task<double> averageRating(int productId);
     }
 }

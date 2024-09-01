@@ -18,11 +18,13 @@ namespace Api.Controllers
         private readonly DBContext _context;
         private readonly IConfiguration _config;
         private readonly IOtherService _oService;
-        public AuthController(DBContext context, IConfiguration config, IOtherService oService)
+        private readonly IEmailVerification _emailVerify;
+        public AuthController(DBContext context, IConfiguration config, IOtherService oService, IEmailVerification emailVerify)
         {
             _context = context;
             _config = config;
             _oService = oService;
+            _emailVerify = emailVerify;
         }
 
         [HttpPost("login")]

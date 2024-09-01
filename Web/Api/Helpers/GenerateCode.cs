@@ -16,5 +16,18 @@ namespace Api.Helpers
             }
             return "LifePadi" + sb.ToString();
         }
+
+        public string generateVerificationCode()
+        {
+            string[] newNum = new string[6];
+            Random random = new Random();
+
+            for (int i = 0; i < 6; i++)
+            {
+                newNum[i] = random.Next(10).ToString();
+            }
+            string codeRand = string.Join("", newNum);
+            return (codeRand);
+        }
     }
 }

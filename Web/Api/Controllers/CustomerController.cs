@@ -3,6 +3,7 @@ using Api.Interfaces;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Api.Helpers;
 
 namespace Api.Controllers
 {
@@ -12,10 +13,40 @@ namespace Api.Controllers
     {
         private readonly ICustomer? _icustomer;
         private readonly IMapper _mapper;
-        public CustomerController(ICustomer icustomer, IMapper mapper)
+        private readonly IEmailVerification _emailVerify;
+        public CustomerController(ICustomer icustomer, IMapper mapper, IEmailVerification emailVerify)
         {
             _icustomer = icustomer;
             _mapper = mapper;
+            _emailVerify = emailVerify;
+        }
+
+        [HttpPost("verifyEmail")]
+        public async Task<IActionResult> verifyEmail([FromForm] string Email)
+        {
+            try
+            {
+                var genCode = new GenerateCode();
+                var code = genCode.generateVerificationCode();
+                // load Html template
+                var htmlTemplate = await System.IO.File.ReadAllTextAsync("Templates/EmailMessage.html");
+
+                // Replace the {code} token with the actual code
+                htmlTemplate = htmlTemplate.Replace("{code}", code);
+
+                string subject = "Verify your email address";
+                // Replace the {{subject}} token with the actual code
+                htmlTemplate = htmlTemplate.Replace("{{subject}}", subject);
+
+                // Use the modified HTML template as the email body
+                string body = htmlTemplate;
+                await _emailVerify.SendEmailAsync(Email!, subject, body);
+                return Ok(new { Code = code, Message = "Sent successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("get/{id}")]

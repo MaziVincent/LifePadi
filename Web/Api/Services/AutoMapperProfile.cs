@@ -91,6 +91,18 @@ namespace Api.Services
             //VendorCategory
             CreateMap<VendorCategory, VendorCategoryDto>();
             CreateMap<VendorCategoryDto, VendorCategory>();
+
+            //ProductReview
+            CreateMap<ProductReview, ProductReviewDto>();
+            CreateMap<ProductReviewDto, ProductReview>();
+
+            //VendorReview
+            CreateMap<VendorReview, VendorReviewDto>();
+            CreateMap<VendorReviewDto, VendorReview>();
+
+            //RiderReview
+            CreateMap<RiderReview, RiderReviewDto>();
+            CreateMap<RiderReviewDto, RiderReview>();
         }
     }
 }
