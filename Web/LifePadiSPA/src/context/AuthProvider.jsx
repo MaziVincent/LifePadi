@@ -21,10 +21,15 @@ export const AuthProvider = ({ children }) => {
   const [reg, setRegister] = useState(false);
   const [location, setLocation] = useState({});
   const [verify, setVerify] = useState(false);
+<<<<<<< HEAD
   const [verifyOTP, setVerifyOTP] = useState(false);
   const [regData, setRegData] = useState({});
   const [verificationInfo, setVerificationInfo] = useState({});
   const [forgotPassword, setForgotPassword] = useState(false);
+=======
+  const [regData, setRegData] = useState({});
+  const [verificationCode, setVerificationCode] = useState("");
+>>>>>>> 1bc8dd0 (still working on register)
 
   return (
     <AuthContext.Provider
@@ -43,12 +48,17 @@ export const AuthProvider = ({ children }) => {
         setVerify,
         regData,
         setRegData,
+<<<<<<< HEAD
         verificationInfo,
         setVerificationInfo,
         verifyOTP,
         setVerifyOTP,
         forgotPassword,
         setForgotPassword
+=======
+        verificationCode,
+        setVerificationCode
+>>>>>>> 1bc8dd0 (still working on register)
       }}
     >
       {children}
