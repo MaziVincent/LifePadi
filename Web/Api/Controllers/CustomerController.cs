@@ -29,14 +29,10 @@ namespace Api.Controllers
             {
                 var genCode = new GenerateCode();
                 var code = genCode.generateVerificationCode();
-                var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "EmailMessage.html");
+                // var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "EmailMessage.html");
                 // var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
 
-                // var imgPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "images", "Logo+name+tagline(light).svg");
-                // byte[] imageArray = await System.IO.File.ReadAllBytesAsync(imgPath);
-                // string base64Image = Convert.ToBase64String(imageArray);
-                // htmlTemplate = htmlTemplate.Replace("{imageBase64}", base64Image);
-                var htmlTemplate = "<h1>Hi, {{subject}}</h1><p>Use the code below to verify your email address</p><h2>{code}</h2>";
+                var htmlTemplate = "<div><div style='height: 100px; background-color: #333; padding: 10px 10px; border-bottom: 1px solid #e7e7e7; display: flex; justify-content: center; align-items: center;'><div class='width: 150px; height: 100px'><img src='https://res.cloudinary.com/dbxapeqzu/image/upload/v1725192449/LifePadi/logo/Logo_name_tagline_light_chiec1_rh825p.png' style='width: 100%; height: 100%; display: block;' alt='Logo' /></div></div><h1>Hi, {{subject}}</h1><p>Use the code below to verify your email address</p><h2>{code}</h2></div>";
 
                 // Replace the {code} token with the actual code
                 htmlTemplate = htmlTemplate.Replace("{code}", code);
