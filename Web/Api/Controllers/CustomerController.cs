@@ -4,6 +4,7 @@ using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Api.Helpers;
+using System;
 
 namespace Api.Controllers
 {
@@ -28,13 +29,14 @@ namespace Api.Controllers
             {
                 var genCode = new GenerateCode();
                 var code = genCode.generateVerificationCode();
-                // load Html template
-                // Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
-                // var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "EmailMessage.html");
-                // Console.WriteLine("Template path: " + templatePath);
-                // var templatePath = Directory.GetCurrentDirectory() + "/Templates/EmailMessage.html";
                 var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "EmailMessage.html");
-                var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                // var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+
+                // var imgPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "images", "Logo+name+tagline(light).svg");
+                // byte[] imageArray = await System.IO.File.ReadAllBytesAsync(imgPath);
+                // string base64Image = Convert.ToBase64String(imageArray);
+                // htmlTemplate = htmlTemplate.Replace("{imageBase64}", base64Image);
+                var htmlTemplate = "<h1>Hi, {{subject}}</h1><p>Use the code below to verify your email address</p><h2>{code}</h2>";
 
                 // Replace the {code} token with the actual code
                 htmlTemplate = htmlTemplate.Replace("{code}", code);
@@ -117,7 +119,8 @@ namespace Api.Controllers
                 var authCustomer = await _icustomer!.createAsync(customer);
                 return Ok(authCustomer);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
