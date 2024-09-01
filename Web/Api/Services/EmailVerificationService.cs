@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Api.Interfaces;
@@ -27,6 +28,13 @@ namespace Api.Services
                 {
                     throw new Exceptions.ServiceException("Email already exists");
                 }
+                // var imgUrl = _iconfig["Logo:Light"];
+                // LinkedResource inlineImage = new LinkedResource(imgUrl!, MediaTypeNames.Image.Svg);
+                // inlineImage.ContentId = "LogoImage";
+                // Create an alternate view to embed the image
+                // AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+                // htmlView.LinkedResources.Add(inlineImage);
+                
                 using (var client = new System.Net.Mail.SmtpClient(_iconfig["SMTPConfig:Server"]))
                 {
                     client.UseDefaultCredentials = false;
@@ -42,6 +50,8 @@ namespace Api.Services
                         BodyEncoding = Encoding.UTF8,
                         IsBodyHtml = true,
                     };
+                    // Add the alternate view to the message
+                    // message.AlternateViews.Add(htmlView);
 
                     message.To.Add(to);
 

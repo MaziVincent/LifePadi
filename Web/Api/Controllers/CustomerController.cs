@@ -29,21 +29,14 @@ namespace Api.Controllers
                 var genCode = new GenerateCode();
                 var code = genCode.generateVerificationCode();
                 // load Html template
-                Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
-                // var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "EmailMessage.html");
+                // Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
+                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "EmailMessage.html");
                 // Console.WriteLine("Template path: " + templatePath);
-                var templatePath = Directory.GetCurrentDirectory() + "/Templates/EmailMessage.html";
+                // var templatePath = Directory.GetCurrentDirectory() + "/Templates/EmailMessage.html";
                 var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
-
-                //Replace the {favicon} with the actual favicon
-                // htmlTemplate = htmlTemplate.Replace("{favicon}", "https://res.cloudinary.com/dbxapeqzu/image/upload/v1725181943/LifePadi/logo/Logo_dark_mu4dkm.svg");
-
-                // Replace the {logoImg} with the actual logo image
-                // htmlTemplate = htmlTemplate.Replace("{logoImg}", "https://res.cloudinary.com/dbxapeqzu/image/upload/v1725181884/LifePadi/logo/Logo_name_tagline_light_chiec1.svg");
 
                 // Replace the {code} token with the actual code
                 htmlTemplate = htmlTemplate.Replace("{code}", code);
-
 
                 string subject = "Verify your email address";
                 // Replace the {{subject}} token with the actual code
