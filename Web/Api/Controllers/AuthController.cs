@@ -86,7 +86,6 @@ namespace Api.Controllers
                     throw new Exceptions.ServiceException("Invalid email or password");
                 }
                 var Type = _oService.Strip(user.GetType().ToString());
-                //_oService.Strip(user.GetType().ToString());
                 return new LoggedInUserDto
                 {
                     Id = user.Id,

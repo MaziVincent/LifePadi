@@ -12,10 +12,10 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class ProductReviewController : ControllerBase
     {
-        private readonly IProductReview _productReviewService;
-        public ProductReviewController(IProductReview productReviewService)
+        private readonly IReview<ProductReviewDto> _reviewService;
+        public ProductReviewController( IReview<ProductReviewDto> reviewService)
         {
-            _productReviewService = productReviewService;
+            _reviewService = reviewService;
         }
 
         [HttpGet("all")]
@@ -23,7 +23,7 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.allAsync();
+                var productReview = await _reviewService.allAsync();
                 return Ok(productReview);
             }
             catch (Exception e)
@@ -37,7 +37,7 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.allByProductAsync(productId);
+                var productReview = await _reviewService.allByObjectAsync(productId);
                 return Ok(productReview);
             }
             catch (Exception e)
@@ -51,7 +51,7 @@ namespace Api.Controllers
         {
             try
             {
-                var averageRating = await _productReviewService.averageRating(productId);
+                var averageRating = await _reviewService.averageRating(productId);
                 return Ok(averageRating);
             }
             catch (Exception e)
@@ -65,7 +65,7 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.createAsync(productReviewDto);
+                var productReview = await _reviewService.createAsync(productReviewDto);
                 return Ok(productReview);
             }
             catch (Exception e)
@@ -79,7 +79,7 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.deleteAsync(id);
+                var productReview = await _reviewService.deleteAsync(id);
                 return Ok(productReview);
             }
             catch (Exception e)
@@ -93,7 +93,7 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.findAsync(id);
+                var productReview = await _reviewService.findAsync(id);
                 return Ok(productReview);
             }
             catch (Exception e)
@@ -107,8 +107,22 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _productReviewService.updateAsync(id, productReviewDto);
+                var productReview = await _reviewService.updateAsync(id, productReviewDto);
                 return Ok(productReview);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("productReviewStats/{productId}")]
+        public async Task<IActionResult> productReviewStats(int productId)
+        {
+            try
+            {
+                var productReviewStats = await _reviewService.reviewStats(productId);
+                return Ok(productReviewStats);
             }
             catch (Exception e)
             {

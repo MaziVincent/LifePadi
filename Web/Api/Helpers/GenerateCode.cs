@@ -19,10 +19,10 @@ namespace Api.Helpers
 
         public string generateVerificationCode()
         {
-            string[] newNum = new string[6];
+            string[] newNum = new string[4];
             Random random = new Random();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 newNum[i] = random.Next(10).ToString();
             }

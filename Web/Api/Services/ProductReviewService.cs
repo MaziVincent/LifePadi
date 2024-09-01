@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
 {
-    public class ProductReviewService : IProductReview
+    public class ProductReviewService : IReview<ProductReviewDto>
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,10 @@ namespace Api.Services
         {
             try
             {
-                var productReview = await _context.ProductReviews.ToListAsync();
+                var productReview = await _context.ProductReviews.OrderByDescending(pr => pr.CreatedAt)
+                .Include(pr => pr.Customer)
+                .Include(pr => pr.Product)
+                .ToListAsync();
                 var productReviewDto = _mapper.Map<List<ProductReviewDto>>(productReview);
                 return productReviewDto;
             }
@@ -33,12 +36,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<List<ProductReviewDto>> allByProductAsync(int productId)
+        public async Task<List<ProductReviewDto>> allByObjectAsync(int objectId)
         {
             try
             {
-                var productReview = await _context.ProductReviews.Where(x => x.ProductId == productId).OrderByDescending(pr => pr.CreatedAt
-                ).ToListAsync();
+                var productReview = await _context.ProductReviews.Where(x => x.ProductId == objectId).OrderByDescending(pr => pr.CreatedAt
+                )
+                .Include(pr => pr.Customer)
+                .Include(pr => pr.Product)
+                .ToListAsync();
                 var productReviewDto = _mapper.Map<List<ProductReviewDto>>(productReview);
                 return productReviewDto;
             }
@@ -48,11 +54,11 @@ namespace Api.Services
             }
         }
 
-        public async Task<double> averageRating(int productId)
+        public async Task<double> averageRating(int objectId)
         {
             try
             {
-                var productReview = await _context.ProductReviews.Where(x => x.ProductId == productId).ToListAsync();
+                var productReview = await _context.ProductReviews.Where(x => x.ProductId == objectId).ToListAsync();
                 if (productReview.Count == 0)
                 {
                     return 0.0;
@@ -66,16 +72,16 @@ namespace Api.Services
             }
         }
 
-        public async Task<ProductReviewDto> createAsync(ProductReviewDto productReviewDto)
+        public async Task<ProductReviewDto> createAsync(ProductReviewDto reviewDto)
         {
             try
             {
-                var initialProductReview = await _context.ProductReviews.FirstOrDefaultAsync(pr => pr.CustomerId == productReviewDto.CustomerId && pr.ProductId == productReviewDto.ProductId);
+                var initialProductReview = await _context.ProductReviews.FirstOrDefaultAsync(pr => pr.CustomerId == reviewDto.CustomerId && pr.ProductId == reviewDto.ProductId);
                 if (initialProductReview != null)
                 {
                     throw new Exceptions.ServiceException("Product Review already exists");
                 }
-                var productReview = _mapper.Map<ProductReview>(productReviewDto);
+                var productReview = _mapper.Map<ProductReview>(reviewDto);
                 await _context.ProductReviews.AddAsync(productReview);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<ProductReviewDto>(productReview);
@@ -123,7 +129,29 @@ namespace Api.Services
             }
         }
 
-        public async Task<ProductReviewDto> updateAsync(int id, ProductReviewDto productReviewDto)
+        public async Task<object> reviewStats(int objectId)
+        {
+            try
+            {
+                var productReview = await _context.ProductReviews.Where(x => x.ProductId == objectId).ToListAsync();
+                if (productReview.Count == 0)
+                {
+                    return new { totalReviews = 0, averageRating = 0.0 };
+                }
+                var totalReviews = productReview.Count;
+                var averageRating = productReview.Average(x => x.Rating);
+                return new { 
+                    totalReviews = totalReviews, 
+                    averageRating = Math.Round(averageRating, 1)
+                 };
+            }
+            catch (Exception e)
+            {
+                throw new Exceptions.ServiceException(e.Message);
+            }
+        }
+
+        public async Task<ProductReviewDto> updateAsync(int id, ProductReviewDto reviewDto)
         {
             try
             {
@@ -132,7 +160,7 @@ namespace Api.Services
                 {
                     throw new Exceptions.ServiceException("Product Review not found");
                 }
-                _mapper.Map(productReviewDto, productReview);
+                _mapper.Map(reviewDto, productReview);
                 _context.ProductReviews.Update(productReview);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<ProductReviewDto>(productReview);
