@@ -1,3 +1,4 @@
+using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
 using Api.Services;
@@ -61,7 +62,9 @@ builder.Services.AddScoped<IVoucher, VoucherService>();
 builder.Services.AddScoped<IVendorCategory, VendorCategoryService>();
 builder.Services.AddScoped<IOtherService, OtherService>();
 builder.Services.AddScoped<IEmailVerification, EmailVerificationService>();
-builder.Services.AddScoped<IProductReview, ProductReviewService>();
+builder.Services.AddScoped<IReview<ProductReviewDto>, ProductReviewService>();
+builder.Services.AddScoped<IReview<VendorReviewDto>, VendorReviewService>();
+builder.Services.AddScoped<IReview<RiderReviewDto>, RiderReviewService>();
 
 
 

@@ -54,7 +54,7 @@ const UserLogin = () => {
           default:
             navigate("/unauthorized");
         }
-      }, 2000);
+      }, 1000);
 
       setIsLoading(false);
     } catch (err) {
@@ -80,7 +80,7 @@ const UserLogin = () => {
     localStorage.setItem("persist", persist);
   }, [persist]);
 
-  console.log(auth);
+  //console.log(auth);
 
   return (
     <Modal
@@ -107,7 +107,7 @@ const UserLogin = () => {
                     onClick={() => {
                       setLogin(false);
                     }}
-                    className="text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="dark:text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-toggle="defaultModal"
                   >
                     <svg

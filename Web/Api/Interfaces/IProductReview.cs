@@ -16,5 +16,6 @@ namespace Api.Interfaces
         public Task<string> deleteAsync(int id);
         public Task<List<ProductReviewDto>> allByProductAsync(int productId);
         public Task<double> averageRating(int productId);
+        public Task<object> productReviewStats(int productId);
     }
 }

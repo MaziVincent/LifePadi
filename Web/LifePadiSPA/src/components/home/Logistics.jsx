@@ -11,6 +11,7 @@ import StackBike from "../../assets/imgs/stack-bike.svg";
 import RelayApp from "../../assets/imgs/relay-app.webp";
 import Promocode from "../../assets/imgs/Promo-code.svg";
 import motorbike from "../../assets/images/vintage-green-motorbike.avif";
+import bike from "../../assets/images/_57af53d1-7558-40a3-8d53-1f677c6c79da.jpeg"
 
 //import Scroller from './Scroller'
 
@@ -52,15 +53,17 @@ const Logistics = () => {
     <>
       <div className=" ">
       <div
-        className="h-screen flex justify-center items-center "
+        className="h-screen flex justify-center items-center bg-opacity-5 "
         style={{
-          backgroundImage: `url(${motorbike})`,
+          backgroundImage: `url(${bike})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          opacity:0.5
+          
         }}
       >
-       <div className=" w-full">
+       <div className=" w-full ">
             <div>
               <h2 className=" text-8xl max-lg:text-6xl max-md:text-4xl font-bold text-center leading-tight">
                 Lifepadi  <br />
