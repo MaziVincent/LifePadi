@@ -30,9 +30,10 @@ namespace Api.Controllers
                 var code = genCode.generateVerificationCode();
                 // load Html template
                 // Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
-                var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "EmailMessage.html");
+                // var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "EmailMessage.html");
                 // Console.WriteLine("Template path: " + templatePath);
                 // var templatePath = Directory.GetCurrentDirectory() + "/Templates/EmailMessage.html";
+                var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "EmailMessage.html");
                 var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
 
                 // Replace the {code} token with the actual code
