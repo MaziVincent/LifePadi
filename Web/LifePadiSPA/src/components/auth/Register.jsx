@@ -1,27 +1,29 @@
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
-import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
+import usePost from "../../hooks/usePost";
 //import useCart from "../../hooks/useCart";
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 const Register = () => {
   const { reg, setRegister, verify, setVerify } = useAuth();
   //const {dispatch} = useCart();
+  const post  = usePost();
   const url = `${baseUrl}customer/create`;
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  //const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "all",
@@ -35,7 +37,7 @@ const Register = () => {
       formData.append(key, data[key]);
     }
     const response = await post(url, formData, "");
-    //console.log(response.data);
+    console.log(response.data);
   };
 
   const { mutate } = useMutation(create, {
@@ -51,10 +53,10 @@ const Register = () => {
   });
 
   const handleCreate = (data) => {
-    console.log(data)
-   // mutate(data);
-    setRegister(false)
-    setVerify(true)
+   // console.log(data)
+    mutate(data);
+    // setRegister(false)
+    // setVerify(true)
   };
 
   const handleClickAway = () => {
@@ -80,7 +82,7 @@ const Register = () => {
             
             <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
               <ClickAwayListener onClickAway={handleClickAway}>
-              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu overflow-y-auto max-h-screen pb-10 ">
+              <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
                 <div className="flex justify-between items-center p-4 sticky top-0 ">
                   <button
                     type="button"
@@ -127,7 +129,7 @@ const Register = () => {
                           name="fname"
                           id="fname"
                           {...register("FirstName", { required: true })}
-                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Type First Name"
                           required=""
                         />
@@ -150,7 +152,7 @@ const Register = () => {
                           name="lname"
                           id="lname"
                           {...register("LastName", { required: true })}
-                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Type Last Name"
                           required=""
                         />
@@ -172,7 +174,7 @@ const Register = () => {
                           name="phoneNumber"
                           id="phoneNumber"
                           {...register("PhoneNumber", { required: true })}
-                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="08112341234"
                           required
                         />
@@ -194,7 +196,7 @@ const Register = () => {
                           name="email"
                           id="email"
                           {...register("Email", { required: true })}
-                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-grayTxt dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="emailaddress@email.com"
                           required=""
                         />
@@ -238,10 +240,10 @@ const Register = () => {
                     </div>
                     <button
                       type="submit"
-                      disabled={isLoading || isSubmitting || !isValid}
+                      disabled={ isSubmitting || !isValid}
                       className="w-full text-white bg-secondary flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
-                      {isSubmitting || isLoading ? (
+                      {isSubmitting  ? (
                         <>
                           <svg
                             aria-hidden="true"
@@ -268,8 +270,10 @@ const Register = () => {
                     
                   </form>
                 </div>
+                
               </div>
               </ClickAwayListener>
+              <VerifyCode />
             </div>
         
       </div>
