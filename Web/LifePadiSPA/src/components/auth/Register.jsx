@@ -16,6 +16,7 @@ import VerifyCode from "./VerifyCode";
 //import useCart from "../../hooks/useCart";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import LoadingGif from "../shared/LodingGif";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 const Register = () => {
@@ -39,6 +40,9 @@ const Register = () => {
   const post = usePost();
   const url = `${baseUrl}customer/send-otp`;
 =======
+=======
+import LoadingGif from "../shared/LodingGif";
+>>>>>>> 074a7e6 (complete register)
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 const Register = () => {
   const {
@@ -110,8 +114,11 @@ const verifyEmail = async (email) => {
   const response = await post(`${baseUrl}customer/verifyEmail`, formData, "");
   if(response.error){
     setError(response.error);
+    setIsLoading(false);
   }else{
     setVerificationCode(response.data.Code)
+    setVerify(true)
+    setIsLoading(false);
   }
   
 }
@@ -199,6 +206,7 @@ const verifyEmail = async (email) => {
 
   const handleCreate = (data) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log(data)
    // mutate(data);
     setRegister(false)
@@ -206,6 +214,9 @@ const verifyEmail = async (email) => {
 >>>>>>> eda1965 (User Dashboard and Landing Page)
 =======
     
+=======
+    setIsLoading(true)
+>>>>>>> 074a7e6 (complete register)
     verifyEmail(data.Email);
     setRegData(data);
 >>>>>>> 1bc8dd0 (still working on register)
@@ -624,6 +635,7 @@ const verifyEmail = async (email) => {
                     className="w-full text-white bg-secondary flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
 <<<<<<< HEAD
+<<<<<<< HEAD
                     {isSubmitting || isLoading ? <LoadingGif /> : " Sign Up"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-lightGray">
@@ -670,6 +682,10 @@ const verifyEmail = async (email) => {
                         <span className="sr-only">Loading...</span>{" "}
                       </>
                     ) : (
+=======
+                    {isSubmitting || isLoading ? 
+                    <LoadingGif /> : (
+>>>>>>> 074a7e6 (complete register)
                       " Sign Up"
                     )}
                   </button>
