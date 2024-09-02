@@ -1,6 +1,5 @@
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,16 +18,17 @@ const Register = () => {
     regData,
     setRegData,
     verificationCode,
-    setVerificationCode
+    setVerificationCode,
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
-  const url = `${baseUrl}customer/create`;
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [type, setType] = useState("");
+  const [icon, setIcon] = useState(false);
 
   const {
     register,
@@ -39,23 +39,23 @@ const Register = () => {
     mode: "all",
   });
 
-const verifyEmail = async (email) => {
-  const formData = new FormData();
-  formData.append("Email", email)
-  const response = await post(`${baseUrl}customer/verifyEmail`, formData, "");
-  if(response.error){
-    setError(response.error);
-    setIsLoading(false);
-  }else{
-    setVerificationCode(response.data.Code)
-    setVerify(true)
-    setIsLoading(false);
-  }
-  
-}
+  const verifyEmail = async (email) => {
+    const formData = new FormData();
+    formData.append("Email", email);
+    const response = await post(`${baseUrl}customer/verifyEmail`, formData, "");
+    if (response.error) {
+      setError(response.error);
+      setIsLoading(false);
+    } else {
+      setVerificationCode(response.data.Code);
+      setVerify(true);
+      setIsLoading(false);
+      reset();
+    }
+  };
 
   const handleCreate = (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
     verifyEmail(data.Email);
     setRegData(data);
   };
@@ -63,6 +63,16 @@ const verifyEmail = async (email) => {
   const handleClickAway = () => {
     setRegister(false);
   };
+
+  const handleToggle = () => {
+    if (type ==='password'){
+       setIcon(true);
+       setType('text')
+    } else {
+       setIcon(false)
+       setType('password')
+    }
+ }
 
   return (
     <Modal
@@ -78,8 +88,6 @@ const verifyEmail = async (email) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
-        <Toaster />
-
         <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
@@ -205,35 +213,76 @@ const verifyEmail = async (email) => {
                           Email is required
                         </p>
                       )}
-                      {
-                        error && <p className="text-sm text-redborder">
-                        {error }
-                      </p>
-                      }
+                      {error && (
+                        <p className="text-sm text-redborder">{error}</p>
+                      )}
                     </div>
 
-                    <div className="sm:col-span-2">
+                    <div className="sm:col-span-2 ">
                       <label
                         htmlFor="password"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
                         Password
                       </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        {...register("Password", {
-                          required: "Password is required",
-                          minLength: {
-                            value: 4,
-                            message: "Password must be at least 4 characters",
-                          },
-                        })}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Type Password"
-                        required
-                      />
+                      <div className="flex">
+                        <input
+                          type={type}
+                          name="password"
+                          id="password"
+                          {...register("Password", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 4,
+                              message: "Password must be at least 4 characters",
+                            },
+                          })}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Type Password"
+                          required
+                        />
+                        <span onClick={handleToggle} className={` text-gray ${icon ? 'hidden' : 'flex'} justify-center items-center  `}>
+                          <svg
+                            className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                            />
+                            <path
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </span>
+                        <span onClick={handleToggle} className={` text-gray ${icon ? 'flex' : 'hidden'} justify-center items-center  `}>
+                          <svg
+                            className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </span>
+                      </div>
 
                       {errors.Password && (
                         <p className="text-sm text-redborder">
@@ -247,16 +296,12 @@ const verifyEmail = async (email) => {
                     disabled={isSubmitting || !isValid}
                     className="w-full text-white bg-secondary flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
-                    {isSubmitting || isLoading ? 
-                    <LoadingGif /> : (
-                      " Sign Up"
-                    )}
+                    {isSubmitting || isLoading ? <LoadingGif /> : " Sign Up"}
                   </button>
                 </form>
               </div>
             </div>
           </ClickAwayListener>
-          
         </div>
       </div>
     </Modal>
