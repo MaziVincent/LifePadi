@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -72,4 +74,46 @@ extension ReadableDateTime on DateTime {
   String get readable {
     return DateFormat('d MMM yyyy, hh:mm a').format(this);
   }
+}
+
+TextStyle? inputTextStyle(
+  BuildContext context, {
+  Color? color,
+  double? fontSize,
+  bool forUserEnteredText = false,
+}) {
+  return forUserEnteredText
+      ? inputTextStyleForUserEnteredText(context)
+      : context.textTheme.bodySmall?.copyWith(
+          color: color ?? const Color(0xFFC2C8D0),
+          fontSize: fontSize ?? 14.sp,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.12.r,
+        );
+}
+
+OutlineInputBorder inputBorder({Color? color}) {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.circular(3.25.r),
+    borderSide: BorderSide(
+      color: color ?? const Color(0xFFC2C8D0),
+      width: 0.81.r,
+    ),
+  );
+}
+
+TextStyle? floatingLabelTextStyle() => GoogleFonts.roboto(
+      color: const Color(0xFF21D1A5),
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.33.r,
+    );
+
+TextStyle? inputTextStyleForUserEnteredText(BuildContext context) {
+  return context.textTheme.bodyLarge?.copyWith(
+    color: Colors.black,
+    fontSize: 15.sp,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.12.r,
+  );
 }

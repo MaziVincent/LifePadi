@@ -51,7 +51,12 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
       ],
     ),
     TypedGoRoute<LogisticsRoute>(path: '/logistics'),
-    TypedGoRoute<ProfileRoute>(path: '/profile'),
+    TypedGoRoute<ProfileRoute>(
+      path: '/profile',
+      routes: [
+        TypedGoRoute<EditProfileRoute>(path: 'edit'),
+      ],
+    ),
   ],
 )
 class HomeShellRoute extends ShellRouteData {
@@ -463,4 +468,15 @@ class SettingsRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const SettingsPage();
   }
+}
+
+class EditProfileRoute extends GoRouteData {
+  const EditProfileRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const EditProfilePage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }

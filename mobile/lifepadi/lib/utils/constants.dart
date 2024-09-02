@@ -21,6 +21,13 @@ const Color kStrokeColor = Color(0xFFEBEBF0);
 /// decided to create a getter for it to avoid repetition.
 EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
 
+EdgeInsets get kInputPadding => EdgeInsets.only(
+      top: 13.h,
+      left: 13.01.w,
+      right: 9.76.w,
+      bottom: 13.h,
+    );
+
 const kRadialGradient = RadialGradient(
   colors: [Color(0xFF90DB19), kDarkPrimaryColor],
   radius: 0.85,

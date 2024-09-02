@@ -4,6 +4,7 @@ export 'categories_page.dart';
 export 'chats_page.dart';
 export 'checkout_page.dart';
 export 'details_page.dart';
+export 'edit_profile_page.dart';
 export 'errands_page.dart';
 export 'forgot_password_page.dart';
 export 'get_started_page.dart';

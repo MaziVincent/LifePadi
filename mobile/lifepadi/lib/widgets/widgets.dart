@@ -47,6 +47,7 @@ export 'receipt_info_tile.dart';
 export 'receiver_chat_bubble.dart';
 export 'scaffold_with_nav_bar.dart';
 export 'section_title.dart';
+export 'select_input_field.dart';
 export 'sender_chat_bubble.dart';
 export 'setting_tile.dart';
 export 'settings_panel.dart';

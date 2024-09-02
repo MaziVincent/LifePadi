@@ -45,9 +45,8 @@ class ProfilePage extends HookWidget {
             actions: [
               MyIconButton(
                 icon: IconsaxPlusLinear.user_edit,
-                onPressed: () {
-                  // TODO: Go to edit profile page.
-                },
+                onPressed: () =>
+                    context.push(const EditProfileRoute().location),
                 backgroundColor: const Color(0x19F5F5F5),
                 iconColor: Colors.white,
               ),

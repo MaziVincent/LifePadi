@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
@@ -58,25 +56,6 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? inputTextStyle({Color? color, double? fontSize}) {
-      return context.textTheme.bodySmall?.copyWith(
-        color: color ?? const Color(0xFFC2C8D0),
-        fontSize: fontSize ?? 14.sp,
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0.12.r,
-      );
-    }
-
-    OutlineInputBorder inputBorder({Color? color}) {
-      return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(3.25.r),
-        borderSide: BorderSide(
-          color: color ?? const Color(0xFFC2C8D0),
-          width: 0.81.r,
-        ),
-      );
-    }
-
     return TextFormField(
       cursorColor: kDarkPrimaryColor,
       decoration: InputDecoration(
@@ -87,24 +66,15 @@ class InputField extends StatelessWidget {
         focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
         errorBorder: inputBorder(color: Colors.redAccent),
         hintText: hintText,
-        hintStyle: inputTextStyle(),
-        errorStyle: inputTextStyle(color: Colors.redAccent),
+        hintStyle: inputTextStyle(context),
+        errorStyle: inputTextStyle(context, color: Colors.redAccent),
         labelStyle: inputTextStyle(
+          context,
           color: const Color(0xFF858585),
         ),
         labelText: labelText,
-        floatingLabelStyle: GoogleFonts.roboto(
-          color: const Color(0xFF21D1A5),
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.33.r,
-        ),
-        contentPadding: EdgeInsets.only(
-          top: 13.h,
-          left: 13.01.w,
-          right: 9.76.w,
-          bottom: 13.h,
-        ),
+        floatingLabelStyle: floatingLabelTextStyle(),
+        contentPadding: kInputPadding,
         suffixIcon: child != null
             ? GestureDetector(
                 onTap: onChildTap,
@@ -115,12 +85,7 @@ class InputField extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      style: context.textTheme.bodyLarge?.copyWith(
-        color: Colors.black,
-        fontSize: 16.sp,
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0.12.r,
-      ),
+      style: inputTextStyle(context, forUserEnteredText: true),
       onTapOutside: (e) => FocusScope.of(context).unfocus(),
       obscureText: hideText,
       onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
