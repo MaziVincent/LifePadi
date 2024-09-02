@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/pages/locations_page.dart';
 import 'package:lifepadi/pages/pages.dart';
 
 import '../entities/user_role.dart';
@@ -481,9 +480,8 @@ class EditProfileRoute extends GoRouteData {
 @TypedGoRoute<LocationsRoute>(
   path: '/locations',
   routes: [
-    TypedGoRoute<NewLocationRoute>(
-      path: 'new',
-    ),
+    TypedGoRoute<NewLocationRoute>(path: 'new'),
+    TypedGoRoute<EditLocationRoute>(path: ':id/edit'),
   ],
 )
 class LocationsRoute extends GoRouteData {
@@ -493,4 +491,17 @@ class LocationsRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const LocationsPage();
   }
+}
+
+class EditLocationRoute extends GoRouteData {
+  EditLocationRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return EditLocationPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
