@@ -1,11 +1,21 @@
 import React, { useState, useRef } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
+import { useMutation } from "react-query";
 
-const VerifyCode = ({ otpLength = 4 }) => {
+const VerifyCode = ({ otpLength = 4, }) => {
   const [otp, setOtp] = useState(Array(otpLength).fill(""));
   const inputsRef = useRef([]);
-  const { verify, setVerify } = useAuth();
+  const {
+    reg,
+    setRegister,
+    verify,
+    setVerify,
+    regData,
+    setRegData,
+    verificationCode,
+    setVerificationCode
+  } = useAuth();
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -35,6 +45,28 @@ const VerifyCode = ({ otpLength = 4 }) => {
   const handleSubmit = () => {
     console.log(otp.join(""));
   };
+
+  const create = async (data) => {
+    setIsLoading(true);
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    const response = await post(url, formData, "");
+  };
+
+  const { mutate } = useMutation(create, {
+    onSuccess: () => {
+      setRegister(false);
+      reset();
+    },
+    onError: () => {
+      toast.error("Error completing your sign up");
+    },
+  });
+
+  console.log(verificationCode)
+  console.log(regData)
 
   return (
     <Modal
