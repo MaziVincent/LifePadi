@@ -1,6 +1,5 @@
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
@@ -8,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
-import VerifyCode from "./VerifyCode";
 //import useCart from "../../hooks/useCart";
 import LoadingGif from "../shared/LodingGif";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
@@ -55,25 +53,6 @@ const verifyEmail = async (email) => {
   }
   
 }
-
-  const create = async (data) => {
-    const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
-    const response = await post(url, formData, "");
-    console.log(response.data);
-  };
-
-  const { mutate } = useMutation(create, {
-    onSuccess: () => {
-      setRegister(false);
-      reset();
-    },
-    onError: () => {
-      toast.error("Error completing your sign up");
-    },
-  });
 
   const handleCreate = (data) => {
     setIsLoading(true)
@@ -277,7 +256,7 @@ const verifyEmail = async (email) => {
               </div>
             </div>
           </ClickAwayListener>
-          <VerifyCode />
+          
         </div>
       </div>
     </Modal>
