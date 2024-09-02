@@ -2,10 +2,18 @@ import React, { useState, useRef } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { useMutation } from "react-query";
+import baseUrl from "../../api/baseUrl";
+import LoadingGif from "../shared/LodingGif";
+import usePost from "../../hooks/usePost";
+import toast, { Toaster } from "react-hot-toast";
 
 const VerifyCode = ({ otpLength = 4, }) => {
   const [otp, setOtp] = useState(Array(otpLength).fill(""));
+  const [codeError, setCodeError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const inputsRef = useRef([]);
+  const post = usePost();
+  const url = `${baseUrl}customer/create`;
   const {
     reg,
     setRegister,
@@ -43,30 +51,46 @@ const VerifyCode = ({ otpLength = 4, }) => {
   };
 
   const handleSubmit = () => {
-    console.log(otp.join(""));
+    setIsLoading(true);
+    const code = otp.join("");
+    if(code === verificationCode){
+      
+      mutate(regData)
+    }else{
+      setCodeError("Code Entered is invalid ")
+      setIsLoading(false)
+    }
   };
 
   const create = async (data) => {
-    setIsLoading(true);
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
     }
     const response = await post(url, formData, "");
+    console.log(response.data)
   };
 
   const { mutate } = useMutation(create, {
     onSuccess: () => {
       setRegister(false);
-      reset();
+      setIsLoading(false);
+      setOtp(Array(otpLength).fill(""))
+      toast.success(" Account Created Successfully")
+      setTimeout(() => {
+        setVerify(false);
+      },1500)
+     
+      
+      
     },
     onError: () => {
       toast.error("Error completing your sign up");
+      setIsLoading(false)
     },
   });
 
-  console.log(verificationCode)
-  console.log(regData)
+
 
   return (
     <Modal
@@ -82,9 +106,10 @@ const VerifyCode = ({ otpLength = 4, }) => {
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
       >
+        <Toaster />
         <div className="relative p-4 w-full h-auto  ">
           <section className=" h-screen flex justify-center items-center ">
-            <div className="flex flex-col items-center bg-primary dark:bg-darkMenu w-3/4 md:w-2/4 pb-4 rounded-xl">
+            <div className="flex flex-col items-center bg-primary dark:bg-darkMenu dark:text-primary w-3/4 md:w-2/4 pb-4 rounded-xl">
               <div className="flex justify-end items-center p-4 w-full ">
                 <button
                   type="button"
@@ -111,7 +136,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
                 </button>
               </div>
               <h2 className="text-2xl font-semibold mb-4">Verify Phonenumber</h2>
-              <p className="text-darkHover">Please Enter the code sent to your phone Number</p>
+              <p className="text-darkHover dark:text-gray">Please Enter the code sent to your Email Address</p>
               <div className="flex space-x-2 m-4">
                 {otp.map((digit, index) => (
                   <input
@@ -126,11 +151,14 @@ const VerifyCode = ({ otpLength = 4, }) => {
                   />
                 ))}
               </div>
+              <p className="text-redborder text-lg"> {codeError}</p>
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2 bg-secondary text-white rounded-lg shadow hover:bg-background transition duration-200"
-              >
-                Complete Sign Up 
+                className="px-4 py-2 bg-secondary text-white dark:text-accent font-semibold rounded-lg shadow hover:bg-background transition duration-200"
+              > {
+                isLoading ? <LoadingGif /> : 'Complete Sign Up '
+              }
+                
               </button>
             </div>
           </section>

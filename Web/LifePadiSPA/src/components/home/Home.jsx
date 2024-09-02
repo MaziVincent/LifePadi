@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
-import HeroAnimation from "../../assets/lottie/HeroAnimation.json";
+import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
 import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
+import HeroAnimation4 from "../../assets/lottie/Heroanimation4.json";
 import Hero1 from "../../assets/lottie/Hero1.json";
 import LandingPageSlide from "./LandingPageSlide";
 import AppStore from "../../assets/images/app-store-white.svg";
@@ -79,7 +80,7 @@ const Home = () => {
       <section className="bg-white dark:bg-gray-900">
         <div className=" w-screen h-5/6  text-center">
           <Lottie
-            animationData={HeroAnimation}
+            animationData={HeroAnimation4}
             loop={true}
             autoPlay={true}
             style={lottieStyle}

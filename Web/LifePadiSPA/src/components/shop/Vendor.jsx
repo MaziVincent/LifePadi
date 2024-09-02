@@ -129,7 +129,7 @@ const Vendor = () => {
     isSuccess: addressSuccess,
   } = useQuery({
     queryKey: ["addresses"],
-    queryFn: () => getAddresses(`${addressUrl}/${auth?.user.Id}`),
+    queryFn: () => getAddresses(`${addressUrl}/${auth?.user?.Id}`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
