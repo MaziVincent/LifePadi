@@ -10,11 +10,17 @@ class LocationCard extends StatelessWidget {
     required this.onTap,
     required this.place,
     required this.phoneNumber,
+    this.isDefault = false,
+    this.child,
+    this.padding,
   });
 
   final VoidCallback onTap;
   final String place;
   final String phoneNumber;
+  final bool isDefault;
+  final Widget? child;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class LocationCard extends StatelessWidget {
       customBorder: roundedRectangleBorder,
       child: Ink(
         width: double.infinity,
-        padding: const EdgeInsets.all(12).r,
+        padding: padding ?? EdgeInsets.all(12.r),
         decoration: ShapeDecoration(
           shape: roundedRectangleBorder,
         ),
@@ -69,13 +75,22 @@ class LocationCard extends StatelessWidget {
                             color: const Color(0xFF27272A),
                           ),
                         ),
+                        if (isDefault)
+                          Text(
+                            'Default',
+                            style: context.textTheme.titleSmall?.copyWith(
+                              color: const Color(0xFF139D01),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                       ].separatedBy(4.verticalSpace),
                     ),
                   ),
                 ],
               ),
             ),
-            Assets.icons.arrowRight.svg(width: 24.sp, height: 24.sp),
+            child ?? Assets.icons.arrowRight.svg(width: 24.sp, height: 24.sp),
           ],
         ),
       ),

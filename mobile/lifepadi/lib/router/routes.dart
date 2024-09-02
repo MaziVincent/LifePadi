@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/pages/locations_page.dart';
 import 'package:lifepadi/pages/pages.dart';
 
 import '../entities/user_role.dart';
@@ -28,10 +29,6 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
           ],
         ),
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
-        TypedGoRoute<NewLocationRoute>(
-          // FIXME: Should be /locations/new, for now, this is just a placeholder
-          path: 'new-location',
-        ),
         TypedGoRoute<CategoriesRoute>(path: 'categories'),
         TypedGoRoute<VendorsRoute>(path: 'vendors'),
         TypedGoRoute<ReceiptRoute>(path: 'receipts/:id'),
@@ -479,4 +476,21 @@ class EditProfileRoute extends GoRouteData {
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+@TypedGoRoute<LocationsRoute>(
+  path: '/locations',
+  routes: [
+    TypedGoRoute<NewLocationRoute>(
+      path: 'new',
+    ),
+  ],
+)
+class LocationsRoute extends GoRouteData {
+  const LocationsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LocationsPage();
+  }
 }

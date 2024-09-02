@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
@@ -20,24 +19,14 @@ class SettingsPage extends HookWidget {
         children: [
           SettingTile(
             name: 'Biometrics',
-            child: SizedBox(
-              height: 40.53.h,
-              width: 30.83.w,
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Switch.adaptive(
-                  value: biometricsEnabled.value,
-                  onChanged: (value) {
-                    // TODO: Update biometrics setting
+            child: SwitchInput(
+              value: biometricsEnabled.value,
+              onChanged: (value) {
+                // TODO: Update biometrics setting
 
-                    // For now, just update the UI
-                    biometricsEnabled.value = value;
-                  },
-                  activeTrackColor: kLightPrimaryColor,
-                  trackOutlineWidth: const WidgetStatePropertyAll(1),
-                  inactiveTrackColor: Colors.white,
-                ),
-              ),
+                // For now, just update the UI
+                biometricsEnabled.value = value;
+              },
             ),
           ),
           SettingTile(
@@ -63,7 +52,7 @@ class SettingsPage extends HookWidget {
             onTap: () {
               // TODO: Go to FAQ page
             },
-            textColor: Color(0xFFF52311),
+            textColor: const Color(0xFFF52311),
           ),
         ],
       ),

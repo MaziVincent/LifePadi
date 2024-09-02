@@ -90,9 +90,8 @@ class ProfilePage extends HookWidget {
                     children: [
                       AccountManagementTile(
                         name: 'Update Location',
-                        onTap: () {
-                          // TODO: Go to location page
-                        },
+                        onTap: () =>
+                            context.push(const LocationsRoute().location),
                       ),
                       AccountManagementTile(
                         name: 'Payment Information',
@@ -102,25 +101,14 @@ class ProfilePage extends HookWidget {
                       ),
                       AccountManagementTile(
                         name: 'Notification',
-                        child: SizedBox(
-                          height: 40.53.h,
-                          width: 30.83.w,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Switch.adaptive(
-                              value: showNotifications.value,
-                              onChanged: (value) {
-                                // TODO: Update notification settings
+                        child: SwitchInput(
+                          value: showNotifications.value,
+                          onChanged: (value) {
+                            // TODO: Update notification settings
 
-                                // For now, just update the UI
-                                showNotifications.value = value;
-                              },
-                              activeTrackColor: kLightPrimaryColor,
-                              trackOutlineWidth:
-                                  const WidgetStatePropertyAll(1),
-                              inactiveTrackColor: Colors.white,
-                            ),
-                          ),
+                            // For now, just update the UI
+                            showNotifications.value = value;
+                          },
                         ),
                       ),
                     ],

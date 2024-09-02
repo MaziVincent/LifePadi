@@ -53,6 +53,7 @@ export 'setting_tile.dart';
 export 'settings_panel.dart';
 export 'settings_tile.dart';
 export 'store_name_with_wishlist_and_share.dart';
+export 'switch_input.dart';
 export 'toggle_auth_page.dart';
 export 'track_tile.dart';
 export 'typing_loader.dart';
