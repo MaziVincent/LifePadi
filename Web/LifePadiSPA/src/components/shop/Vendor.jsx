@@ -31,6 +31,8 @@ const reducer = (state, action) => {
       return { ...state, open: !state.open };
     case "edit":
       return { ...state, edit: !state.edit };
+    case "loading":
+      return { ...state, loading: !state.loading };
     case "error":
       return { ...state, error: action.payload };
     case "products":
@@ -79,6 +81,7 @@ const Vendor = () => {
     product: {},
     subTotal: 0,
     newAddress: false,
+    loading: false,
   });
 
   const getVendor = async (url) => {
@@ -222,6 +225,7 @@ const Vendor = () => {
     handleDeliveryFee();
     console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
+    dispatch({type:"error", payload:""})
   };
 
   const handleClick = async (e) => {
@@ -232,6 +236,11 @@ const Vendor = () => {
   };
 
   const handleOrder = async () => {
+
+    if(!cartState.deliveryAddress){
+      dispatch({type:'error', payload:"Please choose an address before you proceed "})
+      return;
+    }
     setOrderLoading(true);
     const order = {
       CustomerId: auth?.user.Id,
@@ -259,6 +268,7 @@ const Vendor = () => {
 
     setOrderLoading(false);
     cartDispatch({ type: "checkOut" });
+    setCart([]);
   };
 
   const clearCart = () => {
@@ -281,7 +291,24 @@ const Vendor = () => {
   }, []);
 
   useEffect(() => {
+    if (cart.length == 0) {
+      const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const currentVendor = JSON.parse(localStorage.getItem("currentVendor"));
+      console.log(cart);
+      if (currentCart) {
+        setCart(currentCart);
+      }
+      if (currentVendor) {
+        cartDispatch({ type: "vendor", payload: currentVendor });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     calculateTotalAmount();
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
   }, [cart]);
 
   //console.log(deliveryInstruction);
@@ -606,12 +633,18 @@ const Vendor = () => {
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
               </div>
+              <div>{state.error && <span className="text-redborder"> {state.error }</span>}</div>
               <div className=" pt-3 text-center w-full">
+
                 <button
                   onClick={handleOrder}
                   className=" w-full bg-background py-4 px-3 rounded"
                 >
-                  <span className=" text-primary">Place Order</span>
+                  {orderLoading ? (
+                    <LoadingGif />
+                  ) : (
+                    <span className=" text-primary">Place Order</span>
+                  )}
                 </button>
               </div>
               <div className=" pt-3 text-center w-full">

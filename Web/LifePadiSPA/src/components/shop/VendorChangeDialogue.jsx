@@ -14,6 +14,7 @@ const VendorChangeDialogue = ({addToCart, product, vendor}) => {
         
         addToCart(product);
         dispatch({type:'vendor', payload:vendor})
+        localStorage.setItem("currentVendor", JSON.stringify(vendor))
         dispatch({type:'vendorChange'});
     }
 
