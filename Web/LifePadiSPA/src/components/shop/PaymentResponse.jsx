@@ -35,9 +35,9 @@ const PaymentResponse = () => {
         verifyTransaction()
     }, [location.search, navigate])
   return (
-    <div>
+    <div className='flex justify-center items-center'>
       {paymentStatus === 'success' ? (
-        <div className='h-screen py-5 px-36'>
+        <div className='h-[24rem] py-5 px-36'>
           <h1>Payment was successful</h1>
           <p>
             Go back to{' '}
@@ -47,7 +47,7 @@ const PaymentResponse = () => {
           </p>
         </div>
       ) : (
-        <div className='h-screen py-5 px-36'>
+        <div className='h-[24rem] py-5 px-36'>
           <h1 className=''>Payment was not successful</h1>
           <p>
             Go back to{' '}
