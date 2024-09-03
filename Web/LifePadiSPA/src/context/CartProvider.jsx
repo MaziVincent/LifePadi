@@ -53,6 +53,7 @@ export const CartProvider = ({ children }) => {
     checkOut: false,
     order: null
   });
+  
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);

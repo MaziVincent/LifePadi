@@ -55,20 +55,20 @@ const CheckOut = () => {
       >
         <div className='flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 '>
           <div className='w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md  dark:bg-darkMenu  dark:text-primary overflow-y-auto '>
-            <h3 className='text-lg font-semibold text-secondary dark:text-gray-50'>
+            <h3 className='text-xl font-semibold text-background dark:text-gray-50'>
               Payment
             </h3>
 
             {/* <!-- Modal body --> */}
 
-            <div className=' w-full'>
-              <div className='bg-graybg dark:bg-darkMenu'>
+            <div className=' w-full flex flex-col gap-10'>
+              <div className='bg-graybg dark:bg-darkMenu p-3 flex justify-center'>
                 <p>
                   {' '}
-                  <span> Total Amount </span> <span>{state.total}</span>
+                  <span className='text-xl font-semibold'> Total Amount : </span> <span className='text-2xl font-bold'>&#8358;{state.total}</span>
                 </p>
               </div>
-
+              <div className='flex justify-center'>
               <button
                 onClick={handleMakePayment}
                 type='submit'
@@ -93,6 +93,8 @@ const CheckOut = () => {
                   'Proceed to payment'
                 )}
               </button>
+              </div>
+              
             </div>
           </div>
         </div>

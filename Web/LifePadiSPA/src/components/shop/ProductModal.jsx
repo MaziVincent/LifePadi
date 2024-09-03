@@ -47,6 +47,7 @@ const {cart, setCart, state, dispatch } = useCart();
   if(!state.vendor){
     addToCart(item);
     dispatch({type:'vendor', payload:vendor})
+    localStorage.setItem("currentVendor", JSON.stringify(vendor))
     return;
   }
   if(state.vendor?.Id === vendor.Id){
@@ -107,6 +108,7 @@ const {cart, setCart, state, dispatch } = useCart();
                 </svg>
                 <span className="sr-only">Close modal</span>
               </button>
+
             </div>
             {/* <!-- Modal body --> */}
             <div className=" w-full bg-cover overflow-y-auto overflow-x-hidden justify-center pb-8">
