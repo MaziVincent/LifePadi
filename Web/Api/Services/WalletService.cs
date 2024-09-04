@@ -173,16 +173,18 @@ namespace Api.Services
                 {
                     WalletId = fromWallet.Id,
                     Message = $"You transfered {amount} to {toWallet.customer?.FirstName} {toWallet.customer?.LastName}",
-                    Title = "Transfer",
+                    Title = "Transfer out",
                     Type = "Transfer",
                 }; 
                 var toWalletNotification = new WalletNotification
                 {
                     WalletId = toWallet.Id,
                     Message = $"You received {amount} from {fromWallet.customer?.FirstName} {fromWallet.customer?.LastName}",
-                    Title = "Transfer",
+                    Title = "Transfer in",
                     Type = "Transfer",
                 };
+                await _context.WalletNotifications.AddAsync(fromWalletNotification);
+                await _context.WalletNotifications.AddAsync(toWalletNotification);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<WalletDto>(fromWallet);
             }
