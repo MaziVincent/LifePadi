@@ -56,11 +56,11 @@ namespace Api.Controllers
             catch (Exception ex)
 =======
         [HttpGet("confirmPayment")]
-        public async Task<IActionResult> comfirmPayment([FromQuery] string status, [FromQuery] string tx_ref, [FromQuery] string transaction_id)
+        public async Task<IActionResult> confirmPayment([FromQuery] AfterPayment transactionInfo )
         {
             try
             {
-                var response = await _itran.confirmPayment(status, tx_ref, transaction_id);
+                var response = await _itran.confirmPayment(transactionInfo);
                 return Ok(response);
             }catch(Exception ex)
 >>>>>>> 7f9ad44 (done with payment and voucher)

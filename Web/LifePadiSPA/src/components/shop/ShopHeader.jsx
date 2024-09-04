@@ -21,8 +21,11 @@ import VerifyCode from "../auth/VerifyCode";
 <<<<<<< HEAD
 import CheckOut from "./CheckOut";
 import { Badge } from "@mui/material";
+<<<<<<< HEAD
 =======
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+>>>>>>> e848b7b (Payment Response)
 
 
 const ShopHeader = () => {
@@ -79,10 +82,14 @@ const ShopHeader = () => {
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <div className=" flex justify-between w-full lg:w-10/12">
         <div className=" flex items-center md:gap-10 w-1/2 ">
 =======
       <div className=" flex justify-between w-full lg:w-9/12">
+=======
+      <div className=" flex justify-between w-full lg:w-10/12">
+>>>>>>> e848b7b (Payment Response)
         <div className=" flex items-center md:gap-10 w-1/2">
 >>>>>>> 3f80dfc (latest commit)
           <ResponsiveLogo />

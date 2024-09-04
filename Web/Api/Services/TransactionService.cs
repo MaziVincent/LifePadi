@@ -69,6 +69,7 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<object> BaniCheckout(InitiatePaymentDto initiatePaymentDto)
         {
             try
@@ -166,6 +167,20 @@ namespace Api.Services
                 var request = new HttpRequestMessage(HttpMethod.Get,
                 $"https://api.flutterwave.com/v3/transactions/{transaction_id}/verify");
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo)
+        {
+            try
+            {
+                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transactionInfo.transaction_id!));
+                if (initial_transaction != null)
+                {
+                    throw new Exceptions.ServiceException("Transaction already confirmed");
+                }
+                //this is the uri
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                $"https://api.flutterwave.com/v3/transactions/{transactionInfo.transaction_id}/verify");
+>>>>>>> e848b7b (Payment Response)
                 //create an an instance of IHttpclientFactory
                 var client = _ClientFactory.CreateClient();
                 //add the auth token to the header

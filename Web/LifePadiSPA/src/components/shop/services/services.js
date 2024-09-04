@@ -36,7 +36,13 @@ export const addAddressToDb = async (url, location, token, userId ) => {
       formData.append(key, data[key]);
     }
     const response = await post(url, formData, token)
+<<<<<<< HEAD
     console.log(response)
+=======
+    //console.log(response)
+    //console.log(url, token )
+    //const response = post(url, data, token)
+>>>>>>> e848b7b (Payment Response)
 
 }
 
@@ -54,5 +60,9 @@ export const addAddressToDb = async (url, location, token, userId ) => {
 //     console.log(state.deliveryAddress);
 //     dispatch({ type: "address" });
 //     dispatch({type:"error", payload:""})
+<<<<<<< HEAD
 //     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.Id)
+=======
+//     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
+>>>>>>> e848b7b (Payment Response)
 // }

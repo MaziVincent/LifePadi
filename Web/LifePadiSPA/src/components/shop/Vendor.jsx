@@ -26,6 +26,7 @@ import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
+<<<<<<< HEAD
 import { addAddressToDb } from "./services/services";
 import VendorSkeleton from "../shared/VendorSkeleton";
 import ProductSkeleton from "../shared/ProductSkeleton";
@@ -36,6 +37,9 @@ import { Alert } from "@mui/material";
 >>>>>>> 38d66ec (Order and Order Items)
 =======
 import LoadingGif from "../shared/LodingGif";
+=======
+import { addAddressToDb} from "./services/services"
+>>>>>>> e848b7b (Payment Response)
 
 <<<<<<< HEAD
 >>>>>>> 360c46c (vendor)
@@ -79,6 +83,9 @@ const Vendor = () => {
 >>>>>>> 3f80dfc (latest commit)
   const [products, setProducts] = useState(null);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e848b7b (Payment Response)
   const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
   const { auth, setLogin, location } = useAuth();
@@ -109,7 +116,7 @@ const Vendor = () => {
 >>>>>>> 38d66ec (Order and Order Items)
 =======
   const url = `${baseUrl}vendor`;
-  const addressUrl = `${baseUrl}address/customer-addresses`;
+  const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
 
@@ -195,6 +202,7 @@ const Vendor = () => {
     isSuccess: addressSuccess,
   } = useQuery({
     queryKey: ["addresses"],
+<<<<<<< HEAD
     queryFn: () => getAddresses(`${addressUrl}customer-addresses/${auth?.Id}`),
     keepPreviousData: true,
     staleTime: 20000,
@@ -217,6 +225,13 @@ const Vendor = () => {
     refetchOnMount: "always",
     enabled: state.address,
 >>>>>>> 360c46c (vendor)
+=======
+    queryFn: () => getAddresses(`${addressUrl}customer-addresses/${auth?.user?.Id}`),
+    keepPreviousData: true,
+    staleTime: 20000,
+    refetchOnMount: "always",
+    enabled: cartState.address,
+>>>>>>> e848b7b (Payment Response)
   });
 
   const calculateTotalAmount = () => {
@@ -400,7 +415,12 @@ const Vendor = () => {
     handleDeliveryFee();
     console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
+<<<<<<< HEAD
 >>>>>>> 3f80dfc (latest commit)
+=======
+    cartDispatch({type:"error", payload:""})
+    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
+>>>>>>> e848b7b (Payment Response)
   };
 
   const handleClick = async (e) => {
@@ -408,6 +428,7 @@ const Vendor = () => {
     cartDispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     cartDispatch({ type: "address" });
+<<<<<<< HEAD
 <<<<<<< HEAD
     cartDispatch({ type: "error", payload: "" });
   };
@@ -418,6 +439,15 @@ const Vendor = () => {
         type: "error",
         payload: "Please choose an address before you proceed ",
       });
+=======
+    cartDispatch({type:"error", payload:""})
+  };
+
+  const handleOrder = async () => {
+
+    if(!cartState.deliveryAddress){
+      cartDispatch({type:'error', payload:"Please choose an address before you proceed "})
+>>>>>>> e848b7b (Payment Response)
       return;
     }
 
@@ -515,6 +545,11 @@ const Vendor = () => {
 
     setOrderLoading(false);
     cartDispatch({ type: "checkOut" });
+<<<<<<< HEAD
+=======
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
+>>>>>>> e848b7b (Payment Response)
   };
 >>>>>>> 3f80dfc (latest commit)
 
@@ -523,6 +558,7 @@ const Vendor = () => {
     cartDispatch({ type: "setInstruction", payload: "" });
     cartDispatch({ type: "total", payload: 0 });
     setCartState(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
     localStorage.setItem("cart", JSON.stringify([]));
   };
@@ -552,6 +588,11 @@ const Vendor = () => {
 >>>>>>> 3f80dfc (latest commit)
 
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+    localStorage.setItem("cart", JSON.stringify([]));
+  };
+
+>>>>>>> e848b7b (Payment Response)
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
@@ -582,12 +623,16 @@ const Vendor = () => {
 <<<<<<< HEAD
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e848b7b (Payment Response)
   useEffect(() => {
     setOrigin(
       `${cartState.vendor?.ContactAddress}, ${cartState.vendor?.Town}, ${cartState.vendor?.City}, ${cartState.vendor?.State}`
     );
   }, [cartState.vendor]);
 
+<<<<<<< HEAD
   
 
 
@@ -609,6 +654,11 @@ const Vendor = () => {
 >>>>>>> 0ab4b1c (Google Maps Controller)
 =======
   //console.log(deliveryInstruction);
+=======
+  const {distance, duration, error, } = useDistance(origin, cartState.deliveryAddress)
+
+  //console.log(distance);
+>>>>>>> e848b7b (Payment Response)
   //console.log(cartState.vendor);
 >>>>>>> 38d66ec (Order and Order Items)
   return (
@@ -651,6 +701,7 @@ const Vendor = () => {
                     </span>
                   </div>
 
+<<<<<<< HEAD
                   <div className=" flex flex-col  ">
                     <span className=" text-gray text-md font-medium">
                       {data?.OpeningHours} - {data?.ClosingHours}
@@ -662,6 +713,29 @@ const Vendor = () => {
                 </div>
               </>
             )}
+=======
+            <div className=" border-2 relative w-full rounded-lg h-48 md:h-72 ">
+              <img
+                src={data?.VendorImgUrl}
+                alt=""
+                className=" w-full rounded-lg h-full"
+              />
+              <div className=" pb-1 absolute z-10 bottom-1 m-2 ">
+                <span className=" flex items-center gap-1 text-secondary bg-white py-2 px-2 rounded border bg-darkHover border-accent">
+                  <WatchLaterOutlined fontSize="s" />{" "}
+                  <span className="">16-26 mins</span>
+                </span>
+              </div>
+            </div>
+            <div>
+              <div className=" flex justify-between items-center py-2">
+                <h2 className=" text-xl font-bold">{data?.Name}</h2>
+                <span className=" flex items-center gap-1 text-sm text-lightgreen">
+                  <span className=" text-grayTxt">4.3</span>{" "}
+                  <StarOutlined fontSize="" />
+                </span>
+              </div>
+>>>>>>> e848b7b (Payment Response)
 
             {isLoading && <VendorSkeleton />}
 
@@ -675,7 +749,11 @@ const Vendor = () => {
               </div>
             </div>
 
+<<<<<<< HEAD
             <div className=" sticky top-20 bg-primary dark:bg-darkBg flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
+=======
+            <div className=" sticky top-28 bg-primary flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
+>>>>>>> e848b7b (Payment Response)
               <Link
                 onClick={() =>
                   dispatch({ type: "products", payload: data?.Products })
@@ -1371,8 +1449,8 @@ const Vendor = () => {
 
             <div className=" w-full">
               <div className=" py-2">
-                <p className=" flex justify-between items-center text-sm font-normal">
-                  <span>Choose Address: {cartState.deliveryAddress} </span>
+                <div className=" flex justify-between items-center text-sm font-normal">
+                <p><span className="font-bold">Choose Address:</span> {cartState.deliveryAddress} </p>
                   {cartState.address ? (
                     <button
                       onClick={() => cartDispatch({ type: "address" })}
@@ -1388,7 +1466,7 @@ const Vendor = () => {
                       Change
                     </button>
                   )}
-                </p>
+                </div>
               </div>
               <div
                 className={`${
@@ -1524,10 +1602,14 @@ const Vendor = () => {
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
               </div>
+<<<<<<< HEAD
+=======
+              <div>{cartState.error && <span className="text-redborder"> {cartState.error }</span>}</div>
+>>>>>>> e848b7b (Payment Response)
               <div className=" pt-3 text-center w-full">
                 <button
                   onClick={handleOrder}
-                  className=" w-full bg-background py-4 px-3 rounded"
+                  className=" w-full bg-background py-4 px-3 flex justify-center rounded"
                 >
                   <span className=" text-primary">Place Order</span>
                 </button>

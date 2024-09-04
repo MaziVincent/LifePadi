@@ -48,8 +48,12 @@ namespace Api.Interfaces
         public Task<TransactionDto> createAsync(TransactionDto transaction);
         public Task<TransactionDto> getByPaymentId(BigInteger transactionId);
         public Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment);
+<<<<<<< HEAD
         public Task<PaymentDetailsDto> confirmPayment(string status, string tx_ref, string transaction_id);
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo);
+>>>>>>> e848b7b (Payment Response)
         public Task<int> totalNumberOfTransactions();
         public Task<int> totalNumberOfSuccessfulTransactions();
         public Task<int> totalNumberOfFailedTransactions();

@@ -34,6 +34,7 @@ const Cart = ({
   //distance,
   //handleDeliveryInstruction,
 }) => {
+<<<<<<< HEAD
   const { cartState, setCartState, cart, setCart, state, dispatch } = useCart();
 =======
   handleDeliveryAddress,
@@ -54,6 +55,13 @@ const Cart = ({
   const { auth, setLogin, location } = useAuth();
   const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
+=======
+  const { cartState, setCartState, cart, setCart, state, dispatch, } = useCart();
+
+  const { auth, setLogin, location } = useAuth();
+  const [origin, setOrigin] = useState("");
+  const [orderLoading, setOrderLoading] = useState(false)
+>>>>>>> e848b7b (Payment Response)
   const fetch = useFetch();
   const post = usePost();
   const addressUrl = `${baseUrl}address/customer-addresses`;
@@ -124,11 +132,16 @@ const Cart = ({
     dispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     dispatch({ type: "address" });
+<<<<<<< HEAD
     dispatch({ type: "error", payload: "" });
+=======
+    dispatch({ type: "error" , payload:""});
+>>>>>>> e848b7b (Payment Response)
   };
 =======
     getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
     dispatch({ type: "address" });
+    dispatch({ type: "error" , payload:""});
   };
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
@@ -160,6 +173,7 @@ const Cart = ({
 
   const handleOrder = async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!state.deliveryAddress) {
       dispatch({
         type: "error",
@@ -168,6 +182,14 @@ const Cart = ({
       return;
     }
 =======
+=======
+
+    if(!state.deliveryAddress){
+      dispatch({type:'error', payload:"Please choose an address before you proceed "})
+      return;
+    }
+    setOrderLoading(true);
+>>>>>>> e848b7b (Payment Response)
     const order = {
       CustomerId:auth?.user.Id,
       Instruction: state.deliveryInstruction
@@ -246,6 +268,7 @@ const Cart = ({
         PickupType: "Normal",
       };
 
+<<<<<<< HEAD
       dispatch({ type: "delivery", payload: delivery });
       setOrderLoading(false);
       dispatch({ type: "checkOut" });
@@ -254,7 +277,17 @@ const Cart = ({
       console.log(error);
       dispatch({ type: "error", payload: "Error placing Order" });
       setOrderLoading(false);
+=======
+      dispatch({ type: "order", payload: response.data });
+      const result = await post(orderItemUrl, orderItem, auth.accessToken);
+      console.log(result.data);
+>>>>>>> e848b7b (Payment Response)
     }
+
+    setOrderLoading(false);
+    dispatch({ type: "checkOut" });
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   useEffect(() => {
@@ -276,7 +309,11 @@ const Cart = ({
     if (cart.length > 0) {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
+<<<<<<< HEAD
   }, [cart]);
+=======
+  },[cart])
+>>>>>>> e848b7b (Payment Response)
   //console.log(distance);
   return (
     <Modal
@@ -392,10 +429,14 @@ const Cart = ({
           <div className=" w-full">
             <div className=" py-2">
               <div className=" flex justify-between items-center text-sm font-normal">
+<<<<<<< HEAD
                 <p>
                   <span className="font-bold">Choose Address:</span>{" "}
                   {state.deliveryAddress}{" "}
                 </p>
+=======
+                <p><span className="font-bold">Choose Address:</span> {state.deliveryAddress} </p>
+>>>>>>> e848b7b (Payment Response)
                 {state.address ? (
                   <button
                     onClick={() => dispatch({ type: "address" })}
@@ -528,6 +569,7 @@ const Cart = ({
                 ></textarea>
               </div>
             </div>
+<<<<<<< HEAD
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal mb-2">
                 <span>Use Gift </span>
@@ -627,6 +669,8 @@ const Cart = ({
 >>>>>>> 38d66ec (Order and Order Items)
               </div>
             </div>
+=======
+>>>>>>> e848b7b (Payment Response)
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -680,6 +724,7 @@ const Cart = ({
                 </p>
               )}
             </div>
+<<<<<<< HEAD
             <div>
               {state.error && (
                 <span className="text-redborder"> {state.error}</span>
@@ -698,6 +743,23 @@ const Cart = ({
                 )}
               </button>
             </div>
+=======
+            <div>{state.error && <span className="text-redborder"> {state.error }</span>}</div>
+
+            <div className=" pt-3 text-center w-full">
+
+                <button
+                  onClick={handleOrder}
+                  className=" w-full bg-background py-4 px-3 flex justify-center rounded"
+                >
+                  {orderLoading ? (
+                    <LoadingGif />
+                  ) : (
+                    <span className=" text-primary">Place Order</span>
+                  )}
+                </button>
+              </div>
+>>>>>>> e848b7b (Payment Response)
             <div className=" pt-3 text-center w-full">
               <button
                 onClick={clearCart}
