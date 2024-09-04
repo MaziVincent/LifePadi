@@ -17,7 +17,6 @@ import { useDistance } from "../../hooks/useDistance";
 import usePost from "../../hooks/usePost";
 
 const Cart = ({
-  vendor,
   subTotal,
   handleCartDecrement,
   handleCartIncrement,
@@ -27,10 +26,11 @@ const Cart = ({
   //distance,
   //handleDeliveryInstruction,
 }) => {
-  const { cartState, setCartState, cart, setCart, state, dispatch } = useCart();
+  const { cartState, setCartState, cart, setCart, state, dispatch, } = useCart();
 
-  const { auth, login, setLogin, location } = useAuth();
+  const { auth, setLogin, location } = useAuth();
   const [origin, setOrigin] = useState("");
+  const [orderLoading, setOrderLoading] = useState(false)
   const fetch = useFetch();
   const post = usePost();
   const addressUrl = `${baseUrl}address/customer-addresses`;
@@ -80,10 +80,11 @@ const Cart = ({
   };
 
   const handleClick = async (e) => {
-    console.log(e.target.value);
+    //console.log(e.target.value);
     dispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     dispatch({ type: "address" });
+    dispatch({ type: "error" , payload:""});
   };
 
   const handleLocation = () => {
@@ -92,6 +93,7 @@ const Cart = ({
     handleDeliveryFee();
     console.log(state.deliveryAddress);
     dispatch({ type: "address" });
+    dispatch({ type: "error" , payload:""});
   };
 
   const handleTotalAmount = () => {
@@ -108,9 +110,16 @@ const Cart = ({
     dispatch({ type: "setInstruction", payload: "" });
     setCartState(false);
     dispatch({ type: "empty" });
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   const handleOrder = async () => {
+
+    if(!state.deliveryAddress){
+      dispatch({type:'error', payload:"Please choose an address before you proceed "})
+      return;
+    }
+    setOrderLoading(true);
     const order = {
       CustomerId: auth?.user.Id,
       Instruction: state.deliveryInstruction,
@@ -130,16 +139,22 @@ const Cart = ({
         OrderId: response.data?.Id,
       };
 
+      dispatch({ type: "order", payload: response.data });
       const result = await post(orderItemUrl, orderItem, auth.accessToken);
       console.log(result.data);
     }
+
+    setOrderLoading(false);
+    dispatch({ type: "checkOut" });
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   useEffect(() => {
     setOrigin(
-      `${vendor?.ContactAddress}, ${vendor?.Town}, ${vendor?.City}, ${vendor?.State}`
+      `${state.vendor?.ContactAddress}, ${state.vendor?.Town}, ${state.vendor?.City}, ${state.vendor?.State}`
     );
-  }, [vendor]);
+  }, [state.vendor]);
 
   const { distance, loading: disLoading } = useDistance(
     origin,
@@ -160,7 +175,7 @@ const Cart = ({
     localStorage.setItem("cart", JSON.stringify(cart));
     }
   },[cart])
-  console.log(distance);
+  //console.log(distance);
   return (
     <Modal
       open={cartState}
@@ -250,8 +265,8 @@ const Cart = ({
           ))}
           <div className=" w-full">
             <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Choose Address: {state.deliveryAddress} </span>
+              <div className=" flex justify-between items-center text-sm font-normal">
+                <p><span className="font-bold">Choose Address:</span> {state.deliveryAddress} </p>
                 {state.address ? (
                   <button
                     onClick={() => dispatch({ type: "address" })}
@@ -267,7 +282,7 @@ const Cart = ({
                     Change
                   </button>
                 )}
-              </p>
+              </div>
             </div>
             <div
               className={`${
@@ -357,12 +372,6 @@ const Cart = ({
                 ></textarea>
               </div>
             </div>
-            {/* <div className=" py-2">
-              <p className=" flex justify-between items-center text-sm font-normal">
-                <span>Vendor instructions</span>
-                <button className=" text-background">Add</button>
-              </p>
-            </div> */}
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -393,8 +402,6 @@ const Cart = ({
             <div className=" py-2">
               <p className=" flex justify-between items-center text-sm font-normal">
                 <span>Delivery fee</span>
-
-                {disLoading && <span> distance loading... </span>}
                 {state.deliveryFee && (
                   <span className="">&#8358;{state.deliveryFee}</span>
                 )}
@@ -412,14 +419,21 @@ const Cart = ({
                 <span className="">&#8358;{state.total}</span>
               </p>
             </div>
+            <div>{state.error && <span className="text-redborder"> {state.error }</span>}</div>
+
             <div className=" pt-3 text-center w-full">
-              <button
-                onClick={handleOrder}
-                className=" w-full bg-background py-4 px-3 rounded"
-              >
-                <span className=" text-primary">Place Order</span>
-              </button>
-            </div>
+
+                <button
+                  onClick={handleOrder}
+                  className=" w-full bg-background py-4 px-3 flex justify-center rounded"
+                >
+                  {orderLoading ? (
+                    <LoadingGif />
+                  ) : (
+                    <span className=" text-primary">Place Order</span>
+                  )}
+                </button>
+              </div>
             <div className=" pt-3 text-center w-full">
               <button
                 onClick={clearCart}

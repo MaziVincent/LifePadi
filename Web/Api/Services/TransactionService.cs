@@ -46,18 +46,18 @@ namespace Api.Services
             }
         }
 
-        public async Task<PaymentDetailsDto> confirmPayment(string status, string tx_ref, string transaction_id)
+        public async Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo)
         {
             try
             {
-                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transaction_id));
+                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transactionInfo.transaction_id!));
                 if (initial_transaction != null)
                 {
                     throw new Exceptions.ServiceException("Transaction already confirmed");
                 }
                 //this is the uri
                 var request = new HttpRequestMessage(HttpMethod.Get,
-                $"https://api.flutterwave.com/v3/transactions/{transaction_id}/verify");
+                $"https://api.flutterwave.com/v3/transactions/{transactionInfo.transaction_id}/verify");
                 //create an an instance of IHttpclientFactory
                 var client = _ClientFactory.CreateClient();
                 //add the auth token to the header
@@ -175,7 +175,7 @@ namespace Api.Services
                 if (order == null) throw new Exceptions.ServiceException("Order not found");
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // string redirectUrl = _config["Base_Url:Local"] + "/transaction/confirmPayment";
-                string redirectUrl = _config["Base_Url:Frontend_local"] + "/shop/payment-response";
+                string redirectUrl = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 Customer_Info customer = new Customer_Info();
                 customer.email = order.Customer!.Email;
                 customer.phone_number = order.Customer.PhoneNumber;

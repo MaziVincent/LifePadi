@@ -46,7 +46,7 @@ namespace Api.Services
                         IsBodyHtml = true,
                     };
 
-                    message.To.Add(to);
+                    // message.To.Add(to);
 
                     await client.SendMailAsync(message);
                 }
