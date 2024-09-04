@@ -24,6 +24,7 @@ import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
+import { addAddressToDb} from "./services/services"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,10 +58,11 @@ const Vendor = () => {
   const fetch = useFetch();
   const post = usePost();
   const [products, setProducts] = useState(null);
+  const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
   const { auth, setLogin, location } = useAuth();
   const url = `${baseUrl}vendor`;
-  const addressUrl = `${baseUrl}address/customer-addresses`;
+  const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
 
@@ -132,11 +134,11 @@ const Vendor = () => {
     isSuccess: addressSuccess,
   } = useQuery({
     queryKey: ["addresses"],
-    queryFn: () => getAddresses(`${addressUrl}/${auth?.user?.Id}`),
+    queryFn: () => getAddresses(`${addressUrl}customer-addresses/${auth?.user?.Id}`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
-    enabled: state.address,
+    enabled: cartState.address,
   });
 
   const calculateTotalAmount = () => {
@@ -225,7 +227,8 @@ const Vendor = () => {
     handleDeliveryFee();
     console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
-    dispatch({type:"error", payload:""})
+    cartDispatch({type:"error", payload:""})
+    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
   };
 
   const handleClick = async (e) => {
@@ -233,12 +236,13 @@ const Vendor = () => {
     cartDispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     cartDispatch({ type: "address" });
+    cartDispatch({type:"error", payload:""})
   };
 
   const handleOrder = async () => {
 
     if(!cartState.deliveryAddress){
-      dispatch({type:'error', payload:"Please choose an address before you proceed "})
+      cartDispatch({type:'error', payload:"Please choose an address before you proceed "})
       return;
     }
     setOrderLoading(true);
@@ -269,6 +273,7 @@ const Vendor = () => {
     setOrderLoading(false);
     cartDispatch({ type: "checkOut" });
     setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
   };
 
   const clearCart = () => {
@@ -276,13 +281,8 @@ const Vendor = () => {
     cartDispatch({ type: "setInstruction", payload: "" });
     cartDispatch({ type: "total", payload: 0 });
     setCartState(false);
-    //cartDispatch({type:'empty'})
+    localStorage.setItem("cart", JSON.stringify([]));
   };
-
-  const { distance, loading: disLoading } = useDistance(
-    origin,
-    state.deliveryAddress
-  );
 
   useEffect(() => {
     getProductCategory();
@@ -294,7 +294,7 @@ const Vendor = () => {
     if (cart.length == 0) {
       const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
       const currentVendor = JSON.parse(localStorage.getItem("currentVendor"));
-      console.log(cart);
+      //console.log(cart);
       if (currentCart) {
         setCart(currentCart);
       }
@@ -311,11 +311,19 @@ const Vendor = () => {
     }
   }, [cart]);
 
-  //console.log(deliveryInstruction);
+  useEffect(() => {
+    setOrigin(
+      `${cartState.vendor?.ContactAddress}, ${cartState.vendor?.Town}, ${cartState.vendor?.City}, ${cartState.vendor?.State}`
+    );
+  }, [cartState.vendor]);
+
+  const {distance, duration, error, } = useDistance(origin, cartState.deliveryAddress)
+
+  //console.log(distance);
   //console.log(cartState.vendor);
   return (
     <main className=" flex justify-center  ">
-      <div className=" w-11/12 lg:w-9/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
+      <div className=" w-11/12 lg:w-10/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
         <div className=" w-full  col-span-8">
           <div className=" flex flex-col  w-full justify-center gap-5 px-2">
             <div>
@@ -330,7 +338,7 @@ const Vendor = () => {
               </Link>
             </div>
 
-            <div className=" border-2 relative w-full rounded-lg h-48 ">
+            <div className=" border-2 relative w-full rounded-lg h-48 md:h-72 ">
               <img
                 src={data?.VendorImgUrl}
                 alt=""
@@ -372,7 +380,7 @@ const Vendor = () => {
               </div>
             </div>
 
-            <div className=" flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
+            <div className=" sticky top-28 bg-primary flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
               <Link
                 onClick={() =>
                   dispatch({ type: "products", payload: data?.Products })
@@ -480,8 +488,8 @@ const Vendor = () => {
 
             <div className=" w-full">
               <div className=" py-2">
-                <p className=" flex justify-between items-center text-sm font-normal">
-                  <span>Choose Address: {cartState.deliveryAddress} </span>
+                <div className=" flex justify-between items-center text-sm font-normal">
+                <p><span className="font-bold">Choose Address:</span> {cartState.deliveryAddress} </p>
                   {cartState.address ? (
                     <button
                       onClick={() => cartDispatch({ type: "address" })}
@@ -497,7 +505,7 @@ const Vendor = () => {
                       Change
                     </button>
                   )}
-                </p>
+                </div>
               </div>
               <div
                 className={`${
@@ -633,12 +641,12 @@ const Vendor = () => {
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
               </div>
-              <div>{state.error && <span className="text-redborder"> {state.error }</span>}</div>
+              <div>{cartState.error && <span className="text-redborder"> {cartState.error }</span>}</div>
               <div className=" pt-3 text-center w-full">
 
                 <button
                   onClick={handleOrder}
-                  className=" w-full bg-background py-4 px-3 rounded"
+                  className=" w-full bg-background py-4 px-3 flex justify-center rounded"
                 >
                   {orderLoading ? (
                     <LoadingGif />

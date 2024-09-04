@@ -2,7 +2,6 @@ import ResponsiveLogo from "../shared/ResponsiveLogo";
 import useLocation from "../../hooks/useLocation";
 import { useEffect } from "react";
 import {
-  ExpandMore,
   LocationOn,
   PersonOutlined,
   ShoppingCartOutlined,
@@ -19,6 +18,7 @@ import useAddress from "../../hooks/useAddress";
 import EmptyCart from "./EmptyCart";
 import VerifyCode from "../auth/VerifyCode";
 import CheckOut from "./CheckOut";
+import { Badge } from "@mui/material";
 
 
 const ShopHeader = () => {
@@ -37,7 +37,7 @@ const ShopHeader = () => {
   },[address])
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
-      <div className=" flex justify-between w-full lg:w-9/12">
+      <div className=" flex justify-between w-full lg:w-10/12">
         <div className=" flex items-center md:gap-10 w-1/2">
           <ResponsiveLogo />
           <div className="min-w-36">
@@ -80,9 +80,10 @@ const ShopHeader = () => {
               }}
               className=" lg:hidden bg-secondary rounded-full flex justify-center items-center h-10 w-10"
             >
-              <div className=" text-primary">
-                <ShoppingCartOutlined />
-              </div>
+              <Badge badgeContent={cart.length} color="primary">
+               <ShoppingCartOutlined /> 
+               </Badge>
+              
             </span>
             <span
               onClick={
@@ -104,7 +105,7 @@ const ShopHeader = () => {
       <UserLogin />
 
       {
-        cart.length >= 1 ? <Cart /> : <EmptyCart />
+        cart.length >= 1 ?  <Cart /> : <EmptyCart />
       }
       
       
