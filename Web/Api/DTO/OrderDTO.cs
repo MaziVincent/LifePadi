@@ -11,6 +11,7 @@ namespace Api.DTO
         public bool? IsDelivered { get; set; }
         public string? Type { get; set; }
         public string? Instruction { get; set; }
+        public string? Order_Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<OrderItemDto>? OrderItems { get; set; }
@@ -23,6 +24,7 @@ namespace Api.DTO
         public bool? IsDelivered { get; set; }
         public string? Type { get; set;}
         public string? Instruction { get; set; }
+        public string? Order_Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
@@ -34,6 +36,7 @@ namespace Api.DTO
         public bool? IsDelivered { get; set; }
         public string? Type { get; set;}
         public string? Instruction { get; set; }
+        public string? Order_Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public int? Customer_Id { get; set; }

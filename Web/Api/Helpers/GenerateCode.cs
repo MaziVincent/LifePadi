@@ -29,5 +29,21 @@ namespace Api.Helpers
             string codeRand = string.Join("", newNum);
             return (codeRand);
         }
+
+
+        public static string generateOrder_Id()
+        {
+            // Generate a new UUID (GUID)
+            Guid guid = Guid.NewGuid();
+
+            // Convert the GUID to a 12-character string
+            string shortGuid = Convert.ToBase64String(guid.ToByteArray())
+                .Replace("=", "")   // Remove padding characters
+                .Replace("+", "")   // Remove special characters
+                .Replace("/", "")   // Remove special characters
+                .Substring(0, 12);  // Take the first 12 characters
+            
+            return shortGuid;
+        }
     }
 }

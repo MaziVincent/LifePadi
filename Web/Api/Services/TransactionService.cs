@@ -53,7 +53,12 @@ namespace Api.Services
                 var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.PaymentId == BigInteger.Parse(transactionInfo.transaction_id!));
                 if (initial_transaction != null)
                 {
-                    throw new Exceptions.ServiceException("Transaction already confirmed");
+                    var paidTransaction = new PaymentDetailsDto
+                    {
+                        Status = initial_transaction.Status,
+                        Data = {}
+                    };
+                    return paidTransaction;
                 }
                 //this is the uri
                 var request = new HttpRequestMessage(HttpMethod.Get,
