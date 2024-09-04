@@ -103,6 +103,18 @@ namespace Api.Services
             //RiderReview
             CreateMap<RiderReview, RiderReviewDto>();
             CreateMap<RiderReviewDto, RiderReview>();
+
+            //Wallet
+            CreateMap<Wallet, WalletDto>();
+            CreateMap<WalletDto, Wallet>();
+
+            //Deposite
+            CreateMap<Deposite, DepositeDto>();
+            CreateMap<DepositeDto, Deposite>();
+
+            //Withdrawal
+            CreateMap<Withdrawal, WithdrawalDto>();
+            CreateMap<WithdrawalDto, Withdrawal>();
         }
     }
 }

@@ -4,6 +4,7 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Api.Exceptions;
+using Api.Helpers;
 
 namespace Api.Services
 {
@@ -68,6 +69,7 @@ namespace Api.Services
                 }
                 newOrder.IsDelivered = false;
                 newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper();
+                newOrder.Order_Id = GenerateCode.generateOrder_Id();
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(newOrder);
