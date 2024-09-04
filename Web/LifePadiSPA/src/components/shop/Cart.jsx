@@ -145,9 +145,15 @@ const Cart = ({
     }
 
     const delivery = {
-      
-    }
+      OrderId: response.data?.Id,
+      DeliveryAddress: state.deliveryAddress,
+      DeliveryFee: state.deliveryFee,
+      PickupAddress: state.vendor?.ContactAddress,
+      PickupType:"Normal",
 
+    };
+    
+    dispatch({type:"delivery", payload:delivery})
     setOrderLoading(false);
     dispatch({ type: "checkOut" });
     setCart([]);
