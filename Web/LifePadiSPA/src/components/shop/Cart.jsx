@@ -144,6 +144,10 @@ const Cart = ({
       console.log(result.data);
     }
 
+    const delivery = {
+      
+    }
+
     setOrderLoading(false);
     dispatch({ type: "checkOut" });
     setCart([]);

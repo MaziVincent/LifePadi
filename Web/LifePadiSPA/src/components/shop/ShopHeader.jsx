@@ -38,9 +38,9 @@ const ShopHeader = () => {
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
       <div className=" flex justify-between w-full lg:w-10/12">
-        <div className=" flex items-center md:gap-10 w-1/2">
+        <div className=" flex items-center md:gap-10 w-1/2 ">
           <ResponsiveLogo />
-          <div className="min-w-36">
+          <div className="min-w-36 ">
             <Link className=" min-w-28 flex items-center font-normal text-sm max-lg:text-xs max-lg:font-medium">
               <span className=" text-secondary">
                 <LocationOn />
@@ -67,7 +67,7 @@ const ShopHeader = () => {
               </>
               }
               {address && 
-                <span> {address }  </span>
+                <span className="line-clamp-2"> {address }  </span>
                }
             </Link>
           </div>
