@@ -3,13 +3,20 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
 import Lottie from "lottie-react";
 import usePost from "../../hooks/usePost";
+import useFetch from "../../hooks/useFetch";
 import successAnimation from "../../assets/lottie/Animation - 1725438178504.json";
 import errAnimation from "../../assets/lottie/Animation - 1725438360134.json";
+import useCart from "../../hooks/useCart";
+import useAuth from "../../hooks/useAuth";
 
 const PaymentResponse = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState(null);
+  const {state, dispatch} = useCart()
+  const fetch = useFetch();
+  const post = usePost();
+  const {auth} = useAuth();
 
   const lottieStyle = {
     position: "relative",
@@ -29,21 +36,19 @@ const PaymentResponse = () => {
     const transactionId = queryParams.get("transaction_id");
     const tx_ref = queryParams.get("tx_ref");
     const url = `${baseUrl}transaction/confirmPayment?tx_ref=${tx_ref}&transaction_id=${transactionId}&status=${status}`;
-    console.log(status);
-    console.log(transactionId);
-    console.log(tx_ref);
+    
     // Verify the transaction status with your server
     const verifyTransaction = async () => {
-      const res = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(url, auth.accessToken );
        console.log(res)
-      if (res.status === 200) {
+      if (res.status === 200 || res.data.Status == "success" ) {
         setPaymentStatus("success");
-        // navigate('/user')
+
+        const response = await post(`${baseUrl}delivery/create`, state.delivery, auth.accessToken);
+        console.log(response)
+        setTimeout(() => {
+          navigate("/user");
+        }, 3000)
       } else {
         setPaymentStatus("failed");
       }
@@ -62,7 +67,7 @@ const PaymentResponse = () => {
              style={lottieStyle}
            ></Lottie>{" "}
            <p className="flex flex-col justify-center gap-2 px-5">
-           <h2 className="text-center text-xl font-semibold"> Payment failed {" "} </h2>
+           <h2 className="text-center text-xl font-semibold"> Payment Successful {" "} </h2>
              <Link
                to="/shop"
                className="text-lightgreen border-2 p-3 rounded-xl text-center cursor-pointer"
