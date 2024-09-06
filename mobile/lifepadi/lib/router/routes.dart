@@ -505,3 +505,13 @@ class EditLocationRoute extends GoRouteData {
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
+
+@TypedGoRoute<WalletRoute>(path: '/wallet')
+class WalletRoute extends GoRouteData {
+  const WalletRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WalletPage();
+  }
+}

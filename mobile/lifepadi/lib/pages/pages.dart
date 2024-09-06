@@ -33,4 +33,5 @@ export 'support_page.dart';
 export 'track_order_page.dart';
 export 'vendors_page.dart';
 export 'verification_page.dart';
+export 'wallet_page.dart';
 export 'wishlist_page.dart';

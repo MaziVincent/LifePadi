@@ -43,7 +43,7 @@ class AuthController extends _$AuthController {
 
       return _loginWithToken(savedToken);
     } catch (_, __) {
-      _secureStorage.delete(_storageKey).ignore();
+      await _secureStorage.delete(_storageKey);
       return Future.value(const Auth.signedOut());
     }
   }

@@ -35,8 +35,8 @@ class MyIconButton extends StatelessWidget {
               ),
           if (showBadge)
             Positioned(
-              right: 2.r,
-              top: 2.r,
+              right: 2.5.r,
+              top: 2.7.r,
               child: Container(
                 width: 6.r,
                 height: 6.r,

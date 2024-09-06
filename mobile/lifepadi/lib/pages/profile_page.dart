@@ -123,10 +123,8 @@ class ProfilePage extends HookWidget {
                   onTap: () => context.push(const ChatsRoute().location),
                 ),
                 SettingsTile(
-                  title: 'Wallets',
-                  onTap: () {
-                    // TODO: Go to wallets page.
-                  },
+                  title: 'Wallet',
+                  onTap: () => context.push(const WalletRoute().location),
                 ),
                 SettingsTile(
                   title: 'Settings',
