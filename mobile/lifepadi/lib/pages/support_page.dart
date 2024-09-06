@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -39,13 +40,24 @@ class SupportPage extends HookWidget {
           33.verticalSpace,
           PrimaryButton(
             text: 'Submit Compliant',
-            onPressed: () {
+            onPressed: () async {
               // TODO: Submit the compliant
               // Use current user's name and email address if they are required
 
               // Clear the input fields
 
               // Show a success dialog
+              await openChoiceDialog(
+                context: context,
+                title: 'Complaint Sent!',
+                description:
+                    'Your complaint was successfully sent, we will look into it as soon as possible.',
+                icon: MdiIcons.check,
+                yesText: 'Okay',
+                cancelText: 'Close',
+                iconBackgroundColor: kDarkPrimaryColor,
+                iconColor: Colors.white,
+              );
             },
           ),
         ].separatedBy(16.verticalSpace),
