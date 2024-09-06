@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/wallet_action.dart';
+import 'package:lifepadi/widgets/wallet_card.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../utils/constants.dart';
@@ -12,6 +15,12 @@ class WalletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final montserratStyle = GoogleFonts.montserrat(
+      color: const Color(0xFF0F0F0F),
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w600,
+    );
+    
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
@@ -98,23 +107,50 @@ class WalletPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  padding: kHorizontalPadding.copyWith(top: 28.h),
+                  padding: kHorizontalPadding.copyWith(top: 79.h),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      24.verticalSpace,
-
                       /// Manage Cards
+                      Text(
+                        'Manage Cards',
+                        style: montserratStyle,
+                      ),
+                      for (final paymentMethod in paymentMethods.skip(1))
+                        WalletCard(paymentMethod: paymentMethod),
 
                       /// Transaction History
-                      const Text('data'),
-                    ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Transaction History',
+                            style: montserratStyle,
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'See all',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: kDarkPrimaryColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ].separatedBy(14.verticalSpace),
                   ),
                 ),
               ),
 
               /// Wallet actions tile
               Positioned(
-                top: 0.15.sh, // Half of the height of the balance widget
+                top: 0.15.sh, // Half the height of the balance widget
                 left: 24.w,
                 right: 24.w,
                 child: Container(
@@ -138,22 +174,24 @@ class WalletPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// Wallet actions
-                      Column(
-                        children: [
-                          Text(
-                            'Top up',
-                            textAlign: TextAlign.center,
-                            style: context.textTheme.bodySmall?.copyWith(
-                              color: kDarkPrimaryColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      WalletAction(
+                        onTap: () {},
+                        label: 'Top Up',
+                        icon: Remix.upload_line,
                       ),
-                      const Text('data1'),
-                      const Text('data1'),
-                    ],
+                      WalletAction(
+                        onTap: () {},
+                        label: 'Add Card',
+                        icon: Remix.download_line,
+                      ),
+                      WalletAction(
+                        onTap: () {},
+                        label: 'History',
+                        icon: Remix.exchange_funds_line,
+                      ),
+                    ].separatedBy(
+                      SizedBox(height: 24.h, child: const VerticalDivider()),
+                    ),
                   ),
                 ),
               ),

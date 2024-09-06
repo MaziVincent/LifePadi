@@ -36,17 +36,15 @@ class CheckoutPage extends HookWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            ...[
-              for (final paymentMethod in paymentMethods)
-                PaymentMethodCheckbox(
-                  selectedPaymentMethod: selectedPaymentMethod,
-                  image: paymentMethod.image,
-                  description: paymentMethod.description,
-                  balance: paymentMethod.balance,
-                  id: paymentMethod.id,
-                  isDefault: paymentMethod.isDefault,
-                ),
-            ],
+            for (final paymentMethod in paymentMethods)
+              PaymentMethodCheckbox(
+                selectedPaymentMethod: selectedPaymentMethod,
+                image: paymentMethod.image,
+                description: paymentMethod.description,
+                balance: paymentMethod.balance,
+                id: paymentMethod.id,
+                isDefault: paymentMethod.isDefault,
+              ),
             PrimaryOutlineButton(
               text: 'Add new card'.toUpperCase(),
               onPressed: () {
