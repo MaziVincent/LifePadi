@@ -9,6 +9,7 @@ export 'category_tab.dart';
 export 'chat_reply.dart';
 export 'chat_tile.dart';
 export 'circular_button.dart';
+export 'edit_location_modal_form.dart';
 export 'errand_card.dart';
 export 'errand_tile.dart';
 export 'glassmorphic_back_button.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/no_transition_page.dart';
@@ -20,6 +21,17 @@ ThemeData lightTheme() {
         TargetPlatform.android: NoTransitionPageTransitionsBuilder(),
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      showDragHandle: true,
+      backgroundColor: Colors.white,
+      dragHandleSize: Size(72.w, 8.h),
+      dragHandleColor: kDarkTextColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(32),
+        ),
+      ),
     ),
   );
 }

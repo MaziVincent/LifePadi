@@ -8,16 +8,9 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/category_tab.dart';
-import 'package:lifepadi/widgets/errand_card.dart';
-import 'package:lifepadi/widgets/header_with_see_all.dart';
-import 'package:lifepadi/widgets/loading_wheel.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
-import 'package:lifepadi/widgets/product_tile.dart';
-import 'package:lifepadi/widgets/section_title.dart';
-import 'package:lifepadi/widgets/vendor_card.dart';
 import 'package:remixicon/remixicon.dart';
+
+import '../widgets/widgets.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});
@@ -49,12 +42,27 @@ class HomePage extends HookWidget {
           children: [
             MyIconButton(
               icon: Remix.map_pin_5_line,
-              onPressed: () {
+              onPressed: () async {
                 // TODO: Display a modal bottom sheet with a form to update the user's delivery location.
-                // The modal should have a drag handle.
+                await showModalBottomSheet<bool>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      width: double.infinity,
+                      child: Padding(
+                        padding: kHorizontalPadding.copyWith(bottom: 16.h),
+                        child: const EditLocationModalForm(),
+                      ),
+                    );
+                  },
+                  useRootNavigator: true,
+                );
 
                 // For now, navigate to the new location page
-                context.go(NewLocationRoute().location);
+                // context.push(NewLocationRoute().location);
               },
               backgroundColor: const Color(0x194FAF5A),
               iconColor: kDarkPrimaryColor,
