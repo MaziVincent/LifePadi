@@ -4,10 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/primary_outline_button.dart';
-
-import '../state/auth_controller.dart';
 
 class LogoutButton extends ConsumerWidget {
   const LogoutButton({super.key});
@@ -17,16 +16,22 @@ class LogoutButton extends ConsumerWidget {
     return PrimaryOutlineButton(
       text: 'Logout'.toUpperCase(),
       onPressed: () async {
-        // TODO: Open logout confirmation dialog.
+        await openChoiceDialog(
+          context: context,
+          title: 'Logout of Lifepadi?',
+          description: 'Are you sure you want to log out?',
+          icon: IconsaxPlusLinear.logout,
+          onYes: () async {
+            // TODO: Implement logout
 
-        // TODO: Implement logout confirmation dialog.
+            // * For now, just logout simulating a network request:
+            showToast('Logging out').ignore();
 
-        // * For now, just logout:
-        showToast('Logging out').ignore();
-
-        await ref.read(authControllerProvider.notifier).logout().then((_) {
-          if (context.mounted) context.go(const LoginRoute().location);
-        });
+            await ref.read(authControllerProvider.notifier).logout().then((_) {
+              if (context.mounted) context.go(const LoginRoute().location);
+            });
+          },
+        );
       },
       textStyle: context.textTheme.bodyLarge?.copyWith(
         color: const Color(0xFFF52311),

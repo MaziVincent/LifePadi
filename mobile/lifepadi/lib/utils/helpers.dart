@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lifepadi/widgets/choice_alert_dialog.dart';
 import 'package:logger/logger.dart';
 
 import 'constants.dart';
@@ -148,4 +149,36 @@ extension StringCasingExtension on String {
   /// Turns the rest of the letters to lowercase
   String capitalize() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+}
+
+Future<bool?> openChoiceDialog({
+  required BuildContext context,
+  VoidCallback? onYes,
+  VoidCallback? onCancel,
+  required String title,
+  required String description,
+  String? yesText,
+  String? cancelText,
+  required IconData icon,
+  Color? iconColor,
+  Color? iconBackgroundColor,
+}) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        child: ChoiceAlertDialog(
+          onYes: onYes,
+          onCancel: onCancel,
+          title: title,
+          description: description,
+          yesText: yesText,
+          cancelText: cancelText,
+          icon: icon,
+          iconColor: iconColor,
+          iconBackgroundColor: iconBackgroundColor,
+        ),
+      );
+    },
+  );
 }

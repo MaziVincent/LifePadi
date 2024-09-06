@@ -8,6 +8,7 @@ export 'category_pill.dart';
 export 'category_tab.dart';
 export 'chat_reply.dart';
 export 'chat_tile.dart';
+export 'choice_alert_dialog.dart';
 export 'circular_button.dart';
 export 'distance_tab.dart';
 export 'edit_location_modal_form.dart';

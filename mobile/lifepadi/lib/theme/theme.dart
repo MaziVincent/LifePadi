@@ -33,5 +33,13 @@ ThemeData lightTheme() {
         ),
       ),
     ),
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      insetPadding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 16.w),
+    ),
   );
 }
