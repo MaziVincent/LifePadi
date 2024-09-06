@@ -16,7 +16,7 @@ class EditLocationModalForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final address = useState('');
+    final location = useState('');
     final locations = useState([
       'Lekki, Lagos',
       'Soja, Lekki, Lagos',
@@ -55,9 +55,9 @@ class EditLocationModalForm extends HookWidget {
           InputField(
             hintText: 'Soja, Lekki Lagos',
             labelText: 'Location',
-            onChanged: (value) => address.value = value,
+            onChanged: (value) => location.value = value,
             keyboardType: TextInputType.streetAddress,
-            hasValue: address.value.isNotEmpty,
+            hasValue: location.value.isNotEmpty,
           ),
           16.verticalSpace,
           GestureDetector(

@@ -79,7 +79,7 @@ class LocationCard extends StatelessWidget {
                           Text(
                             'Default',
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: const Color(0xFF139D01),
+                              color: kBrightGreen,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
                             ),

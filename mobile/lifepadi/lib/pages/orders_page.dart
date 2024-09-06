@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/my_app_bar.dart';
 import 'package:lifepadi/widgets/my_icon_button.dart';
@@ -47,7 +48,7 @@ class OrdersPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(6.r),
             ),
             padding: EdgeInsets.only(left: 10.w, top: 10.h),
-            labelColor: const Color(0xFF139D01),
+            labelColor: kBrightGreen,
             unselectedLabelColor: const Color(0xFFBDBDBD),
             labelPadding: EdgeInsets.zero,
             splashFactory: NoSplash.splashFactory,

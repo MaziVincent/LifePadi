@@ -133,11 +133,19 @@ Future<bool?> displayBottomPanel(
         ),
         width: double.infinity,
         child: Padding(
-          padding: kHorizontalPadding.copyWith(bottom: 16.h),
+          padding: kHorizontalPadding.copyWith(bottom: 20.h),
           child: child,
         ),
       );
     },
     useRootNavigator: true,
   );
+}
+
+extension StringCasingExtension on String {
+  /// Capitalize the first letter of a string.
+  ///
+  /// Turns the rest of the letters to lowercase
+  String capitalize() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
 }

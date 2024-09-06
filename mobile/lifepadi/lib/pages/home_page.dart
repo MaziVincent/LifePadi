@@ -117,9 +117,10 @@ class HomePage extends HookWidget {
                     color: Color(0xFF878787),
                   ),
                   suffixIcon: GestureDetector(
-                    onTap: () {
-                      // TODO: Open search filter modal
-                    },
+                    onTap: () async => displayBottomPanel(
+                      context,
+                      child: const FilterModal(),
+                    ),
                     child: Icon(
                       IconsaxPlusBold.filter_search,
                       size: 24.r,

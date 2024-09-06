@@ -17,6 +17,9 @@ const Color kLightTextColor = Color(0xFF5F5F5F);
 /// 0xFFEBEBF0
 const Color kStrokeColor = Color(0xFFEBEBF0);
 
+/// 0xFF139D01
+const Color kBrightGreen = Color(0xFF139D01);
+
 /// This horizontal padding is used in many places in the app, I
 /// decided to create a getter for it to avoid repetition.
 EdgeInsets get kHorizontalPadding => EdgeInsets.symmetric(horizontal: 24.w);
