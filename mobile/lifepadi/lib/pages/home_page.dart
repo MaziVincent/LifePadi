@@ -43,26 +43,10 @@ class HomePage extends HookWidget {
             MyIconButton(
               icon: Remix.map_pin_5_line,
               onPressed: () async {
-                // TODO: Display a modal bottom sheet with a form to update the user's delivery location.
-                await showModalBottomSheet<bool>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Container(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      width: double.infinity,
-                      child: Padding(
-                        padding: kHorizontalPadding.copyWith(bottom: 16.h),
-                        child: const EditLocationModalForm(),
-                      ),
-                    );
-                  },
-                  useRootNavigator: true,
+                await displayBottomPanel(
+                  context,
+                  child: const EditLocationModalForm(),
                 );
-
-                // For now, navigate to the new location page
-                // context.push(NewLocationRoute().location);
               },
               backgroundColor: const Color(0x194FAF5A),
               iconColor: kDarkPrimaryColor,

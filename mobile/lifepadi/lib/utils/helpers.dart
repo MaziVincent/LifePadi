@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
+import 'constants.dart';
+
 /// Onboarding Feature information.
 typedef OnboardingInfo = ({String info, String description, String image});
 
@@ -115,5 +117,27 @@ TextStyle? inputTextStyleForUserEnteredText(BuildContext context) {
     fontSize: 15.sp,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.12.r,
+  );
+}
+
+Future<bool?> displayBottomPanel(
+  BuildContext context, {
+  required Widget child,
+}) {
+  return showModalBottomSheet<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        width: double.infinity,
+        child: Padding(
+          padding: kHorizontalPadding.copyWith(bottom: 16.h),
+          child: child,
+        ),
+      );
+    },
+    useRootNavigator: true,
   );
 }
