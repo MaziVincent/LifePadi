@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
+import { motion } from "framer-motion";
 import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
 import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
 import HeroAnimation4 from "../../assets/lottie/Heroanimation4.json";
@@ -25,24 +26,29 @@ import { Link } from "react-router-dom";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MopedIcon from "@mui/icons-material/Moped";
 import Groups3Icon from "@mui/icons-material/Groups3";
+import FadeIn from "../shared/FadeIn";
 
-import {
-  ArrowBack,
-  ArrowDownward,
-  ArrowForward,
-  ChevronRight,
-  ShoppingCart,
-} from "@mui/icons-material";
+import { ChevronRight } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
 
 const Home = () => {
+  const words = ["Food", "Groceries", "Logistics", "Errands"];
+  const [currentWord, setCurrentWord] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWord((prevWord) => (prevWord + 1) % words.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const lottieStyle = {
     position: "relative",
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
-    zIndex: -1,
+    zIndex: 10,
     padding: 0,
     margin: 0,
   };
@@ -77,8 +83,8 @@ const Home = () => {
   ];
   return (
     <main className="scroll-smooth ">
-      <section className="bg-white dark:bg-gray-900">
-        <div className=" w-screen h-5/6  text-center">
+      <section className=" dark:bg-gray-900 bg-lightgreen relative">
+        <div className=" w-screen h-5/6  text-center ">
           <Lottie
             animationData={HeroAnimation4}
             loop={true}
@@ -86,14 +92,26 @@ const Home = () => {
             style={lottieStyle}
           ></Lottie>
         </div>
+        <div className="text-center text-background text-4xl md:text-6xl font-bold  absolute top-0 h-full w-full flex justify-center items-center z-20 ">
+        <span className="text-accent"> Padi for </span> &nbsp;
+          <motion.div
+            key={currentWord}
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 1 }}
+          >
+            { words[currentWord]}
+          </motion.div>
+        </div>
       </section>
 
-      <section className="flex justify-center px-4 h-screen md:h-auto ">
+      <section className="flex justify-center px-4  md:h-auto py-5 ">
         <div className=" md:flex w-full lg:w-3/4 ">
-          <div className=" md:w-1/2 flex flex-col justify-center ">
+          <div className="  flex flex-col justify-center ">
             <div className="">
               <div className=" py-3 text-center md:text-start ">
-                <h2 className="text-center text-3xl md:text-6xl font-bold ">
+                <h2 className="text-center text-3xl md:text-6xl font-bold  ">
                   Try the app
                 </h2>
               </div>
@@ -124,13 +142,18 @@ const Home = () => {
               </button>
             </div>
           </div>
-          <div className="md:w-1/2 flex justify-center items-start  md:h-auto p-6 md:p-4">
-            <img
-              src={iphone}
-              alt=""
-              className="w-3/6 h-full"
-            />
-          </div>
+          <FadeIn
+            delay={0.4}
+            direction="left"
+          >
+            <div className=" flex justify-center items-start  md:h-auto p-6 md:p-4">
+              <img
+                src={iphone}
+                alt=""
+                className="w-3/6 h-full"
+              />
+            </div>
+          </FadeIn>
         </div>
       </section>
       <section className="pb-20">
@@ -140,7 +163,7 @@ const Home = () => {
               There is a Padi for your every need
               <span className=" pt-5 max-lg:pt-2">
                 <svg
-                  className=" max-lg:h-8 max-lg:w-8"
+                  className=" max-lg:h-8 max-lg:w-8 "
                   xmlns="http://www.w3.org/2000/svg"
                   height="48px"
                   viewBox="0 0 24 24"
@@ -169,7 +192,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-                    <span>
+                    <span className="animate-bounce">
                       <StorefrontIcon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">
@@ -203,7 +226,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-                    <span>
+                    <span className="animate-bounce">
                       <MopedIcon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">Become a Padi </h2>
@@ -233,7 +256,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-                    <span>
+                    <span className="animate-bounce">
                       <Groups3Icon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">Build with us </h2>
@@ -256,7 +279,13 @@ const Home = () => {
           </section>
         </div>
       </section>
-      <LandingPageSlide />
+      <FadeIn
+        delay={0.4}
+        direction="up"
+      >
+        <LandingPageSlide />
+      </FadeIn>
+
       <section className="pb-16">
         <div className=" ">
           <svg
@@ -272,22 +301,22 @@ const Home = () => {
         </div>
         <div className="flex flex-col items-center gap-20">
           <h2 className="text-4xl lg:text-6xl font-bold"> Our Top Vendors </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 justify-center items-center gap-6 lg:w-4/6 ">
+          <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-6 lg:w-4/6  px-6">
             {vendors.map((ven) => (
               <div
                 key={ven.text}
                 className="flex flex-col items-center justify-center "
               >
                 <div
-                  className="relative w-44 h-44 bg-cover bg-center "
+                  className="relative w-64 h-64 bg-contain bg-center bg-no-repeat "
                   style={{
                     backgroundImage: `url(${ven.src})`,
-                    clipPath: `polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)`,
+                    clipPath: `polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)`,
                   }}
                 >
-                  {/* Optional content inside the blob */}
+                  {/* <img src={ven.src} alt="" className="h-full w-full object-fill" /> */}
                 </div>
-                <h3 className=" text-xl text-center text-gray-800">
+                <h3 className=" text-xl text-center text-primary bg-background rounded-xl p-2 font-semibold">
                   {ven.text}
                 </h3>
               </div>
@@ -363,7 +392,7 @@ const Home = () => {
             <div className=" w-full flex justify-center mt-8">
               <button
                 type="button"
-                className=" text-white bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-base px-5 py-2.5 text-center "
+                className=" text-accent font-semibold bg-secondary rounded-xl flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 px-7 py-3 text-center "
               >
                 Explore our Store
               </button>
@@ -387,53 +416,82 @@ const Home = () => {
 
         <div className=" bg-accent h-auto pt-20 pb-10 flex justify-center">
           <div className=" flex w-10/12">
-            <div className=" bg-background rounded-3xl w-11/12 pb-8">
-              <h1 className=" text-6xl max-md:text-3xl max-md:pr-10 font-bold p-8 ">
-                Place your order in seconds
-              </h1>
+            <div className=" bg-background rounded-3xl w-11/12 py-8">
+              <FadeIn
+                delay={0.3}
+                direction="up"
+              >
+                {" "}
+                <h1 className=" text-4xl md:text-6xl  max-md:pr-10 font-bold px-3  ">
+                  Place your order in seconds
+                </h1>
+              </FadeIn>
 
-              <div className=" flex items-start  flex-col md:flex-row ">
-                <Link className=" py-3 px-2 rounded-lg ">
-                  <img
-                    src={PlayStore}
-                    alt=""
-                    className="w-40"
-                  />
-                </Link>
-                <Link className="py-3 px-2 rounded-lg">
-                  <img
-                    src={AppStore}
-                    alt=""
-                    className=" w-40"
-                  />
-                </Link>
+              <div className=" flex items-start  flex-col md:flex-row px-3 gap-3 py-5 ">
+                <FadeIn
+                  delay={0.4}
+                  direction="up"
+                >
+                  <Link className=" rounded-lg ">
+                    <img
+                      src={PlayStore}
+                      alt=""
+                      className="w-40"
+                    />
+                  </Link>
+                </FadeIn>
+
+                <FadeIn
+                  delay={0.5}
+                  direction="up"
+                >
+                  <Link className=" rounded-lg">
+                    <img
+                      src={AppStore}
+                      alt=""
+                      className=" w-40"
+                    />
+                  </Link>
+                </FadeIn>
               </div>
 
-              <div className=" w-full flex justify-start px-2 ">
+              <div className=" w-full flex justify-start px-3 ">
+              <FadeIn
+                  delay={0.8}
+                  direction="up"
+                >
                 <button
                   type="button"
                   className=" text-accent h-14 w-40 bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-base px-2 py-2.5 text-center "
                 >
                   Explore our Store
                 </button>
+                </FadeIn>
               </div>
               <div className="flex justify-center">
-              <div className="h-96 max-md:h-48 mt-8 px-2 ">
-                <img
-                  src={buyingfood}
-                  alt=""
-                  className="h-full"
-                />
+                
+
+                <FadeIn
+                  delay={0.8}
+                  direction="left"
+                >
+                  <div className="h-96 max-md:h-48 mt-8 px-2 ">
+                  <img
+                    src={buyingfood}
+                    alt=""
+                    className="h-full"
+                  />
+                  </div>
+
+                  </FadeIn>
+                <div className="hidden w-1/2 md:flex md:justify-center  rounded-3xl h-96">
+                  <img
+                    src={iphone}
+                    alt=""
+                    className="h-full"
+                  />
+                </div>
               </div>
-              <div className="hidden w-1/2 md:flex md:justify-center  rounded-3xl h-96">
-                <img
-                  src={iphone}
-                  alt=""
-                  className="h-full"
-                />
-              </div>
-              </div>
-              
             </div>
           </div>
         </div>

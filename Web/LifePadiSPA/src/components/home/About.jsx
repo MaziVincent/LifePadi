@@ -1,4 +1,5 @@
 import motorbike from "../../assets/images/vintage-green-motorbike.avif";
+import background1 from "../../assets/images/background1.webp";
 import MarqueeComp from "./MarqueeComp";
 
 const About = () => {
@@ -7,7 +8,7 @@ const About = () => {
       <div
         className="h-screen flex justify-center items-center "
         style={{
-          backgroundImage: `url(${motorbike})`,
+          backgroundImage: `url(${background1})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -32,7 +33,8 @@ const About = () => {
         <div className=" mx-auto px-6 md:px-12 lg:px-24">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-800">
-              We are your Padi <i className="line-icon-Thumbs-UpSmiley text-background"></i>{" "}
+              We are your Padi{" "}
+              <i className="line-icon-Thumbs-UpSmiley text-background"></i>{" "}
             </h1>
             <p className="text-lg mt-4 text-gray-600">
               Delivering Excellence Across the Nation
@@ -40,33 +42,87 @@ const About = () => {
           </div>
 
           <div className="mt-10 md:flex md:justify-between gap-5 ">
-            <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                Our Mission
+            <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0 flex flex-col items-center">
+              <h2 className="text-2xl font-semibold text-accent flex items-center gap-2">
+                Our Mission{" "}
+                <svg
+                  className="w-6 h-6 text-background animate-bounce dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"
+                  />
+                </svg>
               </h2>
-              <p className="mt-4 text-gray-600">
-                At LifePadi, our mission is to provide reliable,
-                fast, and affordable delivery services across the country. We
-                strive to ensure every package is delivered on time, every time,
-                with the utmost care.
+              <p className="mt-4 text-darkHover text-center">
+                At LifePadi, our mission is to provide reliable, fast, and
+                affordable delivery services across the country. We strive to
+                ensure every package is delivered on time, every time, with the
+                utmost care.
               </p>
             </div>
-            <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                Our Values
+            <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0 flex flex-col items-center">
+              <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                Our Values{" "}
+                <svg
+                  className="w-6 h-6 text-background animate-bounce dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                  />
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
               </h2>
-              <p className="mt-4 text-gray-600">
+              <p className="mt-4 text-darkHover text-center">
                 We are committed to excellence in service, integrity in our
                 operations, and innovation in our approach. These values guide
                 everything we do, ensuring we meet and exceed customer
                 expectations.
               </p>
             </div>
-            <div className="md:w-1/2 lg:w-1/3">
-              <h2 className="text-2xl font-semibold text-gray-800">
+            <div className="md:w-1/2 lg:w-1/3 mb-8 md:mb-0 flex flex-col  items-center">
+              <h2 className="text-2xl font-semibold text-accent flex gap-2 items-center">
                 Why Choose Us?
+                <svg
+                  className="w-6 h-6 text-background animate-bounce dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokelinejoin="round"
+                    strokeWidth="2"
+                    d="M4.248 19C3.22 15.77 5.275 8.232 12.466 8.232V6.079a1.025 1.025 0 0 1 1.644-.862l5.479 4.307a1.108 1.108 0 0 1 0 1.723l-5.48 4.307a1.026 1.026 0 0 1-1.643-.861v-2.154C5.275 13.616 4.248 19 4.248 19Z"
+                  />
+                </svg>
               </h2>
-              <p className="mt-4 text-gray-600">
+              <p className="mt-4 text-darkHover text-center">
                 With a vast network, cutting-edge technology, and a dedicated
                 team, we offer the best delivery services in the industry. Our
                 customers trust us for our reliability, efficiency, and
@@ -771,8 +827,10 @@ const About = () => {
           </div>
         </div>
       </section>
+      <h2 className="mb-4 text-4xl text-center tracking-tight font-extrabold text-accent dark:text-white">
+        Our Core Values
+      </h2>
       <section className="bg-accent h-72 flex justify-center items-center mt-10">
-        
         <MarqueeComp />
       </section>
     </div>
