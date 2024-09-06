@@ -6,6 +6,9 @@ import grocery from "../../assets/images/grocery.png";
 import Fillinggas from "../../assets/images/Fillinggas.png";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Swiper, SwiperSlide } from "../shared/Swiper";
+import Buyingfood from "../../assets/images/Buying food.png";
+import Delivery1 from "../../assets/images/Delivery Logistics Bike.png"
+import Delivery3 from "../../assets/images/Delivery Logistics trucks.png"
 import {
   Autoplay,
   Navigation,
@@ -44,6 +47,19 @@ const LandingPageSlide = () => {
       text: "Grocery Shopping",
       src: grocery,
     },
+    {
+      text: "Market Runs",
+      src: Buyingfood,
+    },
+    {
+      text: "Prompt Delivery",
+      src: Delivery1,
+    },
+
+    {
+      text: "Logistics Services",
+      src: Delivery3,
+    },
   ];
   return (
     <>
@@ -71,6 +87,7 @@ const LandingPageSlide = () => {
                       src={pic.src}
                       alt={pic.text}
                       className="w-full h-full object-fill rounded-xl"
+                      loading="lazy"
                     />
                     <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
                       {" "}

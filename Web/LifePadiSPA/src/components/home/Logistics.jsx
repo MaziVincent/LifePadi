@@ -11,7 +11,8 @@ import StackBike from "../../assets/imgs/stack-bike.svg";
 import RelayApp from "../../assets/imgs/relay-app.webp";
 import Promocode from "../../assets/imgs/Promo-code.svg";
 import motorbike from "../../assets/images/vintage-green-motorbike.avif";
-import bike from "../../assets/images/_57af53d1-7558-40a3-8d53-1f677c6c79da.jpeg"
+import bike from "../../assets/images/_57af53d1-7558-40a3-8d53-1f677c6c79da.jpeg";
+import background1 from "../../assets/images/background1.webp";
 
 //import Scroller from './Scroller'
 
@@ -21,24 +22,6 @@ const Logistics = () => {
     { text: "Text 2", bg: "bg-[#F9F9F9]", image: Food2 },
     { text: "Text 3", bg: "bg-[#F9F9F9]", image: Food3 },
   ];
-
-  const [newIndex, setNewIndex] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNewIndex((prevIndex) => (prevIndex + 1) % data.length);
-    }, 3500);
-
-    return () => clearInterval(intervalId);
-  }, [data]);
-
-  const handleNext = () => {
-    setNewIndex((prevIndex) => (prevIndex + 1) % data.length);
-  };
-
-  const handlePrev = () => {
-    setNewIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
-  };
 
   const texts = [
     "You don chop?",
@@ -52,26 +35,27 @@ const Logistics = () => {
   return (
     <>
       <div className=" ">
-      <div
-        className="h-screen flex justify-center items-center bg-opacity-5 "
-        style={{
-          backgroundImage: `url(${bike})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity:0.5
-          
-        }}
-      >
-       <div className=" w-full ">
+        <div
+          className="h-screen flex justify-center items-center bg-opacity-5 "
+          style={{
+            backgroundImage: `url(${background1})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            //opacity:0.5
+          }}
+        >
+          <div className=" w-full ">
             <div>
               <h2 className=" text-8xl max-lg:text-6xl max-md:text-4xl font-bold text-center leading-tight">
-                Lifepadi  <br />
+                Lifepadi <br />
                 Delivery
               </h2>
             </div>
             <p className=" text-xl text-center font-normal text-grayTxt">
-              <span>Send and receive packages with ease using Lifepadi Logistics!</span>
+              <span>
+                Send and receive packages with ease using Lifepadi Logistics!
+              </span>
             </p>
             <div className="mt-6 flex justify-center items-center gap-8 w-full">
               <Link className=" bg-primary py-3 px-2 rounded-lg flex items-center gap-2 max-md:rounded-full max-md:px-3">
@@ -100,8 +84,8 @@ const Logistics = () => {
               </Link>
             </div>
           </div>
-      </div>
-       
+        </div>
+
         <div className=" my-20">
           <h1 className=" text-7xl px-5 pb-20 font-bold font-sans">
             How Lifepadi Delivery Works!
@@ -109,30 +93,30 @@ const Logistics = () => {
           <div className=" flex items-cente gap-6 bg-primary relative">
             <div className=" w-1/5 max-lg:hidden">
               <img
-                src={data[newIndex].image}
+                src={Food1}
                 alt="Image"
                 className=" relative w-full h-96 max-md:h-80 object-cover rounded-r-2xl"
               />
             </div>
             <div className=" border max-lg:p-5 flex flex-row max-lg:flex-col h-auto max-md:h-lvh justify-between items-center relative rounded-2xl z-20 w-7/12 max-lg:w-full max-sm:w-full">
               <div className=" text-3xl font-bold z-10 w-2/5 text-center max-md:h-2/5 max-md:text-center">
-                {data[newIndex].text}
+                "slide"
               </div>
               <div className=" w-1/2 max-md:h-4/6 max-md:w-full">
                 <img
-                  src={data[newIndex].image}
+                  src={Food2}
                   alt="Image"
                   className="main-img w-full max-md:h-full object-cover rounded-2xl"
                 />
               </div>
             </div>
             <div className=" absolute bottom-12 max-lg:hidden left-28 flex gap-4">
-              <button onClick={handleNext}>
+              <button >
                 <span className=" bg-secondary text-primary rounded-full flex items-center p-3">
                   <ArrowBack />
                 </span>
               </button>
-              <button onClick={handlePrev}>
+              <button >
                 <span className=" bg-secondary text-primary rounded-full flex items-center p-3">
                   <ArrowForward />
                 </span>
@@ -140,7 +124,7 @@ const Logistics = () => {
             </div>
             <div className=" w-1/5 max-lg:hidden">
               <img
-                src={data[newIndex].image}
+                src={Food3}
                 alt="Image"
                 className=" relative w-full h-96 max-md:h-80 object-cover rounded-l-2xl"
               />
@@ -150,9 +134,8 @@ const Logistics = () => {
         <div className=" bg-background py-20 bg-opacity-70">
           <div className="">
             <h1 className=" text-7xl max-md:text-4xl text-center font-bold text-primary py-10">
-              You need it?  We'll bring it!
+              You need it? We'll bring it!
             </h1>
-
           </div>
           <div className=" flex justify-center items-center mt-10 max-md:w-96 max-md:m-auto max-md:pt-20">
             <img
