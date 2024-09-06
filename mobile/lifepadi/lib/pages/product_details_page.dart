@@ -177,7 +177,7 @@ class ProductDetailsPage extends StatelessWidget {
           TextSpan(
             text: '\u20a6',
             style: GoogleFonts.roboto(
-              color: const Color(0xFF0F0F0F),
+              color: kDarkTextColor,
               fontSize: 24.sp,
               fontWeight: FontWeight.w700,
             ),
@@ -185,7 +185,7 @@ class ProductDetailsPage extends StatelessWidget {
           TextSpan(
             text: 33000.currencyWithoutSymbol,
             style: GoogleFonts.dmSans(
-              color: const Color(0xFF0F0F0F),
+              color: kDarkTextColor,
               fontSize: 24.sp,
               fontWeight: FontWeight.w700,
             ),

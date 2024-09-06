@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifepadi/utils/constants.dart';
 
 class CategoryPill extends StatelessWidget {
   const CategoryPill({
@@ -26,7 +27,7 @@ class CategoryPill extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.dmSans(
-            color: const Color(0xFF0F0F0F),
+            color: kDarkTextColor,
             fontSize: 12.sp,
             fontWeight: FontWeight.w500,
           ),

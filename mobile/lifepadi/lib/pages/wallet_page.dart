@@ -16,11 +16,11 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final montserratStyle = GoogleFonts.montserrat(
-      color: const Color(0xFF0F0F0F),
+      color: kDarkTextColor,
       fontSize: 16.sp,
       fontWeight: FontWeight.w600,
     );
-    
+
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
