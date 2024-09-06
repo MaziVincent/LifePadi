@@ -17,21 +17,7 @@ import background1 from "../../assets/images/background1.webp";
 //import Scroller from './Scroller'
 
 const Logistics = () => {
-  const data = [
-    { text: "Text 1", bg: "bg-[#F9F9F9]", image: Food1 },
-    { text: "Text 2", bg: "bg-[#F9F9F9]", image: Food2 },
-    { text: "Text 3", bg: "bg-[#F9F9F9]", image: Food3 },
-  ];
 
-  const texts = [
-    "You don chop?",
-    "Have U eaten?",
-    "Iriela Nri?",
-    "Kun ci abinci?",
-    "Se o ti jeun?",
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <>
       <div className=" ">

@@ -26,7 +26,7 @@ import { Link } from "react-router-dom";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MopedIcon from "@mui/icons-material/Moped";
 import Groups3Icon from "@mui/icons-material/Groups3";
-import FadeIn from "../shared/FadeIn";
+import FadeIn from "../shared/FadeIn"
 
 import { ChevronRight } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
