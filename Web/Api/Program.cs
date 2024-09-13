@@ -68,6 +68,7 @@ builder.Services.AddScoped<IReview<RiderReviewDto>, RiderReviewService>();
 builder.Services.AddScoped<IWalletDepositeAndWithdrawal<DepositeDto>, DepositeService>();
 builder.Services.AddScoped<IWalletDepositeAndWithdrawal<WithdrawalDto>, WithdrawalService>();
 builder.Services.AddScoped<IWalletNotification, WalletNotificationService>();
+builder.Services.AddScoped<IFavourite, FavouriteService>();
 
 
 
