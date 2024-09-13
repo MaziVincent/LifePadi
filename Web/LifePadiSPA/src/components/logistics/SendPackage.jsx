@@ -102,13 +102,13 @@ const sendPackage = () => {
                           htmlFor="phoneNumber"
                           className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                         >
-                          Phone Number
+                          Sender Name
                         </label>
                         <input
                           type="text"
-                          name="phoneNumber"
-                          id="phoneNumber"
-                          {...register("PhoneNumber", { required: true })}
+                          name="sender"
+                          id="sender"
+                          {...register("Sender", { required: true })}
                           className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="08112341234"
                           required
