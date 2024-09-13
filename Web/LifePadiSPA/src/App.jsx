@@ -44,6 +44,7 @@ import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
+import TryLogistics from "./components/logistics/TryLogistics";
 
 function App() {
   const queryClient = new QueryClient();
@@ -90,6 +91,7 @@ function App() {
               element={<Vendor />}
             />
             <Route path="/shop/payment-response" element={<PaymentResponse />} />
+            <Route path="/shop/logistics" element={<TryLogistics />} />
             <Route
               index
               element={<Shop />}
