@@ -68,8 +68,8 @@ namespace Api.Services
                     newOrder.Type = order.Type;
                 }
                 newOrder.IsDelivered = false;
-                newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper();
                 newOrder.Order_Id = GenerateCode.generateOrder_Id();
+                newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper() + " " +newOrder.Order_Id;
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(newOrder);
@@ -87,12 +87,23 @@ namespace Api.Services
             try
             {
                 IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
-
+                if (props.SearchString == null)
+                {
+                    var normalOrders = await _dbContext!.Orders
+                        .Include(o => o.OrderItems)
+                        .Include(o => o.Customer)
+                        .OrderByDescending(o => o.CreatedAt)
+                        .Where(o => o.CustomerId == id)
+                        .ToListAsync();
+                    orderList = orderList.Concat(normalOrders);
+                    var normalResult = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                    return normalResult;
+                }
                 var orders = await _dbContext!.Orders
                     .Include(o => o.OrderItems)
                     .Include(o => o.Customer)
                     .OrderByDescending(o => o.CreatedAt)
-                    .Where(o => o.CustomerId == id)
+                    .Where(o => o.CustomerId == id && o.SearchString!.Contains(props.SearchString))
                     .ToListAsync();
                 orderList = orderList.Concat(orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);

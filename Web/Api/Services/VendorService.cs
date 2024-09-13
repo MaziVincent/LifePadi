@@ -367,7 +367,8 @@ namespace Api.Services
                 productList = productList.Concat(_mapper.Map<List<ProductDto>>(products1));
                 var returned = PagedList<ProductDto>.ToPagedList(productList, props.PageNumber, props.PageSize);
                 return returned;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
             }

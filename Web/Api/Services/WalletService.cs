@@ -14,11 +14,15 @@ namespace Api.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        string errorMsg = "Wallet not found";
-        public WalletService(DBContext context, IMapper mapper)
+        private readonly DepositeService _depositeService;
+        private readonly WithdrawalService _withdrawalService;
+        readonly string errorMsg = "Wallet not found";
+        public WalletService(DBContext context, IMapper mapper, DepositeService depositeService, WithdrawalService withdrawalService)
         {
             _context = context;
             _mapper = mapper;
+            _depositeService = depositeService;
+            _withdrawalService = withdrawalService;
         }
         public async Task<WalletDto> createAsync(WalletDto walletDto)
         {
@@ -55,6 +59,12 @@ namespace Api.Services
             try
             {
                 Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
+                var deposite = await _depositeService.createAsync(new DepositeDto
+                {
+                    Amount = amount,
+                    WalletId = wallet.Id,
+                    Type = "Deposit"
+                });
                 wallet.InitialBalance = wallet.Balance;
                 wallet.Balance += amount;
                 await _context.SaveChangesAsync();
@@ -71,7 +81,10 @@ namespace Api.Services
             try
             {
                 List<Wallet> wallets = await _context.Wallets
-                .Include(w => w.customer).OrderByDescending(w => w.CreatedAt).ToListAsync();
+                .Include(w => w.Customer)
+                .Include(w => w.Deposites)
+                .Include(w => w.Withdrawals)
+                .OrderByDescending(w => w.CreatedAt).ToListAsync();
                 return _mapper.Map<List<WalletDto>>(wallets);
             }
             catch (Exception ex)
@@ -85,7 +98,10 @@ namespace Api.Services
             try
             {
                 Wallet wallet = await _context.Wallets
-                .Include(w => w.customer).FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
+                .Include(w => w.Customer)
+                .Include(w => w.Deposites)
+                .Include(w => w.Withdrawals)
+                .FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
                 return _mapper.Map<WalletDto>(wallet);
             }
             catch (Exception ex)
@@ -145,7 +161,11 @@ namespace Api.Services
         {
             try
             {
-                Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.CustomerId == customerId) ?? throw new Exceptions.ServiceException(errorMsg);
+                Wallet wallet = await _context.Wallets
+                .Include(w => w.Customer)
+                .Include(w => w.Deposites)
+                .Include(w => w.Withdrawals)
+                .FirstOrDefaultAsync(w => w.CustomerId == customerId) ?? throw new Exceptions.ServiceException(errorMsg);
                 return _mapper.Map<WalletDto>(wallet);
             }
             catch (Exception ex)
@@ -169,20 +189,36 @@ namespace Api.Services
                 toWallet.InitialBalance = toWallet.Balance;
                 toWallet.Balance += amount;
                 //make a deposite record for towalletId and make a withdrawal record for fromWalletId and create the notification
+                var withdrawal = await _withdrawalService.createAsync(new WithdrawalDto
+                {
+                    Amount = amount,
+                    WalletId = fromWallet.Id,
+                    Type = "Transfer"
+                });
+                var deposite = await _depositeService.createAsync(new DepositeDto
+                {
+                    Amount = amount,
+                    WalletId = toWallet.Id,
+                    Type = "Transfer"
+                });
                 var fromWalletNotification = new WalletNotification
                 {
                     WalletId = fromWallet.Id,
-                    Message = $"You transfered {amount} to {toWallet.customer?.FirstName} {toWallet.customer?.LastName}",
+                    Message = $"You transfered {amount} to {toWallet.Customer?.FirstName} {toWallet.Customer?.LastName}",
                     Title = "Transfer out",
                     Type = "Transfer",
                 }; 
                 var toWalletNotification = new WalletNotification
                 {
                     WalletId = toWallet.Id,
-                    Message = $"You received {amount} from {fromWallet.customer?.FirstName} {fromWallet.customer?.LastName}",
+                    Message = $"You received {amount} from {fromWallet.Customer?.FirstName} {fromWallet.Customer?.LastName}",
                     Title = "Transfer in",
                     Type = "Transfer",
                 };
+                _context.Wallets.Attach(fromWallet);
+                _context.Wallets.Attach(toWallet);
+                await _context.Deposites.AddAsync(_mapper.Map<Deposite>(deposite));
+                await _context.Withdrawals.AddAsync(_mapper.Map<Withdrawal>(withdrawal));
                 await _context.WalletNotifications.AddAsync(fromWalletNotification);
                 await _context.WalletNotifications.AddAsync(toWalletNotification);
                 await _context.SaveChangesAsync();
@@ -194,11 +230,11 @@ namespace Api.Services
             }
         }
 
-        public async Task<WalletDto> updateAsync(WalletDto walletDto)
+        public async Task<WalletDto> updateAsync(int id, WalletDto walletDto)
         {
             try
             {
-                Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == walletDto.Id) ?? throw new Exceptions.ServiceException(errorMsg);
+                Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
                 wallet.Balance = walletDto.Balance;
                 wallet.InitialBalance = walletDto.InitialBalance;
                 wallet.CustomerId = walletDto.CustomerId;
@@ -222,6 +258,12 @@ namespace Api.Services
                 {
                     throw new Exceptions.ServiceException("Insufficient balance");
                 }
+                var withdrawal = await _withdrawalService.createAsync(new WithdrawalDto
+                {
+                    Amount = amount,
+                    WalletId = wallet.Id,
+                    Type = "Withdrawal"
+                });
                 wallet.InitialBalance = wallet.Balance;
                 wallet.Balance -= amount;
                 await _context.SaveChangesAsync();
