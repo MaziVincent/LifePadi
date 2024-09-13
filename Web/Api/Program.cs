@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
     builder.Configuration.GetConnectionString("LifePadiDBConnection")
     ));
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<CustomerService>();
 
 //Automaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -65,6 +65,9 @@ builder.Services.AddScoped<IEmailVerification, EmailVerificationService>();
 builder.Services.AddScoped<IReview<ProductReviewDto>, ProductReviewService>();
 builder.Services.AddScoped<IReview<VendorReviewDto>, VendorReviewService>();
 builder.Services.AddScoped<IReview<RiderReviewDto>, RiderReviewService>();
+builder.Services.AddScoped<IWalletDepositeAndWithdrawal<DepositeDto>, DepositeService>();
+builder.Services.AddScoped<IWalletDepositeAndWithdrawal<WithdrawalDto>, WithdrawalService>();
+builder.Services.AddScoped<IWalletNotification, WalletNotificationService>();
 
 
 

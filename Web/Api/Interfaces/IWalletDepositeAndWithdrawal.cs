@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Api.DTO;
+using Api.Services;
 
 namespace Api.Interfaces
 {
@@ -10,10 +12,10 @@ namespace Api.Interfaces
     {
         public Task<T> createAsync(T t);
         public Task<T> getAsync(int id);
-        public Task<List<T>> getAllAsync();
-        public Task<T> updateAsync(T t);
+        public Task<PagedList<T>> getAllAsync(SearchPaging props);
+        public Task<T> updateAsync(int id, T t);
         public Task<string> deleteAsync(int id);
-        public Task<List<T>> getByWalletId(int walletId);
+        public Task<PagedList<T>> getByWalletId(int walletId, SearchPaging props);
         public Task<List<T>> getByCustomerId(int customerId);
         public Task<List<T>> getByStatus(string status);
         public Task<List<T>> getByPaymentMethod(string paymentMethod);

@@ -115,6 +115,10 @@ namespace Api.Services
             //Withdrawal
             CreateMap<Withdrawal, WithdrawalDto>();
             CreateMap<WithdrawalDto, Withdrawal>();
+
+            //walletNotification
+            CreateMap<WalletNotification, WalletNotificationDto>();
+            CreateMap<WalletNotificationDto, WalletNotification>();
         }
     }
 }

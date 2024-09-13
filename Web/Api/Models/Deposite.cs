@@ -15,7 +15,8 @@ namespace Api.Models
         public string? Status { get; set; }
         public string? ReferenceId { get; set; }
         public string? PaymentMethod { get; set; }
-        public BigInteger transactionId { get; set; }
+        public BigInteger? TransactionId { get; set; }
+        public string? Type { get; set; }  //transfer, withdrawal
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

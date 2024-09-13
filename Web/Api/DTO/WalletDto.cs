@@ -11,7 +11,7 @@ namespace Api.DTO
         public double Balance { get; set; }
         public double InitialBalance { get; set; }
         public int CustomerId { get; set; }
-        public CustomerDtoLite? customer { get; set; }
+        public CustomerDtoLite? Customer { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
     }

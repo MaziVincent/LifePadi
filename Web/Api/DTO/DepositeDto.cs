@@ -15,7 +15,8 @@ namespace Api.DTO
         public string? Status { get; set; }
         public string? ReferenceId { get; set; }
         public string? PaymentMethod { get; set; }
-        public BigInteger transactionId { get; set; }
+        public BigInteger? TransactionId { get; set; }
+        public string? Type { get; set; }  //transfer, withdrawal
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
     }

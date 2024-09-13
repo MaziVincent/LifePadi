@@ -9,19 +9,24 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using static RestSharp.RestClient;
 using Customer = Api.Models.Customer;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Api.Services
 {
     public class CustomerService : ICustomer
     {
+        private readonly HttpClient _httpClient;
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config)
+        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config, HttpClient httpClient)
         {
             _dbContext = dBContext;
             _mapper = mapper;
             _config = config;
+            _httpClient = httpClient;
         }
 
         public async Task<AuthUserDto> createAsync(CustomerDto customer)
@@ -34,6 +39,11 @@ namespace Api.Services
                 newCustomer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(customer.Password);
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 await _dbContext.Customers.AddAsync(newCustomer);
+                await _dbContext.Wallets.AddAsync(new Wallet { 
+                    CustomerId = newCustomer.Id,
+                    InitialBalance = 0.0,
+                    Balance = 0.0
+                });
                 await _dbContext.SaveChangesAsync();
                 var authUserDTO = _mapper.Map<AuthUserDto>(newCustomer);
                 return authUserDTO;
@@ -82,7 +92,7 @@ namespace Api.Services
                 IQueryable<Customer> customerList = Enumerable.Empty<Customer>().AsQueryable();
                 if (props.SearchString is null)
                 {
-                    var customerLs = await _dbContext.Customers
+                    var customerLs = await _dbContext.Customers.Include(c => c.Addresses)
                         .OrderByDescending(r => r.CreatedAt)
                         .ToListAsync();
 
@@ -113,8 +123,11 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.Where(c => c.Id == id).Include(c => c.Addresses)
-                .Include(c => c.Orders).FirstOrDefaultAsync();
+                var customer = await _dbContext.Customers.Where(c => c.Id == id)
+                .Include(c => c.Addresses)
+                .Include(c => c.Orders)
+                .Include(c => c.Wallet)
+                .FirstOrDefaultAsync();
                 if (customer == null) return null!;
                 var CustomerDto = new CustomerDto
                 {
@@ -215,20 +228,20 @@ namespace Api.Services
         {
             try
             {
-                RestSharp.RestClient restClient = new RestSharp.RestClient(_config["Termii:SendOtp_Url"]!);
+                RestSharp.RestClient restClient = new RestSharp.RestClient("https://api.ng.termii.com/api/sms/otp/send");
 
                 JObject objectBody = new JObject();
                 objectBody.Add("api_key", _config["Termii:Api_Key"]!);
-                objectBody.Add("message_type", "ALPHANUMERIC");
+                objectBody.Add("message_type", "NUMERIC");
                 objectBody.Add("to", phoneNumber);
-                objectBody.Add("from", "Listacc");
+                objectBody.Add("from", _config["Termii:Sender_Id"]!);
                 objectBody.Add("channel", "dnd");
                 objectBody.Add("pin_attempts", 3);
-                objectBody.Add("pin_time_to_live", 10);
-                objectBody.Add("pin_length", 6);
+                objectBody.Add("pin_time_to_live", 5);
+                objectBody.Add("pin_length", 4);
                 objectBody.Add("pin_placeholder", "< 1234 >");
-                objectBody.Add("message_text", "Your pin is < 1234 >");
-                objectBody.Add("pin_type", "ALPHANUMERIC");
+                objectBody.Add("message_text", "Your verification code is < 1234 >");
+                objectBody.Add("pin_type", "NUMERIC");
 
                 RestRequest restRequest = new RestRequest("POST");
                 restRequest.AddHeader("Content-Type", "application/json");
@@ -237,7 +250,7 @@ namespace Api.Services
 
                 if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exceptions.ServiceException("Failed to send OTP");
+                    throw new Exceptions.ServiceException(restResponse.StatusDescription!);
                 }
                 return restResponse.Content!;
             }
@@ -272,9 +285,68 @@ namespace Api.Services
             }
         }
 
-        public Task<object> verifyOtp(string pinId)
+        public async Task<object> verifyOtp(string pinId, string pin)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var requestUri = _config["Termii:VerifyOtp_Url"]; // Termii API endpoint for verifying OTP
+                var payload = new
+                {
+                    pin_id = pinId,
+                    pinId = pinId,
+                    pin = pin,
+                    api_key = _config["Termii:Api_Key"]
+                };
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!);
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> verifyPhone(string phoneNumber)
+        {
+            try
+            {
+                var requestUri = _config["Termii:SendOtp_Url"]; // Termii API endpoint for sending SMS
+
+                var payload = new
+                {
+                    to = phoneNumber,
+                    from = _config["Termii:Sender_Id"],
+                    message_type = "NUMERIC",
+                    channel = "dnd",
+                    api_key = _config["Termii:Api_Key"],
+                    pin_length = 4,
+                    pin_placeholder = "< 1234 >",
+                    message_text = "Your Lifepadi verification code is < 1234 >, it will expire in 5 minutes",
+                    pin_attempts = 3,
+                    pin_time_to_live = 5,
+                    pin_type = "NUMERIC"
+                };
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+
+                throw new Exceptions.ServiceException(response.ReasonPhrase!);
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
         }
     }
 }

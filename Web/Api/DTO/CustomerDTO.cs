@@ -23,6 +23,7 @@ namespace Api.DTO
         public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
+        public WalletDto? Wallet { get; set; }
         public DateTime DOB { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
         public List<OrderDtoLite>? Orders { get; set; }
@@ -37,6 +38,7 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
         public string? ContactAddress { get; set; }
         public DateTime DOB { get; set; }
+        public WalletDto? Wallet { get; set; }
     }
 
     public class AuthCustomerDto
@@ -51,5 +53,6 @@ namespace Api.DTO
         public string? AccessToken { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public WalletDto? Wallet { get; set; }
     }
 }

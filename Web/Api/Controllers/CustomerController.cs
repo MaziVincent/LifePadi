@@ -192,5 +192,33 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("send-otp")]
+        public async Task<IActionResult> sendOtp([FromForm] string phoneNumber)
+        {
+            try
+            {
+                var response = await _icustomer!.verifyPhone(phoneNumber);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> verifyOtp([FromQuery] string pinId, [FromQuery] string pin)
+        {
+            try
+            {
+                var response = await _icustomer!.verifyOtp(pinId, pin);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

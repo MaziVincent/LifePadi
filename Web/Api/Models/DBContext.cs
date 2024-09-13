@@ -31,5 +31,14 @@ namespace Api.Models
         public DbSet<Deposite> Deposites { get; set; }
         public DbSet<Withdrawal> Withdrawals { get; set; }
         public DbSet<WalletNotification> WalletNotifications { get; set; }
+        public DbSet<Favourite> Favourites { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Customer>()
+                .HasOne(c => c.Wallet)
+                .WithOne(w => w.Customer)
+                .HasForeignKey<Wallet>(w => w.CustomerId);
+        }
     }
 }
