@@ -29,10 +29,14 @@ const Header = () => {
   return (
     <header className=" fixed z-40 flex justify-between items-center px-4 w-full top-0 py-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <div className="w-40 rounded-full ">
 =======
       <div className="w-40">
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+      <div className="w-40 rounded-full ">
+>>>>>>> 07eaeb8 (logistics commit)
         <Link to="/" className=" px-6 py-2 w rounded-full flex items-center gap-4 text-primary font-semibold">
           <img src={logo} alt="logo" />
         </Link>

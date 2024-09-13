@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import sendPackage from "../../assets/images/send package.png"
 import recievePackage from "../../assets/images/recieve package.png"
@@ -45,6 +46,18 @@ const TryLogistics = () => {
           dispatch({type:"send"})
         }}
         className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
+=======
+import courier from "../../assets/images/courier.png";
+import delivery from "../../assets/images/delivery (1).png";
+import sendPackage from "../../assets/images/send package.png"
+import recievePackage from "../../assets/images/recieve package.png"
+
+const TryLogistics = () => {
+  return (
+    <div className="py-28 bg-lightGray">
+      <div className=" flex flex-col items-center justify-center  gap-10   w-full  px-3">
+        <div className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
+>>>>>>> 07eaeb8 (logistics commit)
           <h2 className="text-4xl text-center font-bold text-accent ">
             {" "}
             SEND PACKAGE{" "}
@@ -54,11 +67,15 @@ const TryLogistics = () => {
               src={sendPackage}
               alt=""
               className=" border-accent "
+<<<<<<< HEAD
               loading="lazy"
+=======
+>>>>>>> 07eaeb8 (logistics commit)
             />
           </div>
         </div>
 
+<<<<<<< HEAD
         <div 
         onClick={()=>{
           if(!auth.accessToken){
@@ -69,6 +86,9 @@ const TryLogistics = () => {
         }}
 
         className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
+=======
+        <div className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
+>>>>>>> 07eaeb8 (logistics commit)
           <h2 className="text-4xl text-center font-bold text-accent">
             {" "}
             RECIEVE A PACKAGE{" "}
@@ -77,13 +97,19 @@ const TryLogistics = () => {
           <img
             src={recievePackage}
             alt=""
+<<<<<<< HEAD
             loading="lazy"
+=======
+>>>>>>> 07eaeb8 (logistics commit)
           />
           </div>
         </div>
       </div>
+<<<<<<< HEAD
        <SendPackage dispatch={dispatch} open={state.send} /> 
        <RecievePackage dispatch={dispatch} open={state.recieve} />
+=======
+>>>>>>> 07eaeb8 (logistics commit)
     </div>
   );
 };

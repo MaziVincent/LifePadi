@@ -104,6 +104,7 @@ import Logistics from "./components/home/Logistics"
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
+import TryLogistics from "./components/logistics/TryLogistics";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -219,6 +220,7 @@ function App() {
               element={<Vendor />}
             />
             <Route path="/shop/payment-response" element={<PaymentResponse />} />
+            <Route path="/shop/logistics" element={<TryLogistics />} />
             <Route
 <<<<<<< HEAD
               path="/shop/payment-response"
