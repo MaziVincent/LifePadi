@@ -119,6 +119,10 @@ namespace Api.Services
             //walletNotification
             CreateMap<WalletNotification, WalletNotificationDto>();
             CreateMap<WalletNotificationDto, WalletNotification>();
+
+            //Favourite
+            CreateMap<Favourite, FavouriteDto>();
+            CreateMap<FavouriteDto, Favourite>();
         }
     }
 }
