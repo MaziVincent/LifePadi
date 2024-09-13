@@ -38,6 +38,7 @@ namespace Api.Services
                 var newCustomer = _mapper.Map<Customer>(customer);
                 newCustomer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(customer.Password);
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
+                newCustomer.PhoneNumberConfirmed = true;
                 await _dbContext.Customers.AddAsync(newCustomer);
                 await _dbContext.Wallets.AddAsync(new Wallet { 
                     CustomerId = newCustomer.Id,
