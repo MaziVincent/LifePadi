@@ -1,11 +1,9 @@
 import Modal from "@mui/material/Modal";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
-import { termiiSendUrl } from "../../api/baseUrl";
-import termiiApiKey from "../../api/apiKey";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
 //import useCart from "../../hooks/useCart";
@@ -19,11 +17,12 @@ const Register = () => {
     setVerify,
     regData,
     setRegData,
-    verificationCode,
-    setVerificationCode,
+    verificationInfo,
+    setVerificationInfo,
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
+  const url = `${baseUrl}customer/send-otp`
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
@@ -43,53 +42,37 @@ const Register = () => {
 
   const sendOTP = async (phoneNumber) => {
 
+    const unformated = phoneNumber.slice(1)
+    const formated = `234${unformated}`
+
     try{
-
-      const unFormated = phoneNumber.slice(1)
-      const formated = `234${unFormated}`
-      const body = {
-        "api_key" : termiiApiKey,
-        "message_type" : "NUMERIC",
-        "to" : formated,
-        "from" : "N-Alert",
-        "channel" : "dnd",
-        "pin_attempts" : 3,
-        "pin_time_to_live" : 5,
-        "pin_length" : 4,
-        "pin_placeholder" : "< 1234 >",
-        "message_text" : "Your Lifepadi verification code is < 1234 >",
-        "pin_type" : "NUMERIC"
-    }
-
-    console.log(body)
-
-    const response = await post(termiiSendUrl, body ," ")
-
+      
+    const formData = new FormData()
+    formData.append("phoneNumber", formated)
+    const response = await post(url, formData ," ")
     console.log(response)
-  
 
+      if(response.status == 200 || response.data.status == "200"){
+        setVerificationInfo(response.data);
+          setVerify(true);
+          setIsLoading(false);
+          reset();
+      }else{
+        setError("Error Sending OTP");
+        setIsLoading(false);
+      }
 
     }catch(error){
 
       console.error(error)
+      setError("Error Sending  OTP");
+      setIsLoading(false);
     }
 
-   
-    
-    // if (response.status != "200") {
-    //   setError(response.error);
-    //   setIsLoading(false);
-    // } else {
-
-    //   setVerificationCode(response.data.Code);
-    //   setVerify(true);
-    //   setIsLoading(false);
-    //   reset();
-    // }
   };
 
   const handleCreate = (data) => {
-    //setIsLoading(true);
+    setIsLoading(true);
     sendOTP(data.PhoneNumber);
     setRegData(data);
   };
