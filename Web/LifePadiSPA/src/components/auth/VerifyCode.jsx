@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e0ac5f (edited customer create)
 import React, { useState, useRef, useEffect } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
@@ -30,6 +33,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
   } = useAuth();
 
   //console.log(verificationInfo);
+<<<<<<< HEAD
 =======
 import React, { useState, useRef } from "react";
 import { Modal } from "@mui/material";
@@ -40,6 +44,8 @@ const VerifyCode = ({ otpLength = 4 }) => {
   const inputsRef = useRef([]);
   const { verify, setVerify } = useAuth();
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+>>>>>>> 5e0ac5f (edited customer create)
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -67,6 +73,9 @@ const VerifyCode = ({ otpLength = 4 }) => {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e0ac5f (edited customer create)
   const handleSubmit = async () => {
     setIsLoading(true);
     const code = otp.join("");
@@ -74,7 +83,11 @@ const VerifyCode = ({ otpLength = 4 }) => {
     try{
       const response = await post(`${verifyUrl}?pinId=${verificationInfo.pinId}&pin=${code}`)
 
+<<<<<<< HEAD
       //console.log(response.data)
+=======
+      console.log(response.data)
+>>>>>>> 5e0ac5f (edited customer create)
 
       
       if(response.data?.verified == false){
@@ -102,10 +115,13 @@ const VerifyCode = ({ otpLength = 4 }) => {
       isLoading(false)
     }
   
+<<<<<<< HEAD
 =======
   const handleSubmit = () => {
     console.log(otp.join(""));
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+>>>>>>> 5e0ac5f (edited customer create)
   };
 
   const create = async (data) => {
@@ -238,6 +254,9 @@ const VerifyCode = ({ otpLength = 4 }) => {
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (inputsRef.current[index] = el)}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e0ac5f (edited customer create)
                     className="w-10 h-12 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-background bg-graybg text-accent"
                   />
                 ))}

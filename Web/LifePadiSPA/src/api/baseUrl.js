@@ -11,6 +11,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 const baseUrl = "https://lifepadi-948405839190.us-east1.run.app/api/";
 //const baseUrl ='https://localhost:7216/api/'
@@ -38,6 +39,8 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 >>>>>>> e848b7b (Payment Response)
 =======
 >>>>>>> 6339056 (base url)
+=======
+>>>>>>> 5e0ac5f (edited customer create)
 const baseUrl = "https://localhost:7216/api/"
 =======
 <<<<<<< HEAD
@@ -82,11 +85,16 @@ const baseUrl = 'https://localhost:7216/api/'
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 >>>>>>> 69f97b4 (base url)
+=======
+const baseUrl = 'https://localhost:7216/api/'
+//"https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
+>>>>>>> d2830d6 (edited customer create)
 //"https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 //const baseUrl = 'https://localhost:7216/api/'
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const baseUrl = 'https://localhost:7216/api/'
 //'https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/'
@@ -95,4 +103,6 @@ const baseUrl = 'https://localhost:7216/api/'
 //'http://localhost:3500/'
 =======
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+>>>>>>> 5e0ac5f (edited customer create)
 export default baseUrl

@@ -94,7 +94,18 @@ const Register = () => {
       const response = await post(url, formData, " ");
       // console.log(response)
 
+<<<<<<< HEAD
       if (response.status == 200 || response.data.status == "200") {
+=======
+    try{
+
+    const formData = new FormData()
+    formData.append("phoneNumber", formated)
+    const response = await post(url, formData ," ")
+   // console.log(response)
+
+      if(response.status == 200 || response.data.status == "200"){
+>>>>>>> 5e0ac5f (edited customer create)
         setVerificationInfo(response.data);
         setVerify(true);
         setIsLoading(false);

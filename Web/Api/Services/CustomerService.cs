@@ -83,11 +83,18 @@ namespace Api.Services
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 newCustomer.PhoneNumberConfirmed = true;
                 await _dbContext.Customers.AddAsync(newCustomer);
+<<<<<<< HEAD
 
                 await _dbContext.SaveChangesAsync();
 
                 await _dbContext.Wallets.AddAsync(new Wallet
                 {
+=======
+                
+                await _dbContext.SaveChangesAsync();
+
+                await _dbContext.Wallets.AddAsync(new Wallet { 
+>>>>>>> 5e0ac5f (edited customer create)
                     CustomerId = newCustomer.Id,
                     InitialBalance = 0.0,
                     Balance = 0.0
