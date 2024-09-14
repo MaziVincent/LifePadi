@@ -1,0 +1,3 @@
+const termiiApiKey = "TLGqtKdPOZZgZWuIrudhLMGErlxKKtqpIEWKYbOvXEsYaVYFEhWFzXHoUgUVrY"
+
+export default termiiApiKey;

@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
+import { termiiSendUrl } from "../../api/baseUrl";
+import termiiApiKey from "../../api/apiKey";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
 //import useCart from "../../hooks/useCart";
@@ -39,24 +41,56 @@ const Register = () => {
     mode: "all",
   });
 
-  const verifyEmail = async (email) => {
-    const formData = new FormData();
-    formData.append("Email", email);
-    const response = await post(`${baseUrl}customer/verifyEmail`, formData, "");
-    if (response.error) {
-      setError(response.error);
-      setIsLoading(false);
-    } else {
-      setVerificationCode(response.data.Code);
-      setVerify(true);
-      setIsLoading(false);
-      reset();
+  const sendOTP = async (phoneNumber) => {
+
+    try{
+
+      const unFormated = phoneNumber.slice(1)
+      const formated = `234${unFormated}`
+      const body = {
+        "api_key" : termiiApiKey,
+        "message_type" : "NUMERIC",
+        "to" : formated,
+        "from" : "N-Alert",
+        "channel" : "dnd",
+        "pin_attempts" : 3,
+        "pin_time_to_live" : 5,
+        "pin_length" : 4,
+        "pin_placeholder" : "< 1234 >",
+        "message_text" : "Your Lifepadi verification code is < 1234 >",
+        "pin_type" : "NUMERIC"
     }
+
+    console.log(body)
+
+    const response = await post(termiiSendUrl, body ," ")
+
+    console.log(response)
+  
+
+
+    }catch(error){
+
+      console.error(error)
+    }
+
+   
+    
+    // if (response.status != "200") {
+    //   setError(response.error);
+    //   setIsLoading(false);
+    // } else {
+
+    //   setVerificationCode(response.data.Code);
+    //   setVerify(true);
+    //   setIsLoading(false);
+    //   reset();
+    // }
   };
 
   const handleCreate = (data) => {
-    setIsLoading(true);
-    verifyEmail(data.Email);
+    //setIsLoading(true);
+    sendOTP(data.PhoneNumber);
     setRegData(data);
   };
 
