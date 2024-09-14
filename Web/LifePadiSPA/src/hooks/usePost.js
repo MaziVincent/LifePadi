@@ -6,7 +6,7 @@ const usePost = () => {
   const postData = async (url,data, token) => {
     const controller = new AbortController();
 
-   // console.log(data);
+    //console.log(data);
     let result;
 
     try {
@@ -15,7 +15,7 @@ const usePost = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        // withCredentials: true,
+         withCredentials: true,
       });
 
       result =  response;

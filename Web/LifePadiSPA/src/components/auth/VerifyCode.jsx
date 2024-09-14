@@ -14,6 +14,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
   const inputsRef = useRef([]);
   const post = usePost();
   const url = `${baseUrl}customer/create`;
+  const verifyUrl = `${baseUrl}customer/verify`;
   const {
     reg,
     setRegister,
@@ -21,8 +22,8 @@ const VerifyCode = ({ otpLength = 4, }) => {
     setVerify,
     regData,
     setRegData,
-    verificationCode,
-    setVerificationCode
+    verificationInfo,
+    setVerificationInfo
   } = useAuth();
 
   const handleChange = (element, index) => {
@@ -53,7 +54,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
   const handleSubmit = () => {
     setIsLoading(true);
     const code = otp.join("");
-    if(code === verificationCode){
+    if(code){
       
       mutate(regData)
     }else{
@@ -135,8 +136,8 @@ const VerifyCode = ({ otpLength = 4, }) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              <h2 className="text-2xl font-semibold mb-4">Verify Phonenumber</h2>
-              <p className="text-darkHover dark:text-gray">Please Enter the code sent to your Email Address</p>
+              <h2 className="text-2xl font-semibold mb-4">Verify Phone Number</h2>
+              <p className="text-darkHover dark:text-gray">Please Enter the code sent to your Phone Number </p>
               <div className="flex space-x-2 m-4">
                 {otp.map((digit, index) => (
                   <input

@@ -208,11 +208,11 @@ namespace Api.Controllers
         }
 
         [HttpPost("verify-otp")]
-        public async Task<IActionResult> verifyOtp([FromQuery] string pinId, [FromQuery] string pin)
+        public async Task<IActionResult> verifyOtp([FromQuery] OtpDTO otpVerify )
         {
             try
             {
-                var response = await _icustomer!.verifyOtp(pinId, pin);
+                var response = await _icustomer!.verifyOtp(otpVerify.pinId!, otpVerify.pin!);
                 return Ok(response);
             }
             catch (Exception ex)

@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,12 @@ const Register = () => {
     setVerify,
     regData,
     setRegData,
-    verificationCode,
-    setVerificationCode,
+    verificationInfo,
+    setVerificationInfo,
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
+  const url = `${baseUrl}customer/send-otp`
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
@@ -39,24 +40,40 @@ const Register = () => {
     mode: "all",
   });
 
-  const verifyEmail = async (email) => {
-    const formData = new FormData();
-    formData.append("Email", email);
-    const response = await post(`${baseUrl}customer/verifyEmail`, formData, "");
-    if (response.error) {
-      setError(response.error);
+  const sendOTP = async (phoneNumber) => {
+
+    const unformated = phoneNumber.slice(1)
+    const formated = `234${unformated}`
+
+    try{
+      
+    const formData = new FormData()
+    formData.append("phoneNumber", formated)
+    const response = await post(url, formData ," ")
+    console.log(response)
+
+      if(response.status == 200 || response.data.status == "200"){
+        setVerificationInfo(response.data);
+          setVerify(true);
+          setIsLoading(false);
+          reset();
+      }else{
+        setError("Error Sending OTP");
+        setIsLoading(false);
+      }
+
+    }catch(error){
+
+      console.error(error)
+      setError("Error Sending  OTP");
       setIsLoading(false);
-    } else {
-      setVerificationCode(response.data.Code);
-      setVerify(true);
-      setIsLoading(false);
-      reset();
     }
+
   };
 
   const handleCreate = (data) => {
     setIsLoading(true);
-    verifyEmail(data.Email);
+    sendOTP(data.PhoneNumber);
     setRegData(data);
   };
 
