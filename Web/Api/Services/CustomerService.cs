@@ -40,12 +40,17 @@ namespace Api.Services
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 newCustomer.PhoneNumberConfirmed = true;
                 await _dbContext.Customers.AddAsync(newCustomer);
+                
+                await _dbContext.SaveChangesAsync();
+
                 await _dbContext.Wallets.AddAsync(new Wallet { 
                     CustomerId = newCustomer.Id,
                     InitialBalance = 0.0,
                     Balance = 0.0
                 });
+
                 await _dbContext.SaveChangesAsync();
+
                 var authUserDTO = _mapper.Map<AuthUserDto>(newCustomer);
                 return authUserDTO;
             }
