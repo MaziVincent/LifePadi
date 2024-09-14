@@ -46,11 +46,11 @@ const Register = () => {
     const formated = `234${unformated}`
 
     try{
-      
+
     const formData = new FormData()
     formData.append("phoneNumber", formated)
     const response = await post(url, formData ," ")
-    console.log(response)
+   // console.log(response)
 
       if(response.status == 200 || response.data.status == "200"){
         setVerificationInfo(response.data);

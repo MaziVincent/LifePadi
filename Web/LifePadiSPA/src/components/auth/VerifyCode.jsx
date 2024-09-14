@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import { useMutation } from "react-query";
@@ -10,11 +10,13 @@ import toast, { Toaster } from "react-hot-toast";
 const VerifyCode = ({ otpLength = 4, }) => {
   const [otp, setOtp] = useState(Array(otpLength).fill(""));
   const [codeError, setCodeError] = useState("")
+  const [attempts, setAttempts ] = useState(3)
+  const [resend, setResend] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const inputsRef = useRef([]);
   const post = usePost();
   const url = `${baseUrl}customer/create`;
-  const verifyUrl = `${baseUrl}customer/verify`;
+  const verifyUrl = `${baseUrl}customer/verify-otp`;
   const {
     reg,
     setRegister,
@@ -25,6 +27,8 @@ const VerifyCode = ({ otpLength = 4, }) => {
     verificationInfo,
     setVerificationInfo
   } = useAuth();
+
+  //console.log(verificationInfo);
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -51,16 +55,41 @@ const VerifyCode = ({ otpLength = 4, }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     const code = otp.join("");
-    if(code){
+
+    try{
+      const response = await post(`${verifyUrl}?pinId=${verificationInfo.pinId}&pin=${code}`)
+
+      console.log(response.data)
+
       
-      mutate(regData)
-    }else{
-      setCodeError("Code Entered is invalid ")
-      setIsLoading(false)
+      if(response.data?.verified == false){
+        setAttempts(response.data?.attemptsRemaining)
+        setCodeError("Code Entered is invalid ")
+        setIsLoading(false)
+        return;
+      }
+
+      if(response.data?.verified == "Expired "){
+        setResend(true)
+        setCodeError("Code Entered has Expired ")
+        setIsLoading(false)
+        return;
+      }
+
+      if(response.data?.verified == true){
+      
+        mutate(regData)
+        //console.log(regData)
+      }
+
+    }catch(error){
+      console.log(error)
+      isLoading(false)
     }
+  
   };
 
   const create = async (data) => {
@@ -91,6 +120,39 @@ const VerifyCode = ({ otpLength = 4, }) => {
     },
   });
 
+  useEffect(()=> {
+    setTimeout(()=>{
+      setResend(true)
+    }, 60000)
+  },[])
+
+  const resendOtp = async (phoneNumber) => {
+
+    const unformated = phoneNumber.slice(1)
+    const formated = `234${unformated}`
+
+    try{
+
+    const formData = new FormData()
+    formData.append("phoneNumber", formated)
+    const response = await post(url, formData ," ")
+   // console.log(response)
+
+      if(response.status == 200 || response.data.status == "200"){
+        setVerificationInfo(response.data);
+         
+      }else{
+        setCodeError("Error Sending OTP");
+        
+      }
+
+    }catch(error){
+
+      console.error(error)
+      setCodeError("Error Sending  OTP");
+    }
+
+  };
 
 
   return (
@@ -148,11 +210,17 @@ const VerifyCode = ({ otpLength = 4, }) => {
                     onChange={(e) => handleChange(e.target, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (inputsRef.current[index] = el)}
-                    className="w-10 h-12 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-background bg-graybg"
+                    className="w-10 h-12 text-xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-background bg-graybg text-accent"
                   />
                 ))}
               </div>
-              <p className="text-redborder text-lg"> {codeError}</p>
+              { codeError && <p className="text-redborder text-sm"> {`${codeError}, `}</p> }
+              {
+                attempts < 3 && <p className="text-redborder text-sm"> {`Remaining ${attempts} attempts`} </p>
+              }
+              {
+                resend && <p className="text-accent dark:text-primary pb-6"> You no see the code ? <button onClick={() => resendOtp(regData.PhoneNumber)} className="text-background">Oya Resend am!</button> </p>
+              }
               <button
                 onClick={handleSubmit}
                 className="px-4 py-2 bg-secondary text-white dark:text-accent font-semibold rounded-lg shadow hover:bg-background transition duration-200"
