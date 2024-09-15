@@ -75,7 +75,7 @@ builder.Services.AddScoped<IFavourite, FavouriteService>();
 //enable CORS
 builder.Services.AddCors(c =>
 {
-    c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("https://lifepadi.com", "http://localhost:5173")
+    c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("https://lifepadi.com", "http://localhost:5173", "https://www.lifepadi.com")
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyHeader()
