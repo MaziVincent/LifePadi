@@ -49,7 +49,7 @@ const UserDashboard = () => {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    //console.log("page " + value);
+    console.log("page " + value);
   };
   console.log(orders);
 
