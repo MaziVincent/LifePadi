@@ -18,6 +18,6 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfFailedTransactions();
         public Task<int> totalNumberOfPendingTransactions();
         public Task<object> transactionStats();
-        public Task<object> baniCheckout(BaniCheckoutDto baniCheckout);
+        public Task<object> baniCheckout(InitiatePaymentDto initiatePaymentDto);
     }
 }

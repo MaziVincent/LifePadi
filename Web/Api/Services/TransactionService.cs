@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Numerics;
 using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Api.Services
 {
@@ -19,13 +21,15 @@ namespace Api.Services
         private readonly IConfiguration _config;
         private readonly IHttpClientFactory _ClientFactory;
         private readonly IVoucher _ivoucher;
-        public TransactionService(DBContext dbContext, IMapper mapper, IConfiguration config, IHttpClientFactory clientFactory, IVoucher ivoucher)
+        private readonly HttpClient _httpClient;
+        public TransactionService(DBContext dbContext, IMapper mapper, IConfiguration config, IHttpClientFactory clientFactory, IVoucher ivoucher, HttpClient httpClient)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _config = config;
             _ClientFactory = clientFactory;
             _ivoucher = ivoucher;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<TransactionDto>> allAsync()
@@ -46,9 +50,60 @@ namespace Api.Services
             }
         }
 
-        public Task<object> baniCheckout(BaniCheckoutDto baniCheckout)
+        public async Task<object> baniCheckout(InitiatePaymentDto initiatePaymentDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
+                if (payment != null)
+                {
+                    throw new Exceptions.ServiceException("Already paid for this order");
+                }
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePaymentDto.OrderId);
+                if (order == null) throw new Exceptions.ServiceException("Order not found");
+                var tx_ref = GenerateTxRef.genTx_rf();
+                var paymentUrl = _config["Bani:Stage_Base_Url"] + "/partner/collection/bank_transfer/";
+                var access_token = _config["Bani:Access_Token"];
+                var payload = new BaniCheckoutDto
+                {
+                    holder_account_type = "temporary",
+                    pay_currency = "NGN",
+                    country_code = "NG",
+                    pay_va_step = "direct",
+                    pay_expiry = 20,
+                    pay_ext_ref = tx_ref,
+                    pay_amount = (Double)initiatePaymentDto.TotalAmount!,
+                    custom_data = new Custom_data
+                    {
+                        customerId = order.CustomerId,
+                        voucherCode = initiatePaymentDto.VoucherCode,
+                        orderId = order.Id,
+                        deliveryFee = (Double)initiatePaymentDto.DeliveryFee!,
+                        amount = (Double)initiatePaymentDto.Amount!,
+                        totalAmount = (Double)initiatePaymentDto.TotalAmount!,
+                        createdAt = DateTime.UtcNow
+                    }
+                };
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+                var moni_signature = MoniSignature.GetSignature(_config);
+
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var request = new HttpRequestMessage(HttpMethod.Post,
+                 _config["Bani:Stage_Base_Url"] + "/partner/collection/bank_transfer/");
+                request.Headers.Add("Authorization", "Bearer " + access_token); // Replace with your actual token
+                request.Headers.Add("moni-signature", moni_signature); // Add any other desired headers
+
+                var response = await _httpClient.SendAsync(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return response;
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
         }
 
         public async Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo)
