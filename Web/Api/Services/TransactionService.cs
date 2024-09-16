@@ -46,6 +46,11 @@ namespace Api.Services
             }
         }
 
+        public Task<object> baniCheckout(BaniCheckoutDto baniCheckout)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo)
         {
             try

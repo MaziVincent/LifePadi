@@ -60,7 +60,12 @@ namespace Api.Controllers
 
                 var token = new
                 {
-                    user = user,
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ContactAddress = user.ContactAddress,
+                    Role = user.Role,
                     accessToken = accessToken
                 };
                 return Ok(token);

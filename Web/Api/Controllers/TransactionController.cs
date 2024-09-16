@@ -21,20 +21,22 @@ namespace Api.Controllers
             {
                 var response = await _itran.initiatePayment(initiatePayment);
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("confirmPayment")]
-        public async Task<IActionResult> confirmPayment([FromQuery] AfterPayment transactionInfo )
+        public async Task<IActionResult> confirmPayment([FromQuery] AfterPayment transactionInfo)
         {
             try
             {
                 var response = await _itran.confirmPayment(transactionInfo);
                 return Ok(response);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -47,7 +49,8 @@ namespace Api.Controllers
             {
                 var response = await _itran.allAsync();
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -61,7 +64,8 @@ namespace Api.Controllers
                 var response = await _itran.getAsync(id);
                 if (response == null) return NotFound();
                 return Ok(response);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
