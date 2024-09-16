@@ -230,41 +230,6 @@ namespace Api.Services
             }
         }
 
-        public async Task<object> sendOtp(string phoneNumber)
-        {
-            try
-            {
-                RestSharp.RestClient restClient = new RestSharp.RestClient("https://api.ng.termii.com/api/sms/otp/send");
-
-                JObject objectBody = new JObject();
-                objectBody.Add("api_key", _config["Termii:Api_Key"]!);
-                objectBody.Add("message_type", "NUMERIC");
-                objectBody.Add("to", phoneNumber);
-                objectBody.Add("from", _config["Termii:Sender_Id"]!);
-                objectBody.Add("channel", "dnd");
-                objectBody.Add("pin_attempts", 3);
-                objectBody.Add("pin_time_to_live", 5);
-                objectBody.Add("pin_length", 4);
-                objectBody.Add("pin_placeholder", "< 1234 >");
-                objectBody.Add("message_text", "Your verification code is < 1234 >");
-                objectBody.Add("pin_type", "NUMERIC");
-
-                RestRequest restRequest = new RestRequest("POST");
-                restRequest.AddHeader("Content-Type", "application/json");
-                restRequest.AddParameter("application/json", objectBody, ParameterType.RequestBody);
-                RestResponse restResponse = await restClient.ExecuteAsync(restRequest);
-
-                if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exceptions.ServiceException(restResponse.StatusDescription!);
-                }
-                return restResponse.Content!;
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
 
         public async Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id)
         {
@@ -322,6 +287,9 @@ namespace Api.Services
         {
             try
             {
+                string phone = "+" + phoneNumber;
+                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phone);
+                if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
                 var requestUri = _config["Termii:SendOtp_Url"]; // Termii API endpoint for sending SMS
 
                 var payload = new

@@ -179,19 +179,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("verify-Phone")]
-        public async Task<IActionResult> verifyPhone([FromForm] string phone)
-        {
-            try
-            {
-                var response = await _icustomer!.sendOtp(phone);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         [HttpPost("send-otp")]
         public async Task<IActionResult> sendOtp([FromForm] string phoneNumber)
