@@ -8,18 +8,22 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
+    this.icon,
+    this.iconWidget,
   });
 
   final VoidCallback? onPressed;
   final String text;
+  final IconData? icon;
+  final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
-
     final ShapeBorder roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(40.r),
     );
+    final hasIcon = icon != null || iconWidget != null;
 
     return Material(
       color: Colors.transparent,
@@ -41,6 +45,15 @@ class PrimaryButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              if (hasIcon) ...[
+                iconWidget ??
+                    Icon(
+                      icon,
+                      size: 24.r,
+                      color: Colors.white,
+                    ),
+                6.horizontalSpace,
+              ],
               Text(
                 text,
                 style: textTheme.bodyLarge?.copyWith(

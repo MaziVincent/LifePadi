@@ -38,6 +38,9 @@ const kRadialGradient = RadialGradient(
   stops: [0.0, 1.0],
 );
 
+const kRemoteApiUrl =
+    'https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api';
+
 List<({String name, String image})> services = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
   (name: 'Food', image: Assets.icons.restaurant.path),

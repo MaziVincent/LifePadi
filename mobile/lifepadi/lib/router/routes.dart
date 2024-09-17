@@ -80,9 +80,8 @@ class HomeRoute extends GoRouteData {
     );
 
     return switch (userRole) {
-      Admin() => const AdminRoute().location,
       Rider() => const RiderRoute().location,
-      Guest() => const GetStartedRoute().location,
+      Vendor() => const VendorRoute().location,
       _ => null,
     };
   }
@@ -231,9 +230,9 @@ class VerificationRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<AdminRoute>(path: '/admin')
-class AdminRoute extends GoRouteData {
-  const AdminRoute();
+@TypedGoRoute<VendorRoute>(path: '/admin')
+class VendorRoute extends GoRouteData {
+  const VendorRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

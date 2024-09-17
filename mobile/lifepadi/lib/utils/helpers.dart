@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,15 +14,19 @@ import 'constants.dart';
 /// Onboarding Feature information.
 typedef OnboardingInfo = ({String info, String description, String image});
 
+/// A map with string keys and dynamic values.
+typedef JsonMap = Map<String, dynamic>;
+
 Logger logger = Logger(
   printer: PrettyPrinter(
     methodCount: 0,
   ),
 );
 
+/// Show a toast message.
 Future<bool?> showToast(
   String message, {
-  Toast? toastLength,
+  bool isLong = false,
   Color? backgroundColor,
   double? fontSize,
   Color? textColor,
@@ -28,7 +35,7 @@ Future<bool?> showToast(
   return Fluttertoast.showToast(
     msg: message,
     backgroundColor: backgroundColor ?? Colors.black54,
-    toastLength: toastLength,
+    toastLength: isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT,
     fontSize: fontSize,
     textColor: textColor,
     gravity: gravity,
@@ -181,4 +188,48 @@ Future<bool?> openChoiceDialog({
       );
     },
   );
+}
+
+/// Display error.
+Future<bool?> displayError(
+  BuildContext context, {
+  required String description,
+  String? title,
+  VoidCallback? onOk,
+}) {
+  return openChoiceDialog(
+    context: context,
+    title: title ?? 'An error occurred',
+    description: description,
+    icon: Icons.error,
+    iconColor: Colors.red,
+    iconBackgroundColor: Colors.red[100],
+    yesText: 'Try again',
+    cancelText: 'Close',
+    onYes: onOk,
+  );
+}
+
+Future<dynamic> handleDioError(
+  DioException error,
+  BuildContext? context,
+) async {
+  final title =
+      error.error is SocketException ? 'No Internet Connection' : null;
+  final description = error.error is SocketException
+      ? 'Please check your internet connection and try again'
+      : error.response?.data.toString() ?? // Has a response
+          error.message ?? // Dio Exception
+          error.error.toString(); // Not Dio Exception
+
+  context != null
+      ? await displayError(
+          context,
+          title: title,
+          description: description,
+        )
+      : await showToast(
+          description,
+          isLong: true,
+        );
 }

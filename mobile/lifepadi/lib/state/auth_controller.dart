@@ -1,31 +1,29 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:dio/dio.dart';
+import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:native_storage/native_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../entities/auth.dart';
+import '../entities/user.dart';
 
 part 'auth_controller.g.dart';
-
-/// A mock of an Authenticated User
-const _dummyUser = Auth.signedIn(
-  id: -1,
-  displayName: 'My Name',
-  email: 'My Email',
-  token: 'some-updated-secret-auth-token',
-);
 
 /// This controller is an [AsyncNotifier] that holds and handles our authentication state
 @riverpod
 class AuthController extends _$AuthController {
-  late final IsolatedNativeStorage _secureStorage;
-  static const _storageKey = 'token';
+  IsolatedNativeStorage? _secureStorage;
+  NativeStorage? _storage;
+  static const _credentialsKey = 'currentUser';
 
   @override
-  Future<Auth> build() async {
-    final storage = NativeStorage();
-    _secureStorage = storage.secure.isolated;
+  Future<User> build() async {
+    if (_storage == null) {
+      _storage = NativeStorage();
+      _secureStorage = _storage!.secure.isolated;
+    }
 
     _persistenceRefreshLogic();
 
@@ -33,49 +31,69 @@ class AuthController extends _$AuthController {
   }
 
   /// Tries to perform a login with the saved token on the persistant storage.
+  ///
+  // ignore: comment_references
   /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
-  Future<Auth> _loginRecoveryAttempt() async {
+  Future<User> _loginRecoveryAttempt() async {
     try {
-      final savedToken = await _secureStorage.read(_storageKey);
-      if (savedToken == null) {
-        throw const UnauthorizedException('No auth token found');
+      final credentials = await _secureStorage?.read(_credentialsKey);
+      if (credentials == null) {
+        throw const UnauthorizedException('No credentials found');
       }
 
-      return _loginWithToken(savedToken);
+      return User.fromJson(jsonDecode(credentials) as JsonMap);
     } catch (_, __) {
-      await _secureStorage.delete(_storageKey);
-      return Future.value(const Auth.signedOut());
+      await _secureStorage?.delete(_credentialsKey);
+      return Future.value(const User.signedOut());
     }
   }
 
-  /// Mock of a request performed on logout (might be common, or not, whatevs).
   Future<void> logout() async {
-    await Future<void>.delayed(networkRoundTripTime);
-    state = const AsyncData(Auth.signedOut());
+    state = const AsyncData(User.signedOut());
   }
 
-  /// Mock of a successful login attempt, which results come from the network.
+  /// Login method that performs a request to the server.
   Future<void> login(String email, String password) async {
-    final result = await Future.delayed(
-      networkRoundTripTime,
-      () => _dummyUser,
-    );
-    state = AsyncData(result);
-    NativeStorage().write('hasEverLoggedIn', 'true');
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      final response = await client.post<JsonMap>(
+        '/auth/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from the server');
+      }
+
+      // Add the type to the response data
+      response.data!['type'] = 'SignedIn';
+      // Extract the refresh token from the response headers
+      final refreshToken = response.headers['Set-Cookie']!
+          .toString()
+          .split(';')
+          .firstWhere((element) => element.contains('refreshToken'))
+          .split('=')
+          .last;
+      response.data!['refreshToken'] = refreshToken;
+
+      final user = User.fromJson(response.data!);
+      // Save the user data to the secure storage
+      await _saveDetailsToStorage(user);
+      final hasEverLoggedIn = _storage?.read('hasEverLoggedIn');
+      if (hasEverLoggedIn == null) {
+        _storage?.write('hasEverLoggedIn', 'true');
+      }
+      state = AsyncData(user);
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  /// Mock of a login request performed with a saved token.
-  /// If such request fails, this method will throw an [UnauthorizedException].
-  Future<Auth> _loginWithToken(String token) async {
-    final logInAttempt = await Future.delayed(
-      networkRoundTripTime,
-      () => true, // edit this if you wanna play around
-    );
-
-    if (logInAttempt) return _dummyUser;
-
-    throw const UnauthorizedException('401 Unauthorized');
-  }
+  Future<String> _saveDetailsToStorage(User user) async =>
+      _secureStorage!.write(_credentialsKey, jsonEncode(user.toJson()));
 
   /// Internal method used to listen authentication state changes.
   /// When the auth object is in a loading state, nothing happens.
@@ -85,16 +103,51 @@ class AuthController extends _$AuthController {
     ref.listenSelf((_, next) {
       if (next.isLoading) return;
       if (next.hasError) {
-        _secureStorage.delete(_storageKey).ignore();
+        _secureStorage?.delete(_credentialsKey).ignore();
         return;
       }
 
       next.requireValue.map<void>(
-        signedIn: (signedIn) async =>
-            _secureStorage.write(_storageKey, signedIn.token),
-        signedOut: (signedOut) async => _secureStorage.delete(_storageKey),
+        signedIn: (signedIn) async => _saveDetailsToStorage(signedIn),
+        signedOut: (signedOut) async => _secureStorage?.delete(_credentialsKey),
       );
     });
+  }
+
+  /// Refresh the access token with the refresh token.
+  /// If the request fails, it logs out the user.
+  /// If the request succeeds, it updates the access token.
+  /// Returns the new access token.
+  Future<String> refreshToken() async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      final refreshToken = state.requireValue.maybeMap(
+        signedIn: (signedIn) => signedIn.refreshToken,
+        orElse: () => null,
+      );
+      final options = Options(
+        headers: {
+          'Cookie': 'refreshToken=$refreshToken',
+        },
+      );
+      final response = await client.post<Map<String, dynamic>>(
+        '/auth/refreshToken',
+        options: options,
+      );
+
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from the server');
+      }
+
+      final user = User.fromJson(response.data!);
+      // Save the new token to the secure storage
+      state = AsyncData(user);
+      await _saveDetailsToStorage(state.requireValue);
+      return response.data!['accessToken'] as String;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
@@ -104,5 +157,8 @@ class UnauthorizedException implements Exception {
   final String message;
 }
 
-/// Mock of the duration of a network request
-final networkRoundTripTime = 2.seconds;
+/// Exception thrown when a request returns 500.
+class ServerErrorException implements Exception {
+  const ServerErrorException(this.message);
+  final String message;
+}

@@ -1,13 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/utils/validation.dart';
+import 'package:lifepadi/widgets/primary_action_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
 import '../state/auth_controller.dart';
@@ -19,13 +22,9 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> login() => ref.read(authControllerProvider.notifier).login(
-          'myEmail',
-          'myPassword',
-        );
     final textTheme = context.textTheme;
     final hidePassword = useState(true);
-    final usePhone = useState(true);
+    final usePhone = useState(false);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     // Create the input states
     final email = useState('');
@@ -58,160 +57,170 @@ class LoginPage extends HookConsumerWidget {
                 ),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  // TODO: Validate the form inputs properly
                   child: Form(
                     key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Login',
-                          style: textTheme.titleMedium?.copyWith(
-                            color: const Color(0xFF151522),
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.w600,
+                    child: AutofillGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Login',
+                            style: textTheme.titleMedium?.copyWith(
+                              color: const Color(0xFF151522),
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        7.verticalSpace,
-                        Text(
-                          'Sign in to your account.',
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF999999),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w300,
+                          7.verticalSpace,
+                          Text(
+                            'Sign in to your account.',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: const Color(0xFF999999),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
-                        ),
-                        16.28.verticalSpace,
-                        if (usePhone.value)
-                          InputField(
-                            hintText: 'Enter Phone',
-                            labelText: 'Phone',
-                            onChanged: (value) => phone.value = value,
-                            onChildTap: () {
-                              // Hide this, show email input field
-                              usePhone.value = false;
-                              // Remove keyboard
-                              FocusScope.of(context).unfocus();
-                              // Clear the phone input field
-                              phone.value = '';
-                            },
-                            keyboardType: TextInputType.phone,
-                            hasValue: phone.value.isNotEmpty,
-                            autofillHints: const [
-                              AutofillHints.username,
-                              AutofillHints.telephoneNumber,
-                            ],
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 13,
-                                right: 9.76,
-                              ).r,
-                              child: Text(
-                                'Use Email',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: kDarkPrimaryColor,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.12.r,
+                          16.28.verticalSpace,
+                          if (usePhone.value)
+                            InputField(
+                              hintText: 'Enter Phone',
+                              labelText: 'Phone',
+                              onChanged: (value) => phone.value = value,
+                              onChildTap: () {
+                                // Hide this, show email input field
+                                usePhone.value = false;
+                                // Remove keyboard
+                                FocusScope.of(context).unfocus();
+                                // Clear the phone input field
+                                phone.value = '';
+                              },
+                              keyboardType: TextInputType.phone,
+                              hasValue: phone.value.isNotEmpty,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.telephoneNumber,
+                              ],
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 13,
+                                  right: 9.76,
+                                ).r,
+                                child: Text(
+                                  'Use Email',
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: kDarkPrimaryColor,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 0.12.r,
+                                  ),
+                                ),
+                              ),
+                            )
+                          else
+                            InputField(
+                              hintText: 'Enter Email',
+                              labelText: 'Email',
+                              onChanged: (value) => email.value = value,
+                              onChildTap: () {
+                                // Hide this, show phone number input field
+                                usePhone.value = true;
+                                // Remove keyboard
+                                FocusScope.of(context).unfocus();
+                                // Clear the email input field
+                                email.value = '';
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              hasValue: email.value.isNotEmpty,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.email,
+                              ],
+                              validator: buildEmailValidator(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 13,
+                                  right: 9.76,
+                                ).r,
+                                child: Text(
+                                  'Use Phone',
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: kDarkPrimaryColor,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 0.12.r,
+                                  ),
                                 ),
                               ),
                             ),
-                          )
-                        else
+                          19.verticalSpace,
                           InputField(
-                            hintText: 'Enter Email',
-                            labelText: 'Email',
-                            onChanged: (value) => email.value = value,
-                            onChildTap: () {
-                              // Hide this, show phone number input field
-                              usePhone.value = true;
-                              // Remove keyboard
-                              FocusScope.of(context).unfocus();
-                              // Clear the email input field
-                              email.value = '';
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            hasValue: email.value.isNotEmpty,
-                            autofillHints: const [
-                              AutofillHints.username,
-                              AutofillHints.email,
-                            ],
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 13,
-                                right: 9.76,
-                              ).r,
-                              child: Text(
-                                'Use Phone',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: kDarkPrimaryColor,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.12.r,
-                                ),
+                            hintText: 'Enter Password',
+                            labelText: 'Password',
+                            onChanged: (value) => password.value = value,
+                            onChildTap: () =>
+                                hidePassword.value = !hidePassword.value,
+                            keyboardType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            hideText: hidePassword.value,
+                            hasValue: password.value.isNotEmpty,
+                            autofillHints: const [AutofillHints.password],
+                            validator: ValidationBuilder(
+                              requiredMessage: 'Password is required',
+                            ).build(),
+                            child: Icon(
+                              hidePassword.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: const Color(0xFF858585),
+                              size: 19.52.r,
+                            ),
+                          ),
+                          13.01.verticalSpace,
+                          GestureDetector(
+                            onTap: () => context.go(
+                              const ForgotPasswordRoute().location,
+                            ),
+                            child: Text(
+                              'Forgot Password?',
+                              style: textTheme.bodySmall?.copyWith(
+                                color: kDarkPrimaryColor,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.12.r,
                               ),
                             ),
                           ),
-                        19.verticalSpace,
-                        InputField(
-                          hintText: 'Enter Password',
-                          labelText: 'Password',
-                          onChanged: (value) => password.value = value,
-                          onChildTap: () =>
-                              hidePassword.value = !hidePassword.value,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          hideText: hidePassword.value,
-                          hasValue: password.value.isNotEmpty,
-                          autofillHints: const [AutofillHints.password],
-                          child: Icon(
-                            hidePassword.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: const Color(0xFF858585),
-                            size: 19.52.r,
+                          25.verticalSpace,
+                          PrimaryActionButton(
+                            label: 'Login',
+                            onPressed: () async {
+                              if (!formKey.currentState!.validate()) return;
+
+                              // Make request to login
+                              await ref
+                                  .read(authControllerProvider.notifier)
+                                  .login(email.value, password.value)
+                                  .onError<DioException>(
+                                    (error, stackTrace) => handleDioError(
+                                      error,
+                                      context.mounted ? context : null,
+                                    ),
+                                  );
+                            },
                           ),
-                        ),
-                        13.01.verticalSpace,
-                        GestureDetector(
-                          onTap: () => context.go(
-                            const ForgotPasswordRoute().location,
-                          ),
-                          child: Text(
-                            'Forgot Password?',
-                            style: textTheme.bodySmall?.copyWith(
-                              color: kDarkPrimaryColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 0.12.r,
+                          17.verticalSpace,
+                          Center(
+                            child: ToggleAuthPage(
+                              question: "Don't have an account?",
+                              action: 'Register',
+                              onPressed: () => context.go(
+                                const RegisterRoute().location,
+                              ),
                             ),
                           ),
-                        ),
-                        25.verticalSpace,
-                        PrimaryButton(
-                          text: 'Login',
-                          onPressed: () {
-                            if (!formKey.currentState!.validate()) return;
-
-                            // TODO: Make request to login
-
-                            // For now, just call the login function
-                            showToast('Logging in');
-                            login();
-                          },
-                        ),
-                        17.verticalSpace,
-                        Center(
-                          child: ToggleAuthPage(
-                            question: "Don't have an account?",
-                            action: 'Register',
-                            onPressed: () => context.go(
-                              const RegisterRoute().location,
-                            ),
-                          ),
-                        ),
-                        20.verticalSpace,
-                      ],
+                          20.verticalSpace,
+                        ],
+                      ),
                     ),
                   ),
                 ),
