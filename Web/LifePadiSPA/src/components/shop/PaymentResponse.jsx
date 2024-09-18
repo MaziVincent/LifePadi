@@ -13,6 +13,7 @@ const PaymentResponse = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [paymentStatus, setPaymentStatus] = useState(null)
+  const [responseMsg, setResponseMsg] = useState('')
   const { state, dispatch } = useCart()
   const fetch = useFetch()
   const post = usePost()
@@ -48,17 +49,17 @@ const verifyTransaction = async () => {
       auth.accessToken
     )
     console.log(response)
-    // setTimeout(() => {
-    //   navigate('/user')
-    // }, 3000)
+    setTimeout(() => {
+      navigate('/user')
+    }, 3000)
 
   } else {
+    setResponseMsg(res.data.message)
     setPaymentStatus('failed')
   }
 }
 
   useEffect(() => {
-    // Verify the transaction status with your server
     
     verifyTransaction()
 
@@ -98,7 +99,7 @@ const verifyTransaction = async () => {
             <p className='flex flex-col justify-center gap-2 px-5'>
               <h2 className='text-center text-xl font-semibold'>
                 {' '}
-                Payment failed{' '}
+                {responseMsg && responseMsg}{' '}
               </h2>
               <Link
                 to='/shop'
