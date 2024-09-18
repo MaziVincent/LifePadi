@@ -390,12 +390,12 @@ const Home = () => {
               </div>
             </div>
             <div className=" w-full flex justify-center mt-8">
-              <button
-                type="button"
+              <Link
+                to="/shop"
                 className=" text-accent font-semibold bg-secondary rounded-xl flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 px-7 py-3 text-center "
               >
                 Explore our Store
-              </button>
+              </Link>
             </div>
           </div>
         </div>
