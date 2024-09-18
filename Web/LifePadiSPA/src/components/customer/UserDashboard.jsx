@@ -54,7 +54,7 @@ const UserDashboard = () => {
   console.log(orders);
 
   return (
-    <section className="flex flex-col items-center  dark:bg-darkBg text-darkBg dark:text-primary bg-primary h-auto">
+    <section className="flex flex-col items-center  dark:bg-darkBg text-darkBg dark:text-primary bg-lightGray h-auto">
       <div className="">
         <h1 className=" mb-5 text-2xl text-center font-bold">My Orders</h1>
         <main className=" flex gap-8">
@@ -72,7 +72,7 @@ const UserDashboard = () => {
               orders.result?.map((order) => (
                 <div
                   key={order.Id}
-                  className=" bg-lightGray hover:bg-graybg dark:hover:bg-darkHover dark:bg-darkMenu dark:text-primary border border-gray border-opacity-15 rounded-md mt-5 p-4 shadow-lg"
+                  className=" bg-primary hover:bg-graybg dark:hover:bg-darkHover dark:bg-darkMenu dark:text-primary border border-gray border-opacity-15 rounded-lg mt-5 p-4 shadow-lg"
                 >
                   <div className="">
                     <div className=" flex justify-between flex-wrap max-sm:gap-2 items-center pb-4">
@@ -80,8 +80,8 @@ const UserDashboard = () => {
                         <span className=" text-xl font-medium  text-opacity-60">
                           Order ID:
                           <span className="text-base font-normal">
-                            {" "}
-                            #BCUBYBCS
+                            {order.Order_Id}
+                            
                           </span>
                         </span>
                         {order.Status === "Pending" && (
@@ -143,24 +143,26 @@ const UserDashboard = () => {
                   <hr className=" border-gray border-opacity-30" />
                   <div className=" mt-5">
                     <div className=" flex justify-between items-center max-sm:flex-col max-sm:items-start gap-4 pb-5">
-                      <span className=" inline-flex gap-2 items-center font-normal text-lg max-md:text-sm max-sm:text-xl">
+                      <span className=" inline-flex gap-2 items-center font-normal text-base max-md:text-sm max-sm:text-xl">
                         Order Date:
                         <span className=" text-grayTxt dark:text-gray text-opacity-70 font-normal">
                         {new Date(order.CreatedAt).toDateString()}
                         </span>
                       </span>
-                      <span className=" inline-flex gap-2 items-center font-normal text-lg max-md:text-sm max-sm:text-xl">
+                      <span className=" inline-flex gap-2 items-center font-normal text-base max-md:text-sm max-sm:text-xl">
                         Type:
                         <span className=" text-grayTxt dark:text-gray text-opacity-70 font-normal">
                           {" "}
                           {order.Type}
                         </span>
                       </span>
-                      <span className="inline-flex items-center gap-2 font-normal text-lg max-md:text-sm max-sm:text-xl">
-                        Payment Method:
-                        <span className=" text-grayTxt dark:text-gray text-opacity-70 font-normal inline-flex gap-1 items-center">
+                      <span className="inline-flex items-center gap-2 font-normal text-base max-md:text-sm ">
+                        Delivery Status:
+                        <span className=" text-grayTxt dark:text-gray  text-opacity-70 font-normal inline-flex gap-1 items-center">
                           <CreditCard />
-                          Credit Card
+                          {
+                            order.IsDelivered ? "Delivered" : "Not Delivered"
+                          }
                         </span>
                       </span>
                     </div>
