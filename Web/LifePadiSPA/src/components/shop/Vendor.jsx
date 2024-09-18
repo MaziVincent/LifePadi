@@ -134,7 +134,7 @@ const Vendor = () => {
     isSuccess: addressSuccess,
   } = useQuery({
     queryKey: ["addresses"],
-    queryFn: () => getAddresses(`${addressUrl}customer-addresses/${auth?.user?.Id}`),
+    queryFn: () => getAddresses(`${addressUrl}customer-addresses/${auth?.Id}`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
@@ -203,7 +203,7 @@ const Vendor = () => {
       return;
     }
 
-    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.Id}`);
     cartDispatch({ type: "address" });
   };
 

@@ -50,7 +50,7 @@ const Cart = ({
     isSuccess,
   } = useQuery({
     queryKey: ["addresses"],
-    queryFn: () => getAddresses(`${addressUrl}/${auth?.user.Id}`),
+    queryFn: () => getAddresses(`${addressUrl}/${auth?.Id}`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
@@ -65,7 +65,7 @@ const Cart = ({
       return;
     }
 
-    getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+    getAddresses(`${baseUrl}address/customer-addresses/${auth?.Id}`);
     dispatch({ type: "address" });
   };
 
