@@ -58,7 +58,7 @@ const Cart = ({
   });
 
   const handleAddressChange = () => {
-    if (!auth.user) {
+    if (!auth) {
       setCartState(false);
       setLogin(true);
 

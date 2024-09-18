@@ -20,7 +20,7 @@ const RiderDashboard = () => {
   let pageSize = 5;
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
-  const riderId = auth.user.Id
+  const riderId = auth.Id
 
   const getRiderDeliveris = async (url) => {
     const response = await fetch(url, auth.accessToken)

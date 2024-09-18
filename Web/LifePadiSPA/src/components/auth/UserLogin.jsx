@@ -42,9 +42,8 @@ const UserLogin = () => {
 
       //console.log(response.data);
       setAuth(response.data);
-      //dispatch({type:"setAddress", payload:response.data?.user.ContactAddress})
       toast.success("Logged in Successfully");
-      const role = response.data?.user.Role;
+      const role = response.data?.Role;
       setTimeout(() => {
         switch (role) {
           case "Customer":

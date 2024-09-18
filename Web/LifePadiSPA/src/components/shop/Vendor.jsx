@@ -196,7 +196,7 @@ const Vendor = () => {
   };
 
   const handleAddressChange = () => {
-    if (!auth.user) {
+    if (!auth) {
       setCartState(false);
       setLogin(true);
 
@@ -228,7 +228,7 @@ const Vendor = () => {
     console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
     cartDispatch({type:"error", payload:""})
-    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
+    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth?.Id)
   };
 
   const handleClick = async (e) => {

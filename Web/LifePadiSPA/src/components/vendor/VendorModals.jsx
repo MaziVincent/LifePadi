@@ -97,7 +97,7 @@ export const UpdateModal = ({
   const [tag, setTag] = useState(product.Tag)
   const [imgUrl] = useState(product.ProductImgUrl)
   const [image, setImage] = useState(null)
-  let vendoId = auth.user.Id
+  let vendoId = auth.Id
   const [response, setResponse] = useState(null)
 
   const fetchCategories = async (url) => {
@@ -471,7 +471,7 @@ export const AddProductModal = ({
   const [description, setDescription] = useState('')
   const [tag, setTag] = useState('')
   const [image, setImage] = useState(null)
-  let vendoId = auth.user.Id
+  let vendoId = auth.Id
   const postData = usePost()
   const [response, setResponse] = useState(null)
 

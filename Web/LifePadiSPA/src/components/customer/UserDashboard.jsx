@@ -41,7 +41,7 @@ const UserDashboard = () => {
     isLoading: ordersLoading,
   } = useQuery({
     queryKey: ["orders", page, search ],
-    queryFn: () => getOrder(`${url}${auth.user?.Id}?PageNumber=${page}&SearchString=${search}`),
+    queryFn: () => getOrder(`${url}${auth.Id}?PageNumber=${page}&SearchString=${search}`),
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
