@@ -32,10 +32,10 @@ const PaymentResponse = () => {
   useEffect(() => {
     // Extract query parameters from the URL
     const queryParams = new URLSearchParams(location.search);
-    const status = queryParams.get("status");
-    const transactionId = queryParams.get("transaction_id");
-    const tx_ref = queryParams.get("tx_ref");
-    const url = `${baseUrl}transaction/confirmPayment?tx_ref=${tx_ref}&transaction_id=${transactionId}&status=${status}`;
+    // const status = queryParams.get("status");
+    // const transactionId = queryParams.get("transaction_id");
+    const tx_ref = queryParams.get("reference");
+    const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`
     
     // Verify the transaction status with your server
     const verifyTransaction = async () => {
@@ -54,7 +54,7 @@ const PaymentResponse = () => {
       }
     };
     verifyTransaction();
-  }, []);
+  }, [auth.accessToken, fetch, location.search, navigate, post, state.delivery]);
   return (
     <section className="flex justify-center items-center  pt-28">
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">

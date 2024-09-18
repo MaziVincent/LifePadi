@@ -9,7 +9,7 @@ import { useState } from 'react'
 const CheckOut = () => {
   const { state, dispatch } = useCart()
   const postData = usePost()
-  const url = `${baseUrl}transaction/initiate`
+  const url = `${baseUrl}transaction/paystackcheckout`
   const { auth } = useAuth()
   const [loading, setLoading] = useState(false)
   // console.log(state);
@@ -30,7 +30,7 @@ const CheckOut = () => {
 
     if (res.status == 200) {
       setLoading(false)
-      window.location.href = res.data.link
+      window.location.href = res.link
       // window.open(res.data.link, '_blank')
       // state.checkOut = false
     } else {
