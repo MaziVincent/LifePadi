@@ -317,7 +317,9 @@ namespace Api.Services
                 var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
                 if (payment != null)
                 {
-                    throw new Exceptions.ServiceException("Already paid for this order");
+                    return new {
+                        message = "Already paid for this order",
+                    };
                 }
                 var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePaymentDto.OrderId);
                 if (order == null) throw new Exceptions.ServiceException("Order not found");
@@ -381,7 +383,9 @@ namespace Api.Services
                 var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.TransactionRef == reference);
                 if (initial_transaction != null)
                 {
-                    throw new Exceptions.AlreadyExistException("Already paid for this order");
+                    return new {
+                        message = "Transaction already verified",
+                    };
                 }
 
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" +reference;
