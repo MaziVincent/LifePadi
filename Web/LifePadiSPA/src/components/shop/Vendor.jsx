@@ -247,7 +247,7 @@ const Vendor = () => {
     }
     setOrderLoading(true);
     const order = {
-      CustomerId: auth?.user.Id,
+      CustomerId: auth?.Id,
       Instruction: cartState.deliveryInstruction,
     };
     const response = await post(orderUrl, order, auth.accessToken);
