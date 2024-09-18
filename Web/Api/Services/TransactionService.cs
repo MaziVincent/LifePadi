@@ -88,15 +88,18 @@ namespace Api.Services
                 var moni_signature = MoniSignature.GetSignature(_config);
 
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                var request = new HttpRequestMessage(HttpMethod.Post,
-                 _config["Bani:Stage_Base_Url"] + "/partner/collection/bank_transfer/");
+                var request = new HttpRequestMessage(HttpMethod.Post, paymentUrl)
+                {
+                    Content = content // Attach the payload content here
+                };
                 request.Headers.Add("Authorization", "Bearer " + access_token); // Replace with your actual token
                 request.Headers.Add("moni-signature", moni_signature); // Add any other desired headers
 
                 var response = await _httpClient.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return response;
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    return responseBody;
                 }
                 throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
             }
@@ -289,7 +292,7 @@ namespace Api.Services
                     var apiString = await response.Content.ReadAsStringAsync();
 
                     var paymentRes = JsonConvert.DeserializeObject<JsonResponse>(apiString);
-                    Console.WriteLine(paymentRes);
+                    // Console.WriteLine(paymentRes);
                     if (paymentRes!.status == "success")
                     {
                         return new DTO.Data
@@ -300,7 +303,117 @@ namespace Api.Services
                     throw new Exceptions.ServiceException("Payment not successful");
                 }
                 throw new Exceptions.ServiceException(response.StatusCode.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
 
+        public async Task<object> paystackCheckout(InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
+                if (payment != null)
+                {
+                    throw new Exceptions.ServiceException("Already paid for this order");
+                }
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePaymentDto.OrderId);
+                if (order == null) throw new Exceptions.ServiceException("Order not found");
+                var customerData = new
+                {
+                    voucherCode = initiatePaymentDto.VoucherCode,
+                    orderId = initiatePaymentDto.OrderId,
+                    amount = initiatePaymentDto.Amount,
+                    totalAmount = initiatePaymentDto.TotalAmount,
+                    deliveryFee = initiatePaymentDto.DeliveryFee,
+                    createdAt = DateTime.UtcNow
+                };
+                var tx_ref = GenerateTxRef.genTx_rf();
+                var redirect_url = _config["Base_Url:Frontend_local"] + "/shop/payment-response";
+                // var redirect_url = _config["Base_Url:Local"] + "/transaction/paystack-confirmPayment";
+                string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var payload = new {
+                        email = order.Customer!.Email,
+                        amount = initiatePaymentDto.TotalAmount * 100,
+                        reference = tx_ref,
+                        callback_url = redirect_url,
+                        metadata = customerData
+                };
+
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+
+                var request = new HttpRequestMessage(HttpMethod.Post, paymentUrl);
+
+                //create an an instance of IHttpclientFactory
+                var client = _ClientFactory.CreateClient();
+
+                request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                //add the auth token to the header
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+
+                //send request and get the respond
+                HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var apiString = await response.Content.ReadAsStringAsync();
+                    var paymentRes = JsonConvert.DeserializeObject<PaystackJsonResponse>(apiString);
+                    string link = paymentRes!.data!.authorization_url!;
+                    return new {
+                        link = link
+                    };
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<object> paystackVerifyPayment(string reference)
+        {
+            try
+            {
+                var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.TransactionRef == reference);
+                if (initial_transaction != null)
+                {
+                    throw new Exceptions.AlreadyExistException("Already paid for this order");
+                }
+
+                string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" +reference;
+                var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
+                var client = _ClientFactory.CreateClient();
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+                HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var apiString = await response.Content.ReadAsStringAsync();
+                    var paymentRes = JsonConvert.DeserializeObject<PaystackVerificationResponse>(apiString);
+
+                    //insert transaction into the database
+                    var transaction = new Transaction();
+                    transaction.Status = paymentRes!.data!.status;
+                    transaction.AmountPaid = (Double) paymentRes.data!.amount! / 100;
+                    transaction.TransactionRef = reference;
+                    transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
+                    transaction.TotalAmount = paymentRes.data!.metadata!.totalAmount;
+                    transaction.OrderId = (int)paymentRes.data!.metadata!.orderId!;
+                    if (paymentRes.data.metadata.voucherCode != "")
+                    {
+                        var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
+                        transaction.VoucherId = voucher.Id;
+                    }
+
+                    await _dbContext.Transactions.AddAsync(transaction);
+                    await _dbContext.SaveChangesAsync();
+
+                    return paymentRes!;
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
             }
             catch (Exception ex)
             {

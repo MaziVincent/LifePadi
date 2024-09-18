@@ -24,7 +24,7 @@ namespace Api.Helpers
 
         public static string GetSignature(IConfiguration _config)
         {
-            string merchantKey = _config["Bani:Merchant_Key"]!;
+            string merchantKey = _config["Bani:Private_Key"]!;
             string tribeAccountRef = _config["Bani:Account_Tribe_Ref"]!;
             string publicKey = _config["Bani:Public_Key"]!;
 
