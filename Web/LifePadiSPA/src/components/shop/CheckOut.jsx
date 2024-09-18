@@ -17,12 +17,14 @@ const CheckOut = () => {
   const handleMakePayment = async (e) => {
     e.preventDefault()
     setLoading(true)
+    console.log(state);
+    
     const data = {
-      Amount: state.total,
+      Amount: state.total - state.deliveryFee,
       DeliveryFee: state.deliveryFee,
       VoucherCode: '',
       OrderId: state.order.Id,
-      TotalAmount: state.total - state.deliveryFee,
+      TotalAmount: state.total,
     }
 
     const res = await postData(url, data, auth.token)
@@ -30,7 +32,7 @@ const CheckOut = () => {
 
     if (res.status == 200) {
       setLoading(false)
-      window.location.href = res.link
+      window.location.href = res.data.link
       // window.open(res.data.link, '_blank')
       // state.checkOut = false
     } else {
