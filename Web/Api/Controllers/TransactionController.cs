@@ -70,5 +70,19 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("BaniCheckout")]
+        public async Task<IActionResult> baniCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var response = await _itran.baniCheckout(initiatePaymentDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

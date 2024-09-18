@@ -115,13 +115,13 @@ namespace Api.Controllers
                 var refreshToken = Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(refreshToken))
                 {
-                    return BadRequest("Invalid refresh token");
+                    return Unauthorized("Invalid refresh token");
                 }
                 var genTokenDTO = new GenerateToken(_config).validateRefreshToken(refreshToken);
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == genTokenDTO!.Id);
                 if (user == null)
                 {
-                    return BadRequest("User not found");
+                    return NoContent();
                 }
                 var loggedInUser = new LoggedInUserDto
                 {

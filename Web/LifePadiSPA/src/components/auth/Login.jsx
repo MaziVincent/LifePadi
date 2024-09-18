@@ -37,10 +37,10 @@ const Login = () => {
         withCredentials: true,
       });
 
-      console.log(response.data);
+      //console.log(response);
       setAuth(response.data);
-      toast.success("Logged in Successfully");
-      const role = response.data?.user.Role;
+     toast.success("Logged in Successfully");
+      const role = response.data?.Role;
       setTimeout(() => {
         switch (role) {
           case "Customer":

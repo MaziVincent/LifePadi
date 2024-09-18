@@ -56,5 +56,5 @@ export const addAddressToDb = async (url, location, token, userId ) => {
 //     console.log(state.deliveryAddress);
 //     dispatch({ type: "address" });
 //     dispatch({type:"error", payload:""})
-//     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
+//     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.Id)
 // }

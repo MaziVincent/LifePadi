@@ -8,9 +8,9 @@ const RequireAuthAdmin = ({allowedRole}) => {
 
     return ( 
         
-        auth?.user?.Role?.includes(allowedRole)
+        auth?.Role?.includes(allowedRole)
                 ? <Outlet />
-                : auth.user ?
+                : auth ?
                 <Navigate to="/unauthorized" state={{from: location}} replace />
                     : <Navigate to="/login" state={{from: location}} replace />
 

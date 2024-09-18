@@ -17,7 +17,7 @@ const VendorDashboard = () => {
   let pageSize = 5
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
-  const vendorId = auth.user.Id
+  const vendorId = auth.Id
   const vendorProductsURL = vendorProductsUrl.replace('{id}', vendorId)
   const [openAddProductModal, setOpenAddProductModal] = useState(false)
   const handleOpenAddProductModal = () => setOpenAddProductModal(true)
