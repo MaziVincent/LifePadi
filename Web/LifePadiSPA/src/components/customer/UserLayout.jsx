@@ -20,7 +20,7 @@ const UserLayout = () => {
           setAside={setAside}
         />
 
-        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-56 py-20 border-3 h-full border-red min-h-screen`}>
+        <div className={` ml-1 md:ml-20 lg:ml-56 py-20 border-3 h-full border-red min-h-screen`}>
           <Outlet />
         </div>
         <UserFooter />
