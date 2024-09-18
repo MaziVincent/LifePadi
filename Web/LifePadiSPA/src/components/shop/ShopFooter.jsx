@@ -1,4 +1,3 @@
-
 import logo from "../../assets/images/Logonamedark.svg";
 import { Link } from "react-router-dom";
 import ResponsiveLogo from "../shared/ResponsiveLogo";
@@ -6,7 +5,6 @@ import ResponsiveLogo from "../shared/ResponsiveLogo";
 const ShopFooter = () => {
   return (
     <footer className=" bg-white dark:bg-gray-800 ">
-     
       <div className="mx-auto lg:w-10/12 px-5 pb-6">
         <div className="md:flex md:justify-between">
           <div className="mb-5">
@@ -21,7 +19,7 @@ const ShopFooter = () => {
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
                   <Link
-                    to={"/shop"}
+                    to="/shop"
                     className="hover:underline"
                   >
                     Stores
@@ -29,7 +27,7 @@ const ShopFooter = () => {
                 </li>
                 <li className="mb-4">
                   <Link
-                    to={"/logistics"}
+                    to="/logistics"
                     className="hover:underline"
                   >
                     Logistics
@@ -38,7 +36,7 @@ const ShopFooter = () => {
 
                 <li className="mb-4">
                   <Link
-                    to={"/about"}
+                    to="/about"
                     className="hover:underline"
                   >
                     About
@@ -47,7 +45,7 @@ const ShopFooter = () => {
 
                 <li className="mb-4">
                   <Link
-                    to={"/contacts"}
+                    to="/contact"
                     className="hover:underline"
                   >
                     Contacts

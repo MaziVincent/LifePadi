@@ -24,7 +24,7 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email!.ToLower() == email.ToLower());
                 if (user == null)
                 {
                     return false;
@@ -41,6 +41,11 @@ namespace Api.Services
         {
             try
             {
+                var response = await checkEmail(user.Email!);
+                if (response)
+                {
+                    throw new ServiceException("Email already exists");
+                }
                 var newAdmin = _mapper.Map<Admin>(user);
                 newAdmin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 newAdmin.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();

@@ -1,4 +1,5 @@
 ﻿using Api.Models;
+using Bogus.DataSets;
 using System.Numerics;
 
 namespace Api.DTO
@@ -108,5 +109,50 @@ namespace Api.DTO
         public string? status { get; set; }
         public string? tx_ref { get; set; }
         public string? transaction_id { get; set; }
+    }
+
+    public class PaystackJsonResponse
+    {
+        public bool status { get; set; }
+        public string? message { get; set; }
+        public PaystackData? data { get; set; }
+    }
+
+    public class PaystackData
+    {
+        public string? authorization_url { get; set; }
+        public string? access_code { get; set; }
+        public string? reference { get; set; }
+    }
+
+    public class PaystackVerificationResponse
+    {
+        public bool status { get; set; }
+        public string? message { get; set; }
+        public PaystackVerificationData? data { get; set; }
+    }
+
+    public class PaystackVerificationData
+    {
+        public BigInteger id { get; set; }
+        public string? reference { get; set; }
+        public string? status { get; set; }
+        public string? gateway_response { get; set; }
+        public DateTime? paid_at { get; set; }
+        public string? channel { get; set; }
+        public string? currency { get; set; }
+        public string? ip_address { get; set; }
+        public int? amount { get; set; }
+        public PaystackMetada? metadata { get; set; }
+    }
+
+    public class PaystackMetada
+    {
+        public string? voucherCode { get; set; }
+        public int orderId { get; set; }
+        public double totalAmount { get; set; }
+        public double deliveryFee { get; set; }
+        public double amount { get; set; }
+        public DateTime? createdAt { get; set; }
     }
 }

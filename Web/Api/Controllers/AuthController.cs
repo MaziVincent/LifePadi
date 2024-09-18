@@ -123,19 +123,24 @@ namespace Api.Controllers
                 {
                     return NoContent();
                 }
-                var loggedInUser = new LoggedInUserDto
+                // var loggedInUser = new LoggedInUserDto
+                // {
+                //     Id = user.Id,
+                //     Email = user.Email,
+                //     FirstName = user.FirstName,
+                //     LastName = user.LastName,
+                //     ContactAddress = user.ContactAddress,
+                //     Role = genTokenDTO!.Role
+                // };
+                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
+                var token = new
                 {
                     Id = user.Id,
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ContactAddress = user.ContactAddress,
-                    Role = genTokenDTO!.Role
-                };
-                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
-                var token = new
-                {
-                    user = loggedInUser,
+                    Role = genTokenDTO!.Role,
                     accessToken = accessToken
                 };
                 return Ok(token);

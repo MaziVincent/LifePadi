@@ -84,5 +84,34 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("PaystackCheckout")]
+        public async Task<IActionResult> paystackCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var response = await _itran.paystackCheckout(initiatePaymentDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("paystack-confirmPayment")]
+        public async Task<IActionResult> paystackVerifyPayment([FromQuery] string reference)
+        {
+            try
+            {
+                var response = await _itran.paystackVerifyPayment(reference);
+                Console.WriteLine($"response {response}");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
