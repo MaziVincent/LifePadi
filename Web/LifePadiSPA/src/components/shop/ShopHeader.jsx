@@ -87,7 +87,7 @@ const ShopHeader = () => {
             </span>
             <span
               onClick={
-                auth?.user
+                auth.accessToken
                   ? () => {
                       navigate("/user");
                     }

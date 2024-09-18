@@ -37,7 +37,7 @@ const Login = () => {
         withCredentials: true,
       });
 
-      //console.log(response);
+      //console.log(response.data);
       setAuth(response.data);
      toast.success("Logged in Successfully");
       const role = response.data?.Role;

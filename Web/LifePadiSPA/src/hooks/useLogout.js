@@ -11,6 +11,7 @@ const useLogout = () => {
          try{
             const response = await axios.get('auth/logOut', {
                 withCredentials:true,
+                credentials: 'include',
                 headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
 
             });
