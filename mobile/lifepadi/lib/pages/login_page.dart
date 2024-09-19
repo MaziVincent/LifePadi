@@ -10,6 +10,7 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/validation.dart';
+import 'package:lifepadi/widgets/phone_input_field.dart';
 import 'package:lifepadi/widgets/primary_action_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
@@ -82,10 +83,8 @@ class LoginPage extends HookConsumerWidget {
                           ),
                           16.28.verticalSpace,
                           if (usePhone.value)
-                            InputField(
-                              hintText: 'Enter Phone',
-                              labelText: 'Phone',
-                              onChanged: (value) => phone.value = value,
+                            PhoneInputField(
+                              phone: phone,
                               onChildTap: () {
                                 // Hide this, show email input field
                                 usePhone.value = false;
@@ -94,12 +93,6 @@ class LoginPage extends HookConsumerWidget {
                                 // Clear the phone input field
                                 phone.value = '';
                               },
-                              keyboardType: TextInputType.phone,
-                              hasValue: phone.value.isNotEmpty,
-                              autofillHints: const [
-                                AutofillHints.username,
-                                AutofillHints.telephoneNumber,
-                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
