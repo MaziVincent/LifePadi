@@ -24,14 +24,11 @@ const CheckOut = () => {
 
 
   const handleMakePayment = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+   
     e.preventDefault()
     setLoading(true)
     console.log(state);
     
-    e.preventDefault();
-    setLoading(true);
     const data = {
       Amount: state.total - state.deliveryFee,
       DeliveryFee: state.deliveryFee,
@@ -48,22 +45,14 @@ const CheckOut = () => {
     if (res.status == 200) {
       setLoading(false);
       window.location.href = res.link;
-      setLoading(false)
-      window.location.href = res.data.link
-      setLoading(false);
-      window.location.href = res.link;
+      
       // window.open(res.data.link, '_blank')
       // state.checkOut = false
     } else {
       alert(res.response.data);
       setLoading(false);
-      alert(res.response.data);
-      setLoading(false);
+      
     }
-  };
-  console.log(data)
-    // setTimeout(() => {
-    // }, 2000);
   };
   console.log(data)
   return (
@@ -71,23 +60,16 @@ const CheckOut = () => {
       open={state.checkOut}
       onClose={() => {
         dispatch({ type: "checkOut" });
-        dispatch({ type: "checkOut" });
       }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <div
         id="defaultModal"
         className=" overflow-y-auto overflow-x-hidden absolute  top-20  z-50 justify-center items-center  w-full h-full pb-24 "
-        id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute  top-20  z-50 justify-center items-center  w-full h-full pb-24 "
-      >
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
-          <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md  dark:bg-darkMenu  dark:text-primary overflow-y-auto ">
-            <h3 className="text-xl font-semibold text-background dark:text-gray-50 pb-3">
-              Payment Confirmation
+     
+     >
+        
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen   lg:py-0 ">
           <div className="w-full bg-primary rounded-lg p-5 shadow md:mt-0 sm:max-w-md  dark:bg-darkMenu  dark:text-primary overflow-y-auto ">
             <h3 className="text-xl font-semibold text-background dark:text-gray-50 pb-3">
@@ -186,11 +168,11 @@ const CheckOut = () => {
           </div>
         </div>
       </div>
+      </div>
+    </div>
+    </div>
     </Modal>
   );
 };
-  );
-};
 
-export default CheckOut;
 export default CheckOut;
