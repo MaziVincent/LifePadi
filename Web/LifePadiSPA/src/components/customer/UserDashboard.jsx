@@ -19,6 +19,7 @@ import { CircularProgress } from "@mui/material";
 import { Pagination } from "@mui/material";
 import { Alert } from "@mui/material";
 import { useState } from "react";
+import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 
 const UserDashboard = () => {
   const fetch = useFetch();
@@ -55,8 +56,8 @@ const UserDashboard = () => {
 
   return (
     <section className="flex flex-col items-center  dark:bg-darkBg text-darkBg dark:text-primary bg-lightGray h-auto min-h-screen">
-      <div className="">
-        <h1 className=" mb-5 text-2xl text-center font-bold">My Orders</h1>
+      <div className="pt-5">
+        <h1 className=" mb-5 text-4xl text-center font-bold">My Orders</h1>
         <main className=" flex gap-8">
           <section className="right-section right-0 top-0 max-lg:w-full">
             {ordersLoading && <CircularProgress />}
@@ -69,8 +70,11 @@ const UserDashboard = () => {
             )}
 
             {
-              orders?.result.length < 1 ? <div>
-                <h1> You currently have no orders </h1>
+              orders?.result.length < 1 ? <div className="flex flex-col items-center gap-6">
+                <h1 className="text-2xl"> You currently have no orders <span className="text-background "> <SentimentDissatisfiedOutlinedIcon className="animate-bounce " fontSize="large" /> </span> </h1>
+              <div>
+                <Link to="/shop" className="bg-secondary p-4 rounded-xl shadow-xl text-xl font-semibold hover:bg-background cursor-pointer" > Explore our stores </Link>
+              </div>
               </div>
               :
               <>
