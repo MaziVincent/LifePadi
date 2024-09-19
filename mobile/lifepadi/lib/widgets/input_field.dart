@@ -94,6 +94,7 @@ class InputField extends StatelessWidget {
       autofillHints: autofillHints,
       maxLength: maxLength,
       maxLines: maxLines,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

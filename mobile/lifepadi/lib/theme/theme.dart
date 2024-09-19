@@ -25,6 +25,7 @@ ThemeData lightTheme() {
     bottomSheetTheme: BottomSheetThemeData(
       showDragHandle: true,
       backgroundColor: Colors.white,
+      modalBackgroundColor: Colors.white,
       dragHandleSize: Size(72.w, 8.h),
       dragHandleColor: kDarkTextColor,
       shape: const RoundedRectangleBorder(

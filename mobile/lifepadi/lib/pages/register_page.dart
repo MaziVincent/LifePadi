@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/my_divider.dart';
+import 'package:lifepadi/widgets/phone_input_field.dart';
 import 'package:lifepadi/widgets/primary_button.dart';
 import 'package:lifepadi/widgets/toggle_auth_page.dart';
 
@@ -23,13 +25,14 @@ class RegisterPage extends HookConsumerWidget {
     final textTheme = context.textTheme;
     final hidePassword = useState(true);
     final hideConfirmPassword = useState(true);
-    final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     // Create the input states
     final email = useState('');
     final password = useState('');
     final phone = useState('');
     final confirmPassword = useState('');
+    final firstName = useState('');
+    final lastName = useState('');
 
     return Scaffold(
       body: SafeArea(
@@ -57,7 +60,6 @@ class RegisterPage extends HookConsumerWidget {
                 ),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  // TODO: Validate the form inputs properly
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -81,76 +83,72 @@ class RegisterPage extends HookConsumerWidget {
                           ),
                         ),
                         16.28.verticalSpace,
-                        if (usePhone.value)
-                          InputField(
-                            hintText: 'Enter Phone',
-                            labelText: 'Phone',
-                            onChanged: (value) => phone.value = value,
-                            onChildTap: () {
-                              // Hide this, show email input field
-                              usePhone.value = false;
-                              // Remove keyboard
-                              FocusScope.of(context).unfocus();
-                              // Clear the phone input field
-                              phone.value = '';
-                            },
-                            keyboardType: TextInputType.phone,
-                            hasValue: phone.value.isNotEmpty,
-                            autofillHints: const [
-                              AutofillHints.newUsername,
-                              AutofillHints.telephoneNumber,
-                            ],
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 13,
-                                right: 9.76,
-                              ).r,
-                              child: Text(
-                                'Use Email',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: kDarkPrimaryColor,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.12.r,
-                                ),
-                              ),
-                            ),
+                        InputField(
+                          hintText: 'Enter first name',
+                          labelText: 'First name',
+                          onChanged: (value) => firstName.value = value,
+                          keyboardType: TextInputType.text,
+                          hasValue: firstName.value.isNotEmpty,
+                          autofillHints: const [
+                            AutofillHints.givenName,
+                            AutofillHints.name,
+                          ],
+                          validator: ValidationBuilder(
+                            requiredMessage: 'First name is required',
                           )
-                        else
-                          InputField(
-                            hintText: 'Enter Email',
-                            labelText: 'Email',
-                            onChanged: (value) => email.value = value,
-                            onChildTap: () {
-                              // Hide this, show phone number input field
-                              usePhone.value = true;
-                              // Remove keyboard
-                              FocusScope.of(context).unfocus();
-                              // Clear the email input field
-                              email.value = '';
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            hasValue: email.value.isNotEmpty,
-                            autofillHints: const [
-                              AutofillHints.newUsername,
-                              AutofillHints.email,
-                            ],
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 13,
-                                right: 9.76,
-                              ).r,
-                              child: Text(
-                                'Use Phone',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: kDarkPrimaryColor,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.12.r,
-                                ),
-                              ),
-                            ),
-                          ),
+                              .minLength(
+                                2,
+                                'First name must be at least 2 characters',
+                              )
+                              .build(),
+                        ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Enter last name',
+                          labelText: 'Last name',
+                          onChanged: (value) => lastName.value = value,
+                          keyboardType: TextInputType.text,
+                          hasValue: lastName.value.isNotEmpty,
+                          autofillHints: const [
+                            AutofillHints.familyName,
+                            AutofillHints.name,
+                          ],
+                          validator: ValidationBuilder(
+                            requiredMessage: 'Last name is required',
+                          )
+                              .minLength(
+                                3,
+                                'Last name must be at least 3 characters',
+                              )
+                              .build(),
+                        ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Enter Email',
+                          labelText: 'Email',
+                          onChanged: (value) => email.value = value,
+                          keyboardType: TextInputType.emailAddress,
+                          hasValue: email.value.isNotEmpty,
+                          autofillHints: const [
+                            AutofillHints.newUsername,
+                            AutofillHints.email,
+                          ],
+                          validator: buildEmailValidator(),
+                        ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Enter Phone',
+                          labelText: 'Phone',
+                          onChanged: (value) => phone.value = value,
+                          keyboardType: TextInputType.phone,
+                          hasValue: phone.value.isNotEmpty,
+                          autofillHints: const [
+                            AutofillHints.newUsername,
+                            AutofillHints.telephoneNumber,
+                          ],
+                        ),
+                        19.verticalSpace,
+                        PhoneInputField(phone: phone),
                         19.verticalSpace,
                         InputField(
                           hintText: 'Enter New Password',
@@ -162,6 +160,7 @@ class RegisterPage extends HookConsumerWidget {
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
                           autofillHints: const [AutofillHints.newPassword],
+                          validator: buildPasswordValidator(),
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -182,6 +181,15 @@ class RegisterPage extends HookConsumerWidget {
                           hideText: hideConfirmPassword.value,
                           hasValue: confirmPassword.value.isNotEmpty,
                           autofillHints: const [AutofillHints.newPassword],
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Confirm Password is required';
+                            }
+                            if (value != password.value) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility
