@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
+import 'package:lifepadi/widgets/buttons/my_icon_button.dart';
 
 class GlassmorphicBackButton extends StatelessWidget {
   const GlassmorphicBackButton({

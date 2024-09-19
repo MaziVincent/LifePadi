@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/widgets/logout_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 import '../state/cute_rabbits.dart';
 import '../state/nuclear_codes.dart';
-import '../widgets/my_sliver_list.dart';
-import '../widgets/user_title.dart';
 
 class AdminPage extends ConsumerWidget {
   const AdminPage({super.key});
@@ -25,7 +23,10 @@ class AdminPage extends ConsumerWidget {
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
-                  child: Text('Admin Page', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'Admin Page',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -64,7 +65,10 @@ class _AdminTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: Text(
         '☢️ Admin? Here, use these nukes ☢️',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }

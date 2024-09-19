@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../widgets/notification_tile.dart';
 
 class NotificationPage extends HookWidget {
   const NotificationPage({super.key});

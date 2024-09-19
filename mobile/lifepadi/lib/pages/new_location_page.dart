@@ -5,13 +5,8 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_divider.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../widgets/bottom_panel.dart';
-import '../widgets/section_title.dart';
 
 class NewLocationPage extends StatelessWidget {
   const NewLocationPage({super.key});

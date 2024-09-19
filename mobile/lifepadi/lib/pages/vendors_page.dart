@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 import '../utils/constants.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/vendor_card.dart';
 
 class VendorsPage extends StatelessWidget {
   const VendorsPage({super.key});

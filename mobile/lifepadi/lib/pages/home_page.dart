@@ -8,9 +8,8 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../widgets/widgets.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});

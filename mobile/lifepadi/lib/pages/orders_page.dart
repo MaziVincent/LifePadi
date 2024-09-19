@@ -5,11 +5,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
-
-import '../widgets/my_order_list.dart';
-import '../widgets/order_tile.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});

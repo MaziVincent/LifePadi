@@ -6,14 +6,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_divider.dart';
-import 'package:lifepadi/widgets/payment_total.dart';
-import 'package:lifepadi/widgets/price_breakdown_item.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
-
-import '../widgets/payment_method_checkbox.dart';
-import '../widgets/primary_outline_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class CheckoutPage extends HookWidget {
   const CheckoutPage({super.key});

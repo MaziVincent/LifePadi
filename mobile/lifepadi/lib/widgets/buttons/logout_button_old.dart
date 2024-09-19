@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../state/auth_controller.dart';
+import '../../state/auth_controller.dart';
 import 'action_button.dart';
 
 class LogoutButton extends ConsumerWidget {

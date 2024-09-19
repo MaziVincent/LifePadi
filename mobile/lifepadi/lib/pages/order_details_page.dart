@@ -4,21 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/bottom_panel.dart';
-import 'package:lifepadi/widgets/order_tile.dart';
-import 'package:lifepadi/widgets/payment_method_info.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
-import 'package:lifepadi/widgets/primary_outline_button.dart';
-import 'package:lifepadi/widgets/section_title.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../utils/constants.dart';
-import '../widgets/location_card.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/my_divider.dart';
-import '../widgets/my_icon_button.dart';
-import '../widgets/order_status_widget.dart';
-import '../widgets/price_breakdown_item.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   const OrderDetailsPage({super.key, required this.id});

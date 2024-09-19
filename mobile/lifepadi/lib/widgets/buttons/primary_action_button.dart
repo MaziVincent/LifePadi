@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lifepadi/hooks/use_side_effect.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/buttons/primary_button.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class PrimaryActionButton extends HookWidget {

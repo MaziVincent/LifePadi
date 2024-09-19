@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/widgets/input_field.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_divider.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
-import 'package:lifepadi/widgets/section_title.dart';
-
-import '../widgets/location_card.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsPage extends HookWidget {
   const LogisticsPage({super.key});

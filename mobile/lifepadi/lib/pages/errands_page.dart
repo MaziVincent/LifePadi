@@ -3,8 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/widgets/errand_card.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class ErrandsPage extends StatelessWidget {
   const ErrandsPage({super.key});

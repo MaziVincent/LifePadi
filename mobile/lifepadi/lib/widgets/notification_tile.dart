@@ -4,8 +4,8 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
 import 'avatar.dart';
-import 'outlined_rectangle_button.dart';
-import 'primary_rectangle_button.dart';
+import 'buttons/outlined_rectangle_button.dart';
+import 'buttons/primary_rectangle_button.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({

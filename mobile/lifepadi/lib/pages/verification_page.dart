@@ -5,10 +5,8 @@ import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:pinput/pinput.dart';
-
-import '../widgets/glassmorphic_back_button.dart';
 
 class VerificationPage extends HookConsumerWidget {
   const VerificationPage({super.key});

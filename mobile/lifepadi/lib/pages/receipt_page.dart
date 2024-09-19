@@ -3,15 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/my_divider.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
-import '../widgets/glassmorphic_back_button.dart';
-import '../widgets/my_icon_button.dart';
-import '../widgets/receipt_info_tile.dart';
 
 class ReceiptPage extends StatelessWidget {
   const ReceiptPage({super.key, required this.id});

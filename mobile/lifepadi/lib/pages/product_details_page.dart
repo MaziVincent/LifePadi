@@ -7,16 +7,10 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/header_with_see_all.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../router/routes.dart';
-import '../widgets/category_pill.dart';
-import '../widgets/section_title.dart';
-import '../widgets/store_name_with_wishlist_and_share.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   const ProductDetailsPage({super.key, required this.id});

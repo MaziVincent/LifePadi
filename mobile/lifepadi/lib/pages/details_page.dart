@@ -21,7 +21,8 @@ class DetailsPage extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(title,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 60),
               Text('$detailCode'),

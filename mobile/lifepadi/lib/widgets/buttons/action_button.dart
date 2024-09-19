@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../hooks/use_side_effect.dart';
-import 'loading_spinner.dart';
+import '../../hooks/use_side_effect.dart';
+import '../loading_spinner.dart';
 
 // TODO: Consider creating PrimaryActionButton and PrimaryOutlineActionButton based on this.
 // Show a loading spinner while the action is being processed.

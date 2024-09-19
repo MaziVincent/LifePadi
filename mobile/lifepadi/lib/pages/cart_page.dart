@@ -6,18 +6,8 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/location_card.dart';
-import 'package:lifepadi/widgets/my_app_bar.dart';
-import 'package:lifepadi/widgets/my_icon_button.dart';
-import 'package:lifepadi/widgets/primary_button.dart';
-import 'package:lifepadi/widgets/section_title.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../widgets/bottom_panel.dart';
-import '../widgets/cart_discount.dart';
-import '../widgets/cart_item.dart';
-import '../widgets/my_divider.dart';
-import '../widgets/payment_total.dart';
 
 class CartPage extends HookWidget {
   const CartPage({super.key});

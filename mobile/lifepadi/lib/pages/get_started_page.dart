@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
-import '../widgets/logo_with_name.dart';
-import '../widgets/primary_button.dart';
-import '../widgets/primary_outline_button.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({super.key});

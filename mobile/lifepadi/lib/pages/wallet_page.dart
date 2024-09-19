@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/wallet_action.dart';
-import 'package:lifepadi/widgets/wallet_card.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
 import '../utils/constants.dart';
-import '../widgets/glassmorphic_back_button.dart';
-import '../widgets/my_icon_button.dart';
 
 class WalletPage extends StatelessWidget {
   const WalletPage({super.key});

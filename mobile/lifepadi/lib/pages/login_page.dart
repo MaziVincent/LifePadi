@@ -11,12 +11,9 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/phone_input_field.dart';
-import 'package:lifepadi/widgets/primary_action_button.dart';
-import 'package:lifepadi/widgets/toggle_auth_page.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 import '../state/auth_controller.dart';
-import '../widgets/glassmorphic_back_button.dart';
-import '../widgets/input_field.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});

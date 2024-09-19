@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
-import '../widgets/logout_button.dart';
+import '../widgets/buttons/logout_button.dart';
 
 class RiderPage extends ConsumerWidget {
   const RiderPage({super.key});

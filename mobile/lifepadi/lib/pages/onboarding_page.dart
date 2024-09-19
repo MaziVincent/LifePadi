@@ -3,9 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
-
-import '../widgets/onboarding_feature.dart';
-import '../widgets/onboarding_navigation.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class OnboardingPage extends HookWidget {
   const OnboardingPage({super.key});

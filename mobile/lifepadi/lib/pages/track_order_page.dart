@@ -6,13 +6,9 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/widgets/bottom_panel.dart';
-import 'package:lifepadi/widgets/my_outline_icon_button.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 import '../utils/constants.dart';
-import '../widgets/my_app_bar.dart';
-import '../widgets/my_icon_button.dart';
-import '../widgets/track_tile.dart';
 
 class TrackOrderPage extends StatelessWidget {
   const TrackOrderPage({super.key, required this.id});
