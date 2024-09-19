@@ -37,8 +37,6 @@ const CheckOut = () => {
       alert(res.response.data);
       setLoading(false);
     }
-    // setTimeout(() => {
-    // }, 2000);
   };
   console.log(data)
   return (
