@@ -257,13 +257,13 @@ const OrderDetails = () => {
             </h1>{" "}
             <p>
               {" "}
-              Rider Full Name : {delivery.Rider.FirstName}{" "}
-              {delivery.Rider.LastName}
+              Rider Full Name : {delivery.Rider?.FirstName}{" "}
+              {delivery.Rider?.LastName}
             </p>
-            <p> Rider Phone Number : {delivery.Rider.PhoneNumber}</p>
+            <p> Rider Phone Number : {delivery.Rider?.PhoneNumber}</p>
             <p>
               {" "}
-              Rider Status : {delivery.Rider.IsActive ? "Active" : " In-Active"}
+              Rider Status : {delivery.Rider?.IsActive ? "Active" : " In-Active"}
             </p>
           </div>
         )}
