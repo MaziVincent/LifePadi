@@ -137,10 +137,10 @@ const Cart = ({
     };
     const response = await post(orderUrl, order, auth.accessToken);
 
-    console.log(response.data);
+   // console.log(response.data);
 
     if (response.error) {
-      cartDispatch({
+      dispatch({
         type: "error",
         payload: "Error placing order ",
       });
