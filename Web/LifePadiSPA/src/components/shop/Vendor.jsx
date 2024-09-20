@@ -27,6 +27,7 @@ import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { addAddressToDb } from "./services/services";
 import VendorSkeleton from "../shared/VendorSkeleton";
 import ProductSkeleton from "../shared/ProductSkeleton";
@@ -40,6 +41,9 @@ import LoadingGif from "../shared/LodingGif";
 =======
 import { addAddressToDb} from "./services/services"
 >>>>>>> e848b7b (Payment Response)
+=======
+import { addAddressToDb } from "./services/services";
+>>>>>>> 5f61f19 (updated payment)
 
 <<<<<<< HEAD
 >>>>>>> 360c46c (vendor)
@@ -416,11 +420,16 @@ const Vendor = () => {
     console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 3f80dfc (latest commit)
 =======
     cartDispatch({type:"error", payload:""})
     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth.user?.Id)
 >>>>>>> e848b7b (Payment Response)
+=======
+    cartDispatch({ type: "error", payload: "" });
+    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth?.Id);
+>>>>>>> 5f61f19 (updated payment)
   };
 
   const handleClick = async (e) => {
@@ -428,6 +437,7 @@ const Vendor = () => {
     cartDispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     cartDispatch({ type: "address" });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     cartDispatch({ type: "error", payload: "" });
@@ -524,25 +534,28 @@ const Vendor = () => {
       Instruction: cartState.deliveryInstruction,
     };
     const response = await post(orderUrl, order, auth.accessToken);
+=======
+    cartDispatch({ type: "error", payload: "" });
+  };
 
-    console.log(response.data);
+  const handleOrder = async () => {
+    if (!cartState.deliveryAddress) {
+      cartDispatch({
+        type: "error",
+        payload: "Please choose an address before you proceed ",
+      });
+      return;
+    }
+>>>>>>> 5f61f19 (updated payment)
 
-    for (let item of cart) {
-      const orderItem = {
-        Amount: item.Price,
-        Quantity: item.Quantity,
-        TotalAmount: item.Amount,
-        Name: item.Name,
-        Description: item.Description,
-        ProductId: item.Id,
-        OrderId: response.data?.Id,
-      };
+    if (!auth.accessToken) {
+      setCartState(false);
+      setLogin(true);
 
-      cartDispatch({ type: "order", payload: response.data });
-      const result = await post(orderItemUrl, orderItem, auth.accessToken);
-      console.log(result.data);
+      return;
     }
 
+<<<<<<< HEAD
     setOrderLoading(false);
     cartDispatch({ type: "checkOut" });
 <<<<<<< HEAD
@@ -550,6 +563,62 @@ const Vendor = () => {
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
 >>>>>>> e848b7b (Payment Response)
+=======
+    try {
+      setOrderLoading(true);
+      const order = {
+        CustomerId: auth?.Id,
+        Instruction: cartState.deliveryInstruction,
+      };
+      const response = await post(orderUrl, order, auth.accessToken);
+
+      console.log(response);
+
+      if (response.error) {
+        cartDispatch({
+          type: "error",
+          payload: "Error placing order ",
+        });
+        return;
+      }
+
+      for (let item of cart) {
+        const orderItem = {
+          Amount: item.Price,
+          Quantity: item.Quantity,
+          TotalAmount: item.Amount,
+          Name: item.Name,
+          Description: item.Description,
+          ProductId: item.Id,
+          OrderId: response.data?.Id,
+        };
+
+        cartDispatch({ type: "order", payload: response.data });
+        const result = await post(orderItemUrl, orderItem, auth.accessToken);
+
+        console.log(result.data);
+      }
+
+      const delivery = {
+        PickupAddress: cartState.vendor.ContactAddress,
+        DeliveryAddress: cartState.deliveryAddress,
+        OrderId: response.data?.Id,
+        DeliveryFee: cartState.deliveryFee,
+        PickupType: "Normal",
+      };
+      cartDispatch({ type: "delivery", payload: delivery });
+
+      setOrderLoading(false);
+      cartDispatch({ type: "checkOut" });
+      //console.log(delivery)
+      setCart([]);
+      localStorage.setItem("cart", JSON.stringify([]));
+    } catch (error) {
+      console.log(error);
+      dispatch({type:"error", payload:"Error placing Order"})
+      setOrderLoading(false);
+    }
+>>>>>>> 5f61f19 (updated payment)
   };
 >>>>>>> 3f80dfc (latest commit)
 
@@ -633,18 +702,24 @@ const Vendor = () => {
   }, [cartState.vendor]);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   
 
 
+=======
+>>>>>>> 5f61f19 (updated payment)
   const { distance, duration, error } = useDistance(
     origin,
     cartState.deliveryAddress
   );
+<<<<<<< HEAD
 
   useEffect(() => {
     handleDeliveryFee();
     handleTotalAmount();
   }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
+=======
+>>>>>>> 5f61f19 (updated payment)
 
   //console.log(distance);
   //console.log(cartState.vendor);
@@ -1450,7 +1525,10 @@ const Vendor = () => {
             <div className=" w-full">
               <div className=" py-2">
                 <div className=" flex justify-between items-center text-sm font-normal">
-                <p><span className="font-bold">Choose Address:</span> {cartState.deliveryAddress} </p>
+                  <p>
+                    <span className="font-bold">Choose Address:</span>{" "}
+                    {cartState.deliveryAddress}{" "}
+                  </p>
                   {cartState.address ? (
                     <button
                       onClick={() => cartDispatch({ type: "address" })}
@@ -1603,9 +1681,20 @@ const Vendor = () => {
                 </p>
               </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
               <div>{cartState.error && <span className="text-redborder"> {cartState.error }</span>}</div>
 >>>>>>> e848b7b (Payment Response)
+=======
+              <div>
+                {cartState.error && (
+                  <span className="text-redborder"> {cartState.error}</span>
+                )}
+              </div>
+              {
+                state.error && <span className="text-redborder"> {state.error}</span>
+              }
+>>>>>>> 5f61f19 (updated payment)
               <div className=" pt-3 text-center w-full">
                 <button
                   onClick={handleOrder}

@@ -14,6 +14,7 @@ import baseUrl from "../../api/baseUrl";
 import { CircularProgress } from "@mui/material";
 import { Pagination } from "@mui/material";
 import { Alert } from "@mui/material";
+<<<<<<< HEAD
 import { useState, useReducer } from "react";
 import SentimentDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentDissatisfiedOutlined";
 import { ArrowBackIosNewRounded } from "@mui/icons-material";
@@ -38,6 +39,12 @@ const reducer = (state, action) => {
       return state;
   }
 };
+=======
+import { useState } from "react";
+import SentimentDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentDissatisfiedOutlined";
+import { ArrowBackIosNewRounded } from "@mui/icons-material";
+
+>>>>>>> 5f61f19 (updated payment)
 
 const UserDashboard = () => {
   const fetch = useFetch();
@@ -82,6 +89,7 @@ const UserDashboard = () => {
 
   return (
     <section className="  dark:bg-darkBg text-darkBg dark:text-primary bg-lightGray h-auto min-h-screen">
+<<<<<<< HEAD
       <div className=" px-3 md:px-10 py-3">
         <Link
           to="/shop"
@@ -92,6 +100,16 @@ const UserDashboard = () => {
         </Link>
       </div>
       <div className="pt-5 flex flex-col items-center">
+=======
+      <div className="px-10 py-3">
+          <Link to="/shop" className="text-lg" >
+          <ArrowBackIosNewRounded />
+          Back to shop
+          </Link>
+        </div>
+      <div className="pt-5 flex flex-col items-center">
+        
+>>>>>>> 5f61f19 (updated payment)
         <h1 className=" mb-5 text-4xl text-center font-bold">My Orders</h1>
         <main className=" flex gap-8">
           <section className="right-section right-0 top-0 max-lg:w-full">
@@ -104,7 +122,11 @@ const UserDashboard = () => {
               </Alert>
             )}
 
+<<<<<<< HEAD
             {orders?.orders?.length < 1 ? (
+=======
+            {orders?.result.length < 1 ? (
+>>>>>>> 5f61f19 (updated payment)
               <div className="flex flex-col items-center gap-6">
                 <h1 className="text-2xl">
                   {" "}
@@ -130,7 +152,11 @@ const UserDashboard = () => {
             ) : (
               <>
                 {ordersSuccess &&
+<<<<<<< HEAD
                   orders.orders?.map((order) => (
+=======
+                  orders.result?.map((order) => (
+>>>>>>> 5f61f19 (updated payment)
                     <div
                       key={order.Id}
                       className=" bg-primary hover:bg-graybg dark:hover:bg-darkHover dark:bg-darkMenu dark:text-primary border border-gray border-opacity-15 rounded-lg mt-5 p-4 shadow-lg"
@@ -182,13 +208,18 @@ const UserDashboard = () => {
                           <button
                             disabled={
                               order.Status == "Ongoing" ||
+<<<<<<< HEAD
                               order.Status == "Completed"||
                               order.Status == "Cancelled"
+=======
+                              order.Status == "Completed"
+>>>>>>> 5f61f19 (updated payment)
                                 ? true
                                 : false
                             }
                             className={`${
                               order.Status == "Ongoing" ||
+<<<<<<< HEAD
                               order.Status == "Completed" ||
                               order.Status == "Cancelled"
                                 ? "bg-gray"
@@ -215,10 +246,24 @@ const UserDashboard = () => {
                             <span className=" flex items-center max-sm:justify-center gap-1">
                               <span className="">
                                 <TrackChangesIcon />
+=======
+                              order.Status == "Completed"
+                                ? "bg-gray"
+                                : "bg-redborder"
+                            }  p-1 cursor-pointer rounded-md max-sm:w-full`}
+                          >
+                            <span>Cancel Order</span>
+                          </button>
+                          <button className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full">
+                            <span className=" flex items-center max-sm:justify-center gap-1">
+                              <span className="">
+                                <Receipt fontSize="" />
+>>>>>>> 5f61f19 (updated payment)
                               </span>
                               Track Order
                             </span>
                           </button>
+<<<<<<< HEAD
                           <button className="border border-gray bg-background border-opacity-50 bg-opacity-80 p-1 cursor-pointer rounded-md max-sm:w-full">
                             <Link
                               to={`/user/details/${order.Id}`}
@@ -228,6 +273,14 @@ const UserDashboard = () => {
                                 {" "}
                                 <RemoveRedEyeIcon /> Order Details
                               </span>
+=======
+                          <button className="border border-gray bg-lightindigo border-opacity-50 bg-opacity-30 p-1 cursor-pointer rounded-md max-sm:w-full">
+                            <Link
+                              to={`/user/details/${order.Id}`}
+                              className=" font-normal  text-opacity-60 hover:text-gray block"
+                            >
+                              <span>Order Details</span>
+>>>>>>> 5f61f19 (updated payment)
                             </Link>
                           </button>
                         </div>
@@ -268,6 +321,7 @@ const UserDashboard = () => {
                           </span>
                         </div>
                         <p className="bg-gray bg-opacity-15 p-2 inline-flex items-center gap-2 w-full rounded-md text-lightorange">
+<<<<<<< HEAD
                           
                           {order.Status == "Pending"
                             ? <span> <ManageHistoryIcon /> Processing Order  </span>
@@ -278,10 +332,19 @@ const UserDashboard = () => {
                             : order.Status == "Completed"
                             ? <span> <Done /> Order Completed </span>
                             : ""}
+=======
+                          <span>
+                            <LocalShipping />
+                          </span>
+                          {order.IsDelivered
+                            ? "Order Delivered "
+                            : "Expected Delivery - 30 mins"}
+>>>>>>> 5f61f19 (updated payment)
                         </p>
                       </div>
                     </div>
                   ))}
+<<<<<<< HEAD
 
                 <nav className=" mt-5 mb-10 flex justify-center">
                   <Pagination
@@ -491,6 +554,21 @@ const UserDashboard = () => {
               className="dark:text-primary dark:bg-graybg"
             />
             </nav>
+=======
+
+                <nav className=" mt-5 mb-10 flex justify-center">
+                  <Pagination
+                    count={orders?.dataList.TotalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    variant="outlined"
+                    shape="rounded"
+                    className="dark:text-primary dark:bg-graybg"
+                  />
+                </nav>
+              </>
+            )}
+>>>>>>> 5f61f19 (updated payment)
           </section>
         </main>
       </div>

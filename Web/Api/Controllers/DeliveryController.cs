@@ -76,6 +76,7 @@ namespace Api.Controllers
         [HttpPost("create")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create(DeliveryDto delivery)
         {
             try
@@ -90,6 +91,9 @@ namespace Api.Controllers
 =======
         public async Task<IActionResult> create([FromForm] DeliveryDto delivery)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public async Task<IActionResult> create( DeliveryDto delivery)
+>>>>>>> 5f61f19 (updated payment)
         {
             try
             {

@@ -102,10 +102,14 @@ const Cart = ({
 
   const handleAddressChange = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!auth.accessToken) {
 =======
     if (!auth.user) {
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+    if (!auth.accessToken) {
+>>>>>>> 5f61f19 (updated payment)
       setCartState(false);
       setLogin(true);
 
@@ -188,6 +192,17 @@ const Cart = ({
       dispatch({type:'error', payload:"Please choose an address before you proceed "})
       return;
     }
+
+    if (!auth.accessToken) {
+      setCartState(false);
+      setLogin(true);
+
+      return;
+    }
+
+    try{
+
+
     setOrderLoading(true);
 >>>>>>> e848b7b (Payment Response)
     const order = {
@@ -198,7 +213,19 @@ const Cart = ({
 
     console.log(response.data);
 
+<<<<<<< HEAD
     for(let item of cart){
+=======
+    if (response.error) {
+      cartDispatch({
+        type: "error",
+        payload: "Error placing order ",
+      });
+      return;
+    }
+
+    for (let item of cart) {
+>>>>>>> 5f61f19 (updated payment)
       const orderItem = {
         Amount: item.Price,
         Quantity: item.Quantity,
@@ -280,6 +307,7 @@ const Cart = ({
 =======
       dispatch({ type: "order", payload: response.data });
       const result = await post(orderItemUrl, orderItem, auth.accessToken);
+
       console.log(result.data);
 >>>>>>> e848b7b (Payment Response)
     }
@@ -288,6 +316,13 @@ const Cart = ({
     dispatch({ type: "checkOut" });
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
+
+  }
+    catch (error) {
+      console.log(error);
+      dispatch({type:"error", payload:"Error placing Order"})
+      setOrderLoading(false);
+    }
   };
 
   useEffect(() => {

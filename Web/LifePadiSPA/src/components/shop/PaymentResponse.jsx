@@ -13,11 +13,19 @@ import useAuth from "../../hooks/useAuth";
 
 
 const PaymentResponse = () => {
+<<<<<<< HEAD
+=======
+  const { state, dispatch } = useCart();
+>>>>>>> 5f61f19 (updated payment)
   const location = useLocation();
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [responseMsg, setResponseMsg] = useState("");
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 5f61f19 (updated payment)
   const fetch = useFetch();
   const post = usePost();
   const { auth } = useAuth();
@@ -28,7 +36,11 @@ const PaymentResponse = () => {
     left: 0,
     width: "100%",
     height: "100%",
+<<<<<<< HEAD
     zIndex: 20,
+=======
+    zIndex: -1,
+>>>>>>> 5f61f19 (updated payment)
     padding: 0,
     margin: 0,
   };
@@ -39,6 +51,7 @@ const PaymentResponse = () => {
   // const transactionId = queryParams.get("transaction_id");
   const tx_ref = queryParams.get("reference");
   const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`;
+<<<<<<< HEAD
   const deliveryUrl = `${baseUrl}delivery/create`;
 
   const verifyTransaction = useCallback(async () => {
@@ -73,22 +86,55 @@ const PaymentResponse = () => {
         setResponseMsg(res.data.message);
         setPaymentStatus(true);
       }
+=======
+
+  
+
+  const verifyTransaction = async () => {
+    try {
+      const res = await fetch(url, auth.accessToken);
+      //console.log(res.data);
+      if (
+        res.status === 200 ||
+        res.data.status == "success" ||
+        res.status == true
+      ) {
+        setPaymentStatus(true);
+        setResponseMsg(res.data.message);
+      } else {
+        setResponseMsg(res.data.message);
+        setPaymentStatus(true);
+      }
+
+>>>>>>> 5f61f19 (updated payment)
     } catch (error) {
       setResponseMsg(error.response.data.message);
       setPaymentStatus(false);
       console.log(error);
     }
+<<<<<<< HEAD
   },[tx_ref, url]);
+=======
+  };
+>>>>>>> 5f61f19 (updated payment)
 
   useEffect(() => {
     verifyTransaction();
   }, []);
+<<<<<<< HEAD
 
   return (
     <section className="flex justify-center items-center  pt-28 bg-lightGray dark:bg-darkBg">
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
         {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full bg-primary dark:bg-darkMenu">
+=======
+  return (
+    <section className="flex justify-center items-center  pt-28">
+      <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
+        {paymentStatus && (
+          <div className="h-64 py-10 lg:px-36 w-full">
+>>>>>>> 5f61f19 (updated payment)
             <Lottie
               animationData={successAnimation}
               loop={false}
@@ -96,7 +142,11 @@ const PaymentResponse = () => {
               style={lottieStyle}
             ></Lottie>{" "}
             <div className="flex flex-col justify-center gap-2 px-5">
+<<<<<<< HEAD
               <h2 className="text-center text-xl text-accent dark:text-primary font-semibold">
+=======
+              <h2 className="text-center text-xl font-semibold">
+>>>>>>> 5f61f19 (updated payment)
                 {" "}
                 Payment Successful{" "}
               </h2>
@@ -108,9 +158,17 @@ const PaymentResponse = () => {
               </Link>
             </div>
           </div>
+<<<<<<< HEAD
         )}
 
         {paymentStatus === false && (
+=======
+        ) }
+        
+        
+        
+        { paymentStatus === false && (
+>>>>>>> 5f61f19 (updated payment)
           <div className="h-64 py-10 lg:px-36 w-full">
             <Lottie
               animationData={errAnimation}
@@ -130,6 +188,7 @@ const PaymentResponse = () => {
                 Continue to Dashboard
               </Link>
             </div>
+<<<<<<< HEAD
           </div>
         )}
       </div>
@@ -257,6 +316,8 @@ export default PaymentResponse
                 shop
               </Link>
             </p>
+=======
+>>>>>>> 5f61f19 (updated payment)
           </div>
         )}
       </div>

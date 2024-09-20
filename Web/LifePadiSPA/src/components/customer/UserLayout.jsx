@@ -11,10 +11,14 @@ const UserLayout = () => {
     <main className="">
       {" "}
 <<<<<<< HEAD
+<<<<<<< HEAD
       <div className=" bg-lightGray dark:bg-darkBg dark:text-primary h-full ">
 =======
       <div className=" bg-primary dark:bg-darkBg dark:text-primary border-3 border-red h-full ">
 >>>>>>> eda1965 (User Dashboard and Landing Page)
+=======
+      <div className=" bg-lightGray dark:bg-darkBg dark:text-primary h-full ">
+>>>>>>> 5f61f19 (updated payment)
         <UserHeader setAside={setAside} />
 
         {/* <!-- Sidebar --> */}

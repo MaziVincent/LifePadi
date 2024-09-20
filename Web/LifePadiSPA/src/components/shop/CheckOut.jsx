@@ -22,6 +22,7 @@ const CheckOut = () => {
     e.preventDefault();
     setLoading(true);
 
+<<<<<<< HEAD
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
 
@@ -99,6 +100,49 @@ const CheckOut = () => {
     // }, 2000);
   }
 >>>>>>> 7a64a18 (created a payment response page)
+=======
+    //Create Delivery
+
+    const data = {
+      Amount: state.total - state.deliveryFee,
+      DeliveryFee: state.deliveryFee,
+      VoucherCode: "",
+      OrderId: state.order.Id,
+      TotalAmount: state.total + state.deliveryFee,
+    };
+
+    try {
+      const response = await postData(
+        `${baseUrl}delivery/create`,
+        state.delivery,
+        auth.accessToken
+      );
+
+      if (response.status == 200) {
+        const res = await postData(url, data, auth.token);
+
+        if (res.status == 200) {
+          setLoading(false);
+          window.location.href = res.data.link;
+        } else {
+          setError("Error Proceeding to Payment");
+          setLoading(false);
+        }
+      } else {
+        setError("Error Creating Delivery! ");
+        setLoading(false);
+      }
+
+      // // console.log(res.data.link)
+      // setLoading(false)
+    } catch (err) {
+      console.log(err);
+      setError("Error Making Payment ");
+      loading(false);
+    }
+  };
+
+>>>>>>> 5f61f19 (updated payment)
   return (
     <Modal
       open={state.checkOut}
@@ -122,7 +166,11 @@ const CheckOut = () => {
                   dispatch({ type: "checkOut" });
                   setLoading(false);
                 }}
+<<<<<<< HEAD
                 className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+=======
+                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+>>>>>>> 5f61f19 (updated payment)
                 data-modal-toggle="defaultModal"
               >
                 <svg
@@ -198,6 +246,7 @@ const CheckOut = () => {
                   <span> {error}</span>
                 </div>
               )}
+<<<<<<< HEAD
 =======
 
               <button
@@ -225,6 +274,8 @@ const CheckOut = () => {
                 )}
               </button>
 >>>>>>> 7a64a18 (created a payment response page)
+=======
+>>>>>>> 5f61f19 (updated payment)
             </div>
           </div>
         </div>
