@@ -35,7 +35,7 @@ namespace Api.Controllers
                 var user = await authenticateUser(loginDTO);
                 if (user == null)
                 {
-                    return BadRequest("Invalid email or password");
+                    return NotFound("Invalid email or password");
                 }
                 var genTokenDTO = new GenTokenDto
                 {
@@ -72,6 +72,14 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("User not found"))
+                {
+                    return NotFound(ex.Message);
+                }
+                if (ex.Message.Contains("Invalid email or password"))
+                {
+                    return Unauthorized(ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }
@@ -80,7 +88,7 @@ namespace Api.Controllers
         {
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Email!.ToLower() == loginDTO.Email!.ToLower());
+                var user = await GetUserByLoginDtoAsync(loginDTO);
                 if (user == null)
                 {
                     throw new Exceptions.ServiceException("User not found");
@@ -107,6 +115,24 @@ namespace Api.Controllers
             }
         }
 
+
+        private async Task<User?> GetUserByLoginDtoAsync(LoginDto loginDTO)
+        {
+            // Check if phone number or email is provided and retrieve user
+            if (!string.IsNullOrWhiteSpace(loginDTO.PhoneNumber))
+            {
+                return await _context.Users.FirstOrDefaultAsync(x => x.PhoneNumber == loginDTO.PhoneNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(loginDTO.Email))
+            {
+                return await _context.Users.FirstOrDefaultAsync(x => x.Email == loginDTO.Email);
+            }
+
+            // Return null if neither is provided
+            return null;
+        }
+
         [HttpGet("refreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
@@ -123,15 +149,6 @@ namespace Api.Controllers
                 {
                     return NoContent();
                 }
-                // var loggedInUser = new LoggedInUserDto
-                // {
-                //     Id = user.Id,
-                //     Email = user.Email,
-                //     FirstName = user.FirstName,
-                //     LastName = user.LastName,
-                //     ContactAddress = user.ContactAddress,
-                //     Role = genTokenDTO!.Role
-                // };
                 var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
                 var token = new
                 {
@@ -175,6 +192,26 @@ namespace Api.Controllers
 
             });
             return Ok("Logout Successfully");
+        }
+
+        [HttpPost("password-reset/{UserId}")]
+        public async Task<IActionResult> PasswordReset(int UserId, [FromForm] string NewPassword)
+        {
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
+                await _context.SaveChangesAsync();
+                return Ok("Password reset successful");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
