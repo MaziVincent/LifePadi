@@ -10,7 +10,7 @@ const UserLayout = () => {
   return (
     <main className="">
       {" "}
-      <div className=" bg-primary dark:bg-darkBg dark:text-primary h-full ">
+      <div className=" bg-lightGray dark:bg-darkBg dark:text-primary h-full ">
         <UserHeader setAside={setAside} />
 
         {/* <!-- Sidebar --> */}

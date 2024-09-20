@@ -3,7 +3,6 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 
 const RequireAuth = ({ allowedRole }) => {
   const { auth, setLogin } = useAuth();
-  console.log(auth);
   const location = useLocation();
 
   return auth?.Role === allowedRole ? (
