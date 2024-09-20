@@ -35,33 +35,31 @@ const PaymentResponse = () => {
   const queryParams = new URLSearchParams(location.search);
   // const status = queryParams.get("status");
   // const transactionId = queryParams.get("transaction_id");
-  const tx_ref = queryParams.get("reference");
-  const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`;
-
+  console.log(state);
   
+  const tx_ref = queryParams.get('reference')
+  const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`
 
-  const verifyTransaction = async () => {
-    try {
-      const res = await fetch(url, auth.accessToken);
-      //console.log(res.data);
-      if (
-        res.status === 200 ||
-        res.data.status == "success" ||
-        res.status == true
-      ) {
-        setPaymentStatus(true);
-        setResponseMsg(res.data.message);
-      } else {
-        setResponseMsg(res.data.message);
-        setPaymentStatus(true);
-      }
+const verifyTransaction = async () => {
+  const res = await fetch(url, auth.accessToken)
+  console.log(state)
+  if (res.status === 200 || res.data.Status == 'success') {
+    setPaymentStatus('success')
+    const response = await post(
+      `${baseUrl}delivery/create`,
+      state.delivery,
+      auth.accessToken
+    )
+    console.log(response)
+    setTimeout(() => {
+      navigate('/user')
+    }, 3000)
 
-    } catch (error) {
-      setResponseMsg(error.response.data.message);
-      setPaymentStatus(false);
-      console.log(error);
-    }
-  };
+  } else {
+    setResponseMsg(res.data.message)
+    setPaymentStatus('failed')
+  }
+}
 
   useEffect(() => {
     verifyTransaction();
