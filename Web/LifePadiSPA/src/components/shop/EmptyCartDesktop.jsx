@@ -8,7 +8,7 @@ const EmptyCartDesktop = () => {
         
         <div
           id="defaultModal"
-          className=" overflow-y-auto col-span-4 hidden lg:block overflow-x-hidden top-20  z-50 justify-center items-center  w-full h-full pb-24 "
+          className=" overflow-y-auto col-span-4 hidden lg:block overflow-x-hidden top-20  z-30 justify-center items-center  w-full h-full pb-24 "
         >     
             <div className=" p-4 w-full flex flex-col  overflow-y-auto  bg-primary dark:bg-darkBg rounded-xl dark:text-primary ">
               {/* <!-- Modal header --> */}

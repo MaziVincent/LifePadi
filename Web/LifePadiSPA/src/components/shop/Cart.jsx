@@ -58,7 +58,7 @@ const Cart = ({
   });
 
   const handleAddressChange = () => {
-    if (!auth) {
+    if (!auth.accessToken) {
       setCartState(false);
       setLogin(true);
 
@@ -119,6 +119,17 @@ const Cart = ({
       dispatch({type:'error', payload:"Please choose an address before you proceed "})
       return;
     }
+
+    if (!auth.accessToken) {
+      setCartState(false);
+      setLogin(true);
+
+      return;
+    }
+
+    try{
+
+
     setOrderLoading(true);
     const order = {
       CustomerId: auth?.Id,
@@ -127,6 +138,14 @@ const Cart = ({
     const response = await post(orderUrl, order, auth.accessToken);
 
     console.log(response.data);
+
+    if (response.error) {
+      cartDispatch({
+        type: "error",
+        payload: "Error placing order ",
+      });
+      return;
+    }
 
     for (let item of cart) {
       const orderItem = {
@@ -141,6 +160,7 @@ const Cart = ({
 
       dispatch({ type: "order", payload: response.data });
       const result = await post(orderItemUrl, orderItem, auth.accessToken);
+
       console.log(result.data);
     }
 
@@ -158,6 +178,13 @@ const Cart = ({
     dispatch({ type: "checkOut" });
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
+
+  }
+    catch (error) {
+      console.log(error);
+      dispatch({type:"error", payload:"Error placing Order"})
+      setOrderLoading(false);
+    }
   };
 
   useEffect(() => {

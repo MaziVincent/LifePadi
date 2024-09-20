@@ -46,7 +46,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] DeliveryDto delivery)
+        public async Task<IActionResult> create( DeliveryDto delivery)
         {
             try
             {
