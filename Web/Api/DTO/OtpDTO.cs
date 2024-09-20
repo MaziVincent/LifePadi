@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Api.DTO
 {
-    public class OtpDTO
+    public class OtpDto
     {
         public string? pinId { get; set; }
         public string? pin { get; set; }

@@ -118,6 +118,10 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("Email already exists"))
+                {
+                    return StatusCode(409, ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }
@@ -190,12 +194,16 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("Phone number already exists"))
+                {
+                    return StatusCode(409, ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("verify-otp")]
-        public async Task<IActionResult> verifyOtp([FromQuery] OtpDTO otpVerify )
+        public async Task<IActionResult> verifyOtp([FromQuery] OtpDto otpVerify )
         {
             try
             {
