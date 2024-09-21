@@ -15,6 +15,7 @@ import useAuth from "../../hooks/useAuth";
 import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import usePost from "../../hooks/usePost";
+import { addAddressToDb } from "./services/services";
 
 const Cart = ({
   subTotal,
@@ -88,12 +89,12 @@ const Cart = ({
   };
 
   const handleLocation = () => {
-    console.log(location);
+    // console.log(location);
     dispatch({ type: "setAddress", payload: location.address });
     handleDeliveryFee();
-    console.log(state.deliveryAddress);
     dispatch({ type: "address" });
     dispatch({ type: "error" , payload:""});
+    addAddressToDb(`${baseUrl}address/create`, location, auth.accessToken, auth?.Id);
   };
 
   const handleTotalAmount = () => {
@@ -178,6 +179,7 @@ const Cart = ({
     dispatch({ type: "checkOut" });
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
+    localStorage.setItem("delivery", JSON.stringify(delivery));
 
   }
     catch (error) {

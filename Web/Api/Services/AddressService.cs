@@ -39,7 +39,7 @@ namespace Api.Services
             try
             {
                 var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
-                if (initialAddress == null) throw new Exceptions.ServiceException("Address already exist");
+                if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();

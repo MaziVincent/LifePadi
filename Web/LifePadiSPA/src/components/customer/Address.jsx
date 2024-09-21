@@ -61,7 +61,7 @@ const Address = () => {
       const { data, isError, isLoading, isSuccess } = useQuery({
         queryKey: ["addresses", page, search],
         queryFn: () =>
-          getAddresses(`${url}/${auth?.user.Id}`),
+          getAddresses(`${url}/${auth?.Id}`),
         keepPreviousData: true,
         staleTime: 20000,
         refetchOnMount: "always",
@@ -180,7 +180,8 @@ const Address = () => {
                       <Alert severity="error">Error Fetching Data..</Alert>
                     </p>
                   )}
-                  {isSuccess && (
+                
+                  {isSuccess && data.length > 0 ? (
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                       <thead className="text-xs  uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
                         <tr>
@@ -304,6 +305,11 @@ const Address = () => {
                         ))}
                       </tbody>
                     </table>
+                  ) : (
+                    <p className="flex items-center justify-center">
+                      {" "}
+                      <Alert severity="info"> You currently have no Address </Alert>
+                    </p>
                   )}
                 </div>
                 {/* <nav

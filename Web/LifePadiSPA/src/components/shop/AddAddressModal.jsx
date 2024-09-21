@@ -49,7 +49,7 @@ const AddAddressModal = ({ open, handleClose }) => {
 
   const handleCreate = (address) => {
 
-    const data = {...address, UserId: auth?.user.Id}
+    const data = {...address, UserId: auth?.Id}
    console.log(data)
     mutate(data);
   };
@@ -321,7 +321,7 @@ const AddAddressModal = ({ open, handleClose }) => {
                             fill="currentFill"
                           />
                         </svg>
-                        <span class="sr-only">Loading...</span>{" "}
+                        <span class="sr-only">Loading...</span>
                       </>
                     ) : (
                       " Submit"

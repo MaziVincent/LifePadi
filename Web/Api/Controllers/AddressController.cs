@@ -47,9 +47,13 @@ namespace Api.Controllers
             try
             {
                 var newAddress = await _iaddress.createAsync(address);
+                
                 return Ok(newAddress);
             }catch (Exception ex)
             {
+                if(ex.Message.Contains("Address already exist")){
+                    return Conflict(ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }
