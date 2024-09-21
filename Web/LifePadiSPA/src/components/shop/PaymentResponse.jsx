@@ -10,12 +10,11 @@ import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 
 const PaymentResponse = () => {
-  const { state, dispatch } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [responseMsg, setResponseMsg] = useState("");
- 
+
   const fetch = useFetch();
   const post = usePost();
   const { auth } = useAuth();
@@ -35,39 +34,56 @@ const PaymentResponse = () => {
   const queryParams = new URLSearchParams(location.search);
   // const status = queryParams.get("status");
   // const transactionId = queryParams.get("transaction_id");
-  console.log(state);
-  
-  const tx_ref = queryParams.get('reference')
-  const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`
+  const tx_ref = queryParams.get("reference");
+  const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`;
+  const deliveryUrl = `${baseUrl}delivery/create`;
 
-const verifyTransaction = async () => {
-  const res = await fetch(url, auth.accessToken)
-  console.log(state)
-  if (res.status === 200 || res.data.Status == 'success') {
-    setPaymentStatus('success')
-    const response = await post(
-      `${baseUrl}delivery/create`,
-      state.delivery,
-      auth.accessToken
-    )
-    console.log(response)
-    setTimeout(() => {
-      navigate('/user')
-    }, 3000)
+  const verifyTransaction = async () => {
+    try {
+      const res = await fetch(url, auth.accessToken);
 
-  } else {
-    setResponseMsg(res.data.message)
-    setPaymentStatus('failed')
-  }
-}
+      if (
+        res.data.status === true ||
+        res.data.data.status == "success" ||
+        res.data.message == "Verification successful"
+      ) {
+        setPaymentStatus(true);
+        setResponseMsg(res.data.message);
+        const delivery = localStorage.getItem("delivery");
+        const deliveryData = JSON.parse(delivery);
+        const response = await post(
+          deliveryUrl,
+          deliveryData,
+          auth.accessToken
+        );
+
+        if (response.status == 200) {
+          localStorage.removeItem("delivery");
+          setTimeout(() => {
+            navigate("/user");
+          }, 3000);
+        } else {
+          console.log;
+        }
+      } else {
+        setResponseMsg(res.data.message);
+        setPaymentStatus(true);
+      }
+    } catch (error) {
+      setResponseMsg(error.response.data.message);
+      setPaymentStatus(false);
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     verifyTransaction();
   }, []);
+
   return (
     <section className="flex justify-center items-center  pt-28">
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
-        {paymentStatus && (
+        {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full">
             <Lottie
               animationData={successAnimation}
@@ -88,11 +104,9 @@ const verifyTransaction = async () => {
               </Link>
             </div>
           </div>
-        ) }
-        
-        
-        
-        { paymentStatus === false && (
+        )}
+
+        {paymentStatus === false && (
           <div className="h-64 py-10 lg:px-36 w-full">
             <Lottie
               animationData={errAnimation}
