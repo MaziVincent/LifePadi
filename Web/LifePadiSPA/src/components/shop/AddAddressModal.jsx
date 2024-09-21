@@ -321,7 +321,7 @@ const AddAddressModal = ({ open, handleClose }) => {
                             fill="currentFill"
                           />
                         </svg>
-                        <span class="sr-only">Loading...</span>{" "}
+                        <span class="sr-only">Loading...</span>
                       </>
                     ) : (
                       " Submit"

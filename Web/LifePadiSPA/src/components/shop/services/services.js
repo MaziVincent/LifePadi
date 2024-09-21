@@ -37,8 +37,6 @@ export const addAddressToDb = async (url, location, token, userId ) => {
     }
     const response = await post(url, formData, token)
     console.log(response)
-    //console.log(url, token )
-    //const response = post(url, data, token)
 
 }
 
