@@ -39,6 +39,7 @@ export const addAddressToDb = async (url, location, token, userId ) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
     console.log(response)
+<<<<<<< HEAD
 =======
     //console.log(response)
 =======
@@ -47,6 +48,8 @@ export const addAddressToDb = async (url, location, token, userId ) => {
     //console.log(url, token )
     //const response = post(url, data, token)
 >>>>>>> e848b7b (Payment Response)
+=======
+>>>>>>> c99f576 (changed baseurl)
 
 }
 
