@@ -37,9 +37,13 @@ export const addAddressToDb = async (url, location, token, userId ) => {
     }
     const response = await post(url, formData, token)
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log(response)
 =======
     //console.log(response)
+=======
+    console.log(response)
+>>>>>>> 67ef8ba (updated payment)
     //console.log(url, token )
     //const response = post(url, data, token)
 >>>>>>> e848b7b (Payment Response)

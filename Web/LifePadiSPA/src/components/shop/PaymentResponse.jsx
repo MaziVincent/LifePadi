@@ -14,18 +14,25 @@ import useAuth from "../../hooks/useAuth";
 
 const PaymentResponse = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const { state, dispatch } = useCart();
 >>>>>>> 5f61f19 (updated payment)
+=======
+>>>>>>> 67ef8ba (updated payment)
   const location = useLocation();
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [responseMsg, setResponseMsg] = useState("");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
  
 >>>>>>> 5f61f19 (updated payment)
+=======
+
+>>>>>>> 67ef8ba (updated payment)
   const fetch = useFetch();
   const post = usePost();
   const { auth } = useAuth();
@@ -51,6 +58,7 @@ const PaymentResponse = () => {
   // const transactionId = queryParams.get("transaction_id");
   const tx_ref = queryParams.get("reference");
   const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`;
+<<<<<<< HEAD
 <<<<<<< HEAD
   const deliveryUrl = `${baseUrl}delivery/create`;
 
@@ -89,10 +97,14 @@ const PaymentResponse = () => {
 =======
 
   
+=======
+  const deliveryUrl = `${baseUrl}delivery/create`;
+>>>>>>> 67ef8ba (updated payment)
 
   const verifyTransaction = async () => {
     try {
       const res = await fetch(url, auth.accessToken);
+<<<<<<< HEAD
       //console.log(res.data);
       if (
         res.status === 200 ||
@@ -107,20 +119,55 @@ const PaymentResponse = () => {
       }
 
 >>>>>>> 5f61f19 (updated payment)
+=======
+
+      if (
+        res.data.status === true ||
+        res.data.data.status == "success" ||
+        res.data.message == "Verification successful"
+      ) {
+        setPaymentStatus(true);
+        setResponseMsg(res.data.message);
+        const delivery = localStorage.getItem("delivery");
+        const deliveryData = JSON.parse(delivery);
+        const response = await post(
+          deliveryUrl,
+          deliveryData,
+          auth.accessToken
+        );
+
+        if (response.status == 200) {
+          localStorage.removeItem("delivery");
+          setTimeout(() => {
+            navigate("/user");
+          }, 3000);
+        } else {
+          console.log;
+        }
+      } else {
+        setResponseMsg(res.data.message);
+        setPaymentStatus(true);
+      }
+>>>>>>> 67ef8ba (updated payment)
     } catch (error) {
       setResponseMsg(error.response.data.message);
       setPaymentStatus(false);
       console.log(error);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
   },[tx_ref, url]);
 =======
   };
 >>>>>>> 5f61f19 (updated payment)
+=======
+  };
+>>>>>>> 67ef8ba (updated payment)
 
   useEffect(() => {
     verifyTransaction();
   }, []);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   return (
@@ -129,10 +176,13 @@ const PaymentResponse = () => {
         {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full bg-primary dark:bg-darkMenu">
 =======
+=======
+
+>>>>>>> 67ef8ba (updated payment)
   return (
     <section className="flex justify-center items-center  pt-28">
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
-        {paymentStatus && (
+        {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full">
 >>>>>>> 5f61f19 (updated payment)
             <Lottie
@@ -159,6 +209,7 @@ const PaymentResponse = () => {
             </div>
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         )}
 
         {paymentStatus === false && (
@@ -169,6 +220,11 @@ const PaymentResponse = () => {
         
         { paymentStatus === false && (
 >>>>>>> 5f61f19 (updated payment)
+=======
+        )}
+
+        {paymentStatus === false && (
+>>>>>>> 67ef8ba (updated payment)
           <div className="h-64 py-10 lg:px-36 w-full">
             <Lottie
               animationData={errAnimation}

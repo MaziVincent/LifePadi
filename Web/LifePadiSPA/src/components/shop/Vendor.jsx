@@ -613,6 +613,7 @@ const Vendor = () => {
       //console.log(delivery)
       setCart([]);
       localStorage.setItem("cart", JSON.stringify([]));
+      localStorage.setItem("delivery", JSON.stringify(delivery));
     } catch (error) {
       console.log(error);
       dispatch({type:"error", payload:"Error placing Order"})

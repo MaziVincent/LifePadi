@@ -49,8 +49,11 @@ namespace Api.Services
             {
                 var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
+<<<<<<< HEAD
                 var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
                 if (defaultAddress == null) address.DefaultAddress = true;
+=======
+>>>>>>> 67ef8ba (updated payment)
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();

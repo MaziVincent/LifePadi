@@ -60,6 +60,9 @@ namespace Api.Controllers
             {
                 var newAddress = await _iaddress.createAsync(address);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 67ef8ba (updated payment)
                 
                 return Ok(newAddress);
             }catch (Exception ex)
@@ -67,11 +70,14 @@ namespace Api.Controllers
                 if(ex.Message.Contains("Address already exist")){
                     return Conflict(ex.Message);
                 }
+<<<<<<< HEAD
 =======
                 return Ok(newAddress);
             }catch (Exception ex)
             {
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 67ef8ba (updated payment)
                 return BadRequest(ex.Message);
             }
         }

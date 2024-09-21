@@ -16,11 +16,15 @@ import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import usePost from "../../hooks/usePost";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { addAddressToDb } from "./services/services";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 =======
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+import { addAddressToDb } from "./services/services";
+>>>>>>> 67ef8ba (updated payment)
 
 const Cart = ({
   subTotal,
@@ -142,10 +146,19 @@ const Cart = ({
     dispatch({ type: "error" , payload:""});
 >>>>>>> e848b7b (Payment Response)
   };
+<<<<<<< HEAD
 =======
     getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
+=======
+
+  const handleLocation = () => {
+    // console.log(location);
+    dispatch({ type: "setAddress", payload: location.address });
+    handleDeliveryFee();
+>>>>>>> 67ef8ba (updated payment)
     dispatch({ type: "address" });
     dispatch({ type: "error" , payload:""});
+    addAddressToDb(`${baseUrl}address/create`, location, auth.accessToken, auth?.Id);
   };
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
@@ -316,6 +329,7 @@ const Cart = ({
     dispatch({ type: "checkOut" });
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
+    localStorage.setItem("delivery", JSON.stringify(delivery));
 
   }
     catch (error) {

@@ -15,6 +15,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 const baseUrl = "https://lifepadi-948405839190.us-east1.run.app/api/";
 //const baseUrl ='https://localhost:7216/api/'
@@ -50,6 +51,8 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 >>>>>>> 5f61f19 (updated payment)
 =======
 >>>>>>> 80c7e9d (base url change)
+=======
+>>>>>>> 67ef8ba (updated payment)
 const baseUrl = "https://localhost:7216/api/"
 =======
 <<<<<<< HEAD
@@ -107,8 +110,11 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 >>>>>>> a99a422 (base url change)
+=======
+//const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
+>>>>>>> 52e0702 (updated payment)
 //"https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
-//const baseUrl = 'https://localhost:7216/api/'
+const baseUrl ='https://localhost:7216/api/'
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 

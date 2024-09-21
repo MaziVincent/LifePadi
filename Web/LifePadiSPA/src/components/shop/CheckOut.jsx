@@ -104,21 +104,15 @@ const CheckOut = () => {
     //Create Delivery
 
     const data = {
-      Amount: state.total - state.deliveryFee,
-      DeliveryFee: state.deliveryFee,
+      Amount: Math.trunc( state.total - state.deliveryFee),
+      DeliveryFee: Math.trunc( state.deliveryFee),
       VoucherCode: "",
       OrderId: state.order.Id,
-      TotalAmount: state.total + state.deliveryFee,
+      TotalAmount: Math.trunc( state.total),
     };
 
     try {
-      const response = await postData(
-        `${baseUrl}delivery/create`,
-        state.delivery,
-        auth.accessToken
-      );
-
-      if (response.status == 200) {
+     
         const res = await postData(url, data, auth.token);
 
         if (res.status == 200) {
@@ -128,10 +122,6 @@ const CheckOut = () => {
           setError("Error Proceeding to Payment");
           setLoading(false);
         }
-      } else {
-        setError("Error Creating Delivery! ");
-        setLoading(false);
-      }
 
       // // console.log(res.data.link)
       // setLoading(false)

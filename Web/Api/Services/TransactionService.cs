@@ -596,7 +596,7 @@ namespace Api.Services
                     createdAt = DateTime.UtcNow
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
-                var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
+                var redirect_url = _config["Base_Url:Frontend_local"] + "/shop/payment-response";
                 // var redirect_url = _config["Base_Url:Local"] + "/transaction/paystack-confirmPayment";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var payload = new
