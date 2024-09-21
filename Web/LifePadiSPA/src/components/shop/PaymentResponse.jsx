@@ -63,7 +63,7 @@ const PaymentResponse = () => {
             navigate("/user");
           }, 3000);
         } else {
-          console.log;
+          console.log(response)
         }
       } else {
         setResponseMsg(res.data.message);
