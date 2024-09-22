@@ -25,6 +25,9 @@ import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
 import { addAddressToDb } from "./services/services";
+import VendorSkeleton from "../shared/VendorSkeleton";
+import ProductSkeleton from "../shared/ProductSkeleton";
+import { Alert } from "@mui/material";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -307,7 +310,7 @@ const Vendor = () => {
       localStorage.setItem("delivery", JSON.stringify(delivery));
     } catch (error) {
       console.log(error);
-      dispatch({type:"error", payload:"Error placing Order"})
+      dispatch({ type: "error", payload: "Error placing Order" });
       setOrderLoading(false);
     }
   };
@@ -376,38 +379,43 @@ const Vendor = () => {
                 <span className="text-sm">Vendors</span>
               </Link>
             </div>
+            {isSuccess && (
+              <>
+                <div className=" border-2 relative w-full rounded-lg h-48 md:h-72 ">
+                  <img
+                    src={data?.VendorImgUrl}
+                    alt=""
+                    className=" w-full rounded-lg h-full"
+                  />
+                  <div className=" pb-1 absolute z-10 bottom-1 m-2 ">
+                    <span className=" flex items-center gap-1 text-secondary bg-white py-2 px-2 rounded border bg-darkHover border-accent">
+                      <WatchLaterOutlined fontSize="s" />{" "}
+                      <span className="">16-26 mins</span>
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <div className=" flex justify-between items-center py-2">
+                    <h2 className=" text-xl font-bold">{data?.Name}</h2>
+                    <span className=" flex items-center gap-1 text-sm text-lightgreen">
+                      <span className=" dark:text-gray text-grayTxt">4.3</span>{" "}
+                      <StarOutlined fontSize="" />
+                    </span>
+                  </div>
 
-            <div className=" border-2 relative w-full rounded-lg h-48 md:h-72 ">
-              <img
-                src={data?.VendorImgUrl}
-                alt=""
-                className=" w-full rounded-lg h-full"
-              />
-              <div className=" pb-1 absolute z-10 bottom-1 m-2 ">
-                <span className=" flex items-center gap-1 text-secondary bg-white py-2 px-2 rounded border bg-darkHover border-accent">
-                  <WatchLaterOutlined fontSize="s" />{" "}
-                  <span className="">16-26 mins</span>
-                </span>
-              </div>
-            </div>
-            <div>
-              <div className=" flex justify-between items-center py-2">
-                <h2 className=" text-xl font-bold">{data?.Name}</h2>
-                <span className=" flex items-center gap-1 text-sm text-lightgreen">
-                  <span className=" text-grayTxt">4.3</span>{" "}
-                  <StarOutlined fontSize="" />
-                </span>
-              </div>
+                  <div className=" flex flex-col  ">
+                    <span className=" text-gray text-md font-medium">
+                      {data?.OpeningHours} - {data?.ClosingHours}
+                    </span>
+                    <span className=" capitalize text-secondary text-md font-medium">
+                      {data?.Tag}
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
 
-              <div className=" flex flex-col  ">
-                <span className=" text-gray text-md font-medium">
-                  {data?.OpeningHours} - {data?.ClosingHours}
-                </span>
-                <span className=" capitalize text-secondary text-md font-medium">
-                  {data?.Tag}
-                </span>
-              </div>
-            </div>
+            {isLoading && <VendorSkeleton />}
 
             <div className="pt-3 ">
               <div className=" flex justify-end items-center">
@@ -419,7 +427,7 @@ const Vendor = () => {
               </div>
             </div>
 
-            <div className=" sticky top-28 bg-primary flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
+            <div className=" sticky top-20 bg-primary dark:bg-darkBg flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
               <Link
                 onClick={() =>
                   dispatch({ type: "products", payload: data?.Products })
@@ -442,36 +450,47 @@ const Vendor = () => {
               ))}
             </div>
 
-            <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
-              {state.products.map((prod) => (
-                <Link
-                  key={prod.Id}
-                  onClick={() => {
-                    dispatch({ type: "open" });
-                    dispatch({ type: "product", payload: prod });
-                  }}
-                >
-                  <div className=" flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-darkHover shadow-lg ">
-                    <div className=" flex flex-col">
-                      <h3 className=" text-base font-semibold capitalize">
-                        {prod.Name}
-                      </h3>
-                      <p className=" text-sm text-gray">{prod.Tag}</p>
-                      <span className=" text-secondary">
-                        &#8358;{prod.Price}
-                      </span>
+            {isSuccess && (
+              <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
+                {state.products.map((prod) => (
+                  <Link
+                    key={prod.Id}
+                    onClick={() => {
+                      dispatch({ type: "open" });
+                      dispatch({ type: "product", payload: prod });
+                    }}
+                  >
+                    <div className=" flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-darkHover shadow-lg ">
+                      <div className=" flex flex-col">
+                        <h3 className=" text-base font-semibold capitalize">
+                          {prod.Name}
+                        </h3>
+                        <p className=" text-sm text-gray">{prod.Tag}</p>
+                        <span className=" text-secondary">
+                          &#8358;{prod.Price}
+                        </span>
+                      </div>
+                      <div className=" w-20 h-20 rounded-md">
+                        <img
+                          src={prod.ProductImgUrl}
+                          alt=""
+                          className=" w-full h-full rounded-md"
+                        />
+                      </div>
                     </div>
-                    <div className=" w-20 h-20 rounded-md">
-                      <img
-                        src={prod.ProductImgUrl}
-                        alt=""
-                        className=" w-full h-full rounded-md"
-                      />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {isLoading && (
+              <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <ProductSkeleton />
+                <ProductSkeleton />
+                <ProductSkeleton />
+                <ProductSkeleton />
+              </div>
+            )}
           </div>
         </div>
         {cart.length > 0 ? (
@@ -688,9 +707,9 @@ const Vendor = () => {
                   <span className="text-redborder"> {cartState.error}</span>
                 )}
               </div>
-              {
-                state.error && <span className="text-redborder"> {state.error}</span>
-              }
+              {state.error && (
+                <span className="text-redborder"> {state.error}</span>
+              )}
               <div className=" pt-3 text-center w-full">
                 <button
                   onClick={handleOrder}

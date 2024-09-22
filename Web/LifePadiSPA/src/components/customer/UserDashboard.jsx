@@ -21,6 +21,9 @@ import { Alert } from "@mui/material";
 import { useState } from "react";
 import SentimentDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentDissatisfiedOutlined";
 import { ArrowBackIosNewRounded } from "@mui/icons-material";
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 
 const UserDashboard = () => {
@@ -167,22 +170,22 @@ const UserDashboard = () => {
                                 : "bg-redborder"
                             }  p-1 cursor-pointer rounded-md max-sm:w-full`}
                           >
-                            <span>Cancel Order</span>
+                            <span className="flex items-center justify-center"> <DangerousIcon />Cancel Order</span>
                           </button>
                           <button className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full">
                             <span className=" flex items-center max-sm:justify-center gap-1">
                               <span className="">
-                                <Receipt fontSize="" />
+                                <TrackChangesIcon />
                               </span>
                               Track Order
                             </span>
                           </button>
-                          <button className="border border-gray bg-lightindigo border-opacity-50 bg-opacity-30 p-1 cursor-pointer rounded-md max-sm:w-full">
+                          <button className="border border-gray bg-background border-opacity-50 bg-opacity-80 p-1 cursor-pointer rounded-md max-sm:w-full">
                             <Link
                               to={`/user/details/${order.Id}`}
-                              className=" font-normal  text-opacity-60 hover:text-gray block"
+                              className=" font-normal  text-opacity-80 hover:text-gray block"
                             >
-                              <span>Order Details</span>
+                              <span> <RemoveRedEyeIcon /> Order Details</span>
                             </Link>
                           </button>
                         </div>
