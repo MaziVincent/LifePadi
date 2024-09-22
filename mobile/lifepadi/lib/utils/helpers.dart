@@ -210,17 +210,20 @@ Future<bool?> displayError(
   );
 }
 
-Future<dynamic> handleDioError(
-  DioException error,
+Future<void> handleError(
+  dynamic error,
   BuildContext? context,
 ) async {
-  final title =
-      error.error is SocketException ? 'No Internet Connection' : null;
-  final description = error.error is SocketException
-      ? 'Please check your internet connection and try again'
-      : error.response?.data.toString() ?? // Has a response
-          error.message ?? // Dio Exception
-          error.error.toString(); // Not Dio Exception
+  String? title;
+  var description = error.toString();
+  if (error is DioException) {
+    title = error.error is SocketException ? 'No Internet Connection' : null;
+    description = error.error is SocketException
+        ? 'Please check your internet connection and try again'
+        : error.response?.data.toString() ?? // Has a response
+            error.message ?? // Dio Exception
+            error.error.toString(); // Not Dio Exception
+  }
 
   context != null
       ? await displayError(

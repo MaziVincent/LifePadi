@@ -1,15 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/phone_input_field.dart';
+import 'package:lifepadi/widgets/phone_verification_widget.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class RegisterPage extends HookConsumerWidget {
@@ -28,6 +30,7 @@ class RegisterPage extends HookConsumerWidget {
     final confirmPassword = useState('');
     final firstName = useState('');
     final lastName = useState('');
+    final isPhoneVerified = useState(false);
 
     return Scaffold(
       body: SafeArea(
@@ -131,19 +134,82 @@ class RegisterPage extends HookConsumerWidget {
                           validator: buildEmailValidator(),
                         ),
                         19.verticalSpace,
-                        InputField(
-                          hintText: 'Enter Phone',
-                          labelText: 'Phone',
-                          onChanged: (value) => phone.value = value,
-                          keyboardType: TextInputType.phone,
-                          hasValue: phone.value.isNotEmpty,
-                          autofillHints: const [
-                            AutofillHints.newUsername,
-                            AutofillHints.telephoneNumber,
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: isPhoneVerified.value ? 5 : 3,
+                              child: PhoneInputField(phone: phone),
+                            ),
+                            10.horizontalSpace,
+
+                            /// Verify phone number button
+                            Flexible(
+                              child: PrimaryActionButton(
+                                label: isPhoneVerified.value ? '' : 'Verify',
+                                radius: 8.r,
+                                iconWidget: isPhoneVerified.value
+                                    ? const Icon(
+                                        Icons.verified_sharp,
+                                        color: Colors.white,
+                                      )
+                                    : null,
+                                loadingWheelSize: 18.sp,
+                                onPressed: isPhoneVerified.value
+                                    ? null
+                                    : () async {
+                                        if (phone.value.isEmpty) {
+                                          await showToast('Enter phone number');
+                                          return;
+                                        }
+                                        final isValid =
+                                            await isValidPhoneNumber(
+                                          phone.value,
+                                        );
+                                        if (!isValid) {
+                                          await showToast(
+                                            'Invalid phone number',
+                                          );
+                                          return;
+                                        }
+
+                                        await ref
+                                            .read(
+                                              authControllerProvider.notifier,
+                                            )
+                                            .sendVerificationCode(phone.value)
+                                            .then(
+                                          (String pinId) async {
+                                            await showToast(
+                                              'Verification code sent to ${phone.value}',
+                                            );
+
+                                            if (context.mounted) {
+                                              await displayBottomPanel(
+                                                context,
+                                                child: PhoneVerificationWidget(
+                                                  phoneNumber: phone.value,
+                                                  pinId: pinId,
+                                                  onVerified: () {
+                                                    isPhoneVerified.value =
+                                                        true;
+                                                    context.pop();
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          onError: (dynamic error) async {
+                                            await handleError(
+                                              error,
+                                              context.mounted ? context : null,
+                                            );
+                                          },
+                                        );
+                                      },
+                              ),
+                            ),
                           ],
                         ),
-                        19.verticalSpace,
-                        PhoneInputField(phone: phone),
                         19.verticalSpace,
                         InputField(
                           hintText: 'Enter New Password',
@@ -194,15 +260,26 @@ class RegisterPage extends HookConsumerWidget {
                           ),
                         ),
                         25.verticalSpace,
-                        PrimaryButton(
-                          text: 'Register',
-                          onPressed: () {
+                        PrimaryActionButton(
+                          label: 'Register',
+                          onPressed: () async {
                             if (!formKey.currentState!.validate()) return;
 
-                            // TODO: Make request to register
-
-                            // For now, go to code verification
-                            context.go(const VerificationRoute().location);
+                            await ref
+                                .read(authControllerProvider.notifier)
+                                .register(
+                                  firstName: firstName.value,
+                                  lastName: lastName.value,
+                                  email: email.value,
+                                  phoneNumber: phone.value,
+                                  password: password.value,
+                                )
+                                .onError<DioException>(
+                                  (error, stackTrace) => handleError(
+                                    error,
+                                    context.mounted ? context : null,
+                                  ),
+                                );
                           },
                         ),
                         17.verticalSpace,
@@ -215,75 +292,7 @@ class RegisterPage extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                        15.verticalSpace,
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20).w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Expanded(
-                                child: MyDivider(
-                                  color: Color(0xFFC2C8D0),
-                                ),
-                              ),
-                              13.01.horizontalSpace,
-                              Text(
-                                'OR',
-                                style: GoogleFonts.roboto(
-                                  color: const Color(0xFF2D333A),
-                                  fontSize: 9.76.sp,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.33.r,
-                                ),
-                              ),
-                              13.01.horizontalSpace,
-                              const Expanded(
-                                child: MyDivider(
-                                  color: Color(0xFFC2C8D0),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        16.verticalSpace,
-                        Container(
-                          width: double.infinity,
-                          height: 41.15.h,
-                          margin: const EdgeInsets.symmetric(horizontal: 28).w,
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 10.57).h,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 0.81,
-                                color: Color(0xFFC2C8D0),
-                              ),
-                              borderRadius: BorderRadius.circular(44),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Assets.icons.google.svg(
-                                width: 16.27.r,
-                                height: 16.27.r,
-                              ),
-                              9.76.horizontalSpace,
-                              Text(
-                                'Continue with Google',
-                                style: textTheme.bodyMedium?.copyWith(
-                                  color: const Color(0xFF2D333A),
-                                  fontSize: 13.01.sp,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0.12.r,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        33.85.verticalSpace,
+                        20.verticalSpace,
                       ],
                     ),
                   ),

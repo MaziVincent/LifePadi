@@ -15,7 +15,6 @@ sealed class User with _$User {
     @JsonKey(name: 'Email') required String email,
     @JsonKey(name: 'FirstName') required String firstName,
     @JsonKey(name: 'LastName') required String lastName,
-    @JsonKey(name: 'ContactAddress') required String contactAddress,
     @JsonKey(
       name: 'Role',
       fromJson: UserRole.fromJson,

@@ -168,12 +168,7 @@ class OnboardingRoute extends GoRouteData {
         TypedGoRoute<ResetPasswordRoute>(path: 'reset-password'),
       ],
     ),
-    TypedGoRoute<RegisterRoute>(
-      path: 'register',
-      routes: [
-        TypedGoRoute<VerificationRoute>(path: 'verification'),
-      ],
-    ),
+    TypedGoRoute<RegisterRoute>(path: 'register'),
   ],
 )
 class GetStartedRoute extends GoRouteData {
@@ -218,15 +213,6 @@ class RegisterRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const RegisterPage();
-  }
-}
-
-class VerificationRoute extends GoRouteData {
-  const VerificationRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const VerificationPage();
   }
 }
 

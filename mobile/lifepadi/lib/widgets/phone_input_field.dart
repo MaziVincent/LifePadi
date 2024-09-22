@@ -38,6 +38,7 @@ class PhoneInputField extends StatelessWidget {
       onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
       cursorColor: kDarkPrimaryColor,
       spaceBetweenSelectorAndTextField: 0,
+      keyboardAction: TextInputAction.next,
       inputDecoration: InputDecoration(
         border: inputBorder(),
         enabledBorder: inputBorder(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:native_storage/native_storage.dart';
@@ -53,7 +54,7 @@ class AuthController extends _$AuthController {
   }
 
   /// Login method that performs a request to the server.
-  Future<void> login(String email, String password) async {
+  Future<void> login({required String email, required String password}) async {
     final client = ref.read(dioProvider(secured: false));
 
     try {
@@ -71,7 +72,7 @@ class AuthController extends _$AuthController {
       // Add the type to the response data
       response.data!['type'] = 'SignedIn';
       // Extract the refresh token from the response headers
-      final refreshToken = response.headers['Set-Cookie']!
+      final refreshToken = response.headers['set-cookie']!
           .toString()
           .split(';')
           .firstWhere((element) => element.contains('refreshToken'))
@@ -149,6 +150,97 @@ class AuthController extends _$AuthController {
       rethrow;
     }
   }
+
+  Future<void> register({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+    required String password,
+  }) async {
+    final client = ref.read(dioProvider(secured: false));
+    final formData = FormData.fromMap({
+      'FirstName': firstName,
+      'LastName': lastName,
+      'Email': email,
+      'PhoneNumber': phoneNumber,
+      'Password': password,
+    });
+
+    try {
+      final response = await client.post<JsonMap>(
+        '/user/create',
+        data: formData,
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from the server');
+      }
+
+      // Login the user after registration
+      if (response.statusCode! >= 200) {
+        return await login(email: email, password: password);
+      } else {
+        throw const ServerErrorException('Failed to register');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Send verification code to the user's phone number
+  Future<String> sendVerificationCode(String phoneNumber) async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      final response = await client.post<String>(
+        '/customer/send-otp',
+        data: FormData.fromMap({
+          'phoneNumber': phoneNumber,
+        }),
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from the server');
+      }
+      final data = jsonDecode(response.data!) as JsonMap;
+
+      return data['pinId'].toString();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Make a request to verify the user's phone number with the entered pin
+  Future<bool> verifyPhoneNumber({
+    required String pinId,
+    required String pin,
+  }) async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      final response = await client.post<String>(
+        '/customer/verify-otp',
+        queryParameters: {
+          'pinId': pinId,
+          'pin': pin,
+        },
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from the server');
+      }
+      final data = jsonDecode(response.data!) as JsonMap;
+
+      final verified = data['verified'] as bool;
+      if (!verified) {
+        final attemptsLeft = data['attemptsRemaining'] as int;
+        final message =
+            'Verification failed. You have $attemptsLeft attempts remaining.';
+        throw PhoneVerificationFailedException(message);
+      }
+      return verified;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 /// Exception thrown when a request is unauthorized.
@@ -160,5 +252,11 @@ class UnauthorizedException implements Exception {
 /// Exception thrown when a request returns 500.
 class ServerErrorException implements Exception {
   const ServerErrorException(this.message);
+  final String message;
+}
+
+/// Phone number verification failed.
+class PhoneVerificationFailedException implements Exception {
+  const PhoneVerificationFailedException(this.message);
   final String message;
 }

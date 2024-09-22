@@ -1,4 +1,5 @@
 import 'package:form_validator/form_validator.dart';
+import 'package:intl_phone_number_input/src/utils/phone_number/phone_number_util.dart';
 
 StringValidationCallback buildEmailValidator() {
   return ValidationBuilder(
@@ -35,4 +36,13 @@ StringValidationCallback buildPasswordValidator() {
         'Password must contain at least one special character',
       )
       .build();
+}
+
+Future<bool> isValidPhoneNumber(String phoneNumber) async {
+  final isValid = await PhoneNumberUtil.isValidNumber(
+    phoneNumber: phoneNumber,
+    isoCode: 'NG',
+  );
+  if (isValid != null && isValid) return true;
+  return false;
 }

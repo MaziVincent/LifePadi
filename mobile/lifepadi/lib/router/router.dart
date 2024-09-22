@@ -57,7 +57,6 @@ GoRouter router(RouterRef ref) {
         const LoginRoute().location,
         const GetStartedRoute().location,
         const RegisterRoute().location,
-        const VerificationRoute().location,
         const ForgotPasswordRoute().location,
         const ResetPasswordRoute().location,
       ];

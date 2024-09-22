@@ -189,9 +189,11 @@ class LoginPage extends HookConsumerWidget {
                               // Make request to login
                               await ref
                                   .read(authControllerProvider.notifier)
-                                  .login(email.value, password.value)
+                                  .login(
+                                      email: email.value,
+                                      password: password.value)
                                   .onError<DioException>(
-                                    (error, stackTrace) => handleDioError(
+                                    (error, stackTrace) => handleError(
                                       error,
                                       context.mounted ? context : null,
                                     ),

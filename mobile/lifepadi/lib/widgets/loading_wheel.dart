@@ -60,20 +60,29 @@ abstract class LoadingWheel extends HookWidget {
 }
 
 class GreenyLoadingWheel extends LoadingWheel {
-  const GreenyLoadingWheel({super.key});
+  const GreenyLoadingWheel({super.key, this.size});
 
-  @override
-  Widget getWheelImage() {
-    return Assets.images.loadingWheel.svg();
-  }
-}
-
-class OrangeyLoadingWheel extends LoadingWheel {
-  const OrangeyLoadingWheel({super.key});
+  final double? size;
 
   @override
   Widget getWheelImage() {
     return Assets.images.loadingWheel.svg(
+      height: size,
+      width: size,
+    );
+  }
+}
+
+class OrangeyLoadingWheel extends LoadingWheel {
+  const OrangeyLoadingWheel({super.key, this.size});
+
+  final double? size;
+
+  @override
+  Widget getWheelImage() {
+    return Assets.images.loadingWheel.svg(
+      height: size,
+      width: size,
       colorFilter: const ColorFilter.mode(Color(0xFFFFC727), BlendMode.srcIn),
     );
   }

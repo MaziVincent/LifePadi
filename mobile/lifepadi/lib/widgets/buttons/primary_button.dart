@@ -10,18 +10,20 @@ class PrimaryButton extends StatelessWidget {
     required this.text,
     this.icon,
     this.iconWidget,
+    this.radius,
   });
 
   final VoidCallback? onPressed;
   final String text;
   final IconData? icon;
   final Widget? iconWidget;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     final ShapeBorder roundedRectangleBorder = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(40.r),
+      borderRadius: BorderRadius.circular(radius ?? 40.r),
     );
     final hasIcon = icon != null || iconWidget != null;
 
@@ -52,17 +54,18 @@ class PrimaryButton extends StatelessWidget {
                       size: 24.r,
                       color: Colors.white,
                     ),
-                6.horizontalSpace,
+                if (text != '') 6.horizontalSpace,
               ],
-              Text(
-                text,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16.sp,
-                  letterSpacing: -0.88.r,
+              if (text != '')
+                Text(
+                  text,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.sp,
+                    letterSpacing: -0.88.r,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
