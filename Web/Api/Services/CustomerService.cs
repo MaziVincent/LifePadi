@@ -29,6 +29,22 @@ namespace Api.Services
             _httpClient = httpClient;
         }
 
+        public async Task<bool> checkPhoneAndEmail(string phoneNumber, string email)
+        {
+            try
+            {
+                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
+                if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
+                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
+                if (customer != null) throw new Exceptions.ServiceException("Email already exists");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<AuthUserDto> createAsync(CustomerDto customer)
         {
             try

@@ -123,6 +123,10 @@ namespace Api.Services
             //Favourite
             CreateMap<Favourite, FavouriteDto>();
             CreateMap<FavouriteDto, Favourite>();
+
+            //Logistics
+            CreateMap<Logistic, LogisticDto>();
+            CreateMap<LogisticDto, Logistic>();
         }
     }
 }

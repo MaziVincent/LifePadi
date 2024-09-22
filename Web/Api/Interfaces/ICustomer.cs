@@ -18,5 +18,6 @@ namespace Api.Interfaces
         public Task<int> numberOfCustomers();
         public Task<object> verifyOtp(string pinId, string pin);
         public Task<string> verifyPhone(string phoneNumber);
+        public Task<bool> checkPhoneAndEmail(string phoneNumber, string email);
     }
 }

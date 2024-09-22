@@ -15,6 +15,7 @@
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
         public List<OrderItem>? OrderItems { get; set; }
+        public List<Logistic>? Logistics { get; set; }
 
     }
 }
