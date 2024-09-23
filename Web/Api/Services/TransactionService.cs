@@ -32,7 +32,7 @@ namespace Api.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<TransactionDto>> allAsync()
+        public async Task<IEnumerable<TransactionDto>> AllAsync()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<object> baniCheckout(InitiatePaymentDto initiatePaymentDto)
+        public async Task<object> BaniCheckout(InitiatePaymentDto initiatePaymentDto)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo)
+        public async Task<PaymentDetailsDto> ConfirmPayment(AfterPayment transactionInfo)
         {
             try
             {
@@ -172,12 +172,27 @@ namespace Api.Services
             }
         }
 
-        public Task<TransactionDto> createAsync(TransactionDto transaction)
+        public async Task<TransactionDto> GetTransactionByOrderId(int orderId)
+        {
+            try
+            {
+                var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == orderId);
+                if (transaction == null) throw new Exceptions.ServiceException("Transaction not found");
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
+                return transactionDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public Task<TransactionDto> CreateAsync(TransactionDto transaction)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<string> deleteAsync(int id)
+        public async Task<string> DeleteAsync(int id)
         {
             try
             {
@@ -194,7 +209,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<TransactionDto> getAsync(int id)
+        public async Task<TransactionDto> GetAsync(int id)
         {
             try
             {
@@ -212,7 +227,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<TransactionDto> getByPaymentId(BigInteger transactionId)
+        public async Task<TransactionDto> GetByPaymentId(BigInteger transactionId)
         {
             try
             {
@@ -230,7 +245,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment)
+        public async Task<DTO.Data> InitiatePayment(InitiatePaymentDto initiatePayment)
         {
             try
             {
@@ -310,7 +325,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<object> paystackCheckout(InitiatePaymentDto initiatePaymentDto)
+        public async Task<object> PaystackCheckout(InitiatePaymentDto initiatePaymentDto)
         {
             try
             {
@@ -376,7 +391,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<object> paystackVerifyPayment(string reference)
+        public async Task<object> PaystackVerifyPayment(string reference)
         {
             try
             {
@@ -425,7 +440,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<int> totalNumberOfFailedTransactions()
+        public async Task<int> TotalNumberOfFailedTransactions()
         {
             try
             {
@@ -438,7 +453,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<int> totalNumberOfPendingTransactions()
+        public async Task<int> TotalNumberOfPendingTransactions()
         {
             try
             {
@@ -450,7 +465,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<int> totalNumberOfSuccessfulTransactions()
+        public async Task<int> TotalNumberOfSuccessfulTransactions()
         {
             try
             {
@@ -463,7 +478,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<int> totalNumberOfTransactions()
+        public async Task<int> TotalNumberOfTransactions()
         {
             try
             {
@@ -476,16 +491,16 @@ namespace Api.Services
             }
         }
 
-        public async Task<object> transactionStats()
+        public async Task<object> TransactionStats()
         {
             try
             {
                 var stats = new
                 {
-                    totalNumberOfTransactions = await totalNumberOfTransactions(),
-                    totalNumberOfSuccessfulTransactions = await totalNumberOfSuccessfulTransactions(),
-                    totalNumberOfFailedTransactions = await totalNumberOfFailedTransactions(),
-                    totalNumberOfPendingTransactions = await totalNumberOfPendingTransactions()
+                    totalNumberOfTransactions = await TotalNumberOfTransactions(),
+                    totalNumberOfSuccessfulTransactions = await TotalNumberOfSuccessfulTransactions(),
+                    totalNumberOfFailedTransactions = await TotalNumberOfFailedTransactions(),
+                    totalNumberOfPendingTransactions = await TotalNumberOfPendingTransactions()
                 };
                 return stats;
             }
@@ -495,7 +510,7 @@ namespace Api.Services
             }
         }
 
-        public Task<TransactionDto> updateAsync(TransactionDto transaction, int id)
+        public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id)
         {
             throw new NotImplementedException();
         }
