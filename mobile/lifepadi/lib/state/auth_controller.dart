@@ -168,7 +168,7 @@ class AuthController extends _$AuthController {
 
     try {
       final response = await client.post<JsonMap>(
-        '/user/create',
+        '/customer/create',
         data: formData,
       );
       if (response.data == null) {
