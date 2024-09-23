@@ -237,5 +237,22 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost("password-reset")]
+        public async Task<IActionResult> passwordReset([FromForm] string phoneNumber)
+        {
+            try
+            {
+                var user = await _icustomer!.checkPhoneExists(phoneNumber);
+                if (user == false) return NotFound("User not found");
+                var response = await _icustomer!.passwordReset(phoneNumber);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

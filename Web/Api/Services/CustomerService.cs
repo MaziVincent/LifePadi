@@ -12,6 +12,7 @@ using Customer = Api.Models.Customer;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
+using Api.Helpers;
 
 namespace Api.Services
 {
@@ -38,6 +39,20 @@ namespace Api.Services
                 var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
                 if (customer != null) throw new Exceptions.ServiceException("Email already exists");
                 return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<bool> checkPhoneExists(string phoneNumber)
+        {
+            try
+            {
+                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
+                if (user != null) return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -205,6 +220,20 @@ namespace Api.Services
             {
                 var customers = await _dbContext.Customers.CountAsync();
                 return customers;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> passwordReset(string phoneNumber)
+        {
+            try
+            {
+                var verify = new SendOtp(_config, _httpClient);
+                var response = await verify.sendOtp(phoneNumber);
+                return response;
             }
             catch (Exception ex)
             {
