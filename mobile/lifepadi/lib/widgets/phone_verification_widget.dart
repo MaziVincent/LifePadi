@@ -32,7 +32,6 @@ class PhoneVerificationWidget extends HookWidget {
     final textTheme = context.textTheme;
     const focusedBorderColor = Color(0xFF21D1A5);
     const borderColor = Color(0xFFD9DFE6);
-    final pinController = TextEditingController();
     final focusNode = FocusNode();
     final formKey = GlobalKey<FormState>();
     final loading = useState(false);
@@ -107,7 +106,6 @@ class PhoneVerificationWidget extends HookWidget {
                 key: formKey,
                 child: Consumer(
                   builder: (context, ref, child) => Pinput(
-                    controller: pinController,
                     focusNode: focusNode,
                     defaultPinTheme: defaultPinTheme,
                     hapticFeedbackType: HapticFeedbackType.lightImpact,

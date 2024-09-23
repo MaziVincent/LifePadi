@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ForgotPasswordPage extends HookConsumerWidget {
@@ -16,7 +18,6 @@ class ForgotPasswordPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    // Create the input states
     final email = useState('');
     final phone = useState('');
 
@@ -71,10 +72,8 @@ class ForgotPasswordPage extends HookConsumerWidget {
                           ),
                           16.verticalSpace,
                           if (usePhone.value)
-                            InputField(
-                              hintText: 'Enter Phone',
-                              labelText: 'Phone',
-                              onChanged: (value) => phone.value = value,
+                            PhoneInputField(
+                              phone: phone,
                               onChildTap: () {
                                 // Hide this, show email input field
                                 usePhone.value = false;
@@ -83,12 +82,6 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 // Clear the phone input field
                                 phone.value = '';
                               },
-                              keyboardType: TextInputType.phone,
-                              hasValue: phone.value.isNotEmpty,
-                              autofillHints: const [
-                                AutofillHints.username,
-                                AutofillHints.telephoneNumber,
-                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
@@ -124,6 +117,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                 AutofillHints.username,
                                 AutofillHints.email,
                               ],
+                              validator: buildEmailValidator(),
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   top: 13,
@@ -141,11 +135,48 @@ class ForgotPasswordPage extends HookConsumerWidget {
                               ),
                             ),
                           25.verticalSpace,
-                          PrimaryButton(
-                            text: 'Continue',
-                            onPressed: () {
-                              // Go to reset password page
-                              context.go(const ResetPasswordRoute().location);
+                          PrimaryActionButton(
+                            label: 'Continue',
+                            onPressed: () async {
+                              if (!formKey.currentState!.validate()) return;
+
+                              await ref
+                                  .read(
+                                    authControllerProvider.notifier,
+                                  )
+                                  .sendVerificationCode(phone.value)
+                                  .then(
+                                (String pinId) async {
+                                  await showToast(
+                                    'Verification code sent to ${phone.value}',
+                                  );
+
+                                  if (context.mounted) {
+                                    await displayBottomPanel(
+                                      context,
+                                      child: PhoneVerificationWidget(
+                                        phoneNumber: phone.value,
+                                        pinId: pinId,
+                                        onVerified: () {
+                                          // Go to reset password page
+                                          context
+                                            ..pop()
+                                            ..go(
+                                              const ResetPasswordRoute()
+                                                  .location,
+                                            );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                                onError: (dynamic error) async {
+                                  await handleError(
+                                    error,
+                                    context.mounted ? context : null,
+                                  );
+                                },
+                              );
                             },
                           ),
                           30.verticalSpace,
