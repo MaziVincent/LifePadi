@@ -10,8 +10,6 @@ import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/validation.dart';
-import 'package:lifepadi/widgets/phone_input_field.dart';
-import 'package:lifepadi/widgets/phone_verification_widget.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class RegisterPage extends HookConsumerWidget {
@@ -242,15 +240,10 @@ class RegisterPage extends HookConsumerWidget {
                           hideText: hideConfirmPassword.value,
                           hasValue: confirmPassword.value.isNotEmpty,
                           autofillHints: const [AutofillHints.newPassword],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Confirm Password is required';
-                            }
-                            if (value != password.value) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
+                          validator: (v) => validateConfirmPassword(
+                            value: v,
+                            password: password.value,
+                          ),
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -169,6 +170,7 @@ Future<bool?> openChoiceDialog({
   required IconData icon,
   Color? iconColor,
   Color? iconBackgroundColor,
+  bool? hasCancel,
 }) {
   return showDialog<bool>(
     context: context,
@@ -184,9 +186,39 @@ Future<bool?> openChoiceDialog({
           icon: icon,
           iconColor: iconColor,
           iconBackgroundColor: iconBackgroundColor,
+          hasCancel: hasCancel ?? true,
         ),
       );
     },
+  );
+}
+
+/// Success dialog
+Future<bool?> openSuccessDialog({
+  required BuildContext context,
+  VoidCallback? onOk,
+  VoidCallback? onCancel,
+  required String title,
+  required String description,
+  String? yesText,
+  String? cancelText,
+  IconData icon = MdiIcons.check,
+  Color iconColor = Colors.white,
+  Color? iconBackgroundColor = kDarkPrimaryColor,
+  bool hasClose = false,
+}) async {
+  return openChoiceDialog(
+    context: context,
+    title: title,
+    description: description,
+    yesText: 'Okay',
+    cancelText: 'Close',
+    onYes: onOk,
+    onCancel: onCancel,
+    icon: icon,
+    iconColor: iconColor,
+    iconBackgroundColor: iconBackgroundColor,
+    hasCancel: hasClose,
   );
 }
 

@@ -46,3 +46,16 @@ Future<bool> isValidPhoneNumber(String phoneNumber) async {
   if (isValid != null && isValid) return true;
   return false;
 }
+
+String? validateConfirmPassword({
+  required String? value,
+  required String password,
+}) {
+  if (value == null || value.isEmpty) {
+    return 'Confirm Password is required';
+  }
+  if (value != password) {
+    return 'Passwords do not match';
+  }
+  return null;
+}

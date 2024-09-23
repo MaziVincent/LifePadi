@@ -17,6 +17,7 @@ class ChoiceAlertDialog extends StatelessWidget {
     required this.icon,
     this.iconColor,
     this.iconBackgroundColor,
+    this.hasCancel = true,
   });
 
   final VoidCallback? onYes, onCancel;
@@ -25,6 +26,7 @@ class ChoiceAlertDialog extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
   final Color? iconBackgroundColor;
+  final bool hasCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +67,13 @@ class ChoiceAlertDialog extends StatelessWidget {
           ),
           Row(
             children: [
-              Expanded(
-                child: PrimaryOutlineChoiceButton(
-                  onPressed: onCancel ?? () => context.pop(),
-                  text: cancelText ?? 'Cancel',
+              if (hasCancel)
+                Expanded(
+                  child: PrimaryOutlineChoiceButton(
+                    onPressed: onCancel ?? () => context.pop(),
+                    text: cancelText ?? 'Cancel',
+                  ),
                 ),
-              ),
               16.horizontalSpace,
               Expanded(
                 child: PrimaryChoiceButton(

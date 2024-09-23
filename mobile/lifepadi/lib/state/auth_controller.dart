@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:native_storage/native_storage.dart';
@@ -237,6 +236,28 @@ class AuthController extends _$AuthController {
         throw PhoneVerificationFailedException(message);
       }
       return verified;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> resetPassword({
+    required String newPassword,
+    required int userId,
+  }) async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      final response = await client.post<JsonMap>(
+        '/auth/password-reset/$userId',
+        data: FormData.fromMap({
+          'NewPassword': newPassword,
+        }),
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from server');
+      }
+      return response.data!['message'] as String;
     } catch (e) {
       rethrow;
     }

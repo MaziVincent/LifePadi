@@ -3,8 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ResetPasswordPage extends HookConsumerWidget {
@@ -46,7 +49,6 @@ class ResetPasswordPage extends HookConsumerWidget {
                 ),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  // TODO: Validate the form inputs properly
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -80,6 +82,7 @@ class ResetPasswordPage extends HookConsumerWidget {
                           hideText: hidePassword.value,
                           hasValue: password.value.isNotEmpty,
                           autofillHints: const [AutofillHints.newPassword],
+                          validator: buildPasswordValidator(),
                           child: Icon(
                             hidePassword.value
                                 ? Icons.visibility
@@ -100,6 +103,10 @@ class ResetPasswordPage extends HookConsumerWidget {
                           hideText: hideConfirmPassword.value,
                           hasValue: confirmPassword.value.isNotEmpty,
                           autofillHints: const [AutofillHints.newPassword],
+                          validator: (v) => validateConfirmPassword(
+                            value: v,
+                            password: password.value,
+                          ),
                           child: Icon(
                             hideConfirmPassword.value
                                 ? Icons.visibility
@@ -111,14 +118,44 @@ class ResetPasswordPage extends HookConsumerWidget {
                         24.verticalSpace,
                         PrimaryButton(
                           text: 'Proceed',
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              // TODO: Make request to reset password
-
-                              showToast('Your password has been reset');
-
-                              // Send the user to login page
-                              context.pop();
+                              await ref
+                                  .read(authControllerProvider.notifier)
+                                  .resetPassword(
+                                    newPassword: password.value,
+                                    userId: 1000,
+                                  )
+                                  .then(
+                                (String message) async {
+                                  if (context.mounted) {
+                                    await openSuccessDialog(
+                                      context: context,
+                                      title: 'Reset Password',
+                                      description: message,
+                                      onOk: () => context
+                                        ..pop()
+                                        ..go(const LoginRoute().location),
+                                    );
+                                  } else {
+                                    await showToast(message, isLong: true).then(
+                                      (_) {
+                                        if (context.mounted) {
+                                          context.go(
+                                            const LoginRoute().location,
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                                onError: (dynamic error) async {
+                                  await handleError(
+                                    error,
+                                    context.mounted ? context : null,
+                                  );
+                                },
+                              );
                             }
                           },
                         ),
