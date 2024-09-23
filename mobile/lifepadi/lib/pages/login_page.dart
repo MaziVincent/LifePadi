@@ -10,7 +10,6 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/validation.dart';
-import 'package:lifepadi/widgets/phone_input_field.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 import '../state/auth_controller.dart';
@@ -190,8 +189,11 @@ class LoginPage extends HookConsumerWidget {
                               await ref
                                   .read(authControllerProvider.notifier)
                                   .login(
-                                      email: email.value,
-                                      password: password.value,)
+                                    email: email.value,
+                                    password: password.value,
+                                    phoneNumber: phone.value,
+                                    usePhone: usePhone.value,
+                                  )
                                   .onError<DioException>(
                                     (error, stackTrace) => handleError(
                                       error,

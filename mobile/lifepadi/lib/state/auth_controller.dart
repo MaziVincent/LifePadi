@@ -53,16 +53,21 @@ class AuthController extends _$AuthController {
   }
 
   /// Login method that performs a request to the server.
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+    required String phoneNumber,
+    bool usePhone = false,
+  }) async {
     final client = ref.read(dioProvider(secured: false));
+    final data = {'password': password}..addAll(
+        usePhone ? {'phoneNumber': phoneNumber} : {'email': email},
+      );
 
     try {
       final response = await client.post<JsonMap>(
         '/auth/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        data: data,
       );
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
@@ -177,7 +182,11 @@ class AuthController extends _$AuthController {
 
       // Login the user after registration
       if (response.statusCode! >= 200) {
-        return await login(email: email, password: password);
+        return await login(
+          email: email,
+          password: password,
+          phoneNumber: phoneNumber,
+        );
       } else {
         throw const ServerErrorException('Failed to register');
       }
