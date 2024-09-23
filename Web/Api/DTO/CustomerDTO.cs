@@ -55,4 +55,10 @@ namespace Api.DTO
         public DateTime? UpdatedAt { get; set; }
         public WalletDto? Wallet { get; set; }
     }
+
+    public class checkUserExistsDto
+    {
+        public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
+    }
 }

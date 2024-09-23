@@ -32,6 +32,7 @@ namespace Api.Models
         public DbSet<Withdrawal> Withdrawals { get; set; }
         public DbSet<WalletNotification> WalletNotifications { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
+        public DbSet<Logistic> Logistics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

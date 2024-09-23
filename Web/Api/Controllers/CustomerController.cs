@@ -215,5 +215,44 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("check-user-exists")]
+        public async Task<IActionResult> checkUserExists(checkUserExistsDto checkUser)
+        {
+            try
+            {
+                var response = await _icustomer!.checkPhoneAndEmail(checkUser.PhoneNumber!, checkUser.Email!);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Phone number already exists"))
+                {
+                    return StatusCode(409, ex.Message);
+                }
+                if (ex.Message.Contains("Email already exists"))
+                {
+                    return StatusCode(409, ex.Message);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("password-reset")]
+        public async Task<IActionResult> passwordReset([FromForm] string phoneNumber)
+        {
+            try
+            {
+                var user = await _icustomer!.checkPhoneExists(phoneNumber);
+                if (user == false) return NotFound("User not found");
+                var response = await _icustomer!.passwordReset(phoneNumber);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

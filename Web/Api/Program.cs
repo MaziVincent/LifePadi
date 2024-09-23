@@ -70,6 +70,7 @@ builder.Services.AddScoped<IWalletDepositeAndWithdrawal<DepositeDto>, DepositeSe
 builder.Services.AddScoped<IWalletDepositeAndWithdrawal<WithdrawalDto>, WithdrawalService>();
 builder.Services.AddScoped<IWalletNotification, WalletNotificationService>();
 builder.Services.AddScoped<IFavourite, FavouriteService>();
+builder.Services.AddScoped<ILogistic, LogisticService>();
 
 
 
