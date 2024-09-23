@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:native_storage/native_storage.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../state/auth_controller.dart';
@@ -8,8 +8,8 @@ import 'routes.dart';
 
 part 'router.g.dart';
 
-bool hasLoggedInBefore() {
-  final hasLoggedIn = NativeStorage().read('hasEverLoggedIn');
+bool hasLoggedInBefore(PreferencesHelper prefs) {
+  final hasLoggedIn = prefs.getBool('hasEverLoggedIn');
 
   if (hasLoggedIn == null) {
     return false;
@@ -33,6 +33,7 @@ bool hasLoggedInBefore() {
 @riverpod
 GoRouter router(RouterRef ref) {
   final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
+  final prefs = PreferencesHelper()..load();
   ref
     ..onDispose(isAuth.dispose) // don't forget to clean after yourselves (:
     // update the listenable, when some provider value changes
@@ -61,7 +62,7 @@ GoRouter router(RouterRef ref) {
         const ResetPasswordRoute().location,
       ];
       final isLoggingIn = guestRoutes.contains(state.uri.path);
-      final locationBasedOnPreviousLogin = hasLoggedInBefore()
+      final locationBasedOnPreviousLogin = hasLoggedInBefore(prefs)
           ? const GetStartedRoute().location
           : const OnboardingRoute().location;
 

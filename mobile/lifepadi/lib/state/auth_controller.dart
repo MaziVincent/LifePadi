@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:native_storage/native_storage.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
+import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../entities/user.dart';
@@ -14,15 +15,22 @@ part 'auth_controller.g.dart';
 /// This controller is an [AsyncNotifier] that holds and handles our authentication state
 @riverpod
 class AuthController extends _$AuthController {
-  IsolatedNativeStorage? _secureStorage;
-  NativeStorage? _storage;
-  static const _credentialsKey = 'currentUser';
+  final SecureStorageService _secureStorage = SecureStorageService();
+  final PreferencesHelper _prefs = PreferencesHelper();
+  final _credentialsKey = 'currentUser';
 
   @override
   Future<User> build() async {
-    if (_storage == null) {
-      _storage = NativeStorage();
-      _secureStorage = _storage!.secure.isolated;
+    /// [Fixes iOS issue] Keychain items are not deleted when app is uninstalled:
+    /// Because FlutterSecureStorage stores any info in the keychain,
+    /// the data doesn't get deleted even if the app is uninstalled.
+    // check whether the app is starting for the first time after a fresh install
+    const firstRun = 'LifepadiFirstRun';
+    if (_prefs.getBool(firstRun) ?? true) {
+      // delete FlutterSecureStorage items during uninstall/install
+      await _secureStorage.removeAll();
+
+      _prefs.setBool(key: firstRun, value: false);
     }
 
     _persistenceRefreshLogic();
@@ -36,14 +44,14 @@ class AuthController extends _$AuthController {
   /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
   Future<User> _loginRecoveryAttempt() async {
     try {
-      final credentials = await _secureStorage?.read(_credentialsKey);
+      final credentials = await _secureStorage.get(_credentialsKey);
       if (credentials == null) {
         throw const UnauthorizedException('No credentials found');
       }
 
       return User.fromJson(jsonDecode(credentials) as JsonMap);
     } catch (_, __) {
-      await _secureStorage?.delete(_credentialsKey);
+      await _secureStorage.remove(_credentialsKey);
       return Future.value(const User.signedOut());
     }
   }
@@ -87,9 +95,9 @@ class AuthController extends _$AuthController {
       final user = User.fromJson(response.data!);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
-      final hasEverLoggedIn = _storage?.read('hasEverLoggedIn');
+      final hasEverLoggedIn = _prefs.getBool('hasEverLoggedIn');
       if (hasEverLoggedIn == null) {
-        _storage?.write('hasEverLoggedIn', 'true');
+        _prefs.setBool(key: 'hasEverLoggedIn', value: true);
       }
       state = AsyncData(user);
     } catch (e) {
@@ -97,8 +105,10 @@ class AuthController extends _$AuthController {
     }
   }
 
-  Future<String> _saveDetailsToStorage(User user) async =>
-      _secureStorage!.write(_credentialsKey, jsonEncode(user.toJson()));
+  Future<void> _saveDetailsToStorage(User user) async => _secureStorage.add(
+        key: _credentialsKey,
+        value: jsonEncode(user.toJson()),
+      );
 
   /// Internal method used to listen authentication state changes.
   /// When the auth object is in a loading state, nothing happens.
@@ -108,13 +118,13 @@ class AuthController extends _$AuthController {
     ref.listenSelf((_, next) {
       if (next.isLoading) return;
       if (next.hasError) {
-        _secureStorage?.delete(_credentialsKey).ignore();
+        _secureStorage.remove(_credentialsKey).ignore();
         return;
       }
 
       next.requireValue.map<void>(
         signedIn: (signedIn) async => _saveDetailsToStorage(signedIn),
-        signedOut: (signedOut) async => _secureStorage?.delete(_credentialsKey),
+        signedOut: (signedOut) async => _secureStorage.remove(_credentialsKey),
       );
     });
   }
