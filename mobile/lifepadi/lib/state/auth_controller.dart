@@ -8,7 +8,7 @@ import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../entities/user.dart';
+import '../models/user.dart';
 
 part 'auth_controller.g.dart';
 

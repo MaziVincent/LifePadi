@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/entities/user.dart';
+import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/widgets/widgets.dart';

@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:lifepadi/entities/user_role.dart';
+import 'package:lifepadi/models/user_role.dart';
 
 part 'user.mapper.dart';
 
