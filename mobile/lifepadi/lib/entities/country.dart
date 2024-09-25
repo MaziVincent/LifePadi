@@ -1,3 +1,4 @@
+// Cc: https://github.com/figengungor/country_pickers/blob/master/lib/country.dart
 class Country {
   Country({
     required this.isoCode,

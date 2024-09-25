@@ -1,5 +1,6 @@
 import 'package:lifepadi/entities/country.dart';
 
+// Cc: https://github.com/figengungor/country_pickers/blob/master/lib/countries.dart
 final List<Country> countries = [
   Country(
     isoCode: 'AF',
