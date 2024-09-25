@@ -80,8 +80,8 @@ class HomeRoute extends GoRouteData {
     );
 
     return switch (userRole) {
-      Rider() => const RiderRoute().location,
-      Vendor() => const VendorRoute().location,
+      UserRole.rider => const RiderRoute().location,
+      UserRole.vendor => const VendorRoute().location,
       _ => null,
     };
   }

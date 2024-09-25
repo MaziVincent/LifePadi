@@ -49,15 +49,15 @@ class AuthController extends _$AuthController {
         throw const UnauthorizedException('No credentials found');
       }
 
-      return User.fromJson(jsonDecode(credentials) as JsonMap);
+      return UserMapper.fromJson(credentials);
     } catch (_, __) {
       await _secureStorage.remove(_credentialsKey);
-      return Future.value(const User.signedOut());
+      return Future.value(const Guest());
     }
   }
 
   Future<void> logout() async {
-    state = const AsyncData(User.signedOut());
+    state = const AsyncData(Guest());
   }
 
   /// Login method that performs a request to the server.
@@ -81,8 +81,6 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Add the type to the response data
-      response.data!['type'] = 'SignedIn';
       // Extract the refresh token from the response headers
       final refreshToken = response.headers['set-cookie']!
           .toString()
@@ -91,8 +89,10 @@ class AuthController extends _$AuthController {
           .split('=')
           .last;
       response.data!['refreshToken'] = refreshToken;
+      // FIXME: This is a temporary fix to handle the response from the server
+      response.data!['PhoneNumber'] = '+23412345678';
 
-      final user = User.fromJson(response.data!);
+      final user = User.fromMap(response.data!);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
       final hasEverLoggedIn = _prefs.getBool('hasEverLoggedIn');
@@ -101,13 +101,14 @@ class AuthController extends _$AuthController {
       }
       state = AsyncData(user);
     } catch (e) {
+      logger.e(e, error: e);
       rethrow;
     }
   }
 
   Future<void> _saveDetailsToStorage(User user) async => _secureStorage.add(
         key: _credentialsKey,
-        value: jsonEncode(user.toJson()),
+        value: user.toJson(),
       );
 
   /// Internal method used to listen authentication state changes.
@@ -122,10 +123,12 @@ class AuthController extends _$AuthController {
         return;
       }
 
-      next.requireValue.map<void>(
-        signedIn: (signedIn) async => _saveDetailsToStorage(signedIn),
-        signedOut: (signedOut) async => _secureStorage.remove(_credentialsKey),
-      );
+      final user = next.requireValue;
+      if (user.isAuth) {
+        _saveDetailsToStorage(user).ignore();
+      } else {
+        _secureStorage.remove(_credentialsKey).ignore();
+      }
     });
   }
 
@@ -137,16 +140,13 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final refreshToken = state.requireValue.maybeMap(
-        signedIn: (signedIn) => signedIn.refreshToken,
-        orElse: () => null,
-      );
+      final refreshToken = state.requireValue.refreshToken;
       final options = Options(
         headers: {
           'Cookie': 'refreshToken=$refreshToken',
         },
       );
-      final response = await client.post<Map<String, dynamic>>(
+      final response = await client.post<JsonMap>(
         '/auth/refreshToken',
         options: options,
       );
@@ -155,7 +155,7 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      final user = User.fromJson(response.data!);
+      final user = User.fromMap(response.data!);
       // Save the new token to the secure storage
       state = AsyncData(user);
       await _saveDetailsToStorage(state.requireValue);

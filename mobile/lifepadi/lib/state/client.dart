@@ -29,12 +29,9 @@ Dio dio(
 Interceptor authInterceptor(AuthInterceptorRef ref) {
   return InterceptorsWrapper(
     onRequest: (options, handler) async {
-      final auth = ref.read(authControllerProvider);
-      final token = auth.maybeWhen(
-        data: (auth) => auth.maybeMap(
-          signedIn: (signedIn) => signedIn.accessToken,
-          orElse: () => null,
-        ),
+      final user = ref.read(authControllerProvider);
+      final token = user.maybeWhen(
+        data: (user) => user.accessToken,
         orElse: () => null,
       );
 
@@ -72,12 +69,9 @@ Interceptor refreshInterceptor(RefreshInterceptorRef ref) {
     onError: (error, handler) async {
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 403) {
-        final auth = ref.read(authControllerProvider);
-        final token = auth.maybeWhen(
-          data: (auth) => auth.maybeMap(
-            signedIn: (signedIn) => signedIn.refreshToken,
-            orElse: () => null,
-          ),
+        final user = ref.read(authControllerProvider);
+        final token = user.maybeWhen(
+          data: (user) => user.refreshToken,
           orElse: () => null,
         );
 
