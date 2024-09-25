@@ -57,6 +57,7 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> logout() async {
+    await _secureStorage.remove(_credentialsKey);
     state = const AsyncData(Guest());
   }
 

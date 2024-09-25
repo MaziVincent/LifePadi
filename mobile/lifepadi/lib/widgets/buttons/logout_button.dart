@@ -22,11 +22,6 @@ class LogoutButton extends ConsumerWidget {
           description: 'Are you sure you want to log out?',
           icon: IconsaxPlusLinear.logout,
           onYes: () async {
-            // TODO: Implement logout
-
-            // * For now, just logout simulating a network request:
-            showToast('Logging out').ignore();
-
             await ref.read(authControllerProvider.notifier).logout().then((_) {
               if (context.mounted) context.go(const LoginRoute().location);
             });

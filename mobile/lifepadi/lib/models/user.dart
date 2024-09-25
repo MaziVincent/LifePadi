@@ -7,12 +7,12 @@ part 'user.mapper.dart';
 @MappableClass(discriminatorKey: 'Role')
 sealed class User with UserMappable {
   const User({
-    required this.accessToken,
-    required this.refreshToken,
+    required this.id,
     required this.email,
     required this.phoneNumber,
-    required this.id,
     required this.role,
+    required this.accessToken,
+    required this.refreshToken,
   });
 
   @MappableField()
@@ -40,14 +40,14 @@ sealed class User with UserMappable {
 @MappableClass(discriminatorValue: 'Customer')
 class Customer extends User with CustomerMappable {
   const Customer({
-    required super.accessToken,
-    required super.refreshToken,
     required super.id,
     required super.email,
     required super.phoneNumber,
-    required super.role,
     required this.firstName,
     required this.lastName,
+    required super.role,
+    required super.accessToken,
+    required super.refreshToken,
     this.address,
   });
 
@@ -64,8 +64,6 @@ class Customer extends User with CustomerMappable {
 @MappableClass(discriminatorValue: 'Rider')
 class Rider extends User with RiderMappable {
   const Rider({
-    required super.accessToken,
-    required super.refreshToken,
     required super.id,
     required super.email,
     required super.phoneNumber,
@@ -73,9 +71,11 @@ class Rider extends User with RiderMappable {
     required this.lastName,
     required this.identityType,
     required this.identityNumber,
-    required super.role,
     this.emergencyContact,
     this.address,
+    required super.role,
+    required super.accessToken,
+    required super.refreshToken,
   });
 
   @MappableField(key: 'FirstName')
@@ -97,16 +97,16 @@ class Rider extends User with RiderMappable {
 @MappableClass(discriminatorValue: 'Vendor')
 class Vendor extends User with VendorMappable {
   const Vendor({
-    required super.accessToken,
-    required super.refreshToken,
     required super.id,
     required super.email,
     required super.phoneNumber,
     required this.name,
     required this.vendorType,
     required this.address,
-    required super.role,
     this.serviceId,
+    required super.role,
+    required super.accessToken,
+    required super.refreshToken,
   });
 
   @MappableField(key: 'Name')
@@ -123,11 +123,11 @@ class Vendor extends User with VendorMappable {
 class Guest extends User with GuestMappable {
   const Guest()
       : super(
-          accessToken: '',
-          refreshToken: '',
+          id: 0,
           email: '',
           phoneNumber: '',
-          id: 0,
           role: UserRole.guest,
+          accessToken: '',
+          refreshToken: '',
         );
 }

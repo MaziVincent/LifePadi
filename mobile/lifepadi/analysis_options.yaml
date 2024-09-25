@@ -19,9 +19,6 @@ analyzer:
     - test/.test_coverage.dart
     - lib/generated_plugin_registrant.dart
     - lib/l10n/**
-    - lib/**/*.g.dart
-    - lib/**/*.freezed.dart
-    - test/**/*.g.dart
     - packages/salomon_bottom_bar/**
 
 linter:
