@@ -6,9 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/entities/user.dart';
 import 'package:lifepadi/pages/pages.dart';
 import 'package:lifepadi/state/auth_controller.dart';
-
-import '../state/permissions.dart';
-import '../widgets/scaffold_with_nav_bar.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 part 'routes.g.dart';
 
