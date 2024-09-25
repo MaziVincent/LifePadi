@@ -65,6 +65,7 @@ namespace Api.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
                     Role = user.Role,
                     accessToken = accessToken
@@ -106,6 +107,7 @@ namespace Api.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
                     Role = Type
                 };
