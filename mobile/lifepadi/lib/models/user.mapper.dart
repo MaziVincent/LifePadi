@@ -25,14 +25,14 @@ class UserMapper extends ClassMapperBase<User> {
   @override
   final String id = 'User';
 
+  static int _$id(User v) => v.id;
+  static const Field<User, int> _f$id = Field('id', _$id, key: 'Id');
   static String _$email(User v) => v.email;
   static const Field<User, String> _f$email =
       Field('email', _$email, key: 'Email');
   static String _$phoneNumber(User v) => v.phoneNumber;
   static const Field<User, String> _f$phoneNumber =
       Field('phoneNumber', _$phoneNumber, key: 'PhoneNumber');
-  static int _$id(User v) => v.id;
-  static const Field<User, int> _f$id = Field('id', _$id, key: 'Id');
   static UserRole _$role(User v) => v.role;
   static const Field<User, UserRole> _f$role =
       Field('role', _$role, key: 'Role');
@@ -45,9 +45,9 @@ class UserMapper extends ClassMapperBase<User> {
 
   @override
   final MappableFields<User> fields = const {
+    #id: _f$id,
     #email: _f$email,
     #phoneNumber: _f$phoneNumber,
-    #id: _f$id,
     #role: _f$role,
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
