@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/entities/user.dart';
 import 'package:lifepadi/pages/pages.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 
-import '../entities/user_role.dart';
 import '../state/permissions.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 
@@ -75,13 +76,13 @@ class HomeRoute extends GoRouteData {
   /// This is currently unsupported.
   @override
   FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
-    final userRole = await ProviderScope.containerOf(context).read(
-      permissionsProvider.future,
+    final user = await ProviderScope.containerOf(context).read(
+      authControllerProvider.future,
     );
 
-    return switch (userRole) {
-      UserRole.rider => const RiderRoute().location,
-      UserRole.vendor => const VendorRoute().location,
+    return switch (user) {
+      Rider() => const RiderRoute().location,
+      Vendor() => const VendorRoute().location,
       _ => null,
     };
   }
