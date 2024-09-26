@@ -1,28 +1,171 @@
 import { Modal } from "@mui/material";
 import { useForm } from "react-hook-form";
-import {ClickAwayListener} from "@mui/material";
+import { ClickAwayListener } from "@mui/material";
 import LoadingGif from "../shared/LodingGif";
-
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import { useEffect, useState } from "react";
+import baseUrl from "../../api/baseUrl";
+import axios from "axios";
+import usePost from "../../hooks/usePost";
+import { useDistance } from "../../hooks/useDistance";
+import useAuth from "../../hooks/useAuth";
+import useCart from "../../hooks/useCart";
 
 const SendPackage = ({ dispatch, open }) => {
-  
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "all",
   });
+  const { auth } = useAuth();
+  const post = usePost();
+  const { state: cartState, dispatch: cartDispatch } = useCart();
+  const [selectedChips, setSelectedChips] = useState([]);
+  const [senderSuggestions, setSenderSuggestions] = useState([]);
+  const [recieverSuggestions, setRecieverSuggestions] = useState([]);
+  const [focusedField, setFocusedField] = useState(null);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const url = `${baseUrl}logistics/create`;
+  const options = [
+    "Documents",
+    "Food Stuff",
+    "Money",
+    "Clothing",
+    "Elecronics",
+    "Phone",
+    "I prefer not to say",
+  ];
 
-  const handleSend = (data) => {
-    console.log(data);
+  const handleChipClick = (option) => {
+    setSelectedChips((prevSelected) =>
+      prevSelected.includes(option)
+        ? prevSelected.filter((chip) => chip !== option)
+        : [...prevSelected, option]
+    );
+
+    console.log(selectedChips);
   };
 
   const handleClickAway = () => {
     dispatch({ type: "send" });
   };
 
+  const SenderAddress = watch("SenderAddress");
+  const RecieverAddress = watch("RecieverAddress");
+
+  const fetchSuggestions = async (value, field) => {
+    if (value.length > 2) {
+      console.log(value);
+      try {
+        const response = await axios.get(`${baseUrl}googlemaps/autocomplete`, {
+          params: {
+            input: value,
+          },
+        });
+        console.log(response);
+        const data = response.data.predictions;
+
+        if (field === "SenderAddress") {
+          setSenderSuggestions(data);
+        } else {
+          setRecieverSuggestions(data);
+        }
+        setFocusedField(field);
+      } catch (error) {
+        console.log("Error Fetching Suggestions ", error);
+      }
+    } else {
+      setSenderSuggestions([]);
+      setRecieverSuggestions([]); //
+    }
+  };
+
+  // Handle input change for pickup and delivery
+  const handleInputChange = (e, field) => {
+    const value = e.target.value;
+
+    // Fetch suggestions based on the field in focus
+    fetchSuggestions(value, field);
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion) => {
+    if (focusedField === "SenderAddress") {
+      setValue("SenderAddress", suggestion.description); // Set pickup address in the form
+    } else if (focusedField === "RecieverAddress") {
+      setValue("RecieverAddress", suggestion.description); // Set delivery address in the form
+    }
+    setSenderSuggestions([]);
+    setRecieverSuggestions([]); // Clear suggestions after selection
+  };
+
+  const handleCurrentInfo = () => {
+    setValue("SenderName", `${auth.FirstName} ${auth.LastName}`);
+    setValue("SenderPhone", `${auth.PhoneNumber}`);
+  };
+
+  const { distance, duration, error, loading } = useDistance(
+    SenderAddress,
+    RecieverAddress
+  );
+  //console.log(distance)
+
+  useEffect(() => {
+    if (distance) {
+      setDeliveryFee(Math.trunc((distance / 1000) * 300));
+    }
+  });
+
+  const handleSend = async (data) => {
+    selectedChips.forEach((chip) => {
+      if (!data.Item) {
+        data.Item = chip;
+      } else {
+        data.Item = `${data.Item} and ${chip}`;
+      }
+    });
+
+    const order = {
+      CustomerId: auth.Id,
+      Type: "Logistics",
+      Instruction: " ",
+    };
+
+    const res = await post(`${baseUrl}order/create`, order, auth.accessToken);
+    if (res.error) {
+      cartDispatch({ type: "error", payload: res.error });
+      return;
+    }
+
+    console.log(res);
+
+    data.OrderId = res.data.Id;
+
+    const response = await post(url, data, auth.accessToken);
+    if (response.error) {
+      cartDispatch({
+        type: "error",
+        payload: "Error Creating logistics data ",
+      });
+      return;
+    }
+    console.log(response);
+
+    cartDispatch({ type: "order", payload: res.data });
+    cartDispatch({ type: "amount", payload: deliveryFee });
+    cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+    cartDispatch({ type: "total", payload: deliveryFee });
+    cartDispatch({ type: "checkOut", payload: deliveryFee });
+    dispatch({ type: "send" });
+  };
+
+  // console.log(auth)
   return (
     <Modal
       open={open}
@@ -35,12 +178,12 @@ const SendPackage = ({ dispatch, open }) => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
+        className=" overflow-y-auto overflow-x-auto outline-none absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
-        <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
-              <div className="flex justify-between items-center p-4 sticky top-0 ">
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-screen ">
+            <div className="w-full bg-primary rounded-lg shadow  lg:w-1/2 md:mt-0  xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto  pb-10 ">
+              <div className="flex justify-between relative items-center p-4  ">
                 <button
                   type="button"
                   onClick={() => {
@@ -66,15 +209,15 @@ const SendPackage = ({ dispatch, open }) => {
                 </button>
               </div>
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8 overflow-y-auto">
-                <h1 className="text-xl font-bold leading-tight tracking-tight text-darkBg md:text-2xl dark:text-primary">
+                <h1 className="text-2xl font-bold leading-tight tracking-tight text-darkBg dark:text-primary">
                   Send Package
                 </h1>
                 <form
                   className="space-y-4 md:space-y-6"
                   onSubmit={handleSubmit(handleSend)}
                 >
-                  <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                    <div className="sm:col-span-2">
+                  <div className="grid gap-4 mb-4  grid-cols-2">
+                    <div className="col-span-2 ">
                       <label
                         htmlFor="pickup"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -115,20 +258,44 @@ const SendPackage = ({ dispatch, open }) => {
                           type="text"
                           name="pickup"
                           id="pickup"
-                          {...register("PickUpAddress", { required: true })}
+                          {...register("SenderAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Pick up address"
                           required=""
+                          onChange={(e) =>
+                            handleInputChange(e, "SenderAddress")
+                          }
                         />
-                        {errors.PickUpAddress && (
-                          <p className="text-sm text-redborder">
-                            Pick up address is required
-                          </p>
-                        )}
                       </div>
+                      {errors.SenderAddress && (
+                        <p className="text-sm text-redborder">
+                          Pick up address is required
+                        </p>
+                      )}
                     </div>
 
-                    <div className="sm:col-span-2">
+                    {/* Address Suggestions */}
+                    {senderSuggestions.length > 0 && (
+                      <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
+                        {senderSuggestions.map((suggestion, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className="cursor-pointer text-accent dark:text-primary p-2 rounded-lg border mb-1 dark:hover:bg-darkHover"
+                            // style={{
+                            //     cursor: 'pointer',
+                            //     padding: '8px',
+                            //     borderBottom: '1px solid #ccc',
+                            //     backgroundColor: index % 2 === 0 ? '#f9f9f9' : '#fff',
+                            // }}
+                          >
+                            {suggestion.description}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <div className="col-span-2">
                       <label
                         htmlFor="delivery"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -169,20 +336,56 @@ const SendPackage = ({ dispatch, open }) => {
                           type="text"
                           name="delivery"
                           id="delivery"
-                          {...register("DeliveryAddress", { required: true })}
+                          {...register("RecieverAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Delivery Address"
                           required=""
+                          onChange={(e) =>
+                            handleInputChange(e, "RecieverAddress")
+                          }
                         />
-                        {errors.DeliveryAddress && (
+                       
+                      </div>
+                      {errors.RecieverAddress && (
                           <p className="text-sm text-redborder">
-                            Pick up address is required
+                            Delivery address is required
                           </p>
                         )}
-                      </div>
                     </div>
-                    <h2 className="text-2xl font-bold col-span-2"> Sender Information </h2>
-                    <div className="sm:col-span-2">
+
+                    {/* Address Suggestions */}
+                    {recieverSuggestions.length > 0 && (
+                      <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
+                        {recieverSuggestions.map((suggestion, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleSuggestionClick(suggestion)}
+                            className="cursor-pointer text-accent dark:text-primary p-2 rounded-lg border mb-1 dark:hover:bg-darkHover"
+                            // style={{
+                            //     cursor: 'pointer',
+                            //     padding: '8px',
+                            //     borderBottom: '1px solid #ccc',
+                            //     backgroundColor: index % 2 === 0 ? '#f9f9f9' : '#fff',
+                            // }}
+                          >
+                            {suggestion.description}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <div className="col-span-2">
+                      <p className="bg-lightForest rounded-xl p-2 text-accent ">
+                        {" "}
+                        Delivery Fee : &#8358;{deliveryFee}
+                      </p>
+                    </div>
+
+                    <h2 className="text-2xl font-bold col-span-2">
+                      {" "}
+                      Sender Information{" "}
+                    </h2>
+                    <div className="col-span-2">
                       <label
                         htmlFor="sender"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -193,18 +396,18 @@ const SendPackage = ({ dispatch, open }) => {
                         type="text"
                         name="sender"
                         id="sender"
-                        {...register("Sender", { required: true })}
+                        {...register("SenderName", { required: true })}
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter Sender Name"
                         required=""
                       />
-                      {errors.Sender && (
+                      {errors.SenderName && (
                         <p className="text-sm text-redborder">
                           Sender name is required
                         </p>
                       )}
                     </div>
-                    <div className="sm:col-span-2">
+                    <div className="col-span-2">
                       <label
                         htmlFor="phone"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -215,46 +418,56 @@ const SendPackage = ({ dispatch, open }) => {
                         type="phone"
                         name="phone"
                         id="phone"
-                        {...register("PhoneNumber", { required: true, maxLength:11 })}
+                        {...register("SenderPhone", {
+                          required: true,
+                          maxLength: 11,
+                        })}
                         className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="08122334455"
                         required=""
                       />
-                      {errors.PhoneNumber && (
+                      {errors.SenderPhone && (
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>
                       )}
                     </div>
-                    <div className="sm:col-span-2">
-                      <input type="checkbox" className="border-4 border-gray bg-lightForest" />
+                    <div className="col-span-2">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleCurrentInfo()}
+                        className="border-4 border-gray bg-lightForest"
+                      />
                       <label> Use current information </label>
                     </div>
 
-                    <h2 className="col-span-2 font-bold text-2xl"> Recipient Information </h2>
-                    <div className="sm:col-span-2">
+                    <h2 className="col-span-2 font-bold text-2xl">
+                      {" "}
+                      Recipient Information{" "}
+                    </h2>
+                    <div className="col-span-2">
                       <label
                         htmlFor="reciever"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
-                        Sender Name
+                        Reciever Name
                       </label>
                       <input
                         type="text"
                         name="reciever"
                         id="reciever"
-                        {...register("Reciever", { required: true })}
+                        {...register("RecieverName", { required: true })}
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter Reciever Name"
                         required=""
                       />
-                      {errors.Sender && (
+                      {errors.RecieverName && (
                         <p className="text-sm text-redborder">
-                          Sender name is required
+                          Reciever name is required
                         </p>
                       )}
                     </div>
-                    <div className="sm:col-span-2">
+                    <div className="col-span-2">
                       <label
                         htmlFor="phone"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
@@ -265,34 +478,96 @@ const SendPackage = ({ dispatch, open }) => {
                         type="phone"
                         name="phone"
                         id="phone"
-                        {...register("PhoneNumber", { required: true, maxLength:11 })}
+                        {...register("RecieverPhone", {
+                          required: true,
+                          maxLength: {
+                            value: 11,
+                            message: "Phone number must be 11 digits",
+                          },
+                        })}
                         className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="08122334455"
                         required=""
                       />
-                      {errors.PhoneNumber && (
+                      {errors.RecieverPhone && (
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>
                       )}
                     </div>
+                    <div className="col-span-2">
+                      <h3 className="py-3 text-xl font-bold">
+                        {" "}
+                        What do you want to send ?
+                      </h3>
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{
+                          flexWrap: "wrap",
+                          gap: 1,
+                        }}
+                      >
+                        {options.map((option) => (
+                          <Chip
+                            key={option}
+                            label={option}
+                            clickable
+                            style={{
+                              backgroundColor: selectedChips.includes(option)
+                                ? "#609963"
+                                : "#e0e0e0",
+                              color: selectedChips.includes(option)
+                                ? "white"
+                                : "black",
+                              padding: "2px",
+                              fontSize: "1rem",
+                            }}
+                            onClick={() => handleChipClick(option)}
+                          />
+                        ))}
+                      </Stack>
+                    </div>
+
+                    <div className="col-span-2">
+                      <label
+                        htmlFor="description"
+                        className="block mb-2 text-base font-medium text-gray-900 dark:text-gray-50"
+                      >
+                        Description
+                      </label>
+                      <textarea
+                        id="description"
+                        rows="4"
+                        name="description"
+                        {...register("ItemDescription")}
+                        className="block p-2.5 w-full text-base text-accent bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Write Service Descriptions here"
+                      ></textarea>
+                    </div>
+
+                    <div className="col-span-2">
+                      <p className="bg-lightForest rounded-xl p-2 text-accent ">
+                        {" "}
+                        Total : &#8358;{deliveryFee}
+                      </p>
+                    </div>
                   </div>
                   <button
                     type="submit"
                     disabled={isSubmitting || !isValid}
-                    className="w-full text-white bg-secondary flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    className="w-full text-accent bg-background flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
-                    {isSubmitting ? <LoadingGif /> : " Sign Up"}
+                    {isSubmitting ? <LoadingGif /> : " Proceed "}
                   </button>
                 </form>
               </div>
             </div>
-          </ClickAwayListener>
-        </div>
+          </div>
+        </ClickAwayListener>
       </div>
     </Modal>
   );
 };
-
 
 export default SendPackage;

@@ -24,7 +24,7 @@ const CheckOut = () => {
     //Create Delivery
 
     const data = {
-      Amount: Math.trunc( state.total - state.deliveryFee),
+      Amount: Math.trunc( state.amount),
       DeliveryFee: Math.trunc( state.deliveryFee),
       VoucherCode: "",
       OrderId: state.order.Id,
@@ -75,7 +75,7 @@ const CheckOut = () => {
                   dispatch({ type: "checkOut" });
                   setLoading(false);
                 }}
-                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
               >
                 <svg

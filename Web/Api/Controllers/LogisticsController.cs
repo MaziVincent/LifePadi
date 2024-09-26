@@ -2,24 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Api.Interfaces;
 using Api.DTO;
+using Api.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    public class LogisticController : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class LogisticsController : ControllerBase
     {
         private readonly ILogistic _logisticService;
 
-        public LogisticController(ILogistic logisticService)
+        public LogisticsController(ILogistic logistic)
         {
-            _logisticService = logisticService;
+            _logisticService = logistic;
         }
 
-        [HttpPost("create")]
+         [HttpPost("create")]
         public async Task<IActionResult> create(LogisticDto logisticDto)
         {
+            if(!ModelState.IsValid){
+
+                return BadRequest();
+            }
             try
             {
                 var response = await _logisticService.createAsync(logisticDto);

@@ -93,7 +93,7 @@ const UserLogin = () => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
+        className=" overflow-y-auto overflow-x-hidden absolute outline-none top-14 md:top-0  z-50 justify-center items-center  w-full  h-auto "
       >
         <Toaster />
         <div className="relative p-4 w-full h-auto  ">
@@ -169,7 +169,8 @@ const UserLogin = () => {
                         id="password"
                         className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required=""
-                        {...register("Password", { required: true })}
+                        {...register("Password", { required: true, })}
+                        placeholder="••••••••"
                       />
                       {errors.Password && (
                         <p className="text-sm text-redborder">

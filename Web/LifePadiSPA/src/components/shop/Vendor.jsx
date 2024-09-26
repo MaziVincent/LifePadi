@@ -77,6 +77,7 @@ const Vendor = () => {
     dispatch: cartDispatch,
   } = useCart();
 
+
   const [state, dispatch] = useReducer(reducer, {
     open: false,
     edit: false,
@@ -151,6 +152,7 @@ const Vendor = () => {
       }, 0);
 
       dispatch({ type: "subTotal", payload: total });
+      cartDispatch({type:"amount", payload: total })
     }
 
     return;

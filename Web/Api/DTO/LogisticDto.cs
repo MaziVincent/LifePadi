@@ -7,6 +7,7 @@ namespace Api.DTO
 {
     public class LogisticDto
     {
+        
         public int Id { get; set; }
         public string? SenderName { get; set; }
         public string? SenderPhone { get; set; }

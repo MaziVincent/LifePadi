@@ -110,5 +110,25 @@ namespace Api.Controllers
 
             return Ok(new { distance, duration, json });
         }
+
+
+        [HttpGet("autocomplete")]
+    public async Task<IActionResult> GetAutocompleteSuggestions(string input)
+    {
+        var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+        var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&key={apiKey}";
+        var response = await _httpClient.GetAsync(requestUri);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return StatusCode((int)response.StatusCode);
+        }
+
+        var result = await response.Content.ReadAsStringAsync();
+        return Ok(result);
+    }
+
+
+
     }
 }
