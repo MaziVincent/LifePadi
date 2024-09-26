@@ -133,6 +133,7 @@ const Vendor = () => {
   } = useCart();
 >>>>>>> 3f80dfc (latest commit)
 
+
   const [state, dispatch] = useReducer(reducer, {
     open: false,
     edit: false,
@@ -245,7 +246,11 @@ const Vendor = () => {
       }, 0);
 
       dispatch({ type: "subTotal", payload: total });
+<<<<<<< HEAD
       cartDispatch({ type: "amount", payload: total });
+=======
+      cartDispatch({type:"amount", payload: total })
+>>>>>>> 56c4b95 (completed logistics)
     }
 
     return;

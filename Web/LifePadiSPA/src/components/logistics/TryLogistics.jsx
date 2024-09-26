@@ -76,6 +76,9 @@ const TryLogistics = () => {
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 56c4b95 (completed logistics)
         <div 
         onClick={()=>{
           if(!auth.accessToken){
@@ -86,9 +89,12 @@ const TryLogistics = () => {
         }}
 
         className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
+<<<<<<< HEAD
 =======
         <div className="flex-col items-center w-full md:flex-row md:w-9/12 bg-secondary rounded-xl shadow-xl p-3 cursor-pointer hover:bg-background ">
 >>>>>>> 07eaeb8 (logistics commit)
+=======
+>>>>>>> 56c4b95 (completed logistics)
           <h2 className="text-4xl text-center font-bold text-accent">
             {" "}
             RECIEVE A PACKAGE{" "}
@@ -108,8 +114,11 @@ const TryLogistics = () => {
 <<<<<<< HEAD
        <SendPackage dispatch={dispatch} open={state.send} /> 
        <RecievePackage dispatch={dispatch} open={state.recieve} />
+<<<<<<< HEAD
 =======
 >>>>>>> 07eaeb8 (logistics commit)
+=======
+>>>>>>> 56c4b95 (completed logistics)
     </div>
   );
 };

@@ -75,7 +75,27 @@ const reducer = (state, action) => {
 };
 
 export const CartProvider = ({ children }) => {
+<<<<<<< HEAD
   const [state, dispatch] = useReducer(reducer, initialState );
+=======
+  const [state, dispatch] = useReducer(reducer, {
+    deliveryAddress: "",
+    deliveryInstruction: "",
+    address: false,
+    instruction: false,
+    error: "",
+    addresses: [],
+    vendor: null,
+    empty: false,
+    vendorChange: false,
+    deliveryFee: 0,
+    amount: 0,
+    total: 0,
+    checkOut: false,
+    order: null,
+    delivery: null,
+  });
+>>>>>>> 56c4b95 (completed logistics)
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);

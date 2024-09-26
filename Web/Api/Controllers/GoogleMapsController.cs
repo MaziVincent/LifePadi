@@ -153,6 +153,7 @@ namespace Api.Controllers
 
 
 
+<<<<<<< HEAD
 =======
             var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["text"]?.ToString();
             var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"]?.ToString();
@@ -160,5 +161,7 @@ namespace Api.Controllers
             return Ok(new { distance, duration });
         }
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+>>>>>>> 56c4b95 (completed logistics)
     }
 }

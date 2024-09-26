@@ -131,7 +131,11 @@ const SendPackage = ({ dispatch, open }) => {
         data.Item = `${data.Item} and ${chip}`;
       }
     });
+<<<<<<< HEAD
 //console.log(data);
+=======
+
+>>>>>>> 56c4b95 (completed logistics)
     const order = {
       CustomerId: auth.Id,
       Type: "Logistics",
@@ -156,6 +160,7 @@ const SendPackage = ({ dispatch, open }) => {
       });
       return;
     }
+<<<<<<< HEAD
     //console.log(response);
 
     const delivery = {
@@ -165,13 +170,19 @@ const SendPackage = ({ dispatch, open }) => {
       DeliveryFee: deliveryFee,
       PickupType: "Logistics",
     };
+=======
+    console.log(response);
+>>>>>>> 56c4b95 (completed logistics)
 
     cartDispatch({ type: "order", payload: res.data });
     cartDispatch({ type: "amount", payload: deliveryFee });
     cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     cartDispatch({ type: "total", payload: deliveryFee });
     cartDispatch({ type: "checkOut", payload: deliveryFee });
+<<<<<<< HEAD
     localStorage.setItem("delivery", JSON.stringify(delivery));
+=======
+>>>>>>> 56c4b95 (completed logistics)
     dispatch({ type: "send" });
   };
 
@@ -191,7 +202,11 @@ const SendPackage = ({ dispatch, open }) => {
         className=" overflow-y-auto overflow-x-auto outline-none absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
         <ClickAwayListener onClickAway={handleClickAway}>
+<<<<<<< HEAD
           <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-svh ">
+=======
+          <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-screen ">
+>>>>>>> 56c4b95 (completed logistics)
             <div className="w-full bg-primary rounded-lg shadow  lg:w-1/2 md:mt-0  xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto  pb-10 ">
               <div className="flex justify-between relative items-center p-4  ">
                 <button
@@ -331,6 +346,9 @@ const sendPackage = () => {
                           name="pickup"
                           id="pickup"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 56c4b95 (completed logistics)
                           {...register("SenderAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Pick up address"
@@ -405,17 +423,37 @@ const sendPackage = () => {
                             />
                           </svg>
                         </span>
+<<<<<<< HEAD
 =======
                           {...register("PickUpAddress", { required: true })}
                           className="bg-graybg border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Type Pick up address"
+=======
+                        <input
+                          type="text"
+                          name="delivery"
+                          id="delivery"
+                          {...register("RecieverAddress", { required: true })}
+                          className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Enter Delivery Address"
+>>>>>>> 56c4b95 (completed logistics)
                           required=""
+                          onChange={(e) =>
+                            handleInputChange(e, "RecieverAddress")
+                          }
                         />
+<<<<<<< HEAD
                         {errors.PickUpAddress && (
+=======
+                       
+                      </div>
+                      {errors.RecieverAddress && (
+>>>>>>> 56c4b95 (completed logistics)
                           <p className="text-sm text-redborder">
-                            Pick up address is required
+                            Delivery address is required
                           </p>
                         )}
+<<<<<<< HEAD
                       </div>
   
                       <div className="sm:col-span-1">
@@ -446,6 +484,8 @@ const sendPackage = () => {
                             Delivery address is required
                           </p>
                         )}
+=======
+>>>>>>> 56c4b95 (completed logistics)
                     </div>
 
                     {/* Address Suggestions */}
@@ -551,12 +591,20 @@ const sendPackage = () => {
                         type="text"
                         name="reciever"
                         id="reciever"
+<<<<<<< HEAD
                         {...register("ReceiverName", { required: true })}
+=======
+                        {...register("RecieverName", { required: true })}
+>>>>>>> 56c4b95 (completed logistics)
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter Reciever Name"
                         required=""
                       />
+<<<<<<< HEAD
                       {errors.ReceiverName && (
+=======
+                      {errors.RecieverName && (
+>>>>>>> 56c4b95 (completed logistics)
                         <p className="text-sm text-redborder">
                           Reciever name is required
                         </p>
@@ -573,7 +621,11 @@ const sendPackage = () => {
                         type="phone"
                         name="phone"
                         id="phone"
+<<<<<<< HEAD
                         {...register("ReceiverPhone", {
+=======
+                        {...register("RecieverPhone", {
+>>>>>>> 56c4b95 (completed logistics)
                           required: true,
                           maxLength: {
                             value: 11,
@@ -584,7 +636,11 @@ const sendPackage = () => {
                         placeholder="08122334455"
                         required=""
                       />
+<<<<<<< HEAD
                       {errors.ReceiverPhone && (
+=======
+                      {errors.RecieverPhone && (
+>>>>>>> 56c4b95 (completed logistics)
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>
@@ -650,7 +706,11 @@ const sendPackage = () => {
                   </div>
                   <button
                     type="submit"
+<<<<<<< HEAD
                     disabled={isSubmitting }
+=======
+                    disabled={isSubmitting || !isValid}
+>>>>>>> 56c4b95 (completed logistics)
                     className="w-full text-accent bg-background flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
                     {isSubmitting ? <LoadingGif /> : " Proceed "}
