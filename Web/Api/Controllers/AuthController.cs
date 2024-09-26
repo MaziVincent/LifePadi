@@ -55,7 +55,6 @@ namespace Api.Controllers
                     SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true,
-                    Domain = ".lifepadi.com",
                     Path = "/",
 
                 };
@@ -195,7 +194,6 @@ namespace Api.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
-                Domain = ".lifepadi.com",
                 Path = "/"
 
             });
