@@ -286,7 +286,7 @@ namespace Api.Controllers.Admin
         {
             try
             {
-                var stats = await _transaction.transactionStats();
+                var stats = await _transaction.TransactionStats();
                 return Ok(stats);
             }
             catch (Exception ex)
