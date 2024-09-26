@@ -23,6 +23,7 @@ const RecievePackage = ({ dispatch, open }) => {
   } = useForm({
     mode: "all",
   });
+
   const { auth } = useAuth();
   const post = usePost();
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -49,7 +50,7 @@ const RecievePackage = ({ dispatch, open }) => {
         : [...prevSelected, option]
     );
 
-    console.log(selectedChips);
+   // console.log(selectedChips);
   };
 
   const handleClickAway = () => {
@@ -61,7 +62,7 @@ const RecievePackage = ({ dispatch, open }) => {
 
   const fetchSuggestions = async (value, field) => {
     if (value.length > 2) {
-      console.log(value);
+     // console.log(value);
       try {
         const response = await axios.get(`${baseUrl}googlemaps/autocomplete`, {
           params: {
