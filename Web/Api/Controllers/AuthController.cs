@@ -55,8 +55,9 @@ namespace Api.Controllers
                     SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true,
-                    Domain = "https://www.lifepadi.com",
-                    
+                    Domain = "www.lifepadi.com",
+                    Path = "/",
+
                 };
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
@@ -194,7 +195,8 @@ namespace Api.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
-                Domain = "https://www.lifepadi.com"
+                Domain = "www.lifepadi.com",
+                Path = "/"
 
             });
             return Ok("Logout Successfully");
