@@ -54,6 +54,7 @@ const TryLogistics = () => {
               src={sendPackage}
               alt=""
               className=" border-accent "
+              loading="lazy"
             />
           </div>
         </div>
@@ -76,6 +77,7 @@ const TryLogistics = () => {
           <img
             src={recievePackage}
             alt=""
+            loading="lazy"
           />
           </div>
         </div>

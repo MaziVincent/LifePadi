@@ -67,7 +67,6 @@ namespace Api.Controllers
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
-                    PhoneNumber = user.PhoneNumber,
                     Role = user.Role,
                     accessToken = accessToken
                 };
