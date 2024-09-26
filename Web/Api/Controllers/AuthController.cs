@@ -55,7 +55,7 @@ namespace Api.Controllers
                     SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddDays(7),
                     Secure = true,
-                    Domain = "https://lifepadi.com/"
+                    Domain = "https://www.lifepadi.com/"
                 };
                 Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
 
@@ -65,7 +65,9 @@ namespace Api.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
+                    PhoneNumber = user.PhoneNumber,
                     Role = user.Role,
                     accessToken = accessToken
                 };
@@ -106,6 +108,7 @@ namespace Api.Controllers
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
                     Role = Type
                 };
@@ -158,6 +161,7 @@ namespace Api.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     ContactAddress = user.ContactAddress,
+                    PhoneNumber = user.PhoneNumber,
                     Role = genTokenDTO!.Role,
                     accessToken = accessToken
                 };
@@ -190,7 +194,7 @@ namespace Api.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
-                Domain = "https://lifepadi.com/"
+                Domain = "https://www.lifepadi.com/"
 
             });
             return Ok("Logout Successfully");

@@ -19,7 +19,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.initiatePayment(initiatePayment);
+                var response = await _itran.InitiatePayment(initiatePayment);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -33,7 +33,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.confirmPayment(transactionInfo);
+                var response = await _itran.ConfirmPayment(transactionInfo);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.allAsync();
+                var response = await _itran.AllAsync();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.getAsync(id);
+                var response = await _itran.GetAsync(id);
                 if (response == null) return StatusCode(404, "Transaction not found");
                 return Ok(response);
             }
@@ -76,7 +76,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.baniCheckout(initiatePaymentDto);
+                var response = await _itran.BaniCheckout(initiatePaymentDto);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -90,7 +90,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.paystackCheckout(initiatePaymentDto);
+                var response = await _itran.PaystackCheckout(initiatePaymentDto);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -104,12 +104,31 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _itran.paystackVerifyPayment(reference);
+                var response = await _itran.PaystackVerifyPayment(reference);
                 Console.WriteLine($"response {response}");
                 return Ok(response);
             }
             catch (Exception ex)
             {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("transactionByOrderId/{orderId}")]
+        public async Task<IActionResult> transactionByOrderId(int orderId)
+        {
+            try
+            {
+                var response = await _itran.GetTransactionByOrderId(orderId);
+                if (response == null) return StatusCode(404, "Transaction not found");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Transaction not found"))
+                {
+                    return StatusCode(404, ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }

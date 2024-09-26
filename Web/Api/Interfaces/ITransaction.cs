@@ -5,21 +5,22 @@ namespace Api.Interfaces
 {
     public interface ITransaction
     {
-        public Task<IEnumerable<TransactionDto>> allAsync();
-        public Task<TransactionDto> getAsync(int id);
-        public Task<TransactionDto> updateAsync(TransactionDto transaction, int id);
-        public Task<string> deleteAsync(int id);
-        public Task<TransactionDto> createAsync(TransactionDto transaction);
-        public Task<TransactionDto> getByPaymentId(BigInteger transactionId);
-        public Task<DTO.Data> initiatePayment(InitiatePaymentDto initiatePayment);
-        public Task<PaymentDetailsDto> confirmPayment(AfterPayment transactionInfo);
-        public Task<int> totalNumberOfTransactions();
-        public Task<int> totalNumberOfSuccessfulTransactions();
-        public Task<int> totalNumberOfFailedTransactions();
-        public Task<int> totalNumberOfPendingTransactions();
-        public Task<object> transactionStats();
-        public Task<object> baniCheckout(InitiatePaymentDto initiatePaymentDto);
-        public Task<object> paystackCheckout(InitiatePaymentDto initiatePaymentDto);
-        public Task<object> paystackVerifyPayment(string reference);
+        public Task<IEnumerable<TransactionDto>> AllAsync();
+        public Task<TransactionDto> GetAsync(int id);
+        public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id);
+        public Task<string> DeleteAsync(int id);
+        public Task<TransactionDto> CreateAsync(TransactionDto transaction);
+        public Task<TransactionDto> GetByPaymentId(BigInteger transactionId);
+        public Task<DTO.Data> InitiatePayment(InitiatePaymentDto initiatePayment);
+        public Task<PaymentDetailsDto> ConfirmPayment(AfterPayment transactionInfo);
+        public Task<int> TotalNumberOfTransactions();
+        public Task<int> TotalNumberOfSuccessfulTransactions();
+        public Task<int> TotalNumberOfFailedTransactions();
+        public Task<int> TotalNumberOfPendingTransactions();
+        public Task<object> TransactionStats();
+        public Task<object> BaniCheckout(InitiatePaymentDto initiatePaymentDto);
+        public Task<object> PaystackCheckout(InitiatePaymentDto initiatePaymentDto);
+        public Task<object> PaystackVerifyPayment(string reference);
+        public Task<TransactionDto> GetTransactionByOrderId(int orderId);
     }
 }
