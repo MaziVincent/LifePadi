@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
@@ -155,10 +156,16 @@ class HomePage extends HookConsumerWidget {
                 children: vendors.when(
                   data: (data) => [
                     for (final vendor in data)
-                      VendorCard(
-                        name: vendor.name,
-                        image: NetworkImage(vendor.imageUrl!),
-                        onTap: () {},
+                      CachedNetworkImage(
+                        imageUrl: vendor.imageUrl!,
+                        imageBuilder: (_, imageProvider) => VendorCard(
+                          name: vendor.name,
+                          image: imageProvider,
+                          onTap: () {},
+                        ),
+                        placeholder: (_, __) =>
+                            const CircularProgressIndicator.adaptive(),
+                        errorWidget: (_, __, ___) => const Icon(Icons.error),
                       ),
                     VendorCard(
                       name: 'See more',
