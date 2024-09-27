@@ -26,6 +26,8 @@ namespace Api.Services
             try
             {
                 var logistic = _mapper.Map<Logistic>(logisticDto);
+                logistic.TrackingNumber = Guid.NewGuid().ToString();
+                logistic.Status = "Ongoing";
                 await _context.Logistics.AddAsync(logistic);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<LogisticDto>(logistic);
