@@ -42,7 +42,7 @@ const kRadialGradient = RadialGradient(
 const kRemoteApiUrl =
     'https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api';
 
-List<({String name, String image})> services = [
+List<({String name, String image})> mockErrands = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
   (name: 'Food', image: Assets.icons.restaurant.path),
   (name: 'Petrol/Fuel', image: Assets.icons.fuelStation.path),
@@ -75,7 +75,7 @@ List<({String name, String image})> categories = [
   (name: 'Agro', image: Assets.images.categories.agro.path),
 ];
 
-List<({String name, ImageProvider<Object> image})> dummyVendors = [
+List<({String name, ImageProvider<Object> image})> mockVendors = [
   (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
   (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
   (

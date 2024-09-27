@@ -21,11 +21,11 @@ class ErrandsPage extends StatelessWidget {
             mainAxisSpacing: 10.r,
             childAspectRatio: 0.7.r,
           ),
-          itemCount: services.length,
+          itemCount: mockErrands.length,
           itemBuilder: (context, index) {
             return ErrandCard(
-              name: services[index].name,
-              image: services[index].image,
+              name: mockErrands[index].name,
+              image: mockErrands[index].image,
               onTap: () => context.go(const SingleErrandRoute(id: 1).location),
             );
           },

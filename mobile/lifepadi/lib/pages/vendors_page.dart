@@ -20,9 +20,9 @@ class VendorsPage extends StatelessWidget {
             mainAxisSpacing: 10.8.r,
             childAspectRatio: 0.7.r,
           ),
-          itemCount: dummyVendors.length,
+          itemCount: mockVendors.length,
           itemBuilder: (context, index) {
-            final vendor = dummyVendors[index];
+            final vendor = mockVendors[index];
 
             return VendorCard(
               name: vendor.name,

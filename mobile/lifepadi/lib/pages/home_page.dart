@@ -7,14 +7,14 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/errands.dart';
+import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
-import '../state/vendors.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -23,6 +23,7 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeCategory = useState(1);
     final vendors = ref.watch(vendorsProvider(pageSize: 3));
+    final errands = ref.watch(errandsProvider(pageSize: 4));
 
     TextStyle? inputTextStyle() {
       return context.textTheme.bodyMedium?.copyWith(
@@ -177,7 +178,7 @@ class HomePage extends HookConsumerWidget {
                     const Text('Woah, something went wrong'),
                   ],
                   loading: () => [
-                    for (final v in dummyVendors.take(4))
+                    for (final v in mockVendors.take(4))
                       Skeletonizer(
                         child: VendorCard(
                           name: v.name,
@@ -196,16 +197,31 @@ class HomePage extends HookConsumerWidget {
               16.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (final (:name, :image) in services.take(4))
-                    ErrandCard(
-                      name: name,
-                      image: image,
-                      onTap: () => context.push(
-                        const SingleErrandRoute(id: 1).location,
+                children: errands.when(
+                  data: (data) => [
+                    for (final errand in data)
+                      ErrandCard(
+                        name: errand.name,
+                        image: errand.iconUrl,
+                        onTap: () => context.push(
+                          SingleErrandRoute(id: errand.id).location,
+                        ),
                       ),
-                    ),
-                ].separatedBy(10.horizontalSpace),
+                  ].separatedBy(10.horizontalSpace),
+                  error: (error, stackTrace) => [
+                    const Text('Woah, something went wrong'),
+                  ],
+                  loading: () => [
+                    for (final (:name, :image) in mockErrands.take(4))
+                      Skeletonizer(
+                        child: ErrandCard(
+                          name: name,
+                          image: image,
+                          onTap: () {},
+                        ),
+                      ),
+                  ].separatedBy(10.horizontalSpace),
+                ),
               ),
               16.verticalSpace,
               HeaderWithSeeAll(

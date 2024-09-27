@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ErrandCard extends StatelessWidget {
   const ErrandCard({
@@ -25,29 +26,31 @@ class ErrandCard extends StatelessWidget {
         width: 73.63.r,
         child: Column(
           children: [
-            Container(
-              height: 73.63.r,
-              width: 73.63.r,
-              decoration: ShapeDecoration(
-                color: outerColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.99.r),
-                ),
-              ),
-              padding: const EdgeInsets.fromLTRB(14, 13.87, 13.38, 13.51).r,
+            Skeleton.leaf(
               child: Container(
-                width: 46.24.r,
-                height: 46.24.r,
+                height: 73.63.r,
+                width: 73.63.r,
                 decoration: ShapeDecoration(
-                  color: innerColor,
-                  shape: const CircleBorder(),
+                  color: outerColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.99.r),
+                  ),
                 ),
-                padding: const EdgeInsets.all(11).r,
-                child: Image.asset(
-                  image,
-                  width: 24.r,
-                  height: 24.r,
-                ), // image should be here
+                padding: const EdgeInsets.fromLTRB(14, 13.87, 13.38, 13.51).r,
+                child: Container(
+                  width: 46.24.r,
+                  height: 46.24.r,
+                  decoration: ShapeDecoration(
+                    color: innerColor,
+                    shape: const CircleBorder(),
+                  ),
+                  padding: const EdgeInsets.all(11).r,
+                  child: Image.network(
+                    image,
+                    width: 24.r,
+                    height: 24.r,
+                  ), // image should be here
+                ),
               ),
             ),
             6.5.verticalSpace,
