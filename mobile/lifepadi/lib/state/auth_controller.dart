@@ -91,8 +91,6 @@ class AuthController extends _$AuthController {
           .split('=')
           .last;
       response.data!['refreshToken'] = refreshToken;
-      // FIXME: This is a temporary fix to handle the response from the server
-      response.data!['PhoneNumber'] = '+23412345678';
 
       final user = User.fromMap(response.data!);
       // Save the user data to the secure storage

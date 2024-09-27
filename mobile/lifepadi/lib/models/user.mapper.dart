@@ -527,9 +527,6 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
   static String? _$imageUrl(Vendor v) => v.imageUrl;
   static const Field<Vendor, String> _f$imageUrl =
       Field('imageUrl', _$imageUrl, key: 'VendorImgUrl', opt: true);
-  static String? _$tag(Vendor v) => v.tag;
-  static const Field<Vendor, String> _f$tag =
-      Field('tag', _$tag, key: 'Tag', opt: true);
   static String? _$openingHours(Vendor v) => v.openingHours;
   static const Field<Vendor, String> _f$openingHours =
       Field('openingHours', _$openingHours, key: 'OpeningHours', opt: true);
@@ -550,7 +547,6 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
     #imageUrl: _f$imageUrl,
-    #tag: _f$tag,
     #openingHours: _f$openingHours,
     #closingHours: _f$closingHours,
   };
@@ -575,7 +571,6 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
         accessToken: data.dec(_f$accessToken),
         refreshToken: data.dec(_f$refreshToken),
         imageUrl: data.dec(_f$imageUrl),
-        tag: data.dec(_f$tag),
         openingHours: data.dec(_f$openingHours),
         closingHours: data.dec(_f$closingHours));
   }
@@ -639,7 +634,6 @@ abstract class VendorCopyWith<$R, $In extends Vendor, $Out>
       String? accessToken,
       String? refreshToken,
       String? imageUrl,
-      String? tag,
       String? openingHours,
       String? closingHours});
   VendorCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -664,7 +658,6 @@ class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
           String? accessToken,
           String? refreshToken,
           Object? imageUrl = $none,
-          Object? tag = $none,
           Object? openingHours = $none,
           Object? closingHours = $none}) =>
       $apply(FieldCopyWithData({
@@ -679,7 +672,6 @@ class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
         if (accessToken != null) #accessToken: accessToken,
         if (refreshToken != null) #refreshToken: refreshToken,
         if (imageUrl != $none) #imageUrl: imageUrl,
-        if (tag != $none) #tag: tag,
         if (openingHours != $none) #openingHours: openingHours,
         if (closingHours != $none) #closingHours: closingHours
       }));
@@ -696,7 +688,6 @@ class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
       accessToken: data.get(#accessToken, or: $value.accessToken),
       refreshToken: data.get(#refreshToken, or: $value.refreshToken),
       imageUrl: data.get(#imageUrl, or: $value.imageUrl),
-      tag: data.get(#tag, or: $value.tag),
       openingHours: data.get(#openingHours, or: $value.openingHours),
       closingHours: data.get(#closingHours, or: $value.closingHours));
 

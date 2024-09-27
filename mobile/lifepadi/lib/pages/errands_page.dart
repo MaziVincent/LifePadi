@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ErrandsPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class ErrandsPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return ErrandCard(
               name: mockErrands[index].name,
-              image: mockErrands[index].image,
+              imageUrl: mockErrands[index].image,
               onTap: () => context.go(const SingleErrandRoute(id: 1).location),
             );
           },

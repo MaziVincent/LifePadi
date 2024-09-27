@@ -7,6 +7,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:lifepadi/utils/mock_data.dart';
 
 class CheckoutPage extends HookWidget {
   const CheckoutPage({super.key});

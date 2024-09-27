@@ -23,9 +23,8 @@ FutureOr<List<Vendor>> vendors(VendorsRef ref, {int pageSize = 10}) async {
 
   final data = List<JsonMap>.from(response.data!['result'] as List);
   data.map((e) {
-    // FIXME: This is a temporary fix for the server returning null emails
-    e['Email'] = e['Email'] ?? '';
     // Add empty tokens to avoid null errors in the model
+    e['Email'] = '';
     e['accessToken'] = '';
     e['refreshToken'] = '';
     e['Role'] = '';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 
 /// 0xFF629D03
 const Color kDarkPrimaryColor = Color(0xFF629D03);
@@ -41,94 +40,6 @@ const kRadialGradient = RadialGradient(
 
 const kRemoteApiUrl =
     'https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api';
-
-List<({String name, String image})> mockErrands = [
-  (name: 'Cooking gas', image: Assets.icons.cookingGas.path),
-  (name: 'Food', image: Assets.icons.restaurant.path),
-  (name: 'Petrol/Fuel', image: Assets.icons.fuelStation.path),
-  (name: 'Laundry', image: Assets.icons.laundry.path),
-  (name: 'Groceries', image: Assets.icons.groceryStore.path),
-  (name: 'Gas filling', image: Assets.icons.gasFilling.path),
-];
-
-const featuredCategories = [
-  'All',
-  'Fashion',
-  'Agro-product',
-  'Stationary',
-  'Pharmaceutical',
-  'Furniture',
-];
-
-List<({String name, String image})> categories = [
-  (name: 'Vegetables', image: Assets.images.categories.vegetable.path),
-  (name: 'Fruits', image: Assets.images.categories.fruit.path),
-  (name: 'Beverages', image: Assets.images.categories.beverage.path),
-  (name: 'Grocery', image: Assets.images.categories.grocery.path),
-  (name: 'Edible Oil', image: Assets.images.categories.edibleOil.path),
-  (name: 'Household', image: Assets.images.categories.household.path),
-  (name: 'Babycare', image: Assets.images.categories.babycare.path),
-  (name: 'Electronics', image: Assets.images.categories.electronic.path),
-  (name: 'Fashion', image: Assets.images.categories.fashion.path),
-  (name: 'Pharmaceutical', image: Assets.images.categories.pharmaceutical.path),
-  (name: 'Furniture', image: Assets.images.categories.furniture.path),
-  (name: 'Agro', image: Assets.images.categories.agro.path),
-];
-
-List<({String name, ImageProvider<Object> image})> mockVendors = [
-  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-  (
-    name: "Domino's Pizza",
-    image: Assets.images.vendors.dominosPizza.provider()
-  ),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-  (
-    name: "Domino's Pizza",
-    image: Assets.images.vendors.dominosPizza.provider()
-  ),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-  (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-  (
-    name: "Domino's Pizza",
-    image: Assets.images.vendors.dominosPizza.provider()
-  ),
-  (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
-];
-
-List<
-    ({
-      int id,
-      String description,
-      Image image,
-      double? balance,
-      bool isDefault
-    })> paymentMethods = [
-  (
-    id: 1,
-    description: 'Lifepadi wallet',
-    image: Assets.images.logoDark.image(),
-    balance: 51547,
-    isDefault: true,
-  ),
-  (
-    id: 2,
-    description: '2345 3456 4564 Access bank',
-    image: Assets.icons.mastercard.image(),
-    balance: null,
-    isDefault: false,
-  ),
-  (
-    id: 3,
-    description: '2345 3456 4564 Access bank',
-    image: Assets.icons.verve.image(),
-    balance: null,
-    isDefault: false,
-  ),
-];
 
 /// The cache time for the app on test
 final kTestCacheTime = 10.seconds;

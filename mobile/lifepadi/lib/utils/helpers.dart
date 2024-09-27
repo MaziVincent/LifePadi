@@ -87,6 +87,12 @@ extension ReadableDateTime on DateTime {
   }
 }
 
+extension ListRepetition<T> on List<T> {
+  List<T> repeat(int times) {
+    return List.generate(times, (_) => this).expand((x) => x).toList();
+  }
+}
+
 TextStyle? inputTextStyle(
   BuildContext context, {
   Color? color,

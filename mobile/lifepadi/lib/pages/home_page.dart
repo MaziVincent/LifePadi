@@ -7,11 +7,12 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/vendors.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -21,9 +22,15 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeCategory = useState(1);
+    final activeCategoryIndex = useState(0);
     final vendors = ref.watch(vendorsProvider(pageSize: 3));
     final errands = ref.watch(errandsProvider(pageSize: 4));
+    final categories = ref.watch(categoriesProvider());
+    final activeCategory = categories.when(
+      data: (data) => data[activeCategoryIndex.value],
+      loading: () => null,
+      error: (error, stackTrace) => null,
+    );
 
     TextStyle? inputTextStyle() {
       return context.textTheme.bodyMedium?.copyWith(
@@ -158,7 +165,7 @@ class HomePage extends HookConsumerWidget {
                   data: (data) => [
                     for (final vendor in data)
                       CachedNetworkImage(
-                        imageUrl: vendor.imageUrl!,
+                        imageUrl: vendor.imageUrl ?? '',
                         imageBuilder: (_, imageProvider) => VendorCard(
                           name: vendor.name,
                           image: imageProvider,
@@ -182,7 +189,7 @@ class HomePage extends HookConsumerWidget {
                       Skeletonizer(
                         child: VendorCard(
                           name: v.name,
-                          image: v.image,
+                          image: AssetImage(v.imageUrl!),
                           onTap: () {},
                         ),
                       ),
@@ -202,7 +209,7 @@ class HomePage extends HookConsumerWidget {
                     for (final errand in data)
                       ErrandCard(
                         name: errand.name,
-                        image: errand.iconUrl,
+                        imageUrl: errand.iconUrl,
                         onTap: () => context.push(
                           SingleErrandRoute(id: errand.id).location,
                         ),
@@ -216,8 +223,9 @@ class HomePage extends HookConsumerWidget {
                       Skeletonizer(
                         child: ErrandCard(
                           name: name,
-                          image: image,
+                          imageUrl: image,
                           onTap: () {},
+                          isNetworkImage: false,
                         ),
                       ),
                   ].separatedBy(10.horizontalSpace),
@@ -231,50 +239,85 @@ class HomePage extends HookConsumerWidget {
               13.87.verticalSpace,
               SizedBox(
                 height: 43.h,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: featuredCategories.length,
-                  itemBuilder: (context, index) => CategoryTab(
-                    isActive: index + 1 == activeCategory.value,
-                    name: featuredCategories[index],
-                    onTap: () => activeCategory.value = index + 1,
+                child: categories.when(
+                  data: (data) => ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) => CategoryTab(
+                      isActive: index == activeCategoryIndex.value,
+                      name: data[index].name,
+                      onTap: () => activeCategoryIndex.value = index,
+                    ),
+                    separatorBuilder: (context, index) => 6.93.horizontalSpace,
                   ),
-                  separatorBuilder: (context, index) => 6.93.horizontalSpace,
+                  error: (err, _) => const Text("Woah, something's gone wrong"),
+                  loading: () => Skeletonizer(
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: mockTopCategories.length,
+                      itemBuilder: (context, index) => Skeleton.leaf(
+                        child: CategoryTab(
+                          isActive: index == activeCategoryIndex.value,
+                          name: mockTopCategories[index],
+                          onTap: () => activeCategoryIndex.value = index + 1,
+                        ),
+                      ),
+                      separatorBuilder: (context, index) =>
+                          6.93.horizontalSpace,
+                    ),
+                  ),
                 ),
               ),
               22.72.verticalSpace,
               HeaderWithSeeAll(
-                title: 'Products',
+                title: _buildProductsHeader(activeCategory?.name),
                 onSeeAllTap: () => context.push(
-                  ProductsRoute(categoryId: activeCategory.value).location,
+                  ProductsRoute(categoryId: activeCategoryIndex.value).location,
                 ),
               ),
               16.verticalSpace,
               Column(
                 children: [
-                  ...[
-                    ProductTile(
-                      id: 1,
-                      image: Assets.images.bnbBlender.provider(),
-                      name: 'BNB Blender',
-                      vendor: 'Shoprite Stores',
-                      price: 33000,
-                    ),
-                    ProductTile(
-                      id: 2,
-                      image: Assets.images.oilPerfumes.provider(),
-                      name: 'Oil Perfumes',
-                      vendor: 'Beauty Collection',
-                      price: 500,
-                    ),
-                    ProductTile(
-                      id: 3,
-                      image: Assets.images.plainTees.provider(),
-                      name: 'Plain Tees',
-                      vendor: 'Korede Store',
-                      price: 5000,
-                    ),
-                  ].separatedBy(11.verticalSpace),
+                  ...categories.when(
+                    data: (data) => [
+                      for (final product in activeCategory!.products)
+                        CachedNetworkImage(
+                          imageUrl: product.imageUrl,
+                          imageBuilder: (_, imageProvider) => ProductTile(
+                            id: product.id,
+                            name: product.name,
+                            image: imageProvider,
+                            price: product.price,
+                            vendor: product.vendor.name,
+                          ),
+                          placeholder: (_, __) => Skeletonizer(
+                            child: ProductTile(
+                              id: product.id,
+                              image: AssetImage(mockProducts[0].imageUrl),
+                              name: product.name,
+                              vendor: product.vendor.name,
+                              price: product.price,
+                            ),
+                          ),
+                          errorWidget: (_, __, ___) => const Icon(Icons.error),
+                        ),
+                    ].separatedBy(12.verticalSpace),
+                    error: (error, stackTrace) => [
+                      const Text('Woah, something went wrong'),
+                    ],
+                    loading: () => [
+                      for (final product in mockProducts)
+                        Skeletonizer(
+                          child: ProductTile(
+                            id: product.id,
+                            image: AssetImage(product.imageUrl),
+                            name: product.name,
+                            vendor: product.vendor.name,
+                            price: product.price,
+                          ),
+                        ),
+                    ].separatedBy(11.verticalSpace),
+                  ),
                   19.67.verticalSpace,
                   const OrangeyLoadingWheel(),
                   15.verticalSpace,
@@ -285,5 +328,11 @@ class HomePage extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _buildProductsHeader(String? activeCategory) {
+    return activeCategory == null
+        ? 'Products'
+        : 'Products in ${activeCategory.capitalize()}';
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -7,13 +8,15 @@ class ErrandCard extends StatelessWidget {
   const ErrandCard({
     super.key,
     required this.name,
-    required this.image,
+    required this.imageUrl,
     required this.onTap,
+    this.isNetworkImage = true,
   });
 
   final String name;
-  final String image;
+  final String imageUrl;
   final VoidCallback onTap;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +48,20 @@ class ErrandCard extends StatelessWidget {
                     shape: const CircleBorder(),
                   ),
                   padding: const EdgeInsets.all(11).r,
-                  child: Image.network(
-                    image,
-                    width: 24.r,
-                    height: 24.r,
-                  ), // image should be here
+                  child: isNetworkImage
+                      ? CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          placeholder: (_, __) =>
+                              const CircularProgressIndicator.adaptive(),
+                          errorWidget: (_, __, ___) => const Icon(Icons.error),
+                          width: 24.r,
+                          height: 24.r,
+                        )
+                      : Image.asset(
+                          imageUrl,
+                          width: 24.r,
+                          height: 24.r,
+                        ),
                 ),
               ),
             ),

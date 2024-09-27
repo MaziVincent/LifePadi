@@ -6,6 +6,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 import '../router/routes.dart';
@@ -49,10 +50,10 @@ class ProductsPage extends HookWidget {
               height: 43.h,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: featuredCategories.length,
+                itemCount: mockTopCategories.length,
                 itemBuilder: (context, index) => CategoryTab(
                   isActive: index + 1 == activeCategory.value,
-                  name: featuredCategories[index],
+                  name: mockTopCategories[index],
                   onTap: () => activeCategory.value = index + 1,
                 ),
                 separatorBuilder: (context, index) => 6.93.horizontalSpace,

@@ -82,6 +82,7 @@ class ProductTile extends HookWidget {
                   SectionTitle(
                     name,
                     color: const Color(0xFF212121),
+                    handleOverFlow: true,
                   ),
                   Text(
                     vendor,

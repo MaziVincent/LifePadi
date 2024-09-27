@@ -108,7 +108,6 @@ class Vendor extends User with VendorMappable {
     required super.accessToken,
     required super.refreshToken,
     this.imageUrl,
-    this.tag,
     this.openingHours,
     this.closingHours,
   });
@@ -123,8 +122,6 @@ class Vendor extends User with VendorMappable {
   final int? serviceId;
   @MappableField(key: 'VendorImgUrl')
   final String? imageUrl;
-  @MappableField(key: 'Tag')
-  final String? tag;
   @MappableField(key: 'OpeningHours')
   final String? openingHours;
   @MappableField(key: 'ClosingHours')
