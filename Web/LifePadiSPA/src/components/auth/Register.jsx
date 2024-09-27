@@ -22,11 +22,13 @@ const Register = () => {
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
-  const url = `${baseUrl}customer/send-otp`
+  const url = `${baseUrl}customer/send-otp`;
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [error, setError] = useState("");
   const [type, setType] = useState("");
   const [icon, setIcon] = useState(false);
@@ -41,39 +43,74 @@ const Register = () => {
   });
 
   const sendOTP = async (phoneNumber) => {
+    const unformated = phoneNumber.slice(1);
+    const formated = `234${unformated}`;
 
-    const unformated = phoneNumber.slice(1)
-    const formated = `234${unformated}`
+    try {
+      const formData = new FormData();
+      formData.append("phoneNumber", formated);
+      const response = await post(url, formData, " ");
+      // console.log(response)
 
-    try{
-
-    const formData = new FormData()
-    formData.append("phoneNumber", formated)
-    const response = await post(url, formData ," ")
-   // console.log(response)
-
-      if(response.status == 200 || response.data.status == "200"){
+      if (response.status == 200 || response.data.status == "200") {
         setVerificationInfo(response.data);
-          setVerify(true);
-          setIsLoading(false);
-          reset();
-      }else{
+        setVerify(true);
+        setIsLoading(false);
+        reset();
+      } else {
         setError("Error Sending OTP");
         setIsLoading(false);
       }
-
-    }catch(error){
-
-      console.error(error)
+    } catch (error) {
+      console.error(error);
       setError("Error Sending  OTP");
       setIsLoading(false);
     }
+  };
 
+  const checkForEmailAndPhone = async (email, phone) => {
+
+    setPhoneError("")
+    setEmailError("")
+
+    const data = {
+      Email: email,
+      PhoneNumber: phone,
+    };
+    try {
+      const response = await post(
+        `${baseUrl}customer/check-user-exists`,
+        data,
+        ""
+      );
+      console.log(response);
+      if (response.error?.includes("Phone number already exists")) {
+        setPhoneError(response.error);
+        setIsLoading(false);
+        return;
+      } else if (response.error?.includes("Email already exists")) {
+        setEmailError("Email already exists");
+        setIsLoading(false);
+        return;
+      }
+      
+      if (response.status == 200 || response.data == true ) {
+       sendOTP(phone)
+    }
+     
+      setIsLoading(false);
+     
+    } catch (error) {
+      console.error(error);
+      setError("Error Sending  OTP");
+      setIsLoading(false);
+    }
   };
 
   const handleCreate = (data) => {
     setIsLoading(true);
-    sendOTP(data.PhoneNumber);
+    checkForEmailAndPhone(data.Email, data.PhoneNumber);
+    // sendOTP(data.PhoneNumber);
     setRegData(data);
   };
 
@@ -82,14 +119,14 @@ const Register = () => {
   };
 
   const handleToggle = () => {
-    if (type ==='password'){
-       setIcon(true);
-       setType('text')
+    if (type === "password") {
+      setIcon(true);
+      setType("text");
     } else {
-       setIcon(false)
-       setType('password')
+      setIcon(false);
+      setType("password");
     }
- }
+  };
 
   return (
     <Modal
@@ -208,6 +245,9 @@ const Register = () => {
                           Phone Number is required
                         </p>
                       )}
+                      {phoneError && (
+                        <p className="text-sm text-redborder">{phoneError}</p>
+                      )}
                     </div>
                     <div className="sm:col-span-2">
                       <label
@@ -230,8 +270,8 @@ const Register = () => {
                           Email is required
                         </p>
                       )}
-                      {error && (
-                        <p className="text-sm text-redborder">{error}</p>
+                      {emailError && (
+                        <p className="text-sm text-redborder">{emailError}</p>
                       )}
                     </div>
 
@@ -258,7 +298,12 @@ const Register = () => {
                           placeholder="Type Password"
                           required
                         />
-                        <span onClick={handleToggle} className={` text-gray ${icon ? 'hidden' : 'flex'} justify-center items-center  `}>
+                        <span
+                          onClick={handleToggle}
+                          className={` text-gray ${
+                            icon ? "hidden" : "flex"
+                          } justify-center items-center  `}
+                        >
                           <svg
                             className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
                             aria-hidden="true"
@@ -280,7 +325,12 @@ const Register = () => {
                             />
                           </svg>
                         </span>
-                        <span onClick={handleToggle} className={` text-gray ${icon ? 'flex' : 'hidden'} justify-center items-center  `}>
+                        <span
+                          onClick={handleToggle}
+                          className={` text-gray ${
+                            icon ? "flex" : "hidden"
+                          } justify-center items-center  `}
+                        >
                           <svg
                             className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
                             aria-hidden="true"
@@ -307,6 +357,14 @@ const Register = () => {
                         </p>
                       )}
                     </div>
+                  </div>
+                  <div className="flex justify-center">
+                    {
+                      !emailError || !phoneError && <> 
+                      {error && <p className="text-sm text-redborder">{error}</p>}
+                       </>
+                    }
+                    
                   </div>
                   <button
                     type="submit"

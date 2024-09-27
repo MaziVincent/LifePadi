@@ -158,11 +158,20 @@ const RecievePackage = ({ dispatch, open }) => {
     }
     console.log(response);
 
+    const delivery = {
+        PickupAddress: SenderAddress,
+        DeliveryAddress: RecieverAddress,
+        OrderId: res.data?.Id,
+        DeliveryFee: deliveryFee,
+        PickupType: "Logistics",
+      };
+
     cartDispatch({ type: "order", payload: res.data });
     cartDispatch({ type: "amount", payload: deliveryFee });
     cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     cartDispatch({ type: "total", payload: deliveryFee });
     cartDispatch({ type: "checkOut", payload: deliveryFee });
+    localStorage.setItem("delivery", JSON.stringify(delivery));
     dispatch({ type: "send" });
   };
 
