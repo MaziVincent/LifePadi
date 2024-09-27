@@ -11,6 +11,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../state/vendors.dart';
 
@@ -169,14 +170,13 @@ class HomePage extends HookConsumerWidget {
                     const Text('Woah, something went wrong'),
                   ],
                   loading: () => [
-                    // TODO: Implement loading skeleton here
                     for (final v in dummyVendors.take(4))
-                      VendorCard(
-                        name: v.name,
-                        image: v.image,
-                        onTap: () {
-                          // TODO: Go to vendors single
-                        },
+                      Skeletonizer(
+                        child: VendorCard(
+                          name: v.name,
+                          image: v.image,
+                          onTap: () {},
+                        ),
                       ),
                   ].separatedBy(10.horizontalSpace),
                 ),
