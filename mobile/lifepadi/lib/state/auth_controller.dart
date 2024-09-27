@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/utils/secure_storage_service.dart';
@@ -282,22 +283,4 @@ class AuthController extends _$AuthController {
       rethrow;
     }
   }
-}
-
-/// Exception thrown when a request is unauthorized.
-class UnauthorizedException implements Exception {
-  const UnauthorizedException(this.message);
-  final String message;
-}
-
-/// Exception thrown when a request returns 500.
-class ServerErrorException implements Exception {
-  const ServerErrorException(this.message);
-  final String message;
-}
-
-/// Phone number verification failed.
-class PhoneVerificationFailedException implements Exception {
-  const PhoneVerificationFailedException(this.message);
-  final String message;
 }

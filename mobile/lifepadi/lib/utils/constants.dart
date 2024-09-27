@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 
@@ -74,7 +75,7 @@ List<({String name, String image})> categories = [
   (name: 'Agro', image: Assets.images.categories.agro.path),
 ];
 
-List<({String name, ImageProvider<Object> image})> vendors = [
+List<({String name, ImageProvider<Object> image})> dummyVendors = [
   (name: 'McDonald', image: Assets.images.vendors.mcdonald.provider()),
   (name: 'Shoprite', image: Assets.images.vendors.shoprite.provider()),
   (
@@ -128,3 +129,9 @@ List<
     isDefault: false,
   ),
 ];
+
+/// The cache time for the app on test
+final kTestCacheTime = 10.seconds;
+
+/// The cache time for the app on production
+final kCacheTime = 10.minutes;

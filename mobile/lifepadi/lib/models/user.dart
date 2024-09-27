@@ -101,22 +101,34 @@ class Vendor extends User with VendorMappable {
     required super.email,
     required super.phoneNumber,
     required this.name,
-    required this.vendorType,
+    this.vendorType,
     required this.address,
     this.serviceId,
     required super.role,
     required super.accessToken,
     required super.refreshToken,
+    this.imageUrl,
+    this.tag,
+    this.openingHours,
+    this.closingHours,
   });
 
   @MappableField(key: 'Name')
   final String name;
   @MappableField(key: 'VendorType')
-  final String vendorType;
+  final String? vendorType;
   @MappableField(key: 'ContactAddress')
   final String address;
   @MappableField(key: 'ServiceId')
   final int? serviceId;
+  @MappableField(key: 'VendorImgUrl')
+  final String? imageUrl;
+  @MappableField(key: 'Tag')
+  final String? tag;
+  @MappableField(key: 'OpeningHours')
+  final String? openingHours;
+  @MappableField(key: 'ClosingHours')
+  final String? closingHours;
 }
 
 @MappableClass(discriminatorValue: 'Guest')

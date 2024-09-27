@@ -506,9 +506,9 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
   static String _$name(Vendor v) => v.name;
   static const Field<Vendor, String> _f$name =
       Field('name', _$name, key: 'Name');
-  static String _$vendorType(Vendor v) => v.vendorType;
+  static String? _$vendorType(Vendor v) => v.vendorType;
   static const Field<Vendor, String> _f$vendorType =
-      Field('vendorType', _$vendorType, key: 'VendorType');
+      Field('vendorType', _$vendorType, key: 'VendorType', opt: true);
   static String _$address(Vendor v) => v.address;
   static const Field<Vendor, String> _f$address =
       Field('address', _$address, key: 'ContactAddress');
@@ -524,6 +524,18 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
   static String _$refreshToken(Vendor v) => v.refreshToken;
   static const Field<Vendor, String> _f$refreshToken =
       Field('refreshToken', _$refreshToken);
+  static String? _$imageUrl(Vendor v) => v.imageUrl;
+  static const Field<Vendor, String> _f$imageUrl =
+      Field('imageUrl', _$imageUrl, key: 'VendorImgUrl', opt: true);
+  static String? _$tag(Vendor v) => v.tag;
+  static const Field<Vendor, String> _f$tag =
+      Field('tag', _$tag, key: 'Tag', opt: true);
+  static String? _$openingHours(Vendor v) => v.openingHours;
+  static const Field<Vendor, String> _f$openingHours =
+      Field('openingHours', _$openingHours, key: 'OpeningHours', opt: true);
+  static String? _$closingHours(Vendor v) => v.closingHours;
+  static const Field<Vendor, String> _f$closingHours =
+      Field('closingHours', _$closingHours, key: 'ClosingHours', opt: true);
 
   @override
   final MappableFields<Vendor> fields = const {
@@ -537,6 +549,10 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
     #role: _f$role,
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
+    #imageUrl: _f$imageUrl,
+    #tag: _f$tag,
+    #openingHours: _f$openingHours,
+    #closingHours: _f$closingHours,
   };
 
   @override
@@ -557,7 +573,11 @@ class VendorMapper extends SubClassMapperBase<Vendor> {
         serviceId: data.dec(_f$serviceId),
         role: data.dec(_f$role),
         accessToken: data.dec(_f$accessToken),
-        refreshToken: data.dec(_f$refreshToken));
+        refreshToken: data.dec(_f$refreshToken),
+        imageUrl: data.dec(_f$imageUrl),
+        tag: data.dec(_f$tag),
+        openingHours: data.dec(_f$openingHours),
+        closingHours: data.dec(_f$closingHours));
   }
 
   @override
@@ -617,7 +637,11 @@ abstract class VendorCopyWith<$R, $In extends Vendor, $Out>
       int? serviceId,
       UserRole? role,
       String? accessToken,
-      String? refreshToken});
+      String? refreshToken,
+      String? imageUrl,
+      String? tag,
+      String? openingHours,
+      String? closingHours});
   VendorCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -633,23 +657,31 @@ class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
           String? email,
           String? phoneNumber,
           String? name,
-          String? vendorType,
+          Object? vendorType = $none,
           String? address,
           Object? serviceId = $none,
           UserRole? role,
           String? accessToken,
-          String? refreshToken}) =>
+          String? refreshToken,
+          Object? imageUrl = $none,
+          Object? tag = $none,
+          Object? openingHours = $none,
+          Object? closingHours = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (email != null) #email: email,
         if (phoneNumber != null) #phoneNumber: phoneNumber,
         if (name != null) #name: name,
-        if (vendorType != null) #vendorType: vendorType,
+        if (vendorType != $none) #vendorType: vendorType,
         if (address != null) #address: address,
         if (serviceId != $none) #serviceId: serviceId,
         if (role != null) #role: role,
         if (accessToken != null) #accessToken: accessToken,
-        if (refreshToken != null) #refreshToken: refreshToken
+        if (refreshToken != null) #refreshToken: refreshToken,
+        if (imageUrl != $none) #imageUrl: imageUrl,
+        if (tag != $none) #tag: tag,
+        if (openingHours != $none) #openingHours: openingHours,
+        if (closingHours != $none) #closingHours: closingHours
       }));
   @override
   Vendor $make(CopyWithData data) => Vendor(
@@ -662,7 +694,11 @@ class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
       serviceId: data.get(#serviceId, or: $value.serviceId),
       role: data.get(#role, or: $value.role),
       accessToken: data.get(#accessToken, or: $value.accessToken),
-      refreshToken: data.get(#refreshToken, or: $value.refreshToken));
+      refreshToken: data.get(#refreshToken, or: $value.refreshToken),
+      imageUrl: data.get(#imageUrl, or: $value.imageUrl),
+      tag: data.get(#tag, or: $value.tag),
+      openingHours: data.get(#openingHours, or: $value.openingHours),
+      closingHours: data.get(#closingHours, or: $value.closingHours));
 
   @override
   VendorCopyWith<$R2, Vendor, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>

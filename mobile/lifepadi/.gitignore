@@ -46,3 +46,4 @@ app.*.map.json
 # Code gen related files
 *.g.dart
 *.freezed.dart
+*.mapper.dart

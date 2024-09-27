@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -11,12 +12,15 @@ import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class HomePage extends HookWidget {
+import '../state/vendors.dart';
+
+class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final activeCategory = useState(1);
+    final vendors = ref.watch(vendorsProvider(pageSize: 3));
 
     TextStyle? inputTextStyle() {
       return context.textTheme.bodyMedium?.copyWith(
@@ -147,21 +151,35 @@ class HomePage extends HookWidget {
               16.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  for (final v in vendors.take(3))
+                children: vendors.when(
+                  data: (data) => [
+                    for (final vendor in data)
+                      VendorCard(
+                        name: vendor.name,
+                        image: NetworkImage(vendor.imageUrl!),
+                        onTap: () {},
+                      ),
                     VendorCard(
-                      name: v.name,
-                      image: v.image,
-                      onTap: () {
-                        // TODO: Go to vendors single
-                      },
+                      name: 'See more',
+                      icon: IconsaxPlusLinear.element_plus,
+                      onTap: () => VendorsRoute().go(context),
                     ),
-                  VendorCard(
-                    name: 'See more',
-                    icon: IconsaxPlusLinear.element_plus,
-                    onTap: () => VendorsRoute().go(context),
-                  ),
-                ].separatedBy(10.horizontalSpace),
+                  ].separatedBy(10.horizontalSpace),
+                  error: (error, stackTrace) => [
+                    const Text('Woah, something went wrong'),
+                  ],
+                  loading: () => [
+                    // TODO: Implement loading skeleton here
+                    for (final v in dummyVendors.take(4))
+                      VendorCard(
+                        name: v.name,
+                        image: v.image,
+                        onTap: () {
+                          // TODO: Go to vendors single
+                        },
+                      ),
+                  ].separatedBy(10.horizontalSpace),
+                ),
               ),
               16.verticalSpace,
               HeaderWithSeeAll(

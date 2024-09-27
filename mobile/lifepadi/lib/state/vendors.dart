@@ -1,0 +1,37 @@
+import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/utils/cache_for.dart';
+import 'package:lifepadi/utils/exceptions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'vendors.g.dart';
+
+@riverpod
+FutureOr<List<Vendor>> vendors(VendorsRef ref, {int pageSize = 10}) async {
+  final client = ref.read(dioProvider());
+  final response = await client.get<JsonMap>(
+    '/vendor/all',
+    queryParameters: {
+      'pageNumber': 1,
+      'pageSize': pageSize,
+    },
+  );
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  final data = List<JsonMap>.from(response.data!['result'] as List);
+  data.map((e) {
+    // FIXME: This is a temporary fix for the server returning null emails
+    e['Email'] = e['Email'] ?? '';
+    // Add empty tokens to avoid null errors in the model
+    e['accessToken'] = '';
+    e['refreshToken'] = '';
+    e['Role'] = '';
+    return e;
+  }).toList();
+
+  ref.cache();
+  return data.map(VendorMapper.fromMap).toList();
+}
