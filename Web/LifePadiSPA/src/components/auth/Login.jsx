@@ -39,6 +39,7 @@ const Login = () => {
 
       //console.log(response.data);
       setAuth(response.data);
+      localStorage.setItem("refreshToken", JSON.stringify(response.data?.refreshToken))
      toast.success("Logged in Successfully");
       const role = response.data?.Role;
       setTimeout(() => {

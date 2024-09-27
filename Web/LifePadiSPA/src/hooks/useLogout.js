@@ -8,6 +8,7 @@ const useLogout = () => {
 
     const logout = async () => {
          setAuth({});
+         localStorage.removeItem("refreshToken")
          try{
             const response = await axios.get('auth/logOut', {
                 withCredentials:true,

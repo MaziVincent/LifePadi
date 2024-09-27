@@ -69,6 +69,7 @@ namespace Api.Controllers
                     PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
                     Role = user.Role,
+                    refreshToken = refreshToken,
                     accessToken = accessToken
                 };
                 return Ok(token);
@@ -138,11 +139,11 @@ namespace Api.Controllers
         }
 
         [HttpGet("refreshToken")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromQuery]string refreshToken )
         {
             try
             {
-                var refreshToken = Request.Cookies["refreshToken"];
+               // var refreshToken = Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(refreshToken))
                 {
                     return Unauthorized("Invalid refresh token");
@@ -163,6 +164,7 @@ namespace Api.Controllers
                     ContactAddress = user.ContactAddress,
                     PhoneNumber = user.PhoneNumber,
                     Role = genTokenDTO!.Role,
+                    refreshToken = user.RefreshToken,
                     accessToken = accessToken
                 };
                 return Ok(token);

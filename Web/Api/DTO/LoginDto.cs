@@ -21,6 +21,7 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
         public string? Role { get; set; }
         public string? ContactAddress { get; set; }
+        public string? RefreshToken {get; set; }
 
     }
 }
