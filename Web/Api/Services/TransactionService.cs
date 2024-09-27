@@ -705,8 +705,11 @@ namespace Api.Services
                     var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == (int)paymentRes!.data!.metadata!.orderId!);
                     if (order == null) throw new Exceptions.ServiceException("Order not found");
                     order.Status = "Ongoing";
+<<<<<<< HEAD
                     order.PaymentChannel = paymentRes.data!.channel;
                     order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
+=======
+>>>>>>> f8ebdf6 (returned vendor when getting all categories)
                     // await _dbContext.SaveChangesAsync();
 
                     await _dbContext.Transactions.AddAsync(transaction);

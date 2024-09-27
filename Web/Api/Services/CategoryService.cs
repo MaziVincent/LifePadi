@@ -46,11 +46,16 @@ namespace Api.Services
                 if (props.SearchString is null)
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor)
 =======
                     var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt).Include(c => c.Products)
 >>>>>>> 867b7f3 (added a route for vendorCategories)
+=======
+                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+>>>>>>> f8ebdf6 (returned vendor when getting all categories)
                     .ToListAsync();
 <<<<<<< HEAD
                     categoryList = categoryList.Concat(categories1);
