@@ -6,7 +6,7 @@ const RequireAuthAdmin = ({allowedRole}) => {
     const {auth} = useAuth();
     const location = useLocation()
 
-    console.log(auth);
+    //console.log(auth);
 
     return ( 
         

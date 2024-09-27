@@ -62,7 +62,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
   const handleCreate = (prod) => {
 
     const vendor = { ...prod, VendorId: vendorId, Image:file };
-    //console.log(prod);
+    //console.log(vendor);
     mutate(vendor);
   };
 

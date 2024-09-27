@@ -58,7 +58,7 @@ const RiderDashboard = () => {
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
       console.log(riderDeliveries.result);
-      if (riderDeliveries.result[0].Rider.isVeirfied)
+      if (riderDeliveries?.result[0].Rider?.isVeirfied)
       {
         setIsVerified(true)
       }

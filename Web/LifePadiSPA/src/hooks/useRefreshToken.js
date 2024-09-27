@@ -8,10 +8,12 @@ import axios from "../api/axios";
 const useRefreshToken = () => {
     const {auth, setAuth} = useAuth();
     //const {dispatch} = useCart();
-
+    const refreshToken = JSON.parse( localStorage.getItem('refreshToken'));
+   // console.log(refreshToken);
     const refresh = async () => {
 
         const response = await axios.get('auth/refreshToken',{
+            params:{ refreshToken },
             withCredentials:true,
             headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
             credentials: "include",

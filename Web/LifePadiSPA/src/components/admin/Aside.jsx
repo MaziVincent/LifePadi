@@ -62,7 +62,7 @@ const Aside = ({ aside, setAside }) => {
       id="drawer-navigation"
     >
       <div className="overflow-y-auto py-10 px-2  flex flex-col   items-start justify-center  h-full bg-gray-50 dark:bg-gray-800">
-        <ul className="flex flex-col gap-8 pr-4  items-start  ">
+        <ul className="flex flex-col gap-8 pr-4 pt-16  items-start  ">
           {links.map((link) => (
             <li key={link.to}>
               <Link

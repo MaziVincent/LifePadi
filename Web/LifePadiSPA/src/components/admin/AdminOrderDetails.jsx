@@ -26,9 +26,14 @@ const AdminOrderDetails = () => {
   const getDelivery = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
-    console.log(response);
+    //console.log(response);
     return response.data;
   };
+
+  const getTransaction = async (url) => {
+    const response = await fetch (url, auth.accessToken);
+    return response.data;
+  }
 
   const {
     data: order,
@@ -55,6 +60,22 @@ const AdminOrderDetails = () => {
     staleTime: 10000,
     refetchOnMount: "always",
   });
+
+
+  const {
+    data: transaction,
+    isError: transactionError,
+    isSuccess: transactionSuccess,
+    isLoading: transactionLoading,
+  } = useQuery({
+    queryKey: ["transaction"],
+    queryFn: () => getTransaction(`${baseUrl}transactionByOrderId/${id}`),
+    keepPreviousData: true,
+    staleTime: 10000,
+    refetchOnMount: "always",
+  });
+
+  console.log(transaction);
 
 const handleAssignRider = () => {
 setAssignRider(true)
@@ -154,7 +175,7 @@ setAssignRider(true)
         {orderError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">Error Fetching Data..</Alert>
+            <Alert severity="error">Error Fetching Order Data ...</Alert>
           </p>
         )}
         {orderSuccess && (
@@ -164,7 +185,7 @@ setAssignRider(true)
             {orderError && (
               <p className="flex items-center justify-center">
                 {" "}
-                <Alert severity="error">Error Fetching Data..</Alert>
+                <Alert severity="error">Error Fetching Order Items ...</Alert>
               </p>
             )}
             {orderSuccess && (
@@ -255,7 +276,7 @@ setAssignRider(true)
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">Error Fetching Delivery Data..</Alert>
+            <Alert severity="error">No Delivery Data Availiable for this Order..</Alert>
           </p>
         )}
         {deliverySuccess && (
@@ -286,7 +307,7 @@ setAssignRider(true)
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">Error Fetching Rider Data..</Alert>
+            <Alert severity="error">No Rider Data Availiable..</Alert>
           </p>
         )}
         {deliverySuccess && (
