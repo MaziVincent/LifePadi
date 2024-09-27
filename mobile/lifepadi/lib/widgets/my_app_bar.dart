@@ -46,8 +46,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: EdgeInsets.only(
         top: 16.h,
         bottom: 16.h,
-        right: 24.w,
-        left: canPop ? 24.w : 0,
       ),
       child: AppBar(
         title: _buildTitle(context),
@@ -55,15 +53,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: backgroundColor ?? backgroundColorBase,
         surfaceTintColor:
             surfaceTintColor ?? backgroundColor ?? backgroundColorBase,
-        actions: actions,
+        actions: [
+          if (actions != null) ...[
+            ...actions!,
+            24.horizontalSpace,
+          ],
+        ],
         bottom: bottom,
         leading: canPop
-            ? MyIconButton(
-                icon: IconsaxPlusLinear.arrow_left_1,
-                onPressed: () => context.pop(),
+            ? Padding(
+                padding: EdgeInsets.only(left: 24.w),
+                child: MyIconButton(
+                  icon: IconsaxPlusLinear.arrow_left_1,
+                  onPressed: () => context.pop(),
+                ),
               )
             : null,
-        leadingWidth: 41.w,
+        leadingWidth: 63.w, // 39 for left arrow + 24 for left padding
       ),
     );
   }
@@ -73,6 +79,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     final defaultStyle = context.textTheme.titleLarge?.copyWith(
       fontSize: 20.sp,
       fontWeight: FontWeight.w700,
+      overflow: TextOverflow.ellipsis,
     );
 
     if (title is String) {
