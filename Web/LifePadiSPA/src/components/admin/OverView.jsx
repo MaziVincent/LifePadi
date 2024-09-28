@@ -70,10 +70,14 @@ const Overview = () => {
     queryKey: ["orders", page, search],
     queryFn: () =>
 <<<<<<< HEAD
+<<<<<<< HEAD
       getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
 =======
       getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
 >>>>>>> 4dc5d34 (worked on product component)
+=======
+      getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
+>>>>>>> 0ab5359 (incremental changes)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",

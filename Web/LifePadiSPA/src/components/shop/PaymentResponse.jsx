@@ -135,14 +135,19 @@ const PaymentResponse = () => {
           deliveryData,
           auth.accessToken
         );
-
+      const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
         if (response.status == 200) {
           localStorage.removeItem("delivery");
           setTimeout(() => {
             navigate("/user");
           }, 3000);
         } else {
+<<<<<<< HEAD
           console.log;
+=======
+          console.log(response)
+          console.log(res);
+>>>>>>> 0ab5359 (incremental changes)
         }
       } else {
         setResponseMsg(res.data.message);

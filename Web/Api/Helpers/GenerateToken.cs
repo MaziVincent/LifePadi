@@ -87,10 +87,14 @@ namespace Api.Helpers
                 {
                     Subject = new ClaimsIdentity(Claims),
 <<<<<<< HEAD
+<<<<<<< HEAD
                     Expires = DateTime.Now.AddDays(5),
 =======
                     Expires = DateTime.Now.AddDays(1),
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+                    Expires = DateTime.Now.AddDays(5),
+>>>>>>> 0ab5359 (incremental changes)
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();

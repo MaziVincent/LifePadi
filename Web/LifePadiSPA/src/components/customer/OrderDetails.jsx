@@ -22,6 +22,7 @@ const OrderDetails = () => {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const getData = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
@@ -32,6 +33,12 @@ const OrderDetails = () => {
 
     console.log(response);
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+  const getData = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    //console.log(response);
+>>>>>>> 0ab5359 (incremental changes)
     return response.data;
   };
 
@@ -56,16 +63,23 @@ const OrderDetails = () => {
   } = useQuery({
     queryKey: ["delivery"],
 <<<<<<< HEAD
+<<<<<<< HEAD
     queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
 =======
     queryFn: () => getDelivery(`${baseUrl}delivery/order/get/${id}`),
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+    queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
+>>>>>>> 0ab5359 (incremental changes)
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0ab5359 (incremental changes)
   const {
     data: transaction,
     isError: transactionError,
@@ -96,8 +110,11 @@ const OrderDetails = () => {
 
   console.log(logistics);
 
+<<<<<<< HEAD
 =======
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+>>>>>>> 0ab5359 (incremental changes)
 
   return (
     <section className=" p-2 text-gray-900 dark:text-primary pb-10">
@@ -336,7 +353,11 @@ const OrderDetails = () => {
         {transactionError && (
           <p className="flex items-center justify-center">
             {" "}
+<<<<<<< HEAD
             <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
+=======
+            <Alert severity="error"> No Transaction Data ..</Alert>
+>>>>>>> 0ab5359 (incremental changes)
           </p>
         )}
         {transactionSuccess && (
@@ -362,6 +383,7 @@ const OrderDetails = () => {
 
 {
           logistics &&  <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+<<<<<<< HEAD
           {" "}
           <h1 className="font-bold text-center text-xl">
             Logistics Details{" "}
@@ -425,12 +447,63 @@ const OrderDetails = () => {
           </div>
         )}
         <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+=======
+>>>>>>> 0ab5359 (incremental changes)
           {" "}
           <h1 className="font-bold text-center text-xl">
-            Transaction Details{" "}
+            Logistics Details{" "}
           </h1>{" "}
+          <p>
+            {" "}
+            Item : {logistics.Item}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Item Description : {logistics.ItemDescription}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Address : {logistics.SenderAddress}{" "}
+          </p>
+          
+          <p>
+            {" "}
+            Sender Name : {logistics.SenderName}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Phone Number : {logistics.SenderPhone}{" "}
+          </p>
+          <p>
+            {" "}
+            Receiver Address : {logistics.RecieverAddress}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Name : {logistics.RecieverName}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Phone Number : {logistics.RecieverAddress}{" "}
+          </p>
+
+          
+          <p>
+            {" "}
+            Tracking Number :{" "}
+            {logistics.TrackingNumber ? logistics.TrackingNumber : "Not Available"}
+          </p>
         </div>
+<<<<<<< HEAD
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+        }
+
+
+>>>>>>> 0ab5359 (incremental changes)
       </div>
     </section>
   );

@@ -132,10 +132,14 @@ const SendPackage = ({ dispatch, open }) => {
       }
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 //console.log(data);
 =======
 
 >>>>>>> 56c4b95 (completed logistics)
+=======
+//console.log(data);
+>>>>>>> 0ab5359 (incremental changes)
     const order = {
       CustomerId: auth.Id,
       Type: "Logistics",
@@ -161,6 +165,9 @@ const SendPackage = ({ dispatch, open }) => {
       return;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0ab5359 (incremental changes)
     //console.log(response);
 
     const delivery = {
@@ -433,7 +440,7 @@ const sendPackage = () => {
                           type="text"
                           name="delivery"
                           id="delivery"
-                          {...register("RecieverAddress", { required: true })}
+                          {...register("ReceiverAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Delivery Address"
 >>>>>>> 56c4b95 (completed logistics)
@@ -592,19 +599,27 @@ const sendPackage = () => {
                         name="reciever"
                         id="reciever"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         {...register("ReceiverName", { required: true })}
 =======
                         {...register("RecieverName", { required: true })}
 >>>>>>> 56c4b95 (completed logistics)
+=======
+                        {...register("ReceiverName", { required: true })}
+>>>>>>> 0ab5359 (incremental changes)
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter Reciever Name"
                         required=""
                       />
 <<<<<<< HEAD
+<<<<<<< HEAD
                       {errors.ReceiverName && (
 =======
                       {errors.RecieverName && (
 >>>>>>> 56c4b95 (completed logistics)
+=======
+                      {errors.ReceiverName && (
+>>>>>>> 0ab5359 (incremental changes)
                         <p className="text-sm text-redborder">
                           Reciever name is required
                         </p>
@@ -622,10 +637,14 @@ const sendPackage = () => {
                         name="phone"
                         id="phone"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         {...register("ReceiverPhone", {
 =======
                         {...register("RecieverPhone", {
 >>>>>>> 56c4b95 (completed logistics)
+=======
+                        {...register("ReceiverPhone", {
+>>>>>>> 0ab5359 (incremental changes)
                           required: true,
                           maxLength: {
                             value: 11,
@@ -637,10 +656,14 @@ const sendPackage = () => {
                         required=""
                       />
 <<<<<<< HEAD
+<<<<<<< HEAD
                       {errors.ReceiverPhone && (
 =======
                       {errors.RecieverPhone && (
 >>>>>>> 56c4b95 (completed logistics)
+=======
+                      {errors.ReceiverPhone && (
+>>>>>>> 0ab5359 (incremental changes)
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>
