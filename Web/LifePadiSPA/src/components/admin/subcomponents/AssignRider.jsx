@@ -50,7 +50,7 @@ const AssignRider = ({ id, open, handleClose }) =>{
 
     const { mutate } = useMutation(create, {
       onSuccess: () => {
-        queryClient.invalidateQueries("orders");
+        queryClient.invalidateQueries("delivery");
         toast.success("Rider Assigned Successfully");
         handleClose(false);
         reset();

@@ -445,7 +445,7 @@ const Vendor = () => {
                   onClick={() =>
                     dispatch({ type: "products", payload: cat.Products })
                   }
-                  className=" px-3 py-1 bg-secondary capitalize rounded-lg shadow-md "
+                  className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md "
                 >
                   {cat.Name}
                 </Link>

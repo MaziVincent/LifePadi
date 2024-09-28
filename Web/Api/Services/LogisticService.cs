@@ -55,7 +55,7 @@ namespace Api.Services
         {
             try
             {
-                var logistic = await _context.Logistics.FirstOrDefaultAsync(l => l.Id == id);
+                var logistic = await _context.Logistics.Where(l => l.OrderId == id).FirstOrDefaultAsync();
                 if (logistic == null)
                 {
                     throw new Exceptions.ServiceException("Logistic not found");
