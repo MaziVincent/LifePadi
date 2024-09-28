@@ -115,6 +115,7 @@ const Vendor = () => {
       );
       setProducts(result);
       dispatch({ type: "productCategories", payload: result.data });
+     
     } catch (error) {
       console.error("Error fetching product categories:", error);
       dispatch({
@@ -123,6 +124,8 @@ const Vendor = () => {
       });
     }
   }, [baseUrl]);
+
+  console.log(state.productCategories)
 
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);

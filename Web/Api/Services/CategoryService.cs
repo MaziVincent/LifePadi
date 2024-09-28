@@ -40,7 +40,7 @@ namespace Api.Services
                 var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
             }
-            
+
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -205,10 +205,9 @@ namespace Api.Services
             try
             {
                 var vendorCategories = await _dbContext.Categories
-                    .Include(c => c.Products!)
-                    .ThenInclude(p => p.Vendor)
-                    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
-                    .ToListAsync();
+    .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
+    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
+    .ToListAsync();
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
             }
