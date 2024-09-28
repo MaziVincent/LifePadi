@@ -80,6 +80,7 @@ namespace Api.Services
 >>>>>>> b8c66da (changed all DTO to Dto)
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             catch (Exception ex)
             {
@@ -115,6 +116,9 @@ namespace Api.Services
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                 return returned;
             }
+=======
+
+>>>>>>> ca028f0 (fixed product category)
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -489,6 +493,7 @@ namespace Api.Services
             {
                 var vendorCategories = await _dbContext.Categories
 <<<<<<< HEAD
+<<<<<<< HEAD
     .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
     .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
     .ToListAsync();
@@ -498,6 +503,11 @@ namespace Api.Services
                     .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
                     .ToListAsync();
 >>>>>>> 867b7f3 (added a route for vendorCategories)
+=======
+    .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
+    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
+    .ToListAsync();
+>>>>>>> ca028f0 (fixed product category)
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
             }
