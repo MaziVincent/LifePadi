@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import LoadingGif from "../../shared/LodingGif";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -463,7 +464,7 @@ const EditRiderModal = ({ open, handleClose, rider }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Rider
+               { isSubmitting ? <LoadingGif /> : "Update Rider" } 
               </button>
               {!isValid && (
                 <p className="text-sm text-redborder">Fill the form correctly</p>

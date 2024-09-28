@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import LoadingGif from "../../shared/LodingGif";
 
 const UploadImageModal = ({ open, handleClose,url, id, name }) => {
   const update = useUpdate();
@@ -19,7 +20,7 @@ const UploadImageModal = ({ open, handleClose,url, id, name }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -170,7 +171,7 @@ const UploadImageModal = ({ open, handleClose,url, id, name }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {`Upload ${name} Image`}
+                {isSubmitting ? <LoadingGif/> : `Upload ${name} Image` }
               </button>
             </form>
           </div>

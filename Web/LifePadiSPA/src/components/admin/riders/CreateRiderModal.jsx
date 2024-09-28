@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import LoadingGif from "../../shared/LodingGif";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -513,7 +514,7 @@ const rider = {...data, IdentityImg:file}
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {isSubmitting ? "Creating..." : "Create new Rider"}
+                {isSubmitting ? <LoadingGif /> : "Create new Rider"}
                 
               </button>
               {!isValid && (
