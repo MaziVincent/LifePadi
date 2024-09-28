@@ -25,20 +25,22 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
-                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt).Include(c => c.Products)
+                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .ToListAsync();
                     categoryList = categoryList.Concat(categories1);
                     var result = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 var categories = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
                 categoryList = categoryList.Concat(categories);
                 var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
             }
-            
+
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -203,10 +205,9 @@ namespace Api.Services
             try
             {
                 var vendorCategories = await _dbContext.Categories
-                    .Include(c => c.Products!)
-                    .ThenInclude(p => p.Vendor)
-                    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
-                    .ToListAsync();
+    .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
+    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
+    .ToListAsync();
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
             }

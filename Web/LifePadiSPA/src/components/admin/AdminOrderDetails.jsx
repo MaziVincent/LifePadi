@@ -31,9 +31,14 @@ const AdminOrderDetails = () => {
   };
 
   const getTransaction = async (url) => {
-    const response = await fetch (url, auth.accessToken);
+    const response = await fetch(url, auth.accessToken);
     return response.data;
-  }
+  };
+
+  const getLogistics = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+    return response.data;
+  };
 
   const {
     data: order,
@@ -61,7 +66,6 @@ const AdminOrderDetails = () => {
     refetchOnMount: "always",
   });
 
-
   const {
     data: transaction,
     isError: transactionError,
@@ -69,18 +73,32 @@ const AdminOrderDetails = () => {
     isLoading: transactionLoading,
   } = useQuery({
     queryKey: ["transaction"],
-    queryFn: () => getTransaction(`${baseUrl}transactionByOrderId/${id}`),
+    queryFn: () =>
+      getTransaction(`${baseUrl}transaction/transactionByOrderId/${id}`),
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
   });
 
-  console.log(transaction);
+  const {
+    data: logistics,
+    isError: logisticsError,
+    isSuccess: logisticsSuccess,
+    isLoading: logisticsLoading,
+  } = useQuery({
+    queryKey: ["logistics"],
+    queryFn: () => getLogistics(`${baseUrl}logistics/getByOrder/${id}`),
+    keepPreviousData: true,
+    staleTime: 10000,
+    refetchOnMount: "always",
+    enabled: order?.Type === "Logistics",
+  });
 
-const handleAssignRider = () => {
-setAssignRider(true)
-}
+  console.log(logistics);
 
+  const handleAssignRider = () => {
+    setAssignRider(true);
+  };
 
   return (
     <section className=" p-2 text-gray-900 dark:text-primary pb-10">
@@ -102,28 +120,27 @@ setAssignRider(true)
       </Breadcrumbs>
       <div className="flex justify-end">
         {" "}
-        {
-          delivery &&  <button
-          type="button"
-          onClick={handleAssignRider}
-          className={`inline-flex items-center  dark:text-primary bg-background hover:bg-secondary hover:text-accent focus:ring-4 focus:outline-none focus:ring-darkSecondaryText font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
-        >
-          <svg
-            className="mr-1 -ml-1 w-6 h-6"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
+        {delivery && (
+          <button
+            type="button"
+            onClick={handleAssignRider}
+            className={`inline-flex items-center  dark:text-primary bg-background hover:bg-secondary hover:text-accent focus:ring-4 focus:outline-none focus:ring-darkSecondaryText font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
           >
-            <path
-              fillRule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-          Assign Rider
-        </button>
-        }
-       
+            <svg
+              className="mr-1 -ml-1 w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            Assign Rider
+          </button>
+        )}
       </div>
       <h1 className="text-center text-2xl font-bold py-4"> Order Details </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5  ">
@@ -158,11 +175,11 @@ setAssignRider(true)
               <h2 className="font-bold border-b-2 mb-2">Customer Info.</h2>
               <p>
                 {" "}
-                Customer Full-Name : {order.Customer.FirstName}{" "}
-                {order.Customer.LastName}{" "}
+                Customer Full-Name : {order.Customer?.FirstName}{" "}
+                {order.Customer?.LastName}{" "}
               </p>
-              <p> Customer Address : {order.Customer.ContactAddress} </p>
-              <p> Customer Phone Number : {order.Customer.PhoneNumber} </p>
+              <p> Customer Address : {order.Customer?.ContactAddress} </p>
+              <p> Customer Phone Number : {order.Customer?.PhoneNumber} </p>
             </div>
           </div>
         )}
@@ -276,7 +293,10 @@ setAssignRider(true)
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">No Delivery Data Availiable for this Order..</Alert>
+            <Alert severity="error">
+              No Delivery Data Availiable for this Order..
+              Maybe Order isn't Paid 
+            </Alert>
           </p>
         )}
         {deliverySuccess && (
@@ -294,6 +314,7 @@ setAssignRider(true)
             <p> Delivery Fee : {delivery.DeliveryFee}</p>
             <p> Pickup Address : {delivery.PickupAddress}</p>
             <p> Pickup Type : {delivery.PickupType}</p>
+            <p> Delivery Address : {delivery.DeliveryAddress}</p>
             <p> Status : {delivery.Status}</p>
           </div>
         )}
@@ -318,23 +339,103 @@ setAssignRider(true)
             </h1>{" "}
             <p>
               {" "}
-              Rider Full Name : {delivery.Rider.FirstName}{" "}
-              {delivery.Rider.LastName}
+              Rider Full Name : {delivery.Rider?.FirstName}{" "}
+              {delivery.Rider?.LastName}
             </p>
-            <p> Rider Phone Number : {delivery.Rider.PhoneNumber}</p>
+            <p> Rider Phone Number : {delivery.Rider?.PhoneNumber}</p>
             <p>
               {" "}
-              Rider Status : {delivery.Rider.IsActive ? "Active" : " In-Active"}
+              Rider Status :{" "}
+              {delivery.Rider?.IsActive ? "Active" : " In-Active"}
             </p>
           </div>
         )}
-        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+
+        {transactionLoading && (
+          <p className="flex items-center justify-center">
+            {" "}
+            <CircularProgress />
+          </p>
+        )}
+        {transactionError && (
+          <p className="flex items-center justify-center">
+            {" "}
+            <Alert severity="error">Error Getting Transaction Data.. or The Order hasn't been paid For </Alert>
+          </p>
+        )}
+        {transactionSuccess && (
+          <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+            {" "}
+            <h1 className="font-bold text-center text-xl">
+              Transaction Details{" "}
+            </h1>{" "}
+            <p>
+              {" "}
+              Payment ID : {transaction.PaymentId}{" "}
+            </p>
+            <p> Payment Status : {transaction.Status === "success" ? <span className="text-background">{transaction.Status} </span> :
+            <span className="text-redborder">{transaction.Status} </span> }</p>
+            <p>
+              {" "}
+              Total Amount :{" "}
+              {transaction.TotalAmount}
+            </p>
+          </div>
+        )}
+
+        {
+          logistics &&  <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
           {" "}
           <h1 className="font-bold text-center text-xl">
-            Transaction Details{" "}
+            Logistics Details{" "}
           </h1>{" "}
+          <p>
+            {" "}
+            Item : {logistics.Item}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Item Description : {logistics.ItemDescription}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Address : {logistics.SenderAddress}{" "}
+          </p>
+          
+          <p>
+            {" "}
+            Sender Name : {logistics.SenderName}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Phone Number : {logistics.SenderPhone}{" "}
+          </p>
+          <p>
+            {" "}
+            Receiver Address : {logistics.RecieverAddress}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Name : {logistics.RecieverName}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Phone Number : {logistics.RecieverAddress}{" "}
+          </p>
+
+          
+          <p>
+            {" "}
+            Tracking Number :{" "}
+            {logistics.TrackingNumber ? logistics.TrackingNumber : "Not Available"}
+          </p>
         </div>
+        }
       </div>
+
       {delivery && (
         <AssignRider
           id={delivery.Id}

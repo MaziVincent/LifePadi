@@ -427,6 +427,12 @@ namespace Api.Services
                         transaction.VoucherId = voucher.Id;
                     }
 
+                    //update order status to ongoing
+                    var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == (int)paymentRes!.data!.metadata!.orderId!);
+                    if (order == null) throw new Exceptions.ServiceException("Order not found");
+                    order.Status = "Ongoing";
+                    // await _dbContext.SaveChangesAsync();
+
                     await _dbContext.Transactions.AddAsync(transaction);
                     await _dbContext.SaveChangesAsync();
 

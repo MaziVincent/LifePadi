@@ -21,10 +21,10 @@ const OrderDetails = () => {
     return response.data;
   };
 
-  const getDelivery = async (url) => {
+  const getData = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
-    console.log(response);
+    //console.log(response);
     return response.data;
   };
 
@@ -48,11 +48,41 @@ const OrderDetails = () => {
     isLoading: deliveryLoading,
   } = useQuery({
     queryKey: ["delivery"],
-    queryFn: () => getDelivery(`${baseUrl}delivery/order/get/${id}`),
+    queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
   });
+
+  const {
+    data: transaction,
+    isError: transactionError,
+    isSuccess: transactionSuccess,
+    isLoading: transactionLoading,
+  } = useQuery({
+    queryKey: ["transaction"],
+    queryFn: () =>
+      getData(`${baseUrl}transaction/transactionByOrderId/${id}`),
+    keepPreviousData: true,
+    staleTime: 10000,
+    refetchOnMount: "always",
+  });
+
+  const {
+    data: logistics,
+    isError: logisticsError,
+    isSuccess: logisticsSuccess,
+    isLoading: logisticsLoading,
+  } = useQuery({
+    queryKey: ["logistics"],
+    queryFn: () => getData(`${baseUrl}logistics/getByOrder/${id}`),
+    keepPreviousData: true,
+    staleTime: 10000,
+    refetchOnMount: "always",
+    enabled: order?.Type === "Logistics",
+  });
+
+  console.log(logistics);
 
 
   return (
@@ -267,12 +297,93 @@ const OrderDetails = () => {
             </p>
           </div>
         )}
-        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
+
+{transactionLoading && (
+          <p className="flex items-center justify-center">
+            {" "}
+            <CircularProgress />
+          </p>
+        )}
+        {transactionError && (
+          <p className="flex items-center justify-center">
+            {" "}
+            <Alert severity="error"> No Transaction Data ..</Alert>
+          </p>
+        )}
+        {transactionSuccess && (
+          <div className="col-span-2 border-2 dark:bg-darkMenu bg-graybg shadow-sm flex flex-col md:flex-row justify-between p-5 bg-white rounded-lg shadow-lightgreen">
+            {" "}
+            <div>
+              <h2 className="font-bold border-b-2 mb-2"> Payment Details . </h2>
+              <p>
+              {" "}
+              Payment ID : {transaction.PaymentId}{" "}
+            </p>
+            <p> Payment Status : {transaction.Status === "success" ? <span className="text-background">{transaction.Status} </span> :
+            <span className="text-redborder">{transaction.Status} </span> }</p>
+            <p>
+              {" "}
+              Total Amount :{" "}
+              {transaction.TotalAmount}
+            </p>
+            </div>
+           
+          </div>
+        )}
+
+{
+          logistics &&  <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
           {" "}
           <h1 className="font-bold text-center text-xl">
-            Transaction Details{" "}
+            Logistics Details{" "}
           </h1>{" "}
+          <p>
+            {" "}
+            Item : {logistics.Item}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Item Description : {logistics.ItemDescription}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Address : {logistics.SenderAddress}{" "}
+          </p>
+          
+          <p>
+            {" "}
+            Sender Name : {logistics.SenderName}{" "}
+          </p>
+          <p>
+            {" "}
+            Sender Phone Number : {logistics.SenderPhone}{" "}
+          </p>
+          <p>
+            {" "}
+            Receiver Address : {logistics.RecieverAddress}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Name : {logistics.RecieverName}{" "}
+          </p>
+
+          <p>
+            {" "}
+            Receiver Phone Number : {logistics.RecieverAddress}{" "}
+          </p>
+
+          
+          <p>
+            {" "}
+            Tracking Number :{" "}
+            {logistics.TrackingNumber ? logistics.TrackingNumber : "Not Available"}
+          </p>
         </div>
+        }
+
+
       </div>
     </section>
   );

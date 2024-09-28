@@ -62,7 +62,7 @@ namespace Api.Helpers
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(Claims),
-                    Expires = DateTime.Now.AddDays(2),
+                    Expires = DateTime.Now.AddDays(5),
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();

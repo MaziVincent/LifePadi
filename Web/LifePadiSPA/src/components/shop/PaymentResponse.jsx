@@ -56,7 +56,7 @@ const PaymentResponse = () => {
           deliveryData,
           auth.accessToken
         );
-
+      const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
         if (response.status == 200) {
           localStorage.removeItem("delivery");
           setTimeout(() => {
@@ -64,6 +64,7 @@ const PaymentResponse = () => {
           }, 3000);
         } else {
           console.log(response)
+          console.log(res);
         }
       } else {
         setResponseMsg(res.data.message);

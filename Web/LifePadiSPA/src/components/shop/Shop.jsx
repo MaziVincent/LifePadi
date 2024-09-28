@@ -84,7 +84,7 @@ const Shop = () => {
                 onClick={() => handleVendors(category.Vendors)}
               >
                 <Link className="flex flex-col items-center cursor-pointer">
-                  <span className="w-20">
+                  <span className="w-20 h-20">
                     <img
                       src={category.IconUrl}
                       className="w-full"

@@ -59,7 +59,7 @@ const Overview = () => {
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["orders", page, search],
     queryFn: () =>
-      getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+      getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",

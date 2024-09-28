@@ -130,7 +130,7 @@ const SendPackage = ({ dispatch, open }) => {
         data.Item = `${data.Item} and ${chip}`;
       }
     });
-
+//console.log(data);
     const order = {
       CustomerId: auth.Id,
       Type: "Logistics",
@@ -155,7 +155,7 @@ const SendPackage = ({ dispatch, open }) => {
       });
       return;
     }
-    console.log(response);
+    //console.log(response);
 
     const delivery = {
       PickupAddress: SenderAddress,
@@ -345,7 +345,7 @@ const SendPackage = ({ dispatch, open }) => {
                           type="text"
                           name="delivery"
                           id="delivery"
-                          {...register("RecieverAddress", { required: true })}
+                          {...register("ReceiverAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Delivery Address"
                           required=""
@@ -355,7 +355,7 @@ const SendPackage = ({ dispatch, open }) => {
                         />
                        
                       </div>
-                      {errors.RecieverAddress && (
+                      {errors.ReceiverAddress && (
                           <p className="text-sm text-redborder">
                             Delivery address is required
                           </p>
@@ -465,12 +465,12 @@ const SendPackage = ({ dispatch, open }) => {
                         type="text"
                         name="reciever"
                         id="reciever"
-                        {...register("RecieverName", { required: true })}
+                        {...register("ReceiverName", { required: true })}
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter Reciever Name"
                         required=""
                       />
-                      {errors.RecieverName && (
+                      {errors.ReceiverName && (
                         <p className="text-sm text-redborder">
                           Reciever name is required
                         </p>
@@ -487,7 +487,7 @@ const SendPackage = ({ dispatch, open }) => {
                         type="phone"
                         name="phone"
                         id="phone"
-                        {...register("RecieverPhone", {
+                        {...register("ReceiverPhone", {
                           required: true,
                           maxLength: {
                             value: 11,
@@ -498,7 +498,7 @@ const SendPackage = ({ dispatch, open }) => {
                         placeholder="08122334455"
                         required=""
                       />
-                      {errors.RecieverPhone && (
+                      {errors.ReceiverPhone && (
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>

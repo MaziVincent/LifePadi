@@ -51,7 +51,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("getByOrder/{id}")]
         public async Task<IActionResult> get(int id)
         {
             try
