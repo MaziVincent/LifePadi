@@ -172,7 +172,7 @@ const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {isSubmitting ? 'Submitting...' : `Update ${name} Status`}
+                {isSubmitting ? <LoadingGif /> : `Update ${name} Status`}
               </button>
             </form>
           </div>

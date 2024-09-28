@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
+import LoadingGif from "../../../shared/LodingGif"
 
 const CreateProductModal = ({ open, handleClose, vendorId }) => {
   const post = usePost();
@@ -323,7 +324,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {isSubmitting ? "Creating..." : "Create New Product"}
+                {isSubmitting ? <LoadingGif /> : "Create New Product"}
                 
               </button>
             </form>

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from 'react-hot-toast'
 import { useState } from "react";
+import LoadingGif from "../../../shared/LodingGif";
 
 const CreateVendorCategoryModal = ({ open, handleClose }) => {
   const post = usePost();
@@ -221,7 +222,7 @@ const CreateVendorCategoryModal = ({ open, handleClose }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  {isSubmitting ? "Creating..." : "Create New Vendor Category"}
+                  {isSubmitting ? <LoadingGif /> : "Create New Vendor Category"}
                   
                 </button>
                 

@@ -21,7 +21,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "all" });
 
   const editCategory = async (data) => {
@@ -173,7 +173,9 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Category
+               {
+                isSubmitting ? <LoadingGif /> : "Update Category"
+               } 
               </button>
             </form>
           </div>

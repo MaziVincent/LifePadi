@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
+import LoadingGif from "../../../shared/LodingGif";
 
 const EditProductModal = ({ open, handleClose, product, vendorId }) => {
   const update = useUpdate();
@@ -282,7 +283,7 @@ const EditProductModal = ({ open, handleClose, product, vendorId }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Product
+                {isSubmitting ? <LoadingGif /> : " Update Product" }
               </button>
             </form>
           </div>

@@ -109,7 +109,7 @@ const Shop = () => {
             {vendors.map((vendor) => (
               <div
                 key={vendor.Id}
-                className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg  hover:shadow-md"
+                className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg shadow-md dark:shadow-darkMenu"
               >
                 <Link
                   to={`/shop/vendor/${vendor.Id}`}

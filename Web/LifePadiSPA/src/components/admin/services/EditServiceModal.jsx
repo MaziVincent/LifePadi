@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient, useMutation } from "react-query";
 import { useEffect } from "react";
 import toast, {Toaster} from "react-hot-toast";
+import LoadingGif from "../../shared/LodingGif";
 
 
 
@@ -22,7 +23,7 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "all" });
 
   const editService = async (data) => {
@@ -264,7 +265,9 @@ const EditServiceModal = ({ open, handleClose, service }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Update Service
+               {
+                isSubmitting ? <LoadingGif /> : "Update Service"
+               } 
               </button>
             </form>
           </div>
