@@ -100,11 +100,12 @@ import Gift from "./components/customer/Gift";
 import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
-import Logistics from "./components/home/Logistics"
+import Logistics from "./components/home/Logistics";
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
+import ForgotPassword from "./components/auth/ForgotPassword";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -125,9 +126,18 @@ function App() {
           path="/"
           element={<Layout />}
         >
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="logistics" element={<Logistics />} />
+          <Route
+            path="about"
+            element={<About />}
+          />
+          <Route
+            path="contact"
+            element={<Contact />}
+          />
+          <Route
+            path="logistics"
+            element={<Logistics />}
+          />
           <Route
             path="about"
             element={<About />}
@@ -168,6 +178,11 @@ function App() {
         <Route
           path="/login"
           element={<Login />}
+        />
+
+        <Route
+          path="/forgotPassword"
+          element={<ForgotPassword />}
         />
 
         {/* SHOP ROUTES */}
@@ -219,8 +234,14 @@ function App() {
               path="/shop/vendor/:id"
               element={<Vendor />}
             />
-            <Route path="/shop/payment-response" element={<PaymentResponse />} />
-            <Route path="/shop/logistics" element={<TryLogistics />} />
+            <Route
+              path="/shop/payment-response"
+              element={<PaymentResponse />}
+            />
+            <Route
+              path="/shop/logistics"
+              element={<TryLogistics />}
+            />
             <Route
 <<<<<<< HEAD
               path="/shop/payment-response"
@@ -252,6 +273,9 @@ function App() {
               />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
               <Route
                 path="/user/address"
                 element={<Address />}
@@ -268,6 +292,7 @@ function App() {
                 path="/user/details/:id"
                 element={<OrderDetails />}
               />
+<<<<<<< HEAD
 
               <Route
                 path="/user/track/:status"
@@ -288,6 +313,8 @@ function App() {
 >>>>>>> 7fa87ff (user dashboard commit)
               
 >>>>>>> 7a64a18 (created a payment response page)
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
             </Route>
           </Route>
         </Route>
@@ -488,15 +515,21 @@ function App() {
               />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
               <Route
                 path="/vendor/product/:id"
                 element={<VendorViewProduct />}
               />
+<<<<<<< HEAD
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
 =======
           <Route path='/vendor/product/:id' element={<VendorViewProduct />} />
 >>>>>>> 6248978 (added product view page for vendor)
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
             </Route>
           </Route>
         </Route>

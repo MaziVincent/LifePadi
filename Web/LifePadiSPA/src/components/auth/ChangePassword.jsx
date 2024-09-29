@@ -1,14 +1,22 @@
 
 
 import Modal from "@mui/material/Modal";
+<<<<<<< HEAD
 import {  useForm } from "react-hook-form";
 import { useState,} from "react";
+=======
+import { set, useForm } from "react-hook-form";
+import { useState, useRef } from "react";
+>>>>>>> 5dffde0 (forgot password and live payment)
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
+<<<<<<< HEAD
 import toast, { Toaster } from "react-hot-toast";
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
 //import useCart from "../../hooks/useCart";
 import LoadingGif from "../shared/LodingGif";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
@@ -18,28 +26,47 @@ const ChangePassword = () => {
     forgotPassword,
     setForgotPassword,
     regData,
+<<<<<<< HEAD
     setLogin
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
   const url = `${baseUrl}auth/password-reset`;
+=======
+    setRegData,
+    verificationInfo,
+    setVerificationInfo,
+  } = useAuth();
+  //const {dispatch} = useCart();
+  const post = usePost();
+  const url = `${baseUrl}customer/send-otp`;
+>>>>>>> 5dffde0 (forgot password and live payment)
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+<<<<<<< HEAD
   const [type, setType] = useState("password");
+=======
+  const [type, setType] = useState("");
+>>>>>>> 5dffde0 (forgot password and live payment)
   const [icon, setIcon] = useState(false);
 
   const {
     register,
     handleSubmit,
+<<<<<<< HEAD
     watch,
+=======
+    reset,
+>>>>>>> 5dffde0 (forgot password and live payment)
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "all",
   });
 
+<<<<<<< HEAD
 const password = watch('NewPassword','')
 
   const handleCreate = async (data) => {
@@ -56,12 +83,22 @@ const password = watch('NewPassword','')
     //console.log(response);
 
     setIsLoading(false)
+=======
+
+
+  const handleCreate = (data) => {
+    setIsLoading(true);
+    console.log(data);
+>>>>>>> 5dffde0 (forgot password and live payment)
   
   };
 
   const handleClickAway = () => {
     setForgotPassword(false);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
   };
 
   const handleToggle = () => {
@@ -73,7 +110,10 @@ const password = watch('NewPassword','')
       setType("password");
     }
   };
+<<<<<<< HEAD
   //console.log(regData)
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
 
   return (
     <Modal
@@ -88,7 +128,11 @@ const password = watch('NewPassword','')
       <div
         id="defaultModal"
         className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
+<<<<<<< HEAD
       > <Toaster />
+=======
+      >
+>>>>>>> 5dffde0 (forgot password and live payment)
         <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
@@ -117,7 +161,11 @@ const password = watch('NewPassword','')
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
+<<<<<<< HEAD
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
+=======
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8 overflow-y-scroll">
+>>>>>>> 5dffde0 (forgot password and live payment)
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-darkBg md:text-2xl dark:text-primary">
                  Change Password
                 </h1>
@@ -132,7 +180,11 @@ const password = watch('NewPassword','')
                         htmlFor="password"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
+<<<<<<< HEAD
                        New Password
+=======
+                        Password
+>>>>>>> 5dffde0 (forgot password and live payment)
                       </label>
                       <div className="flex">
                         <input
@@ -212,7 +264,11 @@ const password = watch('NewPassword','')
 
                     <div className="sm:col-span-2 ">
                       <label
+<<<<<<< HEAD
                         htmlFor="cpassword"
+=======
+                        htmlFor="password"
+>>>>>>> 5dffde0 (forgot password and live payment)
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
                         Confirm Password
@@ -220,6 +276,7 @@ const password = watch('NewPassword','')
                       <div className="flex">
                         <input
                           type={type}
+<<<<<<< HEAD
                           name="cpassword"
                           id="cpassword"
                           {...register('ConfirmPassword', {
@@ -230,6 +287,20 @@ const password = watch('NewPassword','')
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Type Password"
                           required=""
+=======
+                          name="password"
+                          id="password"
+                          {...register("ConfirmPassword", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 4,
+                              message: "Confirm Password must be at least 4 characters",
+                            },
+                          })}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Type Password"
+                          required
+>>>>>>> 5dffde0 (forgot password and live payment)
                         />
                         <span
                           onClick={handleToggle}
@@ -284,9 +355,15 @@ const password = watch('NewPassword','')
                         </span>
                       </div>
 
+<<<<<<< HEAD
                       {errors.ConfirmPassword && (
                         <p className="text-sm text-redborder">
                           {errors.ConfirmPassword.message}
+=======
+                      {errors.Password && (
+                        <p className="text-sm text-redborder">
+                          {errors.Password.message}
+>>>>>>> 5dffde0 (forgot password and live payment)
                         </p>
                       )}
                     </div>

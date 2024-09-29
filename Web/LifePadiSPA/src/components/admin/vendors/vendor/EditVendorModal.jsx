@@ -93,7 +93,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
   
 =======
   }, []);
+<<<<<<< HEAD
 >>>>>>> a0030da (vendor and product commit)
+=======
+  
+>>>>>>> 5dffde0 (forgot password and live payment)
 
   const getServices = useCallback(async () => {
     try {

@@ -23,9 +23,13 @@ const UserLogin = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
   const [error, setError] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(false);
+=======
+ 
+>>>>>>> 5dffde0 (forgot password and live payment)
 
   const {
     register,
@@ -339,6 +343,10 @@ const UserLogin = () => {
                         onClick={() => {
                           navigate("/forgotpassword");
                           setLogin(false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5dffde0 (forgot password and live payment)
                         }}
                         className="text-sm cursor-pointer font-medium text-background hover:underline dark:text-primary-500"
                       >

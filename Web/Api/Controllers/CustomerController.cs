@@ -113,6 +113,24 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
+=======
+
+        [HttpGet("getByPhone/{phone}")]
+        public async Task<IActionResult> getByPhone(string phone)
+        {
+            try
+            {
+                var customer = await _icustomer!.getByPhone(phone);
+                if (customer == null) return NotFound();
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+>>>>>>> 5dffde0 (forgot password and live payment)
         [HttpGet("all")]
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {

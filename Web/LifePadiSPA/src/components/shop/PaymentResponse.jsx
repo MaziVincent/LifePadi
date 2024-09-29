@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
 import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
@@ -44,10 +47,14 @@ const PaymentResponse = () => {
     width: "100%",
     height: "100%",
 <<<<<<< HEAD
+<<<<<<< HEAD
     zIndex: 20,
 =======
     zIndex: -1,
 >>>>>>> 5f61f19 (updated payment)
+=======
+    zIndex: 20,
+>>>>>>> 5dffde0 (forgot password and live payment)
     padding: 0,
     margin: 0,
   };
@@ -63,6 +70,7 @@ const PaymentResponse = () => {
   const deliveryUrl = `${baseUrl}delivery/create`;
 
   const verifyTransaction = useCallback(async () => {
+<<<<<<< HEAD
     try {
       const res = await fetch(url, auth.accessToken);
       
@@ -120,27 +128,35 @@ const PaymentResponse = () => {
 
 >>>>>>> 5f61f19 (updated payment)
 =======
+=======
+    try {
+      const res = await fetch(url, auth.accessToken);
+      
+>>>>>>> 5dffde0 (forgot password and live payment)
 
       if (
-        res.data.status === true ||
-        res.data.data.status == "success" ||
-        res.data.message == "Verification successful"
+        res.data?.status ||
+        res.data?.data.status == "success" ||
+        res.data?.message == "Verification successful"
       ) {
+
         setPaymentStatus(true);
-        setResponseMsg(res.data.message);
+        setResponseMsg(res.data?.message);
         const delivery = localStorage.getItem("delivery");
         const deliveryData = JSON.parse(delivery);
+        //console.log(deliveryData)
         const response = await post(
           deliveryUrl,
           deliveryData,
           auth.accessToken
         );
-      const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
-        if (response.status == 200) {
+     // const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
+        
           localStorage.removeItem("delivery");
           setTimeout(() => {
             navigate("/user");
           }, 3000);
+<<<<<<< HEAD
         } else {
 <<<<<<< HEAD
           console.log;
@@ -149,6 +165,9 @@ const PaymentResponse = () => {
           console.log(res);
 >>>>>>> 0ab5359 (incremental changes)
         }
+=======
+       
+>>>>>>> 5dffde0 (forgot password and live payment)
       } else {
         setResponseMsg(res.data.message);
         setPaymentStatus(true);
@@ -161,6 +180,7 @@ const PaymentResponse = () => {
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   },[tx_ref, url]);
 =======
   };
@@ -168,6 +188,9 @@ const PaymentResponse = () => {
 =======
   };
 >>>>>>> 67ef8ba (updated payment)
+=======
+  },[tx_ref, url]);
+>>>>>>> 5dffde0 (forgot password and live payment)
 
   useEffect(() => {
     verifyTransaction();
@@ -177,6 +200,7 @@ const PaymentResponse = () => {
 
   return (
     <section className="flex justify-center items-center  pt-28 bg-lightGray dark:bg-darkBg">
+<<<<<<< HEAD
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
         {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full bg-primary dark:bg-darkMenu">
@@ -190,6 +214,11 @@ const PaymentResponse = () => {
         {paymentStatus == true && (
           <div className="h-64 py-10 lg:px-36 w-full">
 >>>>>>> 5f61f19 (updated payment)
+=======
+      <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
+        {paymentStatus == true && (
+          <div className="h-64 py-10 lg:px-36 w-full bg-primary dark:bg-darkMenu">
+>>>>>>> 5dffde0 (forgot password and live payment)
             <Lottie
               animationData={successAnimation}
               loop={false}
@@ -198,10 +227,14 @@ const PaymentResponse = () => {
             ></Lottie>{" "}
             <div className="flex flex-col justify-center gap-2 px-5">
 <<<<<<< HEAD
+<<<<<<< HEAD
               <h2 className="text-center text-xl text-accent dark:text-primary font-semibold">
 =======
               <h2 className="text-center text-xl font-semibold">
 >>>>>>> 5f61f19 (updated payment)
+=======
+              <h2 className="text-center text-xl text-accent dark:text-primary font-semibold">
+>>>>>>> 5dffde0 (forgot password and live payment)
                 {" "}
                 Payment Successful{" "}
               </h2>

@@ -23,6 +23,7 @@ const CheckOut = () => {
     setLoading(true);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
 
@@ -103,6 +104,8 @@ const CheckOut = () => {
 =======
     //Create Delivery
 
+=======
+>>>>>>> 5dffde0 (forgot password and live payment)
     const data = {
       Amount: Math.trunc( state.amount),
       DeliveryFee: Math.trunc( state.deliveryFee),

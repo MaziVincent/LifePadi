@@ -84,10 +84,14 @@ const VerifyCode = ({ otpLength = 4 }) => {
       const response = await post(`${verifyUrl}?pinId=${verificationInfo.pinId}&pin=${code}`)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       //console.log(response.data)
 =======
       console.log(response.data)
 >>>>>>> 5e0ac5f (edited customer create)
+=======
+      //console.log(response.data)
+>>>>>>> 5dffde0 (forgot password and live payment)
 
       
       if(response.data?.verified == false){

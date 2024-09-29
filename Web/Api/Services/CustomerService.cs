@@ -256,7 +256,11 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
         public async Task<Customer> getByPhone(string phone)
+=======
+public async Task<Customer> getByPhone(string phone)
+>>>>>>> 5dffde0 (forgot password and live payment)
         {
             try
             {
