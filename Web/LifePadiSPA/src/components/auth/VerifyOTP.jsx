@@ -1,3 +1,5 @@
+
+
 import React, { useState, useRef, useEffect } from "react";
 import { Modal } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
@@ -7,7 +9,7 @@ import LoadingGif from "../shared/LodingGif";
 import usePost from "../../hooks/usePost";
 import toast, { Toaster } from "react-hot-toast";
 
-const VerifyCode = ({ otpLength = 4, }) => {
+const VerifyOTP = ({ otpLength = 4, }) => {
   const [otp, setOtp] = useState(Array(otpLength).fill(""));
   const [codeError, setCodeError] = useState("")
   const [attempts, setAttempts ] = useState(3)
@@ -18,17 +20,16 @@ const VerifyCode = ({ otpLength = 4, }) => {
   const url = `${baseUrl}customer/create`;
   const verifyUrl = `${baseUrl}customer/verify-otp`;
   const {
-    reg,
-    setRegister,
-    verify,
-    setVerify,
+    verifyOTP,
+    setVerifyOTP,
     regData,
     setRegData,
     verificationInfo,
     setVerificationInfo
   } = useAuth();
 
-  //console.log(verificationInfo);
+  console.log(verificationInfo);
+  console.log(regData);
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -81,7 +82,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
 
       if(response.data?.verified == true){
       
-        mutate(regData)
+       
         //console.log(regData)
       }
 
@@ -92,33 +93,6 @@ const VerifyCode = ({ otpLength = 4, }) => {
   
   };
 
-  const create = async (data) => {
-    const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
-    }
-    const response = await post(url, formData, "");
-   // console.log(response.data)
-  };
-
-  const { mutate } = useMutation(create, {
-    onSuccess: () => {
-      setRegister(false);
-      setIsLoading(false);
-      setOtp(Array(otpLength).fill(""))
-      toast.success(" Account Created Successfully")
-      setTimeout(() => {
-        setVerify(false);
-      },1500)
-     
-      
-      
-    },
-    onError: () => {
-      toast.error("Error completing your sign up");
-      setIsLoading(false)
-    },
-  });
 
   useEffect(()=> {
     setTimeout(()=>{
@@ -157,9 +131,9 @@ const VerifyCode = ({ otpLength = 4, }) => {
 
   return (
     <Modal
-      open={verify}
+      open={verifyOTP}
       onClose={() => {
-        setVerify(false);
+        setVerifyOTP(false);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -171,13 +145,13 @@ const VerifyCode = ({ otpLength = 4, }) => {
       >
         <Toaster />
         <div className="relative p-4 w-full h-auto  ">
-          <section className=" h-screen flex justify-center items-center ">
-            <div className="flex flex-col items-center bg-primary dark:bg-darkMenu dark:text-primary w-3/4 md:w-2/4 pb-4 rounded-xl">
+          <section className=" h-screen flex justify-center items-center  ">
+            <div className="flex flex-col items-center bg-primary dark:bg-darkMenu dark:text-primary md:w-2/4 pb-4 rounded-xl">
               <div className="flex justify-end items-center p-4 w-full ">
                 <button
                   type="button"
                   onClick={() => {
-                    setVerify(false);
+                    setVerifyOTP(false);
                   }}
                   className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-toggle="defaultModal"
@@ -199,7 +173,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
                 </button>
               </div>
               <h2 className="text-2xl font-semibold mb-4">Verify Phone Number</h2>
-              <p className="text-darkHover dark:text-gray">Please Enter the code sent to your Phone Number </p>
+              <p className="text-darkHover dark:text-gray text-center">Please Enter the code sent to your Phone Number </p>
               <div className="flex space-x-2 m-4">
                 {otp.map((digit, index) => (
                   <input
@@ -225,7 +199,7 @@ const VerifyCode = ({ otpLength = 4, }) => {
                 onClick={handleSubmit}
                 className="px-4 py-2 bg-secondary text-white dark:text-accent font-semibold rounded-lg shadow hover:bg-background transition duration-200"
               > {
-                isLoading ? <LoadingGif /> : 'Complete Sign Up '
+                isLoading ? <LoadingGif /> : 'Verify Code '
               }
                 
               </button>
@@ -237,4 +211,4 @@ const VerifyCode = ({ otpLength = 4, }) => {
   );
 };
 
-export default VerifyCode;
+export default VerifyOTP;

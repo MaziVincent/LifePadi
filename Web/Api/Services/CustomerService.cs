@@ -199,6 +199,19 @@ namespace Api.Services
             }
         }
 
+public async Task<Customer> getByPhone(string phone)
+        {
+            try
+            {
+                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber! == phone);
+                return customer!;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<OrderDtoLite>> getCustomerOders(int id)
         {
             try

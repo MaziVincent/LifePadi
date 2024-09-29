@@ -21,8 +21,10 @@ export const AuthProvider = ({ children }) => {
   const [reg, setRegister] = useState(false);
   const [location, setLocation] = useState({});
   const [verify, setVerify] = useState(false);
+  const [verifyOTP, setVerifyOTP] = useState(false);
   const [regData, setRegData] = useState({});
   const [verificationInfo, setVerificationInfo] = useState({});
+  const [forgotPassword, setForgotPassword] = useState(false);
 
   return (
     <AuthContext.Provider
@@ -42,7 +44,11 @@ export const AuthProvider = ({ children }) => {
         regData,
         setRegData,
         verificationInfo,
-        setVerificationInfo
+        setVerificationInfo,
+        verifyOTP,
+        setVerifyOTP,
+        forgotPassword,
+        setForgotPassword
       }}
     >
       {children}

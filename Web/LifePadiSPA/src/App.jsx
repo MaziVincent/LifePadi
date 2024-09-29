@@ -40,11 +40,12 @@ import Gift from "./components/customer/Gift";
 import Favourite from "./components/customer/Favourite";
 import About from "./components/home/About";
 import Contact from "./components/home/Contact";
-import Logistics from "./components/home/Logistics"
+import Logistics from "./components/home/Logistics";
 import PaymentResponse from "./components/shop/PaymentResponse";
 import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
+import ForgotPassword from "./components/auth/ForgotPassword";
 
 function App() {
   const queryClient = new QueryClient();
@@ -64,9 +65,18 @@ function App() {
           path="/"
           element={<Layout />}
         >
-          <Route path="about" element={<About />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="logistics" element={<Logistics />} />
+          <Route
+            path="about"
+            element={<About />}
+          />
+          <Route
+            path="contact"
+            element={<Contact />}
+          />
+          <Route
+            path="logistics"
+            element={<Logistics />}
+          />
           <Route
             index
             element={<Home />}
@@ -80,6 +90,11 @@ function App() {
           element={<Login />}
         />
 
+        <Route
+          path="/forgotPassword"
+          element={<ForgotPassword />}
+        />
+
         {/* SHOP ROUTES */}
         <Route element={<PersistLogin />}>
           <Route
@@ -90,8 +105,14 @@ function App() {
               path="/shop/vendor/:id"
               element={<Vendor />}
             />
-            <Route path="/shop/payment-response" element={<PaymentResponse />} />
-            <Route path="/shop/logistics" element={<TryLogistics />} />
+            <Route
+              path="/shop/payment-response"
+              element={<PaymentResponse />}
+            />
+            <Route
+              path="/shop/logistics"
+              element={<TryLogistics />}
+            />
             <Route
               index
               element={<Shop />}
@@ -110,11 +131,22 @@ function App() {
                 index
                 element={<UserDashboard />}
               />
-              <Route path="/user/address" element={<Address />} />
-              <Route path="/user/gift" element={<Gift />} />
-              <Route path="/user/favourite" element={<Favourite />} />
-              <Route path="/user/details/:id" element={<OrderDetails />} />
-              
+              <Route
+                path="/user/address"
+                element={<Address />}
+              />
+              <Route
+                path="/user/gift"
+                element={<Gift />}
+              />
+              <Route
+                path="/user/favourite"
+                element={<Favourite />}
+              />
+              <Route
+                path="/user/details/:id"
+                element={<OrderDetails />}
+              />
             </Route>
           </Route>
         </Route>
@@ -246,7 +278,10 @@ function App() {
                 index
                 element={<VendorDashboard />}
               />
-          <Route path='/vendor/product/:id' element={<VendorViewProduct />} />
+              <Route
+                path="/vendor/product/:id"
+                element={<VendorViewProduct />}
+              />
             </Route>
           </Route>
         </Route>

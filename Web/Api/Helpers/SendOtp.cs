@@ -22,6 +22,14 @@ namespace Api.Helpers
         {
             try
             {
+                // Check if the number starts with '0'
+                if (phoneNumber.StartsWith("0"))
+                {
+                    // Remove the first character ('0') and prepend '234'
+                     phoneNumber = string.Concat("234", phoneNumber.AsSpan(1));
+                    
+                }
+
                 if (phoneNumber.StartsWith("+"))
                 {
                     phoneNumber = phoneNumber.Replace("+", "");

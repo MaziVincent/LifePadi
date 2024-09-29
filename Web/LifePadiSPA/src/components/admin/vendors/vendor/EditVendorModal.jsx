@@ -85,6 +85,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       setError("Error fetching states. Please try again later.");
     }
   }, []);
+  
 
   const getServices = useCallback(async () => {
     try {
