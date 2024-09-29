@@ -29,7 +29,7 @@ const RecievePackage = ({ dispatch, open }) => {
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const [selectedChips, setSelectedChips] = useState([]);
   const [senderSuggestions, setSenderSuggestions] = useState([]);
-  const [recieverSuggestions, setRecieverSuggestions] = useState([]);
+  const [receiverSuggestions, setReceiverSuggestions] = useState([]);
   const [focusedField, setFocusedField] = useState(null);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const url = `${baseUrl}logistics/create`;
@@ -58,7 +58,7 @@ const RecievePackage = ({ dispatch, open }) => {
   };
 
   const SenderAddress = watch("SenderAddress");
-  const RecieverAddress = watch("RecieverAddress");
+  const ReceiverAddress = watch("ReceiverAddress");
 
   const fetchSuggestions = async (value, field) => {
     if (value.length > 2) {
@@ -75,7 +75,7 @@ const RecievePackage = ({ dispatch, open }) => {
         if (field === "SenderAddress") {
           setSenderSuggestions(data);
         } else {
-          setRecieverSuggestions(data);
+          setReceiverSuggestions(data);
         }
         setFocusedField(field);
       } catch (error) {
@@ -83,7 +83,7 @@ const RecievePackage = ({ dispatch, open }) => {
       }
     } else {
       setSenderSuggestions([]);
-      setRecieverSuggestions([]); //
+      setReceiverSuggestions([]); //
     }
   };
 
@@ -99,21 +99,21 @@ const RecievePackage = ({ dispatch, open }) => {
   const handleSuggestionClick = (suggestion) => {
     if (focusedField === "SenderAddress") {
       setValue("SenderAddress", suggestion.description); // Set pickup address in the form
-    } else if (focusedField === "RecieverAddress") {
-      setValue("RecieverAddress", suggestion.description); // Set delivery address in the form
+    } else if (focusedField === "ReceiverAddress") {
+      setValue("ReceiverAddress", suggestion.description); // Set delivery address in the form
     }
     setSenderSuggestions([]);
-    setRecieverSuggestions([]); // Clear suggestions after selection
+    setReceiverSuggestions([]); // Clear suggestions after selection
   };
 
   const handleCurrentInfo = () => {
-    setValue("RecieverName", `${auth.FirstName} ${auth.LastName}`);
-    setValue("RecieverPhone", `${auth.PhoneNumber}`);
+    setValue("ReceiverName", `${auth.FirstName} ${auth.LastName}`);
+    setValue("ReceiverPhone", `${auth.PhoneNumber}`);
   };
 
   const { distance, duration, error, loading } = useDistance(
     SenderAddress,
-    RecieverAddress
+    ReceiverAddress
   );
   //console.log(distance)
 
@@ -160,7 +160,7 @@ const RecievePackage = ({ dispatch, open }) => {
 
     const delivery = {
         PickupAddress: SenderAddress,
-        DeliveryAddress: RecieverAddress,
+        DeliveryAddress: ReceiverAddress,
         OrderId: res.data?.Id,
         DeliveryFee: deliveryFee,
         PickupType: "Logistics",
@@ -346,16 +346,16 @@ const RecievePackage = ({ dispatch, open }) => {
                           type="text"
                           name="delivery"
                           id="delivery"
-                          {...register("RecieverAddress", { required: true })}
+                          {...register("ReceiverAddress", { required: true })}
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Delivery Address"
                           required=""
                           onChange={(e) =>
-                            handleInputChange(e, "RecieverAddress")
+                            handleInputChange(e, "ReceiverAddress")
                           }
                         />
                       </div>
-                      {errors.RecieverAddress && (
+                      {errors.ReceiverAddress && (
                         <p className="text-sm text-redborder">
                           Delivery address is required
                         </p>
@@ -363,9 +363,9 @@ const RecievePackage = ({ dispatch, open }) => {
                     </div>
 
                     {/* Address Suggestions */}
-                    {recieverSuggestions.length > 0 && (
+                    {receiverSuggestions.length > 0 && (
                       <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
-                        {recieverSuggestions.map((suggestion, index) => (
+                        {receiverSuggestions.map((suggestion, index) => (
                           <li
                             key={index}
                             onClick={() => handleSuggestionClick(suggestion)}
@@ -456,23 +456,23 @@ const RecievePackage = ({ dispatch, open }) => {
                     </h2>
                     <div className="col-span-2">
                       <label
-                        htmlFor="reciever"
+                        htmlFor="receiver"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
-                        Reciever Name
+                        Receiver Name
                       </label>
                       <input
                         type="text"
-                        name="reciever"
-                        id="reciever"
-                        {...register("RecieverName", { required: true })}
+                        name="receiver"
+                        id="receiver"
+                        {...register("ReceiverName", { required: true })}
                         className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Enter Reciever Name"
+                        placeholder="Enter Receiver Name"
                         required=""
                       />
-                      {errors.RecieverName && (
+                      {errors.ReceiverName && (
                         <p className="text-sm text-redborder">
-                          Reciever name is required
+                          Receiver name is required
                         </p>
                       )}
                     </div>
@@ -487,7 +487,7 @@ const RecievePackage = ({ dispatch, open }) => {
                         type="phone"
                         name="phone"
                         id="phone"
-                        {...register("RecieverPhone", {
+                        {...register("ReceiverPhone", {
                           required: true,
                           maxLength: {
                             value: 11,
@@ -498,7 +498,7 @@ const RecievePackage = ({ dispatch, open }) => {
                         placeholder="08122334455"
                         required=""
                       />
-                      {errors.RecieverPhone && (
+                      {errors.ReceiverPhone && (
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>

@@ -67,6 +67,20 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("getByPhone/{phone}")]
+        public async Task<IActionResult> getByPhone(string phone)
+        {
+            try
+            {
+                var customer = await _icustomer!.getByPhone(phone);
+                if (customer == null) return NotFound();
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpGet("all")]
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
@@ -203,7 +217,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("verify-otp")]
-        public async Task<IActionResult> verifyOtp([FromQuery] OtpDto otpVerify )
+        public async Task<IActionResult> verifyOtp([FromQuery] OtpDto otpVerify)
         {
             try
             {

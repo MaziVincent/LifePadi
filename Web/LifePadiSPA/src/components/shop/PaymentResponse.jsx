@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
 import Lottie from "lottie-react";
@@ -8,6 +8,7 @@ import successAnimation from "../../assets/lottie/Animation - 1725438178504.json
 import errAnimation from "../../assets/lottie/Animation - 1725438360134.json";
 import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
+
 
 const PaymentResponse = () => {
   const location = useLocation();
@@ -25,7 +26,7 @@ const PaymentResponse = () => {
     left: 0,
     width: "100%",
     height: "100%",
-    zIndex: -1,
+    zIndex: 20,
     padding: 0,
     margin: 0,
   };
@@ -38,34 +39,34 @@ const PaymentResponse = () => {
   const url = `${baseUrl}transaction/paystack-confirmPayment?reference=${tx_ref}`;
   const deliveryUrl = `${baseUrl}delivery/create`;
 
-  const verifyTransaction = async () => {
+  const verifyTransaction = useCallback(async () => {
     try {
       const res = await fetch(url, auth.accessToken);
+      
 
       if (
-        res.data.status === true ||
-        res.data.data.status == "success" ||
-        res.data.message == "Verification successful"
+        res.data?.status ||
+        res.data?.data.status == "success" ||
+        res.data?.message == "Verification successful"
       ) {
+
         setPaymentStatus(true);
-        setResponseMsg(res.data.message);
+        setResponseMsg(res.data?.message);
         const delivery = localStorage.getItem("delivery");
         const deliveryData = JSON.parse(delivery);
+        //console.log(deliveryData)
         const response = await post(
           deliveryUrl,
           deliveryData,
           auth.accessToken
         );
-      const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
-        if (response.status == 200) {
+     // const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
+        
           localStorage.removeItem("delivery");
           setTimeout(() => {
             navigate("/user");
           }, 3000);
-        } else {
-          console.log(response)
-          console.log(res);
-        }
+       
       } else {
         setResponseMsg(res.data.message);
         setPaymentStatus(true);
@@ -75,17 +76,17 @@ const PaymentResponse = () => {
       setPaymentStatus(false);
       console.log(error);
     }
-  };
+  },[tx_ref, url]);
 
   useEffect(() => {
     verifyTransaction();
   }, []);
 
   return (
-    <section className="flex justify-center items-center  pt-28">
+    <section className="flex justify-center items-center  pt-28 bg-lightGray dark:bg-darkBg">
       <div className="flex justify-center items-center rounded-xl shadow-xl h-[24rem] w-10/12">
         {paymentStatus == true && (
-          <div className="h-64 py-10 lg:px-36 w-full">
+          <div className="h-64 py-10 lg:px-36 w-full bg-primary dark:bg-darkMenu">
             <Lottie
               animationData={successAnimation}
               loop={false}
@@ -93,7 +94,7 @@ const PaymentResponse = () => {
               style={lottieStyle}
             ></Lottie>{" "}
             <div className="flex flex-col justify-center gap-2 px-5">
-              <h2 className="text-center text-xl font-semibold">
+              <h2 className="text-center text-xl text-accent dark:text-primary font-semibold">
                 {" "}
                 Payment Successful{" "}
               </h2>

@@ -18,6 +18,7 @@ const UserLogin = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
+ 
 
   const {
     register,
@@ -202,12 +203,16 @@ const UserLogin = () => {
                           </label>
                         </div>
                       </div>
-                      <Link
-                        to="/forgotPassword"
-                        className="text-sm font-medium text-background hover:underline dark:text-primary-500"
+                      <span
+                        onClick={() => {
+                          navigate("/forgotpassword");
+                          setLogin(false);
+
+                        }}
+                        className="text-sm cursor-pointer font-medium text-background hover:underline dark:text-primary-500"
                       >
                         Forgot password?
-                      </Link>
+                      </span>
                     </div>
                     <button
                       type="submit"

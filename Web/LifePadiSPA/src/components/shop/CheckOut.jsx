@@ -21,8 +21,6 @@ const CheckOut = () => {
     e.preventDefault();
     setLoading(true);
 
-    //Create Delivery
-
     const data = {
       Amount: Math.trunc( state.amount),
       DeliveryFee: Math.trunc( state.deliveryFee),
