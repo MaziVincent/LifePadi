@@ -116,6 +116,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+              
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
@@ -131,7 +132,7 @@ namespace Api.Controllers
 
             if (!string.IsNullOrWhiteSpace(loginDTO.Email))
             {
-                return await _context.Users.FirstOrDefaultAsync(x => x.Email == loginDTO.Email);
+                return await _context.Users.Where(x => x.Email!.ToLower() == loginDTO.Email.ToLower()).FirstOrDefaultAsync();
             }
 
             // Return null if neither is provided

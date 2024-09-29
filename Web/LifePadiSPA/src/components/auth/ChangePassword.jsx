@@ -35,13 +35,13 @@ const ChangePassword = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     mode: "all",
   });
 
-
+const password = watch('Password','')
 
   const handleCreate = (data) => {
     setIsLoading(true);
@@ -210,16 +210,14 @@ const ChangePassword = () => {
                           type={type}
                           name="password"
                           id="password"
-                          {...register("ConfirmPassword", {
-                            required: "Password is required",
-                            minLength: {
-                              value: 4,
-                              message: "Confirm Password must be at least 4 characters",
-                            },
+                          {...register('ConfirmPassword', {
+                            required: 'Please confirm your new password',
+                            validate: (value) =>
+                              value === password || 'Passwords do not match',
                           })}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Type Password"
-                          required
+                          required=""
                         />
                         <span
                           onClick={handleToggle}

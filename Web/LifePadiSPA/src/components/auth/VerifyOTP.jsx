@@ -17,7 +17,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
   const [isLoading, setIsLoading] = useState(false)
   const inputsRef = useRef([]);
   const post = usePost();
-  const url = `${baseUrl}customer/create`;
+  const url = `${baseUrl}customer/send-otp`;
   const verifyUrl = `${baseUrl}customer/verify-otp`;
   const {
     verifyOTP,
@@ -25,7 +25,8 @@ const VerifyOTP = ({ otpLength = 4, }) => {
     regData,
     setRegData,
     verificationInfo,
-    setVerificationInfo
+    setVerificationInfo,
+    setForgotPassword
   } = useAuth();
 
   console.log(verificationInfo);
@@ -82,7 +83,8 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
       if(response.data?.verified == true){
       
-       
+        setForgotPassword(true)
+        setVerifyOTP(false)
         //console.log(regData)
       }
 
@@ -102,6 +104,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
   const resendOtp = async (phoneNumber) => {
 
+    setCodeError("")
     const unformated = phoneNumber.slice(1)
     const formated = `234${unformated}`
 
@@ -114,6 +117,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
       if(response.status == 200 || response.data.status == "200"){
         setVerificationInfo(response.data);
+        
          
       }else{
         setCodeError("Error Sending OTP");
