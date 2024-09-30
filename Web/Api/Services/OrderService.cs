@@ -103,7 +103,7 @@ namespace Api.Services
                     .Include(o => o.OrderItems)
                     .Include(o => o.Customer)
                     .OrderByDescending(o => o.CreatedAt)
-                    .Where(o => o.CustomerId == id && o.SearchString!.Contains(props.SearchString))
+                    .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString.ToLower()))
                     .ToListAsync();
                 orderList = orderList.Concat(orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
