@@ -33,6 +33,7 @@ namespace Api.Models
         public DbSet<WalletNotification> WalletNotifications { get; set; }
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<Logistic> Logistics { get; set; }
+        public DbSet<CustomerVoucher> CustomerVouchers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,11 @@ namespace Api.Models
                 .HasOne(c => c.Wallet)
                 .WithOne(w => w.Customer)
                 .HasForeignKey<Wallet>(w => w.CustomerId);
+            
+            modelBuilder.Entity<Voucher>()
+                .HasOne(v => v.Transactions)
+                .WithOne(t => t.Voucher)
+                .HasForeignKey<Transaction>(t => t.VoucherId);
         }
     }
 }

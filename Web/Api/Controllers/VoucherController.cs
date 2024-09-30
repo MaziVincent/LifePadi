@@ -109,7 +109,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -251,7 +251,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/use")]
+        [HttpPut("use/{id}")]
         public async Task<IActionResult> useVoucher(int id)
         {
             try
@@ -262,6 +262,9 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Voucher expired") return NotFound(ex.Message);
+                if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
+                if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

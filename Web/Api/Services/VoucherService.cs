@@ -118,6 +118,8 @@ namespace Api.Services
                     endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
                 newVoucher.StartDate = startDate;
                 newVoucher.EndDate = endDate;
+                newVoucher.Status = "Not Used";
+                newVoucher.Type = "Discount";
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
                 var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
@@ -252,6 +254,7 @@ namespace Api.Services
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
                 int num = (int)voucher.TotalNumberAvailable! - (int)voucher.TotalNumberUsed!;
+                
                 return num;
             }
             catch (Exception ex)
@@ -404,6 +407,9 @@ namespace Api.Services
                 if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
                 if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
                 voucher.TotalNumberUsed += 1;
+                voucher.IsExpired = true;
+                voucher.Status = "Used";
+                voucher.IsActive = false;
                 voucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();

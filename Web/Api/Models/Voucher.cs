@@ -17,6 +17,8 @@
         public string? Status { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-        public List<Transaction>? Transactions { get; set; }
+        public int? TransactionId { get; set; }
+        public Transaction? Transactions { get; set; }
+        public List<CustomerVoucher>? CustomerVouchers { get; set; }
     }
 }
