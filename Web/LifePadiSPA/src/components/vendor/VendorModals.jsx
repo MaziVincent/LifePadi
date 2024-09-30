@@ -30,6 +30,7 @@ const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: 5,
+  padding: '10px',
 }
 
 export const ViewModal = ({ product, openViewModal, setOpenViewModal }) => {
@@ -336,14 +337,17 @@ export const DeleteModal = ({
 }) => {
   const handleCloseDeleteModal = () => setOpenDeleteModal(false)
   const [result, setResult] = useState(null)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const deleteData = useDelete()
   const { auth } = useAuth()
   const handleDeleteProduct = async (productId) => {
+    setDeleteLoading(true)
     const url = deleteProductUrl.replace('{id}', productId)
     const response = await deleteData(url, auth.accessToken)
     console.log(response.data)
-    setResult(response.data)
+    // setResult(response.data)
     setTimeout(() => {
+      setDeleteLoading(false)
       handleCloseDeleteModal()
       window.location.reload()
     }, 2000)
@@ -369,6 +373,7 @@ export const DeleteModal = ({
               type='button'
               className='bg-secondary hover:bg-lightgreen text-white font-bold py-2 px-4 rounded'
               onClick={() => handleDeleteProduct(productId)}
+              disabled={deleteLoading}
             >
               Yes
             </button>
