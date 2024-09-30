@@ -7,7 +7,7 @@ namespace Api.DTO
 {
     public class CustomerVoucherDto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int CustomerId { get; set; }
         public CustomerDtoLite? Customer { get; set; }
         public int VoucherId { get; set; }

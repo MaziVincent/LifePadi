@@ -283,6 +283,7 @@ namespace Api.Controllers
                 if (ex.Message == "Voucher expired") return NotFound(ex.Message);
                 if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
                 if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
+                if (ex.Message == "Customer already use this voucher") return Conflict(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

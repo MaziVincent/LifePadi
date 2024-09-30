@@ -434,11 +434,18 @@ namespace Api.Services
                 if ((bool)voucher.IsExpired!) throw new Exception("Voucher expired");
                 if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
                 if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
+                if (voucher.EndDate < DateTime.UtcNow) 
+                {
+                    voucher.IsExpired = true;
+                    voucher.Status = "Used";
+                    voucher.IsActive = false;
+                    throw new Exception("Voucher expired");
+                }
 
                 voucher.TotalNumberUsed += 1;
-                voucher.IsExpired = true;
-                voucher.Status = "Used";
-                voucher.IsActive = false;
+                // voucher.IsExpired = true;
+                voucher.Status = "On Use";
+                // voucher.IsActive = false;
                 voucher.UpdatedAt = DateTime.UtcNow;
 
                 var customerVoucherDto = new CustomerVoucherDto

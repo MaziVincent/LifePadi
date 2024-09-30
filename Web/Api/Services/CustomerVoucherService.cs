@@ -19,19 +19,28 @@ namespace Api.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<CustomerVoucherDto> CreateAsync(CustomerVoucherDto customerVoucher)
+        public async Task<CustomerVoucherDto> CreateAsync(CustomerVoucherDto customerVoucherDto)
         {
             try
             {
-                var initialCustomerVoucher = await _context.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == customerVoucher.CustomerId && cv.VoucherId == customerVoucher.VoucherId);
+                var initialCustomerVoucher = await _context.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == customerVoucherDto.CustomerId && cv.VoucherId == customerVoucherDto.VoucherId);
                 if (initialCustomerVoucher != null)
                 {
                     throw new Exceptions.ServiceException("Customer already use this voucher");
                 }
-                var newCustomerVoucher = _mapper.Map<CustomerVoucher>(customerVoucher);
+                var newCustomerVoucher = _mapper.Map<CustomerVoucher>(customerVoucherDto);
                 _context.CustomerVouchers.Add(newCustomerVoucher);
                 _context.SaveChanges();
-                return _mapper.Map<CustomerVoucherDto>(newCustomerVoucher);
+                var newCustomerVoucherDto =  new CustomerVoucherDto
+                {
+                    Id = newCustomerVoucher.Id,
+                    CustomerId = newCustomerVoucher.CustomerId,
+                    VoucherId = newCustomerVoucher.VoucherId,
+                    TransactionId = newCustomerVoucher.TransactionId,
+                    CreatedAt = newCustomerVoucher.CreatedAt,
+                    UpdatedAt = newCustomerVoucher.UpdatedAt
+                };
+                return newCustomerVoucherDto;
             }
             catch (Exception ex)
             {
