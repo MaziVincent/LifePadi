@@ -1,13 +1,14 @@
 
 
 import Modal from "@mui/material/Modal";
-import { set, useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import {  useForm } from "react-hook-form";
+import { useState,} from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import usePost from "../../hooks/usePost";
+import toast, { Toaster } from "react-hot-toast";
 //import useCart from "../../hooks/useCart";
 import LoadingGif from "../shared/LodingGif";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
@@ -17,19 +18,17 @@ const ChangePassword = () => {
     forgotPassword,
     setForgotPassword,
     regData,
-    setRegData,
-    verificationInfo,
-    setVerificationInfo,
+    setLogin
   } = useAuth();
   //const {dispatch} = useCart();
   const post = usePost();
-  const url = `${baseUrl}customer/send-otp`;
+  const url = `${baseUrl}auth/password-reset`;
   const navigate = useNavigate();
   const location = useLocation();
   //const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("password");
   const [icon, setIcon] = useState(false);
 
   const {
@@ -41,16 +40,28 @@ const ChangePassword = () => {
     mode: "all",
   });
 
-const password = watch('Password','')
+const password = watch('NewPassword','')
 
-  const handleCreate = (data) => {
+  const handleCreate = async (data) => {
     setIsLoading(true);
-    console.log(data);
+    const formData = new FormData()
+    formData.append('NewPassword', data.NewPassword);
+    const response = await post(`${url}/${regData.Id}`, formData, '')
+    if(response.status === 200){
+      toast.success('Password Changed Successfully')  
+      setLogin(true)
+    }else{
+        toast.error('Error Changing Password')
+    }
+    //console.log(response);
+
+    setIsLoading(false)
   
   };
 
   const handleClickAway = () => {
     setForgotPassword(false);
+
   };
 
   const handleToggle = () => {
@@ -62,6 +73,7 @@ const password = watch('Password','')
       setType("password");
     }
   };
+  //console.log(regData)
 
   return (
     <Modal
@@ -76,7 +88,7 @@ const password = watch('Password','')
       <div
         id="defaultModal"
         className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
-      >
+      > <Toaster />
         <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-screen ">
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
@@ -105,7 +117,7 @@ const password = watch('Password','')
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              <div className="p-6 space-y-4 md:space-y-6 sm:p-8 overflow-y-scroll">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-darkBg md:text-2xl dark:text-primary">
                  Change Password
                 </h1>
@@ -120,7 +132,7 @@ const password = watch('Password','')
                         htmlFor="password"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
-                        Password
+                       New Password
                       </label>
                       <div className="flex">
                         <input
@@ -200,7 +212,7 @@ const password = watch('Password','')
 
                     <div className="sm:col-span-2 ">
                       <label
-                        htmlFor="password"
+                        htmlFor="cpassword"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
                         Confirm Password
@@ -208,8 +220,8 @@ const password = watch('Password','')
                       <div className="flex">
                         <input
                           type={type}
-                          name="password"
-                          id="password"
+                          name="cpassword"
+                          id="cpassword"
                           {...register('ConfirmPassword', {
                             required: 'Please confirm your new password',
                             validate: (value) =>
@@ -272,9 +284,9 @@ const password = watch('Password','')
                         </span>
                       </div>
 
-                      {errors.Password && (
+                      {errors.ConfirmPassword && (
                         <p className="text-sm text-redborder">
-                          {errors.Password.message}
+                          {errors.ConfirmPassword.message}
                         </p>
                       )}
                     </div>

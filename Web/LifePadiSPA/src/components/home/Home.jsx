@@ -117,10 +117,9 @@ const Home = () => {
               </div>
               <div className=" pb-3">
                 <p className=" text-center font-normal text-base px-5 text-grayTxt">
-                  Experience the convenience of swift delivery from numerous
-                  restaurants, featuring a broad spectrum of cuisines, including
-                  African, Continental, and many more! Your cravings will be
-                  satisfied in no time.
+                Enjoy the ease of swift delivery from countless services, 
+                offering a wide range of cuisines, grocery shopping,
+                 errands, and more! We, your padi, we ensure your satisfaction every time.
                 </p>
               </div>
             </div>
@@ -160,7 +159,7 @@ const Home = () => {
         <div className=" ">
           <div className=" py-8">
             <h1 className=" flex justify-center items-center text-5xl max-lg:text-3xl max-md:text-2xl max-lg:font-normal font-medium text-grayTxt text-center px-3">
-              There is a Padi for your every need
+              There's a padi for everything you need!
               <span className=" pt-5 max-lg:pt-2">
                 <svg
                   className=" max-lg:h-8 max-lg:w-8 "
@@ -205,14 +204,14 @@ const Home = () => {
                     increase sales, reach new customers and unlock new
                     opportunities.
                   </p>
-                  <button className=" my-4 rounded-xl">
+                  {/* <button className=" my-4 rounded-xl">
                     <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
                       </span>
                     </span>
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded-lg p-2 ">
@@ -235,14 +234,14 @@ const Home = () => {
                     Enjoy flexibility, freedom and deliver happiness to
                     customers while earning to achieve your dreams.
                   </p>
-                  <button className=" my-4 rounded-xl">
+                  {/* <button className=" my-4 rounded-xl">
                     <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
                       </span>
                     </span>
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <div className=" flex flex-col max-lg:w-11/12 max-sm:w-full shadow-lg bg-primary rounded-lg p-2 ">
@@ -265,14 +264,14 @@ const Home = () => {
                     Are you passionate about helping us achieve our goal to make
                     life easy for our customers, we would like to hear from you.
                   </p>
-                  <button className=" my-4 rounded-xl">
+                  {/* <button className=" my-4 rounded-xl">
                     <span className=" font-medium text-base text-grayTxt">
                       see more{" "}
                       <span>
                         <ChevronRight />
                       </span>
                     </span>
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -327,7 +326,7 @@ const Home = () => {
               We Deliver Everything
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-4 lg:w-4/6 ">
-              <div className="flex flex-col items-center h-48 ">
+              <div className="flex flex-col items-center h-48 mb-6">
                 <div
                   className="h-2/3 w-36 bg-cover bg-repeat bg-center "
                   style={{
@@ -341,13 +340,14 @@ const Home = () => {
                   />
                 </div>
 
-                <p className="h-1/3 px-5 text-center">
+                <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aspernatur neque nulla hic obcaecati quod.
+                  From delicious local dishes to international cuisines, 
+                  we've got your cravings covered. Enjoy fresh, hot meals 
+                  delivered right to your doorstep. 🍲🚀
                 </p>
               </div>
-              <div className="flex flex-col items-center h-48 ">
+              <div className="flex flex-col items-center h-48 mb-6 ">
                 <div
                   className="h-2/3 w-36 bg-cover bg-repeat bg-center "
                   style={{
@@ -361,14 +361,13 @@ const Home = () => {
                   />
                 </div>
 
-                <p className="h-1/3 px-5 text-center">
+                <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aspernatur neque nulla hic obcaecati quod.
+                  Experience lightning-fast delivery that gets your items to you in no time. 🚀⏱️
                 </p>
               </div>
 
-              <div className="flex flex-col items-center h-48 ">
+              <div className="flex flex-col items-center h-48 mb-6 ">
                 <div
                   className="h-2/3 w-36 bg-cover bg-repeat bg-center "
                   style={{
@@ -382,10 +381,10 @@ const Home = () => {
                   />
                 </div>
 
-                <p className="h-1/3 px-5 text-center">
+                <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Aspernatur neque nulla hic obcaecati quod.
+                  Need errands run? We've got you covered. From picking
+                   up packages to grocery shopping, we handle it all so you can relax. 🚀🛒
                 </p>
               </div>
             </div>
