@@ -55,7 +55,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/isExpired")]
+        [HttpGet("isExpired/{id}")]
         public async Task<IActionResult> checkIfExpired(int id)
         {
             try
