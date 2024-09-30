@@ -120,16 +120,6 @@ namespace Api.Services
                 //     endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
                 // newVoucher.StartDate = startDate;
                 // newVoucher.EndDate = endDate;
-                DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                if (startDate.Kind == DateTimeKind.Unspecified)
-                    startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
-                if (endDate.Kind == DateTimeKind.Unspecified)
-                    endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
-                newVoucher.StartDate = startDate;
-                newVoucher.EndDate = endDate;
-                newVoucher.Status = "Not Used";
-                newVoucher.Type = "Discount";
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
                 var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
