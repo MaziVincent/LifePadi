@@ -140,9 +140,9 @@ const Register = () => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
+        className=" overflow-y-auto overflow-x-auto absolute top-10 md:top-0  z-50 justify-center outline-none items-center  w-full "
       >
-        <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-dvh ">
+        <div className="flex flex-col items-center justify-center px-6  mx-auto lg:py-0 h-svh ">
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className="w-full bg-primary rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto max-h-screen pb-10 ">
               <div className="flex justify-between items-center p-4 sticky top-0 ">

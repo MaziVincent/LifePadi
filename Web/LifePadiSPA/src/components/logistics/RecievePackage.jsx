@@ -191,7 +191,7 @@ const RecievePackage = ({ dispatch, open }) => {
         className=" overflow-y-auto overflow-x-auto outline-none absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-dvh ">
+          <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-svh ">
             <div className="w-full bg-primary rounded-lg shadow  lg:w-1/2 md:mt-0  xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto  pb-10 ">
               <div className="flex justify-between relative items-center p-4  ">
                 <button

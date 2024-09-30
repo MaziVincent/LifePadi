@@ -87,7 +87,7 @@ const Login = () => {
     localStorage.setItem("persist", persist);
   }, [persist]);
 
-  console.log(auth);
+ // console.log(auth);
   return (
     <div className="dark:bg-darkBg">
       <Toaster />
