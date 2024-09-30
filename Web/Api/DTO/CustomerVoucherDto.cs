@@ -12,7 +12,7 @@ namespace Api.DTO
         public CustomerDtoLite? Customer { get; set; }
         public int VoucherId { get; set; }
         public VoucherDto? Voucher { get; set; }
-        public int TransactionId { get; set; }
+        public int? TransactionId { get; set; }
         public TransactionDto? Transaction { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

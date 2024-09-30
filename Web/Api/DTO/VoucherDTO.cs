@@ -17,8 +17,6 @@ namespace Api.DTO
         public DateTime? EndDate { get; set; }
         public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
-        public int? TransactionId { get; set; }
-        public Transaction? Transactions { get; set; }
         public CustomerVoucher? CustomerVouchers { get; set; }
     }
 

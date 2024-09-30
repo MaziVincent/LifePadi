@@ -14,11 +14,13 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ICustomerVoucher _customerVoucher;
 
-        public VoucherService(DBContext dBContext, IMapper mapper)
+        public VoucherService(DBContext dBContext, IMapper mapper, ICustomerVoucher customerVoucher)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+            _customerVoucher = customerVoucher;
 
         }
 
@@ -411,6 +413,40 @@ namespace Api.Services
                 voucher.Status = "Used";
                 voucher.IsActive = false;
                 voucher.UpdatedAt = DateTime.UtcNow;
+                _dbContext.Vouchers.Attach(voucher);
+                await _dbContext.SaveChangesAsync();
+                return "Successful";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> useVoucherByCustomer(string voucherCode, int customerId)
+        {
+            try
+            {
+                var voucher = await _dbContext.Vouchers
+                    .FirstOrDefaultAsync(v => v.Code!.ToLower() == voucherCode.ToLower());
+                if (voucher is null) return null!;
+                if ((bool)voucher.IsExpired!) throw new Exception("Voucher expired");
+                if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
+                if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
+
+                voucher.TotalNumberUsed += 1;
+                voucher.IsExpired = true;
+                voucher.Status = "Used";
+                voucher.IsActive = false;
+                voucher.UpdatedAt = DateTime.UtcNow;
+
+                var customerVoucherDto = new CustomerVoucherDto
+                {
+                    CustomerId = customerId,
+                    VoucherId = voucher.Id
+                };
+                await _customerVoucher.CreateAsync(customerVoucherDto);
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Successful";

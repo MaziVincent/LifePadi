@@ -26,6 +26,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfActiveVouchers();
         public Task<int> totalNumberOfNonActiveVouchers();
         public Task<object> voucherStats();
+        public Task<object> useVoucherByCustomer(string voucherCode, int customerId);
         
     }
 }

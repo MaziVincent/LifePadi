@@ -42,10 +42,6 @@ namespace Api.Models
                 .WithOne(w => w.Customer)
                 .HasForeignKey<Wallet>(w => w.CustomerId);
             
-            modelBuilder.Entity<Voucher>()
-                .HasOne(v => v.Transactions)
-                .WithOne(t => t.Voucher)
-                .HasForeignKey<Transaction>(t => t.VoucherId);
         }
     }
 }

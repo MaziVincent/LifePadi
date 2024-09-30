@@ -270,6 +270,24 @@ namespace Api.Controllers
         }
 
         [HttpPut("use")]
+        public async Task<IActionResult> useVoucherByCustomer([FromQuery] string voucherCode, int customerId)
+        {
+            try
+            {
+                var response = await _ivoucher.useVoucherByCustomer(voucherCode, customerId);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Voucher expired") return NotFound(ex.Message);
+                if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
+                if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("use/lite")]
         public async Task<IActionResult> applyVoucher([FromQuery] string code, Double totalAmount)
         {
             try

@@ -127,6 +127,10 @@ namespace Api.Services
             //Logistics
             CreateMap<Logistic, LogisticDto>();
             CreateMap<LogisticDto, Logistic>();
+
+            //CustomerVoucher
+            CreateMap<CustomerVoucher, CustomerVoucherDto>();
+            CreateMap<CustomerVoucherDto, CustomerVoucher>();
         }
     }
 }
