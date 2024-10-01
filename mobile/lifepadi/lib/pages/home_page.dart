@@ -164,16 +164,11 @@ class HomePage extends HookConsumerWidget {
                 children: vendors.when(
                   data: (data) => [
                     for (final vendor in data)
-                      CachedNetworkImage(
-                        imageUrl: vendor.imageUrl ?? '',
-                        imageBuilder: (_, imageProvider) => VendorCard(
-                          name: vendor.name,
-                          image: imageProvider,
-                          onTap: () {},
-                        ),
-                        placeholder: (_, __) =>
-                            const CircularProgressIndicator.adaptive(),
-                        errorWidget: (_, __, ___) => const Icon(Icons.error),
+                      VendorCard(
+                        name: vendor.name,
+                        image:
+                            CachedNetworkImageProvider(vendor.imageUrl ?? ''),
+                        onTap: () {},
                       ),
                     VendorCard(
                       name: 'See more',
@@ -281,25 +276,12 @@ class HomePage extends HookConsumerWidget {
                   ...categories.when(
                     data: (data) => [
                       for (final product in activeCategory!.products)
-                        CachedNetworkImage(
-                          imageUrl: product.imageUrl,
-                          imageBuilder: (_, imageProvider) => ProductTile(
-                            id: product.id,
-                            name: product.name,
-                            image: imageProvider,
-                            price: product.price,
-                            vendor: product.vendor.name,
-                          ),
-                          placeholder: (_, __) => Skeletonizer(
-                            child: ProductTile(
-                              id: product.id,
-                              image: AssetImage(mockProducts[0].imageUrl),
-                              name: product.name,
-                              vendor: product.vendor.name,
-                              price: product.price,
-                            ),
-                          ),
-                          errorWidget: (_, __, ___) => const Icon(Icons.error),
+                        ProductTile(
+                          id: product.id,
+                          name: product.name,
+                          image: CachedNetworkImageProvider(product.imageUrl),
+                          price: product.price,
+                          vendor: product.vendor.name,
                         ),
                     ].separatedBy(12.verticalSpace),
                     error: (error, stackTrace) => [
