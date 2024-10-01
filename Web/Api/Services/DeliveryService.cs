@@ -429,6 +429,7 @@ namespace Api.Services
                 if (order == null) return null!;
                 delivery.Status = deliveryStatus;
                 delivery.UpdatedAt = DateTime.UtcNow;
+                order.Status = "Completed";
                 order.IsDelivered = true;
                 order.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
@@ -446,8 +447,18 @@ namespace Api.Services
         {
             try
             {
+                string str = "Completed";
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
+                if (status.ToLower() == str.ToLower())
+                {
+                    var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == delivery.OrderId);
+                    if (order == null) return null!;
+                    order.Status = str;
+                    order.IsDelivered = true;
+                    order.UpdatedAt = DateTime.UtcNow;
+                    _dbContext.Orders.Attach(order);
+                }
                 delivery.Status = status;
                 delivery.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
