@@ -7,6 +7,8 @@ import { useQuery } from 'react-query'
 import DateFormater from '../shared/DateFormater'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import baseUrl from '../../api/baseUrl'
 
 
@@ -14,6 +16,7 @@ const ViewDelivery = () => {
     const { auth } = useAuth()
     const fetch = useFetch()
     let totalMoney = 0
+    const [logistic, setLogistic] = useState(null)
 
     const { id } = useParams()
     const url = getDeliveryUrl.replace('{id}', id)
@@ -58,16 +61,25 @@ const ViewDelivery = () => {
       refetchOnMount: "always",
       enabled: order?.Type === "Logistics",
     });
+    if (delivery) {
+        console.log(delivery)
+        if (delivery.PickupType === "Logistics") {
+          
+        }
+    }
 
 
   return (
     <div>
-      <section className='bg-darkMenu dark:bg-gray-900 p-1 sm:p-5'>
+      <section className='dark:bg-darkMenu dark:bg-gray-900 p-1 sm:p-5'>
+        <button>
+          <Link className='bg-graybg text-darkMenu px-2 rounded-sm text-2xl' to='/rider'>&larr; </Link>
+        </button>
         <div className='mx-auto max-w-screen-xl px-2 lg:px-3'>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
               <div className='w-full md:w-1/2'>
-                <Box className='bg-darkHover rounded-md'>
+                <Box className='dark:bg-darkHover rounded-md'>
                   <Typography
                     id='modal-modal-title'
                     variant='h6'
@@ -76,7 +88,7 @@ const ViewDelivery = () => {
                   >
                     Delivery details
                   </Typography>
-                  <Box className='h-72 p-3'>
+                  <Box className='h-72 p-3 overflow-auto'>
                     {isError && (
                       <Typography id='modal-modal-description' sx={{ mt: 2 }}>
                         <span className='text-red-600'>An error occurred</span>
@@ -111,7 +123,13 @@ const ViewDelivery = () => {
                           <span className='text-lg font-bold'>
                             Delivery Status:{' '}
                           </span>{' '}
-                          {delivery.Status == 'Delivered' ? (<span className='text-lightgreen'>{delivery.Status}</span>): (delivery.Status)}
+                          {delivery.Status == 'Delivered' ? (
+                            <span className='text-lightgreen'>
+                              {delivery.Status}
+                            </span>
+                          ) : (
+                            delivery.Status
+                          )}
                         </Typography>
                         <Typography>
                           <span className='text-lg font-bold'>
@@ -175,7 +193,7 @@ const ViewDelivery = () => {
                   >
                     Customer details
                   </Typography>
-                  <Box className='h-72 p-3'>
+                  <Box className='h-72 p-3 overflow-auto'>
                     {isError && (
                       <Typography id='modal-modal-description' sx={{ mt: 2 }}>
                         <span className='text-red-600'>An error occurred</span>
