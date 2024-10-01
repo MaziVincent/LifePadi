@@ -120,9 +120,30 @@ namespace Api.Services
                 //     endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
                 // newVoucher.StartDate = startDate;
                 // newVoucher.EndDate = endDate;
+                DateTime startDate = DateTime.SpecifyKind(voucher.StartDate, DateTimeKind.Utc);
+                DateTime endDate = DateTime.SpecifyKind(voucher.EndDate, DateTimeKind.Utc);
+                newVoucher.StartDate = startDate;
+                newVoucher.EndDate = endDate;
+                newVoucher.Type = "Discount";
+                newVoucher.Status = "NotUsed";
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
-                var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
+                var VoucherDto = new VoucherDto{
+                    Id = newVoucher.Id,
+                    Name = newVoucher.Name,
+                    Description = newVoucher.Description,
+                    Code = newVoucher.Code,
+                    Type = newVoucher.Type,
+                    IsActive = newVoucher.IsActive,
+                    IsExpired = newVoucher.IsExpired,
+                    TotalNumberAvailable = newVoucher.TotalNumberAvailable,
+                    TotalNumberUsed = newVoucher.TotalNumberUsed,
+                    StartDate = newVoucher.StartDate,
+                    EndDate = newVoucher.EndDate,
+                    DiscountPercentage = newVoucher.DiscountPercentage,
+                    Status = newVoucher.Status,
+                };
+
                 return VoucherDto;
             }
             catch (Exception ex)

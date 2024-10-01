@@ -60,15 +60,15 @@ import CreateVoucher from "./CreateVoucher";
     };
   
     const { data, isError, isLoading, isSuccess } = useQuery({
-      queryKey: ["vouchers", page, search],
+      queryKey: ["vouchers",],
       queryFn: () =>
-        getVouchers(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+        getVouchers(`${url}/all`),
       keepPreviousData: true,
       staleTime: 20000,
       refetchOnMount: "always",
     });
   
-    //console.log(data);
+    console.log(data);
   
     const handlePageChange = (event, value) => {
       setPage(value);
