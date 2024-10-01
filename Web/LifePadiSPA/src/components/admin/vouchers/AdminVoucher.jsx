@@ -231,6 +231,7 @@ import CreateVoucher from "./CreateVoucher";
                           className="px-4 py-3"
                         >
                           Used
+<<<<<<< HEAD
                         </th>
 
                         <th
@@ -245,6 +246,8 @@ import CreateVoucher from "./CreateVoucher";
                           className="px-4 py-3"
                         >
                           Discount Amt
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
                         </th>
   
                         <th
@@ -281,8 +284,11 @@ import CreateVoucher from "./CreateVoucher";
                           <td className="px-4 py-3">{voucher.IsExpired ? <span className="text-background"> Expired </span> : <span className="text-redborder"> Still Valid </span>}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberAvailable}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberUsed}</td>
+<<<<<<< HEAD
                           <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
                           <td className="px-4 py-3">{voucher.DiscountAmount}</td>
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
                           <td className="px-4 py-3">{voucher.Description}</td>
 
                           <td className="px-4 py-3 flex items-center justify-end">

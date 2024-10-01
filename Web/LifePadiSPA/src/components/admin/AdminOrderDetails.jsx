@@ -17,9 +17,13 @@ const AdminOrderDetails = () => {
   const url = `${baseUrl}order`;
   const [assignRider, setAssignRider] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
   
 =======
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+  
+>>>>>>> 28e0a99 (rider corrections and other)
 
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);

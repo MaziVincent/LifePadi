@@ -225,6 +225,7 @@ const Logistics = () => {
           
         </div>
 
+<<<<<<< HEAD
         <div className=" bg-accent h-auto flex justify-center  py-10 ">
           
             <div className="flex justify-center md:grid md:grid-cols-5 lg:w-10/12  ">
@@ -583,6 +584,8 @@ const Logistics = () => {
             </div>
           </div>
         </div>
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
         <div className=" bg-accent h-auto flex justify-center  py-10 ">
           
             <div className="flex justify-center md:grid md:grid-cols-5 lg:w-10/12  ">

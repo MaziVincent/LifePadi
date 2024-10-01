@@ -30,8 +30,11 @@ import Groups3Icon from "@mui/icons-material/Groups3";
 <<<<<<< HEAD
 import FadeIn from "./FadeIn"
 import ntachi from "../../assets/images/ntachi.png"
+<<<<<<< HEAD
 =======
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
 
 import { ChevronRight } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
@@ -70,12 +73,17 @@ const Home = () => {
   const vendors = [
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
       text: "Ntachi-Osa Restaurant",
       src: ntachi,
 =======
       text: "Everyday Supermarket",
       src: everyday,
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+      text: "Ntachi-Osa Restaurant",
+      src: ntachi,
+>>>>>>> 28e0a99 (rider corrections and other)
     },
     {
       text: "Shoprite Supermarket",

@@ -123,6 +123,7 @@ const Vendor = () => {
   const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
+  const navigate = useNavigate()
 
   const {
     cart,
@@ -868,12 +869,18 @@ const Vendor = () => {
                   <span
                     key={prod.Id}
                     onClick={() => {
+<<<<<<< HEAD
                       if (
                         prod.Name.includes("Send Package") ||
                         prod.Name.includes("Recieve Package")
                       ) {
                         console.log("clicked");
                         navigate("/shop/logistics");
+=======
+                      if(prod.Name.includes('Send Package') || prod.Name.includes('Recieve Package')){
+                        console.log("clicked")
+                        navigate("/shop/logistics")
+>>>>>>> 28e0a99 (rider corrections and other)
                         return;
                       }
                       dispatch({ type: "open" });
@@ -899,6 +906,9 @@ const Vendor = () => {
                       </div>
                     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
                   </span>
                 ))}
               </div>

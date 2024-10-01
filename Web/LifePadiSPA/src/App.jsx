@@ -106,6 +106,7 @@ import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
 import ForgotPassword from "./components/auth/ForgotPassword";
+import TrackOrder from "./components/customer/TrackOrder";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -293,11 +294,15 @@ function App() {
                 element={<OrderDetails />}
               />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
 
               <Route
                 path="/user/track/:status"
                 element={<TrackOrder />}
               />
+<<<<<<< HEAD
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
 =======
@@ -315,6 +320,8 @@ function App() {
 >>>>>>> 7a64a18 (created a payment response page)
 =======
 >>>>>>> 5dffde0 (forgot password and live payment)
+=======
+>>>>>>> 28e0a99 (rider corrections and other)
             </Route>
           </Route>
         </Route>

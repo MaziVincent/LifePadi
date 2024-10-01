@@ -34,6 +34,7 @@ import DateFormater from '../shared/DateFormater'
 import useUpdate from '../../hooks/useUpdate'
 import useAuth from '../../hooks/useAuth'
 import { updateDeliveryOrderStatusUrl } from './rider_uri/RiderURI'
+import { CloseOutlined } from '@mui/icons-material'
 
 const style = {
   position: 'absolute',
@@ -504,14 +505,18 @@ export const UpdateModal = ({ delivery, openUpdateModal, setOpenUpdateModal }) =
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <Box sx={style}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
+        <div className='w-full bg-lightGray flex flex-col  items-center justify-center h-svh '>
+          <div className='flex justify-end w-full p-4'>
+            <button onClick={handleCloseUpdateModal} className='p-2 cursor-pointer border-2 rounded-full'> <CloseOutlined /> </button>
+          </div>
+         <div>
+         <h2 className='text-2xl text-center font-bold' >
             Update Delivery
-          </Typography>
-          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Are you sure you want to update the status of this delivery?
-          </Typography>
-          <div className='flex justify-end mt-3 gap-2'>
+          </h2>
+          <p className='px-3 text-center'>
+            Are you sure you want to update the status of this delivery to <span className='text-background'> Delivered </span>?
+          </p>
+          <div className='flex justify-center mt-3 gap-2 px-5'>
             <button
               type='button'
               className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
@@ -527,7 +532,8 @@ export const UpdateModal = ({ delivery, openUpdateModal, setOpenUpdateModal }) =
               No
             </button>
           </div>
-        </Box>
+         </div>
+        </div>
       </Modal>
     </div>
   )
