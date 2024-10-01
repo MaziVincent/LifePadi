@@ -75,7 +75,7 @@ const RiderLayout = () => {
                 {' '}
                 <img src={logo} alt='' className='w-full' />{' '}
               </div>
-              <span className='self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white'>
+              <span className='self-center text-gray-700 dark:text-primary text-2xl font-semibold whitespace-nowrap  dark:text-white'>
                 Rider
               </span>
             </Link>
