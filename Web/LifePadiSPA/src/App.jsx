@@ -229,6 +229,18 @@ function App() {
                 path="/admin/admin"
                 element={<Admin />}
               />
+              <Route
+                path="/admin/order/:id"
+                element={<AdminOrderDetails />}
+              />
+              <Route
+                path="/admin/voucher"
+                element={<AdminVoucher />}
+              />
+              <Route
+                path="/admin/admin"
+                element={<Admin />}
+              />
             </Route>
           </Route>
         </Route>
@@ -244,34 +256,14 @@ function App() {
                 index
                 element={<RiderdDashboard />}
               />
+              <Route
+                path="/rider/delivery/:id"
+                element={<ViewDelivery />}
+              />
             </Route>
           </Route>
-          <Route
-            path="/admin/order/:id"
-            element={<AdminOrderDetails />}
-          />
-          <Route
-            path="/admin/voucher"
-            element={<AdminVoucher />}
-          />
-          <Route
-            path="/admin/admin"
-            element={<Admin />}
-          />
         </Route>
-        <Route
-          path="/rider"
-          element={<RiderLayout />}
-        >
-          <Route
-            index
-            element={<RiderdDashboard />}
-          />
-          <Route
-            path="/rider/delivery/:id"
-            element={<ViewDelivery />}
-          />
-        </Route>
+       
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>
