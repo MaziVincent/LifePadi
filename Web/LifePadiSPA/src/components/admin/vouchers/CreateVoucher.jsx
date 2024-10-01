@@ -42,7 +42,7 @@ const CreateVoucher = ({ open, handleClose }) => {
 
   const handleCreate = (voucher) => {
     console.log(voucher);
-    //mutate(service);
+    mutate(voucher);
   };
 
   // console.log(data)

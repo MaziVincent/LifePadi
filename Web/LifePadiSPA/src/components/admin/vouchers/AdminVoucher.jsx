@@ -86,7 +86,7 @@ import CreateVoucher from "./CreateVoucher";
                   {/* {data?.dataList.TotalCount} */}
                 </dt>
                 <dd className="font-light text-gray-500 dark:text-gray-400">
-                  Services
+                  Vouchers
                 </dd>
               </div>
             </dl>

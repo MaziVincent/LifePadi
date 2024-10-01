@@ -14,7 +14,7 @@ namespace Api.Controllers
             _ivoucher = ivoucher;
         }
 
-        [HttpPut("{id}/activate")]
+        [HttpPut("activate/{id}")]
         public async Task<IActionResult> activate(int id)
         {
             try
