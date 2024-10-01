@@ -280,10 +280,10 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Voucher expired") return NotFound(ex.Message);
-                if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
-                if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
-                if (ex.Message == "Customer already use this voucher") return Conflict(ex.Message);
+                if (ex.Message.Contains("Voucher expired")) return NotFound(ex.Message);
+                if (ex.Message.Contains("Voucher not active")) return Unauthorized(ex.Message);
+                if (ex.Message.Contains("Voucher exhausted")) return NotFound(ex.Message);
+                if (ex.Message.Contains("Customer already use this voucher")) return Conflict(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

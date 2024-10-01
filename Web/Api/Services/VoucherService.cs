@@ -475,7 +475,7 @@ namespace Api.Services
                 await _customerVoucher.CreateAsync(customerVoucherDto);
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
-                return "Successful";
+                return voucher;
 
             }
             catch (Exception ex)
