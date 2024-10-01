@@ -7,6 +7,7 @@ import { useQuery } from 'react-query'
 import DateFormater from '../shared/DateFormater'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import baseUrl from '../../api/baseUrl'
 
 
 const ViewDelivery = () => {
@@ -26,6 +27,11 @@ const ViewDelivery = () => {
         return response.data
     }
 
+    const getLogistics = async (url) => {
+      const response = await fetch(url, auth.accessToken);
+      return response.data;
+    };
+
     const { 
         data: delivery,
         isError,
@@ -39,9 +45,19 @@ const ViewDelivery = () => {
         refetchOnMount: true,
     })
 
-    if (delivery) {
-        console.log(delivery)
-    }
+    const {
+      data: logistics,
+      isError: logisticsError,
+      isSuccess: logisticsSuccess,
+      isLoading: logisticsLoading,
+    } = useQuery({
+      queryKey: ["logistics"],
+      queryFn: () => getLogistics(`${baseUrl}logistics/getByOrder/${id}`),
+      keepPreviousData: true,
+      staleTime: 10000,
+      refetchOnMount: "always",
+      enabled: order?.Type === "Logistics",
+    });
 
 
   return (
