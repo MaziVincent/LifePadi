@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+part of 'hooks.dart';
 
 typedef SideEffect<T> = ({
   VoidCallback clear,
