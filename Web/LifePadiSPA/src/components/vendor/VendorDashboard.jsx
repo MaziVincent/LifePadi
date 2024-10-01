@@ -123,7 +123,7 @@ const VendorDashboard = () => {
           </dl>
         </div>
       </section>
-      <section className='bg-darkMenu dark:bg-gray-900 p-3 sm:p-5'>
+      <section className='bg-darkMenu dark:bg-gray-900 p-3 sm:p-5 h-full'>
         <div className='mx-auto max-w-screen-xl px-2 lg:px-12'>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
             <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
