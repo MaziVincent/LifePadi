@@ -20,8 +20,8 @@ const RiderLayout = () => {
 
   return (
     <main>
-      <div className='bg-primary dark:bg-darkBg dark:text-primary min-h-[130vh] '>
-        <div className='flex justify-between bg-gray-50 text-primary  border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 '>
+      <div className='bg-primary dark:bg-darkBg dark:text-primary h-auto '>
+        <div className='flex justify-between bg-lightGray text-accent shadow-lg border-darkMenu px-4 py-2.5 dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 '>
           <ClickAwayListener
             onClickAway={() => {
               setAside(false)
@@ -68,7 +68,7 @@ const RiderLayout = () => {
 
           <div className=''>
             <Link
-              to='#'
+              to='/'
               className='flex items-center justify-between gap-5 mr-4'
             >
               <div className='w-10 h-12'>
@@ -76,7 +76,7 @@ const RiderLayout = () => {
                 <img src={logo} alt='' className='w-full' />{' '}
               </div>
               <span className='self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white'>
-                Rider Dashboard
+                Rider
               </span>
             </Link>
           </div>
@@ -108,12 +108,12 @@ const RiderLayout = () => {
             <SideNav aside={aside} />
           </div>
           <div
-            className={`p-2 pl-1 ml-1 md:ml-20 lg:ml-44 py-20 w-full min-h-screen overflow-hidden`}
+            className={`p-2 pl-1 ml-1 md:ml-20 lg:ml-44 py-20 w-full overflow-y-auto overflow-hidden`}
           >
             <Outlet />
           </div>
         </div>
-        <div className='footer fixed bottom-0 dark:border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu  w-full '>
+        <div className='footer fixed bottom-0  px-4 py-2.5 bg-lightGray dark:bg-darkMenu dark:text-primary  w-full '>
           <div className='flex justify-center '>
             <span className='text-sm text-gray-500 dark:text-gray-400'>
               &copy; 2024 Listacc All rights reserved.

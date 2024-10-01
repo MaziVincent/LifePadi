@@ -30,7 +30,7 @@ const SideNav = ({aside}) => {
   }
   return (
     <div
-      className={`fixed top-0 left-0 z-40 lg:w-58 h-screen pt-8 pb-10 dark:bg-darkMenu text-primary transition-transform border-r border-darkMenu md:translate-x-0 ${
+      className={`fixed top-0 left-0 z-40 lg:w-58 h-screen pt-8 pb-10 bg-lightGray dark:bg-darkMenu text-accent transition-transform border-r  md:translate-x-0 ${
         aside ? 'translate-x-0' : '-translate-x-full'
       }`}
       aria-label='Sidenav'
@@ -42,7 +42,7 @@ const SideNav = ({aside}) => {
             <li key={link.to}>
               <Link
                 to={link.to}
-                className='flex items-center p-2 text-base font-medium text-primary rounded-lg dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 group'
+                className='flex items-center p-2 text-base font-medium text-accent dark:text-primary rounded-lg dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 group'
               >
                 <i className={`${link.icon}`}></i>
                 <span className='hidden lg:flex ml-3'>{link.text}</span>

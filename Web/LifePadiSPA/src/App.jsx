@@ -46,6 +46,7 @@ import RequireAuthAdmin from "./hooks/RequireAuthAdmin";
 import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
 import ForgotPassword from "./components/auth/ForgotPassword";
+import TrackOrder from "./components/customer/TrackOrder";
 
 function App() {
   const queryClient = new QueryClient();
@@ -146,6 +147,11 @@ function App() {
               <Route
                 path="/user/details/:id"
                 element={<OrderDetails />}
+              />
+
+              <Route
+                path="/user/track/:status"
+                element={<TrackOrder />}
               />
             </Route>
           </Route>

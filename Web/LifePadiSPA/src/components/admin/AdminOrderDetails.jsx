@@ -16,6 +16,7 @@ const AdminOrderDetails = () => {
   const { auth } = useAuth();
   const url = `${baseUrl}order`;
   const [assignRider, setAssignRider] = useState(false);
+  
 
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);

@@ -74,6 +74,10 @@ import CreateVoucher from "./CreateVoucher";
       setPage(value);
       //console.log("page " + value);
     };
+
+    const deActivateVoucher = () => {
+      
+    }
   
     return (
       <div className="bg-gray-100 dark:bg-gray-900">
@@ -164,11 +168,11 @@ import CreateVoucher from "./CreateVoucher";
                     className="flex items-center gap-1 justify-center text-background bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                   >
                     <i className="line-icon-Add text-background font-bold text-lg"></i>
-                    Add Voucher
+                    Create Voucher
                   </button>
                 </div>
               </div>
-              {/* <div className="overflow-x-auto">
+              <div className="overflow-x-auto">
                 {isLoading && (
                   <p className="flex items-center justify-center">
                     {" "}
@@ -178,7 +182,7 @@ import CreateVoucher from "./CreateVoucher";
                 {isError && (
                   <p className="flex items-center justify-center">
                     {" "}
-                    <Alert severity="error">Error Fetching Data..</Alert>
+                    <Alert severity="error"> We cant get your vouchers currently </Alert>
                   </p>
                 )}
                 {isSuccess && (
@@ -189,13 +193,41 @@ import CreateVoucher from "./CreateVoucher";
                           scope="col"
                           className="px-4 py-3"
                         >
-                          Service Name
+                          Voucher Name
                         </th>
                         <th
                           scope="col"
                           className="px-4 py-3"
                         >
-                          Service Icon
+                          Voucher Code
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Active
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Expired
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Usage
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Used
                         </th>
   
                         <th
@@ -209,46 +241,31 @@ import CreateVoucher from "./CreateVoucher";
                           scope="col"
                           className="px-4 py-3"
                         >
-                          Status
-                        </th>
-  
-                        <th
-                          scope="col"
-                          className="px-4 py-3"
-                        >
                           <span className="sr-only">Actions</span>
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data?.result.map((service) => (
+                      {data?.map((voucher) => (
                         <tr
-                          key={service.Id}
-                          onClick={()=>navigate(`/admin/service/${service.Id}`)}
+                          key={voucher.Id}
+                          //onClick={()=>navigate(`/admin/service/${service.Id}`)}
                           className="border-b cursor-pointer dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <th
                             scope="row"
                             className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                           >
-                            {service.Name}
+                            {voucher.Name}
                           </th>
-                          <td className="px-4 py-3">
-                            <div className="relative h-10 w-10 flex justify-center items-center ">
-                              {service.ServiceIconUrl ? (
-                                <img
-                                  className="h-full w-full rounded-full object-cover object-center "
-                                  src={service.ServiceIconUrl}
-                                  alt=""
-                                />
-                              ) : (
-                                <i className="line-icon-Settings-Window text-2xl hover:text-green-800"></i>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-4 py-3">{service.Description}</td>
-                          <td className="px-4 py-3">{service.IsActive ? <span className="text-background"> Active </span> : <span className="text-redborder"> In-Active </span>}</td>
-  
+                        
+                          <td className="px-4 py-3">{voucher.Code}</td>
+                          <td className="px-4 py-3">{voucher.IsActive ? <span className="text-background"> Active </span> : <span className="text-redborder"> In-Active </span>}</td>
+                          <td className="px-4 py-3">{voucher.IsExpired ? <span className="text-background"> Expired </span> : <span className="text-redborder"> Still Valid </span>}</td>
+                          <td className="px-4 py-3">{voucher.TotalNumberAvailable}</td>
+                          <td className="px-4 py-3">{voucher.TotalNumberUsed}</td>
+                          <td className="px-4 py-3">{voucher.Description}</td>
+
                           <td className="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-end gap-4">
                               <button
@@ -276,30 +293,30 @@ import CreateVoucher from "./CreateVoucher";
                                   />
                                 </svg>
                               </button>
-                              <button
-                                x-data="{ tooltip: 'Edite' }"
+                              {
+                                voucher.IsActive ? 
+                                <button
+                               className="bg-redborder rounded-lg p-2 text-nowrap"
                                 onClick={(event) => {
                                   event.stopPropagation();
-                                  dispatch({ type: "edit" });
-                                  dispatch({type:"service", payload:service})
+                                 // dispatch({ type: "edit" });
+                                 // dispatch({type:"service", payload:service})
                                 }}
                               >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth="1.5"
-                                  stroke="currentColor"
-                                  className="h-6 w-6"
-                                  x-tooltip="tooltip"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                                  />
-                                </svg>
-                              </button>
+                              De-Activate
+                              </button> 
+                              :  <button
+                              className="bg-background rounded-lg p-2 text-nowrap"
+                               onClick={(event) => {
+                                 event.stopPropagation();
+                                // dispatch({ type: "edit" });
+                                // dispatch({type:"service", payload:service})
+                               }}
+                             >
+                              Activate
+                             </button>
+                              }
+                             
                             </div>
                           </td>
                         </tr>
@@ -307,7 +324,7 @@ import CreateVoucher from "./CreateVoucher";
                     </tbody>
                   </table>
                 )}
-              </div> */}
+              </div>
               {/* <nav
                 className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                 aria-label="Table navigation"

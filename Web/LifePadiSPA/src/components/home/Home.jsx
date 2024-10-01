@@ -27,6 +27,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import MopedIcon from "@mui/icons-material/Moped";
 import Groups3Icon from "@mui/icons-material/Groups3";
 import FadeIn from "./FadeIn"
+import ntachi from "../../assets/images/ntachi.png"
 
 import { ChevronRight } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
@@ -55,8 +56,8 @@ const Home = () => {
 
   const vendors = [
     {
-      text: "Everyday Supermarket",
-      src: everyday,
+      text: "Ntachi-Osa Restaurant",
+      src: ntachi,
     },
     {
       text: "Shoprite Supermarket",

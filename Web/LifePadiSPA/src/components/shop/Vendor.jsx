@@ -10,7 +10,7 @@ import {
   WestRounded,
 } from "@mui/icons-material";
 import { useState, useReducer, useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Cart from "./Cart";
 import EmptyCart from "./EmptyCart";
 import useCart from "../../hooks/useCart";
@@ -68,6 +68,7 @@ const Vendor = () => {
   const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
+  const navigate = useNavigate()
 
   const {
     cart,
@@ -458,14 +459,19 @@ const Vendor = () => {
             {isSuccess && (
               <div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
                 {state.products.map((prod) => (
-                  <Link
+                  <span
                     key={prod.Id}
                     onClick={() => {
+                      if(prod.Name.includes('Send Package') || prod.Name.includes('Recieve Package')){
+                        console.log("clicked")
+                        navigate("/shop/logistics")
+                        return;
+                      }
                       dispatch({ type: "open" });
                       dispatch({ type: "product", payload: prod });
                     }}
                   >
-                    <div className=" flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-darkHover shadow-lg ">
+                    <div className=" cursor-pointer flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-darkHover shadow-lg ">
                       <div className=" flex flex-col">
                         <h3 className=" text-base font-semibold capitalize">
                           {prod.Name}
@@ -483,7 +489,7 @@ const Vendor = () => {
                         />
                       </div>
                     </div>
-                  </Link>
+                  </span>
                 ))}
               </div>
             )}
