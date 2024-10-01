@@ -100,6 +100,8 @@ namespace Api.Services
             {
                 var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
+                _dbContext.Products.Remove(product);
+                await _dbContext.SaveChangesAsync();
                 return "Product deleted";
             }
             catch (Exception ex)

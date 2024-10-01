@@ -81,7 +81,10 @@ const RiderLayout = () => {
             </Link>
           </div>
           <div className='flex  justify-end w-auto items-center'>
-            <button onClick={handleLogout} className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'>
+            <button
+              onClick={handleLogout}
+              className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'
+            >
               <svg
                 className='w-6 h-6 text-red-500 dark:text-red-500'
                 aria-hidden='true'
@@ -103,7 +106,7 @@ const RiderLayout = () => {
             </button>
           </div>
         </div>
-        <div className='flex h-screen'>
+        <div className='flex min-h-screen'>
           <div className=''>
             <SideNav aside={aside} />
           </div>

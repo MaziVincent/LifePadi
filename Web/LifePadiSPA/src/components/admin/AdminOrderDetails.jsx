@@ -414,17 +414,17 @@ const AdminOrderDetails = () => {
           </p>
           <p>
             {" "}
-            Receiver Address : {logistics.RecieverAddress}{" "}
+            Receiver Address : {logistics.ReceiverAddress}{" "}
           </p>
 
           <p>
             {" "}
-            Receiver Name : {logistics.RecieverName}{" "}
+            Receiver Name : {logistics.ReceiverName}{" "}
           </p>
 
           <p>
             {" "}
-            Receiver Phone Number : {logistics.RecieverAddress}{" "}
+            Receiver Phone Number : {logistics.ReceiverAddress}{" "}
           </p>
 
           

@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html",
-  "./src/**/*.{js,ts,jsx,tsx}",],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
       primary: '#fff',
@@ -16,25 +15,38 @@ export default {
       graybg: '#e5e7eb',
       redborder: '#ff8282',
       lightgreen: '#8eca8e',
-      lightyellow: "#F7DC6F",
-      lightcyan: "#00FFFF",
-      lightemerald: "#00FF00",
-      lightindigo: "#4B0082",
-      lightorange: "#FFA07A",
-      lightviolet: "#EE00FF",
-      lightteal: "#00FF80",
-      lightForest:'#E9F5DB', 
-      darkBg:"#181818",
-      darkMenu:"#212121",
-      darkHover:"#3D3D3D",
-      darkSecondaryText:"#AAAAAA",
-      yellow:"#e8c115",
-      blue:"#15c5e8",
-      lightGray:"#f1f2f3",
-      midnightGreen: "#073B4C"
+      lightyellow: '#F7DC6F',
+      lightcyan: '#00FFFF',
+      lightemerald: '#00FF00',
+      lightindigo: '#4B0082',
+      lightorange: '#FFA07A',
+      lightviolet: '#EE00FF',
+      lightteal: '#00FF80',
+      lightForest: '#E9F5DB',
+      darkBg: '#181818',
+      darkMenu: '#212121',
+      darkHover: '#3D3D3D',
+      darkSecondaryText: '#AAAAAA',
+      yellow: '#e8c115',
+      blue: '#15c5e8',
+      lightGray: '#f1f2f3',
+      midnightGreen: '#073B4C',
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-hide': {
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      })
+    },
+  ],
 }
 

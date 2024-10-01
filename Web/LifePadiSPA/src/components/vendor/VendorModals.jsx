@@ -129,18 +129,14 @@ export const UpdateModal = ({
     formData.append('Tag', tag)
     formData.append('CategoryId', Number(productCategory))
     formData.append('VendorId', vendoId)
-      const updatePUrl = updateProductUrl.replace("{id}", productId)
+    const updatePUrl = updateProductUrl.replace('{id}', productId)
     try {
-        const res = await updateData(
-          updatePUrl,
-          formData,
-          auth.accessToken
-        )
-        setResponse(res.data)
-        setTimeout(() => {
-          handleCloseUpdateModal()
-          Window.location.refresh()
-        }, 2000);
+      const res = await updateData(updatePUrl, formData, auth.accessToken)
+      setResponse(res.data)
+      setTimeout(() => {
+        handleCloseUpdateModal()
+        Window.location.refresh()
+      }, 2000)
     } catch (error) {
       console.log(error)
     }
@@ -155,13 +151,24 @@ export const UpdateModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-        {response && <span className='text-lightgreen p-2'>{response}</span>}
-        {isError && <span className='text-red p-2'>{isError}</span>}
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Update Product
-          </Typography>
+          {response && <span className='text-lightgreen p-2'>{response}</span>}
+          {isError && <span className='text-red p-2'>{isError}</span>}
+          <div className='flex justify-between items-center w-full '>
+            <Typography id='modal-modal-title' variant='h6' component='h2'>
+              Update Product
+            </Typography>
+            <button
+              onClick={() => setOpenUpdateModal(false)}
+              className='py-2 px-4 rounded-md bg-graybg text-darkBg'
+            >
+              X
+            </button>
+          </div>
           <div className='mt-2'>
-            <form onSubmit={(e) => handleUpdateProduct(e)} method='post'>
+            <form
+              onSubmit={(e) => handleUpdateProduct(product.Id)}
+              method='post'
+            >
               <div className=''>
                 <label
                   htmlFor='product-name'
@@ -302,7 +309,7 @@ export const UpdateModal = ({
                   <div className='w-56 '>
                     <span className='block text-center'>Current Image</span>
                     <div className=''>
-                      <img src={imgUrl} alt="" />
+                      <img src={imgUrl} alt='' />
                     </div>
                   </div>
                 </div>
@@ -331,7 +338,7 @@ export const UpdateModal = ({
 }
 
 export const DeleteModal = ({
-  productId,
+  product,
   openDeleteModal,
   setOpenDeleteModal,
 }) => {
@@ -340,12 +347,22 @@ export const DeleteModal = ({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const deleteData = useDelete()
   const { auth } = useAuth()
+  const productId = product.Id
+  // console.log(productId);
+
   const handleDeleteProduct = async (productId) => {
     setDeleteLoading(true)
     const url = deleteProductUrl.replace('{id}', productId)
+
     const response = await deleteData(url, auth.accessToken)
-    console.log(response.data)
-    // setResult(response.data)
+    if (response.error) {
+      setResult(response.error)
+    }
+    if (response) {
+      setResult(response)
+      console.log(response)
+    }
+    setResult(response)
     setTimeout(() => {
       setDeleteLoading(false)
       handleCloseDeleteModal()
@@ -362,9 +379,17 @@ export const DeleteModal = ({
       >
         <Box sx={style}>
           {result && <p className='text-lightgreen'>{result}</p>}
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Delete Product
-          </Typography>
+          <div className='flex justify-between items-center w-full '>
+            <Typography id='modal-modal-title' variant='h6' component='h2'>
+              Delete Product
+            </Typography>
+            <button
+              onClick={() => setOpenDeleteModal(false)}
+              className='py-2 px-4 rounded-md bg-graybg text-darkBg'
+            >
+              X
+            </button>
+          </div>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
             Are you sure you want to delete this product?
           </Typography>
@@ -408,7 +433,7 @@ export const ToggleStatusModal = ({
     setTimeout(() => {
       handleCloseToggleModal()
       window.location.reload()
-    }, 2000);
+    }, 2000)
   }
   return (
     <div>
@@ -419,10 +444,19 @@ export const ToggleStatusModal = ({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          {response && (<p className='text-lightgreen'>{response}</p>)}
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            {product.Status ? 'Deactivate' : 'Activate'} Product
-          </Typography>
+          {response && <p className='text-lightgreen'>{response}</p>}
+
+          <div className='flex justify-between items-center w-full '>
+            <Typography id='modal-modal-title' variant='h6' component='h2'>
+              {product.Status ? 'Deactivate' : 'Activate'} Product
+            </Typography>
+            <button
+              onClick={() => setOpenToggleStatusModal(false)}
+              className='py-2 px-4 rounded-md bg-graybg text-darkBg'
+            >
+              X
+            </button>
+          </div>
           <Typography id='modal-modal-description' sx={{ mt: 2 }}>
             Are you sure you want to{' '}
             {product.Status ? 'deactivate' : 'activate'} this product?
@@ -500,6 +534,7 @@ export const AddProductModal = ({
   if (categories) {
     console.log(categories)
   }
+
   const handleAddProduct = async (e) => {
     e.preventDefault()
 
@@ -534,9 +569,17 @@ export const AddProductModal = ({
               <h4>Successfuly added</h4>
             </div>
           )}
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Add Product
-          </Typography>
+          <div className='flex justify-between items-center w-full '>
+            <Typography id='modal-modal-title' variant='h6' component='h2'>
+              Add Product
+            </Typography>
+            <button
+              onClick={() => setOpenAddProductModal(false)}
+              className='py-2 px-4 rounded-md bg-graybg text-darkBg'
+            >
+              X
+            </button>
+          </div>
           {/* <Typography id='modal-modal-description' sx={{ mt: 2 }}>
             Are you sure you want to add this product?
           </Typography> */}

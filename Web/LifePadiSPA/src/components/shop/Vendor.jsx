@@ -225,7 +225,7 @@ const Vendor = () => {
       const deliveryFee = 1500;
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     } else {
-      const deliveryFee = 1500 + 200 * (distance / 1000);
+      const deliveryFee = Math.trunc( 1500 + 200 * (distance / 1000));
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     }
   };

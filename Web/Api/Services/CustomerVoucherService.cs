@@ -30,8 +30,8 @@ namespace Api.Services
                 }
                 var newCustomerVoucher = _mapper.Map<CustomerVoucher>(customerVoucherDto);
                 _context.CustomerVouchers.Add(newCustomerVoucher);
-                _context.SaveChanges();
-                var newCustomerVoucherDto =  new CustomerVoucherDto
+                await _context.SaveChangesAsync();
+                var newCustomerVoucherDto = new CustomerVoucherDto
                 {
                     Id = newCustomerVoucher.Id,
                     CustomerId = newCustomerVoucher.CustomerId,
@@ -58,7 +58,7 @@ namespace Api.Services
                     throw new Exceptions.ServiceException("Customer Voucher not found");
                 }
                 _context.CustomerVouchers.Remove(customerVoucher);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return "Customer Voucher deleted successfully";
             }
             catch (Exception ex)
@@ -88,10 +88,10 @@ namespace Api.Services
             }
         }
 
-        public Task<CustomerVoucherDto> UpdateAsync(CustomerVoucherDto customerVoucher, int id)
+        public Task<CustomerVoucherDto> UpdateAsync(CustomerVoucherDto customerVoucherDto, int id)
         {
             throw new NotImplementedException();
         }
-        
+
     }
 }

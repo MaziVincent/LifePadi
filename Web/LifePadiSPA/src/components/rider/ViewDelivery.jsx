@@ -76,6 +76,14 @@ const ViewDelivery = () => {
                             {delivery.PickupAddress}
                           </span>
                         </Typography>
+                        <Typography id='modal-modal-description'>
+                          <span className='text-lg font-bold'>
+                            Delivery Address:{' '}
+                          </span>{' '}
+                          <span className='text-sm'>
+                            {delivery.DeliveryAddress}
+                          </span>
+                        </Typography>
                         <Typography>
                           <span className='text-lg font-bold'>
                             Delivery Fee:{' '}
