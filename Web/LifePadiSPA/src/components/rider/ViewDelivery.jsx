@@ -17,6 +17,7 @@ const ViewDelivery = () => {
     const fetch = useFetch()
     let totalMoney = 0
     const [logistic, setLogistic] = useState(null)
+    const [isLogistic, setIsLogistic] = useState(false)
 
     const { id } = useParams()
     const url = getDeliveryUrl.replace('{id}', id)
@@ -43,27 +44,18 @@ const ViewDelivery = () => {
      } = useQuery({
         queryKey: ['delivery'],
         queryFn: () => geDelivery(url),
-        staleTime: 20000,
+        staleTime: 50000,
         keepPreviousData: true,
         refetchOnMount: true,
     })
 
-    const {
-      data: logistics,
-      isError: logisticsError,
-      isSuccess: logisticsSuccess,
-      isLoading: logisticsLoading,
-    } = useQuery({
-      queryKey: ["logistics"],
-      queryFn: () => getLogistics(`${baseUrl}logistics/getByOrder/${id}`),
-      keepPreviousData: true,
-      staleTime: 10000,
-      refetchOnMount: "always",
-      enabled: order?.Type === "Logistics",
-    });
     if (delivery) {
-        console.log(delivery)
-        if (delivery.PickupType === "Logistics") {
+      if (delivery.PickupType === "Logistics") {
+          const res = getLogistics(`${baseUrl}logistics/getByOrder/${delivery.Order.Id}`);
+          res.then((data) => {
+            setLogistic(data);
+            setIsLogistic(true);
+          });
           
         }
     }
@@ -73,7 +65,12 @@ const ViewDelivery = () => {
     <div>
       <section className='dark:bg-darkMenu dark:bg-gray-900 p-1 sm:p-5'>
         <button>
-          <Link className='bg-graybg text-darkMenu px-2 rounded-sm text-2xl' to='/rider'>&larr; </Link>
+          <Link
+            className='bg-graybg text-darkMenu px-2 rounded-sm text-2xl'
+            to='/rider'
+          >
+            &larr;{' '}
+          </Link>
         </button>
         <div className='mx-auto max-w-screen-xl px-2 lg:px-3'>
           <div className='bg-white relative shadow-md sm:rounded-lg'>
@@ -238,6 +235,97 @@ const ViewDelivery = () => {
                   </Box>
                 </Box>
               </div>
+              {isLogistic && (
+                <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
+                  <Box className='bg-darkHover rounded-md'>
+                    <Typography
+                      id='modal-modal-title'
+                      variant='h6'
+                      component='h2'
+                      className='pl-2 pt-2'
+                    >
+                      Logistic details
+                    </Typography>
+                    <Box className='h-72 p-3 overflow-auto'>
+                      {isError && (
+                        <Typography id='modal-modal-description' sx={{ mt: 2 }}>
+                          <span className='text-red-600'>
+                            An error occurred
+                          </span>
+                        </Typography>
+                      )}
+                      {logistic && (
+                        <>
+                          <Typography id='modal-modal-description'>
+                            <span className='text-lg font-bold'>
+                              Sender Name:{' '}
+                            </span>{' '}
+                            <span className='text-sm'>
+                              {logistic.SenderName}
+                            </span>
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Sender Phone:{' '}
+                            </span>{' '}
+                            {logistic.SenderPhone}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Sender Address:{' '}
+                            </span>{' '}
+                            {logistic.SenderAddress}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Receiver Name:{' '}
+                            </span>{' '}
+                            {logistic.ReceiverName}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Receiver Phone:{' '}
+                            </span>{' '}
+                            {logistic.ReceiverPhone}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Receiver Address:{' '}
+                            </span>{' '}
+                            {logistic.ReceiverAddress}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>Item: </span>{' '}
+                            {logistic.Item}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Item Description:{' '}
+                            </span>{' '}
+                            {logistic.ItemDescription}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              Item Weight:{' '}
+                            </span>{' '}
+                            {logistic.ItemWeight}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>
+                              TrackingNumber:{' '}
+                            </span>{' '}
+                            {logistic.TrackingNumber}
+                          </Typography>
+                          <Typography>
+                            <span className='text-lg font-bold'>Status: </span>{' '}
+                            {logistic.Status}
+                          </Typography>
+                        </>
+                      )}
+                    </Box>
+                  </Box>
+                </div>
+              )}
             </div>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
