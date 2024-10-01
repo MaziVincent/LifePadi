@@ -6,8 +6,6 @@ using FuzzySharp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using RestSharp;
-using static RestSharp.RestClient;
 using Customer = Api.Models.Customer;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -199,7 +197,7 @@ namespace Api.Services
             }
         }
 
-public async Task<Customer> getByPhone(string phone)
+        public async Task<Customer> getByPhone(string phone)
         {
             try
             {
