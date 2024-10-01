@@ -550,6 +550,7 @@ setAssignRider(true)
           <p>
             {" "}
             Receiver Address : {logistics.ReceiverAddress}{" "}
+<<<<<<< HEAD
           </p>
 
           <p>
@@ -706,16 +707,18 @@ setAssignRider(true)
           <p>
             {" "}
             Receiver Address : {logistics.RecieverAddress}{" "}
+=======
+>>>>>>> 40d3219 (changes)
           </p>
 
           <p>
             {" "}
-            Receiver Name : {logistics.RecieverName}{" "}
+            Receiver Name : {logistics.ReceiverName}{" "}
           </p>
 
           <p>
             {" "}
-            Receiver Phone Number : {logistics.RecieverAddress}{" "}
+            Receiver Phone Number : {logistics.ReceiverAddress}{" "}
           </p>
 
           

@@ -407,6 +407,9 @@ function App() {
                 element={<Admin />}
               />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 40d3219 (changes)
               <Route
                 path="/admin/order/:id"
                 element={<AdminOrderDetails />}
@@ -419,8 +422,11 @@ function App() {
                 path="/admin/admin"
                 element={<Admin />}
               />
+<<<<<<< HEAD
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+>>>>>>> 40d3219 (changes)
             </Route>
           </Route>
         </Route>
@@ -463,14 +469,21 @@ function App() {
                 element={<RiderdDashboard />}
               />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 40d3219 (changes)
               <Route
                 path="/rider/delivery/:id"
                 element={<ViewDelivery />}
               />
+<<<<<<< HEAD
 =======
 >>>>>>> 0ab4b1c (Google Maps Controller)
+=======
+>>>>>>> 40d3219 (changes)
             </Route>
           </Route>
+<<<<<<< HEAD
 <<<<<<< HEAD
         </Route>
 <<<<<<< HEAD
@@ -506,7 +519,10 @@ function App() {
             element={<ViewDelivery />}
           />
 >>>>>>> fd293ff (Google Maps Controller)
+=======
+>>>>>>> 369df67 (changes)
         </Route>
+       
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>
