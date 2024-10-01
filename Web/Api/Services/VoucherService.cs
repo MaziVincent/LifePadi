@@ -195,6 +195,7 @@ namespace Api.Services
                 newVoucher.IsActive = true;
                 newVoucher.IsExpired = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 // string str_startDate = voucher.StartDate.ToString()!;
                 // string str_endDate = voucher.EndDate.ToString()!;
                 // Remove the StarDate and EndDate values when the data is coming from the frontend and not postman
@@ -237,7 +238,19 @@ namespace Api.Services
 =======
                 string str_startDate = voucher.StartDate.ToString()!;
                 string str_endDate = voucher.EndDate.ToString()!;
+=======
+                // string str_startDate = voucher.StartDate.ToString()!;
+                // string str_endDate = voucher.EndDate.ToString()!;
+>>>>>>> 32d425d (new commit)
                 // Remove the StarDate and EndDate values when the data is coming from the frontend and not postman
+                // DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                // DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                // if (startDate.Kind == DateTimeKind.Unspecified)
+                //     startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+                // if (endDate.Kind == DateTimeKind.Unspecified)
+                //     endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                // newVoucher.StartDate = startDate;
+                // newVoucher.EndDate = endDate;
                 DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                 DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                 if (startDate.Kind == DateTimeKind.Unspecified)

@@ -15,10 +15,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpPut("activate/{id}")]
 =======
         [HttpPut("{id}/activate")]
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        [HttpPut("activate/{id}")]
+>>>>>>> 32d425d (new commit)
         public async Task<IActionResult> activate(int id)
         {
             try

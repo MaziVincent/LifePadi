@@ -46,7 +46,11 @@ const CreateVoucher = ({ open, handleClose }) => {
   });
 
   const handleCreate = (voucher) => {
+<<<<<<< HEAD
     // console.log(voucher);
+=======
+    console.log(voucher);
+>>>>>>> 32d425d (new commit)
     mutate(voucher);
   };
 
