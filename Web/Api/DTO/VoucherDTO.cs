@@ -13,11 +13,11 @@ namespace Api.DTO
         public bool? IsExpired { get; set; }
         public int? TotalNumberAvailable { get; set; }
         public int? TotalNumberUsed { get; set; } = 0;
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
-        public List<TransactionDto>? Transactions { get; set; }
+        public CustomerVoucher? CustomerVouchers { get; set; }
     }
 
     public class VoucherDtoLite

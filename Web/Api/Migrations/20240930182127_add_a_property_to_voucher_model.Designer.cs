@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240930182127_add_a_property_to_voucher_model")]
+    partial class add_a_property_to_voucher_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,40 +97,6 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Api.Models.CustomerVoucher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TransactionId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("VoucherId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("TransactionId");
-
-                    b.HasIndex("VoucherId");
-
-                    b.ToTable("CustomerVouchers");
                 });
 
             modelBuilder.Entity("Api.Models.Delivery", b =>
@@ -587,7 +556,8 @@ namespace Api.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("VoucherId");
+                    b.HasIndex("VoucherId")
+                        .IsUnique();
 
                     b.ToTable("Transactions");
                 });
@@ -787,6 +757,9 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("TotalNumberUsed")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransactionId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Type")
@@ -997,31 +970,6 @@ namespace Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api.Models.CustomerVoucher", b =>
-                {
-                    b.HasOne("Api.Models.Customer", "Customer")
-                        .WithMany("CustomerVouchers")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Api.Models.Transaction", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId");
-
-                    b.HasOne("Api.Models.Voucher", "Voucher")
-                        .WithMany("CustomerVouchers")
-                        .HasForeignKey("VoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Transaction");
-
-                    b.Navigation("Voucher");
-                });
-
             modelBuilder.Entity("Api.Models.Delivery", b =>
                 {
                     b.HasOne("Api.Models.Order", "Order")
@@ -1176,8 +1124,8 @@ namespace Api.Migrations
                         .IsRequired();
 
                     b.HasOne("Api.Models.Voucher", "Voucher")
-                        .WithMany("Transactions")
-                        .HasForeignKey("VoucherId");
+                        .WithOne("Transactions")
+                        .HasForeignKey("Api.Models.Transaction", "VoucherId");
 
                     b.Navigation("Order");
 
@@ -1287,8 +1235,6 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Voucher", b =>
                 {
-                    b.Navigation("CustomerVouchers");
-
                     b.Navigation("Transactions");
                 });
 
@@ -1301,8 +1247,6 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Customer", b =>
                 {
-                    b.Navigation("CustomerVouchers");
-
                     b.Navigation("Favourites");
 
                     b.Navigation("Orders");

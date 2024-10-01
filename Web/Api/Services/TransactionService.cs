@@ -424,6 +424,22 @@ namespace Api.Services
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
+                        var dorder = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == transaction.OrderId);
+                        var customerVoucher =  await _dbContext.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
+                        if (customerVoucher == null)
+                        {
+                            var newCustomerVoucher = new CustomerVoucher
+                            {
+                                CustomerId = dorder!.CustomerId,
+                                VoucherId = voucher.Id,
+                                TransactionId = transaction.Id
+                            };
+                            await _dbContext.CustomerVouchers.AddAsync(newCustomerVoucher);
+                        }else
+                        {
+                            customerVoucher.TransactionId = transaction.Id;
+                        }
+                        await _dbContext.SaveChangesAsync();
                         transaction.VoucherId = voucher.Id;
                     }
 

@@ -7,5 +7,6 @@
         public List<Order>? Orders { get; set; }
         public Wallet? Wallet { get; set; }
         public List<Favourite>? Favourites { get; set; }
+        public List<CustomerVoucher>? CustomerVouchers { get; set; }
     }
 }

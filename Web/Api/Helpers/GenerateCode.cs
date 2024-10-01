@@ -14,7 +14,7 @@ namespace Api.Helpers
             {
                 sb.Append(chars[random.Next(chars.Length)]);
             }
-            return "LifePadi" + sb.ToString();
+            return "LifePadi-" + sb.ToString();
         }
 
         public string generateVerificationCode()

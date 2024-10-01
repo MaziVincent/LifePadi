@@ -24,7 +24,7 @@ import { ArrowBackIosNewRounded } from "@mui/icons-material";
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const fetch = useFetch();
@@ -32,7 +32,7 @@ const UserDashboard = () => {
   const url = `${baseUrl}order/customer/`;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-
+const navigate = useNavigate()
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
@@ -172,7 +172,9 @@ const UserDashboard = () => {
                           >
                             <span className="flex items-center justify-center"> <DangerousIcon />Cancel Order</span>
                           </button>
-                          <button className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full">
+                          <button 
+                          onClick={() => navigate(`/user/track/${order.Status }`)}
+                          className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full">
                             <span className=" flex items-center max-sm:justify-center gap-1">
                               <span className="">
                                 <TrackChangesIcon />

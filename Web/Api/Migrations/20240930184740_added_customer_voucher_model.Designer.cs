@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20240930184740_added_customer_voucher_model")]
+    partial class added_customer_voucher_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,7 +130,7 @@ namespace Api.Migrations
 
                     b.HasIndex("VoucherId");
 
-                    b.ToTable("CustomerVouchers");
+                    b.ToTable("CustomerVoucher");
                 });
 
             modelBuilder.Entity("Api.Models.Delivery", b =>
@@ -587,7 +590,8 @@ namespace Api.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("VoucherId");
+                    b.HasIndex("VoucherId")
+                        .IsUnique();
 
                     b.ToTable("Transactions");
                 });
@@ -787,6 +791,9 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("TotalNumberUsed")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransactionId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Type")
@@ -1176,8 +1183,8 @@ namespace Api.Migrations
                         .IsRequired();
 
                     b.HasOne("Api.Models.Voucher", "Voucher")
-                        .WithMany("Transactions")
-                        .HasForeignKey("VoucherId");
+                        .WithOne("Transactions")
+                        .HasForeignKey("Api.Models.Transaction", "VoucherId");
 
                     b.Navigation("Order");
 

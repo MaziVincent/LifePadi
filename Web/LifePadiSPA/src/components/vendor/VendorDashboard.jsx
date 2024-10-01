@@ -80,7 +80,7 @@ const VendorDashboard = () => {
   }
 
   return (
-    <div className='bg-darkBg h-auto'>
+    <div className='bg-darkBg h-auto overflow-y-auto sm:pt-14'>
       <section className='bg-white dark:bg-gray-900 mb-5'>
         <div className='max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 '>
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
@@ -170,7 +170,7 @@ const VendorDashboard = () => {
                 </button>
               </div>
             </div>
-            <div className='overflow-x-auto'>
+            <div className='overflow-auto'>
               <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
                   <tr>

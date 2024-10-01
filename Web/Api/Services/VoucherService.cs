@@ -14,11 +14,13 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ICustomerVoucher _customerVoucher;
 
-        public VoucherService(DBContext dBContext, IMapper mapper)
+        public VoucherService(DBContext dBContext, IMapper mapper, ICustomerVoucher customerVoucher)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+            _customerVoucher = customerVoucher;
 
         }
 
@@ -107,20 +109,41 @@ namespace Api.Services
                 newVoucher.Code = GenerateCode.GenerateRandomString();
                 newVoucher.IsActive = true;
                 newVoucher.IsExpired = false;
-                string str_startDate = voucher.StartDate.ToString()!;
-                string str_endDate = voucher.EndDate.ToString()!;
+                // string str_startDate = voucher.StartDate.ToString()!;
+                // string str_endDate = voucher.EndDate.ToString()!;
                 // Remove the StarDate and EndDate values when the data is coming from the frontend and not postman
-                DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                if (startDate.Kind == DateTimeKind.Unspecified)
-                    startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
-                if (endDate.Kind == DateTimeKind.Unspecified)
-                    endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                // DateTime startDate = DateTime.ParseExact(str_startDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                // DateTime endDate = DateTime.ParseExact(str_endDate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                // if (startDate.Kind == DateTimeKind.Unspecified)
+                //     startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+                // if (endDate.Kind == DateTimeKind.Unspecified)
+                //     endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+                // newVoucher.StartDate = startDate;
+                // newVoucher.EndDate = endDate;
+                DateTime startDate = DateTime.SpecifyKind(voucher.StartDate, DateTimeKind.Utc);
+                DateTime endDate = DateTime.SpecifyKind(voucher.EndDate, DateTimeKind.Utc);
                 newVoucher.StartDate = startDate;
                 newVoucher.EndDate = endDate;
+                newVoucher.Type = "Discount";
+                newVoucher.Status = "NotUsed";
                 await _dbContext.Vouchers.AddAsync(newVoucher);
                 await _dbContext.SaveChangesAsync();
-                var VoucherDto = _mapper.Map<VoucherDto>(newVoucher);
+                var VoucherDto = new VoucherDto{
+                    Id = newVoucher.Id,
+                    Name = newVoucher.Name,
+                    Description = newVoucher.Description,
+                    Code = newVoucher.Code,
+                    Type = newVoucher.Type,
+                    IsActive = newVoucher.IsActive,
+                    IsExpired = newVoucher.IsExpired,
+                    TotalNumberAvailable = newVoucher.TotalNumberAvailable,
+                    TotalNumberUsed = newVoucher.TotalNumberUsed,
+                    StartDate = newVoucher.StartDate,
+                    EndDate = newVoucher.EndDate,
+                    DiscountPercentage = newVoucher.DiscountPercentage,
+                    Status = newVoucher.Status,
+                };
+
                 return VoucherDto;
             }
             catch (Exception ex)
@@ -252,6 +275,7 @@ namespace Api.Services
                     .FirstOrDefaultAsync(v => v.Id == id);
                 if (voucher == null) throw new Exception("Voucher not found");
                 int num = (int)voucher.TotalNumberAvailable! - (int)voucher.TotalNumberUsed!;
+                
                 return num;
             }
             catch (Exception ex)
@@ -404,10 +428,54 @@ namespace Api.Services
                 if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
                 if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
                 voucher.TotalNumberUsed += 1;
+                voucher.IsExpired = true;
+                voucher.Status = "Used";
+                voucher.IsActive = false;
                 voucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
                 return "Successful";
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<object> useVoucherByCustomer(string voucherCode, int customerId)
+        {
+            try
+            {
+                var voucher = await _dbContext.Vouchers
+                    .FirstOrDefaultAsync(v => v.Code!.ToLower() == voucherCode.ToLower());
+                if (voucher is null) return null!;
+                if ((bool)voucher.IsExpired!) throw new Exception("Voucher expired");
+                if ((bool)!voucher.IsActive!) throw new Exception("Voucher not active");
+                if (voucher.TotalNumberAvailable <= voucher.TotalNumberUsed) throw new Exception("Voucher exhausted");
+                if (voucher.EndDate < DateTime.UtcNow) 
+                {
+                    voucher.IsExpired = true;
+                    voucher.Status = "Used";
+                    voucher.IsActive = false;
+                    throw new Exception("Voucher expired");
+                }
+
+                voucher.TotalNumberUsed += 1;
+                // voucher.IsExpired = true;
+                voucher.Status = "On Use";
+                // voucher.IsActive = false;
+                voucher.UpdatedAt = DateTime.UtcNow;
+
+                var customerVoucherDto = new CustomerVoucherDto
+                {
+                    CustomerId = customerId,
+                    VoucherId = voucher.Id
+                };
+                await _customerVoucher.CreateAsync(customerVoucherDto);
+                _dbContext.Vouchers.Attach(voucher);
+                await _dbContext.SaveChangesAsync();
+                return voucher;
 
             }
             catch (Exception ex)

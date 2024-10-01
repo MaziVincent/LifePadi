@@ -27,6 +27,7 @@ namespace Api.DTO
         public DateTime DOB { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
         public List<OrderDtoLite>? Orders { get; set; }
+        public List<CustomerVoucherDto>? CustomerVouchers { get; set;}
     }
 
     public class CustomerDtoLite

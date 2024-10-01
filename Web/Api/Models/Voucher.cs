@@ -11,12 +11,13 @@
         public bool? IsExpired { get; set; } = false;
         public int? TotalNumberAvailable { get; set; }
         public int? TotalNumberUsed { get; set; } = 0;
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int? DiscountPercentage { get; set; }
         public string? Status { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<Transaction>? Transactions { get; set; }
+        public List<CustomerVoucher>? CustomerVouchers { get; set; }
     }
 }

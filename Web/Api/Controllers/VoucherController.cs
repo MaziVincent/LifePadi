@@ -14,7 +14,7 @@ namespace Api.Controllers
             _ivoucher = ivoucher;
         }
 
-        [HttpPut("{id}/activate")]
+        [HttpPut("activate/{id}")]
         public async Task<IActionResult> activate(int id)
         {
             try
@@ -55,7 +55,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("{id}/isExpired")]
+        [HttpGet("isExpired/{id}")]
         public async Task<IActionResult> checkIfExpired(int id)
         {
             try
@@ -109,7 +109,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -251,7 +251,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/use")]
+        [HttpPut("use/{id}")]
         public async Task<IActionResult> useVoucher(int id)
         {
             try
@@ -262,11 +262,33 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Voucher expired") return NotFound(ex.Message);
+                if (ex.Message == "Voucher not active") return Unauthorized(ex.Message);
+                if (ex.Message == "Voucher exhausted") return NotFound(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("use")]
+        public async Task<IActionResult> useVoucherByCustomer([FromQuery] string voucherCode, int customerId)
+        {
+            try
+            {
+                var response = await _ivoucher.useVoucherByCustomer(voucherCode, customerId);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Voucher expired")) return NotFound(ex.Message);
+                if (ex.Message.Contains("Voucher not active")) return Unauthorized(ex.Message);
+                if (ex.Message.Contains("Voucher exhausted")) return NotFound(ex.Message);
+                if (ex.Message.Contains("Customer already use this voucher")) return Conflict(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("use/lite")]
         public async Task<IActionResult> applyVoucher([FromQuery] string code, Double totalAmount)
         {
             try
