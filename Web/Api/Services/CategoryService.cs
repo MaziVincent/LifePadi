@@ -5,9 +5,13 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using CloudinaryDotNet;
 
 =======
+=======
+using System.Linq;
+>>>>>>> db55c17 (added a route for products under a category with pagination)
 using System.Linq.Expressions;
 >>>>>>> ee48634 (done with service, category and product controllers.)
 
@@ -97,28 +101,41 @@ namespace Api.Services
                 if (props.SearchString is null)
                 {
                     var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+<<<<<<< HEAD
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id)
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
+=======
+                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                    .Where(c => c.Id == id)
+>>>>>>> db55c17 (added a route for products under a category with pagination)
                     .ToListAsync();
                     productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
                     var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+<<<<<<< HEAD
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
+=======
+                .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                    .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+>>>>>>> db55c17 (added a route for products under a category with pagination)
                     .ToListAsync();
                 productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                 return returned;
             }
+<<<<<<< HEAD
 =======
 
 >>>>>>> ca028f0 (fixed product category)
+=======
+>>>>>>> db55c17 (added a route for products under a category with pagination)
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -446,6 +463,7 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
 
         public async Task<int> numberOfCategories()
         {

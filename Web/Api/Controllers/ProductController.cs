@@ -1,9 +1,13 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using AutoMapper;
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+using AutoMapper;
+>>>>>>> db55c17 (added a route for products under a category with pagination)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -13,6 +17,7 @@ namespace Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProduct? _iproduct;
+<<<<<<< HEAD
 <<<<<<< HEAD
         private readonly IMapper _mapper;
         public ProductController(IProduct iproduct, IMapper mapper)
@@ -25,8 +30,13 @@ namespace Api.Controllers
         public async Task<IActionResult> getAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchString = "")
 =======
         public ProductController(IProduct iproduct)
+=======
+        private readonly IMapper _mapper;
+        public ProductController(IProduct iproduct, IMapper mapper)
+>>>>>>> db55c17 (added a route for products under a category with pagination)
         {
             _iproduct = iproduct;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
@@ -402,6 +412,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpGet("searchAll")]
         public async Task<IActionResult> searchAll([FromQuery] SearchPaging props)
@@ -419,5 +430,7 @@ namespace Api.Controllers
 
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> db55c17 (added a route for products under a category with pagination)
     }
 }

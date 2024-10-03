@@ -48,6 +48,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync();
         public Task<CategoryDto> getAsync(int id);
         public Task<IEnumerable<ProductDto>> categoryProducts(int id);
+        public Task<PagedList<Product>> getCategoryProducts(int id, SearchPaging props);
         public Task<CategoryDto> getByNameAsync(string name);
 >>>>>>> b8c66da (changed all DTO to Dto)
         public Task<string> deleteAsync(int id);

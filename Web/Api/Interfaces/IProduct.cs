@@ -1,9 +1,14 @@
 ﻿using Api.DTO;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Api.Models;
 using Api.Services;
 =======
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+using Api.Models;
+using Api.Services;
+>>>>>>> db55c17 (added a route for products under a category with pagination)
 
 namespace Api.Interfaces
 {
@@ -31,6 +36,7 @@ namespace Api.Interfaces
         public Task<string> toogleProductStatus(int id);
         public Task<object> getVendorProductStat(int vendorId);
         public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
+<<<<<<< HEAD
         public Task<SearchDTO> SearchAsync(SearchPaging props);
 =======
         public Task<IEnumerable<ProductDTO>> allAsync();
@@ -70,6 +76,8 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfProducts();
         public Task<int> totalNumberOfProductsByVendor(int vendorId);
         public Task<int> totalNumberOfProductsByCategory(int categoryId);
+=======
+>>>>>>> db55c17 (added a route for products under a category with pagination)
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
     }

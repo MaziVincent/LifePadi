@@ -224,6 +224,9 @@ namespace Api.Controllers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db55c17 (added a route for products under a category with pagination)
 
         [HttpGet("{id}/products")]
         public async Task<IActionResult> getCategoryProducts(int id, [FromQuery] SearchPaging props)
@@ -244,6 +247,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpPut("{id}/uploadIcon")]
         public async Task<IActionResult> uploadIcon(int id, [FromForm] IFormFile Icon)
@@ -263,5 +267,7 @@ namespace Api.Controllers
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
 >>>>>>> 867b7f3 (added a route for vendorCategories)
+=======
+>>>>>>> db55c17 (added a route for products under a category with pagination)
     }
 }
