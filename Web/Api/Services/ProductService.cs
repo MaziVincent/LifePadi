@@ -130,6 +130,39 @@ namespace Api.Services
             }
         }
 
+        public async Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props)
+        {
+            try
+            {
+                IQueryable<Product> productList = Enumerable.Empty<Product>().AsQueryable();
+                if (props.SearchString == null)
+                {
+                    var product1 = await _dbContext.Products
+                        .Include(p => p.Vendor)
+                        .Include(p => p.Category)
+                        .OrderByDescending(p => p.CreatedAt)
+                        .Where(p => p.CategoryId == categoryId).ToListAsync();
+                    productList = productList.Concat(product1);
+                    var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                    // var ProductDto1 = _mapper.Map<PagedList<ProductDto>>(result);
+                    return result;
+                }
+                var product2 = await _dbContext.Products
+                    .Include(p => p.Vendor)
+                    .Include(p => p.Category)
+                    .OrderByDescending(p => p.CreatedAt)
+                    .Where(p => p.CategoryId == categoryId && p.SearchString!.ToLower().Contains(props.SearchString!.ToLower())).ToListAsync();
+                productList = productList.Concat(product2);
+                var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                // var ProductDto = _mapper.Map<PagedList<ProductDto>>(returned);
+                return returned;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<VendorDto> getProductVendor(int id)
         {
             try

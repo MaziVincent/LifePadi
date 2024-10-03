@@ -4,6 +4,7 @@ using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Api.Services
@@ -41,6 +42,36 @@ namespace Api.Services
                 return returned;
             }
 
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<PagedList<Product>> getCategoryProducts(int id, SearchPaging props)
+        {
+            try
+            {
+                IQueryable<Product> productList = Enumerable.Empty<Product>().AsQueryable();
+
+                if (props.SearchString is null)
+                {
+                    var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                    .Where(c => c.Id == id)
+                    .ToListAsync();
+                    productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
+                    var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+                .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                    .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .ToListAsync();
+                productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
+                var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+                return returned;
+            }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -166,6 +197,7 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
 
         public async Task<int> numberOfCategories()
         {

@@ -1,5 +1,6 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -9,9 +10,11 @@ namespace Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProduct? _iproduct;
-        public ProductController(IProduct iproduct)
+        private readonly IMapper _mapper;
+        public ProductController(IProduct iproduct, IMapper mapper)
         {
             _iproduct = iproduct;
+            _mapper = mapper;
         }
 
         [HttpGet("all")]
@@ -224,6 +227,28 @@ namespace Api.Controllers
                 var response = await _iproduct!.getVendorProductStat(vendorId);
                 if (response == null) return NotFound();
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("byCategory/{categoryId}")]
+        public async Task<IActionResult> byCategory(int categoryId, [FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var products = await _iproduct!.GetProductsByCategory(categoryId, props);
+                var result = _mapper.Map<List<ProductDto>>(products);
+                var dataList = new{
+                    products.PageSize,
+                    products.TotalPages,
+                    products.TotalCount,
+                    products.CurrentPage
+                };
+                return Ok(new { result, dataList});
             }
             catch (Exception ex)
             {
