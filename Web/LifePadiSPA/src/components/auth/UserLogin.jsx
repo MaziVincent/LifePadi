@@ -12,6 +12,9 @@ import useAuth from "../../hooks/useAuth";
 
 const UserLogin = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a061db6 (phone login)
   const { auth, setAuth, persist, setPersist, login, setLogin, setRegister } =
     useAuth();
   //const {dispatch} = useCart();
@@ -24,12 +27,18 @@ const UserLogin = () => {
   const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [error, setError] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(false);
 =======
  
 >>>>>>> 5dffde0 (forgot password and live payment)
+=======
+  const [error, setError] = useState("");
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(false);
+>>>>>>> a061db6 (phone login)
 
   const {
     register,
@@ -191,10 +200,14 @@ const UserLogin = () => {
                     <div>
                       <label
 <<<<<<< HEAD
+<<<<<<< HEAD
                         htmlFor="input"
 =======
                         htmlFor="email"
 >>>>>>> 9174884 (require auth commit)
+=======
+                        htmlFor="input"
+>>>>>>> a061db6 (phone login)
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
                         Your Phone number or email
@@ -231,6 +244,9 @@ const UserLogin = () => {
                         Password
                       </label>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a061db6 (phone login)
                       <div className="flex">
                         <input
                           type={type}
@@ -299,6 +315,7 @@ const UserLogin = () => {
                           </svg>
                         </span>
                       </div>
+<<<<<<< HEAD
 =======
                       <input
                         type="password"
@@ -310,6 +327,8 @@ const UserLogin = () => {
                         placeholder="••••••••"
                       />
 >>>>>>> 56c4b95 (completed logistics)
+=======
+>>>>>>> a061db6 (phone login)
                       {errors.Password && (
                         <p className="text-sm text-redborder">
                           {" "}
@@ -344,9 +363,12 @@ const UserLogin = () => {
                           navigate("/forgotpassword");
                           setLogin(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 5dffde0 (forgot password and live payment)
+=======
+>>>>>>> a061db6 (phone login)
                         }}
                         className="text-sm cursor-pointer font-medium text-background hover:underline dark:text-primary-500"
                       >

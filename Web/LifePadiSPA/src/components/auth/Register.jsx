@@ -24,6 +24,7 @@ const Register = () => {
     reg,
     setRegister,
     setLogin,
+<<<<<<< HEAD
     verify,
     setVerify,
     regData,
@@ -48,6 +49,8 @@ const Register = () => {
   const {
     reg,
     setRegister,
+=======
+>>>>>>> a061db6 (phone login)
     verify,
     setVerify,
     regData,
@@ -83,6 +86,9 @@ const Register = () => {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a061db6 (phone login)
 
   const sendOTP = async (phoneNumber) => {
     const unformated = phoneNumber.slice(1);
@@ -661,6 +667,7 @@ const verifyEmail = async (email) => {
                         Login
                       </span>
                     </p>
+<<<<<<< HEAD
                 </form>
               </div>
               </ClickAwayListener>
@@ -700,6 +707,8 @@ const verifyEmail = async (email) => {
                       " Sign Up"
                     )}
                   </button>
+=======
+>>>>>>> a061db6 (phone login)
                 </form>
               </div>
             </div>

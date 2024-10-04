@@ -123,7 +123,7 @@ const Vendor = () => {
   const addressUrl = `${baseUrl}address/`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     cart,
@@ -133,7 +133,6 @@ const Vendor = () => {
     dispatch: cartDispatch,
   } = useCart();
 >>>>>>> 3f80dfc (latest commit)
-
 
   const [state, dispatch] = useReducer(reducer, {
     open: false,
@@ -175,7 +174,6 @@ const Vendor = () => {
       );
       setProducts(result);
       dispatch({ type: "productCategories", payload: result.data });
-     
     } catch (error) {
       console.error("Error fetching product categories:", error);
       dispatch({
@@ -187,10 +185,14 @@ const Vendor = () => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   //console.log(state.productCategories)
 =======
   console.log(state.productCategories)
 >>>>>>> ca028f0 (fixed product category)
+=======
+  //console.log(state.productCategories)
+>>>>>>> a061db6 (phone login)
 
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
@@ -253,10 +255,14 @@ const Vendor = () => {
 
       dispatch({ type: "subTotal", payload: total });
 <<<<<<< HEAD
+<<<<<<< HEAD
       cartDispatch({ type: "amount", payload: total });
 =======
       cartDispatch({type:"amount", payload: total })
 >>>>>>> 56c4b95 (completed logistics)
+=======
+      cartDispatch({ type: "amount", payload: total });
+>>>>>>> a061db6 (phone login)
     }
 
     return;
@@ -419,7 +425,7 @@ const Vendor = () => {
       const deliveryFee = 1500;
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     } else {
-      const deliveryFee = Math.trunc( 1500 + 200 * (distance / 1000));
+      const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     }
   };
@@ -870,17 +876,23 @@ const Vendor = () => {
                     key={prod.Id}
                     onClick={() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a061db6 (phone login)
                       if (
                         prod.Name.includes("Send Package") ||
                         prod.Name.includes("Recieve Package")
                       ) {
                         console.log("clicked");
                         navigate("/shop/logistics");
+<<<<<<< HEAD
 =======
                       if(prod.Name.includes('Send Package') || prod.Name.includes('Recieve Package')){
                         console.log("clicked")
                         navigate("/shop/logistics")
 >>>>>>> 28e0a99 (rider corrections and other)
+=======
+>>>>>>> a061db6 (phone login)
                         return;
                       }
                       dispatch({ type: "open" });
@@ -1655,6 +1667,53 @@ const Vendor = () => {
                   ></textarea>
                 </div>
               </div>
+              {/* <div className=" py-2">
+                <p className=" flex justify-between items-center text-sm font-normal mb-2">
+                  <span>Use Gift </span>
+                  {cartState.gift ? (
+                    <button
+                      onClick={() => cartDispatch({ type: "gift" })}
+                      className=" text-background"
+                    >
+                      Close
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => cartDispatch({ type: "gift" })}
+                      className=" text-background"
+                    >
+                      Add
+                    </button>
+                  )}
+                </p>
+                <div
+                  className={`flex flex-col ${
+                    cartState.gift ? "block" : "hidden"
+                  } mb-2`}
+                >
+                  <input
+                    name="gift"
+                    id=""
+                    className="border rounded-lg border-gray bg-graybg text-accent p-3 mb-1"
+                    placeholder="gift code"
+                    onChange={(e) =>
+                      cartDispatch({
+                        type: "voucherCode",
+                        payload: e.target.value,
+                      })
+                    }
+                  />
+                  <div className="flex justify-end">
+                    {" "}
+                    <button
+                      onClick={() => cartDispatch({ type: "gift" })}
+                      className=" text-background"
+                    >
+                      Use Code
+                    </button>{" "}
+                  </div>
+                </div>
+              </div> */}
             </div>
             <div className=" flex justify-between items-center border-y ">
               <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -1665,11 +1724,11 @@ const Vendor = () => {
                 </div>
                 <div className=" text-gray">
                   <h1 className=" text-sm font-normal">
-                    Delivery includes PIN confirmation
+                    Delivery Address confirmation
                   </h1>
                   <p className=" text-xs">
-                    This helps ensure that your order is given to the right
-                    person
+                    This helps ensure that your order is brought to the right
+                    address
                   </p>
                 </div>
               </div>

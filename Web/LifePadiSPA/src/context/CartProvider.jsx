@@ -59,10 +59,13 @@ const reducer = (state, action) => {
       return { ...state, delivery: action.payload };
     case "voucherCode":
       return { ...state, voucherCode: action.payload };
+<<<<<<< HEAD
     case "voucher":
       return { ...state, voucher: action.payload };
     case "voucherMessage":
       return { ...state, voucherMessage: action.payload };
+=======
+>>>>>>> a061db6 (phone login)
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":
@@ -94,6 +97,8 @@ export const CartProvider = ({ children }) => {
     checkOut: false,
     order: null,
     delivery: null,
+    gift:false,
+    voucherCode:""
   });
 >>>>>>> 56c4b95 (completed logistics)
 
