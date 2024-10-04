@@ -32,6 +32,10 @@ const reducer = (state, action) => {
       return { ...state, order: action.payload };
     case "delivery":
       return { ...state, delivery: action.payload };
+    case "voucherCode":
+      return { ...state, voucherCode: action.payload };
+    case "gift":
+      return { ...state, gift: !state.gift };
     case "checkOut":
       return { ...state, checkOut: !state.checkOut };
     case "CLEAR_CART":
@@ -58,6 +62,8 @@ export const CartProvider = ({ children }) => {
     checkOut: false,
     order: null,
     delivery: null,
+    gift:false,
+    voucherCode:""
   });
 
   const [cart, setCart] = useState([]);

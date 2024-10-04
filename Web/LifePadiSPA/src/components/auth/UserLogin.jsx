@@ -11,14 +11,17 @@ import useAuth from "../../hooks/useAuth";
 //import useCart from "../../hooks/useCart";
 
 const UserLogin = () => {
-  const { auth, setAuth, persist, setPersist, login, setLogin, setRegister } = useAuth();
+  const { auth, setAuth, persist, setPersist, login, setLogin, setRegister } =
+    useAuth();
   //const {dispatch} = useCart();
   const url = `${baseUrl}auth/login`;
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
- 
+  const [error, setError] = useState("");
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(false);
 
   const {
     register,
@@ -28,11 +31,34 @@ const UserLogin = () => {
     mode: "all",
   });
 
+  const handleInput = (data) => {
+    // Simple email validation pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^0\d{10}$/;
+    if (emailPattern.test(data.Input)) {
+      // Input is an email
+      return { Email: data.Input, Password:data.Password };
+    } else if (phonePattern.test(data.Input)) {
+      // Input is a phone number (assuming only digits)
+      return { PhoneNumber: data.Input, Password:data.Password };
+    } else {
+      setError("Please enter a valid email or phone number");
+      return null;
+    }
+  };
+
   const Login = async (data) => {
     setIsLoading(true);
+    setError("")
+    const result = handleInput(data)
 
+    if(!result){
+      setIsLoading(false);
+      
+      return;
+    }
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post(url, result, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
@@ -43,7 +69,10 @@ const UserLogin = () => {
 
       //console.log(response.data);
       setAuth(response.data);
-      localStorage.setItem("refreshToken", JSON.stringify(response.data?.refreshToken))
+      localStorage.setItem(
+        "refreshToken",
+        JSON.stringify(response.data?.refreshToken)
+      );
       toast.success("Logged in Successfully");
       const role = response.data?.Role;
       setTimeout(() => {
@@ -61,6 +90,9 @@ const UserLogin = () => {
     } catch (err) {
       switch (err?.response?.status) {
         case 400:
+          toast.error("Invalid email or password");
+          break;
+        case 404:
           toast.error("Invalid email or password");
           break;
         case 401:
@@ -81,6 +113,15 @@ const UserLogin = () => {
     localStorage.setItem("persist", persist);
   }, [persist]);
 
+  const handleToggle = () => {
+    if (type === "password") {
+      setIcon(true);
+      setType("text");
+    } else {
+      setIcon(false);
+      setType("password");
+    }
+  };
   //console.log(auth);
 
   return (
@@ -137,26 +178,34 @@ const UserLogin = () => {
                   >
                     <div>
                       <label
-                        htmlFor="email"
+                        htmlFor="input"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
-                        Your email
+                        Your Phone number or email
                       </label>
                       <input
-                        type="email"
-                        name="email"
-                        id="email"
+                        type="text"
+                        name="input"
+                        id="input"
                         className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="name@company.com"
+                        placeholder="08022233344 / myemail@email.com"
                         required=""
-                        {...register("Email", { required: true })}
+                        {...register("Input", { required: true })}
                       />
-                      {errors.email && (
+                      {errors.Input && (
                         <p className="text-sm text-redborder">
                           {" "}
-                          email is required{" "}
+                          phone number or email is required{" "}
                         </p>
                       )}
+
+                      {error && 
+                        <p className="text-sm text-redborder">
+                          {error}
+                          
+                        </p>
+                      }
+
                     </div>
                     <div>
                       <label
@@ -165,15 +214,74 @@ const UserLogin = () => {
                       >
                         Password
                       </label>
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required=""
-                        {...register("Password", { required: true, })}
-                        placeholder="••••••••"
-                      />
+                      <div className="flex">
+                        <input
+                          type={type}
+                          name="password"
+                          id="password"
+                          {...register("Password", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 4,
+                              message: "Password must be at least 4 characters",
+                            },
+                          })}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:text-accent dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Type Password"
+                          required
+                        />
+                        <span
+                          onClick={handleToggle}
+                          className={` text-gray ${
+                            icon ? "hidden" : "flex"
+                          } justify-center items-center  `}
+                        >
+                          <svg
+                            className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                            />
+                            <path
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </span>
+                        <span
+                          onClick={handleToggle}
+                          className={` text-gray ${
+                            icon ? "flex" : "hidden"
+                          } justify-center items-center  `}
+                        >
+                          <svg
+                            className="w-6 h-6 text-gray-800 dark:text-white absolute mr-10"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </span>
+                      </div>
                       {errors.Password && (
                         <p className="text-sm text-redborder">
                           {" "}
@@ -207,7 +315,6 @@ const UserLogin = () => {
                         onClick={() => {
                           navigate("/forgotpassword");
                           setLogin(false);
-
                         }}
                         className="text-sm cursor-pointer font-medium text-background hover:underline dark:text-primary-500"
                       >
@@ -250,7 +357,7 @@ const UserLogin = () => {
                           setLogin(false);
                           setRegister(true);
                         }}
-                        className="font-medium text-background hover:underline dark:text-primary-500"
+                        className="font-medium text-background text-lg cursor-pointer hover:underline dark:text-primary-500"
                       >
                         Sign up
                       </Link>
