@@ -424,7 +424,7 @@ const AdminOrderDetails = () => {
 
           <p>
             {" "}
-            Receiver Phone Number : {logistics.ReceiverAddress}{" "}
+            Receiver Phone Number : {logistics.ReceiverPhone}{" "}
           </p>
 
           
