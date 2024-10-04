@@ -13,6 +13,7 @@ const Register = () => {
   const {
     reg,
     setRegister,
+    setLogin,
     verify,
     setVerify,
     regData,
@@ -30,7 +31,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [error, setError] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("password");
   const [icon, setIcon] = useState(false);
 
   const {
@@ -41,6 +42,7 @@ const Register = () => {
   } = useForm({
     mode: "all",
   });
+
 
   const sendOTP = async (phoneNumber) => {
     const unformated = phoneNumber.slice(1);
@@ -373,6 +375,18 @@ const Register = () => {
                   >
                     {isSubmitting || isLoading ? <LoadingGif /> : " Sign Up"}
                   </button>
+                  <p className="text-sm font-light text-gray-500 dark:text-lightGray">
+                      Already have an account?{" "}
+                      <span
+                        onClick={() => {
+                          setLogin(true);
+                          setRegister(false);
+                        }}
+                        className="font-medium text-background cursor-pointer text-lg hover:underline dark:text-primary-500"
+                      >
+                        Login
+                      </span>
+                    </p>
                 </form>
               </div>
             </div>

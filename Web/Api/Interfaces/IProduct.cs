@@ -1,4 +1,6 @@
 ﻿using Api.DTO;
+using Api.Models;
+using Api.Services;
 
 namespace Api.Interfaces
 {
@@ -22,6 +24,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfProductsByCategory(int categoryId);
         public Task<string> toogleProductStatus(int id);
         public Task<object> getVendorProductStat(int vendorId);
+        public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
 
     }
 }

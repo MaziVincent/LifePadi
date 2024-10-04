@@ -145,5 +145,25 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}/products")]
+        public async Task<IActionResult> getCategoryProducts(int id, [FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var products = await _icategory.getCategoryProducts(id, props);
+                var result = _mapper.Map<List<ProductDto>>(products);
+                var dataList = new {
+                    products.PageSize,
+                    products.TotalPages,
+                    products.TotalCount,
+                    products.CurrentPage
+                };
+                return Ok(new {result, dataList});
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
