@@ -34,6 +34,8 @@ const reducer = (state, action) => {
       return { ...state, delivery: action.payload };
     case "voucherCode":
       return { ...state, voucherCode: action.payload };
+    case "voucher":
+      return { ...state, voucher: action.payload };
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":
@@ -63,7 +65,8 @@ export const CartProvider = ({ children }) => {
     order: null,
     delivery: null,
     gift:false,
-    voucherCode:""
+    voucherCode:"",
+    voucher: null
   });
 
   const [cart, setCart] = useState([]);

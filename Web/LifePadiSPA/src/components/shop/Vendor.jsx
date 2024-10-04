@@ -218,6 +218,11 @@ const Vendor = () => {
     cartDispatch({ type: "setInstruction", payload: e.target.value });
   };
 
+  const handleGift = () => {
+    console.log(e.target.value)
+    //cartDispatch({ type: "voucher", payload: e.target.value });
+  };
+
   const handleDeliveryFee = () => {
     if (distance == null || distance == 0) {
       const deliveryFee = 1500;
@@ -668,7 +673,7 @@ const Vendor = () => {
                   ></textarea>
                 </div>
               </div>
-              {/* <div className=" py-2">
+              <div className=" py-2">
                 <p className=" flex justify-between items-center text-sm font-normal mb-2">
                   <span>Use Gift </span>
                   {cartState.gift ? (
@@ -699,7 +704,7 @@ const Vendor = () => {
                     placeholder="gift code"
                     onChange={(e) =>
                       cartDispatch({
-                        type: "voucherCode",
+                        type: "voucher",
                         payload: e.target.value,
                       })
                     }
@@ -707,14 +712,14 @@ const Vendor = () => {
                   <div className="flex justify-end">
                     {" "}
                     <button
-                      onClick={() => cartDispatch({ type: "gift" })}
+                      onClick={() =>{ handleGift(); cartDispatch({ type: "gift" }) } }
                       className=" text-background"
                     >
                       Use Code
                     </button>{" "}
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
             <div className=" flex justify-between items-center border-y ">
               <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
