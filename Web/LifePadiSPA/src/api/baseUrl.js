@@ -110,6 +110,7 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 =======
 const baseUrl = 'https://localhost:7216/api/'
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
+<<<<<<< HEAD
 >>>>>>> 9bb5b03 (still working on register)
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
@@ -169,6 +170,10 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 const baseUrl ='https://localhost:7216/api/'
 >>>>>>> 5e2f2b2 (phone login)
+=======
+const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
+//const baseUrl ='https://localhost:7216/api/'
+>>>>>>> bcf2546 (base url)
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
