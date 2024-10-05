@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/widgets/choice_alert_dialog.dart';
 import 'package:logger/logger.dart';
 
@@ -273,4 +274,12 @@ Future<void> handleError(
           description,
           isLong: true,
         );
+}
+
+JsonMap stripAuth(JsonMap json) {
+  json['Email'] = '';
+  json['accessToken'] = '';
+  json['refreshToken'] = '';
+  json['Role'] = UserRole.guest.toValue();
+  return json;
 }

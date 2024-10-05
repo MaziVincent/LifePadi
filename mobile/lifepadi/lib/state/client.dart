@@ -11,7 +11,12 @@ part 'client.g.dart';
 Dio dio(
   DioRef ref, {
   bool secured = true,
+  bool logRequest = false,
+  bool logRequestHeader = false,
   bool logRequestBody = false,
+  bool logResponseHeader = false,
+  bool logResponseBody = false,
+  bool logError = true,
 }) {
   return Dio(
     BaseOptions(baseUrl: kRemoteApiUrl),
@@ -20,7 +25,16 @@ Dio dio(
         ref.read(authInterceptorProvider),
         ref.read(refreshInterceptorProvider),
       ],
-      ref.read(loggingInterceptorProvider(logRequestBody: logRequestBody)),
+      ref.read(
+        loggingInterceptorProvider(
+          request: logRequest,
+          requestHeader: logRequestHeader,
+          requestBody: logRequestBody,
+          responseHeader: logResponseHeader,
+          responseBody: logResponseBody,
+          error: logError,
+        ),
+      ),
     ]);
 }
 
@@ -48,12 +62,21 @@ Interceptor authInterceptor(AuthInterceptorRef ref) {
 @riverpod
 Interceptor loggingInterceptor(
   LoggingInterceptorRef ref, {
-  bool logRequestBody = false,
+  bool request = false,
+  bool requestHeader = false,
+  bool requestBody = false,
+  bool responseHeader = false,
+  bool responseBody = false,
+  bool error = true,
 }) {
   return LogInterceptor(
     logPrint: logger.i,
-    responseBody: true,
-    requestBody: logRequestBody,
+    request: request,
+    requestHeader: requestHeader,
+    requestBody: requestBody,
+    responseHeader: responseHeader,
+    responseBody: responseBody,
+    error: error,
   );
 }
 

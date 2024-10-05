@@ -21,15 +21,9 @@ FutureOr<List<Vendor>> vendors(VendorsRef ref, {int pageSize = 10}) async {
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['result'] as List);
-  data.map((e) {
+  final data = List<JsonMap>.from(response.data!['result'] as List)
     // Add empty tokens to avoid null errors in the model
-    e['Email'] = '';
-    e['accessToken'] = '';
-    e['refreshToken'] = '';
-    e['Role'] = '';
-    return e;
-  }).toList();
+    ..map(stripAuth).toList();
 
   ref.cache();
   return data.map(VendorMapper.fromMap).toList();

@@ -101,7 +101,6 @@ class AuthController extends _$AuthController {
       }
       state = AsyncData(user);
     } catch (e) {
-      logger.e(e, error: e);
       rethrow;
     }
   }

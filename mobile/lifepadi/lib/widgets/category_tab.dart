@@ -12,7 +12,7 @@ class CategoryTab extends StatelessWidget {
 
   final bool isActive;
   final String name;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
