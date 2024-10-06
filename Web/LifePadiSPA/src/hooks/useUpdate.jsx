@@ -24,12 +24,17 @@ const useUpdate = () => {
       // console.log(data)
     } catch (error) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       //console.log(error);
       return {error:error.response.data}
 =======
       console.log(error);
       throw new Error(`Error : ${error }`)
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+      //console.log(error);
+      return {error:error.response.data}
+>>>>>>> b7ff8e8 (voucher)
       //navigate('/Login',{state:{from: location}, replace:true })
     }
     controller.abort();

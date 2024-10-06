@@ -82,9 +82,13 @@ const Vendor = () => {
   const fetch = useFetch();
   const post = usePost();
 <<<<<<< HEAD
+<<<<<<< HEAD
   const update = useUpdate();
 =======
 >>>>>>> 3f80dfc (latest commit)
+=======
+  const update = useUpdate();
+>>>>>>> b7ff8e8 (voucher)
   const [products, setProducts] = useState(null);
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -329,6 +333,7 @@ const Vendor = () => {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const handleGift = async () => {
     cartDispatch({type:"voucherError", payload:""})
 
@@ -338,12 +343,17 @@ const Vendor = () => {
 
       return;
     }
+=======
+  const handleGift = async () => {
+    cartDispatch({type:"voucherError", payload:""})
+>>>>>>> b7ff8e8 (voucher)
   
       const response = await update(`${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,cartState.voucherCode, auth.accessToken);
       if(response.data?.IsActive && !response.data?.IsExpired){
         cartDispatch({type:"voucher", payload:response.data})
         cartDispatch({type:"voucherError", payload:""})
         cartDispatch({type:"gift"})
+<<<<<<< HEAD
         cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountAmount} Naira Discount applied `})
         //handleTotalAmount()
         //handleDeliveryFee(response.data?.DiscountAmount)
@@ -354,10 +364,20 @@ const Vendor = () => {
       if(response.error){
         cartDispatch({type:"voucherError", payload:response.error})
         console.log(response.error)
+=======
+        cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountPercentage}% Discount applied `})
+        //handleTotalAmount()
+      }
+      console.log(cartState.voucher)
+
+      if(response.error){
+        cartDispatch({type:"voucherError", payload:response.error})
+>>>>>>> b7ff8e8 (voucher)
         return
       }
 
     
+<<<<<<< HEAD
 =======
   const handleAddressChange = () => {
     if (!auth.user) {
@@ -373,6 +393,10 @@ const Vendor = () => {
     getAddresses(`${baseUrl}address/customer-addresses/${auth?.user.Id}`);
     cartDispatch({ type: "address" });
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+
+
+>>>>>>> b7ff8e8 (voucher)
   };
 
   const handleDeliveryFee = ( ) => {
@@ -541,6 +565,7 @@ const Vendor = () => {
     }
   };
 
+<<<<<<< HEAD
 =======
   };
 
@@ -639,6 +664,8 @@ const Vendor = () => {
 >>>>>>> 5f61f19 (updated payment)
   };
 >>>>>>> 3f80dfc (latest commit)
+=======
+>>>>>>> b7ff8e8 (voucher)
 
   const clearCart = () => {
     setCart([]);
@@ -651,11 +678,20 @@ const Vendor = () => {
   };
 
   const handleTotalAmount = () => {
+<<<<<<< HEAD
     
+=======
+    if(cartState.voucher){
+      const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee - ((cartState.voucher.DiscountPercentage / 100) * (state.subTotal + cartState.deliveryFee) ));
+      cartDispatch({ type: "total", payload: totalAmount });
+      return;
+    }
+>>>>>>> b7ff8e8 (voucher)
     const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee);
     cartDispatch({ type: "total", payload: totalAmount });
   };
 
+<<<<<<< HEAD
 =======
   const handleDeliveryAddress = (e) => {
     e.preventDefault()
@@ -680,6 +716,8 @@ const Vendor = () => {
   };
 
 >>>>>>> e848b7b (Payment Response)
+=======
+>>>>>>> b7ff8e8 (voucher)
   useEffect(() => {
     getProductCategory();
     //setVendors(data?.result);
@@ -721,11 +759,17 @@ const Vendor = () => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   
 
 
 =======
 >>>>>>> 5f61f19 (updated payment)
+=======
+  
+
+
+>>>>>>> b7ff8e8 (voucher)
   const { distance, duration, error } = useDistance(
     origin,
     cartState.deliveryAddress
@@ -738,6 +782,10 @@ const Vendor = () => {
   }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
 =======
 >>>>>>> 5f61f19 (updated payment)
+
+  useEffect(() => {
+    handleTotalAmount();
+  }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
 
   //console.log(distance);
   //console.log(cartState.vendor);
@@ -1703,14 +1751,21 @@ const Vendor = () => {
                       })
                     }
                   />
-                  <div className="flex justify-end">
-                    {" "}
+                  <div className="flex justify-between">
+                  {cartState.voucherError && <p className="text-sm text-redborder"> {cartState.voucherError }</p>}
+
                     <button
+<<<<<<< HEAD
                       onClick={() => cartDispatch({ type: "gift" })}
                       className=" text-background"
+=======
+                      onClick={() =>{ handleGift(); } }
+                      className=" text-background "
+>>>>>>> b7ff8e8 (voucher)
                     >
                       Use Code
                     </button>{" "}
+                    
                   </div>
                 </div>
               </div> */}
@@ -1759,6 +1814,9 @@ const Vendor = () => {
                   <span className="">Total</span>
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
+                {
+                  cartState.voucherMessage && <p className="text-sm text-background"> {cartState.voucherMessage} <ThumbUpOffAltIcon /> </p>
+                }
               </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1819,11 +1877,16 @@ const Vendor = () => {
           handleCartItemDelete={handleCartItemDelete}
           handleNewAddress={dispatch}
 <<<<<<< HEAD
+<<<<<<< HEAD
           handleGift={handleGift}
           handleDeliveryFee={handleDeliveryFee}
          // handleTotalAmount={handleTotalAmount}
 =======
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+          handleGift={handleGift}
+         // handleTotalAmount={handleTotalAmount}
+>>>>>>> b7ff8e8 (voucher)
           //distance={handleDistance}
           //handleDeliveryInstruction = {setDeliveryInstruction}
         />

@@ -41,16 +41,24 @@ const CreateVoucher = ({ open, handleClose }) => {
       toast.success("Voucher Created Successfully");
       reset();
       handleClose({ type: "open" });
+<<<<<<< HEAD
       setIsLoading(false);
+=======
+      setIsLoading(false)
+>>>>>>> b7ff8e8 (voucher)
     },
   });
 
   const handleCreate = (voucher) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     // console.log(voucher);
 =======
     console.log(voucher);
 >>>>>>> 32d425d (new commit)
+=======
+   // console.log(voucher);
+>>>>>>> b7ff8e8 (voucher)
     mutate(voucher);
   };
 
@@ -297,11 +305,15 @@ const CreateVoucher = ({ open, handleClose }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
+<<<<<<< HEAD
                 {isSubmitting || isLoading ? (
                   <LoadingGif />
                 ) : (
                   "Create New Voucher"
                 )}
+=======
+                {isSubmitting || isLoading ? <LoadingGif /> : "Create New Voucher"}
+>>>>>>> b7ff8e8 (voucher)
               </button>
             </form>
           </div>

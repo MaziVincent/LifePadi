@@ -64,8 +64,11 @@ const reducer = (state, action) => {
       return { ...state, voucher: action.payload };
     case "voucherMessage":
       return { ...state, voucherMessage: action.payload };
+<<<<<<< HEAD
 =======
 >>>>>>> a061db6 (phone login)
+=======
+>>>>>>> b7ff8e8 (voucher)
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":
@@ -78,6 +81,7 @@ const reducer = (state, action) => {
 };
 
 export const CartProvider = ({ children }) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
   const [state, dispatch] = useReducer(reducer, initialState );
 =======
@@ -101,6 +105,9 @@ export const CartProvider = ({ children }) => {
     voucherCode:""
   });
 >>>>>>> 56c4b95 (completed logistics)
+=======
+  const [state, dispatch] = useReducer(reducer, initialState );
+>>>>>>> b7ff8e8 (voucher)
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);

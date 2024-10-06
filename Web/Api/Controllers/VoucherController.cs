@@ -220,23 +220,33 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("searchWithCode")]
 =======
         [HttpGet("seachWithCode")]
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        [HttpGet("searchWithCode")]
+>>>>>>> b7ff8e8 (voucher)
         public async Task<IActionResult> searchWithCode([FromQuery] string code)
         {
             try
             {
                 var response = await _ivoucher.searchWithCode(code);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b7ff8e8 (voucher)
                 if(response == null) 
                 {
                     return NotFound();
                     
                 }
+<<<<<<< HEAD
 =======
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+>>>>>>> b7ff8e8 (voucher)
                 return Ok(response);
             }
             catch (Exception ex)
@@ -246,10 +256,14 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         [HttpGet("searchWithName")]
 =======
         [HttpGet("seachWithName")]
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        [HttpGet("searchWithName")]
+>>>>>>> b7ff8e8 (voucher)
         public async Task<IActionResult> searchWithName([FromQuery] string name)
         {
             try

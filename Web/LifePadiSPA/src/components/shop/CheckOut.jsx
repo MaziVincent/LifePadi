@@ -24,6 +24,7 @@ const CheckOut = () => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
 
@@ -106,6 +107,11 @@ const CheckOut = () => {
 
 =======
 >>>>>>> 5dffde0 (forgot password and live payment)
+=======
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
+
+>>>>>>> b7ff8e8 (voucher)
     const data = {
       Amount: Math.trunc( state.amount),
       DeliveryFee: Math.trunc( state.deliveryFee),
@@ -121,6 +127,7 @@ const CheckOut = () => {
         if (res.status == 200) {
           setLoading(false);
           window.location.href = res.data.link;
+          dispatch({ type: "RESET" });
         } else {
           setError("Error Proceeding to Payment");
           setLoading(false);

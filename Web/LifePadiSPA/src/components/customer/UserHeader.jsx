@@ -85,6 +85,9 @@ const UserHeader = ({ setAside }) => {
             </div>
             <div className="flex flex-col">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b7ff8e8 (voucher)
             <span className="self-center text-gray-700 text-xl md:text-2xl font-semibold whitespace-nowrap  dark:text-white">
                Hi, {auth?.FirstName}!
             </span>
