@@ -131,6 +131,10 @@ namespace Api.Services
             //CustomerVoucher
             CreateMap<CustomerVoucher, CustomerVoucherDto>();
             CreateMap<CustomerVoucherDto, CustomerVoucher>();
+
+            //VoucherNotification
+            CreateMap<VoucherNotification, VoucherNotificationDto>();
+            CreateMap<VoucherNotificationDto, VoucherNotification>();
         }
     }
 }

@@ -19,5 +19,6 @@
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<Transaction>? Transactions { get; set; }
         public List<CustomerVoucher>? CustomerVouchers { get; set; }
+        public List<VoucherNotification>? voucherNotifications { get; set; }
     }
 }
