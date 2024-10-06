@@ -112,6 +112,7 @@ const baseUrl = 'https://localhost:7216/api/'
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9bb5b03 (still working on register)
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
@@ -179,6 +180,10 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 const baseUrl ='https://localhost:7216/api/'
 >>>>>>> a9e14b8 (voucher)
+=======
+const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
+//const baseUrl ='https://localhost:7216/api/'
+>>>>>>> c4f1f91 (baseurl)
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 
