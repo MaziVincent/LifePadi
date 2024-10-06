@@ -195,12 +195,17 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("seachWithCode")]
+        [HttpGet("searchWithCode")]
         public async Task<IActionResult> searchWithCode([FromQuery] string code)
         {
             try
             {
                 var response = await _ivoucher.searchWithCode(code);
+                if(response == null) 
+                {
+                    return NotFound();
+                    
+                }
                 return Ok(response);
             }
             catch (Exception ex)
@@ -209,7 +214,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("seachWithName")]
+        [HttpGet("searchWithName")]
         public async Task<IActionResult> searchWithName([FromQuery] string name)
         {
             try
@@ -275,7 +280,7 @@ namespace Api.Controllers
             try
             {
                 var response = await _ivoucher.useVoucherByCustomer(voucherCode, customerId);
-                if (response == null) return NotFound();
+                if (response == null) return NotFound("Voucher Code Does not Exist");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -283,7 +288,7 @@ namespace Api.Controllers
                 if (ex.Message.Contains("Voucher expired")) return NotFound(ex.Message);
                 if (ex.Message.Contains("Voucher not active")) return Unauthorized(ex.Message);
                 if (ex.Message.Contains("Voucher exhausted")) return NotFound(ex.Message);
-                if (ex.Message.Contains("Customer already use this voucher")) return Conflict(ex.Message);
+                if (ex.Message.Contains("Customer already used this voucher")) return Conflict(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

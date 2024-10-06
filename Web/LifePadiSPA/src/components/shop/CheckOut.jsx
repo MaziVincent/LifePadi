@@ -8,7 +8,7 @@ import { useState } from "react";
 //import PayStackPop from "@paystack/inline-js"
 
 const CheckOut = () => {
-  const { state, dispatch } = useCart();
+  const {setCart, state, dispatch } = useCart();
   const postData = usePost();
   const url = `${baseUrl}transaction/paystackcheckout`;
   const { auth } = useAuth();
@@ -20,6 +20,9 @@ const CheckOut = () => {
   const handleMakePayment = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify([]));
 
     const data = {
       Amount: Math.trunc( state.amount),
@@ -36,6 +39,7 @@ const CheckOut = () => {
         if (res.status == 200) {
           setLoading(false);
           window.location.href = res.data.link;
+          dispatch({ type: "RESET" });
         } else {
           setError("Error Proceeding to Payment");
           setLoading(false);

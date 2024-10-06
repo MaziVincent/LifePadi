@@ -73,10 +73,10 @@ const {cart, setCart, state, dispatch } = useCart();
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full "
+        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-full outline-none "
       >
         <Toaster />
-        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto outline-none">
           {/* <!-- Modal content --> */}
           <div className="relative p-4 bg-primary dark:bg-darkMenu dark:text-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
             {/* <!-- Modal header --> */}

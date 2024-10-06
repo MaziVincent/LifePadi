@@ -23,8 +23,8 @@ const useUpdate = () => {
       
       // console.log(data)
     } catch (error) {
-      console.log(error);
-      throw new Error(`Error : ${error }`)
+      //console.log(error);
+      return {error:error.response.data}
       //navigate('/Login',{state:{from: location}, replace:true })
     }
     controller.abort();

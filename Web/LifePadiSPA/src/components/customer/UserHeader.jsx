@@ -80,8 +80,8 @@ const UserHeader = ({ setAside }) => {
               />{" "}
             </div>
             <div className="flex flex-col">
-            <span className="self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white">
-              <i className="line-icon-User text-accent text-3xl dark:text-graybg"></i> Hi, {auth?.FirstName}!
+            <span className="self-center text-gray-700 text-xl md:text-2xl font-semibold whitespace-nowrap  dark:text-white">
+               Hi, {auth?.FirstName}!
             </span>
             {/* <span className=" self-end dark:text-gray">{auth?.Email}</span> */}
             </div>
