@@ -16,6 +16,8 @@ import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import usePost from "../../hooks/usePost";
 import { addAddressToDb } from "./services/services";
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+
 
 const Cart = ({
   subTotal,
@@ -23,15 +25,15 @@ const Cart = ({
   handleCartIncrement,
   handleCartItemDelete,
   handleNewAddress,
-
+  handleGift,
   //distance,
   //handleDeliveryInstruction,
 }) => {
-  const { cartState, setCartState, cart, setCart, state, dispatch, } = useCart();
+  const { cartState, setCartState, cart, setCart, state, dispatch } = useCart();
 
   const { auth, setLogin, location } = useAuth();
   const [origin, setOrigin] = useState("");
-  const [orderLoading, setOrderLoading] = useState(false)
+  const [orderLoading, setOrderLoading] = useState(false);
   const fetch = useFetch();
   const post = usePost();
   const addressUrl = `${baseUrl}address/customer-addresses`;
@@ -75,7 +77,7 @@ const Cart = ({
       const deliveryFee = 1500;
       dispatch({ type: "deliveryFee", payload: deliveryFee });
     } else {
-      const deliveryFee = 1500 + 200 * (distance / 1000);
+      const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
       dispatch({ type: "deliveryFee", payload: deliveryFee });
     }
   };
@@ -85,7 +87,7 @@ const Cart = ({
     dispatch({ type: "setAddress", payload: e.target.value });
     handleDeliveryFee();
     dispatch({ type: "address" });
-    dispatch({ type: "error" , payload:""});
+    dispatch({ type: "error", payload: "" });
   };
 
   const handleLocation = () => {
@@ -93,13 +95,13 @@ const Cart = ({
     dispatch({ type: "setAddress", payload: location.address });
     handleDeliveryFee();
     dispatch({ type: "address" });
-    dispatch({ type: "error" , payload:""});
-    addAddressToDb(`${baseUrl}address/create`, location, auth.accessToken, auth?.Id);
-  };
-
-  const handleTotalAmount = () => {
-    const totalAmount = subTotal + state.deliveryFee;
-    dispatch({ type: "total", payload: totalAmount });
+    dispatch({ type: "error", payload: "" });
+    addAddressToDb(
+      `${baseUrl}address/create`,
+      location,
+      auth.accessToken,
+      auth?.Id
+    );
   };
 
   const handleDeliveryInstruction = (e) => {
@@ -115,9 +117,11 @@ const Cart = ({
   };
 
   const handleOrder = async () => {
-
-    if(!state.deliveryAddress){
-      dispatch({type:'error', payload:"Please choose an address before you proceed "})
+    if (!state.deliveryAddress) {
+      dispatch({
+        type: "error",
+        payload: "Please choose an address before you proceed ",
+      });
       return;
     }
 
@@ -128,63 +132,56 @@ const Cart = ({
       return;
     }
 
-    try{
+    try {
+      setOrderLoading(true);
+      const order = {
+        CustomerId: auth?.Id,
+        Instruction: state.deliveryInstruction,
+      };
+      const response = await post(orderUrl, order, auth.accessToken);
 
+      // console.log(response.data);
 
-    setOrderLoading(true);
-    const order = {
-      CustomerId: auth?.Id,
-      Instruction: state.deliveryInstruction,
-    };
-    const response = await post(orderUrl, order, auth.accessToken);
+      if (response.error) {
+        dispatch({
+          type: "error",
+          payload: "Error placing order ",
+        });
+        return;
+      }
 
-   // console.log(response.data);
+      for (let item of cart) {
+        const orderItem = {
+          Amount: item.Price,
+          Quantity: item.Quantity,
+          TotalAmount: item.Amount,
+          Name: item.Name,
+          Description: item.Description,
+          ProductId: item.Id,
+          OrderId: response.data?.Id,
+        };
 
-    if (response.error) {
-      dispatch({
-        type: "error",
-        payload: "Error placing order ",
-      });
-      return;
-    }
+        dispatch({ type: "order", payload: response.data });
+        const result = await post(orderItemUrl, orderItem, auth.accessToken);
 
-    for (let item of cart) {
-      const orderItem = {
-        Amount: item.Price,
-        Quantity: item.Quantity,
-        TotalAmount: item.Amount,
-        Name: item.Name,
-        Description: item.Description,
-        ProductId: item.Id,
+        console.log(result.data);
+      }
+
+      const delivery = {
         OrderId: response.data?.Id,
+        DeliveryAddress: state.deliveryAddress,
+        DeliveryFee: state.deliveryFee,
+        PickupAddress: state.vendor?.ContactAddress,
+        PickupType: "Normal",
       };
 
-      dispatch({ type: "order", payload: response.data });
-      const result = await post(orderItemUrl, orderItem, auth.accessToken);
-
-      console.log(result.data);
-    }
-
-    const delivery = {
-      OrderId: response.data?.Id,
-      DeliveryAddress: state.deliveryAddress,
-      DeliveryFee: state.deliveryFee,
-      PickupAddress: state.vendor?.ContactAddress,
-      PickupType:"Normal",
-
-    };
-    
-    dispatch({type:"delivery", payload:delivery})
-    setOrderLoading(false);
-    dispatch({ type: "checkOut" });
-    setCart([]);
-    localStorage.setItem("cart", JSON.stringify([]));
-    localStorage.setItem("delivery", JSON.stringify(delivery));
-
-  }
-    catch (error) {
+      dispatch({ type: "delivery", payload: delivery });
+      setOrderLoading(false);
+      dispatch({ type: "checkOut" });
+      localStorage.setItem("delivery", JSON.stringify(delivery));
+    } catch (error) {
       console.log(error);
-      dispatch({type:"error", payload:"Error placing Order"})
+      dispatch({ type: "error", payload: "Error placing Order" });
       setOrderLoading(false);
     }
   };
@@ -199,21 +196,16 @@ const Cart = ({
     origin,
     state.deliveryAddress
   );
-  useEffect(() => {
-    handleTotalAmount();
-  }, [subTotal, distance, state.deliveryFee, cart]);
 
   useEffect(() => {
     handleDeliveryFee();
   }, [state.deliveryAddress, distance]);
 
-
-
-  useEffect(()=> {
-    if(cart.length > 0 ){
-    localStorage.setItem("cart", JSON.stringify(cart));
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
-  },[cart])
+  }, [cart]);
   //console.log(distance);
   return (
     <Modal
@@ -305,7 +297,10 @@ const Cart = ({
           <div className=" w-full">
             <div className=" py-2">
               <div className=" flex justify-between items-center text-sm font-normal">
-                <p><span className="font-bold">Choose Address:</span> {state.deliveryAddress} </p>
+                <p>
+                  <span className="font-bold">Choose Address:</span>{" "}
+                  {state.deliveryAddress}{" "}
+                </p>
                 {state.address ? (
                   <button
                     onClick={() => dispatch({ type: "address" })}
@@ -411,6 +406,60 @@ const Cart = ({
                 ></textarea>
               </div>
             </div>
+            <div className=" py-2">
+              <p className=" flex justify-between items-center text-sm font-normal mb-2">
+                <span>Use Gift </span>
+                {state.gift ? (
+                  <button
+                    onClick={() => dispatch({ type: "gift" })}
+                    className=" text-background"
+                  >
+                    Close
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => dispatch({ type: "gift" })}
+                    className=" text-background"
+                  >
+                    Add
+                  </button>
+                )}
+              </p>
+              <div
+                className={`flex flex-col ${
+                  state.gift ? "block" : "hidden"
+                } mb-2`}
+              >
+                <input
+                  name="gift"
+                  id=""
+                  className="border rounded-lg border-gray bg-graybg text-accent p-3 mb-1"
+                  placeholder="gift code"
+                  onChange={(e) =>
+                    dispatch({
+                      type: "voucherCode",
+                      payload: e.target.value,
+                    })
+                  }
+                />
+                <div className="flex justify-between">
+                  {state.voucherError && (
+                    <p className="text-sm text-redborder">
+                      {" "}
+                      {state.voucherError}
+                    </p>
+                  )}
+                  <button
+                    onClick={() => {
+                      handleGift();
+                    }}
+                    className=" text-background "
+                  >
+                    Use Code
+                  </button>{" "}
+                </div>
+              </div>
+            </div>
           </div>
           <div className=" flex justify-between items-center border-y ">
             <div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
@@ -457,22 +506,31 @@ const Cart = ({
                 <span className="">Total</span>
                 <span className="">&#8358;{state.total}</span>
               </p>
+              {state.voucherMessage && (
+                <p className="text-sm text-background">
+                  {" "}
+                  {state.voucherMessage} <ThumbUpOffAltIcon />{" "}
+                </p>
+              )}
             </div>
-            <div>{state.error && <span className="text-redborder"> {state.error }</span>}</div>
+            <div>
+              {state.error && (
+                <span className="text-redborder"> {state.error}</span>
+              )}
+            </div>
 
             <div className=" pt-3 text-center w-full">
-
-                <button
-                  onClick={handleOrder}
-                  className=" w-full bg-background py-4 px-3 flex justify-center rounded"
-                >
-                  {orderLoading ? (
-                    <LoadingGif />
-                  ) : (
-                    <span className=" text-primary">Place Order</span>
-                  )}
-                </button>
-              </div>
+              <button
+                onClick={handleOrder}
+                className=" w-full bg-background py-4 px-3 flex justify-center rounded"
+              >
+                {orderLoading ? (
+                  <LoadingGif />
+                ) : (
+                  <span className=" text-primary">Place Order</span>
+                )}
+              </button>
+            </div>
             <div className=" pt-3 text-center w-full">
               <button
                 onClick={clearCart}

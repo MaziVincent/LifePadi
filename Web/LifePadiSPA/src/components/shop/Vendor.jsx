@@ -27,6 +27,8 @@ import usePost from "../../hooks/usePost";
 import { addAddressToDb } from "./services/services";
 import VendorSkeleton from "../shared/VendorSkeleton";
 import ProductSkeleton from "../shared/ProductSkeleton";
+import useUpdate from "../../hooks/useUpdate";
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { Alert } from "@mui/material";
 
 const reducer = (state, action) => {
@@ -60,6 +62,7 @@ const Vendor = () => {
   const { id } = useParams();
   const fetch = useFetch();
   const post = usePost();
+  const update = useUpdate();
   const [products, setProducts] = useState(null);
   const [origin, setOrigin] = useState("");
   const [orderLoading, setOrderLoading] = useState(false);
@@ -218,9 +221,27 @@ const Vendor = () => {
     cartDispatch({ type: "setInstruction", payload: e.target.value });
   };
 
-  const handleGift = () => {
-    console.log(e.target.value)
-    //cartDispatch({ type: "voucher", payload: e.target.value });
+  const handleGift = async () => {
+    cartDispatch({type:"voucherError", payload:""})
+  
+      const response = await update(`${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,cartState.voucherCode, auth.accessToken);
+      if(response.data?.IsActive && !response.data?.IsExpired){
+        cartDispatch({type:"voucher", payload:response.data})
+        cartDispatch({type:"voucherError", payload:""})
+        cartDispatch({type:"gift"})
+        cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountPercentage}% Discount applied `})
+        //handleTotalAmount()
+      }
+      console.log(cartState.voucher)
+
+      if(response.error){
+        cartDispatch({type:"voucherError", payload:response.error})
+        return
+      }
+
+    
+
+
   };
 
   const handleDeliveryFee = () => {
@@ -314,8 +335,7 @@ const Vendor = () => {
       setOrderLoading(false);
       cartDispatch({ type: "checkOut" });
       //console.log(delivery)
-      setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
+     
       localStorage.setItem("delivery", JSON.stringify(delivery));
     } catch (error) {
       console.log(error);
@@ -324,12 +344,23 @@ const Vendor = () => {
     }
   };
 
+
   const clearCart = () => {
     setCart([]);
     cartDispatch({ type: "setInstruction", payload: "" });
     cartDispatch({ type: "total", payload: 0 });
     setCartState(false);
     localStorage.setItem("cart", JSON.stringify([]));
+  };
+
+  const handleTotalAmount = () => {
+    if(cartState.voucher){
+      const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee - ((cartState.voucher.DiscountPercentage / 100) * (state.subTotal + cartState.deliveryFee) ));
+      cartDispatch({ type: "total", payload: totalAmount });
+      return;
+    }
+    const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee);
+    cartDispatch({ type: "total", payload: totalAmount });
   };
 
   useEffect(() => {
@@ -365,10 +396,17 @@ const Vendor = () => {
     );
   }, [cartState.vendor]);
 
+  
+
+
   const { distance, duration, error } = useDistance(
     origin,
     cartState.deliveryAddress
   );
+
+  useEffect(() => {
+    handleTotalAmount();
+  }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
 
   //console.log(distance);
   //console.log(cartState.vendor);
@@ -704,19 +742,21 @@ const Vendor = () => {
                     placeholder="gift code"
                     onChange={(e) =>
                       cartDispatch({
-                        type: "voucher",
+                        type: "voucherCode",
                         payload: e.target.value,
                       })
                     }
                   />
-                  <div className="flex justify-end">
-                    {" "}
+                  <div className="flex justify-between">
+                  {cartState.voucherError && <p className="text-sm text-redborder"> {cartState.voucherError }</p>}
+
                     <button
-                      onClick={() =>{ handleGift(); cartDispatch({ type: "gift" }) } }
-                      className=" text-background"
+                      onClick={() =>{ handleGift(); } }
+                      className=" text-background "
                     >
                       Use Code
                     </button>{" "}
+                    
                   </div>
                 </div>
               </div>
@@ -765,6 +805,9 @@ const Vendor = () => {
                   <span className="">Total</span>
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
+                {
+                  cartState.voucherMessage && <p className="text-sm text-background"> {cartState.voucherMessage} <ThumbUpOffAltIcon /> </p>
+                }
               </div>
               <div>
                 {cartState.error && (
@@ -819,6 +862,8 @@ const Vendor = () => {
           handleCartIncrement={handleCartIncrement}
           handleCartItemDelete={handleCartItemDelete}
           handleNewAddress={dispatch}
+          handleGift={handleGift}
+         // handleTotalAmount={handleTotalAmount}
           //distance={handleDistance}
           //handleDeliveryInstruction = {setDeliveryInstruction}
         />

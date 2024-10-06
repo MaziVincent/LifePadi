@@ -2,6 +2,29 @@ import { createContext, useState, useReducer } from "react";
 
 const CartContext = createContext({});
 
+const initialState = {
+  deliveryAddress: "",
+  deliveryInstruction: "",
+  address: false,
+  instruction: false,
+  error: "",
+  voucherError: "",
+  addresses: [],
+  vendor: null,
+  empty: false,
+  vendorChange: false,
+  deliveryFee: 0,
+  amount: 0,
+  total: 0,
+  checkOut: false,
+  order: null,
+  delivery: null,
+  gift:false,
+  voucherCode:"",
+  voucher: null,
+  voucherMessage:""
+}
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "setAddress":
@@ -14,6 +37,8 @@ const reducer = (state, action) => {
       return { ...state, instruction: !state.instruction };
     case "error":
       return { ...state, error: action.payload };
+    case "voucherError":
+      return { ...state, voucherError: action.payload };
     case "setAddresses":
       return { ...state, addresses: action.payload };
     case "vendor":
@@ -36,38 +61,21 @@ const reducer = (state, action) => {
       return { ...state, voucherCode: action.payload };
     case "voucher":
       return { ...state, voucher: action.payload };
+    case "voucherMessage":
+      return { ...state, voucherMessage: action.payload };
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":
       return { ...state, checkOut: !state.checkOut };
-    case "CLEAR_CART":
-      return [];
+    case "RESET":
+      return initialState;
     default:
       return state;
   }
 };
 
 export const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, {
-    deliveryAddress: "",
-    deliveryInstruction: "",
-    address: false,
-    instruction: false,
-    error: "",
-    addresses: [],
-    vendor: null,
-    empty: false,
-    vendorChange: false,
-    deliveryFee: 0,
-    amount: 0,
-    total: 0,
-    checkOut: false,
-    order: null,
-    delivery: null,
-    gift:false,
-    voucherCode:"",
-    voucher: null
-  });
+  const [state, dispatch] = useReducer(reducer, initialState );
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);

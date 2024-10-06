@@ -1,14 +1,9 @@
 import {
-  ChevronLeft,
-  ChevronRight,
   Clear,
   CreditCard,
   Done,
-  ExpandCircleDownOutlined,
-  FileDownloadOutlined,
   LocalShipping,
-  Receipt,
-  Sync,
+
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -18,13 +13,30 @@ import baseUrl from "../../api/baseUrl";
 import { CircularProgress } from "@mui/material";
 import { Pagination } from "@mui/material";
 import { Alert } from "@mui/material";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import SentimentDissatisfiedOutlinedIcon from "@mui/icons-material/SentimentDissatisfiedOutlined";
 import { ArrowBackIosNewRounded } from "@mui/icons-material";
-import DangerousIcon from '@mui/icons-material/Dangerous';
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import DangerousIcon from "@mui/icons-material/Dangerous";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
+import CancelOrder from "./subcomponents/CancelOrder";
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "open":
+      return { ...state, open: true };
+    case "close":
+      return { ...state, open: false };
+    case "cancel":
+      return { ...state, cancel: !state.cancel };
+    case "orderId":
+      return { ...state, orderId: action.payload };
+    default:
+      return state;
+  }
+};
 
 const UserDashboard = () => {
   const fetch = useFetch();
@@ -32,7 +44,15 @@ const UserDashboard = () => {
   const url = `${baseUrl}order/customer/`;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [state, dispatch] = useReducer(reducer, {
+    open: false,
+    close: false,
+    cancel: false,
+    orderId: null,
+  });
+
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
@@ -61,14 +81,16 @@ const navigate = useNavigate()
 
   return (
     <section className="  dark:bg-darkBg text-darkBg dark:text-primary bg-lightGray h-auto min-h-screen">
-      <div className="px-10 py-3">
-          <Link to="/shop" className="text-lg" >
+      <div className=" px-3 md:px-10 py-3">
+        <Link
+          to="/shop"
+          className="text-lg"
+        >
           <ArrowBackIosNewRounded />
           Back to shop
-          </Link>
-        </div>
+        </Link>
+      </div>
       <div className="pt-5 flex flex-col items-center">
-        
         <h1 className=" mb-5 text-4xl text-center font-bold">My Orders</h1>
         <main className=" flex gap-8">
           <section className="right-section right-0 top-0 max-lg:w-full">
@@ -159,22 +181,36 @@ const navigate = useNavigate()
                           <button
                             disabled={
                               order.Status == "Ongoing" ||
-                              order.Status == "Completed"
+                              order.Status == "Completed"||
+                              order.Status == "Cancelled"
                                 ? true
                                 : false
                             }
                             className={`${
                               order.Status == "Ongoing" ||
-                              order.Status == "Completed"
+                              order.Status == "Completed" ||
+                              order.Status == "Cancelled"
                                 ? "bg-gray"
                                 : "bg-redborder"
                             }  p-1 cursor-pointer rounded-md max-sm:w-full`}
+
+                            onClick={() => {
+                              dispatch({type:"orderId", payload:`${order.Id}`})
+                              dispatch({ type: "cancel" });
+                            }}
                           >
-                            <span className="flex items-center justify-center"> <DangerousIcon />Cancel Order</span>
+                            <span className="flex items-center justify-center">
+                              {" "}
+                              <DangerousIcon />
+                              Cancel Order
+                            </span>
                           </button>
-                          <button 
-                          onClick={() => navigate(`/user/track/${order.Status }`)}
-                          className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full">
+                          <button
+                            onClick={() =>
+                              navigate(`/user/track/${order.Status}`)
+                            }
+                            className="border border-gray cursor-pointer font-normal text-opacity-60 hover:text-gray border-opacity-50 p-1 rounded-md max-sm:w-full"
+                          >
                             <span className=" flex items-center max-sm:justify-center gap-1">
                               <span className="">
                                 <TrackChangesIcon />
@@ -187,7 +223,10 @@ const navigate = useNavigate()
                               to={`/user/details/${order.Id}`}
                               className=" font-normal  text-opacity-80 hover:text-gray block"
                             >
-                              <span> <RemoveRedEyeIcon /> Order Details</span>
+                              <span>
+                                {" "}
+                                <RemoveRedEyeIcon /> Order Details
+                              </span>
                             </Link>
                           </button>
                         </div>
@@ -228,12 +267,16 @@ const navigate = useNavigate()
                           </span>
                         </div>
                         <p className="bg-gray bg-opacity-15 p-2 inline-flex items-center gap-2 w-full rounded-md text-lightorange">
-                          <span>
-                            <LocalShipping />
-                          </span>
-                          {order.IsDelivered
-                            ? "Order Delivered "
-                            : "Expected Delivery - 30 mins"}
+                          
+                          {order.Status == "Pending"
+                            ? <span> <ManageHistoryIcon /> Processing Order  </span>
+                            : order.Status == "Ongoing"
+                            ? <span> <LocalShipping /> Expected Delivery - less than 20 min </span>
+                            : order.Status == "Cancelled"
+                            ? <span> <Clear /> Order Cancelled </span>
+                            : order.Status == "Completed"
+                            ? <span> <Done /> Order Completed </span>
+                            : ""}
                         </p>
                       </div>
                     </div>
@@ -252,6 +295,7 @@ const navigate = useNavigate()
               </>
             )}
           </section>
+          <CancelOrder open={state.cancel} handleClose={dispatch} Id={state.orderId} />
         </main>
       </div>
     </section>

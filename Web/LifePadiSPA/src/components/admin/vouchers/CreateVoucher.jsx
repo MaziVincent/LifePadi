@@ -13,6 +13,7 @@ const CreateVoucher = ({ open, handleClose }) => {
   const { auth } = useAuth();
   const url = `${baseUrl}voucher/create`;
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -22,6 +23,8 @@ const CreateVoucher = ({ open, handleClose }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
+    setIsLoading(true);
+    // Create a new FormData object
     const formData = new FormData();
 
     for (const key in data) {
@@ -37,11 +40,12 @@ const CreateVoucher = ({ open, handleClose }) => {
       toast.success("Voucher Created Successfully");
       reset();
       handleClose({ type: "open" });
+      setIsLoading(false)
     },
   });
 
   const handleCreate = (voucher) => {
-    console.log(voucher);
+   // console.log(voucher);
     mutate(voucher);
   };
 
@@ -244,7 +248,7 @@ const CreateVoucher = ({ open, handleClose }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {isSubmitting ? <LoadingGif /> : "Create New Voucher"}
+                {isSubmitting || isLoading ? <LoadingGif /> : "Create New Voucher"}
               </button>
             </form>
           </div>
