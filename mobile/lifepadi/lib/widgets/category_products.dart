@@ -38,33 +38,36 @@ class CategoryProducts extends HookConsumerWidget {
       [categoryId],
     );
 
-    return MyPagedListView<int, Product>.separated(
-      shrinkWrap: true,
-      primary: false,
-      pagingController: controller,
-      builderDelegate: PagedChildBuilderDelegate<Product>(
-        itemBuilder: (context, product, index) {
-          return ProductTile(
-            id: product.id,
-            name: product.name,
-            image: CachedNetworkImageProvider(product.imageUrl),
-            price: product.price,
-            vendor: product.vendor.name,
-          );
-        },
-        firstPageProgressIndicatorBuilder: (_) {
-          return MockProductsSkeleton(count: pageSize);
-        },
-        newPageProgressIndicatorBuilder: (_) => Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 11.h),
-            child: const OrangeyLoadingWheel(),
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(controller.refresh),
+      child: MyPagedListView<int, Product>.separated(
+        shrinkWrap: true,
+        primary: false,
+        pagingController: controller,
+        builderDelegate: PagedChildBuilderDelegate<Product>(
+          itemBuilder: (context, product, index) {
+            return ProductTile(
+              id: product.id,
+              name: product.name,
+              image: CachedNetworkImageProvider(product.imageUrl),
+              price: product.price,
+              vendor: product.vendor.name,
+            );
+          },
+          firstPageProgressIndicatorBuilder: (_) {
+            return MockProductsSkeleton(count: pageSize);
+          },
+          newPageProgressIndicatorBuilder: (_) => Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 11.h),
+              child: const OrangeyLoadingWheel(),
+            ),
           ),
+          noItemsFoundIndicatorBuilder: (context) =>
+              const Center(child: Text('No products found')),
         ),
-        noItemsFoundIndicatorBuilder: (context) =>
-            const Center(child: Text('No products found')),
+        separatorBuilder: (context, index) => 14.verticalSpace,
       ),
-      separatorBuilder: (context, index) => 14.verticalSpace,
     );
   }
 
