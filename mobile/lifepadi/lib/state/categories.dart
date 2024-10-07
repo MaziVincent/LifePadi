@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:lifepadi/models/category.dart';
-import 'package:lifepadi/models/paginated.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/cache_for.dart';
@@ -42,13 +41,13 @@ class Categories extends _$Categories {
     return data.map(CategoryMapper.fromMap).toList();
   }
 
-  Future<Paginated<List<Product>>> categoryProducts({
+  Future<List<Product>> categoryProducts({
     int pageSize = 6,
     int categoryId = 1,
     int pageNumber = 1,
     CancelToken? cancelToken,
   }) async {
-    final client = ref.read(dioProvider(logResponseBody: true));
+    final client = ref.read(dioProvider());
     final response = await client.get<JsonMap>(
       '/category/$categoryId/products',
       queryParameters: {
@@ -66,13 +65,8 @@ class Categories extends _$Categories {
       ..map(
         (p) => stripAuth(p['Vendor'] as JsonMap),
       ).toList();
-    final products = data.map(ProductMapper.fromMap).toList();
-    final total = int.parse(
-      (response.data!['dataList'] as JsonMap)['TotalCount'].toString(),
-    );
-    final result = Paginated(data: products, totalCount: total);
 
     ref.cache();
-    return result;
+    return data.map(ProductMapper.fromMap).toList();
   }
 }

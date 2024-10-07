@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
@@ -7,9 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:lifepadi/models/category.dart';
-import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/errands.dart';
@@ -22,89 +18,15 @@ import 'package:remixicon/remixicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // TODO: Improve performance w/ super_sliver_list
-class HomePage extends StatefulHookConsumerWidget {
+class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends ConsumerState<HomePage> {
-  Category? activeCategory;
-  final _pagingController = PagingController<int, Product>(firstPageKey: 1);
-  CancelToken? _categoryProductsCancelToken;
-
-  @override
-  void initState() {
-    _pagingController.addPageRequestListener(_fetchPage);
-    super.initState();
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    if (activeCategory == null) {
-      return;
-    }
-    try {
-      _categoryProductsCancelToken ??= CancelToken();
-      final result =
-          await ref.read(categoriesProvider().notifier).categoryProducts(
-                categoryId: activeCategory!.id,
-                pageNumber: pageKey,
-                pageSize: 3,
-                cancelToken: _categoryProductsCancelToken,
-              );
-
-      final alreadyFetchedItemsCount = _pagingController.itemList?.length ?? 0;
-      final isLastPage = alreadyFetchedItemsCount == result.totalCount;
-
-      if (isLastPage) {
-        _pagingController.appendLastPage(result.data);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(result.data, nextPageKey);
-      }
-    } catch (e) {
-      if (e is DioException && CancelToken.isCancel(e)) {
-        // If the request was cancelled, we don't need to do anything
-        // The PagingController will be refreshed by the onTap callback
-        return;
-      }
-      // For other errors, we set the error on the PagingController
-      _pagingController.error = e;
-    }
-  }
-
-  @override
-  void dispose() {
-    _pagingController
-      ..removePageRequestListener(_fetchPage)
-      ..dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final activeCategoryIndex = useState(0);
+  Widget build(BuildContext context, WidgetRef ref) {
     final vendors = ref.watch(vendorsProvider(pageSize: 3));
     final errands = ref.watch(errandsProvider(pageSize: 4));
+    final activeCategoryIndex = useState(0);
     final categories = ref.watch(categoriesProvider());
-
-    TextStyle? inputTextStyle() {
-      return context.textTheme.bodyMedium?.copyWith(
-        color: const Color(0xFF878787),
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
-      );
-    }
-
-    OutlineInputBorder inputBorder({Color? color}) {
-      return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.r),
-        borderSide: BorderSide(
-          color: color ?? const Color(0xFFD6D6D6),
-        ),
-      );
-    }
 
     return Scaffold(
       appBar: MyAppBar(
@@ -175,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               enabledBorder: inputBorder(),
               focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
               hintText: 'Search product',
-              hintStyle: inputTextStyle(),
+              hintStyle: inputTextStyle(context),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
               prefixIcon: const Icon(
@@ -285,147 +207,78 @@ class _HomePageState extends ConsumerState<HomePage> {
             onSeeAllTap: () => context.go(CategoriesRoute().location),
           ),
           13.87.verticalSpace,
-          SizedBox(
-            height: 43.h,
-            child: categories.when(
-              data: (data) {
-                if (activeCategory == null) {
-                  setState(
-                    () => activeCategory = data[activeCategoryIndex.value],
-                  );
-                  _pagingController.refresh();
-                }
-
-                return ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return CategoryTab(
-                      isActive: index == activeCategoryIndex.value,
-                      name: data[index].name,
-                      onTap: () {
-                        activeCategoryIndex.value = index;
-                        activeCategory = data[index];
-                        final shouldCancel =
-                            _categoryProductsCancelToken != null &&
-                                !_categoryProductsCancelToken!.isCancelled;
-                        if (shouldCancel) {
-                          logger.i('Cancelling request');
-                          // Cancel any existing request for category's products
-                          _categoryProductsCancelToken!
-                              .cancel('Switching category');
-                        }
-                        setState(() {
-                          // Create a new cancel token for the new category
-                          _categoryProductsCancelToken = CancelToken();
-                          // Clear the current items in the PagingController
-                          _pagingController.itemList?.clear();
-                        });
-                        // Refresh the PagingController with the new category
-                        _pagingController.refresh();
+          categories.when(
+            data: (categoryList) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 43.h,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoryList.length,
+                      itemBuilder: (context, index) {
+                        return CategoryTab(
+                          isActive: index == activeCategoryIndex.value,
+                          name: categoryList[index].name,
+                          onTap: () => activeCategoryIndex.value = index,
+                        );
                       },
-                    );
-                  },
-                  separatorBuilder: (context, index) => 6.93.horizontalSpace,
-                );
-              },
-              error: (err, _) => const Text("Woah, something's gone wrong"),
-              loading: () => Skeletonizer(
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: mockTopCategories.length,
-                  itemBuilder: (context, index) => Skeleton.leaf(
-                    child: CategoryTab(
-                      isActive: index == activeCategoryIndex.value,
-                      name: mockTopCategories[index],
-                      onTap: () {},
+                      separatorBuilder: (context, index) =>
+                          6.93.horizontalSpace,
                     ),
                   ),
-                  separatorBuilder: (context, index) => 6.93.horizontalSpace,
-                ),
-              ),
-            ),
-          ),
-          22.72.verticalSpace,
-          HeaderWithSeeAll(
-            title: _buildProductsHeader(activeCategory?.name),
-            onSeeAllTap: () => context.push(
-              ProductsRoute(categoryId: activeCategoryIndex.value).location,
-            ),
-          ),
-          16.verticalSpace,
-          if (activeCategory == null && categories.isLoading)
-            ListView.separated(
-              itemBuilder: (context, index) {
-                final product = mockProducts[index];
-
-                return Skeletonizer(
-                  child: ProductTile(
-                    id: product.id,
-                    image: AssetImage(product.imageUrl),
-                    name: product.name,
-                    vendor: product.vendor.name,
-                    price: product.price,
+                  22.72.verticalSpace,
+                  HeaderWithSeeAll(
+                    title:
+                        'Products in ${categoryList[activeCategoryIndex.value].name.capitalize()}',
+                    onSeeAllTap: () => context.push(
+                      ProductsRoute(categoryId: activeCategoryIndex.value)
+                          .location,
+                    ),
                   ),
-                );
-              },
-              separatorBuilder: (_, __) => 11.verticalSpace,
-              itemCount: mockProducts.length,
-              shrinkWrap: true,
-              primary: false,
-            )
-          else
-            PagedListView.separated(
-              shrinkWrap: true,
-              primary: false,
-              pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Product>(
-                itemBuilder: (context, product, index) {
-                  return ProductTile(
-                    id: product.id,
-                    name: product.name,
-                    image: CachedNetworkImageProvider(product.imageUrl),
-                    price: product.price,
-                    vendor: product.vendor.name,
-                  );
-                },
-                firstPageProgressIndicatorBuilder: (_) {
-                  return Column(
-                    children: [
-                      for (final product in mockProducts)
-                        Skeletonizer(
-                          child: ProductTile(
-                            id: product.id,
-                            image: AssetImage(product.imageUrl),
-                            name: product.name,
-                            vendor: product.vendor.name,
-                            price: product.price,
-                          ),
+                  16.verticalSpace,
+                  HomeCategoryProducts(
+                    category: categoryList[activeCategoryIndex.value],
+                  ),
+                  15.verticalSpace,
+                ],
+              );
+            },
+            error: (err, _) => const Text("Woah, something's gone wrong"),
+            loading: () => Column(
+              children: [
+                Skeletonizer(
+                  child: SizedBox(
+                    height: 43.h,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: mockTopCategories.length,
+                      itemBuilder: (context, index) => Skeleton.leaf(
+                        child: CategoryTab(
+                          isActive: index == activeCategoryIndex.value,
+                          name: mockTopCategories[index],
+                          onTap: () {},
                         ),
-                    ].separatedBy(14.verticalSpace),
-                  );
-                },
-                newPageProgressIndicatorBuilder: (_) => Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 11.h),
-                    child: const OrangeyLoadingWheel(),
+                      ),
+                      separatorBuilder: (context, index) =>
+                          6.93.horizontalSpace,
+                    ),
                   ),
                 ),
-                noMoreItemsIndicatorBuilder: (context) =>
-                    const Center(child: Text('No more items')),
-                // TODO: Add more builders to capture the loading and error states
-              ),
-              separatorBuilder: (context, index) => 14.verticalSpace,
+                22.72.verticalSpace,
+                Skeletonizer(
+                  child: HeaderWithSeeAll(
+                    title: 'Products in ${mockTopCategories.first}',
+                    onSeeAllTap: () {},
+                  ),
+                ),
+                16.verticalSpace,
+                const MockProductsSkeleton(),
+              ],
             ),
-          15.verticalSpace,
+          ),
         ],
       ),
     );
-  }
-
-  String _buildProductsHeader(String? activeCategory) {
-    return activeCategory == null
-        ? 'Products'
-        : 'Products in ${activeCategory.capitalize()}';
   }
 }

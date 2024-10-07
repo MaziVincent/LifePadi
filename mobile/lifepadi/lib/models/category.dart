@@ -4,7 +4,7 @@ import 'package:lifepadi/models/product.dart';
 part 'category.mapper.dart';
 
 @MappableClass()
-class Category {
+class Category with CategoryMappable {
   Category({
     required this.id,
     required this.name,

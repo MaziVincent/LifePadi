@@ -130,4 +130,4 @@ final List<Product> mockProducts = [
     imageUrl: Assets.images.plainTees.path,
     vendor: mockVendors[2],
   ),
-];
+].repeat(2);
