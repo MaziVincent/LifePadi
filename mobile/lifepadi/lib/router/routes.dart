@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/user.dart';
@@ -397,13 +396,20 @@ class SingleChatRoute extends GoRouteData {
 class ProductsRoute extends GoRouteData {
   /// Accepts query parameter category which is the id of
   /// the category to display products for.
-  const ProductsRoute({this.categoryId});
+  const ProductsRoute({
+    required this.categoryId,
+    required this.categoryName,
+  });
 
-  final int? categoryId;
+  final int categoryId;
+  final String categoryName;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProductsPage(categoryId: categoryId);
+    return ProductsPage(
+      categoryId: categoryId,
+      categoryName: categoryName,
+    );
   }
 }
 

@@ -3,21 +3,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ProductsPage extends HookWidget {
-  const ProductsPage({super.key, this.categoryId});
+  const ProductsPage({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+  });
 
-  final int? categoryId;
+  final int categoryId;
+  final String categoryName;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        title: 'Fashion',
+        title: categoryName,
         bottom: PreferredSize(
           preferredSize: Size(12.h, double.infinity),
           child: 12.verticalSpace,
@@ -37,34 +40,10 @@ class ProductsPage extends HookWidget {
         ],
       ),
       body: Padding(
-        padding: kHorizontalPadding.copyWith(top: 5.h),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ProductTile(
-                id: 1,
-                image: Assets.images.bnbBlender.provider(),
-                name: 'BNB Blender',
-                vendor: 'Shoprite Stores',
-                price: 33000,
-              ),
-              ProductTile(
-                id: 2,
-                image: Assets.images.oilPerfumes.provider(),
-                name: 'Oil Perfumes',
-                vendor: 'Beauty Collection',
-                price: 500,
-              ),
-              for (final i in [3, 4, 5])
-                ProductTile(
-                  id: i,
-                  image: Assets.images.plainTees.provider(),
-                  name: 'Plain Tees',
-                  vendor: 'Korede Store',
-                  price: 5000,
-                ),
-            ].separatedBy(11.verticalSpace),
-          ),
+        padding: kHorizontalPadding.copyWith(top: 5.h, bottom: 11.h),
+        child: CategoryProducts(
+          categoryId: categoryId,
+          pageSize: 6,
         ),
       ),
     );

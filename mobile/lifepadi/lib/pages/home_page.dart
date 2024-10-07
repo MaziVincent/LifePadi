@@ -230,13 +230,17 @@ class HomePage extends HookConsumerWidget {
                     title:
                         'Products in ${categoryList[activeCategoryIndex.value].name.capitalize()}',
                     onSeeAllTap: () => context.push(
-                      ProductsRoute(categoryId: activeCategoryIndex.value)
-                          .location,
+                      ProductsRoute(
+                        categoryId: categoryList[activeCategoryIndex.value].id,
+                        categoryName: categoryList[activeCategoryIndex.value]
+                            .name
+                            .capitalize(),
+                      ).location,
                     ),
                   ),
                   16.verticalSpace,
-                  HomeCategoryProducts(
-                    category: categoryList[activeCategoryIndex.value],
+                  CategoryProducts(
+                    categoryId: categoryList[activeCategoryIndex.value].id,
                   ),
                   15.verticalSpace,
                 ],

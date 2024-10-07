@@ -4,19 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lifepadi/hooks/hooks.dart';
-import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/widgets/layouts/my_paged_list_view.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class HomeCategoryProducts extends HookConsumerWidget {
-  const HomeCategoryProducts({
+class CategoryProducts extends HookConsumerWidget {
+  const CategoryProducts({
     super.key,
-    required this.category,
+    required this.categoryId,
+    this.pageSize = 3,
   });
 
-  final Category category;
+  final int categoryId;
+  final int pageSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +27,6 @@ class HomeCategoryProducts extends HookConsumerWidget {
         ref,
         pageKey,
         controller,
-        categoryId: category.id,
       ),
     );
 
@@ -35,7 +35,7 @@ class HomeCategoryProducts extends HookConsumerWidget {
         controller.refresh();
         return null;
       },
-      [category.id],
+      [categoryId],
     );
 
     return MyPagedListView<int, Product>.separated(
@@ -53,7 +53,7 @@ class HomeCategoryProducts extends HookConsumerWidget {
           );
         },
         firstPageProgressIndicatorBuilder: (_) {
-          return const MockProductsSkeleton();
+          return MockProductsSkeleton(count: pageSize);
         },
         newPageProgressIndicatorBuilder: (_) => Center(
           child: Padding(
@@ -71,15 +71,13 @@ class HomeCategoryProducts extends HookConsumerWidget {
   Future<void> _fetchPage(
     WidgetRef ref,
     int pageKey,
-    PagingController<int, Product> controller, {
-    required int categoryId,
-  }) async {
+    PagingController<int, Product> controller,
+  ) async {
     try {
-      const pageSize = 3;
       final result =
           await ref.read(categoriesProvider().notifier).categoryProducts(
-                categoryId: categoryId,
                 pageNumber: pageKey,
+                categoryId: categoryId,
                 pageSize: pageSize,
               );
 
