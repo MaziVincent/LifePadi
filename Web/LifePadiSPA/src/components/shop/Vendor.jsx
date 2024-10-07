@@ -232,10 +232,11 @@ const Vendor = () => {
         cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountPercentage}% Discount applied `})
         //handleTotalAmount()
       }
-      console.log(cartState.voucher)
+     
 
       if(response.error){
         cartDispatch({type:"voucherError", payload:response.error})
+        console.log(response.error)
         return
       }
 

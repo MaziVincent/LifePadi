@@ -26,13 +26,13 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
 
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => getCategories(`${baseUrl}category/all?PageSize=10`),
+    queryFn: () => getCategories(`${baseUrl}category/allLite`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
   });
 
- // console.log(vendorId);
+ console.log(data);
   const {
     register,
     handleSubmit,
@@ -246,7 +246,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                     {isError && <option> Error Loading Category </option>}
                     {isLoading && <option> Loading Category... </option>}
 
-                    {data?.result?.map((category) => (
+                    {data?.map((category) => (
                       <option
                         key={category.Id}
                         value={category.Id}

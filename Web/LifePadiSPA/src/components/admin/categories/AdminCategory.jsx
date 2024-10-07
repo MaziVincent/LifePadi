@@ -62,7 +62,7 @@ const AdminCategory = () => {
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["categories", page, search],
     queryFn: () =>
-      getCategories(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+      getCategories(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
