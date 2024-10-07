@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +7,7 @@ import 'package:lifepadi/hooks/hooks.dart';
 import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/categories.dart';
+import 'package:lifepadi/widgets/layouts/my_paged_list_view.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class HomeCategoryProducts extends HookConsumerWidget {
@@ -38,7 +38,7 @@ class HomeCategoryProducts extends HookConsumerWidget {
       [category.id],
     );
 
-    return PagedListView<int, Product>.separated(
+    return MyPagedListView<int, Product>.separated(
       shrinkWrap: true,
       primary: false,
       pagingController: controller,
