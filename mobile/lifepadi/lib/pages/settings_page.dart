@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -14,7 +13,7 @@ class SettingsPage extends HookWidget {
       appBar: const MyAppBar(
         title: 'Settings',
       ),
-      body: ListView(
+      body: SuperListView(
         padding: kHorizontalPadding,
         children: [
           SettingTile(

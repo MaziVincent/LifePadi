@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +35,7 @@ class ProductDetailsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: SuperListView(
         padding: kHorizontalPadding,
         children: [
           Container(

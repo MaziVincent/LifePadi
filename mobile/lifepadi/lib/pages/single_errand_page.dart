@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -31,7 +30,7 @@ class SingleErrandPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: SuperListView(
         padding: kHorizontalPadding.copyWith(top: 5.h, bottom: 30.h),
         children: [
           const SectionTitle('People Near You'),

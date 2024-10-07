@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
@@ -33,7 +32,7 @@ class OrderDetailsPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          ListView(
+          SuperListView(
             padding: kHorizontalPadding.copyWith(top: 12.h),
             children: [
               /// Product info

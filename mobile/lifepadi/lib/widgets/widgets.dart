@@ -1,3 +1,8 @@
+library widgets;
+
+export 'package:flutter/material.dart';
+export 'package:super_sliver_list/super_sliver_list.dart';
+
 export 'account_management_tile.dart';
 export 'avatar.dart';
 export 'bottom_panel.dart';

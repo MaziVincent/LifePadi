@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
 class DetailsPage extends ConsumerWidget {
   const DetailsPage(this.detailCode, {required this.isNuclearCode, super.key});
@@ -21,8 +21,10 @@ class DetailsPage extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text(title,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                child: Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               const SizedBox(height: 60),
               Text('$detailCode'),

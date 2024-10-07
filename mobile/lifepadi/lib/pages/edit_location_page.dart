@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +22,7 @@ class EditLocationPage extends HookWidget {
         title: 'Edit Location',
       ),
       body: Form(
-        child: ListView(
+        child: SuperListView(
           padding: kHorizontalPadding.copyWith(top: 29.h, bottom: 20.h),
           children: [
             InputField(

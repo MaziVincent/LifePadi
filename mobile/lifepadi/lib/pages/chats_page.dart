@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
@@ -9,7 +8,7 @@ class ChatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(title: 'Chats'),
-      body: ListView(
+      body: SuperListView(
         children: [
           ChatTile(
             subject: 'John Bayo',

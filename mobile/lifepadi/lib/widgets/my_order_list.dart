@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/widgets/order_tile.dart';
+
+import 'widgets.dart';
 
 /// A list of orders.
 class MyOrderList extends StatelessWidget {
@@ -21,7 +21,7 @@ class MyOrderList extends StatelessWidget {
         children: [
           10.verticalSpace,
           Expanded(
-            child: ListView.separated(
+            child: SuperListView.separated(
               itemCount: numberOfOrders,
               itemBuilder: (context, index) {
                 return OrderTile(status: status);

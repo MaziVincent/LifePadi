@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -23,7 +22,7 @@ class WishlistPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: SuperListView(
         padding: kHorizontalPadding.copyWith(top: 5.h, bottom: 30.h),
         children: [
           for (final i in [1, 2, 3])

@@ -18,7 +18,7 @@ class SupportPage extends HookWidget {
       appBar: const MyAppBar(
         title: 'Customer Support',
       ),
-      body: ListView(
+      body: SuperListView(
         padding: kHorizontalPadding.copyWith(top: 29.h, bottom: 20.h),
         children: [
           InputField(
