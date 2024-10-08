@@ -223,14 +223,23 @@ const Vendor = () => {
 
   const handleGift = async () => {
     cartDispatch({type:"voucherError", payload:""})
+
+    if (!auth.accessToken) {
+      setCartState(false);
+      setLogin(true);
+
+      return;
+    }
   
       const response = await update(`${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,cartState.voucherCode, auth.accessToken);
       if(response.data?.IsActive && !response.data?.IsExpired){
         cartDispatch({type:"voucher", payload:response.data})
         cartDispatch({type:"voucherError", payload:""})
         cartDispatch({type:"gift"})
-        cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountPercentage}% Discount applied `})
+        cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountAmount} Naira Discount applied `})
         //handleTotalAmount()
+        //handleDeliveryFee(response.data?.DiscountAmount)
+
       }
      
 
@@ -245,21 +254,37 @@ const Vendor = () => {
 
   };
 
-  const handleDeliveryFee = () => {
+  const handleDeliveryFee = ( ) => {
     if (distance == null || distance == 0) {
+      // if(discountPercentage){
+      //   const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
+      //   cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+      //   return;
+      // }else 
+      if(cartState.voucher){
+        const deliveryFee = 1500 - cartState.voucher.DiscountAmount;
+        cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+        return;
+      }
       const deliveryFee = 1500;
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+      
     } else {
+      if(cartState.voucher){
+        const deliveryFee =  Math.trunc((1500 + 200 * (distance / 1000)) - cartState.voucher.DiscountAmount);
+        cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+        return;
+      }
       const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     }
   };
 
   const handleLocation = () => {
-    console.log(location);
+   // console.log(location);
     cartDispatch({ type: "setAddress", payload: location.address });
     handleDeliveryFee();
-    console.log(cartState.deliveryAddress);
+   // console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
     cartDispatch({ type: "error", payload: "" });
     addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth?.Id);
@@ -355,11 +380,7 @@ const Vendor = () => {
   };
 
   const handleTotalAmount = () => {
-    if(cartState.voucher){
-      const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee - ((cartState.voucher.DiscountPercentage / 100) * (state.subTotal + cartState.deliveryFee) ));
-      cartDispatch({ type: "total", payload: totalAmount });
-      return;
-    }
+    
     const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee);
     cartDispatch({ type: "total", payload: totalAmount });
   };
@@ -368,6 +389,7 @@ const Vendor = () => {
     getProductCategory();
     //setVendors(data?.result);
     //console.log('services')
+
   }, []);
 
   useEffect(() => {
@@ -406,6 +428,7 @@ const Vendor = () => {
   );
 
   useEffect(() => {
+    handleDeliveryFee();
     handleTotalAmount();
   }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
 
@@ -864,6 +887,7 @@ const Vendor = () => {
           handleCartItemDelete={handleCartItemDelete}
           handleNewAddress={dispatch}
           handleGift={handleGift}
+          handleDeliveryFee={handleDeliveryFee}
          // handleTotalAmount={handleTotalAmount}
           //distance={handleDistance}
           //handleDeliveryInstruction = {setDeliveryInstruction}

@@ -218,30 +218,26 @@ const CreateVoucher = ({ open, handleClose }) => {
                   </label>
                   <input
                     type="number"
+                   // disabled={true}
                     placeholder="discount percentage"
                     className="bg-gray-50 dark:bg-lightGray border border-gray-300 text-accent text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray dark:focus:ring-primary-500 dark:focus:border-primary-500 "
-                    {...register("DiscountPercentage", {
+                    {...register('DiscountPercentage', {
+                      required: {
+                        value: !getValues('DiscountAmount'),
+                        message: 'Either percentage or amount is required.',
+                      },
                       validate: {
-                        requiredIfEmpty: (value) => {
-                          const DiscountAmount = getValues("DiscountAmount");
-                          return (
-                            value ||
-                            DiscountAmount ||
-                            "Either percentage or amount is required."
-                          );
-                        },
                         exclusiveValue: (value) => {
-                          const DiscountAmount = getValues("DiscountAmount");
+                          const DiscountAmount = getValues('DiscountAmount');
                           return (
-                            !(value && DiscountAmount) ||
-                            "Only one of percentage or amount can be filled."
+                            !(value && DiscountAmount) || 'Only one of percentage or amount can be filled.'
                           );
                         },
                       },
                     })}
                   />
                   {errors.DiscountPercentage && (
-                    <p className="text-red-500 text-sm">
+                    <p className="text-red text-sm">
                       {errors.DiscountPercentage.message}
                     </p>
                   )}
@@ -258,30 +254,23 @@ const CreateVoucher = ({ open, handleClose }) => {
                     type="number"
                     placeholder="discount amount"
                     className="bg-gray-50 dark:bg-lightGray border border-gray-300 text-accent text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray dark:focus:ring-primary-500 dark:focus:border-primary-500 "
-                    {...register("DiscountAmount", {
+                    {...register('DiscountAmount', {
+                      required: {
+                        value: !getValues('DiscountPercentage'),
+                        message: 'Either percentage or amount is required.',
+                      },
                       validate: {
-                        requiredIfEmpty: (value) => {
-                          const DiscountPercentage =
-                            getValues("DiscountPercentage");
-                          return (
-                            value ||
-                            DiscountPercentage ||
-                            "Either percentage or amount is required."
-                          );
-                        },
                         exclusiveValue: (value) => {
-                          const DiscountPercentage =
-                            getValues("DiscountPercentage");
+                          const DiscountPercentage = getValues('DiscountPercentage');
                           return (
-                            !(value && DiscountPercentage) ||
-                            "Only one of percentage or amount can be filled."
+                            !(value && DiscountPercentage) || 'Only one of percentage or amount can be filled.'
                           );
                         },
                       },
                     })}
                   />
                   {errors.DiscountAmount && (
-                    <p className="text-red-500 text-sm">
+                    <p className="text-red text-sm">
                       {errors.DiscountAmount.message}
                     </p>
                   )}
