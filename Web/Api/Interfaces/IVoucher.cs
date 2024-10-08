@@ -42,10 +42,14 @@ namespace Api.Interfaces
         public Task<string> activateVoucher(int id);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<object> deleteAsync(int id);
 =======
         public Task<string> deleteAsync(int id);
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<object> deleteAsync(int id);
+>>>>>>> 50bdb11 (added amount to voucher)
         public Task<VoucherDto> updateAsync(VoucherDto voucher, int id);
         public Task<string> deactivateAllExpiredVouchers();
         public Task<string> expireALlPastDueDate();

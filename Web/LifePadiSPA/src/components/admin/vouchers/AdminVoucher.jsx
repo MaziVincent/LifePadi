@@ -249,6 +249,20 @@ import CreateVoucher from "./CreateVoucher";
 =======
 >>>>>>> 28e0a99 (rider corrections and other)
                         </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Discount %
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Discount Amt
+                        </th>
   
                         <th
                           scope="col"
@@ -285,10 +299,15 @@ import CreateVoucher from "./CreateVoucher";
                           <td className="px-4 py-3">{voucher.TotalNumberAvailable}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberUsed}</td>
 <<<<<<< HEAD
+<<<<<<< HEAD
                           <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
                           <td className="px-4 py-3">{voucher.DiscountAmount}</td>
 =======
 >>>>>>> 28e0a99 (rider corrections and other)
+=======
+                          <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
+                          <td className="px-4 py-3">{voucher.DiscountAmount}</td>
+>>>>>>> 50bdb11 (added amount to voucher)
                           <td className="px-4 py-3">{voucher.Description}</td>
 
                           <td className="px-4 py-3 flex items-center justify-end">

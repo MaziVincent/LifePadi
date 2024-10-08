@@ -21,6 +21,7 @@ import LoadingGif from "../shared/LodingGif"
 // ];
 
 function getRandomCoolHexColor() {
+<<<<<<< HEAD
   const red = Math.floor(Math.random() * 50)
     .toString(16)
     .padStart(2, "0"); // Keep red low
@@ -31,6 +32,12 @@ function getRandomCoolHexColor() {
     .toString(16)
     .padStart(2, "0"); // Blue between 100-200
 
+=======
+  const red = Math.floor(Math.random() * 50).toString(16).padStart(2, '0'); // Keep red low
+  const green = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Green between 50-150
+  const blue = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Blue between 100-200
+  
+>>>>>>> 50bdb11 (added amount to voucher)
   return `#${red}${green}${blue}`;
 }
 
@@ -106,8 +113,14 @@ const Shop = () => {
             {vendorCategories?.result?.map((category, index) => (
               <div
                 key={category.Id}
+<<<<<<< HEAD
                 style={{ backgroundColor: getRandomCoolHexColor() }}
                 className={` flex flex-col min-w-32 justify-center items-center  bg-opacity-10 py-4 px-2 rounded-lg shadow-md `}
+=======
+                style={{backgroundColor: getRandomCoolHexColor(),}}
+                className={` flex flex-col min-w-32 justify-center items-center  bg-opacity-10 py-4 px-2 rounded-lg shadow-md `}
+               
+>>>>>>> 50bdb11 (added amount to voucher)
                 onClick={() => handleVendors(category.Vendors)}
               >
                 <Link className="flex flex-col items-center cursor-pointer">

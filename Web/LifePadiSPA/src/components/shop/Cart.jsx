@@ -88,12 +88,15 @@ const Cart = ({
   const orderItemUrl = `${baseUrl}orderitem/create`;
 
   
+<<<<<<< HEAD
 =======
   const post = usePost();
   const addressUrl = `${baseUrl}address/customer-addresses`;
   const orderUrl = `${baseUrl}order/create`
   const orderItemUrl = `${baseUrl}orderitem/create`
 >>>>>>> 38d66ec (Order and Order Items)
+=======
+>>>>>>> 50bdb11 (added amount to voucher)
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
     dispatch({ type: "setAddresses", payload: result.data });

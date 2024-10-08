@@ -340,10 +340,14 @@ namespace Api.Services
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<object> deleteAsync(int id)
 =======
         public async Task<string> deleteAsync(int id)
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+        public async Task<object> deleteAsync(int id)
+>>>>>>> 50bdb11 (added amount to voucher)
         {
             try
             {
@@ -352,6 +356,9 @@ namespace Api.Services
                 _dbContext.Vouchers.Remove(voucher);
                 await _dbContext.SaveChangesAsync();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 50bdb11 (added amount to voucher)
                 return new {success = "Voucher deleted"};
             }
             catch (Exception ex)

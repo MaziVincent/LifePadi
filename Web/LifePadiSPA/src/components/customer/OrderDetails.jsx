@@ -126,10 +126,14 @@ const OrderDetails = () => {
           Dashboard
         </Link>
 <<<<<<< HEAD
+<<<<<<< HEAD
           
 =======
 
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+          
+>>>>>>> 50bdb11 (added amount to voucher)
         <Link
           to="#"
           aria-current="page"
@@ -281,10 +285,14 @@ const OrderDetails = () => {
           <p className="flex items-center justify-center">
             {" "}
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
 =======
             <Alert severity="error">Error Fetching Delivery Data..</Alert>
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+            <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
+>>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {deliverySuccess && (
@@ -314,6 +322,7 @@ const OrderDetails = () => {
         )}
         {deliveryError && (
 <<<<<<< HEAD
+<<<<<<< HEAD
           <p className="flex items-center justify-center ">
             {" "}
             <Alert severity="error">Rider is yet to be assigned..</Alert>
@@ -322,6 +331,11 @@ const OrderDetails = () => {
             {" "}
             <Alert severity="error">Error Fetching Rider Data..</Alert>
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+          <p className="flex items-center justify-center ">
+            {" "}
+            <Alert severity="error">Rider is yet to be assigned..</Alert>
+>>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {deliverySuccess && (
@@ -354,10 +368,14 @@ const OrderDetails = () => {
           <p className="flex items-center justify-center">
             {" "}
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
 =======
             <Alert severity="error"> No Transaction Data ..</Alert>
 >>>>>>> 0ab5359 (incremental changes)
+=======
+            <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
+>>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {transactionSuccess && (

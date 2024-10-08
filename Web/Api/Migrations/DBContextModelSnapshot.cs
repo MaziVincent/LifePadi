@@ -970,6 +970,9 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 50bdb11 (added amount to voucher)
                     b.Property<double?>("DiscountAmount")
                         .HasColumnType("double precision");
 
