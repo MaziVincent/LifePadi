@@ -26,6 +26,7 @@ const Cart = ({
   handleCartItemDelete,
   handleNewAddress,
   handleGift,
+  handleDeliveryFee
   //distance,
   //handleDeliveryInstruction,
 }) => {
@@ -74,15 +75,15 @@ const Cart = ({
     dispatch({ type: "address" });
   };
 
-  const handleDeliveryFee = () => {
-    if (distance == null || distance == 0) {
-      const deliveryFee = 1500;
-      dispatch({ type: "deliveryFee", payload: deliveryFee });
-    } else {
-      const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
-      dispatch({ type: "deliveryFee", payload: deliveryFee });
-    }
-  };
+  // const handleDeliveryFee = () => {
+  //   if (distance == null || distance == 0) {
+  //     const deliveryFee = 1500;
+  //     dispatch({ type: "deliveryFee", payload: deliveryFee });
+  //   } else {
+  //     const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
+  //     dispatch({ type: "deliveryFee", payload: deliveryFee });
+  //   }
+  // };
 
   const handleClick = async (e) => {
     //console.log(e.target.value);
@@ -199,9 +200,9 @@ const Cart = ({
     state.deliveryAddress
   );
 
-  useEffect(() => {
-    handleDeliveryFee();
-  }, [state.deliveryAddress, distance]);
+  // useEffect(() => {
+  //   handleDeliveryFee();
+  // }, [state.deliveryAddress, distance]);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -457,7 +458,8 @@ const Cart = ({
                     }}
                     className=" text-background "
                   >
-                    Use Code
+                  Use Code
+                 
                   </button>{" "}
                 </div>
               </div>

@@ -87,7 +87,7 @@ import CreateVoucher from "./CreateVoucher";
             <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
               <div className="flex flex-col items-center justify-center">
                 <dt className="mb-2 text-3xl md:text-4xl font-extrabold">
-                  {/* {data?.dataList.TotalCount} */}
+                   {data?.length} 
                 </dt>
                 <dd className="font-light text-gray-500 dark:text-gray-400">
                   Vouchers
@@ -99,7 +99,7 @@ import CreateVoucher from "./CreateVoucher";
   
         <section className="bg-white dark:bg-gray-900">
           <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
-            Services{" "}
+            Vouchers{" "}
           </h2>
         </section>
   
