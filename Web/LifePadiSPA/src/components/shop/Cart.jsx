@@ -39,6 +39,8 @@ const Cart = ({
   const addressUrl = `${baseUrl}address/customer-addresses`;
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
+
+  
   const getAddresses = async (url) => {
     const result = await fetch(url, auth.accessToken);
     dispatch({ type: "setAddresses", payload: result.data });

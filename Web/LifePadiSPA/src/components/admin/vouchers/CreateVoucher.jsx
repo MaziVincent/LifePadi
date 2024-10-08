@@ -20,6 +20,7 @@ const CreateVoucher = ({ open, handleClose }) => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isValid },
+    getValues,
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
@@ -40,12 +41,12 @@ const CreateVoucher = ({ open, handleClose }) => {
       toast.success("Voucher Created Successfully");
       reset();
       handleClose({ type: "open" });
-      setIsLoading(false)
+      setIsLoading(false);
     },
   });
 
   const handleCreate = (voucher) => {
-   // console.log(voucher);
+    // console.log(voucher);
     mutate(voucher);
   };
 
@@ -62,12 +63,12 @@ const CreateVoucher = ({ open, handleClose }) => {
       {/* <!-- Main modal --> */}
       <div
         id="defaultModal"
-        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4   h-modal md:h-auto  "
+        className=" overflow-y-auto overflow-x-hidden absolute top-9   md:right-1/4 z-50 justify-center items-center  w-full md:w-2/4 h-svh  "
       >
         <Toaster />
-        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto overflow-y-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative p-4 bg-white rounded-lg shadow bg-primary dark:text-primary dark:bg-darkMenu sm:p-5">
+          <div className="relative p-4 bg-white rounded-lg shadow bg-primary dark:text-primary dark:bg-darkMenu sm:p-5 overflow-auto">
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -216,17 +217,72 @@ const CreateVoucher = ({ open, handleClose }) => {
                     Discount Percentage
                   </label>
                   <input
-                    type="discount"
-                    name="discount"
-                    id="discount"
-                    {...register("DiscountPercentage", { required: true })}
+                    type="number"
+                    placeholder="discount percentage"
                     className="bg-gray-50 dark:bg-lightGray border border-gray-300 text-accent text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray dark:focus:ring-primary-500 dark:focus:border-primary-500 "
-                    placeholder="Type discount percentage"
-                    required=""
+                    {...register("DiscountPercentage", {
+                      validate: {
+                        requiredIfEmpty: (value) => {
+                          const DiscountAmount = getValues("DiscountAmount");
+                          return (
+                            value ||
+                            DiscountAmount ||
+                            "Either percentage or amount is required."
+                          );
+                        },
+                        exclusiveValue: (value) => {
+                          const DiscountAmount = getValues("DiscountAmount");
+                          return (
+                            !(value && DiscountAmount) ||
+                            "Only one of percentage or amount can be filled."
+                          );
+                        },
+                      },
+                    })}
                   />
                   {errors.DiscountPercentage && (
-                    <p className="text-sm text-red">
-                      Discount percentage is required
+                    <p className="text-red-500 text-sm">
+                      {errors.DiscountPercentage.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="amount"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Discount Amount
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="discount amount"
+                    className="bg-gray-50 dark:bg-lightGray border border-gray-300 text-accent text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray dark:focus:ring-primary-500 dark:focus:border-primary-500 "
+                    {...register("DiscountAmount", {
+                      validate: {
+                        requiredIfEmpty: (value) => {
+                          const DiscountPercentage =
+                            getValues("DiscountPercentage");
+                          return (
+                            value ||
+                            DiscountPercentage ||
+                            "Either percentage or amount is required."
+                          );
+                        },
+                        exclusiveValue: (value) => {
+                          const DiscountPercentage =
+                            getValues("DiscountPercentage");
+                          return (
+                            !(value && DiscountPercentage) ||
+                            "Only one of percentage or amount can be filled."
+                          );
+                        },
+                      },
+                    })}
+                  />
+                  {errors.DiscountAmount && (
+                    <p className="text-red-500 text-sm">
+                      {errors.DiscountAmount.message}
                     </p>
                   )}
                 </div>
@@ -248,7 +304,11 @@ const CreateVoucher = ({ open, handleClose }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                {isSubmitting || isLoading ? <LoadingGif /> : "Create New Voucher"}
+                {isSubmitting || isLoading ? (
+                  <LoadingGif />
+                ) : (
+                  "Create New Voucher"
+                )}
               </button>
             </form>
           </div>

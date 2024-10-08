@@ -11,7 +11,7 @@ import CreateVoucher from "./CreateVoucher";
   import Pagination from "@mui/material/Pagination";
   import Alert from "@mui/material/Alert";
   import { useNavigate } from "react-router-dom";
-  // import DeleteDialogue from "../subcomponents/DeleteDialogue";
+  import DeleteDialogue from "../subcomponents/DeleteDialogue"
   //import serviceIcon from "../../../assets/images/services.png";
   
   const reducer = (state, action) => {
@@ -50,7 +50,7 @@ import CreateVoucher from "./CreateVoucher";
       activate: false,
       delete: false,
       service: {},
-      deleteId: 0,
+      deleteId: null,
     });
   
     const getVouchers = async (url) => {
@@ -112,13 +112,14 @@ import CreateVoucher from "./CreateVoucher";
           handleClose={dispatch}
           service={state.service}
         />
+        */}
         <DeleteDialogue
           open={state.delete}
           handleClose={dispatch}
           deleteId={state.deleteId}
           url={url}
-          name='services'
-        /> */}
+          name='vouchers'
+        /> 
   
         <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
           <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
@@ -229,6 +230,20 @@ import CreateVoucher from "./CreateVoucher";
                         >
                           Used
                         </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Discount %
+                        </th>
+
+                        <th
+                          scope="col"
+                          className="px-4 py-3"
+                        >
+                          Discount Amt
+                        </th>
   
                         <th
                           scope="col"
@@ -264,6 +279,8 @@ import CreateVoucher from "./CreateVoucher";
                           <td className="px-4 py-3">{voucher.IsExpired ? <span className="text-background"> Expired </span> : <span className="text-redborder"> Still Valid </span>}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberAvailable}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberUsed}</td>
+                          <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
+                          <td className="px-4 py-3">{voucher.DiscountAmount}</td>
                           <td className="px-4 py-3">{voucher.Description}</td>
 
                           <td className="px-4 py-3 flex items-center justify-end">
@@ -273,7 +290,7 @@ import CreateVoucher from "./CreateVoucher";
                                 onClick={(event) => {
                                   event.stopPropagation();
                                   dispatch({type:"delete"});
-                                  dispatch({type:"deleteId", payload:service.Id})
+                                  dispatch({type:"deleteId", payload:voucher.Id})
                                   //setDeleteId(ap._id);
                                 }}
                               >

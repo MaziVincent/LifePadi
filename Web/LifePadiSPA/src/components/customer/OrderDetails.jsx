@@ -94,7 +94,7 @@ const OrderDetails = () => {
         >
           Dashboard
         </Link>
-
+          
         <Link
           to="#"
           aria-current="page"
@@ -245,7 +245,7 @@ const OrderDetails = () => {
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">Error Fetching Delivery Data..</Alert>
+            <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
           </p>
         )}
         {deliverySuccess && (
@@ -274,9 +274,9 @@ const OrderDetails = () => {
           </p>
         )}
         {deliveryError && (
-          <p className="flex items-center justify-center">
+          <p className="flex items-center justify-center ">
             {" "}
-            <Alert severity="error">Error Fetching Rider Data..</Alert>
+            <Alert severity="error">Rider is yet to be assigned..</Alert>
           </p>
         )}
         {deliverySuccess && (
@@ -307,7 +307,7 @@ const OrderDetails = () => {
         {transactionError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error"> No Transaction Data ..</Alert>
+            <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
           </p>
         )}
         {transactionSuccess && (

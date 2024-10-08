@@ -12,12 +12,20 @@ import { useQuery } from "react-query";
 import CategorySkeleton from "../shared/CategorySkeleton";
 import VendorSkeleton from "../shared/VendorSkeleton";
 
-const catBackgrounds = [
-  "bg-lightcyan",
-  "bg-lightorange",
-  "bg-lightteal",
-  "bg-lightviolet",
-];
+// const catBackgrounds = [
+//   "bg-lightcyan",
+//   "bg-lightorange",
+//   "bg-lightteal",
+//   "bg-lightviolet",
+// ];
+
+function getRandomCoolHexColor() {
+  const red = Math.floor(Math.random() * 50).toString(16).padStart(2, '0'); // Keep red low
+  const green = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Green between 50-150
+  const blue = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Blue between 100-200
+  
+  return `#${red}${green}${blue}`;
+}
 
 const Shop = () => {
   const url = `${baseUrl}vendor`;
@@ -80,7 +88,9 @@ const Shop = () => {
             {vendorCategories?.result?.map((category, index) => (
               <div
                 key={category.Id}
-                className={` flex flex-col min-w-32 justify-center items-center ${catBackgrounds[index]} bg-opacity-20 py-4 px-2 rounded-lg shadow-md `}
+                style={{backgroundColor: getRandomCoolHexColor(),}}
+                className={` flex flex-col min-w-32 justify-center items-center  bg-opacity-10 py-4 px-2 rounded-lg shadow-md `}
+               
                 onClick={() => handleVendors(category.Vendors)}
               >
                 <Link className="flex flex-col items-center cursor-pointer">
