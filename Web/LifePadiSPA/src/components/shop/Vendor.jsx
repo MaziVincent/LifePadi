@@ -261,8 +261,13 @@ const Vendor = () => {
       //   cartDispatch({ type: "deliveryFee", payload: deliveryFee });
       //   return;
       // }else 
-      if(cartState.voucher){
+      if(cartState.voucher?.DiscountAmount){
         const deliveryFee = 1500 - cartState.voucher.DiscountAmount;
+        cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+        return;
+      }
+      if(cartState.voucher?.DiscountPercentage){
+        const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
@@ -270,8 +275,13 @@ const Vendor = () => {
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
       
     } else {
-      if(cartState.voucher){
+      if(cartState.voucher?.DiscountAmount){
         const deliveryFee =  Math.trunc((1500 + 200 * (distance / 1000)) - cartState.voucher.DiscountAmount);
+        cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+        return;
+      }
+      if(cartState.voucher?.DiscountPercentage){
+        const deliveryFee = Math.trunc( (1500 + 200 * (distance / 1000)) - ((cartState.voucher?.DiscountPercentage / 100) * (1500 + 200 * (distance / 1000)) ));
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
