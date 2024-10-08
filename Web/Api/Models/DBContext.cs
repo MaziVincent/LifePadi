@@ -34,6 +34,7 @@ namespace Api.Models
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<Logistic> Logistics { get; set; }
         public DbSet<CustomerVoucher> CustomerVouchers { get; set; }
+        public DbSet<VoucherNotification> VoucherNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

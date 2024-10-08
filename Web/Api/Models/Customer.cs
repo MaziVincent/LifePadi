@@ -8,5 +8,6 @@
         public Wallet? Wallet { get; set; }
         public List<Favourite>? Favourites { get; set; }
         public List<CustomerVoucher>? CustomerVouchers { get; set; }
+        public List<VoucherNotification>? VoucherNotifications { get; set; }
     }
 }

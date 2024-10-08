@@ -72,6 +72,7 @@ builder.Services.AddScoped<IWalletNotification, WalletNotificationService>();
 builder.Services.AddScoped<IFavourite, FavouriteService>();
 builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
+builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 
 
 //enable CORS

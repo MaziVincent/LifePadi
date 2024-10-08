@@ -141,6 +141,7 @@ namespace Api.Services
                     StartDate = newVoucher.StartDate,
                     EndDate = newVoucher.EndDate,
                     DiscountPercentage = newVoucher.DiscountPercentage,
+                    DiscountAmount = newVoucher.DiscountAmount,
                     Status = newVoucher.Status,
                 };
 
@@ -193,7 +194,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> deleteAsync(int id)
+        public async Task<object> deleteAsync(int id)
         {
             try
             {
@@ -201,7 +202,7 @@ namespace Api.Services
                 if (voucher == null) return null!;
                 _dbContext.Vouchers.Remove(voucher);
                 await _dbContext.SaveChangesAsync();
-                return "Voucher deleted";
+                return new {success = "Voucher deleted"};
             }
             catch (Exception ex)
             {

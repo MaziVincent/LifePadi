@@ -17,7 +17,7 @@ namespace Api.Interfaces
         public Task<bool> checkIfExpired(int id);
         public Task<string> deactivateVoucher(int id);
         public Task<string> activateVoucher(int id);
-        public Task<string> deleteAsync(int id);
+        public Task<object> deleteAsync(int id);
         public Task<VoucherDto> updateAsync(VoucherDto voucher, int id);
         public Task<string> deactivateAllExpiredVouchers();
         public Task<string> expireALlPastDueDate();
