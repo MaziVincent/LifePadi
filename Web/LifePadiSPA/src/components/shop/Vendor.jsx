@@ -412,7 +412,11 @@ const Vendor = () => {
         return;
       }
       if(cartState.voucher?.DiscountPercentage){
+<<<<<<< HEAD
         const deliveryFee = Math.trunc( 1500 - ((cartState.voucher?.DiscountPercentage / 100) * (1500) ));
+=======
+        const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
+>>>>>>> 8716353 (percent voucher)
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
