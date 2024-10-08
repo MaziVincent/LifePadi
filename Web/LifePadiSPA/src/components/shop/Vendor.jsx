@@ -267,7 +267,7 @@ const Vendor = () => {
         return;
       }
       if(cartState.voucher?.DiscountPercentage){
-        const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
+        const deliveryFee = Math.trunc( 1500 - ((cartState.voucher?.DiscountPercentage / 100) * (1500) ));
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
