@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'errands.g.dart';
 
 @riverpod
-FutureOr<List<Errand>> errands(ErrandsRef ref, {int pageSize = 10}) async {
+FutureOr<List<Errand>> errands(ErrandsRef ref, {int pageSize = 200}) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
     '/service/all',

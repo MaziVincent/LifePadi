@@ -38,7 +38,7 @@ class CategoryProducts extends HookConsumerWidget {
       [categoryId],
     );
 
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () => Future.sync(controller.refresh),
       child: MyPagedListView<int, Product>.separated(
         shrinkWrap: true,
