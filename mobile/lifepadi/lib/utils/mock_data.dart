@@ -3,7 +3,7 @@ import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/extensions.dart';
 
 List<({String name, String image})> mockErrands = [
   (name: 'Cooking gas', image: Assets.icons.cookingGas.path),

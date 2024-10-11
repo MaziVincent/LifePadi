@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:remixicon/remixicon.dart';
 
 class ProfileImageAndLocation extends StatelessWidget {

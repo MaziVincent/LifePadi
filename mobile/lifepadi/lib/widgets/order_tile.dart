@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/extensions.dart';
 
 import 'order_status_widget.dart';
 

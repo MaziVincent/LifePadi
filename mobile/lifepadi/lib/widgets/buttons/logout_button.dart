@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/buttons/primary_outline_button.dart';
 

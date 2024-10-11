@@ -4,7 +4,7 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 
 class ErrandTile extends HookWidget {

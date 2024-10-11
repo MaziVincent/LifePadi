@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/extensions.dart';
 
 class SenderChatBubble extends StatelessWidget {
   const SenderChatBubble({

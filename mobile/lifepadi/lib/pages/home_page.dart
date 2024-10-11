@@ -10,6 +10,7 @@ import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';

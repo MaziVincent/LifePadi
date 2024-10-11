@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/countdown_transition.dart';
 import 'package:lifepadi/widgets/loading_wheel.dart';
