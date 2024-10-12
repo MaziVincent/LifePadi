@@ -379,7 +379,14 @@ namespace Api.Services
         {
             try
             {
+<<<<<<< HEAD
                 var order = await _dbContext!.Orders.FirstOrDefaultAsync(o => o.Id == id);
+=======
+                var order = await _dbContext!.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product).ThenInclude(i => i.Vendor)!
+                    .FirstOrDefaultAsync(o => o.Id == id);
+>>>>>>> 4c51c8f (new commit)
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<OrderDto>(order);
                 return OrderDto;

@@ -115,6 +115,7 @@ const baseUrl = 'https://localhost:7216/api/'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9bb5b03 (still working on register)
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
@@ -194,6 +195,10 @@ const baseUrl ='https://localhost:7216/api/'
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 //const baseUrl ='https://localhost:7216/api/'
 >>>>>>> 33a02a9 (percent voucher)
+=======
+//const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
+const baseUrl ='https://localhost:7216/api/'
+>>>>>>> cf9b767 (new commit)
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 

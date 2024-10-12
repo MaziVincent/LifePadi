@@ -122,6 +122,7 @@ const AdminOrderDetails = () => {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log(order);
 
   const handleAssignRider = () => {
@@ -135,6 +136,9 @@ setAssignRider(true)
 >>>>>>> 7fa87ff (user dashboard commit)
 =======
   console.log(logistics);
+=======
+  console.log(order);
+>>>>>>> 4c51c8f (new commit)
 
   const handleAssignRider = () => {
     setAssignRider(true);
@@ -322,6 +326,9 @@ setAssignRider(true)
                 <thead className="text-xs text-gray-700 uppercase bg-gray dark:bg-darkHover dark:text-gray-400">
                   <tr>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4c51c8f (new commit)
                   <th
                       scope="col"
                       className="px-4 py-3"
@@ -391,14 +398,20 @@ setAssignRider(true)
                         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4c51c8f (new commit)
                         {item.Product?.Vendor?.Name}
                       </th>
                       <th
                         scope="row"
                         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
+<<<<<<< HEAD
 =======
 >>>>>>> 7fa87ff (user dashboard commit)
+=======
+>>>>>>> 4c51c8f (new commit)
                         {item.Name}
                       </th>
                       <td className="px-4 py-3">{item.Quantity}</td>
