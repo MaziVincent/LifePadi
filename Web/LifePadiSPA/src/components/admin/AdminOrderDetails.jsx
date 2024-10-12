@@ -95,7 +95,7 @@ const AdminOrderDetails = () => {
     enabled: order?.Type === "Logistics",
   });
 
-  console.log(logistics);
+  console.log(order);
 
   const handleAssignRider = () => {
     setAssignRider(true);
@@ -210,6 +210,12 @@ const AdminOrderDetails = () => {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray dark:bg-darkHover dark:text-gray-400">
                   <tr>
+                  <th
+                      scope="col"
+                      className="px-4 py-3"
+                    >
+                      Vendor Name
+                    </th>
                     <th
                       scope="col"
                       className="px-4 py-3"
@@ -262,6 +268,12 @@ const AdminOrderDetails = () => {
                       key={item.Id}
                       className="border-b dark:border-gray-700"
                     >
+                      <th
+                        scope="row"
+                        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {item.Product?.Vendor?.Name}
+                      </th>
                       <th
                         scope="row"
                         className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"

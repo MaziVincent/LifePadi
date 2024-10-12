@@ -137,7 +137,7 @@ namespace Api.Services
             {
                 var order = await _dbContext!.Orders
                     .Include(o => o.Customer)
-                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product)
+                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product).ThenInclude(i => i.Vendor)!
                     .FirstOrDefaultAsync(o => o.Id == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<OrderDto>(order);
