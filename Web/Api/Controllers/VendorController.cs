@@ -36,7 +36,8 @@ namespace Api.Controllers
                     vendors.PageSize,
                     vendors.TotalPages,
                     vendors.TotalCount,
-                    vendors.CurrentPage
+                    vendors.CurrentPage,
+                    vendors.HasNext
                 };
                 return Ok(new {result, dataList});
             }catch (Exception ex)
