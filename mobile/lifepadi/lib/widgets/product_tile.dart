@@ -27,6 +27,7 @@ class ProductTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isInWishlist = useState(isInWishlistInitial);
+    final isInCart = useState(false);
 
     return InkWell(
       onTap: () async => ProductDetailsRoute(id).push(context),
@@ -79,10 +80,31 @@ class ProductTile extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SectionTitle(
-                    name,
-                    color: const Color(0xFF212121),
-                    handleOverFlow: true,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SectionTitle(
+                        name,
+                        color: const Color(0xFF212121),
+                        handleOverFlow: true,
+                      ),
+
+                      /// Toggle cart
+                      GestureDetector(
+                        onTap: () {
+                          isInCart.value = !isInCart.value;
+
+                          // TODO: Toggle in wishlist
+                        },
+                        child: Icon(
+                          isInCart.value
+                              ? MdiIcons.checkCircle
+                              : MdiIcons.cartPlus,
+                          color: const Color(0xFF1BAC4B),
+                          size: 22.r,
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     vendor,
@@ -133,19 +155,25 @@ class ProductTile extends HookWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            isInWishlist.value = !isInWishlist.value;
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            /// Toggle wishlist
+                            GestureDetector(
+                              onTap: () {
+                                isInWishlist.value = !isInWishlist.value;
 
-                            // TODO: Toggle in wishlist
-                          },
-                          icon: Icon(
-                            isInWishlist.value
-                                ? MdiIcons.heart
-                                : MdiIcons.heartOutline,
-                            color: const Color(0xFFF14336),
-                          ),
-                          iconSize: 20.r,
+                                // TODO: Toggle in wishlist
+                              },
+                              child: Icon(
+                                isInWishlist.value
+                                    ? MdiIcons.heart
+                                    : MdiIcons.heartOutline,
+                                color: const Color(0xFFF14336),
+                                size: 22.r,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
