@@ -11,6 +11,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 import CategorySkeleton from "../shared/CategorySkeleton";
 import VendorSkeleton from "../shared/VendorSkeleton";
+import LoadingGif from "../shared/LodingGif"
 
 // const catBackgrounds = [
 //   "bg-lightcyan",
@@ -20,10 +21,16 @@ import VendorSkeleton from "../shared/VendorSkeleton";
 // ];
 
 function getRandomCoolHexColor() {
-  const red = Math.floor(Math.random() * 50).toString(16).padStart(2, '0'); // Keep red low
-  const green = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Green between 50-150
-  const blue = (Math.floor(Math.random() * 50) + 50).toString(16).padStart(2, '0'); // Blue between 100-200
-  
+  const red = Math.floor(Math.random() * 50)
+    .toString(16)
+    .padStart(2, "0"); // Keep red low
+  const green = (Math.floor(Math.random() * 50) + 50)
+    .toString(16)
+    .padStart(2, "0"); // Green between 50-150
+  const blue = (Math.floor(Math.random() * 50) + 50)
+    .toString(16)
+    .padStart(2, "0"); // Blue between 100-200
+
   return `#${red}${green}${blue}`;
 }
 
@@ -43,16 +50,18 @@ const Shop = () => {
     return response.data;
   };
 
-  const { data, isError, isLoading, isSuccess } = useQuery({
+  const { data, isError, isLoading, isSuccess, isFetching } = useQuery({
     queryKey: ["vendors", page, search],
     queryFn: () =>
-      getVendors(`${url}/all?PageNumber=${page}&SearchString=${search}`),
+      getVendors(
+        `${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=5`
+      ),
     keepPreviousData: true,
-    staleTime: 20000,
+    staleTime: 10000,
     refetchOnMount: "always",
   });
 
-  // console.log(data);
+  console.log(data);
   const getVendorCategories = useCallback(async () => {
     try {
       const result = await fetch(`${baseUrl}vendorcategory/all`);
@@ -72,6 +81,13 @@ const Shop = () => {
   const handleVendors = (data) => {
     setVendors(data);
   };
+
+  const loadMore = () => {
+    if(data?.dataList.HasNext){
+      setPage((prev) => prev + 1);
+    }
+    
+  };
   //console.log(vendorCategories);
   return (
     <div className="flex flex-col dark:bg-darkBg dark:text-primary gap-4 ">
@@ -88,9 +104,8 @@ const Shop = () => {
             {vendorCategories?.result?.map((category, index) => (
               <div
                 key={category.Id}
-                style={{backgroundColor: getRandomCoolHexColor(),}}
+                style={{ backgroundColor: getRandomCoolHexColor() }}
                 className={` flex flex-col min-w-32 justify-center items-center  bg-opacity-10 py-4 px-2 rounded-lg shadow-md `}
-               
                 onClick={() => handleVendors(category.Vendors)}
               >
                 <Link className="flex flex-col items-center cursor-pointer">
@@ -115,11 +130,11 @@ const Shop = () => {
         </div>
 
         {isSuccess && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 w-full p-1 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-8 w-full p-1 max-w-7xl ">
             {vendors.map((vendor) => (
               <div
                 key={vendor.Id}
-                className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg shadow-md dark:shadow-darkMenu"
+                className=" flex flex-col items-center dark:hover:bg-darkHover rounded-lg shadow-md dark:shadow-darkMenu "
               >
                 <Link
                   to={`/shop/vendor/${vendor.Id}`}
@@ -160,6 +175,21 @@ const Shop = () => {
                 </Link>
               </div>
             ))}
+            <div className=" w-full flex justify-center p-4 border md:col-span-2 lg:col-span-3">
+              <button className=" py-2 px-2 border border-background rounded-lg">
+                {
+                  isFetching && <LoadingGif />
+                }
+                {
+                  data?.dataList.HasNext && !isFetching &&  <span className=" text-secondary">View More</span>
+                }
+
+                {
+                  !data?.dataList.HasNext && !isFetching && <span className=" text-secondary">No More Vendors to load </span>
+                }
+               
+              </button>
+            </div>
           </div>
         )}
         {isLoading && (
@@ -169,12 +199,6 @@ const Shop = () => {
             <VendorSkeleton />
           </div>
         )}
-
-        <div className=" w-full flex justify-center p-4">
-          <button className=" py-2 px-2 border border-background rounded-lg">
-            <Link className=" text-secondary">View More</Link>
-          </button>
-        </div>
       </div>
     </div>
   );
