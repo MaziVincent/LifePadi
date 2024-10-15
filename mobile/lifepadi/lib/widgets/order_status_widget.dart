@@ -58,9 +58,9 @@ class OrderStatusWidget extends StatelessWidget {
               ),
             ),
           ],
-        OrderStatus.canceled => [
+        OrderStatus.cancelled => [
             Text(
-              'Canceled',
+              'Cancelled',
               style: context.textTheme.bodySmall?.copyWith(
                 color: const Color(0xFFF52311),
                 fontSize: 12.sp,

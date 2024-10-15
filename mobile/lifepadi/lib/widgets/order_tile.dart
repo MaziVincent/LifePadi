@@ -12,7 +12,7 @@ enum OrderStatus {
   pending,
   ongoing,
   completed,
-  canceled,
+  cancelled,
 }
 
 class OrderTile extends StatelessWidget {

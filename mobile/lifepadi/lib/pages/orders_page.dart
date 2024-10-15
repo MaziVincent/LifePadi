@@ -34,7 +34,7 @@ class OrdersPage extends StatelessWidget {
               Tab(text: 'Pending', height: 39.h),
               Tab(text: 'Ongoing', height: 39.h),
               Tab(text: 'Completed', height: 39.h),
-              Tab(text: 'Canceled', height: 39.h),
+              Tab(text: 'Cancelled', height: 39.h),
             ],
             dividerHeight: 0,
             tabAlignment: TabAlignment.fill,
@@ -68,7 +68,7 @@ class OrdersPage extends StatelessWidget {
               numberOfOrders: 4,
             ),
             MyOrderList(
-              status: OrderStatus.canceled,
+              status: OrderStatus.cancelled,
               numberOfOrders: 1,
             ),
           ],
