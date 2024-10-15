@@ -46,7 +46,7 @@ const Shop = () => {
 
   const getVendors = async (url) => {
     const response = await fetch(url, auth.accessToken);
-    setVendors(response.data?.result);
+    // setVendors(response.data?.result);
     return response.data;
   };
 
@@ -54,14 +54,16 @@ const Shop = () => {
     queryKey: ["vendors", page, search],
     queryFn: () =>
       getVendors(
-        `${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=5`
+        `${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=6`
       ),
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
+    onSuccess:(newData) => {
+      setVendors((prev) => [...prev, ...newData?.result])
+    }
   });
 
-  console.log(data);
   const getVendorCategories = useCallback(async () => {
     try {
       const result = await fetch(`${baseUrl}vendorcategory/all`);
@@ -175,8 +177,8 @@ const Shop = () => {
                 </Link>
               </div>
             ))}
-            <div className=" w-full flex justify-center p-4 border md:col-span-2 lg:col-span-3">
-              <button className=" py-2 px-2 border border-background rounded-lg">
+            <div className=" w-full flex justify-center p-4  md:col-span-2 lg:col-span-3">
+              <button onClick={loadMore} className=" py-2 px-2 border border-background rounded-lg">
                 {
                   isFetching && <LoadingGif />
                 }
