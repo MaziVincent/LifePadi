@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/widgets/order_tile.dart';
 
 class OrderStatusWidget extends StatelessWidget {
   const OrderStatusWidget({

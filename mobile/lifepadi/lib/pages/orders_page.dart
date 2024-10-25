@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -57,19 +58,15 @@ class OrdersPage extends StatelessWidget {
           children: [
             MyOrderList(
               status: OrderStatus.pending,
-              numberOfOrders: 2,
             ),
             MyOrderList(
               status: OrderStatus.ongoing,
-              numberOfOrders: 3,
             ),
             MyOrderList(
               status: OrderStatus.completed,
-              numberOfOrders: 4,
             ),
             MyOrderList(
               status: OrderStatus.cancelled,
-              numberOfOrders: 1,
             ),
           ],
         ),
