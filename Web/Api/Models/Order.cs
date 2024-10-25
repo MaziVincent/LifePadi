@@ -13,7 +13,7 @@
         public string? Order_Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        
+        public double? TotalAmount { get; set; }
         public List<OrderItem>? OrderItems { get; set; }
         public List<Logistic>? Logistics { get; set; }
 
