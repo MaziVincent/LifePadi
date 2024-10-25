@@ -28,7 +28,7 @@ class OrderDetailsPage extends ConsumerWidget {
           MyIconButton(
             icon: Remix.more_2_fill,
             onPressed: () {
-              // TODO: Add a popup menu with option: Get Receipt (Go to receipt page).
+              // Can have popup menu with option: Get Receipt (Go to receipt page).
             },
           ),
         ],
