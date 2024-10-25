@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/utils/cache_for.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'nuclear_codes.g.dart';
 
 @riverpod
-FutureOr<List<(IconData, String)>> nuclearCodes(NuclearCodesRef ref) async {
+FutureOr<List<(IconData, String)>> nuclearCodes(Ref ref) async {
   // A proper mock of a simple request. I guess requesting nuclear codes is simple.
   await Future<void>.delayed(800.milliseconds);
 

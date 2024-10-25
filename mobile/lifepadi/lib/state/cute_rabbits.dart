@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/utils/cache_for.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cute_rabbits.g.dart';
 
 @riverpod
-FutureOr<List<(IconData, String)>> cuteRabbits(CuteRabbitsRef ref) async {
+FutureOr<List<(IconData, String)>> cuteRabbits(Ref ref) async {
   // A proper mock of a simple request. I guess adopting a rabbit is simple.
   await Future<void>.delayed(800.milliseconds);
 

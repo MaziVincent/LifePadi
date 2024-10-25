@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart' show kRemoteApiUrl;
 import 'package:lifepadi/utils/helpers.dart' show JsonMap, logger;
@@ -9,7 +10,7 @@ part 'client.g.dart';
 /// HTTP client
 @riverpod
 Dio dio(
-  DioRef ref, {
+  Ref ref, {
   bool secured = true,
   bool logRequest = false,
   bool logRequestHeader = false,
@@ -40,7 +41,7 @@ Dio dio(
 
 /// Adds the Authorization header to the request if the user is signed in.
 @riverpod
-Interceptor authInterceptor(AuthInterceptorRef ref) {
+Interceptor authInterceptor(Ref ref) {
   return InterceptorsWrapper(
     onRequest: (options, handler) async {
       final user = ref.read(authControllerProvider);
@@ -61,7 +62,7 @@ Interceptor authInterceptor(AuthInterceptorRef ref) {
 /// Logs the request and response of the HTTP client
 @riverpod
 Interceptor loggingInterceptor(
-  LoggingInterceptorRef ref, {
+  Ref ref, {
   bool request = false,
   bool requestHeader = false,
   bool requestBody = false,
@@ -87,7 +88,7 @@ Interceptor loggingInterceptor(
 /// if it succeeds, it updates the access token and then retries the request with the new token.
 /// if it fails, it logs out the user.
 @riverpod
-Interceptor refreshInterceptor(RefreshInterceptorRef ref) {
+Interceptor refreshInterceptor(Ref ref) {
   return InterceptorsWrapper(
     onError: (error, handler) async {
       if (error.response?.statusCode == 401 ||

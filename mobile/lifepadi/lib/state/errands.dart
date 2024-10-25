@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/errand.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/cache_for.dart';
@@ -8,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'errands.g.dart';
 
 @riverpod
-FutureOr<List<Errand>> errands(ErrandsRef ref, {int pageSize = 200}) async {
+FutureOr<List<Errand>> errands(Ref ref, {int pageSize = 200}) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
     '/service/all',
