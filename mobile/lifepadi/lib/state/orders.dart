@@ -9,6 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'orders.g.dart';
 
+/// Retrieves a list of orders from the server.
 @Riverpod(keepAlive: true)
 FutureOr<List<Order>> orders(
   Ref ref, {
@@ -42,4 +43,17 @@ FutureOr<List<Order>> orders(
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();
+}
+
+/// Fetches a single order from the server.
+@riverpod
+FutureOr<Order> order(Ref ref, int id) async {
+  final client = ref.read(dioProvider());
+  final response = await client.get<JsonMap>('/order/get/$id');
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  ref.cache();
+  return OrderMapper.fromMap(response.data!);
 }

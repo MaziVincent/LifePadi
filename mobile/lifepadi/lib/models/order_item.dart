@@ -25,7 +25,7 @@ class OrderItem with OrderItemMappable {
   final double amount;
   @MappableField(key: 'TotalAmount')
   final double totalAmount;
-  @MappableField(key: 'TotalAmount')
+  @MappableField(key: 'Name')
   final String name;
   @MappableField(key: 'Weight')
   final double? weight;

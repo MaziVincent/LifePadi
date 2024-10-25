@@ -12,14 +12,18 @@ class OrderTile extends StatelessWidget {
   const OrderTile({
     super.key,
     required this.order,
+    this.isMock = false,
   });
 
   final Order order;
+  final bool isMock;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.go(const OrderDetailsRoute(id: 1).location),
+      onTap: isMock
+          ? null
+          : () => context.go(OrderDetailsRoute(id: order.id).location),
       child: Ink(
         width: double.infinity,
         decoration: const BoxDecoration(
