@@ -1,4 +1,4 @@
-library widgets;
+library;
 
 export 'package:flutter/material.dart';
 export 'package:super_sliver_list/super_sliver_list.dart';

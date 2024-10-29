@@ -1,4 +1,4 @@
-library pages;
+library;
 
 export 'admin_page.dart';
 export 'cart_page.dart';

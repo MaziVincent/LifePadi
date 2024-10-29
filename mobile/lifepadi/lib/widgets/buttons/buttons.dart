@@ -1,4 +1,4 @@
-library buttons;
+library;
 
 export 'action_button.dart';
 export 'circular_button.dart';
