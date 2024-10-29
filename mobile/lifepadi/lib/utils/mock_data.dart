@@ -14,30 +14,6 @@ List<({String name, String image})> mockErrands = [
   (name: 'Gas filling', image: Assets.icons.gasFilling.path),
 ];
 
-const mockTopCategories = [
-  'All',
-  'Fashion',
-  'Agro-product',
-  'Stationary',
-  'Pharmaceutical',
-  'Furniture',
-];
-
-List<({String name, String image})> mockCategories = [
-  (name: 'Vegetables', image: Assets.images.categories.vegetable.path),
-  (name: 'Fruits', image: Assets.images.categories.fruit.path),
-  (name: 'Beverages', image: Assets.images.categories.beverage.path),
-  (name: 'Grocery', image: Assets.images.categories.grocery.path),
-  (name: 'Edible Oil', image: Assets.images.categories.edibleOil.path),
-  (name: 'Household', image: Assets.images.categories.household.path),
-  (name: 'Babycare', image: Assets.images.categories.babycare.path),
-  (name: 'Electronics', image: Assets.images.categories.electronic.path),
-  (name: 'Fashion', image: Assets.images.categories.fashion.path),
-  (name: 'Pharmaceutical', image: Assets.images.categories.pharmaceutical.path),
-  (name: 'Furniture', image: Assets.images.categories.furniture.path),
-  (name: 'Agro', image: Assets.images.categories.agro.path),
-];
-
 List<
     ({
       int id,

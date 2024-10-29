@@ -2,15 +2,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/models/category.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
     required this.category,
+    this.onTap,
   });
 
-  final ({String image, String name}) category;
+  final Category category;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,7 @@ class CategoryCard extends StatelessWidget {
     );
 
     return InkWell(
-      onTap: () {
-        // TODO: Go to category single
-      },
+      onTap: onTap,
       customBorder: roundedRectangleBorder,
       child: Ink(
         width: 103.26.h,
@@ -34,16 +37,18 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 56.79.h,
-              height: 56.79.h,
-              decoration: BoxDecoration(
-                color: colors.outer,
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                category.image,
-                color: colors.inner,
+            Skeleton.leaf(
+              child: Container(
+                width: 56.79.h,
+                height: 56.79.h,
+                decoration: BoxDecoration(
+                  color: colors.outer,
+                  shape: BoxShape.circle,
+                ),
+                child: Image.asset(
+                  Assets.images.categories.fruit.path,
+                  color: colors.inner,
+                ),
               ),
             ),
             7.75.verticalSpace,

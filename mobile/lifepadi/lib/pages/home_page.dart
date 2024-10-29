@@ -255,11 +255,11 @@ class HomePage extends HookConsumerWidget {
                     height: 43.h,
                     child: SuperListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount: mockTopCategories.length,
+                      itemCount: 6,
                       itemBuilder: (context, index) => Skeleton.leaf(
                         child: CategoryTab(
                           isActive: index == activeCategoryIndex.value,
-                          name: mockTopCategories[index],
+                          name: BoneMock.name,
                           onTap: () {},
                         ),
                       ),
@@ -271,7 +271,7 @@ class HomePage extends HookConsumerWidget {
                 22.72.verticalSpace,
                 Skeletonizer(
                   child: HeaderWithSeeAll(
-                    title: 'Products in ${mockTopCategories.first}',
+                    title: 'Products in ${BoneMock.name}',
                     onSeeAllTap: () {},
                   ),
                 ),
