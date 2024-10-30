@@ -23,8 +23,7 @@ class ProductTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isInCart = useState(false);
-    final isInWishlist =
-        useState(ref.read(wishlistProvider.notifier).isInWishlist(product.id));
+    final isInWishlist = ref.watch(wishlistProvider).contains(product);
 
     return InkWell(
       onTap: () async => ProductDetailsRoute(product.id).push(context),
@@ -164,10 +163,9 @@ class ProductTile extends HookConsumerWidget {
                                 ref
                                     .read(wishlistProvider.notifier)
                                     .toggle(product);
-                                isInWishlist.value = !isInWishlist.value;
                               },
                               child: Icon(
-                                isInWishlist.value
+                                isInWishlist
                                     ? MdiIcons.heart
                                     : MdiIcons.heartOutline,
                                 color: const Color(0xFFF14336),
