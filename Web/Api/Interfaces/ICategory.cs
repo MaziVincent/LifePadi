@@ -14,10 +14,11 @@ namespace Api.Interfaces
         public Task<CategoryDto> getByNameAsync(string name);
         public Task<string> deleteAsync(int id);
         public Task<CategoryDto> updateAsync(CategoryDto category, int id);
-        public Task<CategoryDto> createAsync(CategoryDtoLite category);
+        public Task<CategoryDto> createAsync(CreateCategoryDto category);
         public Task<int> numberOfCategories();
         public Task<object> categoryStats();
         public Task<IEnumerable<CategoryDto>> vendorCategories(int vendorId);
+        public Task<string> uploadIconAsync(int id, IFormFile Icon);
 
     }
 }
