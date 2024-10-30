@@ -64,15 +64,23 @@ namespace Api.Interfaces
 =======
 =======
         public Task<CategoryDto> updateAsync(CategoryDto category, int id);
+<<<<<<< HEAD
         public Task<CategoryDto> createAsync(CategoryDtoLite category);
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public Task<CategoryDto> createAsync(CreateCategoryDto category);
+>>>>>>> 59a2135 (added icon to the category model)
         public Task<int> numberOfCategories();
         public Task<object> categoryStats();
 <<<<<<< HEAD
 >>>>>>> 98415b4 (done with dashboard)
 =======
         public Task<IEnumerable<CategoryDto>> vendorCategories(int vendorId);
+<<<<<<< HEAD
 >>>>>>> 867b7f3 (added a route for vendorCategories)
+=======
+        public Task<string> uploadIconAsync(int id, IFormFile Icon);
+>>>>>>> 59a2135 (added icon to the category model)
 
     }
 }

@@ -88,6 +88,7 @@ namespace Api.Controllers
         [HttpPost("create")]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
 =======
         public async Task<IActionResult> create([FromForm] CategoryDTOLite category)
@@ -95,6 +96,9 @@ namespace Api.Controllers
 =======
         public async Task<IActionResult> create([FromForm] CategoryDtoLite category)
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+        public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
+>>>>>>> 59a2135 (added icon to the category model)
         {
             try
             {
@@ -104,9 +108,13 @@ namespace Api.Controllers
             }catch (Exception ex)
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+                if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
+>>>>>>> 59a2135 (added icon to the category model)
                 return BadRequest(ex.Message);
             }
         }
@@ -248,6 +256,9 @@ namespace Api.Controllers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 59a2135 (added icon to the category model)
 
         [HttpPut("{id}/uploadIcon")]
         public async Task<IActionResult> uploadIcon(int id, [FromForm] IFormFile Icon)
@@ -263,11 +274,14 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
 >>>>>>> 867b7f3 (added a route for vendorCategories)
 =======
 >>>>>>> db55c17 (added a route for products under a category with pagination)
+=======
+>>>>>>> 59a2135 (added icon to the category model)
     }
 }

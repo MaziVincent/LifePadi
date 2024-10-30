@@ -211,6 +211,8 @@ namespace Api.Services
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryDtoLite>();
             CreateMap<CategoryDtoLite, Category>();
+            CreateMap<CreateCategoryDto, Category>();
+            CreateMap<Category, CreateCategoryDto>();
 
             //OrderItem
             CreateMap<OrderItemDto, OrderItem>();
