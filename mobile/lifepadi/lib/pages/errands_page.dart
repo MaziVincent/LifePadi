@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/errands.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -50,11 +50,11 @@ class ErrandsPage extends ConsumerWidget {
                   mainAxisSpacing: 10.r,
                   childAspectRatio: 0.7.r,
                 ),
-                itemCount: mockErrands.length,
+                itemCount: 6,
                 itemBuilder: (context, index) {
                   return ErrandCard(
-                    name: mockErrands[index].name,
-                    imageUrl: mockErrands[index].image,
+                    name: BoneMock.name,
+                    imageUrl: Assets.icons.cookingGas.path,
                     onTap: () {},
                   );
                 },

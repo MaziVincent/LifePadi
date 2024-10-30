@@ -9,10 +9,10 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/vendors.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -154,11 +154,11 @@ class HomePage extends HookConsumerWidget {
                 const Text('Woah, something went wrong'),
               ],
               loading: () => [
-                for (final v in mockVendors.take(4))
+                for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
                     child: VendorCard(
-                      name: v.name,
-                      image: AssetImage(v.imageUrl!),
+                      name: BoneMock.name,
+                      image: Assets.images.vendors.shoprite.provider(),
                       onTap: () {},
                     ),
                   ),
@@ -188,11 +188,11 @@ class HomePage extends HookConsumerWidget {
                 const Text('Woah, something went wrong'),
               ],
               loading: () => [
-                for (final (:name, :image) in mockErrands.take(4))
+                for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
                     child: ErrandCard(
-                      name: name,
-                      imageUrl: image,
+                      name: BoneMock.name,
+                      imageUrl: Assets.icons.cookingGas.path,
                       onTap: () {},
                       isNetworkImage: false,
                     ),
