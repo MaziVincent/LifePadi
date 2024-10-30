@@ -1,6 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/utils/mock_data.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -16,14 +16,10 @@ class MockProductsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (final product in mockProducts.take(count))
+        for (final i in List.generate(count, (index) => index))
           Skeletonizer(
             child: ProductTile(
-              id: product.id,
-              image: AssetImage(product.imageUrl),
-              name: product.name,
-              vendor: product.vendor.name,
-              price: product.price,
+              product: makeFakeProduct(id: i),
             ),
           ),
       ].separatedBy(14.verticalSpace),

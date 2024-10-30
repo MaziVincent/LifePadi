@@ -46,3 +46,5 @@ final kTestCacheTime = 10.seconds;
 
 /// The cache time for the app on production
 final kCacheTime = 10.minutes;
+
+const kWishlistKey = 'wishlist';

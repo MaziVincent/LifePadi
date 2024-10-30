@@ -17,18 +17,23 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (handleOverFlow && title.length > 15) {
-      return Tooltip(
-        message: title,
-        showDuration: 2.seconds,
-        triggerMode: TooltipTriggerMode.tap,
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: color,
-                overflow: TextOverflow.ellipsis,
-              ),
+      return Expanded(
+        child: SizedBox(
+          width: 18.w,
+          child: Tooltip(
+            message: title,
+            showDuration: 2.seconds,
+            triggerMode: TooltipTriggerMode.tap,
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: color,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            ),
+          ),
         ),
       );
     }

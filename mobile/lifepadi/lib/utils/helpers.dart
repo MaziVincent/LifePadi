@@ -6,10 +6,13 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifepadi/models/product.dart';
+import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/choice_alert_dialog.dart';
 import 'package:logger/logger.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'constants.dart';
 
@@ -224,4 +227,25 @@ JsonMap stripAuth(JsonMap json) {
   json['refreshToken'] = '';
   json['Role'] = UserRole.guest.toValue();
   return json;
+}
+
+Product makeFakeProduct({required int id}) {
+  return Product(
+    id: id,
+    name: 'Product $id',
+    imageUrl: 'foobarbaz',
+    price: 2000,
+    description: BoneMock.paragraph,
+    vendor: Vendor(
+      id: 1,
+      name: 'Vendor $id',
+      imageUrl: 'foobarbaz',
+      email: BoneMock.email,
+      phoneNumber: BoneMock.phone,
+      address: BoneMock.address,
+      role: UserRole.guest,
+      accessToken: '',
+      refreshToken: '',
+    ),
+  );
 }

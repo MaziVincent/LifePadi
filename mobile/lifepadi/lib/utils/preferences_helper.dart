@@ -5,9 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
   static SharedPreferences? _prefs;
-  final Map<String, dynamic> _memoryPrefs = {};
+  static final Map<String, dynamic> _memoryPrefs = {};
 
-  Future<void> load() async {
+  static Future<void> load() async {
     _prefs ??= await SharedPreferences.getInstance();
     final keys = _prefs!.getKeys();
     if (keys.isNotEmpty) {
@@ -17,27 +17,27 @@ class PreferencesHelper {
     }
   }
 
-  void setString({required String key, required String value}) {
+  static void setString({required String key, required String value}) {
     _prefs!.setString(key, value);
     _memoryPrefs[key] = value;
   }
 
-  void setInt({required String key, required int value}) {
+  static void setInt({required String key, required int value}) {
     _prefs!.setInt(key, value);
     _memoryPrefs[key] = value;
   }
 
-  void setDouble({required String key, required double value}) {
+  static void setDouble({required String key, required double value}) {
     _prefs!.setDouble(key, value);
     _memoryPrefs[key] = value;
   }
 
-  void setBool({required String key, required bool value}) {
+  static void setBool({required String key, required bool value}) {
     _prefs!.setBool(key, value);
     _memoryPrefs[key] = value;
   }
 
-  void setStringList({
+  static void setStringList({
     required String key,
     required List<String> value,
   }) {
@@ -45,32 +45,33 @@ class PreferencesHelper {
     _memoryPrefs[key] = value;
   }
 
-  void remove(String key) {
+  static void remove(String key) {
     _prefs!.remove(key);
     _memoryPrefs.remove(key);
   }
 
-  String? getString(String key) => _memoryPrefs.containsKey(key)
+  static String? getString(String key) => _memoryPrefs.containsKey(key)
       ? _memoryPrefs[key] as String
       : _prefs!.getString(key);
 
-  int? getInt(String key) => _memoryPrefs.containsKey(key)
+  static int? getInt(String key) => _memoryPrefs.containsKey(key)
       ? _memoryPrefs[key] as int
       : _prefs!.getInt(key);
 
-  double? getDouble(String key) => _memoryPrefs.containsKey(key)
+  static double? getDouble(String key) => _memoryPrefs.containsKey(key)
       ? _memoryPrefs[key] as double
       : _prefs!.getDouble(key);
 
-  bool? getBool(String key) => _memoryPrefs.containsKey(key)
+  static bool? getBool(String key) => _memoryPrefs.containsKey(key)
       ? _memoryPrefs[key] as bool
       : _prefs!.getBool(key);
 
-  List<dynamic>? getStringList(String key) => _memoryPrefs.containsKey(key)
-      ? List<String>.from(_memoryPrefs[key] as Iterable)
-      : _prefs!.getStringList(key);
+  static List<String>? getStringList(String key) =>
+      _memoryPrefs.containsKey(key)
+          ? List<String>.from(_memoryPrefs[key] as Iterable)
+          : _prefs!.getStringList(key);
 
-  void cacheJsonString({
+  static void cacheJsonString({
     required String key,
     required String value,
     Duration expirationDuration = const Duration(minutes: 30),
@@ -84,7 +85,7 @@ class PreferencesHelper {
     setString(key: key, value: jsonEncode(item));
   }
 
-  String? getCachedJsonString({
+  static String? getCachedJsonString({
     required String key,
   }) {
     final data = getString(key);

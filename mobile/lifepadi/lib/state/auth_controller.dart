@@ -17,7 +17,6 @@ part 'auth_controller.g.dart';
 @riverpod
 class AuthController extends _$AuthController {
   final SecureStorageService _secureStorage = SecureStorageService();
-  final PreferencesHelper _prefs = PreferencesHelper();
   final _credentialsKey = 'currentUser';
 
   @override
@@ -27,11 +26,11 @@ class AuthController extends _$AuthController {
     /// the data doesn't get deleted even if the app is uninstalled.
     // check whether the app is starting for the first time after a fresh install
     const firstRun = 'LifepadiFirstRun';
-    if (_prefs.getBool(firstRun) ?? true) {
+    if (PreferencesHelper.getBool(firstRun) ?? true) {
       // delete FlutterSecureStorage items during uninstall/install
       await _secureStorage.removeAll();
 
-      _prefs.setBool(key: firstRun, value: false);
+      PreferencesHelper.setBool(key: firstRun, value: false);
     }
 
     _persistenceRefreshLogic();
@@ -95,9 +94,9 @@ class AuthController extends _$AuthController {
       final user = User.fromMap(response.data!);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
-      final hasEverLoggedIn = _prefs.getBool('hasEverLoggedIn');
+      final hasEverLoggedIn = PreferencesHelper.getBool('hasEverLoggedIn');
       if (hasEverLoggedIn == null) {
-        _prefs.setBool(key: 'hasEverLoggedIn', value: true);
+        PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
       }
       state = AsyncData(user);
     } catch (e) {
@@ -115,7 +114,7 @@ class AuthController extends _$AuthController {
   /// When the auth object is in an error state, we choose to remove the token
   /// Otherwise, we expect the current auth value to be reflected in our persitence API
   void _persistenceRefreshLogic() {
-    ref.listenSelf((_, next) {
+    listenSelf((_, next) {
       if (next.isLoading) return;
       if (next.hasError) {
         _secureStorage.remove(_credentialsKey).ignore();

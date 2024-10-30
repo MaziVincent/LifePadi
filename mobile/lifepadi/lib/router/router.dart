@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,8 +9,8 @@ import 'routes.dart';
 
 part 'router.g.dart';
 
-bool hasLoggedInBefore(PreferencesHelper prefs) {
-  final hasLoggedIn = prefs.getBool('hasEverLoggedIn');
+bool hasLoggedInBefore() {
+  final hasLoggedIn = PreferencesHelper.getBool('hasEverLoggedIn');
 
   if (hasLoggedIn == null) {
     return false;
@@ -31,9 +32,9 @@ bool hasLoggedInBefore(PreferencesHelper prefs) {
 /// You can always build more listenables and even merge more than one into a more complex `ChangeNotifier`,
 /// but that's up to your case and out of this scope.
 @riverpod
-GoRouter router(RouterRef ref) {
+GoRouter router(Ref ref) {
   final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
-  final prefs = PreferencesHelper()..load();
+
   ref
     ..onDispose(isAuth.dispose) // don't forget to clean after yourselves (:
     // update the listenable, when some provider value changes
@@ -62,7 +63,7 @@ GoRouter router(RouterRef ref) {
         const ResetPasswordRoute().location,
       ];
       final isLoggingIn = guestRoutes.contains(state.uri.path);
-      final locationBasedOnPreviousLogin = hasLoggedInBefore(prefs)
+      final locationBasedOnPreviousLogin = hasLoggedInBefore()
           ? const GetStartedRoute().location
           : const OnboardingRoute().location;
 

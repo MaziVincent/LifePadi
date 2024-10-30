@@ -1,36 +1,33 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconly/iconly.dart';
+import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/section_title.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductTile extends HookWidget {
+class ProductTile extends HookConsumerWidget {
   const ProductTile({
     super.key,
-    this.image,
-    required this.name,
-    required this.vendor,
-    required this.price,
-    required this.id,
-    this.isInWishlistInitial = false,
+    required this.product,
   });
 
-  final ImageProvider<Object>? image;
-  final String name, vendor;
-  final double price;
-  final int id;
-  final bool isInWishlistInitial;
+  final Product product;
 
   @override
-  Widget build(BuildContext context) {
-    final isInWishlist = useState(isInWishlistInitial);
+  Widget build(BuildContext context, WidgetRef ref) {
     final isInCart = useState(false);
+    final isInWishlist =
+        useState(ref.read(wishlistProvider.notifier).isInWishlist(product.id));
 
     return InkWell(
-      onTap: () async => ProductDetailsRoute(id).push(context),
+      onTap: () async => ProductDetailsRoute(product.id).push(context),
       customBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13.77.r),
       ),
@@ -58,19 +55,21 @@ class ProductTile extends HookWidget {
         ),
         child: Row(
           children: [
-            Container(
+            Skeleton.replace(
               width: 103.26.h,
               height: 103.26.h,
-              decoration: ShapeDecoration(
-                color: const Color(0xFFB9B9B9),
-                image: image != null
-                    ? DecorationImage(
-                        image: image!,
-                        fit: BoxFit.fill,
-                      )
-                    : null,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10).r,
+              child: Container(
+                width: 103.26.h,
+                height: 103.26.h,
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFB9B9B9),
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(product.imageUrl),
+                    fit: BoxFit.fill,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10).r,
+                  ),
                 ),
               ),
             ),
@@ -84,17 +83,18 @@ class ProductTile extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SectionTitle(
-                        name,
+                        product.name,
                         color: const Color(0xFF212121),
                         handleOverFlow: true,
                       ),
+                      7.74.horizontalSpace,
 
                       /// Toggle cart
                       GestureDetector(
                         onTap: () {
                           isInCart.value = !isInCart.value;
 
-                          // TODO: Toggle in wishlist
+                          // TODO: Toggle in cart
                         },
                         child: Icon(
                           isInCart.value
@@ -107,7 +107,7 @@ class ProductTile extends HookWidget {
                     ],
                   ),
                   Text(
-                    vendor,
+                    product.vendor.name,
                     style: context.textTheme.bodyLarge?.copyWith(
                       color: const Color(0xFFA1A5B0),
                       fontWeight: FontWeight.w400,
@@ -148,7 +148,7 @@ class ProductTile extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          price.currency,
+                          product.price.currency,
                           style: context.textTheme.bodyLarge?.copyWith(
                             color: const Color(0xFF1BAC4B),
                             fontSize: 16.sp,
@@ -161,9 +161,10 @@ class ProductTile extends HookWidget {
                             /// Toggle wishlist
                             GestureDetector(
                               onTap: () {
+                                ref
+                                    .read(wishlistProvider.notifier)
+                                    .toggle(product);
                                 isInWishlist.value = !isInWishlist.value;
-
-                                // TODO: Toggle in wishlist
                               },
                               child: Icon(
                                 isInWishlist.value

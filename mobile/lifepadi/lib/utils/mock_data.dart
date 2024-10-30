@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -80,30 +79,3 @@ final mockVendors = [
     refreshToken: '',
   ),
 ].repeat(3);
-
-final List<Product> mockProducts = [
-  Product(
-    id: 1,
-    name: 'BNB Blender',
-    description: 'High-quality blender for all your kitchen needs.',
-    price: 33000,
-    imageUrl: Assets.images.bnbBlender.path,
-    vendor: mockVendors[0],
-  ),
-  Product(
-    id: 2,
-    name: 'Oil Perfumes',
-    description: 'Exquisite oil perfumes for a lasting fragrance.',
-    price: 500,
-    imageUrl: Assets.images.oilPerfumes.path,
-    vendor: mockVendors[1],
-  ),
-  Product(
-    id: 3,
-    name: 'Plain Tees',
-    description: 'Comfortable plain tees for everyday wear.',
-    price: 5000,
-    imageUrl: Assets.images.plainTees.path,
-    vendor: mockVendors[2],
-  ),
-].repeat(2);
