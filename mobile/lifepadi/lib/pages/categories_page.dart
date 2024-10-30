@@ -13,7 +13,7 @@ class CategoriesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesProvider());
+    final categories = ref.watch(categoriesProvider(pageSize: 200));
     final random = Random();
 
     return Scaffold(
