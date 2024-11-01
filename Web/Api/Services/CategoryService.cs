@@ -4,8 +4,8 @@ using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Linq.Expressions;
+using CloudinaryDotNet;
+
 
 namespace Api.Services
 {
@@ -13,10 +13,19 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-        public CategoryService(DBContext dbContext, IMapper mapper)
+        private readonly IConfiguration _config;
+        private readonly Cloudinary _cloudinary;
+        public CategoryService(DBContext dbContext, IMapper mapper, IConfiguration config)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _config = config;
+            var account = new Account(
+                _config["CloudinarySettings:CloudName"],
+                _config["CloudinarySettings:ApiKey"],
+                _config["CloudinarySettings:ApiSecret"]
+            );
+            _cloudinary = new Cloudinary(account);
         }
         public async Task<PagedList<Category>> allAsync(SearchPaging props)
         {
@@ -128,11 +137,15 @@ namespace Api.Services
             }
         }
 
-        public async Task<CategoryDto> createAsync(CategoryDtoLite category)
+        public async Task<CategoryDto> createAsync(CreateCategoryDto category)
         {
             try
             {
+                var folderName = "ProductCategory";
+                var imgPath = await UploadImage.uploadImg(category.Icon!, _cloudinary, folderName);
+                if (imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
                 var newCategory = _mapper.Map<Category>(category);
+                newCategory.Icon = imgPath;
                 await _dbContext.Categories.AddAsync(newCategory);
                 await _dbContext.SaveChangesAsync();
                 var CategoryDto = _mapper.Map<CategoryDto>(newCategory);
@@ -242,6 +255,26 @@ namespace Api.Services
     .ToListAsync();
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> uploadIconAsync(int id, IFormFile Icon)
+        {
+            try
+            {
+                var folderName = "ProductCategory";
+                var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id);
+                if (category == null) return null!;
+                var imgPath = await UploadImage.uploadImg(Icon, _cloudinary, folderName);
+                if (imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
+                category.Icon = imgPath;
+                _dbContext.Categories.Attach(category);
+                await _dbContext.SaveChangesAsync();
+                return "Icon uploaded successfully";
             }
             catch (Exception ex)
             {

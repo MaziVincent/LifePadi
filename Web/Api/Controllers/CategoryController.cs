@@ -64,7 +64,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CategoryDtoLite category)
+        public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
         {
             try
             {
@@ -73,6 +73,7 @@ namespace Api.Controllers
                 return Ok(newCategory);
             }catch (Exception ex)
             {
+                if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
                 return BadRequest(ex.Message);
             }
         }
@@ -162,6 +163,21 @@ namespace Api.Controllers
                 return Ok(new {result, dataList});
             }catch (Exception ex)
             {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}/uploadIcon")]
+        public async Task<IActionResult> uploadIcon(int id, [FromForm] IFormFile Icon)
+        {
+            try
+            {
+                var response = await _icategory.uploadIconAsync(id, Icon);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
                 return BadRequest(ex.Message);
             }
         }
