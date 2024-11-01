@@ -42,7 +42,6 @@ class LocationCard extends StatelessWidget {
           children: [
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Assets.icons.location.svg(width: 24.r, height: 24.r),
                   8.horizontalSpace,
@@ -65,14 +64,6 @@ class LocationCard extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             color: const Color(0xFF27272A),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Text(
-                          'Phone • $phoneNumber',
-                          style: context.textTheme.titleMedium?.copyWith(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xFF27272A),
                           ),
                         ),
                         if (isDefault)

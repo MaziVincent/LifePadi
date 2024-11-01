@@ -35,15 +35,6 @@ class LocationsPage extends HookWidget {
               phoneNumber: '0901 234 5678',
               isDefault: true,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              child: SwitchInput(
-                value: location1.value,
-                onChanged: (value) {
-                  // TODO: Toggle location active/inactive state
-
-                  // For now, just update the UI
-                  location1.value = value;
-                },
-              ),
             ),
 
             /// Location card with switch that is off
@@ -57,15 +48,6 @@ class LocationsPage extends HookWidget {
               place: 'Soja, Lekki Lagos...',
               phoneNumber: '0901 234 5678',
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              child: SwitchInput(
-                value: location2.value,
-                onChanged: (value) {
-                  // TODO: Toggle location active/inactive state
-
-                  // For now, just update the UI
-                  location2.value = value;
-                },
-              ),
             ),
 
             PrimaryOutlineButton(
