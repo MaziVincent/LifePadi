@@ -36,6 +36,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
       routes: [
         TypedGoRoute<OrderDetailsRoute>(path: ':id'),
         TypedGoRoute<TrackOrderRoute>(path: 'track/:id'),
+        TypedGoRoute<TrackOrderMapRoute>(path: 'track/:id/map'),
       ],
     ),
     TypedGoRoute<ErrandsRoute>(
@@ -504,4 +505,17 @@ class WalletRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const WalletPage();
   }
+}
+
+class TrackOrderMapRoute extends GoRouteData {
+  const TrackOrderMapRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return TrackOrderMapPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }

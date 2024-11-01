@@ -46,18 +46,14 @@ class HomePage extends HookConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Current location',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: kLightTextColor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        letterSpacing: 0.16,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Current location',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: kLightTextColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    letterSpacing: 0.16,
+                  ),
                 ),
                 4.verticalSpace,
                 Text(

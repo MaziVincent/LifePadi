@@ -6,6 +6,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
 
 import '../utils/constants.dart';
 
@@ -34,8 +35,13 @@ class TrackOrderPage extends StatelessWidget {
               width: 18.h,
             ),
             onPressed: () {
-              // TODO: Add a popup menu with option: Get Receipt (Go to receipt page).
+              // Implement tracking order with QR code scan
             },
+          ),
+          MyIconButton(
+            icon: Remix.map_pin_5_line,
+            iconColor: kDarkPrimaryColor,
+            onPressed: () => context.push(TrackOrderMapRoute(id: id).location),
           ),
         ],
       ),
