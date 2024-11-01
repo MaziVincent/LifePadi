@@ -21,9 +21,9 @@ namespace Api.Services
             _mapper = mapper;
             _config = config;
             var account = new Account(
-                _config["CloudinarySettings:CloudName"],
-                _config["CloudinarySettings:ApiKey"],
-                _config["CloudinarySettings:ApiSecret"]
+                _config["Cloudinary:Cloud_Name"],
+                _config["Cloudinary:Api_Key"],
+                _config["Cloudinary:Api_Secret"]
             );
             _cloudinary = new Cloudinary(account);
         }
