@@ -1,5 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsPage extends HookWidget {
@@ -58,8 +59,11 @@ class LogisticsPage extends HookWidget {
               ),
               16.verticalSpace,
               LocationCard(
-                onTap: () {
-                  // TODO: Open bottom sheet to update location
+                onTap: () async {
+                  await displayBottomPanel(
+                    context,
+                    child: const EditLocationModalForm(),
+                  );
                 },
                 place: 'Soja, Lekki Lagos...',
                 phoneNumber: '0901 234 5678',
@@ -71,8 +75,11 @@ class LogisticsPage extends HookWidget {
               ),
               16.verticalSpace,
               LocationCard(
-                onTap: () {
-                  // TODO: Open bottom sheet to update location
+                onTap: () async {
+                  await displayBottomPanel(
+                    context,
+                    child: const EditLocationModalForm(),
+                  );
                 },
                 place: '3RD FLOOR DREAMLINK CONCEPTS',
                 phoneNumber: '0701 234 5678',

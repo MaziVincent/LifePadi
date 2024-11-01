@@ -5,6 +5,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -35,8 +36,11 @@ class CartPage extends HookWidget {
               const SectionTitle('Location'),
               12.verticalSpace,
               LocationCard(
-                onTap: () {
-                  // TODO: Open bottom sheet to update location
+                onTap: () async {
+                  await displayBottomPanel(
+                    context,
+                    child: const EditLocationModalForm(),
+                  );
                 },
                 place: '3RD FLOOR DREAMLINK CONCEPTS',
                 phoneNumber: '0701 234 5678',

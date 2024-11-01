@@ -26,7 +26,7 @@ class LocationsPage extends HookWidget {
             /// Location card with switch that is on
             LocationCard(
               onTap: () {
-                // TODO: Open bottom sheet with options to edit or delete location
+                // Edit or slide left to delete location
 
                 // For now, just go to edit location page
                 context.push(EditLocationRoute(id: 1).location);
@@ -49,7 +49,10 @@ class LocationsPage extends HookWidget {
             /// Location card with switch that is off
             LocationCard(
               onTap: () {
-                // TODO: Open bottom sheet with options to edit or delete location
+                // Edit or slide left to delete location
+
+                // For now, just go to edit location page
+                context.push(EditLocationRoute(id: 1).location);
               },
               place: 'Soja, Lekki Lagos...',
               phoneNumber: '0901 234 5678',
