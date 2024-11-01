@@ -38,7 +38,7 @@ class WishlistPage extends ConsumerWidget {
                   Icon(
                     MdiIcons.heart,
                     size: 60.sp,
-                    color: const Color(0xFF27272A),
+                    color: kDarkPrimaryColor,
                   ),
                   20.verticalSpace,
                   Text(

@@ -9,6 +9,7 @@ class LocationDetails {
     required this.state,
     required this.country,
     required this.postalCode,
+    required this.sublocality,
   });
   final double latitude;
   final double longitude;
@@ -17,6 +18,7 @@ class LocationDetails {
   final String state;
   final String country;
   final String postalCode;
+  final String sublocality;
 
   LatLng get latLng => LatLng(latitude, longitude);
 }

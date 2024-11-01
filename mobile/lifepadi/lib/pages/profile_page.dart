@@ -93,12 +93,6 @@ class ProfilePage extends HookWidget {
                             context.push(const LocationsRoute().location),
                       ),
                       AccountManagementTile(
-                        name: 'Payment Information',
-                        onTap: () {
-                          // TODO: Go to tentative page
-                        },
-                      ),
-                      AccountManagementTile(
                         name: 'Notification',
                         child: SwitchInput(
                           value: showNotifications.value,

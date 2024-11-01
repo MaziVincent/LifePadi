@@ -1,7 +1,6 @@
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/utils/exceptions.dart';
-import 'package:lifepadi/utils/helpers.dart';
 import 'package:location/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -54,9 +53,6 @@ class LocationInfo extends _$LocationInfo {
     }
 
     final placemark = placemarks.first;
-    logger
-      ..i('Location details')
-      ..i(placemark);
 
     return LocationDetails(
       latitude: currentLocation.latitude!,
@@ -66,6 +62,7 @@ class LocationInfo extends _$LocationInfo {
       state: '${placemark.administrativeArea}',
       country: '${placemark.country}',
       postalCode: '${placemark.postalCode}',
+      sublocality: '${placemark.subLocality}',
     );
   }
 
