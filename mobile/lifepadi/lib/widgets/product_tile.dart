@@ -1,18 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconly/iconly.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductTile extends HookConsumerWidget {
+class ProductTile extends ConsumerWidget {
   const ProductTile({
     super.key,
     required this.product,
@@ -22,8 +22,9 @@ class ProductTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isInCart = useState(false);
     final isInWishlist = ref.watch(wishlistProvider).contains(product);
+    final cartProducts = ref.watch(cartStateProvider).products;
+    final isInCart = cartProducts.any((p) => p.id == product.id);
 
     return InkWell(
       onTap: () async => ProductDetailsRoute(product.id).push(context),
@@ -91,14 +92,26 @@ class ProductTile extends HookConsumerWidget {
                       /// Toggle cart
                       GestureDetector(
                         onTap: () {
-                          isInCart.value = !isInCart.value;
-
-                          // TODO: Toggle in cart
+                          if (isInCart) {
+                            ref
+                                .read(cartStateProvider.notifier)
+                                .removeFromCart(product.id);
+                          } else {
+                            final productToAdd = Product(
+                              id: product.id,
+                              name: product.name,
+                              description: product.description,
+                              price: product.price,
+                              imageUrl: product.imageUrl,
+                              vendor: product.vendor,
+                            );
+                            ref
+                                .read(cartStateProvider.notifier)
+                                .addToCart(productToAdd);
+                          }
                         },
                         child: Icon(
-                          isInCart.value
-                              ? MdiIcons.checkCircle
-                              : MdiIcons.cartPlus,
+                          isInCart ? MdiIcons.checkCircle : MdiIcons.cartPlus,
                           color: const Color(0xFF1BAC4B),
                           size: 22.r,
                         ),

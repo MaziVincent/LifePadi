@@ -81,7 +81,12 @@ class CheckoutPage extends HookWidget {
                   ].separatedBy(8.verticalSpace),
                   Padding(
                     padding: EdgeInsets.only(top: 12.h),
-                    child: const PaymentTotal(totalPrice: 44300),
+                    child: const PaymentPrice(
+                      title: 'Total',
+                      amount: 44300,
+                      description:
+                          'This is the total amount of all the items in your cart.',
+                    ),
                   ),
                 ],
               ),

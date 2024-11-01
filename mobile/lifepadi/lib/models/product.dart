@@ -12,6 +12,7 @@ class Product with ProductMappable {
     required this.price,
     required this.imageUrl,
     required this.vendor,
+    this.quantity = 1,
   });
 
   @MappableField(key: 'Id')
@@ -26,4 +27,5 @@ class Product with ProductMappable {
   final String imageUrl;
   @MappableField(key: 'Vendor')
   final Vendor vendor;
+  final int quantity;
 }

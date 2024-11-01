@@ -1,20 +1,21 @@
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class CartPage extends HookWidget {
+class CartPage extends ConsumerWidget {
   const CartPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final selectAll = useState(false);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cart = ref.watch(cartStateProvider);
 
     return Scaffold(
       appBar: MyAppBar(
@@ -22,9 +23,7 @@ class CartPage extends HookWidget {
         actions: [
           MyIconButton(
             icon: Remix.more_2_fill,
-            onPressed: () {
-              // TODO: YAGNI! Just keeping this for now because it's in the design.
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -46,51 +45,14 @@ class CartPage extends HookWidget {
                 phoneNumber: '0701 234 5678',
               ),
               18.verticalSpace,
-              const SectionTitle('Items in Cart'),
-              8.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Transform.scale(
-                        scale: 1.3,
-                        child: SizedBox(
-                          height: 24.h,
-                          width: 24.h,
-                          child: Checkbox.adaptive(
-                            value: selectAll.value,
-                            onChanged: (bool? value) =>
-                                selectAll.value = value ?? false,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
-                            side: const BorderSide(
-                              color: Color(0xFFDCDCE2),
-                            ),
-                            activeColor: kDarkPrimaryColor,
-                          ),
-                        ),
-                      ),
-                      8.horizontalSpace,
-                      Text(
-                        'Select all',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF27272A),
-                        ),
-                      ),
-                    ],
-                  ),
+                  const SectionTitle('Items in Cart'),
                   IconButton(
-                    onPressed: () {
-                      // TODO: Clear cart
-                      // Just clear cart or show a confirmation dialog first?..TBH, I don't know yet. TBD!
-                    },
-                    icon: const Icon(
-                      IconsaxPlusLinear.trash,
-                    ),
+                    onPressed: () =>
+                        ref.read(cartStateProvider.notifier).clearCart(),
+                    icon: const Icon(IconsaxPlusLinear.trash),
                     iconSize: 24.sp,
                   ),
                 ],
@@ -98,37 +60,88 @@ class CartPage extends HookWidget {
               4.verticalSpace,
               const MyDivider(),
               16.verticalSpace,
-              ...[
-                CartItem(
-                  image: Assets.images.bnbBlender.provider(),
-                  price: 33000,
-                  name: 'BNB Blender',
+              if (cart.products.isEmpty)
+                Padding(
+                  padding: EdgeInsets.only(top: 16.w),
+                  child: Center(
+                    child: Text(
+                      'Your cart is empty',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: kDarkPrimaryColor,
+                      ),
+                    ),
+                  ),
                 ),
-                CartItem(
-                  image: Assets.images.miniBlender.provider(),
-                  price: 5000,
-                  name: 'Mini BNB Blender',
-                ),
-                CartItem(
-                  image: Assets.images.miniBlender.provider(),
-                  price: 5000,
-                  name: 'Mini BNB Blender',
-                ),
-              ].separatedBy(14.verticalSpace),
+              ...cart.products
+                  .map(
+                    (product) => CartItem(
+                      image: CachedNetworkImageProvider(product.imageUrl),
+                      price: product.price,
+                      name: product.name,
+                      quantity: product.quantity,
+                      onIncrement: () => ref
+                          .read(cartStateProvider.notifier)
+                          .incrementQuantity(product.id),
+                      onDecrement: () => ref
+                          .read(cartStateProvider.notifier)
+                          .decrementQuantity(product.id),
+                      onRemove: () => ref
+                          .read(cartStateProvider.notifier)
+                          .removeFromCart(product.id),
+                      vendorName: product.vendor.name,
+                    ),
+                  )
+                  .toList()
+                  .separatedBy(14.verticalSpace),
               31.verticalSpace,
               247.verticalSpace,
             ],
           ),
           BottomPanel(
+            height: 300.h,
             child: Column(
               children: [
                 const CartDiscount(),
                 const MyDivider(),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  child: const PaymentTotal(totalPrice: 43000),
+                12.verticalSpace,
+                RichText(
+                  text: TextSpan(
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.italic,
+                      color: const Color(0xFF7F7F89),
+                    ),
+                    children: const [
+                      TextSpan(text: 'You have a discount of '),
+                      TextSpan(
+                        text: '10%',
+                        style: TextStyle(
+                          color: kDarkPrimaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(text: ' on this order'),
+                    ],
+                  ),
                 ),
+                PaymentPrice(
+                  title: 'Subtotal',
+                  amount: cart.subtotal,
+                  description:
+                      'This is the total amount of all the items in your cart.',
+                ),
+                PaymentPrice(
+                  title: 'Delivery Fee',
+                  amount: cart.deliveryFee,
+                ),
+                PaymentPrice(
+                  title: 'Total',
+                  amount: cart.total,
+                  description:
+                      'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
+                ),
+                10.verticalSpace,
                 PrimaryButton(
                   text: 'Proceed to checkout',
                   onPressed: () => CheckoutRoute().go(context),

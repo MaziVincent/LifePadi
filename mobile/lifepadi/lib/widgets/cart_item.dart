@@ -11,11 +11,21 @@ class CartItem extends StatelessWidget {
     required this.image,
     required this.price,
     required this.name,
+    required this.quantity,
+    required this.onIncrement,
+    required this.onDecrement,
+    required this.onRemove,
+    required this.vendorName,
   });
 
-  final ImageProvider<Object> image;
+  final ImageProvider image;
   final double price;
   final String name;
+  final int quantity;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
+  final VoidCallback onRemove;
+  final String vendorName;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +69,7 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Trader: Shoprite Stores',
+                  vendorName,
                   style: context.textTheme.bodySmall?.copyWith(
                     color: const Color(0xFF7F7F89),
                     fontSize: 10.sp,
@@ -80,9 +90,7 @@ class CartItem extends StatelessWidget {
                   children: [
                     /// Decrement button
                     InkWell(
-                      onTap: () {
-                        // TODO: Decrease item quantity
-                      },
+                      onTap: onDecrement,
                       child: Ink(
                         width: 40.h,
                         height: 40.h,
@@ -109,7 +117,7 @@ class CartItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
-                        '1',
+                        '$quantity',
                         style: context.textTheme.bodyMedium?.copyWith(
                           color: const Color(0xFF27272A),
                           fontSize: 16.sp,
@@ -120,9 +128,7 @@ class CartItem extends StatelessWidget {
 
                     /// Increment button
                     InkWell(
-                      onTap: () {
-                        // TODO: Increase item quantity
-                      },
+                      onTap: onIncrement,
                       child: Ink(
                         width: 40.h,
                         height: 40.h,
@@ -137,14 +143,12 @@ class CartItem extends StatelessWidget {
                     ),
                   ].separatedBy(4.horizontalSpace),
                 ),
-                12.horizontalSpace,
               ],
             ),
           ),
+          12.horizontalSpace,
           InkWell(
-            onTap: () {
-              // TODO: Remove item from cart
-            },
+            onTap: onRemove,
             child: Ink(
               width: 24.h,
               height: 24.h,
