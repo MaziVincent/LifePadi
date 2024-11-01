@@ -8,6 +8,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/errands.dart';
+import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -26,6 +27,7 @@ class HomePage extends HookConsumerWidget {
     final errands = ref.watch(errandsProvider(pageSize: 4));
     final activeCategoryIndex = useState(0);
     final categories = ref.watch(categoriesProvider());
+    final locationDetails = ref.watch(locationInfoProvider);
 
     return Scaffold(
       appBar: MyAppBar(
@@ -33,12 +35,7 @@ class HomePage extends HookConsumerWidget {
           children: [
             MyIconButton(
               icon: Remix.map_pin_5_line,
-              onPressed: () async {
-                await displayBottomPanel(
-                  context,
-                  child: const EditLocationModalForm(),
-                );
-              },
+              onPressed: () {},
               backgroundColor: const Color(0x194FAF5A),
               iconColor: kDarkPrimaryColor,
             ),
@@ -57,11 +54,16 @@ class HomePage extends HookConsumerWidget {
                 ),
                 4.verticalSpace,
                 Text(
-                  'Soja, Lekki Lagos',
+                  locationDetails.when(
+                    data: (data) => data.address,
+                    loading: () => 'Fetching location...',
+                    error: (_, __) => 'Could not fetch location',
+                  ),
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: kDarkTextColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 12.sp,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
