@@ -46,7 +46,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create( DeliveryDto delivery)
+        public async Task<IActionResult> create(DeliveryDto delivery)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Api.Controllers
                     deliveries.CurrentPage
 
                 };
-                return Ok(new {result, dataList});
+                return Ok(new { result, dataList });
             }
             catch (Exception ex)
             {
@@ -266,6 +266,21 @@ namespace Api.Controllers
             try
             {
                 var response = await _idelivery.totalNumberOfSuccessfulDeliveriesByRider(riderId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("customer-orders/{customerId}")]
+        public async Task<IActionResult> getCustomersOrder(int customerId)
+        {
+            try
+            {
+                var response = await _idelivery.getCustomersOrder(customerId);
+                if (response == null) return NotFound();
                 return Ok(response);
             }
             catch (Exception ex)

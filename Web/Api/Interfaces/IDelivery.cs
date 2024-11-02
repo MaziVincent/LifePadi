@@ -29,5 +29,6 @@ namespace Api.Interfaces
         public Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus);
         public Task<int> totalNumberOfPendingDeliveriesByRider(int riderId);
         public Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId);
+        public Task<DeliveryDto> getCustomersOrder(int customerId);
     }
 }
