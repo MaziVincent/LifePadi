@@ -178,8 +178,7 @@ class _OrderDetailsContent extends StatelessWidget {
           onTap: () {
             // TODO: Open bottom sheet to update location
           },
-          place: 'Soja, Lekki Lagos...',
-          phoneNumber: '0901 234 5678',
+          address: 'Soja, Lekki Lagos...',
         ),
 
         /// Payment method

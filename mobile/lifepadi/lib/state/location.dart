@@ -1,6 +1,11 @@
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/location_details.dart';
+import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/exceptions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:location/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -63,10 +68,35 @@ class LocationInfo extends _$LocationInfo {
       country: '${placemark.country}',
       postalCode: '${placemark.postalCode}',
       sublocality: '${placemark.subLocality}',
+      localGovernmentArea: '${placemark.subAdministrativeArea}',
     );
   }
 
   Future<void> refreshLocation() async {
     ref.invalidateSelf();
   }
+}
+
+@riverpod
+FutureOr<List<LocationDetails>> locations(Ref ref) async {
+  final client = ref.watch(dioProvider());
+  final user = ref.read(authControllerProvider);
+  final userId = user.maybeWhen(
+    data: (user) => user.id,
+    orElse: () => null,
+  );
+  if (userId == null) {
+    return [];
+  }
+  final response =
+      await client.get<List<dynamic>>('/customer/addresses/$userId');
+
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  final data = List<JsonMap>.from(response.data!);
+
+  ref.cache();
+  return data.map(LocationDetailsMapper.fromMap).toList();
 }

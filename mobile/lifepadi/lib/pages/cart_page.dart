@@ -45,8 +45,7 @@ class CartPage extends HookConsumerWidget {
                     child: const EditLocationModalForm(),
                   );
                 },
-                place: '3RD FLOOR DREAMLINK CONCEPTS',
-                phoneNumber: '0701 234 5678',
+                address: '3RD FLOOR DREAMLINK CONCEPTS',
               ),
               18.verticalSpace,
               Row(

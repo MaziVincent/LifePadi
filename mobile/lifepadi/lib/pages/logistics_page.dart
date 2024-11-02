@@ -65,8 +65,7 @@ class LogisticsPage extends HookWidget {
                     child: const EditLocationModalForm(),
                   );
                 },
-                place: 'Soja, Lekki Lagos...',
-                phoneNumber: '0901 234 5678',
+                address: 'Soja, Lekki Lagos...',
               ),
               16.verticalSpace,
               const SectionTitle(
@@ -81,8 +80,7 @@ class LogisticsPage extends HookWidget {
                     child: const EditLocationModalForm(),
                   );
                 },
-                place: '3RD FLOOR DREAMLINK CONCEPTS',
-                phoneNumber: '0701 234 5678',
+                address: '3RD FLOOR DREAMLINK CONCEPTS',
               ),
               16.verticalSpace,
               const MyDivider(

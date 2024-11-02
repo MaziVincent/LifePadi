@@ -3,21 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class LocationCard extends StatelessWidget {
   const LocationCard({
     super.key,
     required this.onTap,
-    required this.place,
-    required this.phoneNumber,
+    required this.address,
     this.isDefault = false,
     this.child,
     this.padding,
   });
 
   final VoidCallback onTap;
-  final String place;
-  final String phoneNumber;
+  final String address;
   final bool isDefault;
   final Widget? child;
   final EdgeInsetsGeometry? padding;
@@ -43,7 +42,9 @@ class LocationCard extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Assets.icons.location.svg(width: 24.r, height: 24.r),
+                  Skeleton.shade(
+                    child: Assets.icons.location.svg(width: 24.r, height: 24.r),
+                  ),
                   8.horizontalSpace,
                   Expanded(
                     child: Column(
@@ -58,7 +59,7 @@ class LocationCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          place,
+                          address,
                           style: context.textTheme.titleMedium?.copyWith(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
@@ -81,7 +82,10 @@ class LocationCard extends StatelessWidget {
                 ],
               ),
             ),
-            child ?? Assets.icons.arrowRight.svg(width: 24.sp, height: 24.sp),
+            Skeleton.shade(
+              child: child ??
+                  Assets.icons.arrowRight.svg(width: 24.sp, height: 24.sp),
+            ),
           ],
         ),
       ),
