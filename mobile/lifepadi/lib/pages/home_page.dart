@@ -53,17 +53,20 @@ class HomePage extends HookConsumerWidget {
                   ),
                 ),
                 4.verticalSpace,
-                Text(
-                  locationDetails.when(
-                    data: (data) => '${data.address}, ${data.sublocality}',
-                    loading: () => 'Fetching location...',
-                    error: (_, __) => 'Could not fetch location',
-                  ),
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: kDarkTextColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12.sp,
-                    overflow: TextOverflow.ellipsis,
+                SizedBox(
+                  width: 120.w,
+                  child: Text(
+                    locationDetails.when(
+                      data: (data) => '${data.address}, ${data.sublocality}',
+                      loading: () => 'Fetching location...',
+                      error: (_, __) => 'Could not fetch location',
+                    ),
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: kDarkTextColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.sp,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
