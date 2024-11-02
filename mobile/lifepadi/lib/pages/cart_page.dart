@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -10,12 +11,15 @@ import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class CartPage extends ConsumerWidget {
+class CartPage extends HookConsumerWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartStateProvider);
+    final isExpanded = useState(false);
+
+    void togglePanel() => isExpanded.value = !isExpanded.value;
 
     return Scaffold(
       appBar: MyAppBar(
@@ -94,53 +98,73 @@ class CartPage extends ConsumerWidget {
                   .toList()
                   .separatedBy(14.verticalSpace),
               31.verticalSpace,
-              247.verticalSpace,
+              if (isExpanded.value) 320.verticalSpace else 150.verticalSpace,
             ],
           ),
           BottomPanel(
-            height: 300.h,
+            height: isExpanded.value ? 320.h : 150.h,
             child: Column(
               children: [
-                const CartDiscount(),
-                const MyDivider(),
-                12.verticalSpace,
-                RichText(
-                  text: TextSpan(
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.italic,
-                      color: const Color(0xFF7F7F89),
-                    ),
-                    children: const [
-                      TextSpan(text: 'You have a discount of '),
-                      TextSpan(
-                        text: '10%',
-                        style: TextStyle(
-                          color: kDarkPrimaryColor,
-                          fontWeight: FontWeight.w700,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (!isExpanded.value)
+                      Expanded(
+                        child: PaymentPrice(
+                          title: 'Subtotal',
+                          amount: cart.subtotal,
+                          description:
+                              'This is the total amount of all the items in your cart.',
                         ),
+                      )
+                    else
+                      const Expanded(child: Text('Hide details')),
+                    IconButton(
+                      icon: Icon(
+                        isExpanded.value
+                            ? Icons.keyboard_double_arrow_down
+                            : Icons.keyboard_double_arrow_up,
                       ),
-                      TextSpan(text: ' on this order'),
-                    ],
+                      onPressed: togglePanel,
+                    ),
+                  ],
+                ),
+                if (isExpanded.value) ...[
+                  const CartDiscount(),
+                  const MyDivider(),
+                  12.verticalSpace,
+                  RichText(
+                    text: TextSpan(
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.italic,
+                        color: const Color(0xFF7F7F89),
+                      ),
+                      children: const [
+                        TextSpan(text: 'You have a discount of '),
+                        TextSpan(
+                          text: '10%',
+                          style: TextStyle(
+                            color: kDarkPrimaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        TextSpan(text: ' on this order'),
+                      ],
+                    ),
                   ),
-                ),
-                PaymentPrice(
-                  title: 'Subtotal',
-                  amount: cart.subtotal,
-                  description:
-                      'This is the total amount of all the items in your cart.',
-                ),
-                PaymentPrice(
-                  title: 'Delivery Fee',
-                  amount: cart.deliveryFee,
-                ),
-                PaymentPrice(
-                  title: 'Total',
-                  amount: cart.total,
-                  description:
-                      'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
-                ),
+                  PaymentPrice(
+                    title: 'Delivery Fee',
+                    amount: cart.deliveryFee,
+                  ),
+                  PaymentPrice(
+                    title: 'Total',
+                    amount: cart.total,
+                    description:
+                        'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
+                  ),
+                ],
                 10.verticalSpace,
                 PrimaryButton(
                   text: 'Proceed to checkout',
