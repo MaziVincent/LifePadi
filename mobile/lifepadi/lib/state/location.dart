@@ -12,7 +12,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'location.g.dart';
 
 @riverpod
-class LocationInfo extends _$LocationInfo {
+class CurrentLocation extends _$CurrentLocation {
   @override
   Future<LocationDetails> build() async {
     return _getCurrentLocation();

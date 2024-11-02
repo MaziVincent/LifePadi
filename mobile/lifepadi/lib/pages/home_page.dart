@@ -27,7 +27,7 @@ class HomePage extends HookConsumerWidget {
     final errands = ref.watch(errandsProvider(pageSize: 4));
     final activeCategoryIndex = useState(0);
     final categories = ref.watch(categoriesProvider());
-    final locationDetails = ref.watch(locationInfoProvider);
+    final locationDetails = ref.watch(currentLocationProvider);
 
     return Scaffold(
       appBar: MyAppBar(

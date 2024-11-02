@@ -1,129 +1,201 @@
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/location_details.dart';
+import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class NewLocationPage extends StatelessWidget {
+class NewLocationPage extends HookConsumerWidget {
   const NewLocationPage({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentLocation = ref.watch(currentLocationProvider);
+    final selectedLocation = useState<LocationDetails?>(null);
+    final isLoading = useState(false);
+    final mapController = useState<GoogleMapController?>(null);
+
+    Future<void> getAddressFromCoordinates(LatLng position) async {
+      isLoading.value = true;
+      try {
+        final placemarks = await geocoding.placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          final placemark = placemarks.first;
+          selectedLocation.value = LocationDetails(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            address: '${placemark.street}',
+            city: '${placemark.locality}',
+            state: '${placemark.administrativeArea}',
+            country: '${placemark.country}',
+            postalCode: '${placemark.postalCode}',
+            sublocality: '${placemark.subLocality}',
+            localGovernmentArea: '${placemark.subAdministrativeArea}',
+          );
+        }
+      } finally {
+        isLoading.value = false;
+      }
+    }
+
     return Scaffold(
-      appBar: const MyAppBar(title: 'Maps'),
+      appBar: const MyAppBar(title: 'Add New Location'),
       body: Stack(
         children: [
-          Container(
-            height: MediaQuery.sizeOf(context).height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Assets.images.map.provider(),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Align(
-            child: Padding(
-              padding: EdgeInsets.only(top: 0.2.sh),
-              child: Column(
-                children: [
-                  Assets.icons.mapPin.svg(
-                    width: 62.5.h,
-                    height: 62.5.h,
-                  ),
-                  Container(
-                    width: 40.h,
-                    height: 40.h,
-                    decoration: ShapeDecoration(
-                      shape: const OvalBorder(
-                        side: BorderSide(
-                          color: Color(0xFF4FAF5A),
-                          width: 2,
-                        ),
-                      ),
-                      image: DecorationImage(
-                        image: Assets.images.profileAvatar.provider(),
+          currentLocation.when(
+            data: (location) {
+              return GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: location.latLng,
+                  zoom: 15,
+                ),
+                myLocationEnabled: true,
+                myLocationButtonEnabled: false,
+                onCameraMove: (position) {
+                  // Update selected location when camera moves
+                  getAddressFromCoordinates(position.target);
+                },
+                onMapCreated: (GoogleMapController controller) {
+                  mapController.value = controller;
+                  controller.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: location.latLng,
+                        zoom: 15,
                       ),
                     ),
-                  ),
-                ],
+                  );
+                },
+              );
+            },
+            loading: () => const Center(child: GreenyLoadingWheel()),
+            error: (error, _) => Center(
+              child: Text(
+                error.toString(),
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: kDarkPrimaryColor,
+                  fontSize: 16.sp,
+                ),
               ),
             ),
           ),
-          BottomPanel(
-            height: 240.h,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          if (currentLocation is AsyncData<LocationDetails>)
+            // Center marker
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 24.h),
+                child: Icon(
+                  Icons.location_pin,
+                  color: kDarkPrimaryColor,
+                  size: 40.sp,
+                ),
+              ),
+            ),
+          switch (currentLocation) {
+            AsyncLoading() => const SizedBox.shrink(),
+            _ => BottomPanel(
+                height: 190.h,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Remix.map_pin_5_line,
-                          size: 18.sp,
-                          color: kDarkPrimaryColor,
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Remix.map_pin_5_line,
+                                size: 18.sp,
+                                color: kDarkPrimaryColor,
+                              ),
+                              5.horizontalSpace,
+                              Expanded(
+                                child: isLoading.value
+                                    ? const Text('Loading address...')
+                                    : SectionTitle(
+                                        selectedLocation.value?.address ??
+                                            'Choose Location',
+                                        color: const Color(0xFF1C1C20),
+                                        handleOverFlow: true,
+                                      ),
+                              ),
+                            ],
+                          ),
                         ),
-                        5.horizontalSpace,
-                        const SectionTitle(
-                          'Lekki, Lagos',
-                          color: Color(0xFF1C1C20),
+                        IconButton(
+                          onPressed: () async {
+                            if (currentLocation.hasValue &&
+                                mapController.value != null) {
+                              final location = currentLocation.value!;
+                              // Animate camera to current location
+                              await mapController.value!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: location.latLng,
+                                    zoom: 15,
+                                  ),
+                                ),
+                              );
+                              // Update selected location
+                              await getAddressFromCoordinates(location.latLng);
+                            }
+                          },
+                          icon: Icon(
+                            IconsaxPlusLinear.search_normal,
+                            size: 20.sp,
+                            color: kDarkPrimaryColor,
+                          ),
                         ),
                       ],
                     ),
-
-                    /// Search icon
-                    IconButton(
-                      onPressed: () {
-                        // TODO: Implement map
-                      },
-                      icon: Icon(
-                        IconsaxPlusLinear.search_normal,
-                        size: 20.sp,
-                        color: const Color(0xFF878787),
-                      ),
+                    10.verticalSpace,
+                    Row(
+                      children: [
+                        Assets.icons.info.svg(
+                          width: 16.sp,
+                          height: 16.sp,
+                        ),
+                        5.horizontalSpace,
+                        Expanded(
+                          child: Text(
+                            'Drag map to set your delivery location or click the search icon to use your current location',
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: const Color(0xFF5F5F5F),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    12.22.verticalSpace,
+                    PrimaryButton(
+                      text: 'Confirm Address',
+                      onPressed: selectedLocation.value == null
+                          ? null
+                          : () {
+                              logger.i(
+                                'Selected Location: ${selectedLocation.value?.shortAddress}',
+                              );
+                            },
                     ),
                   ],
                 ),
-                10.verticalSpace,
-                Text(
-                  'Drag map to set your delivery location ',
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF5F5F5F),
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                16.verticalSpace,
-                GestureDetector(
-                  onTap: () {
-                    // TODO: Show dialog/input to add phone number
-                  },
-                  child: Text(
-                    'Add a phone number to this location',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.roboto(
-                      color: const Color(0xFF629D03),
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                16.verticalSpace,
-                const MyDivider(),
-                12.22.verticalSpace,
-                PrimaryButton(
-                  text: 'Confirm Address',
-                  onPressed: () {
-                    // TODO: Save location to user's locations
-                  },
-                ),
-              ],
-            ),
-          ),
+              ),
+          },
         ],
       ),
     );
