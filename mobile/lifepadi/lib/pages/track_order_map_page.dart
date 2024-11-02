@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:location/location.dart';
 
@@ -17,6 +18,7 @@ class TrackOrderMapPage extends StatefulWidget {
 
 class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
+  StreamSubscription<LocationData>? locationSubscription;
 
   static const LatLng sourceLocation = LatLng(37.4220541, -122.0853242);
   static const LatLng destination = LatLng(37.4116103, -122.0713127);
@@ -31,27 +33,39 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   Future<void> getCurrentLocation() async {
     final location = Location();
 
-    await location.getLocation().then((location) {
-      currentLocation = location;
-      setState(() {});
-    });
+    try {
+      final currentLoc = await location.getLocation();
+      if (mounted) {
+        setState(() {
+          currentLocation = currentLoc;
+        });
+      }
 
-    final googleMapController = await _controller.future;
+      final googleMapController = await _controller.future;
 
-    location.onLocationChanged.listen((newLocation) {
-      currentLocation = newLocation;
+      locationSubscription = location.onLocationChanged.listen((newLocation) {
+        if (!mounted) return;
 
-      googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(newLocation.latitude!, newLocation.longitude!),
-            zoom: 13.5,
+        setState(() {
+          currentLocation = newLocation;
+        });
+
+        googleMapController
+            .animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(newLocation.latitude!, newLocation.longitude!),
+              zoom: 13.5,
+            ),
           ),
-        ),
-      );
-
-      setState(() {});
-    });
+        )
+            .catchError((dynamic error) {
+          logger.e('Map controller error', error: error);
+        });
+      });
+    } catch (e) {
+      logger.e('Location error', error: e);
+    }
   }
 
   Future<void> getPolyPoints() async {
@@ -96,6 +110,16 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
     getCurrentLocation();
     setCustomMarkerIcon();
     getPolyPoints();
+  }
+
+  @override
+  void dispose() {
+    locationSubscription?.cancel();
+    _controller.future.then(
+      (controller) => controller.dispose(),
+      onError: (dynamic e) => logger.e('Controller dispose error', error: e),
+    );
+    super.dispose();
   }
 
   @override
