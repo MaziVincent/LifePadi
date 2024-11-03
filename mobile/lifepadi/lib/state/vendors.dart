@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/models/vendor.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/exceptions.dart';
@@ -22,9 +22,7 @@ FutureOr<List<Vendor>> vendors(Ref ref, {int pageSize = 10}) async {
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['result'] as List)
-    // Add empty tokens to avoid null errors in the model
-    ..map(stripAuth).toList();
+  final data = List<JsonMap>.from(response.data!['result'] as List);
 
   ref.cache();
   return data.map(VendorMapper.fromMap).toList();

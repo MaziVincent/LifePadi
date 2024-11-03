@@ -54,11 +54,7 @@ class Categories extends _$Categories {
       throw const ServerErrorException('No data returned from the server');
     }
 
-    final data = List<JsonMap>.from(response.data!['result'] as List)
-      ..map(
-        // Add empty tokens to avoid null errors in the model
-        (p) => stripAuth(p['Vendor'] as JsonMap),
-      ).toList();
+    final data = List<JsonMap>.from(response.data!['result'] as List);
 
     ref.cache();
     return data.map(ProductMapper.fromMap).toList();

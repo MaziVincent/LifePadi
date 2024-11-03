@@ -29,8 +29,6 @@ class UserRoleMapper extends EnumMapper<UserRole> {
         return UserRole.customer;
       case 'Rider':
         return UserRole.rider;
-      case 'Vendor':
-        return UserRole.vendor;
       case 'Guest':
         return UserRole.guest;
       default:
@@ -45,8 +43,6 @@ class UserRoleMapper extends EnumMapper<UserRole> {
         return 'Customer';
       case UserRole.rider:
         return 'Rider';
-      case UserRole.vendor:
-        return 'Vendor';
       case UserRole.guest:
         return 'Guest';
     }

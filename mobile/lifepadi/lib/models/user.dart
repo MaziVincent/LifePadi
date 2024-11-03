@@ -13,6 +13,9 @@ sealed class User with UserMappable {
     required this.role,
     required this.accessToken,
     required this.refreshToken,
+    required this.firstName,
+    required this.lastName,
+    this.address,
   });
 
   @MappableField()
@@ -27,6 +30,12 @@ sealed class User with UserMappable {
   final String phoneNumber;
   @MappableField(key: 'Role')
   final UserRole role;
+  @MappableField(key: 'FirstName')
+  final String firstName;
+  @MappableField(key: 'LastName')
+  final String lastName;
+  @MappableField(key: 'ContactAddress')
+  final String? address;
 
   bool get isAuth => switch (this) {
         Guest() => false,
@@ -35,6 +44,8 @@ sealed class User with UserMappable {
 
   static const fromMap = UserMapper.fromMap;
   static const fromJson = UserMapper.fromJson;
+
+  String get name => '$firstName $lastName';
 }
 
 @MappableClass(discriminatorValue: 'Customer')
@@ -43,22 +54,13 @@ class Customer extends User with CustomerMappable {
     required super.id,
     required super.email,
     required super.phoneNumber,
-    required this.firstName,
-    required this.lastName,
+    required super.firstName,
+    required super.lastName,
     required super.role,
     required super.accessToken,
     required super.refreshToken,
-    this.address,
+    super.address,
   });
-
-  @MappableField(key: 'FirstName')
-  final String firstName;
-  @MappableField(key: 'LastName')
-  final String lastName;
-  @MappableField(key: 'ContactAddress')
-  final String? address;
-
-  String get name => '$firstName $lastName';
 }
 
 @MappableClass(discriminatorValue: 'Rider')
@@ -67,65 +69,23 @@ class Rider extends User with RiderMappable {
     required super.id,
     required super.email,
     required super.phoneNumber,
-    required this.firstName,
-    required this.lastName,
-    required this.identityType,
-    required this.identityNumber,
-    this.emergencyContact,
-    this.address,
+    required super.firstName,
+    required super.lastName,
+    super.address,
     required super.role,
     required super.accessToken,
     required super.refreshToken,
+    required this.identityType,
+    required this.identityNumber,
+    this.emergencyContact,
   });
 
-  @MappableField(key: 'FirstName')
-  final String firstName;
-  @MappableField(key: 'LastName')
-  final String lastName;
   @MappableField(key: 'IdentityType')
   final String? identityType;
   @MappableField(key: 'IdentityNumber')
   final String? identityNumber;
   @MappableField(key: 'EmergencyContact')
   final String? emergencyContact;
-  @MappableField(key: 'ContactAddress')
-  final String? address;
-
-  String get name => '$firstName $lastName';
-}
-
-@MappableClass(discriminatorValue: 'Vendor')
-class Vendor extends User with VendorMappable {
-  const Vendor({
-    required super.id,
-    required super.email,
-    required super.phoneNumber,
-    required this.name,
-    this.vendorType,
-    required this.address,
-    this.serviceId,
-    required super.role,
-    required super.accessToken,
-    required super.refreshToken,
-    this.imageUrl,
-    this.openingHours,
-    this.closingHours,
-  });
-
-  @MappableField(key: 'Name')
-  final String name;
-  @MappableField(key: 'VendorType')
-  final String? vendorType;
-  @MappableField(key: 'ContactAddress')
-  final String address;
-  @MappableField(key: 'ServiceId')
-  final int? serviceId;
-  @MappableField(key: 'VendorImgUrl')
-  final String? imageUrl;
-  @MappableField(key: 'OpeningHours')
-  final String? openingHours;
-  @MappableField(key: 'ClosingHours')
-  final String? closingHours;
 }
 
 @MappableClass(discriminatorValue: 'Guest')
@@ -138,5 +98,7 @@ class Guest extends User with GuestMappable {
           role: UserRole.guest,
           accessToken: '',
           refreshToken: '',
+          firstName: '',
+          lastName: '',
         );
 }

@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/models/product.dart';
-import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/models/user_role.dart';
+import 'package:lifepadi/models/vendor.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/choice_alert_dialog.dart';
 import 'package:logger/logger.dart';
@@ -240,12 +240,8 @@ Product makeFakeProduct({required int id}) {
       id: 1,
       name: 'Vendor $id',
       imageUrl: 'foobarbaz',
-      email: BoneMock.email,
       phoneNumber: BoneMock.phone,
       address: BoneMock.address,
-      role: UserRole.guest,
-      accessToken: '',
-      refreshToken: '',
     ),
   );
 }

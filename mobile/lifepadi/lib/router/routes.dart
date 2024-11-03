@@ -80,7 +80,6 @@ class HomeRoute extends GoRouteData {
 
     return switch (user) {
       Rider() => const RiderRoute().location,
-      Vendor() => const VendorRoute().location,
       _ => null,
     };
   }
@@ -212,16 +211,6 @@ class RegisterRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const RegisterPage();
-  }
-}
-
-@TypedGoRoute<VendorRoute>(path: '/admin')
-class VendorRoute extends GoRouteData {
-  const VendorRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const AdminPage();
   }
 }
 

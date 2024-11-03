@@ -15,7 +15,6 @@ class UserMapper extends ClassMapperBase<User> {
       MapperContainer.globals.use(_instance = UserMapper._());
       CustomerMapper.ensureInitialized();
       RiderMapper.ensureInitialized();
-      VendorMapper.ensureInitialized();
       GuestMapper.ensureInitialized();
       UserRoleMapper.ensureInitialized();
     }
@@ -42,6 +41,15 @@ class UserMapper extends ClassMapperBase<User> {
   static String _$refreshToken(User v) => v.refreshToken;
   static const Field<User, String> _f$refreshToken =
       Field('refreshToken', _$refreshToken);
+  static String _$firstName(User v) => v.firstName;
+  static const Field<User, String> _f$firstName =
+      Field('firstName', _$firstName, key: 'FirstName');
+  static String _$lastName(User v) => v.lastName;
+  static const Field<User, String> _f$lastName =
+      Field('lastName', _$lastName, key: 'LastName');
+  static String? _$address(User v) => v.address;
+  static const Field<User, String> _f$address =
+      Field('address', _$address, key: 'ContactAddress', opt: true);
 
   @override
   final MappableFields<User> fields = const {
@@ -51,6 +59,9 @@ class UserMapper extends ClassMapperBase<User> {
     #role: _f$role,
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
+    #firstName: _f$firstName,
+    #lastName: _f$lastName,
+    #address: _f$address,
   };
 
   static User _instantiate(DecodingData data) {
@@ -299,16 +310,6 @@ class RiderMapper extends SubClassMapperBase<Rider> {
   static String _$lastName(Rider v) => v.lastName;
   static const Field<Rider, String> _f$lastName =
       Field('lastName', _$lastName, key: 'LastName');
-  static String? _$identityType(Rider v) => v.identityType;
-  static const Field<Rider, String> _f$identityType =
-      Field('identityType', _$identityType, key: 'IdentityType');
-  static String? _$identityNumber(Rider v) => v.identityNumber;
-  static const Field<Rider, String> _f$identityNumber =
-      Field('identityNumber', _$identityNumber, key: 'IdentityNumber');
-  static String? _$emergencyContact(Rider v) => v.emergencyContact;
-  static const Field<Rider, String> _f$emergencyContact = Field(
-      'emergencyContact', _$emergencyContact,
-      key: 'EmergencyContact', opt: true);
   static String? _$address(Rider v) => v.address;
   static const Field<Rider, String> _f$address =
       Field('address', _$address, key: 'ContactAddress', opt: true);
@@ -321,6 +322,16 @@ class RiderMapper extends SubClassMapperBase<Rider> {
   static String _$refreshToken(Rider v) => v.refreshToken;
   static const Field<Rider, String> _f$refreshToken =
       Field('refreshToken', _$refreshToken);
+  static String? _$identityType(Rider v) => v.identityType;
+  static const Field<Rider, String> _f$identityType =
+      Field('identityType', _$identityType, key: 'IdentityType');
+  static String? _$identityNumber(Rider v) => v.identityNumber;
+  static const Field<Rider, String> _f$identityNumber =
+      Field('identityNumber', _$identityNumber, key: 'IdentityNumber');
+  static String? _$emergencyContact(Rider v) => v.emergencyContact;
+  static const Field<Rider, String> _f$emergencyContact = Field(
+      'emergencyContact', _$emergencyContact,
+      key: 'EmergencyContact', opt: true);
 
   @override
   final MappableFields<Rider> fields = const {
@@ -329,13 +340,13 @@ class RiderMapper extends SubClassMapperBase<Rider> {
     #phoneNumber: _f$phoneNumber,
     #firstName: _f$firstName,
     #lastName: _f$lastName,
-    #identityType: _f$identityType,
-    #identityNumber: _f$identityNumber,
-    #emergencyContact: _f$emergencyContact,
     #address: _f$address,
     #role: _f$role,
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
+    #identityType: _f$identityType,
+    #identityNumber: _f$identityNumber,
+    #emergencyContact: _f$emergencyContact,
   };
 
   @override
@@ -352,13 +363,13 @@ class RiderMapper extends SubClassMapperBase<Rider> {
         phoneNumber: data.dec(_f$phoneNumber),
         firstName: data.dec(_f$firstName),
         lastName: data.dec(_f$lastName),
-        identityType: data.dec(_f$identityType),
-        identityNumber: data.dec(_f$identityNumber),
-        emergencyContact: data.dec(_f$emergencyContact),
         address: data.dec(_f$address),
         role: data.dec(_f$role),
         accessToken: data.dec(_f$accessToken),
-        refreshToken: data.dec(_f$refreshToken));
+        refreshToken: data.dec(_f$refreshToken),
+        identityType: data.dec(_f$identityType),
+        identityNumber: data.dec(_f$identityNumber),
+        emergencyContact: data.dec(_f$emergencyContact));
   }
 
   @override
@@ -414,13 +425,13 @@ abstract class RiderCopyWith<$R, $In extends Rider, $Out>
       String? phoneNumber,
       String? firstName,
       String? lastName,
-      String? identityType,
-      String? identityNumber,
-      String? emergencyContact,
       String? address,
       UserRole? role,
       String? accessToken,
-      String? refreshToken});
+      String? refreshToken,
+      String? identityType,
+      String? identityNumber,
+      String? emergencyContact});
   RiderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -437,26 +448,26 @@ class _RiderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Rider, $Out>
           String? phoneNumber,
           String? firstName,
           String? lastName,
-          Object? identityType = $none,
-          Object? identityNumber = $none,
-          Object? emergencyContact = $none,
           Object? address = $none,
           UserRole? role,
           String? accessToken,
-          String? refreshToken}) =>
+          String? refreshToken,
+          Object? identityType = $none,
+          Object? identityNumber = $none,
+          Object? emergencyContact = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (email != null) #email: email,
         if (phoneNumber != null) #phoneNumber: phoneNumber,
         if (firstName != null) #firstName: firstName,
         if (lastName != null) #lastName: lastName,
-        if (identityType != $none) #identityType: identityType,
-        if (identityNumber != $none) #identityNumber: identityNumber,
-        if (emergencyContact != $none) #emergencyContact: emergencyContact,
         if (address != $none) #address: address,
         if (role != null) #role: role,
         if (accessToken != null) #accessToken: accessToken,
-        if (refreshToken != null) #refreshToken: refreshToken
+        if (refreshToken != null) #refreshToken: refreshToken,
+        if (identityType != $none) #identityType: identityType,
+        if (identityNumber != $none) #identityNumber: identityNumber,
+        if (emergencyContact != $none) #emergencyContact: emergencyContact
       }));
   @override
   Rider $make(CopyWithData data) => Rider(
@@ -465,235 +476,18 @@ class _RiderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Rider, $Out>
       phoneNumber: data.get(#phoneNumber, or: $value.phoneNumber),
       firstName: data.get(#firstName, or: $value.firstName),
       lastName: data.get(#lastName, or: $value.lastName),
-      identityType: data.get(#identityType, or: $value.identityType),
-      identityNumber: data.get(#identityNumber, or: $value.identityNumber),
-      emergencyContact:
-          data.get(#emergencyContact, or: $value.emergencyContact),
       address: data.get(#address, or: $value.address),
       role: data.get(#role, or: $value.role),
       accessToken: data.get(#accessToken, or: $value.accessToken),
-      refreshToken: data.get(#refreshToken, or: $value.refreshToken));
+      refreshToken: data.get(#refreshToken, or: $value.refreshToken),
+      identityType: data.get(#identityType, or: $value.identityType),
+      identityNumber: data.get(#identityNumber, or: $value.identityNumber),
+      emergencyContact:
+          data.get(#emergencyContact, or: $value.emergencyContact));
 
   @override
   RiderCopyWith<$R2, Rider, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
       _RiderCopyWithImpl($value, $cast, t);
-}
-
-class VendorMapper extends SubClassMapperBase<Vendor> {
-  VendorMapper._();
-
-  static VendorMapper? _instance;
-  static VendorMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = VendorMapper._());
-      UserMapper.ensureInitialized().addSubMapper(_instance!);
-      UserRoleMapper.ensureInitialized();
-    }
-    return _instance!;
-  }
-
-  @override
-  final String id = 'Vendor';
-
-  static int _$id(Vendor v) => v.id;
-  static const Field<Vendor, int> _f$id = Field('id', _$id, key: 'Id');
-  static String _$email(Vendor v) => v.email;
-  static const Field<Vendor, String> _f$email =
-      Field('email', _$email, key: 'Email');
-  static String _$phoneNumber(Vendor v) => v.phoneNumber;
-  static const Field<Vendor, String> _f$phoneNumber =
-      Field('phoneNumber', _$phoneNumber, key: 'PhoneNumber');
-  static String _$name(Vendor v) => v.name;
-  static const Field<Vendor, String> _f$name =
-      Field('name', _$name, key: 'Name');
-  static String? _$vendorType(Vendor v) => v.vendorType;
-  static const Field<Vendor, String> _f$vendorType =
-      Field('vendorType', _$vendorType, key: 'VendorType', opt: true);
-  static String _$address(Vendor v) => v.address;
-  static const Field<Vendor, String> _f$address =
-      Field('address', _$address, key: 'ContactAddress');
-  static int? _$serviceId(Vendor v) => v.serviceId;
-  static const Field<Vendor, int> _f$serviceId =
-      Field('serviceId', _$serviceId, key: 'ServiceId', opt: true);
-  static UserRole _$role(Vendor v) => v.role;
-  static const Field<Vendor, UserRole> _f$role =
-      Field('role', _$role, key: 'Role');
-  static String _$accessToken(Vendor v) => v.accessToken;
-  static const Field<Vendor, String> _f$accessToken =
-      Field('accessToken', _$accessToken);
-  static String _$refreshToken(Vendor v) => v.refreshToken;
-  static const Field<Vendor, String> _f$refreshToken =
-      Field('refreshToken', _$refreshToken);
-  static String? _$imageUrl(Vendor v) => v.imageUrl;
-  static const Field<Vendor, String> _f$imageUrl =
-      Field('imageUrl', _$imageUrl, key: 'VendorImgUrl', opt: true);
-  static String? _$openingHours(Vendor v) => v.openingHours;
-  static const Field<Vendor, String> _f$openingHours =
-      Field('openingHours', _$openingHours, key: 'OpeningHours', opt: true);
-  static String? _$closingHours(Vendor v) => v.closingHours;
-  static const Field<Vendor, String> _f$closingHours =
-      Field('closingHours', _$closingHours, key: 'ClosingHours', opt: true);
-
-  @override
-  final MappableFields<Vendor> fields = const {
-    #id: _f$id,
-    #email: _f$email,
-    #phoneNumber: _f$phoneNumber,
-    #name: _f$name,
-    #vendorType: _f$vendorType,
-    #address: _f$address,
-    #serviceId: _f$serviceId,
-    #role: _f$role,
-    #accessToken: _f$accessToken,
-    #refreshToken: _f$refreshToken,
-    #imageUrl: _f$imageUrl,
-    #openingHours: _f$openingHours,
-    #closingHours: _f$closingHours,
-  };
-
-  @override
-  final String discriminatorKey = 'Role';
-  @override
-  final dynamic discriminatorValue = 'Vendor';
-  @override
-  late final ClassMapperBase superMapper = UserMapper.ensureInitialized();
-
-  static Vendor _instantiate(DecodingData data) {
-    return Vendor(
-        id: data.dec(_f$id),
-        email: data.dec(_f$email),
-        phoneNumber: data.dec(_f$phoneNumber),
-        name: data.dec(_f$name),
-        vendorType: data.dec(_f$vendorType),
-        address: data.dec(_f$address),
-        serviceId: data.dec(_f$serviceId),
-        role: data.dec(_f$role),
-        accessToken: data.dec(_f$accessToken),
-        refreshToken: data.dec(_f$refreshToken),
-        imageUrl: data.dec(_f$imageUrl),
-        openingHours: data.dec(_f$openingHours),
-        closingHours: data.dec(_f$closingHours));
-  }
-
-  @override
-  final Function instantiate = _instantiate;
-
-  static Vendor fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<Vendor>(map);
-  }
-
-  static Vendor fromJson(String json) {
-    return ensureInitialized().decodeJson<Vendor>(json);
-  }
-}
-
-mixin VendorMappable {
-  String toJson() {
-    return VendorMapper.ensureInitialized().encodeJson<Vendor>(this as Vendor);
-  }
-
-  Map<String, dynamic> toMap() {
-    return VendorMapper.ensureInitialized().encodeMap<Vendor>(this as Vendor);
-  }
-
-  VendorCopyWith<Vendor, Vendor, Vendor> get copyWith =>
-      _VendorCopyWithImpl(this as Vendor, $identity, $identity);
-  @override
-  String toString() {
-    return VendorMapper.ensureInitialized().stringifyValue(this as Vendor);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return VendorMapper.ensureInitialized().equalsValue(this as Vendor, other);
-  }
-
-  @override
-  int get hashCode {
-    return VendorMapper.ensureInitialized().hashValue(this as Vendor);
-  }
-}
-
-extension VendorValueCopy<$R, $Out> on ObjectCopyWith<$R, Vendor, $Out> {
-  VendorCopyWith<$R, Vendor, $Out> get $asVendor =>
-      $base.as((v, t, t2) => _VendorCopyWithImpl(v, t, t2));
-}
-
-abstract class VendorCopyWith<$R, $In extends Vendor, $Out>
-    implements UserCopyWith<$R, $In, $Out> {
-  @override
-  $R call(
-      {int? id,
-      String? email,
-      String? phoneNumber,
-      String? name,
-      String? vendorType,
-      String? address,
-      int? serviceId,
-      UserRole? role,
-      String? accessToken,
-      String? refreshToken,
-      String? imageUrl,
-      String? openingHours,
-      String? closingHours});
-  VendorCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
-}
-
-class _VendorCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Vendor, $Out>
-    implements VendorCopyWith<$R, Vendor, $Out> {
-  _VendorCopyWithImpl(super.value, super.then, super.then2);
-
-  @override
-  late final ClassMapperBase<Vendor> $mapper = VendorMapper.ensureInitialized();
-  @override
-  $R call(
-          {int? id,
-          String? email,
-          String? phoneNumber,
-          String? name,
-          Object? vendorType = $none,
-          String? address,
-          Object? serviceId = $none,
-          UserRole? role,
-          String? accessToken,
-          String? refreshToken,
-          Object? imageUrl = $none,
-          Object? openingHours = $none,
-          Object? closingHours = $none}) =>
-      $apply(FieldCopyWithData({
-        if (id != null) #id: id,
-        if (email != null) #email: email,
-        if (phoneNumber != null) #phoneNumber: phoneNumber,
-        if (name != null) #name: name,
-        if (vendorType != $none) #vendorType: vendorType,
-        if (address != null) #address: address,
-        if (serviceId != $none) #serviceId: serviceId,
-        if (role != null) #role: role,
-        if (accessToken != null) #accessToken: accessToken,
-        if (refreshToken != null) #refreshToken: refreshToken,
-        if (imageUrl != $none) #imageUrl: imageUrl,
-        if (openingHours != $none) #openingHours: openingHours,
-        if (closingHours != $none) #closingHours: closingHours
-      }));
-  @override
-  Vendor $make(CopyWithData data) => Vendor(
-      id: data.get(#id, or: $value.id),
-      email: data.get(#email, or: $value.email),
-      phoneNumber: data.get(#phoneNumber, or: $value.phoneNumber),
-      name: data.get(#name, or: $value.name),
-      vendorType: data.get(#vendorType, or: $value.vendorType),
-      address: data.get(#address, or: $value.address),
-      serviceId: data.get(#serviceId, or: $value.serviceId),
-      role: data.get(#role, or: $value.role),
-      accessToken: data.get(#accessToken, or: $value.accessToken),
-      refreshToken: data.get(#refreshToken, or: $value.refreshToken),
-      imageUrl: data.get(#imageUrl, or: $value.imageUrl),
-      openingHours: data.get(#openingHours, or: $value.openingHours),
-      closingHours: data.get(#closingHours, or: $value.closingHours));
-
-  @override
-  VendorCopyWith<$R2, Vendor, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _VendorCopyWithImpl($value, $cast, t);
 }
 
 class GuestMapper extends SubClassMapperBase<Guest> {
@@ -728,6 +522,15 @@ class GuestMapper extends SubClassMapperBase<Guest> {
   static UserRole _$role(Guest v) => v.role;
   static const Field<Guest, UserRole> _f$role =
       Field('role', _$role, key: 'Role');
+  static String _$firstName(Guest v) => v.firstName;
+  static const Field<Guest, String> _f$firstName =
+      Field('firstName', _$firstName, key: 'FirstName');
+  static String _$lastName(Guest v) => v.lastName;
+  static const Field<Guest, String> _f$lastName =
+      Field('lastName', _$lastName, key: 'LastName');
+  static String? _$address(Guest v) => v.address;
+  static const Field<Guest, String> _f$address =
+      Field('address', _$address, key: 'ContactAddress');
 
   @override
   final MappableFields<Guest> fields = const {
@@ -737,6 +540,9 @@ class GuestMapper extends SubClassMapperBase<Guest> {
     #email: _f$email,
     #phoneNumber: _f$phoneNumber,
     #role: _f$role,
+    #firstName: _f$firstName,
+    #lastName: _f$lastName,
+    #address: _f$address,
   };
 
   @override

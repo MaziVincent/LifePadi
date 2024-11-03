@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/models/vendor.dart';
 
 part 'product.mapper.dart';
 

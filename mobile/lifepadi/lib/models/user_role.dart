@@ -9,8 +9,6 @@ enum UserRole {
   customer,
   @MappableValue('Rider')
   rider,
-  @MappableValue('Vendor')
-  vendor,
   @MappableValue('Guest')
   guest,
 }
