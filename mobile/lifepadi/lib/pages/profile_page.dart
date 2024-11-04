@@ -1,18 +1,22 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class ProfilePage extends HookWidget {
+class ProfilePage extends HookConsumerWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final showNotifications = useState(true);
+    final user = ref.watch(authControllerProvider);
 
     return Scaffold(
       body: CustomScrollView(
@@ -56,32 +60,14 @@ class ProfilePage extends HookWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
             sliver: SliverList.list(
               children: [
-                const SettingsPanel(
+                SettingsPanel(
                   title: 'Personal Details',
-                  child: Column(
-                    children: [
-                      ProfileDetailInfo(
-                        name: 'Email',
-                        value: 'tobechijacobs@gmail.com',
-                      ),
-                      ProfileDetailInfo(
-                        name: 'Phone Number',
-                        value: '07012345678',
-                      ),
-                      ProfileDetailInfo(
-                        name: 'Date of birth',
-                        value: '20-05-1900',
-                      ),
-                      ProfileDetailInfo(
-                        name: 'Gender',
-                        value: 'Male',
-                      ),
-                      ProfileDetailInfo(
-                        name: 'Address',
-                        value: '3A, Ikota estate, eti-osa, Lagos, NG',
-                      ),
-                    ],
-                  ),
+                  child: switch (user) {
+                    AsyncData(:final value) =>
+                      _PersonalDetailsContent(user: value),
+                    AsyncError(:final error) => Text(error.toString()),
+                    _ => const GreenyLoadingWheel(),
+                  },
                 ),
                 SettingsPanel(
                   title: 'Account management',
@@ -139,6 +125,42 @@ class ProfilePage extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PersonalDetailsContent extends StatelessWidget {
+  const _PersonalDetailsContent({
+    required this.user,
+  });
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ProfileDetailInfo(
+          name: 'Email',
+          value: user.email,
+        ),
+        ProfileDetailInfo(
+          name: 'Phone Number',
+          value: user.phoneNumber,
+        ),
+        const ProfileDetailInfo(
+          name: 'Date of birth',
+          value: 'Not set',
+        ),
+        const ProfileDetailInfo(
+          name: 'Gender',
+          value: 'Not set',
+        ),
+        ProfileDetailInfo(
+          name: 'Address',
+          value: user.address ?? 'Not set',
+        ),
+      ],
     );
   }
 }
