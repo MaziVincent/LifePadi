@@ -135,3 +135,42 @@ FutureOr<LocationDetails> storeLocation(
 
   return newLocation;
 }
+
+/// Get a single location by its ID
+@riverpod
+FutureOr<LocationDetails> location(Ref ref, {required int id}) async {
+  final client = ref.watch(dioProvider());
+  final response = await client.get<JsonMap>('/address/get/$id');
+
+  if (response.data == null) {
+    throw const ServerErrorException('No data retur`ned from the server');
+  }
+
+  return LocationDetailsMapper.fromMap(response.data!);
+}
+
+/// Update an existing location
+@riverpod
+FutureOr<LocationDetails> updateLocation(
+  Ref ref, {
+  required LocationDetails location,
+}) async {
+  final client = ref.watch(dioProvider());
+  final requestData = location.toMap();
+  logger.d(requestData);
+  final response = await client.put<JsonMap>(
+    '/address/update/${location.id}',
+    data: FormData.fromMap(requestData),
+  );
+
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  final updatedLocation = LocationDetailsMapper.fromMap(response.data!);
+
+  // Invalidate the locations provider to refresh the list
+  ref.invalidate(locationsProvider);
+
+  return updatedLocation;
+}
