@@ -185,7 +185,7 @@ class NewLocationPage extends HookConsumerWidget {
                     PrimaryActionButton(
                       label: 'Confirm Address',
                       onPressed: selectedLocation.value == null
-                          ? () => showToast('Please select a location')
+                          ? () => showToast('Please drag to choose a location')
                           : () async {
                               await ref
                                   .read(
