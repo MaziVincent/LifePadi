@@ -200,6 +200,7 @@ Future<void> handleError(
 ) async {
   String? title;
   var description = error.toString();
+
   if (error is DioException) {
     title = error.error is SocketException ? 'No Internet Connection' : null;
     description = error.error is SocketException

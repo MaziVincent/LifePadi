@@ -74,7 +74,7 @@ class ProfilePage extends HookConsumerWidget {
                   child: Column(
                     children: [
                       AccountManagementTile(
-                        name: 'Update Location',
+                        name: 'Locations',
                         onTap: () =>
                             context.push(const LocationsRoute().location),
                       ),

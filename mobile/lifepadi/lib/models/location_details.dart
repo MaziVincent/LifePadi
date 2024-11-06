@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'location_details.mapper.dart';
 
 @MappableClass()
-class LocationDetails {
+class LocationDetails with LocationDetailsMappable {
   LocationDetails({
     this.id,
     required this.latitude,
@@ -33,7 +33,7 @@ class LocationDetails {
   @MappableField(key: 'PostalCode')
   final String postalCode;
   @MappableField(key: 'Town')
-  final String sublocality;
+  final String? sublocality;
   final String country;
   @MappableField(key: 'LocalGovt')
   final String localGovernmentArea;
@@ -45,5 +45,5 @@ class LocationDetails {
 
   /// Returns the short address of the location
   String get shortAddress =>
-      '$address${sublocality.isNotEmpty ? ', $sublocality' : ''}, $city';
+      '$address${sublocality != null && sublocality!.isNotEmpty ? ', $sublocality' : ''}, $city';
 }

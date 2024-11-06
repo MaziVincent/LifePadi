@@ -1,6 +1,7 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -121,16 +122,15 @@ class NewLocationPage extends HookConsumerWidget {
                                 color: kDarkPrimaryColor,
                               ),
                               5.horizontalSpace,
-                              Expanded(
-                                child: isLoading.value
-                                    ? const Text('Loading address...')
-                                    : SectionTitle(
-                                        selectedLocation.value?.address ??
-                                            'Choose Location',
-                                        color: const Color(0xFF1C1C20),
-                                        handleOverFlow: true,
-                                      ),
-                              ),
+                              if (isLoading.value)
+                                const Text('Loading address...')
+                              else
+                                SectionTitle(
+                                  selectedLocation.value?.address ??
+                                      'Choose Location',
+                                  color: const Color(0xFF1C1C20),
+                                  handleOverFlow: true,
+                                ),
                             ],
                           ),
                         ),
@@ -182,14 +182,33 @@ class NewLocationPage extends HookConsumerWidget {
                       ],
                     ),
                     12.22.verticalSpace,
-                    PrimaryButton(
-                      text: 'Confirm Address',
+                    PrimaryActionButton(
+                      label: 'Confirm Address',
                       onPressed: selectedLocation.value == null
-                          ? null
-                          : () {
-                              logger.i(
-                                'Selected Location: ${selectedLocation.value?.shortAddress}',
-                              );
+                          ? () => showToast('Please select a location')
+                          : () async {
+                              await ref
+                                  .read(
+                                storeLocationProvider(
+                                  location: selectedLocation.value!,
+                                ).future,
+                              )
+                                  .then((value) {
+                                if (context.mounted) {
+                                  openSuccessDialog(
+                                    context: context,
+                                    title: 'Location saved',
+                                    description:
+                                        '${value.shortAddress} have been saved to your locations.',
+                                    onOk: () => context.pop(),
+                                  );
+                                }
+                              }).onError((error, _) async {
+                                await handleError(
+                                  error,
+                                  context.mounted ? context : null,
+                                );
+                              });
                             },
                     ),
                   ],

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/location_details.dart';
@@ -99,4 +100,38 @@ FutureOr<List<LocationDetails>> locations(Ref ref) async {
 
   ref.cache();
   return data.map(LocationDetailsMapper.fromMap).toList();
+}
+
+@riverpod
+FutureOr<LocationDetails> storeLocation(
+  Ref ref, {
+  required LocationDetails location,
+}) async {
+  final client = ref.watch(dioProvider());
+  final user = ref.read(authControllerProvider);
+  final userId = user.maybeWhen(
+    data: (user) => user.id,
+    orElse: () => null,
+  );
+  if (userId == null) {
+    throw const UnauthorizedException('No user found');
+  }
+  final requestData = location.toMap()
+    ..addAll({'UserId': userId})
+    ..remove('Id');
+  final response = await client.post<JsonMap>(
+    '/address/create',
+    data: FormData.fromMap(requestData),
+  );
+
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  final newLocation = LocationDetailsMapper.fromMap(response.data!);
+
+  // Invalidate the locations provider to refresh the list
+  ref.invalidate(locationsProvider);
+
+  return newLocation;
 }

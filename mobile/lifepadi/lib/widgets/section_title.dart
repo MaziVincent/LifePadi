@@ -17,7 +17,7 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (handleOverFlow && title.length > 15) {
-      return Expanded(
+      return Flexible(
         child: SizedBox(
           width: 18.w,
           child: Tooltip(

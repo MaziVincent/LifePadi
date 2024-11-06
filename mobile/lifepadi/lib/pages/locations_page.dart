@@ -21,33 +21,38 @@ class LocationsPage extends ConsumerWidget {
       appBar: const MyAppBar(
         title: 'Locations',
       ),
-      body: switch (locations) {
-        AsyncData(:final value) => _LocationsContent(locations: value),
-        AsyncError(:final error) => Center(
-            child: Text(
-              error.toString(),
-              style: context.textTheme.bodyLarge?.copyWith(
-                color: kDarkPrimaryColor,
-                fontWeight: FontWeight.w400,
+      body: RefreshIndicator(
+        onRefresh: () async => ref.refresh(locationsProvider),
+        child: switch (locations) {
+          AsyncData(:final value) => _LocationsContent(locations: value),
+          AsyncError(:final error) => Center(
+              child: Text(
+                error.toString(),
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: kDarkPrimaryColor,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
-          ),
-        _ => Skeletonizer(
-            child: SuperListView(
-              padding: kHorizontalPadding.copyWith(top: 24.h, bottom: 20.h),
-              children: [
-                for (final i in [1, 2, 3])
-                  LocationCard(
-                    onTap: () {},
-                    address: BoneMock.address,
-                    isDefault: i == 1,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  ),
-              ].separatedBy(16.verticalSpace),
+          _ => Skeletonizer(
+              child: SuperListView(
+                padding: kHorizontalPadding.copyWith(top: 24.h, bottom: 20.h),
+                children: [
+                  for (final i in [1, 2, 3])
+                    LocationCard(
+                      onTap: () {},
+                      address: BoneMock.address,
+                      isDefault: i == 1,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 12.h,
+                      ),
+                    ),
+                ].separatedBy(16.verticalSpace),
+              ),
             ),
-          ),
-      },
+        },
+      ),
     );
   }
 }
