@@ -12,6 +12,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location.g.dart';
 
+/// Get the current location of the user
 @riverpod
 class CurrentLocation extends _$CurrentLocation {
   @override
@@ -78,6 +79,7 @@ class CurrentLocation extends _$CurrentLocation {
   }
 }
 
+/// Get a list of locations for the current user
 @riverpod
 FutureOr<List<LocationDetails>> locations(Ref ref) async {
   final client = ref.watch(dioProvider());
@@ -102,6 +104,7 @@ FutureOr<List<LocationDetails>> locations(Ref ref) async {
   return data.map(LocationDetailsMapper.fromMap).toList();
 }
 
+/// Store a new location
 @riverpod
 FutureOr<LocationDetails> storeLocation(
   Ref ref, {
@@ -173,4 +176,15 @@ FutureOr<LocationDetails> updateLocation(
   ref.invalidate(locationsProvider);
 
   return updatedLocation;
+}
+
+/// Delete a location
+@riverpod
+Future<void> deleteLocation(Ref ref, {required int id}) async {
+  final client = ref.watch(dioProvider());
+  // ignore: inference_failure_on_function_invocation
+  await client.delete('/address/delete/$id');
+
+  // Invalidate the locations provider to refresh the list
+  ref.invalidate(locationsProvider);
 }

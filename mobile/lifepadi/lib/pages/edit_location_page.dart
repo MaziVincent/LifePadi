@@ -68,11 +68,31 @@ class EditLocationPage extends HookConsumerWidget {
       appBar: MyAppBar(
         title: 'Edit Location #$id',
         actions: [
-          MyIconButton(
-            onPressed: () async {},
-            icon: IconsaxPlusLinear.trash,
-            iconColor: Colors.red,
-          ),
+          if (oldLocation is AsyncData<LocationDetails>)
+            MyIconButton(
+              onPressed: () async {
+                await ref
+                    .read(deleteLocationProvider(id: id).future)
+                    .then((value) {
+                  if (context.mounted) {
+                    openSuccessDialog(
+                      context: context,
+                      title: 'Location deleted',
+                      description:
+                          'Location #$id has been deleted from your locations.',
+                      onOk: () => context.pop(),
+                    );
+                  }
+                }).onError((error, _) async {
+                  await handleError(
+                    error,
+                    context.mounted ? context : null,
+                  );
+                });
+              },
+              icon: IconsaxPlusLinear.trash,
+              iconColor: Colors.red,
+            ),
         ],
       ),
       body: Stack(
