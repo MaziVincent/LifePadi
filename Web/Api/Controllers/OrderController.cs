@@ -68,12 +68,12 @@ namespace Api.Controllers
         }
 
         [HttpGet("customer/{id}")]
-        public async Task<IActionResult> customerOrders(int id,[FromQuery] SearchPaging props)
+        public async Task<IActionResult> customerOrders(int id, [FromQuery] SearchPaging props)
         {
             try
             {
-                var orders = await _iorder.customerOrders(id,props);
-                var result = _mapper.Map<List<OrderDto>>(orders);
+                var orders = await _iorder.customerOrders(id, props);
+                // var result = _mapper.Map<List<OrderDto>>(orders);
                 var dataList = new
                 {
                     orders.PageSize,
@@ -81,7 +81,7 @@ namespace Api.Controllers
                     orders.TotalCount,
                     orders.CurrentPage
                 };
-                return Ok(new { result, dataList });
+                return Ok(new { orders, dataList });
             }
             catch (Exception ex)
             {

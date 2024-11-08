@@ -247,7 +247,7 @@ function App() {
 
         {/* PROTECTED ROUTES FOR RIDER */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRole={ROLES.rider} />}>
+          <Route element={<RequireAuthAdmin allowedRole={ROLES.rider} />}>
             <Route
               path="/rider"
               element={<RiderLayout />}
@@ -267,7 +267,7 @@ function App() {
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRole={ROLES.vendor} />}>
+          <Route element={<RequireAuthAdmin allowedRole={ROLES.vendor} />}>
             <Route
               path="/vendor"
               element={<VendorLayout />}

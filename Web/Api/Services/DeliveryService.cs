@@ -151,12 +151,40 @@ namespace Api.Services
             }
         }
 
+        public async Task<DeliveryDto> getCustomersOrder(int customerId)
+        {
+            try
+            {
+                var delivery = await _dbContext.Deliveries
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p!.Vendor)
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.Customer)
+                    .Include(d => d.Rider)
+                    .FirstOrDefaultAsync(d => d.Order!.CustomerId == customerId);
+                if (delivery == null) return null!;
+                var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
+                return DeliveryDto;
+            }catch(Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+
         public async Task<DeliveryDto> getOrderDelivery(int orderId)
         {
             try
             {
                 var delivery = await _dbContext.Deliveries
                     .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p!.Vendor)
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
                     .FirstOrDefaultAsync(d => d.OrderId == orderId);
                 if (delivery == null) return null!;
@@ -281,10 +309,11 @@ namespace Api.Services
                 var unsuccessful = await _dbContext.Deliveries
                     .Where(d => d.RiderId == riderId && d.Status!.Contains("Unsuccessful"))
                     .CountAsync();
-                return new {
-                    pending= pending,
-                    successful= successful,
-                    unsuccessful= unsuccessful
+                return new
+                {
+                    pending = pending,
+                    successful = successful,
+                    unsuccessful = unsuccessful
                 };
             }
             catch (Exception ex)
@@ -437,7 +466,8 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
 
                 return "Delivery and Order status updated";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
@@ -464,7 +494,8 @@ namespace Api.Services
                 _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Delivery status updated";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
