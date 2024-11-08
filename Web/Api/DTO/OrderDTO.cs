@@ -45,4 +45,21 @@ namespace Api.DTO
         public int? Customer_Id { get; set; }
         public CustomerDtoLite? Customer { get; set; }
     }
+
+    public class SingleOrderDto
+    {
+        public int Id { get; set; }
+        public int CustomerId { get; set; }
+        public CustomerDtoLite? Customer { get; set; }
+        public string? Status { get; set; }
+        public bool? IsDelivered { get; set; }
+        public string? Type { get; set; }
+        public string? Instruction { get; set; }
+        public string? Order_Id { get; set; }
+        public double? TotalAmount { get; set; }
+        public string? DeliveryAddress { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public List<OrderItemDto>? OrderItems { get; set; }
+    }
 }

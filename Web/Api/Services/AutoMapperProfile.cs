@@ -44,6 +44,10 @@ namespace Api.Services
             CreateMap<OrderDto, Order>();
             CreateMap<Order, OrderDtoLite>();
             CreateMap<Order, OrderDto>();
+            CreateMap<Order, SingleOrderDto>();
+            CreateMap<SingleOrderDto, Order>();
+            CreateMap<SingleOrderDto, OrderDto>();
+            CreateMap<OrderDto, SingleOrderDto > ();
 
             //Product
             CreateMap<ProductDto, Product>();

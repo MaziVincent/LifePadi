@@ -69,7 +69,7 @@ namespace Api.Services
                 }
                 newOrder.IsDelivered = false;
                 newOrder.Order_Id = GenerateCode.generateOrder_Id();
-                newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper() + " " +newOrder.Order_Id;
+                newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper() + " " + newOrder.Order_Id;
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(newOrder);
@@ -80,13 +80,13 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
             }
         }
-        
 
-        public async Task<PagedList<Order>> customerOrders(int id, SearchPaging props)
+
+        public async Task<PagedList<SingleOrderDto>> customerOrders(int id, SearchPaging props)
         {
             try
             {
-                IQueryable<Order> orderList = Enumerable.Empty<Order>().AsQueryable();
+                IQueryable<SingleOrderDto> orderList = Enumerable.Empty<SingleOrderDto>().AsQueryable();
                 if (props.SearchString == null)
                 {
                     var normalOrders = await _dbContext!.Orders
@@ -95,8 +95,17 @@ namespace Api.Services
                         .OrderByDescending(o => o.CreatedAt)
                         .Where(o => o.CustomerId == id)
                         .ToListAsync();
-                    orderList = orderList.Concat(normalOrders);
-                    var normalResult = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                    var singleOrderDto = _mapper.Map<List<SingleOrderDto>>(normalOrders);
+                    foreach (var item in singleOrderDto)
+                    {
+                        var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
+                        if (delivery != null)
+                        {
+                            item.DeliveryAddress = delivery.DeliveryAddress;
+                        }
+                    }
+                    orderList = orderList.Concat(singleOrderDto);
+                    var normalResult = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
                     return normalResult;
                 }
                 var orders = await _dbContext!.Orders
@@ -105,8 +114,17 @@ namespace Api.Services
                     .OrderByDescending(o => o.CreatedAt)
                     .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString.ToLower()))
                     .ToListAsync();
-                orderList = orderList.Concat(orders);
-                var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                var newSingleOrderDto = _mapper.Map<List<SingleOrderDto>>(orders);
+                foreach (var item in newSingleOrderDto)
+                {
+                    var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
+                    if (delivery != null)
+                    {
+                        item.DeliveryAddress = delivery.DeliveryAddress;
+                    }
+                }
+                orderList = orderList.Concat(newSingleOrderDto);
+                var result = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
                 return result;
             }
             catch (Exception ex)
@@ -131,16 +149,21 @@ namespace Api.Services
             }
         }
 
-        public async Task<OrderDto> getAsync(int id)
+        public async Task<SingleOrderDto> getAsync(int id)
         {
             try
             {
                 var order = await _dbContext!.Orders
                     .Include(o => o.Customer)
-                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product).ThenInclude(i => i.Vendor)!
+                    .Include(o => o.OrderItems)!.ThenInclude(i => i.Product).ThenInclude(i => i!.Vendor)!
                     .FirstOrDefaultAsync(o => o.Id == id);
+                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
-                var OrderDto = _mapper.Map<OrderDto>(order);
+                var OrderDto = _mapper.Map<SingleOrderDto>(order);
+                if (delivery != null)
+                {
+                    OrderDto.DeliveryAddress = delivery.DeliveryAddress;
+                }
                 return OrderDto;
             }
             catch (Exception ex)

@@ -73,7 +73,7 @@ namespace Api.Controllers
             try
             {
                 var orders = await _iorder.customerOrders(id, props);
-                var result = _mapper.Map<List<OrderDto>>(orders);
+                // var result = _mapper.Map<List<OrderDto>>(orders);
                 var dataList = new
                 {
                     orders.PageSize,
@@ -81,7 +81,7 @@ namespace Api.Controllers
                     orders.TotalCount,
                     orders.CurrentPage
                 };
-                return Ok(new { result, dataList });
+                return Ok(new { orders, dataList });
             }
             catch (Exception ex)
             {

@@ -173,12 +173,18 @@ namespace Api.Services
             }
         }
 
+
         public async Task<DeliveryDto> getOrderDelivery(int orderId)
         {
             try
             {
                 var delivery = await _dbContext.Deliveries
                     .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(oi => oi.Product)
+                    .ThenInclude(p => p!.Vendor)
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
                     .FirstOrDefaultAsync(d => d.OrderId == orderId);
                 if (delivery == null) return null!;

@@ -11,9 +11,9 @@ namespace Api.Interfaces
         public Task<OrderDto> createAsync(OrderDto order);
         public Task<OrderDto> updateAsync(OrderDto order, int id);
         public Task<string> deleteAsync(int id);
-        public Task<OrderDto> getAsync(int id);
+        public Task<SingleOrderDto> getAsync(int id);
         public Task<IEnumerable<OrderItemDtoLite>> orderItemLites(int id);
-        public Task<PagedList<Order>> customerOrders(int id, SearchPaging props);
+        public Task<PagedList<SingleOrderDto>> customerOrders(int id, SearchPaging props);
         //public Task<IEnumerable<OrderDto>> riderOrders(int riderId);
         public Task<OrderDto> updateOrderStatus(int id, string status);
         public Task<int> totalNumberOfOrders();
