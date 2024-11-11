@@ -50,6 +50,7 @@ dependencies:
   google_maps_flutter: ^2.9.0
   location: ^7.0.1
   geocoding: ^3.0.0
+  calendar_date_picker2: ^1.1.7
 dev_dependencies:
   build_runner: ^2.4.12
   flutter_test:

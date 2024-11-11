@@ -1,26 +1,51 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/countries.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/validation.dart';
+import 'package:lifepadi/widgets/date_picker_field.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class EditProfilePage extends HookWidget {
+class EditProfilePage extends HookConsumerWidget {
   const EditProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final name = useState('');
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authControllerProvider);
+
+    final firstName = useState('');
+    final lastName = useState('');
     final email = useState('');
     final phone = useState('');
-    final country = useState('');
     final gender = useState('');
     final address = useState('');
+    final birthDate = useState<DateTime?>(null);
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+
+    // Add useEffect to set initial birth date if user has one
+    useEffect(
+      () {
+        if (user is AsyncData &&
+            user.valueOrNull != null &&
+            birthDate.value == null) {
+          final userValue = user.valueOrNull!;
+          if (userValue is Customer && userValue.dateOfBirth != null) {
+            birthDate.value = userValue.dateOfBirth;
+          }
+          return null;
+        }
+        return null;
+      },
+      [user.valueOrNull],
+    );
 
     const genders = [
       'Male',
       'Female',
-      'Other',
     ];
 
     return Scaffold(
@@ -28,16 +53,50 @@ class EditProfilePage extends HookWidget {
         title: 'Edit Profile',
       ),
       body: Form(
+        key: formKey,
         child: ListView(
           padding: kHorizontalPadding.copyWith(top: 29.h, bottom: 20.h),
           children: [
             ...[
               InputField(
-                hintText: 'Your full name',
-                labelText: 'Full name',
-                onChanged: (value) => name.value = value,
+                hintText: 'Enter first name',
+                labelText: 'First name',
+                onChanged: (value) => firstName.value = value,
                 keyboardType: TextInputType.text,
-                hasValue: name.value.isNotEmpty,
+                hasValue: firstName.value.isNotEmpty,
+                initialValue: user.valueOrNull?.firstName,
+                autofillHints: const [
+                  AutofillHints.givenName,
+                  AutofillHints.name,
+                ],
+                validator: ValidationBuilder(
+                  requiredMessage: 'First name is required',
+                )
+                    .minLength(
+                      2,
+                      'First name must be at least 2 characters',
+                    )
+                    .build(),
+              ),
+              InputField(
+                hintText: 'Enter last name',
+                labelText: 'Last name',
+                onChanged: (value) => lastName.value = value,
+                keyboardType: TextInputType.text,
+                hasValue: lastName.value.isNotEmpty,
+                initialValue: user.valueOrNull?.lastName,
+                autofillHints: const [
+                  AutofillHints.familyName,
+                  AutofillHints.name,
+                ],
+                validator: ValidationBuilder(
+                  requiredMessage: 'Last name is required',
+                )
+                    .minLength(
+                      3,
+                      'Last name must be at least 3 characters',
+                    )
+                    .build(),
               ),
               InputField(
                 hintText: 'Your email address',
@@ -45,30 +104,39 @@ class EditProfilePage extends HookWidget {
                 onChanged: (value) => email.value = value,
                 keyboardType: TextInputType.emailAddress,
                 hasValue: email.value.isNotEmpty,
+                initialValue: user.valueOrNull?.email,
+                autofillHints: const [
+                  AutofillHints.username,
+                  AutofillHints.email,
+                ],
+                validator: buildEmailValidator(),
               ),
-              InputField(
-                hintText: 'Your phone number',
-                labelText: 'Phone',
-                onChanged: (value) => phone.value = value,
-                keyboardType: TextInputType.phone,
-                hasValue: phone.value.isNotEmpty,
+              PhoneInputField(
+                phone: phone,
               ),
               InputField(
                 hintText: 'Your street address',
-                labelText: 'Address',
+                labelText: 'Contact Address',
                 onChanged: (value) => address.value = value,
                 keyboardType: TextInputType.streetAddress,
                 hasValue: address.value.isNotEmpty,
+                initialValue: user.valueOrNull?.address,
+                autofillHints: const [AutofillHints.streetAddressLine1],
+                validator: ValidationBuilder(
+                  requiredMessage: 'Address is required',
+                ).build(),
               ),
               Row(
                 children: [
-                  /// Select country
+                  /// Date of birth picker
                   Expanded(
-                    child: SelectInputField<String>(
-                      hintText: 'Select country',
-                      labelText: 'Country',
-                      items: countries.map((e) => e.name).toList(),
-                      onChanged: (value) => country.value = value ?? '',
+                    child: DatePickerField(
+                      labelText: 'Date of Birth',
+                      hintText: 'Select date',
+                      selectedDate: birthDate.value,
+                      onDateSelected: (dates) {
+                        birthDate.value = dates[0];
+                      },
                     ),
                   ),
                   15.horizontalSpace,
@@ -89,6 +157,9 @@ class EditProfilePage extends HookWidget {
             PrimaryButton(
               text: 'Update',
               onPressed: () {
+                // Validate the input fields
+                if (!formKey.currentState!.validate()) return;
+
                 // TODO: Update the user's profile
 
                 // Clear the input fields

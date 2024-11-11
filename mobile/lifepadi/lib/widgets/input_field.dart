@@ -19,7 +19,12 @@ class InputField extends StatelessWidget {
     this.autofillHints,
     this.maxLines = 1,
     this.maxLength,
-  });
+    this.initialValue,
+    this.controller,
+  }) : assert(
+          controller == null || initialValue == null,
+          'Cannot provide both an initialValue and a controller',
+        );
 
   /// The child widget to be displayed as the suffix icon
   final Widget? child;
@@ -54,9 +59,15 @@ class InputField extends StatelessWidget {
   /// The maximum number of lines and characters allowed in the input field
   final int? maxLines, maxLength;
 
+  /// The initial value of the input field
+  final String? initialValue;
+
+  final TextEditingController? controller;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       cursorColor: kDarkPrimaryColor,
       decoration: InputDecoration(
         border: inputBorder(),
@@ -95,6 +106,7 @@ class InputField extends StatelessWidget {
       maxLength: maxLength,
       maxLines: maxLines,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      initialValue: initialValue,
     );
   }
 }

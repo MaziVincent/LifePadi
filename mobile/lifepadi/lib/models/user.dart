@@ -60,7 +60,10 @@ class Customer extends User with CustomerMappable {
     required super.accessToken,
     required super.refreshToken,
     super.address,
+    this.dateOfBirth,
   });
+
+  final DateTime? dateOfBirth;
 }
 
 @MappableClass(discriminatorValue: 'Rider')

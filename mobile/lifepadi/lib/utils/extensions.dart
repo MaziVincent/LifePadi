@@ -47,6 +47,13 @@ extension ReadableDateTime on DateTime {
   String get readableDate {
     return DateFormat('dd-MM-yyyy').format(this);
   }
+
+  /// Return the month of the date in short month format.
+  ///
+  /// e.g. Jan, Feb, Mar, etc.
+  String get shortMonth {
+    return DateFormat.MMM().format(this);
+  }
 }
 
 extension ListRepetition<T> on List<T> {

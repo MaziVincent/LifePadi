@@ -56,6 +56,7 @@ class SelectInputField<T> extends StatelessWidget {
       isExpanded: true,
       dropdownColor: const Color(0xFFF5F5F5),
       style: inputTextStyle(context, forUserEnteredText: true),
+      validator: (value) => value == null ? 'Please select a gender' : null,
     );
   }
 }
