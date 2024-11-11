@@ -13,25 +13,19 @@ class CircularButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      customBorder: const CircleBorder(),
-      child: Ink(
-        width: 40.h,
-        height: 40.h,
-        decoration: ShapeDecoration(
-          color: const Color(0xFFFCFCFC),
-          shape: const CircleBorder(),
-          shadows: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 1.r,
-              blurRadius: 3.r,
-              offset: const Offset(0, 2),
-            ),
-          ],
+    return Material(
+      color: const Color(0xFFFCFCFC),
+      shape: const CircleBorder(),
+      elevation: 3,
+      shadowColor: Colors.black.withOpacity(0.1),
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: SizedBox(
+          width: 40.h,
+          height: 40.h,
+          child: Center(child: child),
         ),
-        child: child,
       ),
     );
   }

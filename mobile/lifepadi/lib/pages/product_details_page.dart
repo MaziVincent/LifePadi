@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -128,29 +129,7 @@ class _ProductDetailsContent extends StatelessWidget {
           color: Color(0xFF27272A),
         ),
         3.verticalSpace,
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text:
-                    '2 or more persons can share this space...Velit purus egestas tellus phasellus. Mattis eget sed faucibus magna vulputate pellentesque a diam.  ',
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF878787),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              TextSpan(
-                text: 'Read More...',
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: kDarkPrimaryColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
+        ExpandableDescription(description: product.description),
         9.verticalSpace,
         StoreNameWithWishlistAndShare(
           product: product,
@@ -227,6 +206,66 @@ class _ProductDetailsContent extends StatelessWidget {
         ),
         30.verticalSpace,
       ],
+    );
+  }
+}
+
+class ExpandableDescription extends HookWidget {
+  const ExpandableDescription({
+    super.key,
+    required this.description,
+  });
+
+  final String description;
+  static const maxLength = 165;
+
+  @override
+  Widget build(BuildContext context) {
+    final isExpanded = useState(false);
+    final text = description;
+    final shouldTrim = text.length > maxLength && !isExpanded.value;
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: shouldTrim ? '${text.substring(0, maxLength)}...' : text,
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFF878787),
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          if (shouldTrim)
+            WidgetSpan(
+              child: GestureDetector(
+                onTap: () => isExpanded.value = true,
+                child: Text(
+                  ' Read More...',
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: kDarkPrimaryColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          if (isExpanded.value)
+            WidgetSpan(
+              child: GestureDetector(
+                onTap: () => isExpanded.value = false,
+                child: Text(
+                  ' Show Less',
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: kDarkPrimaryColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
