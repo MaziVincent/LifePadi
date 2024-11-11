@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/vendor.dart';
 
 part 'product.mapper.dart';
@@ -13,6 +14,7 @@ class Product with ProductMappable {
     required this.imageUrl,
     required this.vendor,
     this.quantity = 1,
+    required this.category,
   });
 
   @MappableField(key: 'Id')
@@ -28,4 +30,6 @@ class Product with ProductMappable {
   @MappableField(key: 'Vendor')
   final Vendor vendor;
   final int quantity;
+  @MappableField(key: 'Category')
+  final Category category;
 }

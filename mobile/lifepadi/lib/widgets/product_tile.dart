@@ -97,17 +97,9 @@ class ProductTile extends ConsumerWidget {
                                 .read(cartStateProvider.notifier)
                                 .removeFromCart(product.id);
                           } else {
-                            final productToAdd = Product(
-                              id: product.id,
-                              name: product.name,
-                              description: product.description,
-                              price: product.price,
-                              imageUrl: product.imageUrl,
-                              vendor: product.vendor,
-                            );
                             ref
                                 .read(cartStateProvider.notifier)
-                                .addToCart(productToAdd);
+                                .addToCart(product);
                           }
                         },
                         child: Icon(

@@ -6,6 +6,7 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/models/vendor.dart';
@@ -243,6 +244,10 @@ Product makeFakeProduct({required int id}) {
       imageUrl: 'foobarbaz',
       phoneNumber: BoneMock.phone,
       address: BoneMock.address,
+    ),
+    category: Category(
+      id: 1,
+      name: BoneMock.name,
     ),
   );
 }

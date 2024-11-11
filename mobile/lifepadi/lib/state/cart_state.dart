@@ -83,6 +83,7 @@ class CartState extends _$CartState {
           imageUrl: product.imageUrl,
           vendor: product.vendor,
           quantity: product.quantity + 1,
+          category: product.category,
         );
       }
       return product;
@@ -107,6 +108,7 @@ class CartState extends _$CartState {
           imageUrl: product.imageUrl,
           vendor: product.vendor,
           quantity: product.quantity - 1,
+          category: product.category,
         );
       }
       return product;
