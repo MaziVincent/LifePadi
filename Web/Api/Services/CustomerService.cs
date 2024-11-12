@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Api.Helpers;
 
+
 namespace Api.Services
 {
     public class CustomerService : ICustomer
@@ -20,12 +21,15 @@ namespace Api.Services
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config, HttpClient httpClient)
+        private readonly IOtherService _oService;
+
+        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config, HttpClient httpClient, IOtherService oService)
         {
             _dbContext = dBContext;
             _mapper = mapper;
             _config = config;
             _httpClient = httpClient;
+            _oService = oService;
         }
 
         public async Task<bool> checkPhoneAndEmail(string phoneNumber, string email)
@@ -69,10 +73,11 @@ namespace Api.Services
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 newCustomer.PhoneNumberConfirmed = true;
                 await _dbContext.Customers.AddAsync(newCustomer);
-                
+
                 await _dbContext.SaveChangesAsync();
 
-                await _dbContext.Wallets.AddAsync(new Wallet { 
+                await _dbContext.Wallets.AddAsync(new Wallet
+                {
                     CustomerId = newCustomer.Id,
                     InitialBalance = 0.0,
                     Balance = 0.0
@@ -292,6 +297,7 @@ namespace Api.Services
             try
             {
                 var initialCustomer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
                 if (initialCustomer == null) return null!;
                 initialCustomer.ContactAddress = customer.ContactAddress;
                 initialCustomer.FirstName = customer.FirstName;
@@ -304,6 +310,8 @@ namespace Api.Services
                 _dbContext.Customers.Attach(initialCustomer);
                 await _dbContext.SaveChangesAsync();
                 var CustomerDtoLite = _mapper.Map<CustomerDtoLite>(initialCustomer);
+                var Type = _oService.Strip(user!.GetType().ToString());
+                CustomerDtoLite.Role = Type;
                 return CustomerDtoLite;
             }
             catch (Exception ex)
