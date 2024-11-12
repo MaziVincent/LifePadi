@@ -331,7 +331,9 @@ namespace Api.Services
             {
                 var vendor = await _dbContext!.Vendors
                     .Include(v => v.Products!)
-                    .ThenInclude(p => p.Category)
+                        .ThenInclude(v => v.Vendor)
+                    .Include(v => v.Products!)
+                        .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
                 return products;
