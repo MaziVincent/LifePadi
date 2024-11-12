@@ -135,6 +135,12 @@ class CustomerMapper extends SubClassMapperBase<Customer> {
   static String? _$address(Customer v) => v.address;
   static const Field<Customer, String> _f$address =
       Field('address', _$address, key: 'ContactAddress', opt: true);
+  static DateTime? _$dateOfBirth(Customer v) => v.dateOfBirth;
+  static const Field<Customer, DateTime> _f$dateOfBirth =
+      Field('dateOfBirth', _$dateOfBirth, key: 'DateOfBirth', opt: true);
+  static String? _$gender(Customer v) => v.gender;
+  static const Field<Customer, String> _f$gender =
+      Field('gender', _$gender, key: 'Gender', opt: true);
 
   @override
   final MappableFields<Customer> fields = const {
@@ -147,6 +153,8 @@ class CustomerMapper extends SubClassMapperBase<Customer> {
     #accessToken: _f$accessToken,
     #refreshToken: _f$refreshToken,
     #address: _f$address,
+    #dateOfBirth: _f$dateOfBirth,
+    #gender: _f$gender,
   };
 
   @override
@@ -166,7 +174,9 @@ class CustomerMapper extends SubClassMapperBase<Customer> {
         role: data.dec(_f$role),
         accessToken: data.dec(_f$accessToken),
         refreshToken: data.dec(_f$refreshToken),
-        address: data.dec(_f$address));
+        address: data.dec(_f$address),
+        dateOfBirth: data.dec(_f$dateOfBirth),
+        gender: data.dec(_f$gender));
   }
 
   @override
@@ -228,7 +238,9 @@ abstract class CustomerCopyWith<$R, $In extends Customer, $Out>
       UserRole? role,
       String? accessToken,
       String? refreshToken,
-      String? address});
+      String? address,
+      DateTime? dateOfBirth,
+      String? gender});
   CustomerCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -250,7 +262,9 @@ class _CustomerCopyWithImpl<$R, $Out>
           UserRole? role,
           String? accessToken,
           String? refreshToken,
-          Object? address = $none}) =>
+          Object? address = $none,
+          Object? dateOfBirth = $none,
+          Object? gender = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (email != null) #email: email,
@@ -260,7 +274,9 @@ class _CustomerCopyWithImpl<$R, $Out>
         if (role != null) #role: role,
         if (accessToken != null) #accessToken: accessToken,
         if (refreshToken != null) #refreshToken: refreshToken,
-        if (address != $none) #address: address
+        if (address != $none) #address: address,
+        if (dateOfBirth != $none) #dateOfBirth: dateOfBirth,
+        if (gender != $none) #gender: gender
       }));
   @override
   Customer $make(CopyWithData data) => Customer(
@@ -272,7 +288,9 @@ class _CustomerCopyWithImpl<$R, $Out>
       role: data.get(#role, or: $value.role),
       accessToken: data.get(#accessToken, or: $value.accessToken),
       refreshToken: data.get(#refreshToken, or: $value.refreshToken),
-      address: data.get(#address, or: $value.address));
+      address: data.get(#address, or: $value.address),
+      dateOfBirth: data.get(#dateOfBirth, or: $value.dateOfBirth),
+      gender: data.get(#gender, or: $value.gender));
 
   @override
   CustomerCopyWith<$R2, Customer, $Out2> $chain<$R2, $Out2>(

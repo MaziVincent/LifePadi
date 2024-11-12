@@ -24,7 +24,7 @@ class PhoneInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
       autoValidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: PhoneNumber(isoCode: 'NG'),
+      initialValue: PhoneNumber(isoCode: 'NG', phoneNumber: phone.value),
       onInputChanged: (PhoneNumber number) => phone.value = number.phoneNumber!,
       inputBorder: const OutlineInputBorder(),
       selectorConfig: const SelectorConfig(

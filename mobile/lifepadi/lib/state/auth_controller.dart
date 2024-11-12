@@ -279,4 +279,27 @@ class AuthController extends _$AuthController {
       rethrow;
     }
   }
+
+  /// Update a customer's profile details
+  Future<void> updateProfile({
+    required Customer customer,
+  }) async {
+    final client = ref.read(dioProvider());
+
+    try {
+      final response = await client.put<JsonMap>(
+        '/customer/update/${customer.id}',
+        data: FormData.fromMap(customer.toMap()),
+      );
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from server');
+      }
+
+      final updatedCustomer = CustomerMapper.fromMap(response.data!);
+      state = AsyncData(updatedCustomer);
+      await _saveDetailsToStorage(updatedCustomer);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
