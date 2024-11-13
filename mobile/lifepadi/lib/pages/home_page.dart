@@ -143,7 +143,12 @@ class HomePage extends HookConsumerWidget {
                   VendorCard(
                     name: vendor.name,
                     image: CachedNetworkImageProvider(vendor.imageUrl ?? ''),
-                    onTap: () {},
+                    onTap: () => context.push(
+                      ProductsRoute(
+                        vendorId: vendor.id,
+                        vendorName: vendor.name,
+                      ).location,
+                    ),
                   ),
                 VendorCard(
                   name: 'See more',

@@ -387,19 +387,33 @@ class ProductsRoute extends GoRouteData {
   /// Accepts query parameter category which is the id of
   /// the category to display products for.
   const ProductsRoute({
-    required this.categoryId,
-    required this.categoryName,
-  });
+    this.categoryId,
+    this.categoryName,
+    this.vendorId,
+    this.vendorName,
+  }) : assert(
+          !(categoryId != null && vendorId != null) &&
+                  (categoryId != null && categoryName != null) ||
+              (vendorId != null && vendorName != null),
+          'categoryId and categoryName or vendorId and vendorName must not be null, but not both',
+        );
 
-  final int categoryId;
-  final String categoryName;
+  final int? categoryId;
+  final String? categoryName;
+  final int? vendorId;
+  final String? vendorName;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProductsPage(
-      categoryId: categoryId,
-      categoryName: categoryName,
-    );
+    return categoryId != null
+        ? ProductsPage(
+            categoryId: categoryId,
+            categoryName: categoryName,
+          )
+        : ProductsPage(
+            vendorId: vendorId,
+            vendorName: vendorName,
+          );
   }
 }
 

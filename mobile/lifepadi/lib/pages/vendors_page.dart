@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -30,8 +32,14 @@ class VendorsPage extends ConsumerWidget {
               itemCount: vendors.length,
               itemBuilder: (context, index) => VendorCard(
                 name: vendors[index].name,
-                image: CachedNetworkImageProvider(vendors[index].imageUrl!),
-                onTap: () {},
+                image:
+                    CachedNetworkImageProvider(vendors[index].imageUrl ?? ''),
+                onTap: () => context.push(
+                  ProductsRoute(
+                    vendorId: vendors[index].id,
+                    vendorName: vendors[index].name,
+                  ).location,
+                ),
               ),
             ),
           _ => Skeletonizer(
