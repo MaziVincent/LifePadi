@@ -331,8 +331,6 @@ namespace Api.Services
             {
                 var vendor = await _dbContext!.Vendors
                     .Include(v => v.Products!)
-                        .ThenInclude(v => v.Vendor)
-                    .Include(v => v.Products!)
                         .ThenInclude(p => p.Category)
                     .FirstOrDefaultAsync(v => v.Id == id);
                 var products = _mapper.Map<List<ProductDtoLite>>(vendor!.Products);
@@ -354,6 +352,7 @@ namespace Api.Services
                     var products = await _dbContext!.Products
                         .Where(p => p.VendorId == id)
                         .Include(p => p.Category)
+                        .Include(p => p.Vendor)
                         .OrderByDescending(p => p.CreatedAt)
                         .ToListAsync();
                     productList = productList.Concat(_mapper.Map<List<ProductDto>>(products));
