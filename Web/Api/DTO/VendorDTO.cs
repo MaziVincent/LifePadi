@@ -36,6 +36,7 @@ namespace Api.DTO
         public string? ClosingHours { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public List<AddressDtoLite>? Addresses {get; set; }
         public List<VendorReview>? VendorReviews { get; set; }
     }
 
