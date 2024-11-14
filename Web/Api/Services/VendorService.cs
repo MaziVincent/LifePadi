@@ -353,6 +353,7 @@ namespace Api.Services
                         .Where(p => p.VendorId == id)
                         .Include(p => p.Category)
                         .Include(p => p.Vendor)
+                        .ThenInclude(v => v.Addresses.Where(a => a.UserId == id))
                         .OrderByDescending(p => p.CreatedAt)
                         .ToListAsync();
                     productList = productList.Concat(_mapper.Map<List<ProductDto>>(products));
