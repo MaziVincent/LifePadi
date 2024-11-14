@@ -38,13 +38,13 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
-                    var vendor1 = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products)
+                    var vendor1 = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products).Include(v => v.Addresses).AsSplitQuery()
                     .ToListAsync();
                     vendorList = vendorList.Concat(vendor1);
                     var result = PagedList<Vendor>.ToPagedList(vendorList, props.PageNumber, props.PageSize);
                     return result;
                 }
-                var vendors = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products)
+                var vendors = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products).Include(v => v.Addresses).AsSplitQuery()
                     .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
                 vendorList = vendorList.Concat(vendors);
@@ -53,7 +53,7 @@ namespace Api.Services
             }
             catch (Exception ex)
             {
-                throw new Exceptions.ServiceException(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
 
@@ -353,9 +353,12 @@ namespace Api.Services
                         .Where(p => p.VendorId == id)
                         .Include(p => p.Category)
                         .Include(p => p.Vendor)
-                        .ThenInclude(v => v.Addresses.Where(a => a.UserId == id))
+                        .ThenInclude(v => v.Addresses!)
+                        .AsSplitQuery()
                         .OrderByDescending(p => p.CreatedAt)
                         .ToListAsync();
+                    
+
                     productList = productList.Concat(_mapper.Map<List<ProductDto>>(products));
                     var result = PagedList<ProductDto>.ToPagedList(productList, props.PageNumber, props.PageSize);
                     return result;
@@ -363,7 +366,10 @@ namespace Api.Services
                 var products1 = await _dbContext!.Products
                     .Where(p => p.VendorId == id)
                     .Include(p => p.Category)
+                    .Include(p => p.Vendor)
+                    .ThenInclude(v => v.Addresses!)
                     .Where(p => p.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .AsSplitQuery()
                     .OrderByDescending(p => p.CreatedAt)
                     .ToListAsync();
                 productList = productList.Concat(_mapper.Map<List<ProductDto>>(products1));
