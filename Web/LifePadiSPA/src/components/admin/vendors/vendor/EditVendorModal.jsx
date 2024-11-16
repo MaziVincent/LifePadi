@@ -113,8 +113,9 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
   const getVendor = useCallback(async () => {
     try {
       const result = await fetch(`${url}/get/${vendorId}`, auth.accessToken);
-      //console.log(result.data);
+      console.log(result.data);
       setVendor(result.data);
+
       Object.entries(result.data).forEach(([key, value]) => {
         setValue(key, value);
       });

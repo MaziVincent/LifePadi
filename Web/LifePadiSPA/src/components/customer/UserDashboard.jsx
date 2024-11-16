@@ -103,7 +103,7 @@ const UserDashboard = () => {
               </Alert>
             )}
 
-            {orders?.result.length < 1 ? (
+            {orders?.orders?.length < 1 ? (
               <div className="flex flex-col items-center gap-6">
                 <h1 className="text-2xl">
                   {" "}
@@ -129,7 +129,7 @@ const UserDashboard = () => {
             ) : (
               <>
                 {ordersSuccess &&
-                  orders.result?.map((order) => (
+                  orders.orders?.map((order) => (
                     <div
                       key={order.Id}
                       className=" bg-primary hover:bg-graybg dark:hover:bg-darkHover dark:bg-darkMenu dark:text-primary border border-gray border-opacity-15 rounded-lg mt-5 p-4 shadow-lg"
