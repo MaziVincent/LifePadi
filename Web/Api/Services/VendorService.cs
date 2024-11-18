@@ -461,9 +461,13 @@ namespace Api.Services
                 currentAddress.City = vendor.City;
                 currentAddress.State = vendor.State;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 currentAddress.LocalGovt = vendor.LocalGovt;
 =======
 >>>>>>> a0030da (vendor and product commit)
+=======
+                currentAddress.LocalGovt = vendor.LocalGovt;
+>>>>>>> 3d0abb7 (new commit)
                 currentAddress.PostalCode = vendor.PostalCode;
                 currentAddress.Longitude = vendor.Longitude;
                 currentAddress.Latitude = vendor.Latitude;

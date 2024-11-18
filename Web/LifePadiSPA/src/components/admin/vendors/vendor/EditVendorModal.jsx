@@ -68,10 +68,14 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
   const handleUpdate = (vendor) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log(vendor);
 =======
     //console.log(vendor);
 >>>>>>> a0030da (vendor and product commit)
+=======
+    console.log(vendor);
+>>>>>>> 3d0abb7 (new commit)
      mutate(vendor);
   };
 
@@ -89,6 +93,9 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       setError("Error fetching states. Please try again later.");
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d0abb7 (new commit)
   }, [vendorId]);
   
 =======
@@ -108,16 +115,23 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       setError("Error fetching services. Please try again later.");
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
   }, [baseUrl, vendorId]);
 =======
   }, [baseUrl]);
 >>>>>>> a0030da (vendor and product commit)
+=======
+  }, [baseUrl, vendorId]);
+>>>>>>> 3d0abb7 (new commit)
 
   const getLocalGovts = async (state) => {
 
     try {
       const localGovts = await fetch(`https://nga-states-lga.onrender.com/?state=${state}`);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d0abb7 (new commit)
      
       
       if(localGovts.data.includes('Error')){
@@ -126,12 +140,17 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       return
       }
 
+<<<<<<< HEAD
       setLGAs(localGovts.data);
       console.log(localGovts.data)
 =======
       setLGAs(localGovts.data);
      // console.log(localGovts.data)
 >>>>>>> a0030da (vendor and product commit)
+=======
+      setLGAs(localGovts.data);
+      console.log(localGovts.data)
+>>>>>>> 3d0abb7 (new commit)
 
     } catch (error) {
       console.error("Error fetching LGAs:", error);
@@ -147,19 +166,26 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       setVendor(result.data);
       console.log(result.data?.State)
       getLocalGovts(result.data?.State);
+<<<<<<< HEAD
 =======
       //console.log(result.data);
       setVendor(result.data);
 >>>>>>> a0030da (vendor and product commit)
+=======
+>>>>>>> 3d0abb7 (new commit)
       Object.entries(result.data).forEach(([key, value]) => {
         setValue(key, value);
       });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
      
 =======
       getLocalGovts(result.data.State);
 >>>>>>> a0030da (vendor and product commit)
+=======
+     
+>>>>>>> 3d0abb7 (new commit)
 
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -202,7 +228,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
     getServices();
     //console.log('services')
 
-  }, []);
+  }, [vendorId]);
 
   const handleStateChange = (e) => {
     e.preventDefault();
@@ -517,26 +543,36 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                 <div className="sm:col-span-1">
                   <label
 <<<<<<< HEAD
+<<<<<<< HEAD
                     htmlFor="localGovt"
 =======
                     htmlFor="city"
 >>>>>>> a0030da (vendor and product commit)
+=======
+                    htmlFor="localGovt"
+>>>>>>> 3d0abb7 (new commit)
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
                     Vendor LocalGovt
                   </label>
                   <select
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3d0abb7 (new commit)
                     id="localGovt"
                     name="localGovt"
                     {...register("LocalGovt", {
                       required: "LocalGovt is required",
+<<<<<<< HEAD
 =======
                     id="city"
                     name="city"
                     {...register("City", {
                       required: "City is required",
 >>>>>>> a0030da (vendor and product commit)
+=======
+>>>>>>> 3d0abb7 (new commit)
                     })}
                     defaultValue={"default"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -562,7 +598,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                   </select>
 
                   {errors.LocalGovt && (
+<<<<<<< HEAD
                     <span className="text-sm text-red">
+=======
+                    <span className="text-sm text-red-400">
+>>>>>>> 3d0abb7 (new commit)
                       {errors.LocalGovt.message}
                     </span>
                   )}
@@ -587,7 +627,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     required=""
                   />
                   {errors.City && (
+<<<<<<< HEAD
                     <p className="text-sm text-red">City is required</p>
+=======
+                    <p className="text-sm text-red-400">City is required</p>
+>>>>>>> 3d0abb7 (new commit)
                   )}
                 </div>
 
@@ -622,7 +666,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     Latitude
                   </label>
                   <input
+<<<<<<< HEAD
                     type="number"
+=======
+                    type="text"
+>>>>>>> 3d0abb7 (new commit)
                     name="latitude"
                     id="latitude"
                     {...register("Latitude", {required:true} )}
@@ -630,7 +678,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     placeholder="Type Latitude of Vendor"
                   />
                   {errors.Latitude && (
+<<<<<<< HEAD
                     <p className="text-sm text-red">Latitude is required</p>
+=======
+                    <p className="text-sm text-red-400">Latitude is required</p>
+>>>>>>> 3d0abb7 (new commit)
                   )}
                 </div>
 
@@ -642,7 +694,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     Longitude
                   </label>
                   <input
+<<<<<<< HEAD
                     type="number"
+=======
+                    type="text"
+>>>>>>> 3d0abb7 (new commit)
                     name="longitude"
                     id="longitude"
                     {...register("Longitude", {required:true})}
@@ -650,7 +706,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     placeholder="Type Longitude of Vendor"
                   />
                   {errors.Longitude && (
+<<<<<<< HEAD
                     <p className="text-sm text-red">
+=======
+                    <p className="text-sm text-red-400">
+>>>>>>> 3d0abb7 (new commit)
                       Longitude is required
                     </p>
                   )}
