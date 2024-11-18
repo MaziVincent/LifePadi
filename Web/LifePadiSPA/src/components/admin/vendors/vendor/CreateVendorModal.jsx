@@ -374,7 +374,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     {...register("State", {
                       required: "State is required",
                     })}
-                    defaultValue={"default"}
+                    defaultValue={"Enugu"}
                     onChange={(e, value) => handleStateChange(e)}
                     className="text-grayTxt bg-graybg border border-gray-300 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
