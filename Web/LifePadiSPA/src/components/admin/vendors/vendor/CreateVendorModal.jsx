@@ -99,7 +99,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
         `https://nga-states-lga.onrender.com/?state=${state}`
       );
 
-      console.log(result.data)
+     // console.log(result.data)
       setLGAs(result.data);
     };
     getLGAs(e.target.value);
@@ -409,13 +409,13 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     htmlFor="state"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Vendor City/LGA
+                    Vendor Local Govt
                   </label>
                   <select
                     id="state"
                     name="state"
-                    {...register("City", {
-                      required: "City is required",
+                    {...register("LocalGovt", {
+                      required: "LGA is required",
                     })}
                     defaultValue={"default"}
                     className="text-grayTxt bg-graybg border border-gray-300  text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -426,7 +426,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                       className="text-gray-600"
                       selected
                     >
-                      Select City/LGA
+                      Select Local Govt
                     </option>
 
                     { lga.map((lga) => (
@@ -439,10 +439,33 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     ))}
                   </select>
 
-                  {errors.City && (
+                  {errors.LocalGovt && (
                     <span className="text-sm text-red">
-                      {errors.City.message}
+                      {errors.LocalGovt.message}
                     </span>
+                  )}
+                </div>
+
+                <div className="sm:col-span-1">
+                  <label
+                    htmlFor="city"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Vendor City
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    {...register("City", {
+                      required: true,
+                    })}
+                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type City of Vendor"
+                    required=""
+                  />
+                  {errors.City && (
+                    <p className="text-sm text-red">City is required</p>
                   )}
                 </div>
 
@@ -471,23 +494,21 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
 
                 <div className="sm:col-span-1">
                   <label
-                    htmlFor="code"
+                    htmlFor="latitude"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Postal Code (Optional)
+                    Latitude
                   </label>
                   <input
                     type="text"
-                    name="code"
-                    id="code"
-                    {...register("PostalCode")}
+                    name="latitude"
+                    id="latitude"
+                    {...register("Latitude")}
                     className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Postal Code of Vendor"
+                    placeholder="Type Latitude of Vendor"
                   />
-                  {/* {errors.PostalCode && (
-                    <p className="text-sm text-red-400">
-                      Postal Code is required
-                    </p>
+                  {/* {errors.Latitude && (
+                    <p className="text-sm text-red-400">Latitude is required</p>
                   )} */}
                 </div>
 
@@ -513,23 +534,27 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                   )} */}
                 </div>
 
+               
+
                 <div className="sm:col-span-1">
                   <label
-                    htmlFor="latitude"
+                    htmlFor="code"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Latitude
+                    Postal Code (Optional)
                   </label>
                   <input
                     type="text"
-                    name="latitude"
-                    id="latitude"
-                    {...register("Latitude")}
+                    name="code"
+                    id="code"
+                    {...register("PostalCode")}
                     className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Latitude of Vendor"
+                    placeholder="Type Postal Code of Vendor"
                   />
-                  {/* {errors.Latitude && (
-                    <p className="text-sm text-red-400">Latitude is required</p>
+                  {/* {errors.PostalCode && (
+                    <p className="text-sm text-red-400">
+                      Postal Code is required
+                    </p>
                   )} */}
                 </div>
               </div>

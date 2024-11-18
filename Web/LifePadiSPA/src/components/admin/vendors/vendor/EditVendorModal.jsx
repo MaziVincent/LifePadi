@@ -67,7 +67,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
   });
 
   const handleUpdate = (vendor) => {
-    //console.log(vendor);
+    console.log(vendor);
      mutate(vendor);
   };
 
@@ -84,7 +84,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       console.error("Error fetching states:", error);
       setError("Error fetching states. Please try again later.");
     }
-  }, []);
+  }, [vendorId]);
   
 
   const getServices = useCallback(async () => {
@@ -95,14 +95,22 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       console.error("Error fetching services:", error);
       setError("Error fetching services. Please try again later.");
     }
-  }, [baseUrl]);
+  }, [baseUrl, vendorId]);
 
   const getLocalGovts = async (state) => {
 
     try {
       const localGovts = await fetch(`https://nga-states-lga.onrender.com/?state=${state}`);
+     
+      
+      if(localGovts.data.includes('Error')){
+
+      setError("Error fetching Local Govts. Please try again later.");
+      return
+      }
+
       setLGAs(localGovts.data);
-     // console.log(localGovts.data)
+      console.log(localGovts.data)
 
     } catch (error) {
       console.error("Error fetching LGAs:", error);
@@ -115,12 +123,13 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
       const result = await fetch(`${url}/get/${vendorId}`, auth.accessToken);
       console.log(result.data);
       setVendor(result.data);
-
+      console.log(result.data?.State)
+      getLocalGovts(result.data?.State);
       Object.entries(result.data).forEach(([key, value]) => {
         setValue(key, value);
       });
 
-      getLocalGovts(result.data.State);
+     
 
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -149,7 +158,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
     getServices();
     //console.log('services')
 
-  }, []);
+  }, [vendorId]);
 
   const handleStateChange = (e) => {
     e.preventDefault();
@@ -463,16 +472,16 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
                 <div className="sm:col-span-1">
                   <label
-                    htmlFor="city"
+                    htmlFor="localGovt"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Vendor City/LGA
+                    Vendor LocalGovt
                   </label>
                   <select
-                    id="city"
-                    name="city"
-                    {...register("City", {
-                      required: "City is required",
+                    id="localGovt"
+                    name="localGovt"
+                    {...register("LocalGovt", {
+                      required: "LocalGovt is required",
                     })}
                     defaultValue={"default"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-base capitalize rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-900 placeholder-gray-800 dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -483,7 +492,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                       className="text-gray-600"
                       
                     >
-                      Select City/LGA
+                      Select Local Govt
                     </option>
 
                     {
@@ -497,10 +506,33 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     ))}
                   </select>
 
-                  {errors.City && (
+                  {errors.LocalGovt && (
                     <span className="text-sm text-red-400">
-                      {errors.City.message}
+                      {errors.LocalGovt.message}
                     </span>
+                  )}
+                </div>
+
+                <div className="sm:col-span-1">
+                  <label
+                    htmlFor="city"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Vendor City
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    {...register("City", {
+                      required: true,
+                    })}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type City of Vendor"
+                    required=""
+                  />
+                  {errors.City && (
+                    <p className="text-sm text-red-400">City is required</p>
                   )}
                 </div>
 
@@ -529,6 +561,49 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
 
                 <div className="sm:col-span-1">
                   <label
+                    htmlFor="latitude"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Latitude
+                  </label>
+                  <input
+                    type="text"
+                    name="latitude"
+                    id="latitude"
+                    {...register("Latitude", {required:true} )}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type Latitude of Vendor"
+                  />
+                  {errors.Latitude && (
+                    <p className="text-sm text-red-400">Latitude is required</p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-1">
+                  <label
+                    htmlFor="longitude"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Longitude
+                  </label>
+                  <input
+                    type="text"
+                    name="longitude"
+                    id="longitude"
+                    {...register("Longitude", {required:true})}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type Longitude of Vendor"
+                  />
+                  {errors.Longitude && (
+                    <p className="text-sm text-red-400">
+                      Longitude is required
+                    </p>
+                  )}
+                </div>
+
+               
+                <div className="sm:col-span-1">
+                  <label
                     htmlFor="code"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
@@ -546,48 +621,6 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     <p className="text-sm text-red-400">
                       Postal Code is required
                     </p>
-                  )} */}
-                </div>
-
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="longitude"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Longitude
-                  </label>
-                  <input
-                    type="text"
-                    name="longitude"
-                    id="longitude"
-                    {...register("Longitude")}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Longitude of Vendor"
-                  />
-                  {/* {errors.Longitude && (
-                    <p className="text-sm text-red-400">
-                      Longitude is required
-                    </p>
-                  )} */}
-                </div>
-
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="latitude"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Latitude
-                  </label>
-                  <input
-                    type="text"
-                    name="latitude"
-                    id="latitude"
-                    {...register("Latitude")}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Latitude of Vendor"
-                  />
-                  {/* {errors.Latitude && (
-                    <p className="text-sm text-red-400">Latitude is required</p>
                   )} */}
                 </div>
               </div>
