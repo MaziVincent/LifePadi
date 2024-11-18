@@ -77,7 +77,7 @@ namespace Api.Services
                     Name = vendor.ContactAddress,
                     Town = vendor.Town!,
                     City = vendor.City!,
-                    LocalGovt = vendor.LocalGovt,
+                    LocalGovt = vendor.LocalGovt!,
                     State = vendor.State!,
                     PostalCode = vendor.PostalCode!,
                     Longitude = vendor.Longitude!,
@@ -260,11 +260,12 @@ namespace Api.Services
                 currentAddress.Town = vendor.Town;
                 currentAddress.City = vendor.City;
                 currentAddress.State = vendor.State;
+                currentAddress.LocalGovt = vendor.LocalGovt;
                 currentAddress.PostalCode = vendor.PostalCode;
                 currentAddress.Longitude = vendor.Longitude;
                 currentAddress.Latitude = vendor.Latitude;
                 _dbContext!.Addresses.Update(currentAddress);
-                _dbContext.Vendors.Attach(initialVendor);
+                _dbContext.Vendors.Update(initialVendor);
                 await _dbContext.SaveChangesAsync();
                 var currentVendor = _mapper.Map<AuthVendorDtoLite>(initialVendor);
 
