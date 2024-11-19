@@ -424,7 +424,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     placeholder="Write Contact Address here"
                   ></textarea>
                   {errors.ContactAddress && (
-                    <p className="text-sm text-red-400">Address is required</p>
+                    <p className="text-sm text-red">Address is required</p>
                   )}
                 </div>
 
@@ -464,7 +464,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                   </select>
 
                   {errors.State && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.State.message}
                     </span>
                   )}
@@ -507,7 +507,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                   </select>
 
                   {errors.LocalGovt && (
-                    <span className="text-sm text-red-400">
+                    <span className="text-sm text-red">
                       {errors.LocalGovt.message}
                     </span>
                   )}
@@ -532,7 +532,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     required=""
                   />
                   {errors.City && (
-                    <p className="text-sm text-red-400">City is required</p>
+                    <p className="text-sm text-red">City is required</p>
                   )}
                 </div>
 
@@ -555,7 +555,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     required=""
                   />
                   {errors.Town && (
-                    <p className="text-sm text-red-400">Town is required</p>
+                    <p className="text-sm text-red">Town is required</p>
                   )}
                 </div>
 
@@ -575,7 +575,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     placeholder="Type Latitude of Vendor"
                   />
                   {errors.Latitude && (
-                    <p className="text-sm text-red-400">Latitude is required</p>
+                    <p className="text-sm text-red">Latitude is required</p>
                   )}
                 </div>
 
@@ -595,7 +595,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     placeholder="Type Longitude of Vendor"
                   />
                   {errors.Longitude && (
-                    <p className="text-sm text-red-400">
+                    <p className="text-sm text-red">
                       Longitude is required
                     </p>
                   )}

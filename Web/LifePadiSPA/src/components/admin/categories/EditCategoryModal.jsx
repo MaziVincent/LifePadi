@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient, useMutation } from "react-query";
 import { useEffect } from "react";
 import toast, {Toaster} from "react-hot-toast";
+import LoadingGif from "../../shared/LodingGif";
 
 
 
@@ -15,6 +16,7 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
   const update = useUpdate();
   const { auth } = useAuth();
   const url = `${baseUrl}category`;
+  const [fileError, setFileError] = useState(false);
 
   const {
     register,
@@ -29,6 +31,11 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
     const formData = new FormData()
     formData.append("Name",data.Name)
     formData.append("Description",data.Description)
+    if(data.Icon){
+      formData.append("Icon",data.Icon[0])
+      const result = await update(`${url}/${data.Id}/uploadIcon`, formData, auth?.accessToken)
+   // console.log(result.data)
+    }
     
     const response = await update(`${url}/update/${data.Id}`, formData, auth?.accessToken);
 
@@ -57,7 +64,18 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
     });
   }, [category, setValue]);
 
- 
+  const handleChange = (event) => {
+   
+    const file = event.target.files[0];
+
+    //console.log(file)
+    
+    if (!file || file.size > 50 * 1024) {
+      setFileError(true);
+    }else{
+      setFileError(false);
+    }
+  };
 
   return (
     <Modal
@@ -154,11 +172,44 @@ const EditCategoryModal = ({ open, handleClose, category }) => {
                   )}
                 </div>
 
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="icon"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Category Icon (
+                    <span className="text-sm text-gray-500">
+                      {" "}
+                      Icon should not be above 50kb
+                    </span>
+                    )
+                  </label>
+                  <input
+                    type="file"
+                    name="icon"
+                    id="icon"
+                    accept="image/*"
+                    {...register("Icon", )}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Upload Category Icon"
+                    required
+                    onChange={handleChange}
+                  />
+                  
+                  {fileError && (
+                    <p className="text-sm text-red">
+                      {" "}
+                      File should not be above 50kb
+                    </p>
+                  )}
+                </div>
+
                   
               </div>
 
               <button
                 type="submit"
+                disabled={fileError}
                 className=" cursor-pointer inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800"
               >
                 <svg

@@ -74,6 +74,9 @@ const EditServiceModal = ({ open, handleClose, service }) => {
     
     if (!file || file.size > 50 * 1024) {
       setFileError(true);
+      
+    }else{
+      setFileError(false)
     }
   };
 

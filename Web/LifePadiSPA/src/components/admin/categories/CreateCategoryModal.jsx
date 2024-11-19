@@ -163,7 +163,7 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                     htmlFor="icon"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
-                    Service Icon (
+                    Category Icon (
                     <span className="text-sm text-gray-500">
                       {" "}
                       Icon should not be above 50kb
