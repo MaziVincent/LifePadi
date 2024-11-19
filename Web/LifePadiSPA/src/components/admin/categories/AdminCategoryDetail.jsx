@@ -66,7 +66,7 @@ const AdminCategoryDetails = () => {
           refetchOnMount: "always",
         });
       
-        //console.log(data);
+        console.log(data);
    
   return (
     <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-10 p-5">
@@ -87,14 +87,20 @@ const AdminCategoryDetails = () => {
             </Link>
           </Breadcrumbs>
       <h1 className="text-3xl font-bold text-center p-4">Category Details</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="shadow-lg rounded-lg p-3 bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-evenly items-center">
+        <div className="shadow-lg rounded-lg p-3 bg-white ">
           <div className="flex flex-col gap-2 items-center ">
             <h3 className="text-lg font-bold"> Name :</h3>
             <p className="text-gray-800">{data?.Name}</p>
           </div>
         </div>
-        <div className="shadow-lg rounded-lg p-3 bg-white">
+        <div className=" flex justify-center">
+        <div className="rounded-full border-2 w-20 h-20 p-1 ">
+          <img src={data?.Icon} alt="" className="w-full h-full" />
+        </div>
+        </div>
+        
+        <div className="shadow-lg rounded-lg p-3 bg-white ">
           {" "}
           <div className="flex flex-col gap-2 items-center">
             <h3 className="text-lg font-bold"> Description :</h3>
