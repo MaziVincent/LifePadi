@@ -17,8 +17,8 @@ namespace Api.DTO
         public List<ProductDtoLite>? Products { get; set; }
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
-        public string? Longitude { get; set; }
-        public string? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public List<VendorReview>? VendorReviews { get; set; }
     }
 
@@ -58,8 +58,8 @@ namespace Api.DTO
 
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-        public string? Longitude { get; set; }
-        public string? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public string? VendorImgUrl { get; set; }
         public int? ServiceId { get; set; }
         public int? VendorCategoryId {get; set;}

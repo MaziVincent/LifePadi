@@ -66,16 +66,18 @@ namespace Api.Services
                 if (props.SearchString is null)
                 {
                     var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                    .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id)
+                    .AsSplitQuery()
                     .ToListAsync();
                     productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
                     var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-                .Include(c => c.Products!).ThenInclude(p => p.Vendor)
+                .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+                    .AsSplitQuery()
                     .ToListAsync();
                 productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
