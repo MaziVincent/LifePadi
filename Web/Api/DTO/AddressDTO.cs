@@ -11,8 +11,8 @@ namespace Api.DTO
         public string? LocalGovt { get; set; }
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-        public string? Longitude { get; set; }
-        public string? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public int UserId { get; set; }
         public UserDtoLite? User { get; set; }
     }
@@ -26,8 +26,8 @@ namespace Api.DTO
         public string? LocalGovt { get; set; }
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-        public string? Longitude { get; set; }
-        public string? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int UserId { get; set;}
