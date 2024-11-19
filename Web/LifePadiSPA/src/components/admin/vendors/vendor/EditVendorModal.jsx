@@ -567,7 +567,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     Latitude
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="latitude"
                     id="latitude"
                     {...register("Latitude", {required:true} )}
@@ -587,7 +587,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }) => {
                     Longitude
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="longitude"
                     id="longitude"
                     {...register("Longitude", {required:true})}

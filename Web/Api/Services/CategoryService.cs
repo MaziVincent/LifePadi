@@ -111,6 +111,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(c => c.Id == id);
                 var products = _mapper.Map<List<ProductDto>>(category!.Products);
                 return products;
@@ -145,7 +146,7 @@ namespace Api.Services
             {
                 var folderName = "ProductCategory";
                 var imgPath = await UploadImage.uploadImg(category.Icon!, _cloudinary, folderName);
-                if (imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
+                if(imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
                 var newCategory = _mapper.Map<Category>(category);
                 newCategory.Icon = imgPath;
                 await _dbContext.Categories.AddAsync(newCategory);
