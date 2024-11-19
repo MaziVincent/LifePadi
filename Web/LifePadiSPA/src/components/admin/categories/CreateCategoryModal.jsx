@@ -13,7 +13,7 @@ const CreateCategoryModal = ({ open, handleClose }) => {
   const { auth } = useAuth();
   const url = `${baseUrl}category/create`;
   const queryClient = useQueryClient();
-
+  const [fileError, setFileError] = useState(false)
   const {
     register,
     handleSubmit,
@@ -22,10 +22,12 @@ const CreateCategoryModal = ({ open, handleClose }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
+    const category = {...data, Icon: data.Icon[0]}
+
     const formData = new FormData()
 
-    for(const key in data){
-      formData.append(key, data[key])
+    for(const key in category){
+      formData.append(key, category[key])
     }
     const response = await post(url, formData, auth?.accessToken);
     //console.log(response);
@@ -43,6 +45,19 @@ const CreateCategoryModal = ({ open, handleClose }) => {
   const handleCreate = (category) => {
   //  console.log(data)
     mutate(category);
+  };
+
+  const handleChange = (event) => {
+   
+    const file = event.target.files[0];
+
+    //console.log(file)
+    
+    if (!file || file.size > 50 * 1024) {
+      setFileError(true);
+    }else{
+      setFileError(false)
+    }
   };
 
 
@@ -143,12 +158,48 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                   
                 </div>
 
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="icon"
+                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
+                  >
+                    Service Icon (
+                    <span className="text-sm text-gray-500">
+                      {" "}
+                      Icon should not be above 50kb
+                    </span>
+                    )
+                  </label>
+                  <input
+                    type="file"
+                    name="icon"
+                    id="icon"
+                    accept="image/*"
+                    {...register("Icon", { required: true })}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-40 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Upload Category Icon"
+                    required
+                    onChange={handleChange}
+                  />
+                  {errors.Icon && (
+                    <p className="text-sm text-red">
+                      Category icon is required
+                    </p>
+                  )}
+                  {fileError && (
+                    <p className="text-sm text-red">
+                      {" "}
+                      File should not be above 50kb
+                    </p>
+                  )}
+                </div>
+
                  
               </div>
               <button
                   type="submit"
                   className={` cursor-pointer inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800`}
-               disabled={!isValid || isSubmitting}
+               disabled={!isValid || isSubmitting || fileError}
                >
                   <svg
                     className="mr-1 -ml-1 w-6 h-6"

@@ -500,16 +500,16 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     Latitude
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="latitude"
                     id="latitude"
-                    {...register("Latitude")}
+                    {...register("Latitude",{required:true})}
                     className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Latitude of Vendor"
                   />
-                  {/* {errors.Latitude && (
+                  {errors.Latitude && (
                     <p className="text-sm text-red-400">Latitude is required</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className="sm:col-span-1">
@@ -520,18 +520,18 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     Longitude
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="longitude"
                     id="longitude"
-                    {...register("Longitude")}
+                    {...register("Longitude", {required:true })}
                     className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Longitude of Vendor"
                   />
-                  {/* {errors.Longitude && (
+                  {errors.Longitude && (
                     <p className="text-sm text-red-400">
                       Longitude is required
                     </p>
-                  )} */}
+                  )}
                 </div>
 
                
