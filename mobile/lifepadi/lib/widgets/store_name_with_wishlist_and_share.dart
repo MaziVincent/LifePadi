@@ -45,8 +45,11 @@ class StoreNameWithWishlistAndShare extends StatelessWidget {
             children: [
               Consumer(
                 builder: (context, ref, child) {
-                  final isInWishlist =
-                      ref.watch(wishlistProvider).contains(product);
+                  final wishlistAsync = ref.watch(wishlistProvider);
+                  final isInWishlist = wishlistAsync.valueOrNull?.any(
+                        (p) => p.id == product.id,
+                      ) ??
+                      false;
 
                   return CircularButton(
                     onTap: () {

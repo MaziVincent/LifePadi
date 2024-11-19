@@ -12,20 +12,24 @@ import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductTile extends ConsumerWidget {
-  const ProductTile({
+class ProductTileBase extends StatelessWidget {
+  const ProductTileBase({
     super.key,
     required this.product,
+    this.onCartToggle,
+    this.onWishlistToggle,
+    this.isInCart = false,
+    this.isInWishlist = false,
   });
 
   final Product product;
+  final VoidCallback? onCartToggle;
+  final VoidCallback? onWishlistToggle;
+  final bool isInCart;
+  final bool isInWishlist;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isInWishlist = ref.watch(wishlistProvider).contains(product);
-    final cartProducts = ref.watch(cartStateProvider).products;
-    final isInCart = cartProducts.any((p) => p.id == product.id);
-
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () async => ProductDetailsRoute(product.id).push(context),
       customBorder: RoundedRectangleBorder(
@@ -91,17 +95,7 @@ class ProductTile extends ConsumerWidget {
 
                       /// Toggle cart
                       GestureDetector(
-                        onTap: () {
-                          if (isInCart) {
-                            ref
-                                .read(cartStateProvider.notifier)
-                                .removeFromCart(product.id);
-                          } else {
-                            ref
-                                .read(cartStateProvider.notifier)
-                                .addToCart(product);
-                          }
-                        },
+                        onTap: onCartToggle,
                         child: Icon(
                           isInCart ? MdiIcons.checkCircle : MdiIcons.cartPlus,
                           color: const Color(0xFF1BAC4B),
@@ -164,11 +158,7 @@ class ProductTile extends ConsumerWidget {
                           children: [
                             /// Toggle wishlist
                             GestureDetector(
-                              onTap: () {
-                                ref
-                                    .read(wishlistProvider.notifier)
-                                    .toggle(product);
-                              },
+                              onTap: onWishlistToggle,
                               child: Icon(
                                 isInWishlist
                                     ? MdiIcons.heart
@@ -188,6 +178,40 @@ class ProductTile extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProductTile extends ConsumerWidget {
+  const ProductTile({super.key, required this.product});
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartAsync = ref.watch(cartStateProvider);
+    final wishlistAsync = ref.watch(wishlistProvider);
+
+    final isInCart =
+        cartAsync.valueOrNull?.products.any((p) => p.id == product.id) ?? false;
+    final isInWishlist =
+        wishlistAsync.valueOrNull?.any((p) => p.id == product.id) ?? false;
+
+    return ProductTileBase(
+      product: product,
+      isInCart: isInCart,
+      isInWishlist: isInWishlist,
+      onCartToggle: () async {
+        final notifier = ref.read(cartStateProvider.notifier);
+        if (isInCart) {
+          await notifier.removeFromCart(product.id);
+        } else {
+          await notifier.addToCart(product);
+        }
+      },
+      onWishlistToggle: () {
+        ref.read(wishlistProvider.notifier).toggle(product);
+      },
     );
   }
 }

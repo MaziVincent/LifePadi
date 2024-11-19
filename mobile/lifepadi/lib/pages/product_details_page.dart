@@ -187,17 +187,19 @@ class _ProductDetailsContent extends StatelessWidget {
         20.verticalSpace,
         Consumer(
           builder: (context, ref, child) {
-            final cartProducts = ref.watch(cartStateProvider).products;
-            final isInCart = cartProducts.any((p) => p.id == product.id);
+            final cartAsync = ref.watch(cartStateProvider);
+            final isInCart = cartAsync.valueOrNull?.products.any(
+                  (p) => p.id == product.id,
+                ) ??
+                false;
 
             return PrimaryButton(
-              onPressed: () {
+              onPressed: () async {
+                final notifier = ref.read(cartStateProvider.notifier);
                 if (isInCart) {
-                  ref
-                      .read(cartStateProvider.notifier)
-                      .removeFromCart(product.id);
+                  await notifier.removeFromCart(product.id);
                 } else {
-                  ref.read(cartStateProvider.notifier).addToCart(product);
+                  await notifier.addToCart(product);
                 }
               },
               text: isInCart ? 'Remove from Cart' : 'Add to Cart',

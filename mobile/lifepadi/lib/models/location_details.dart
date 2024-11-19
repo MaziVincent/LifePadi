@@ -31,7 +31,7 @@ class LocationDetails with LocationDetailsMappable {
   @MappableField(key: 'State')
   final String state;
   @MappableField(key: 'PostalCode')
-  final String postalCode;
+  final String? postalCode;
   @MappableField(key: 'Town')
   final String? sublocality;
   final String country;

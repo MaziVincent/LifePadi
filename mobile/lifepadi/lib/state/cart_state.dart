@@ -1,4 +1,8 @@
+import 'dart:math' show pi, sin, cos, sqrt, atan2;
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/models/cart.dart';
+import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -10,11 +14,12 @@ part 'cart_state.g.dart';
 @Riverpod(keepAlive: true)
 class CartState extends _$CartState {
   @override
-  Cart build() {
+  Future<Cart> build() async {
     return _getCart();
   }
 
-  Cart _getCart() {
+  /// Get the current cart state from shared preferences
+  Future<Cart> _getCart() async {
     final products = PreferencesHelper.getStringList(kCartKey)
             ?.map(ProductMapper.fromJson)
             .toList() ??
@@ -22,108 +27,203 @@ class CartState extends _$CartState {
     return _calculateCart(products);
   }
 
+  /// Calculate the cart total based on the products in the cart
   Cart _calculateCart(List<Product> products) {
     final subtotal = products.fold<double>(
       0,
       (sum, product) => sum + (product.price * product.quantity),
     );
 
-    // You can adjust these values based on your business logic
-    const deliveryFee = 0.0;
-    const discountCode = 0.0;
+    final locations = _getUniqueLocations(products);
+    final deliveryFee = _calculateDeliveryFee(locations);
+    const discountPrice = 0.0;
+
+    // Get the current state value safely
+    final currentState = state.valueOrNull;
 
     return Cart(
       products: products,
       subtotal: subtotal,
-      total: subtotal + (deliveryFee - discountCode),
+      total: subtotal + (deliveryFee - discountPrice),
       deliveryFee: deliveryFee,
-      discount: discountCode,
+      discount: discountPrice,
+      selectedLocationId: currentState?.selectedLocationId ?? 0,
     );
   }
 
-  void _saveCart(List<Product> products) {
-    PreferencesHelper.setStringList(
+  /// Get unique vendor locations from the products in the cart
+  Set<LocationDetails> _getUniqueLocations(List<Product> products) {
+    final locations = <LocationDetails>{};
+
+    // Add all vendor locations
+    for (final product in products) {
+      locations.add(product.vendor.address);
+    }
+
+    return locations;
+  }
+
+  /// Calculate delivery fee based on the Travelling Salesman Problem (TSP)
+  double _calculateDeliveryFee(Set<LocationDetails> locations) {
+    if (locations.isEmpty) return 0;
+
+    final points = locations.toList();
+    final route = _findNearestNeighborRoute(points);
+
+    // Calculate total distance along route
+    var totalDistance = 0.0;
+    for (var i = 0; i < route.length - 1; i++) {
+      totalDistance += _calculateDistance(
+        route[i].latLng,
+        route[i + 1].latLng,
+      );
+    }
+
+    logger.i('Total distance: $totalDistance km');
+    return totalDistance * kDeliveryPricePerKm;
+  }
+
+  /// Find the nearest neighbor route using the Nearest Neighbor algorithm
+  List<LocationDetails> _findNearestNeighborRoute(
+    List<LocationDetails> points,
+  ) {
+    if (points.isEmpty) return [];
+    if (points.length == 1) return points;
+
+    final route = <LocationDetails>[points.first];
+    final unvisited = points.skip(1).toList();
+
+    while (unvisited.isNotEmpty) {
+      final current = route.last;
+      var nearestIdx = 0;
+      var minDistance = double.infinity;
+
+      // Find nearest unvisited point
+      for (var i = 0; i < unvisited.length; i++) {
+        final distance = _calculateDistance(
+          current.latLng,
+          unvisited[i].latLng,
+        );
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestIdx = i;
+        }
+      }
+
+      route.add(unvisited[nearestIdx]);
+      unvisited.removeAt(nearestIdx);
+    }
+
+    return route;
+  }
+
+  /// Convert degrees to radians
+  double _getRadians(double degrees) => degrees * pi / 180;
+
+  /// Use the Haversine formula to calculate distance in km
+  /// between two points
+  double _calculateDistance(LatLng start, LatLng end) {
+    const earthRadiusKm = 6371;
+    final startLatRadians = _getRadians(start.latitude);
+    final endLatRadians = _getRadians(end.latitude);
+    final latitudeDiffRadians = _getRadians(end.latitude - start.latitude);
+    final longitudeDiffRadians = _getRadians(end.longitude - start.longitude);
+
+    final haversineA =
+        sin(latitudeDiffRadians / 2) * sin(latitudeDiffRadians / 2) +
+            cos(startLatRadians) *
+                cos(endLatRadians) *
+                sin(longitudeDiffRadians / 2) *
+                sin(longitudeDiffRadians / 2);
+
+    final greatCircleDistance =
+        2 * atan2(sqrt(haversineA), sqrt(1 - haversineA));
+    return earthRadiusKm * greatCircleDistance;
+  }
+
+  /// Save the cart to shared preferences
+  Future<void> _saveCart(List<Product> products) async {
+    await PreferencesHelper.setStringList(
       key: kCartKey,
       value: products.map((product) => product.toJson()).toList(),
     );
-    state = _calculateCart(products);
+    state = AsyncData(_calculateCart(products));
   }
 
+  /// Check if a product is in the cart
   bool isInCart(int productId) {
-    return state.products.any((product) => product.id == productId);
+    return state.valueOrNull?.products
+            .any((product) => product.id == productId) ??
+        false;
   }
 
-  void addToCart(Product product) {
+  /// Add a product to the cart
+  Future<void> addToCart(Product product) async {
     if (isInCart(product.id)) {
-      incrementQuantity(product.id);
+      await incrementQuantity(product.id);
       return;
     }
 
-    final updatedProducts = [product, ...state.products];
-    _saveCart(updatedProducts);
+    final currentProducts = state.valueOrNull?.products ?? [];
+    final updatedProducts = [product, ...currentProducts];
+    await _saveCart(updatedProducts);
     showToast('Added ${product.name} to cart');
   }
 
-  void removeFromCart(int productId) {
-    final product = state.products.firstWhere((p) => p.id == productId);
+  /// Remove a product from the cart
+  Future<void> removeFromCart(int productId) async {
+    final currentState = state.valueOrNull;
+    if (currentState == null) return;
+
+    final product = currentState.products.firstWhere((p) => p.id == productId);
     final updatedProducts =
-        state.products.where((product) => product.id != productId).toList();
-    _saveCart(updatedProducts);
+        currentState.products.where((p) => p.id != productId).toList();
+    await _saveCart(updatedProducts);
     showToast('Removed ${product.name} from cart');
   }
 
-  void incrementQuantity(int productId) {
-    final updatedProducts = state.products.map((product) {
+  /// Increment the quantity of a product in the cart
+  Future<void> incrementQuantity(int productId) async {
+    final currentProducts = state.valueOrNull?.products ?? [];
+    final updatedProducts = currentProducts.map((product) {
       if (product.id == productId) {
-        return Product(
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          vendor: product.vendor,
-          quantity: product.quantity + 1,
-          category: product.category,
-        );
+        return product.copyWith(quantity: product.quantity + 1);
       }
       return product;
     }).toList();
-    _saveCart(updatedProducts);
+    await _saveCart(updatedProducts);
   }
 
-  void decrementQuantity(int productId) {
-    final product = state.products.firstWhere((p) => p.id == productId);
+  /// Decrement the quantity of a product in the cart
+  Future<void> decrementQuantity(int productId) async {
+    final currentProducts = state.valueOrNull?.products ?? [];
+    final product = currentProducts.firstWhere((p) => p.id == productId);
+
     if (product.quantity == 1) {
-      removeFromCart(productId);
+      await removeFromCart(productId);
       return;
     }
 
-    final updatedProducts = state.products.map((product) {
-      if (product.id == productId) {
-        return Product(
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          vendor: product.vendor,
-          quantity: product.quantity - 1,
-          category: product.category,
-        );
+    final updatedProducts = currentProducts.map((p) {
+      if (p.id == productId) {
+        return p.copyWith(quantity: p.quantity - 1);
       }
-      return product;
+      return p;
     }).toList();
-    _saveCart(updatedProducts);
+    await _saveCart(updatedProducts);
   }
 
-  void clearCart() {
-    PreferencesHelper.setStringList(key: kCartKey, value: []);
-    state = Cart(
-      products: [],
-      subtotal: 0,
-      total: 0,
-      deliveryFee: 0,
-      discount: 0,
+  /// Clear the cart
+  Future<void> clearCart() async {
+    await PreferencesHelper.setStringList(key: kCartKey, value: []);
+    state = AsyncData(
+      Cart(
+        products: [],
+        subtotal: 0,
+        total: 0,
+        deliveryFee: 0,
+        discount: 0,
+      ),
     );
     showToast('Cart cleared');
   }

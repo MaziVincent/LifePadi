@@ -16,7 +16,7 @@ class CartPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cart = ref.watch(cartStateProvider);
+    final cartAsync = ref.watch(cartStateProvider);
     final isExpanded = useState(false);
 
     void togglePanel() => isExpanded.value = !isExpanded.value;
@@ -31,148 +31,152 @@ class CartPage extends HookConsumerWidget {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          SuperListView(
-            padding: kHorizontalPadding.copyWith(top: 12.h),
-            children: [
-              const SectionTitle('Location'),
-              12.verticalSpace,
-              LocationCard(
-                onTap: () async {
-                  await displayBottomPanel(
-                    context,
-                    child: const EditLocationModalForm(),
-                  );
-                },
-                address: '3RD FLOOR DREAMLINK CONCEPTS',
-              ),
-              18.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SectionTitle('Items in Cart'),
-                  IconButton(
-                    onPressed: () =>
-                        ref.read(cartStateProvider.notifier).clearCart(),
-                    icon: const Icon(IconsaxPlusLinear.trash),
-                    iconSize: 24.sp,
-                  ),
-                ],
-              ),
-              4.verticalSpace,
-              const MyDivider(),
-              16.verticalSpace,
-              if (cart.products.isEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 16.w),
-                  child: Center(
-                    child: Text(
-                      'Your cart is empty',
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: kDarkPrimaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ...cart.products
-                  .map(
-                    (product) => CartItem(
-                      image: CachedNetworkImageProvider(product.imageUrl),
-                      price: product.price,
-                      name: product.name,
-                      quantity: product.quantity,
-                      onIncrement: () => ref
-                          .read(cartStateProvider.notifier)
-                          .incrementQuantity(product.id),
-                      onDecrement: () => ref
-                          .read(cartStateProvider.notifier)
-                          .decrementQuantity(product.id),
-                      onRemove: () => ref
-                          .read(cartStateProvider.notifier)
-                          .removeFromCart(product.id),
-                      vendorName: product.vendor.name,
-                    ),
-                  )
-                  .toList()
-                  .separatedBy(14.verticalSpace),
-              31.verticalSpace,
-              if (isExpanded.value) 320.verticalSpace else 150.verticalSpace,
-            ],
-          ),
-          BottomPanel(
-            height: isExpanded.value ? 320.h : 150.h,
-            child: Column(
+      body: cartAsync.when(
+        loading: () => const Center(child: GreenyLoadingWheel()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (cart) => Stack(
+          children: [
+            SuperListView(
+              padding: kHorizontalPadding.copyWith(top: 12.h),
               children: [
+                const SectionTitle('Location'),
+                12.verticalSpace,
+                LocationCard(
+                  onTap: () async {
+                    await displayBottomPanel(
+                      context,
+                      child: const EditLocationModalForm(),
+                    );
+                  },
+                  address: '3RD FLOOR DREAMLINK CONCEPTS',
+                ),
+                18.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (!isExpanded.value)
-                      Expanded(
-                        child: PaymentPrice(
-                          title: 'Subtotal',
-                          amount: cart.subtotal,
-                          description:
-                              'This is the total amount of all the items in your cart.',
-                        ),
-                      )
-                    else
-                      const Expanded(child: Text('Hide details')),
+                    const SectionTitle('Items in Cart'),
                     IconButton(
-                      icon: Icon(
-                        isExpanded.value
-                            ? Icons.keyboard_double_arrow_down
-                            : Icons.keyboard_double_arrow_up,
-                      ),
-                      onPressed: togglePanel,
+                      onPressed: () =>
+                          ref.read(cartStateProvider.notifier).clearCart(),
+                      icon: const Icon(IconsaxPlusLinear.trash),
+                      iconSize: 24.sp,
                     ),
                   ],
                 ),
-                if (isExpanded.value) ...[
-                  const CartDiscount(),
-                  const MyDivider(),
-                  12.verticalSpace,
-                  RichText(
-                    text: TextSpan(
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.italic,
-                        color: const Color(0xFF7F7F89),
-                      ),
-                      children: const [
-                        TextSpan(text: 'You have a discount of '),
-                        TextSpan(
-                          text: '10%',
-                          style: TextStyle(
-                            color: kDarkPrimaryColor,
-                            fontWeight: FontWeight.w700,
-                          ),
+                4.verticalSpace,
+                const MyDivider(),
+                16.verticalSpace,
+                if (cart.products.isEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 16.w),
+                    child: Center(
+                      child: Text(
+                        'Your cart is empty',
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: kDarkPrimaryColor,
                         ),
-                        TextSpan(text: ' on this order'),
-                      ],
+                      ),
                     ),
                   ),
-                  PaymentPrice(
-                    title: 'Delivery Fee',
-                    amount: cart.deliveryFee,
-                  ),
-                  PaymentPrice(
-                    title: 'Total',
-                    amount: cart.total,
-                    description:
-                        'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
-                  ),
-                ],
-                10.verticalSpace,
-                PrimaryButton(
-                  text: 'Proceed to checkout',
-                  onPressed: () => CheckoutRoute().go(context),
-                ),
+                ...cart.products
+                    .map(
+                      (product) => CartItem(
+                        image: CachedNetworkImageProvider(product.imageUrl),
+                        price: product.price,
+                        name: product.name,
+                        quantity: product.quantity,
+                        onIncrement: () => ref
+                            .read(cartStateProvider.notifier)
+                            .incrementQuantity(product.id),
+                        onDecrement: () => ref
+                            .read(cartStateProvider.notifier)
+                            .decrementQuantity(product.id),
+                        onRemove: () => ref
+                            .read(cartStateProvider.notifier)
+                            .removeFromCart(product.id),
+                        vendorName: product.vendor.name,
+                      ),
+                    )
+                    .toList()
+                    .separatedBy(14.verticalSpace),
+                31.verticalSpace,
+                if (isExpanded.value) 320.verticalSpace else 150.verticalSpace,
               ],
             ),
-          ),
-        ],
+            BottomPanel(
+              height: isExpanded.value ? 320.h : 150.h,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (!isExpanded.value)
+                        Expanded(
+                          child: PaymentPrice(
+                            title: 'Subtotal',
+                            amount: cart.subtotal,
+                            description:
+                                'This is the total amount of all the items in your cart.',
+                          ),
+                        )
+                      else
+                        const Expanded(child: Text('Hide details')),
+                      IconButton(
+                        icon: Icon(
+                          isExpanded.value
+                              ? Icons.keyboard_double_arrow_down
+                              : Icons.keyboard_double_arrow_up,
+                        ),
+                        onPressed: togglePanel,
+                      ),
+                    ],
+                  ),
+                  if (isExpanded.value) ...[
+                    const CartDiscount(),
+                    const MyDivider(),
+                    12.verticalSpace,
+                    RichText(
+                      text: TextSpan(
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.italic,
+                          color: const Color(0xFF7F7F89),
+                        ),
+                        children: const [
+                          TextSpan(text: 'You have a discount of '),
+                          TextSpan(
+                            text: '10%',
+                            style: TextStyle(
+                              color: kDarkPrimaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(text: ' on this order'),
+                        ],
+                      ),
+                    ),
+                    PaymentPrice(
+                      title: 'Delivery Fee',
+                      amount: cart.deliveryFee,
+                    ),
+                    PaymentPrice(
+                      title: 'Total',
+                      amount: cart.total,
+                      description:
+                          'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
+                    ),
+                  ],
+                  10.verticalSpace,
+                  PrimaryButton(
+                    text: 'Proceed to checkout',
+                    onPressed: () => CheckoutRoute().go(context),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

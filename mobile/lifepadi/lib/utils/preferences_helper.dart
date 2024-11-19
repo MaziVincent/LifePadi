@@ -17,36 +17,45 @@ class PreferencesHelper {
     }
   }
 
-  static void setString({required String key, required String value}) {
-    _prefs!.setString(key, value);
+  static Future<void> setString({
+    required String key,
+    required String value,
+  }) async {
+    await _prefs!.setString(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static void setInt({required String key, required int value}) {
-    _prefs!.setInt(key, value);
+  static Future<void> setInt({required String key, required int value}) async {
+    await _prefs!.setInt(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static void setDouble({required String key, required double value}) {
-    _prefs!.setDouble(key, value);
+  static Future<void> setDouble({
+    required String key,
+    required double value,
+  }) async {
+    await _prefs!.setDouble(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static void setBool({required String key, required bool value}) {
-    _prefs!.setBool(key, value);
+  static Future<void> setBool({
+    required String key,
+    required bool value,
+  }) async {
+    await _prefs!.setBool(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static void setStringList({
+  static Future<void> setStringList({
     required String key,
     required List<String> value,
-  }) {
-    _prefs!.setStringList(key, value);
+  }) async {
+    await _prefs!.setStringList(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static void remove(String key) {
-    _prefs!.remove(key);
+  static Future<void> remove(String key) async {
+    await _prefs!.remove(key);
     _memoryPrefs.remove(key);
   }
 
@@ -71,18 +80,18 @@ class PreferencesHelper {
           ? List<String>.from(_memoryPrefs[key] as Iterable)
           : _prefs!.getStringList(key);
 
-  static void cacheJsonString({
+  static Future<void> cacheJsonString({
     required String key,
     required String value,
     Duration expirationDuration = const Duration(minutes: 30),
-  }) {
+  }) async {
     final expirationTime = DateTime.now().add(expirationDuration);
     final item = <String, dynamic>{
       'data': value,
       'expiration': expirationTime.toIso8601String(),
     };
 
-    setString(key: key, value: jsonEncode(item));
+    await setString(key: key, value: jsonEncode(item));
   }
 
   static String? getCachedJsonString({

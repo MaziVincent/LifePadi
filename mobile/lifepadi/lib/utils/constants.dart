@@ -54,3 +54,5 @@ const kWishlistKey = 'wishlist';
 const String kCartKey = 'cart';
 
 const kGoogleMapsApiKey = 'AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k';
+
+const kDeliveryPricePerKm = 300.0;

@@ -18,7 +18,7 @@ class MockProductsSkeleton extends StatelessWidget {
       children: [
         for (final i in List.generate(count, (index) => index))
           Skeletonizer(
-            child: ProductTile(
+            child: ProductTileBase(
               product: makeFakeProduct(id: i),
             ),
           ),

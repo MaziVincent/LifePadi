@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/models/category.dart';
+import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/models/vendor.dart';
@@ -243,7 +244,18 @@ Product makeFakeProduct({required int id}) {
       name: 'Vendor $id',
       imageUrl: 'foobarbaz',
       phoneNumber: BoneMock.phone,
-      address: BoneMock.address,
+      address: LocationDetails(
+        id: 1,
+        address: BoneMock.address,
+        city: BoneMock.city,
+        state: BoneMock.subtitle,
+        country: BoneMock.country,
+        postalCode: BoneMock.subtitle,
+        latitude: 0,
+        longitude: 0,
+        sublocality: BoneMock.subtitle,
+        localGovernmentArea: BoneMock.subtitle,
+      ),
     ),
     category: Category(
       id: 1,

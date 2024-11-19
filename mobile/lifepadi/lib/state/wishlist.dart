@@ -9,11 +9,11 @@ part 'wishlist.g.dart';
 @Riverpod(keepAlive: true)
 class Wishlist extends _$Wishlist {
   @override
-  List<Product> build() {
+  Future<List<Product>> build() async {
     return _getWishlist();
   }
 
-  List<Product> _getWishlist() {
+  Future<List<Product>> _getWishlist() async {
     return PreferencesHelper.getStringList(kWishlistKey)
             ?.map(ProductMapper.fromJson)
             .toList() ??
@@ -22,48 +22,51 @@ class Wishlist extends _$Wishlist {
 
   /// Check if a product is in wishlist
   bool isInWishlist(int productId) {
-    return state.any((product) => product.id == productId);
+    return state.valueOrNull?.any(
+          (product) => product.id == productId,
+        ) ??
+        false;
   }
 
   /// Add item to wishlist
-  void addToWishlist(Product product) {
+  Future<void> addToWishlist(Product product) async {
     if (isInWishlist(product.id)) return;
 
-    final updatedWishlist = [product, ...state];
-    PreferencesHelper.setStringList(
+    final currentProducts = state.valueOrNull ?? [];
+    final updatedWishlist = [product, ...currentProducts];
+    await PreferencesHelper.setStringList(
       key: kWishlistKey,
       value: updatedWishlist.map((product) => product.toJson()).toList(),
     );
-    state = updatedWishlist;
+    state = AsyncData(updatedWishlist);
   }
 
   /// Remove item from wishlist
-  void removeFromWishlist(int productId) {
+  Future<void> removeFromWishlist(int productId) async {
+    final currentProducts = state.valueOrNull ?? [];
     final updatedWishlist =
-        state.where((product) => product.id != productId).toList();
-    PreferencesHelper.setStringList(
+        currentProducts.where((product) => product.id != productId).toList();
+    await PreferencesHelper.setStringList(
       key: kWishlistKey,
       value: updatedWishlist.map((product) => product.toJson()).toList(),
     );
-    state = updatedWishlist;
+    state = AsyncData(updatedWishlist);
   }
 
   /// Toggle item in wishlist
-  /// If the item is in wishlist, remove it
-  /// If the item is not in wishlist, add it
-  void toggle(Product product) {
+  Future<void> toggle(Product product) async {
     if (isInWishlist(product.id)) {
-      removeFromWishlist(product.id);
+      await removeFromWishlist(product.id);
       showToast('Removed from wishlist');
     } else {
-      addToWishlist(product);
+      await addToWishlist(product);
       showToast('Added to wishlist');
     }
   }
 
   /// Clear wishlist
-  void clearWishlist() {
-    PreferencesHelper.setStringList(key: kWishlistKey, value: []);
-    state = [];
+  Future<void> clearWishlist() async {
+    await PreferencesHelper.setStringList(key: kWishlistKey, value: []);
+    state = const AsyncData([]);
   }
 }
