@@ -1,4 +1,5 @@
 import 'package:lifepadi/models/product.dart';
+import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -14,6 +15,7 @@ class Wishlist extends _$Wishlist {
   }
 
   Future<List<Product>> _getWishlist() async {
+    ref.cache();
     return PreferencesHelper.getStringList(kWishlistKey)
             ?.map(ProductMapper.fromJson)
             .toList() ??

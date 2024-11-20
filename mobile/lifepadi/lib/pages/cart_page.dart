@@ -100,11 +100,11 @@ class CartPage extends HookConsumerWidget {
                     .toList()
                     .separatedBy(14.verticalSpace),
                 31.verticalSpace,
-                if (isExpanded.value) 320.verticalSpace else 150.verticalSpace,
+                if (isExpanded.value) 332.verticalSpace else 150.verticalSpace,
               ],
             ),
             BottomPanel(
-              height: isExpanded.value ? 320.h : 150.h,
+              height: isExpanded.value ? 332.h : 150.h,
               child: Column(
                 children: [
                   Row(
@@ -135,27 +135,16 @@ class CartPage extends HookConsumerWidget {
                     const CartDiscount(),
                     const MyDivider(),
                     12.verticalSpace,
-                    RichText(
-                      text: TextSpan(
+                    if (cart.discount != null)
+                      Text(
+                        cart.discount!.statement,
                         style: context.textTheme.bodyMedium?.copyWith(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
                           color: const Color(0xFF7F7F89),
                         ),
-                        children: const [
-                          TextSpan(text: 'You have a discount of '),
-                          TextSpan(
-                            text: '10%',
-                            style: TextStyle(
-                              color: kDarkPrimaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          TextSpan(text: ' on this order'),
-                        ],
                       ),
-                    ),
                     PaymentPrice(
                       title: 'Delivery Fee',
                       amount: cart.deliveryFee,

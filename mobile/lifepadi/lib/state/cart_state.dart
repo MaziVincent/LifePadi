@@ -2,9 +2,14 @@ import 'dart:math' show pi, sin, cos, sqrt, atan2;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/models/cart.dart';
+import 'package:lifepadi/models/discount.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
+import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,25 +33,35 @@ class CartState extends _$CartState {
   }
 
   /// Calculate the cart total based on the products in the cart
-  Cart _calculateCart(List<Product> products) {
+  Cart _calculateCart(List<Product> products, {Discount? discount}) {
     final subtotal = products.fold<double>(
       0,
       (sum, product) => sum + (product.price * product.quantity),
     );
 
     final locations = _getUniqueLocations(products);
-    final deliveryFee = _calculateDeliveryFee(locations);
-    const discountPrice = 0.0;
+    var deliveryFee = _calculateDeliveryFee(locations);
+    var discountPrice = 0.0;
+    if (discount != null) {
+      if (discount.amount != null) {
+        discountPrice = discount.amount!;
+      } else if (discount.percentage != null) {
+        discountPrice = (discount.percentage! / 100) * deliveryFee;
+      }
+      // Apply discount to delivery fee
+      deliveryFee -= discountPrice;
+    }
 
     // Get the current state value safely
     final currentState = state.valueOrNull;
 
+    ref.cache();
     return Cart(
       products: products,
       subtotal: subtotal,
       total: subtotal + (deliveryFee - discountPrice),
       deliveryFee: deliveryFee,
-      discount: discountPrice,
+      discount: discount ?? currentState?.discount,
       selectedLocationId: currentState?.selectedLocationId ?? 0,
     );
   }
@@ -79,7 +94,6 @@ class CartState extends _$CartState {
       );
     }
 
-    logger.i('Total distance: $totalDistance km');
     return totalDistance * kDeliveryPricePerKm;
   }
 
@@ -167,7 +181,7 @@ class CartState extends _$CartState {
     final currentProducts = state.valueOrNull?.products ?? [];
     final updatedProducts = [product, ...currentProducts];
     await _saveCart(updatedProducts);
-    showToast('Added ${product.name} to cart');
+    await showToast('Added ${product.name} to cart');
   }
 
   /// Remove a product from the cart
@@ -179,7 +193,7 @@ class CartState extends _$CartState {
     final updatedProducts =
         currentState.products.where((p) => p.id != productId).toList();
     await _saveCart(updatedProducts);
-    showToast('Removed ${product.name} from cart');
+    await showToast('Removed ${product.name} from cart');
   }
 
   /// Increment the quantity of a product in the cart
@@ -222,9 +236,49 @@ class CartState extends _$CartState {
         subtotal: 0,
         total: 0,
         deliveryFee: 0,
-        discount: 0,
       ),
     );
-    showToast('Cart cleared');
+    await showToast('Cart cleared');
+  }
+
+  /// Check if a voucher code is valid
+  /// and apply the discount to the cart
+  Future<void> applyDiscount({required String voucherCode}) async {
+    final currentState = state.valueOrNull;
+    if (currentState == null) return;
+
+    final user = ref.read(authControllerProvider);
+    final userId = user.maybeWhen(
+      data: (user) => user.id,
+      orElse: () => null,
+    );
+    if (userId == null) {
+      await showToast('Please login to apply discount');
+      return;
+    }
+
+    final client = ref.read(dioProvider());
+    final response = await client.put<String>(
+      '/voucher/use',
+      queryParameters: {
+        'voucherCode': voucherCode,
+        'customerId': userId,
+      },
+    );
+
+    if (response.data == null) {
+      throw const InvalidDiscountCodeException('Invalid discount code');
+    }
+
+    if (response.statusCode != 200) {
+      throw InvalidDiscountCodeException(response.data!);
+    }
+
+    final discount = DiscountMapper.fromJson(response.data!);
+
+    final updatedCart =
+        _calculateCart(currentState.products, discount: discount);
+    state = AsyncData(updatedCart);
+    await showToast('Discount applied');
   }
 }

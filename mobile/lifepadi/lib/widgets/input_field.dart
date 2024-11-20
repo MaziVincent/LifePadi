@@ -22,8 +22,8 @@ class InputField extends StatelessWidget {
     this.initialValue,
     this.controller,
   }) : assert(
-          controller == null || initialValue == null,
-          'Cannot provide both an initialValue and a controller',
+          controller == null || (initialValue == null && onChanged == null),
+          'Cannot provide both an initialValue/onChanged and a controller',
         );
 
   /// The child widget to be displayed as the suffix icon

@@ -1,64 +1,82 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
 
-class CartDiscount extends StatelessWidget {
+class CartDiscount extends HookWidget {
   const CartDiscount({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final voucherCode = useState('');
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
         children: [
-          Assets.icons.voucher.svg(width: 24.r, height: 24.r),
-          10.horizontalSpace,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Discount voucher',
-                  style: context.textTheme.bodyLarge?.copyWith(
-                    color: const Color(0xFF27272A),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                4.verticalSpace,
-                Text(
-                  'Enter voucher code',
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF7F7F89),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10).w,
+              child: Assets.icons.voucher.svg(width: 24.r, height: 24.r),
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 8.w),
-                child: Text(
-                  '0.00',
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF27272A),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+          Flexible(
+            flex: 4,
+            child: Form(
+              key: formKey,
+              child: InputField(
+                hintText: 'Enter voucher code',
+                labelText: 'Discount Voucher',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                onChanged: (value) => voucherCode.value = value,
+                validator: ValidationBuilder(
+                  requiredMessage: 'Voucher code is required',
+                )
+                    .minLength(5, 'Voucher code must be at least 5 characters')
+                    .build(),
+                hasValue: voucherCode.value.isNotEmpty,
               ),
-              4.horizontalSpace,
-              Assets.icons.arrowRight.svg(
-                width: 24.sp,
-                height: 24.sp,
+            ),
+          ),
+          Flexible(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10).w,
+              child: Consumer(
+                builder: (context, ref, _) {
+                  return PrimaryActionButton(
+                    label: 'use',
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        // Use the voucher code
+                        await ref
+                            .read(cartStateProvider.notifier)
+                            .applyDiscount(
+                              voucherCode: voucherCode.value,
+                            )
+                            .catchError(
+                              (dynamic error) => handleError(
+                                error,
+                                context.mounted ? context : null,
+                              ),
+                            );
+                      }
+                    },
+                    radius: 8.r,
+                    loadingWheelSize: 18.sp,
+                    fontSize: 18.sp,
+                  );
+                },
               ),
-            ],
+            ),
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:form_validator/form_validator.dart';
+// ignore: implementation_imports
 import 'package:intl_phone_number_input/src/utils/phone_number/phone_number_util.dart';
 
 StringValidationCallback buildEmailValidator() {

@@ -13,13 +13,13 @@ class PrimaryActionButton extends HookWidget {
     this.iconWidget,
     this.radius,
     this.loadingWheelSize,
+    this.fontSize,
   });
 
   final AsyncCallback? onPressed;
   final String label;
   final Widget? iconWidget;
-  final double? radius;
-  final double? loadingWheelSize;
+  final double? radius, loadingWheelSize, fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,7 @@ class PrimaryActionButton extends HookWidget {
         _ => iconWidget ?? const SizedBox.shrink(),
       },
       radius: radius,
+      fontSize: fontSize,
     );
   }
 }

@@ -33,3 +33,9 @@ class LocationDetailsException implements Exception {
   const LocationDetailsException(this.message);
   final String message;
 }
+
+/// Exception thrown when a discount code is invalid.
+class InvalidDiscountCodeException implements Exception {
+  const InvalidDiscountCodeException(this.message);
+  final String message;
+}
