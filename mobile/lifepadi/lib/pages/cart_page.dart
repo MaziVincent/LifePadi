@@ -82,7 +82,7 @@ class CartPage extends HookConsumerWidget {
                     .map(
                       (product) => CartItem(
                         image: CachedNetworkImageProvider(product.imageUrl),
-                        price: product.price,
+                        price: product.price * product.quantity,
                         name: product.name,
                         quantity: product.quantity,
                         onIncrement: () => ref
