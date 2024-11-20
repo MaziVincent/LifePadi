@@ -116,4 +116,10 @@ class PreferencesHelper {
       return null;
     }
   }
+
+  /// Clear all the cached data
+  static Future<void> clear() async {
+    await _prefs!.clear();
+    _memoryPrefs.clear();
+  }
 }

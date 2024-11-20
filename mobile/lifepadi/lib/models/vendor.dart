@@ -42,4 +42,12 @@ class VendorAddressHook extends MappingHook {
     final addresses = value! as List;
     return LocationDetailsMapper.fromMap(JsonMap.from(addresses.first as Map));
   }
+
+  /// Encode the address to a list of json objects
+  /// Return the address as a list
+  @override
+  Object? beforeEncode(Object? value) {
+    final address = value! as LocationDetails;
+    return [address.toMap()];
+  }
 }

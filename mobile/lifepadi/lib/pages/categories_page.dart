@@ -33,10 +33,7 @@ class CategoriesPage extends ConsumerWidget {
               ),
               itemCount: categories.length,
               itemBuilder: (context, index) => CategoryCard(
-                category: Category(
-                  id: categories[index].id,
-                  name: categories[index].name,
-                ),
+                category: categories[index],
                 onTap: () => context.push(
                   ProductsRoute(
                     categoryId: categories[index].id,
@@ -57,6 +54,7 @@ class CategoriesPage extends ConsumerWidget {
                   category: Category(
                     id: random.nextInt(20),
                     name: BoneMock.name,
+                    icon: 'http://${BoneMock.city}',
                   ),
                 ),
               ),

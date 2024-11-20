@@ -57,6 +57,10 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> logout() async {
+    await PreferencesHelper.clear();
+
+    // TODO: Invalidate all the providers
+
     await _secureStorage.remove(_credentialsKey);
     state = const AsyncData(Guest());
   }

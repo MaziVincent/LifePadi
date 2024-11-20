@@ -260,6 +260,7 @@ Product makeFakeProduct({required int id}) {
     category: Category(
       id: 1,
       name: BoneMock.name,
+      icon: 'http://${BoneMock.city}',
     ),
   );
 }

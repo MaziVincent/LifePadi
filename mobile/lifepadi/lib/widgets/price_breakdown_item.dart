@@ -9,11 +9,13 @@ class PriceBreakdownItem extends StatelessWidget {
     required this.price,
     this.isFirst = false,
     this.isFinal = false,
+    this.quantity = 1,
   });
 
   final String title;
   final double price;
   final bool isFirst, isFinal;
+  final int quantity;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class PriceBreakdownItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title,
+            '$title ${isFinal ? '' : 'x$quantity'}',
             style: TextStyle(
               color: const Color(0xFF27272A),
               fontSize: 14.sp,

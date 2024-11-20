@@ -7,10 +7,13 @@ class Category with CategoryMappable {
   Category({
     required this.id,
     required this.name,
+    this.icon,
   });
 
   @MappableField(key: 'Id')
   final int id;
   @MappableField(key: 'Name')
   final String name;
+  @MappableField(key: 'Icon')
+  final String? icon;
 }

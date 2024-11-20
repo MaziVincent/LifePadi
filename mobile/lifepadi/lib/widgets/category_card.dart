@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/models/category.dart';
@@ -45,10 +46,17 @@ class CategoryCard extends StatelessWidget {
                   color: colors.outer,
                   shape: BoxShape.circle,
                 ),
-                child: Image.asset(
-                  Assets.images.categories.fruit.path,
-                  color: colors.inner,
-                ),
+                child: category.icon == null
+                    ? Image.asset(
+                        Assets.images.categories.fruit.path,
+                        color: colors.inner,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: category.icon!,
+                        placeholder: (_, __) =>
+                            const CircularProgressIndicator.adaptive(),
+                        errorWidget: (_, __, ___) => const Icon(Icons.error),
+                      ),
               ),
             ),
             7.75.verticalSpace,

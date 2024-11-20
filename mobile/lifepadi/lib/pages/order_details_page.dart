@@ -157,8 +157,9 @@ class _OrderDetailsContent extends StatelessWidget {
               for (final item in order.items)
                 PriceBreakdownItem(
                   title: item.name,
-                  price: item.amount,
+                  price: item.amount * item.quantity,
                   isFirst: order.items.first == item,
+                  quantity: item.quantity,
                 ),
               PriceBreakdownItem(
                 title: 'Sub total',
