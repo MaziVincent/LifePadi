@@ -2,7 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:lifepadi/state/cart_state.dart';
+import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/errands.dart';
+import 'package:lifepadi/state/location.dart';
+import 'package:lifepadi/state/orders.dart';
+import 'package:lifepadi/state/product.dart';
+import 'package:lifepadi/state/vendors.dart';
+import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -59,7 +67,18 @@ class AuthController extends _$AuthController {
   Future<void> logout() async {
     await PreferencesHelper.clear();
 
-    // TODO: Invalidate all the providers
+    // Clear all the cached data
+    ref
+      ..invalidate(cartStateProvider)
+      ..invalidate(categoriesProvider)
+      ..invalidate(errandsProvider())
+      ..invalidate(locationsProvider)
+      ..invalidate(ordersProvider)
+      ..invalidate(orderProvider)
+      ..invalidate(productProvider)
+      ..invalidate(vendorsProvider)
+      ..invalidate(vendorProductsProvider)
+      ..invalidate(wishlistProvider);
 
     await _secureStorage.remove(_credentialsKey);
     state = const AsyncData(Guest());
