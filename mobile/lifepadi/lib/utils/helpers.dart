@@ -11,6 +11,7 @@ import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/models/vendor.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/choice_alert_dialog.dart';
 import 'package:logger/logger.dart';
@@ -204,7 +205,13 @@ Future<void> handleError(
   var description = error.toString();
 
   if (error is DioException) {
-    title = error.error is SocketException ? 'No Internet Connection' : null;
+    title = switch (error.error) {
+      final Exception e when e is SocketException => 'No Internet Connection',
+      final Exception e when e is InvalidDiscountCodeException =>
+        'Invalid Discount Code',
+      _ => null,
+    };
+
     description = error.error is SocketException
         ? 'Please check your internet connection and try again'
         : error.response?.data.toString() ?? // Has a response

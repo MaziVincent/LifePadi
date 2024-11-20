@@ -63,6 +63,7 @@ class ChoiceAlertDialog extends StatelessWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
             ),
+            textAlign: TextAlign.center,
           ),
           Row(
             children: [
