@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import LoadingGif from "../../shared/LodingGif"
 
 const OrderStatusModal = ({ open, handleClose,url, id, name }) => {
   const update = useUpdate();
