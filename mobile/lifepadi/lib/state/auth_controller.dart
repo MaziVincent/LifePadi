@@ -38,7 +38,7 @@ class AuthController extends _$AuthController {
       // delete FlutterSecureStorage items during uninstall/install
       await _secureStorage.removeAll();
 
-      PreferencesHelper.setBool(key: firstRun, value: false);
+      await PreferencesHelper.setBool(key: firstRun, value: false);
     }
 
     _persistenceRefreshLogic();
@@ -119,7 +119,7 @@ class AuthController extends _$AuthController {
       await _saveDetailsToStorage(user);
       final hasEverLoggedIn = PreferencesHelper.getBool('hasEverLoggedIn');
       if (hasEverLoggedIn == null) {
-        PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
+        await PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
       }
       state = AsyncData(user);
     } catch (e) {

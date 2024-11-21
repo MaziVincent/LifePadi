@@ -59,10 +59,10 @@ class Wishlist extends _$Wishlist {
   Future<void> toggle(Product product) async {
     if (isInWishlist(product.id)) {
       await removeFromWishlist(product.id);
-      showToast('Removed from wishlist');
+      await showToast('Removed from wishlist');
     } else {
       await addToWishlist(product);
-      showToast('Added to wishlist');
+      await showToast('Added to wishlist');
     }
   }
 
