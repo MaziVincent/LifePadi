@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
+import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -18,6 +19,8 @@ class CartPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartAsync = ref.watch(cartStateProvider);
     final isExpanded = useState(false);
+    final locations = ref.watch(locationsProvider);
+    final selectedLocation = ref.watch(selectedLocationProvider);
 
     void togglePanel() => isExpanded.value = !isExpanded.value;
 
@@ -41,14 +44,44 @@ class CartPage extends HookConsumerWidget {
               children: [
                 const SectionTitle('Location'),
                 12.verticalSpace,
-                LocationCard(
-                  onTap: () async {
-                    await displayBottomPanel(
-                      context,
-                      child: const EditLocationModalForm(),
+                locations.when(
+                  data: (locations) {
+                    if (locations.isEmpty) {
+                      return LocationCard(
+                        onTap: () async {
+                          await displayBottomPanel(
+                            context,
+                            child: const EditLocationModalForm(),
+                          );
+                        },
+                        address: 'Add a delivery location',
+                      );
+                    }
+
+                    return LocationCard(
+                      onTap: () async {
+                        await displayBottomPanel(
+                          context,
+                          child: const EditLocationModalForm(),
+                        );
+                      },
+                      address: locations
+                          .firstWhere(
+                            (location) => location.id == selectedLocation,
+                          )
+                          .address,
                     );
                   },
-                  address: '3RD FLOOR DREAMLINK CONCEPTS',
+                  error: (error, _) => Center(
+                    child: Text(
+                      error.toString(),
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: kDarkPrimaryColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  loading: () => const GreenyLoadingWheel(),
                 ),
                 18.verticalSpace,
                 Row(

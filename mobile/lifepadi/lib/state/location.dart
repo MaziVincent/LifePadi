@@ -188,3 +188,8 @@ Future<void> deleteLocation(Ref ref, {required int id}) async {
   // Invalidate the locations provider to refresh the list
   ref.invalidate(locationsProvider);
 }
+
+/// Selected delivery location provider.
+///
+/// This provider is used to store the id of the selected location.
+final selectedLocationProvider = StateProvider<int?>((ref) => null);
