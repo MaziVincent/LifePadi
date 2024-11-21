@@ -2,6 +2,7 @@
 using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
@@ -61,6 +62,33 @@ namespace Api.Services
                 _dbContext.Addresses.Remove(address);
                 await _dbContext.SaveChangesAsync();
                 return "Deleted successfuly";
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+           public async Task<string> setAsDefault(int id, int customerId)
+        {
+            try
+            {
+                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId).ToListAsync();
+                if (addresses == null) return null!;
+                foreach (var address in addresses)
+                {
+                    if(address.DefaultAddress == true){
+                        address.DefaultAddress = false;
+                         _dbContext.Addresses.Update(address);
+                    }
+                    if(address.Id == id){
+                        address.DefaultAddress = true;
+                         _dbContext.Addresses.Update(address);
+                    }
+                }
+               
+                await _dbContext.SaveChangesAsync();
+                return "Address Updated successfully";
             }
             catch (Exception ex)
             {

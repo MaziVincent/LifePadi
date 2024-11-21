@@ -1,0 +1,19 @@
+GET https://localhost:7216/api/voucher/all
+
+###
+
+GET https://localhost:7216/api/vendor/all
+
+###
+GET https://localhost:7216/api/address/all
+ 
+###
+
+PUT https://localhost:7216/api/address/setasdefault/80
+Content-Type: application/json
+
+{
+    "customerId":20
+}
+
+ 

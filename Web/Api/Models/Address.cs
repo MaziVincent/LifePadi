@@ -11,6 +11,7 @@
         public string? PostalCode { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
+        public bool? DefaultAddress {get; set;} = false;
         public int UserId { get; set; }
         public User? User { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;

@@ -10,6 +10,7 @@ namespace Api.Interfaces
         public Task<AddressDtoLite> createAsync(AddressDto address);
         public Task<AddressDtoLite> updateAsync(AddressDto address, int id);
         public Task<string> deleteAsync(int id);
+        public Task<string> setAsDefault(int id, int customerId);
         public Task<IEnumerable<AddressDtoLite>> getCustomersAddresses(int customerId);
         public Task<IEnumerable<AddressDtoLite>> getUsersAddress(int userId);
 
