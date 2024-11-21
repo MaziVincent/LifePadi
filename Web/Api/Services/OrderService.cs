@@ -12,10 +12,12 @@ namespace Api.Services
     {
         private readonly DBContext? _dbContext;
         private readonly IMapper _mapper;
+        private readonly UpdateOrderAmount updateOrderAmount;
         public OrderService(DBContext dBContext, IMapper mapper)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+            updateOrderAmount = new UpdateOrderAmount(dBContext);
         }
         public async Task<PagedList<Order>> allAsync(SearchPaging props)
         {
@@ -26,10 +28,12 @@ namespace Api.Services
                 var _orders = await _dbContext!.Orders
                .Include(o => o.Customer)
                .Include(o => o.OrderItems)
+               .AsSplitQuery()
                .OrderByDescending(o => o.CreatedAt)
                .ToListAsync();
                 orderList = orderList.Concat(_orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                updateOrderAmount.OrderAmount();
                 return result;
             }
             catch (Exception ex)

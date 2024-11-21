@@ -2,6 +2,7 @@
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Api.Services;
 
 namespace Api.Controllers
 {
@@ -167,6 +168,8 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+         
     }
 
 }

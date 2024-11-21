@@ -13,6 +13,7 @@ namespace Api.DTO
         public string? PostalCode { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
+        public bool? DefaultAddress {get; set;}
         public int UserId { get; set; }
         public UserDtoLite? User { get; set; }
     }
@@ -28,8 +29,14 @@ namespace Api.DTO
         public string? PostalCode { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
+        public bool? DefaultAddress {get; set;}
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int UserId { get; set;}
+    }
+
+    public class DefaultAddressDto{
+        public int AddressId {get; set;}
+        public int CustomerId {get; set;}
     }
 }

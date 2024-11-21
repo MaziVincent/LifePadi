@@ -86,6 +86,22 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPut("setasdefault")]
+        public async Task<IActionResult> setAsDefault([FromBody] DefaultAddressDto add )
+        {
+            try
+            {
+                var response = await _iaddress.setAsDefault(add.AddressId, add.CustomerId);
+                if (response == null) return NotFound();
+                return Ok(response);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
         [HttpGet("customer-addresses/{customerId}")]
         public async Task<IActionResult> getCustomersAddresses([FromRoute] int customerId)
         {
