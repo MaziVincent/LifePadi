@@ -15,7 +15,7 @@ class NotificationPage extends HookWidget {
           MyIconButton(
             icon: Remix.more_2_fill,
             onPressed: () {
-              // TODO: Add clear all or other options here using a popup menu
+              // Add clear all or other options here using a popup menu
             },
           ),
         ],

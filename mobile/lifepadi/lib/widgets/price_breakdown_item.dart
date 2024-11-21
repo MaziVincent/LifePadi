@@ -9,7 +9,7 @@ class PriceBreakdownItem extends StatelessWidget {
     required this.price,
     this.isFirst = false,
     this.isFinal = false,
-    this.quantity = 1,
+    this.quantity = 0,
   });
 
   final String title;
@@ -28,7 +28,7 @@ class PriceBreakdownItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$title ${isFinal ? '' : 'x$quantity'}',
+            '$title ${quantity > 0 ? 'x$quantity' : ''}',
             style: TextStyle(
               color: const Color(0xFF27272A),
               fontSize: 14.sp,

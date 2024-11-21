@@ -56,3 +56,6 @@ const String kCartKey = 'cart';
 const kGoogleMapsApiKey = 'AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k';
 
 const kDeliveryPricePerKm = 300.0;
+
+const kTotalDescription =
+    'This is the total amount of all the items in your cart including the delivery fee and any other charges.';

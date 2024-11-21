@@ -182,8 +182,7 @@ class CartPage extends HookConsumerWidget {
                     PaymentPrice(
                       title: 'Total',
                       amount: cart.total,
-                      description:
-                          'This is the total amount of all the items in your cart including the delivery fee and any other charges.',
+                      description: kTotalDescription,
                     ),
                   ],
                   10.verticalSpace,
