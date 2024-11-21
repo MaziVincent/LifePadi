@@ -28,19 +28,6 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("mobileInitiate")]
-        public async Task<IActionResult> mobileInitiatePayment([FromBody] InitiatePaymentDto initiatePayment)
-        {
-            try
-            {
-                var response = await _itran.MobileInitiatePayment(initiatePayment);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
 
             [HttpGet("confirmPayment")]
@@ -106,6 +93,20 @@ namespace Api.Controllers
             try
             {
                 var response = await _itran.PaystackCheckout(initiatePaymentDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("MobilePaystackCheckout")]
+        public async Task<IActionResult> mobilePaystackCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var response = await _itran.MobilePaystackCheckout(initiatePaymentDto);
                 return Ok(response);
             }
             catch (Exception ex)

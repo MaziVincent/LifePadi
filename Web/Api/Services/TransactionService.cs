@@ -325,79 +325,68 @@ namespace Api.Services
             }
         }
 
-        public async Task<DTO.Data> MobileInitiatePayment(InitiatePaymentDto initiatePayment)
+        public async Task<object> MobilePaystackCheckout(InitiatePaymentDto initiatePaymentDto)
         {
             try
             {
-                var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePayment.OrderId);
+                var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
                 if (payment != null)
                 {
-                    throw new Exceptions.ServiceException("Already paid for this order");
+                    return new
+                    {
+                        message = "Already paid for this order",
+                    };
                 }
-                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePayment.OrderId);
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePaymentDto.OrderId);
                 if (order == null) throw new Exceptions.ServiceException("Order not found");
+                var customerData = new
+                {
+                    voucherCode = initiatePaymentDto.VoucherCode,
+                    orderId = initiatePaymentDto.OrderId,
+                    amount = initiatePaymentDto.Amount,
+                    totalAmount = initiatePaymentDto.TotalAmount,
+                    deliveryFee = initiatePaymentDto.DeliveryFee,
+                    createdAt = DateTime.UtcNow
+                };
                 var tx_ref = GenerateTxRef.genTx_rf();
-                string redirectUrl = _config["Base_Url:Remote"] + "/transaction/confirmPayment";
-                // string redirectUrl = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                Customer_Info customer = new Customer_Info();
-                customer.email = order.Customer!.Email;
-                customer.phone_number = order.Customer.PhoneNumber;
-                customer.name = order.Customer.FirstName;
-                Customizations customizations = new Customizations();
-                customizations.title = "LifePadi";
-                customizations.description = "Service payment";
-                customizations.logo = "https://res.cloudinary.com/dbxapeqzu/image/upload/v1724785015/LifePadi/logo/Logo_dark_ndhilz.svg";
+                // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
+                var redirect_url = _config["Base_Url:Remote"] + "/transaction/paystack-confirmPayment";
+                string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var payload = new
+                {
+                    email = order.Customer!.Email,
+                    amount = initiatePaymentDto.TotalAmount * 100,
+                    reference = tx_ref,
+                    callback_url = redirect_url,
+                    metadata = customerData
+                };
 
-                Meta meta = new Meta();
-                meta.totalAmount = (Double)initiatePayment.TotalAmount!;
-                meta.deliveryFee = (Double)initiatePayment.DeliveryFee!;
-                meta.orderId = initiatePayment.OrderId;
-                meta.voucherCode = initiatePayment.VoucherCode;
-                meta.createdAt = DateTime.UtcNow;
+                var jsonPayload = JsonConvert.SerializeObject(payload);
 
-                MakePaymentDetails jsonPayload = new MakePaymentDetails();
-                jsonPayload.amount = (Double)initiatePayment.Amount!;
-                jsonPayload.tx_ref = tx_ref;
-                jsonPayload.redirect_url = redirectUrl;
-                jsonPayload.currency = "NGN";
-                jsonPayload.meta = meta;
-                jsonPayload.customer = customer;
-                jsonPayload.customizations = customizations;
-
-                // Convert the payload to JSON string
-                var jsonPayloadString = JsonConvert.SerializeObject(jsonPayload);
-
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://api.flutterwave.com/v3/payments");
+                var request = new HttpRequestMessage(HttpMethod.Post, paymentUrl);
 
                 //create an an instance of IHttpclientFactory
                 var client = _ClientFactory.CreateClient();
 
-                request.Content = new StringContent(jsonPayloadString, Encoding.UTF8, "application/json");
+                request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 //add the auth token to the header
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["FW_Payment:Secret_key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
 
                 //send request and get the respond
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
-                //check if the respond status is successful
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    //convert the respond to string
                     var apiString = await response.Content.ReadAsStringAsync();
-
-                    var paymentRes = JsonConvert.DeserializeObject<JsonResponse>(apiString);
-                    // Console.WriteLine(paymentRes);
-                    if (paymentRes!.status == "success")
+                    var paymentRes = JsonConvert.DeserializeObject<PaystackJsonResponse>(apiString);
+                    string link = paymentRes!.data!.authorization_url!;
+                    return new
                     {
-                        return new DTO.Data
-                        {
-                            link = paymentRes.data!.link
-                        };
-                    }
-                    throw new Exceptions.ServiceException("Payment not successful");
+                        link = link
+                    };
                 }
-                throw new Exceptions.ServiceException(response.StatusCode.ToString());
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
             }
             catch (Exception ex)
             {
