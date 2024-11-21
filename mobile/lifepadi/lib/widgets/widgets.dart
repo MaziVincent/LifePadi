@@ -42,6 +42,7 @@ export 'order_tile.dart';
 export 'pagination_dots.dart';
 export 'payment_method_checkbox.dart';
 export 'payment_method_info.dart';
+export 'payment_method_selector.dart';
 export 'payment_price.dart';
 export 'phone_input_field.dart';
 export 'phone_verification_widget.dart';
