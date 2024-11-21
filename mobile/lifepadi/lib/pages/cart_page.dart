@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
@@ -46,17 +47,14 @@ class CartPage extends HookConsumerWidget {
                 12.verticalSpace,
                 locations.when(
                   data: (locations) {
-                    if (locations.isEmpty) {
-                      return LocationCard(
-                        onTap: () async {
-                          await displayBottomPanel(
-                            context,
-                            child: const EditLocationModalForm(),
-                          );
-                        },
-                        address: 'Add a delivery location',
-                      );
-                    }
+                    final selectedLocationAddress = selectedLocation != null
+                        ? locations
+                            .where(
+                              (location) => location.id == selectedLocation,
+                            )
+                            .firstOrNull
+                            ?.address
+                        : null;
 
                     return LocationCard(
                       onTap: () async {
@@ -65,11 +63,10 @@ class CartPage extends HookConsumerWidget {
                           child: const EditLocationModalForm(),
                         );
                       },
-                      address: locations
-                          .firstWhere(
-                            (location) => location.id == selectedLocation,
-                          )
-                          .address,
+                      address: locations.isEmpty
+                          ? 'Add a delivery location'
+                          : selectedLocationAddress ??
+                              'Select a delivery location',
                     );
                   },
                   error: (error, _) => Center(
@@ -192,7 +189,26 @@ class CartPage extends HookConsumerWidget {
                   10.verticalSpace,
                   PrimaryButton(
                     text: 'Proceed to checkout',
-                    onPressed: () => CheckoutRoute().go(context),
+                    onPressed: () async {
+                      if (selectedLocation == null) {
+                        if (context.mounted) {
+                          await displayError(
+                            context,
+                            title: 'No delivery location selected',
+                            description: 'Please choose a delivery location',
+                          );
+                        } else {
+                          await showToast('Please select a delivery location');
+                        }
+                      } else if (cart.products.isEmpty) {
+                        await showToast(
+                          'Your cart is empty, nothing to checkout',
+                          gravity: ToastGravity.CENTER,
+                        );
+                      } else {
+                        CheckoutRoute().go(context);
+                      }
+                    },
                   ),
                 ],
               ),

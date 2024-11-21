@@ -230,14 +230,12 @@ class CartState extends _$CartState {
   /// Clear the cart
   Future<void> clearCart() async {
     await PreferencesHelper.setStringList(key: kCartKey, value: []);
+
     state = AsyncData(
-      Cart(
-        products: [],
-        subtotal: 0,
-        total: 0,
-        deliveryFee: 0,
-      ),
+      state.valueOrNull?.copyWith(products: []) ??
+          Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0),
     );
+
     await showToast('Cart cleared');
   }
 
