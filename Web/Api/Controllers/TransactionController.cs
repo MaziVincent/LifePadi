@@ -28,7 +28,22 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("confirmPayment")]
+        [HttpPost("mobileInitiate")]
+        public async Task<IActionResult> mobileInitiatePayment([FromBody] InitiatePaymentDto initiatePayment)
+        {
+            try
+            {
+                var response = await _itran.MobileInitiatePayment(initiatePayment);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+            [HttpGet("confirmPayment")]
         public async Task<IActionResult> confirmPayment([FromQuery] AfterPayment transactionInfo)
         {
             try

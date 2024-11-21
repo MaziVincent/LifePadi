@@ -12,6 +12,7 @@ namespace Api.Interfaces
         public Task<TransactionDto> CreateAsync(TransactionDto transaction);
         public Task<TransactionDto> GetByPaymentId(BigInteger transactionId);
         public Task<DTO.Data> InitiatePayment(InitiatePaymentDto initiatePayment);
+        public Task<DTO.Data> MobileInitiatePayment(InitiatePaymentDto initiatePayment);
         public Task<PaymentDetailsDto> ConfirmPayment(AfterPayment transactionInfo);
         public Task<int> TotalNumberOfTransactions();
         public Task<int> TotalNumberOfSuccessfulTransactions();
