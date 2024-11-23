@@ -136,7 +136,7 @@ namespace Api.Controllers
             try
             {
                 var response = await _itran.GetTransactionByOrderId(orderId);
-                if (response == null) return StatusCode(404, "Transaction not found");
+                if (response == null) return StatusCode(404, " Transaction not found ");
                 return Ok(response);
             }
             catch (Exception ex)
