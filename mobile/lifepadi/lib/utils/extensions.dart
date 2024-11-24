@@ -41,7 +41,13 @@ extension Currency on num {
 
 extension ReadableDateTime on DateTime {
   String get readable {
-    return DateFormat('d MMM yyyy, hh:mm a').format(this);
+    final suffix = switch (day % 10) {
+      1 when day != 11 => 'st',
+      2 when day != 12 => 'nd',
+      3 when day != 13 => 'rd',
+      _ => 'th'
+    };
+    return DateFormat("d'$suffix' MMM yyyy, hh:mm a").format(this);
   }
 
   String get readableDate {

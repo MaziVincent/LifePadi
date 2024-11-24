@@ -1,5 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -9,9 +11,14 @@ import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
 
 class ReceiptPage extends StatelessWidget {
-  const ReceiptPage({super.key, required this.id});
+  const ReceiptPage({
+    super.key,
+    required this.orderId,
+    this.receipt,
+  });
 
-  final int id;
+  final int orderId;
+  final Receipt? receipt;
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +53,10 @@ class ReceiptPage extends StatelessWidget {
         ],
         leading: Padding(
           padding: EdgeInsets.only(left: 16.w),
-          child: const Align(
-            child: GlassmorphicBackButton(),
+          child: Align(
+            child: GlassmorphicBackButton(
+              onPressed: () => context.go(const OrdersRoute().location),
+            ),
           ),
         ),
         toolbarHeight: 0.16.sh,
@@ -65,50 +74,74 @@ class ReceiptPage extends StatelessWidget {
           ),
         ),
         padding: kHorizontalPadding.copyWith(top: 28.h),
-        child: Column(
-          children: [
-            Assets.icons.success.svg(),
-            10.verticalSpace,
-            Text(
-              'Payment Successful!',
-              style: context.textTheme.titleLarge?.copyWith(
-                color: Colors.black,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w500,
+        child: receipt != null
+            ? _ReceiptContent(receipt: receipt!)
+            : Consumer(
+                builder: (context, ref, child) {
+                  return const Center(
+                    child: Text('FETCH AND DISPLAY RECEIPT!'),
+                  );
+                },
               ),
-            ),
-            8.verticalSpace,
-            Text(
-              'Payment made successfully',
-              style: context.textTheme.bodySmall?.copyWith(
-                color: const Color(0xFFB3B3B5),
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            25.66.verticalSpace,
-            ReceiptInfoTile(left: 'Amount paid', right: 43000.currency),
-            ReceiptInfoTile(left: 'Payment fee', right: 0.currency),
-            ReceiptInfoTile(left: 'Total', right: 43000.currency),
-            ReceiptInfoTile(
-              left: 'Date & Time',
-              right: DateTime.now().readable,
-            ),
-            const ReceiptInfoTile(
-              left: 'Narration',
-              right:
-                  'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur',
-            ),
-            const MyDivider(),
-            const Spacer(),
-            PrimaryButton(
-              onPressed: () => context.go(const OrdersRoute().location),
-              text: 'Go to Orders',
-            ),
-            const Spacer(),
-          ],
-        ),
       ),
+    );
+  }
+}
+
+class _ReceiptContent extends StatelessWidget {
+  const _ReceiptContent({
+    required this.receipt,
+  });
+
+  final Receipt receipt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Assets.icons.success.svg(),
+        10.verticalSpace,
+        Text(
+          receipt.totalAmount.currency,
+          style: context.textTheme.titleLarge?.copyWith(
+            color: Colors.black,
+            fontSize: 28.sp,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        8.verticalSpace,
+        Text(
+          'Successful',
+          style: context.textTheme.bodySmall?.copyWith(
+            color: const Color(0xFFB3B3B5),
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        25.66.verticalSpace,
+        ReceiptInfoTile(left: 'Channel', right: receipt.channel.capitalize()),
+        ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
+        ReceiptInfoTile(
+          left: 'Delivery fee',
+          right: receipt.deliveryFee.currency,
+        ),
+        ReceiptInfoTile(left: 'Total', right: receipt.totalAmount.currency),
+        ReceiptInfoTile(
+          left: 'Txn Reference',
+          right: receipt.reference,
+          copiable: true,
+        ),
+        ReceiptInfoTile(
+          left: 'Date & Time',
+          right: receipt.paidAt.readable,
+        ),
+        const Spacer(),
+        PrimaryButton(
+          onPressed: () => context.go(const OrdersRoute().location),
+          text: 'Go to Orders',
+        ),
+        const Spacer(),
+      ],
     );
   }
 }
