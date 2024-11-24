@@ -2,7 +2,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:lifepadi/hooks/hooks.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -13,7 +12,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import 'widgets.dart';
 
-/// A list of orders.
+/// Displays a list of orders based on the status provided.
 class MyOrderList extends HookConsumerWidget {
   const MyOrderList({
     super.key,
@@ -26,22 +25,53 @@ class MyOrderList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // FIXME: Fix controller has been disposed error when switching between tabs.
-    final controller = usePagingController<int, Order>(
-      firstPageKey: 1,
-      fetchPage: (pageKey, controller) => _fetchPage(
-        ref,
-        pageKey,
-        controller,
-      ),
+    final controller = useMemoized(
+      () => PagingController<int, Order>(firstPageKey: 1),
+      [], // Empty dependency array - controller persists for widget lifetime
+    );
+
+    final mounted = useRef(true);
+    useEffect(
+      () {
+        mounted.value = true;
+        return () {
+          mounted.value = false;
+        };
+      },
+      [],
     );
 
     useEffect(
       () {
+        controller.addPageRequestListener((pageKey) async {
+          try {
+            final orderStatus = status.toValue().toString();
+            final result = await ref.read(
+              ordersProvider(pageNumber: pageKey, status: orderStatus).future,
+            );
+
+            if (!mounted.value) return;
+
+            final isLastPage = result.length < pageSize;
+            if (isLastPage) {
+              controller.appendLastPage(result);
+            } else {
+              controller.appendPage(result, pageKey + 1);
+            }
+          } catch (e) {
+            if (!mounted.value) return;
+            controller.error = e;
+            logger.e(e, error: e);
+          }
+        });
+
+        // Refresh when status changes
+        // ignore: cascade_invocations
         controller.refresh();
-        return null;
+
+        return controller.dispose;
       },
-      [status],
+      [status], // Only recreate listener when status changes
     );
 
     return RefreshIndicator(
@@ -86,30 +116,5 @@ class MyOrderList extends HookConsumerWidget {
         separatorBuilder: (context, index) => 18.verticalSpace,
       ),
     );
-  }
-
-  Future<void> _fetchPage(
-    WidgetRef ref,
-    int pageKey,
-    PagingController<int, Order> controller,
-  ) async {
-    try {
-      final orderStatus = status.toValue().toString();
-      final result = await ref.read(
-        ordersProvider(pageNumber: pageKey, status: orderStatus).future,
-      );
-
-      final isLastPage = result.length < pageSize;
-
-      if (isLastPage) {
-        controller.appendLastPage(result);
-      } else {
-        final nextPageKey = pageKey + 1;
-        controller.appendPage(result, nextPageKey);
-      }
-    } catch (e) {
-      logger.e(e, error: e);
-      controller.error = e;
-    }
   }
 }
