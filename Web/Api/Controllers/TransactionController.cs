@@ -121,7 +121,7 @@ namespace Api.Controllers
             try
             {
                 var response = await _itran.PaystackVerifyPayment(reference);
-                Console.WriteLine($"response {response}");
+               // Console.WriteLine($"response {response}");
                 return Ok(response);
             }
             catch (Exception ex)

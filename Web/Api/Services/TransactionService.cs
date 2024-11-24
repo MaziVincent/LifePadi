@@ -479,7 +479,7 @@ namespace Api.Services
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
