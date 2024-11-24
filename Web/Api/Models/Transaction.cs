@@ -10,6 +10,7 @@ namespace Api.Models
         public double TotalAmount { get; set; }
         public double AmountPaid { get; set; }  
         public string? Status { get; set; }
+        public bool? StatusBool { get; set; }
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }

@@ -489,6 +489,7 @@ namespace Api.Services
                     //insert transaction into the database
                     var transaction = new Transaction();
                     transaction.Status = paymentRes!.data!.status;
+                    transaction.StatusBool = paymentRes!.status;
                     transaction.AmountPaid = (Double)paymentRes.data!.amount! / 100;
                     transaction.TransactionRef = reference;
                     transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
