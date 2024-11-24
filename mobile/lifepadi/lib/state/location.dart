@@ -160,7 +160,7 @@ FutureOr<LocationDetails> updateLocation(
 }) async {
   final client = ref.watch(dioProvider());
   final requestData = location.toMap();
-  logger.d(requestData);
+
   final response = await client.put<JsonMap>(
     '/address/update/${location.id}',
     data: FormData.fromMap(requestData),
@@ -188,8 +188,3 @@ Future<void> deleteLocation(Ref ref, {required int id}) async {
   // Invalidate the locations provider to refresh the list
   ref.invalidate(locationsProvider);
 }
-
-/// Selected delivery location provider.
-///
-/// This provider is used to store the id of the selected location.
-final selectedLocationProvider = StateProvider<int?>((ref) => null);

@@ -7,7 +7,6 @@ import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/client.dart';
-import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -25,22 +24,35 @@ class CartState extends _$CartState {
 
   /// Get the current cart state from shared preferences
   Future<Cart> _getCart() async {
-    final products = PreferencesHelper.getStringList(kCartKey)
-            ?.map(ProductMapper.fromJson)
-            .toList() ??
-        [];
-    return _calculateCart(products);
+    final cartJson = PreferencesHelper.getString(kCartKey);
+    if (cartJson == null) {
+      return Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0);
+    }
+    return CartMapper.fromJson(cartJson);
   }
 
   /// Calculate the cart total based on the products in the cart
-  Cart _calculateCart(List<Product> products, {Discount? discount}) {
+  Cart _computeCart({
+    List<Product>? products,
+    Discount? discount,
+    LocationDetails? selectedLocation,
+  }) {
+    // Get the current state value safely
+    final currentState = state.valueOrNull;
+    if (discount == null && currentState?.discount != null) {
+      discount = currentState?.discount;
+    }
+    if (selectedLocation == null && currentState?.deliveryLocation != null) {
+      selectedLocation = currentState?.deliveryLocation;
+    }
+    products ??= currentState?.products ?? [];
+
     final subtotal = products.fold<double>(
       0,
       (sum, product) => sum + (product.price * product.quantity),
     );
-
     final locations = _getUniqueLocations(products);
-    var deliveryFee = _calculateDeliveryFee(locations);
+    var deliveryFee = _calculateDeliveryFee(locations, selectedLocation);
     var discountPrice = 0.0;
     if (discount != null) {
       if (discount.amount != null) {
@@ -52,17 +64,17 @@ class CartState extends _$CartState {
       deliveryFee -= discountPrice;
     }
 
-    // Get the current state value safely
-    final currentState = state.valueOrNull;
+    deliveryFee = double.parse(deliveryFee.toStringAsFixed(1));
+    var total = subtotal + (deliveryFee - discountPrice);
+    total = double.parse(total.toStringAsFixed(1));
 
-    ref.cache();
     return Cart(
       products: products,
       subtotal: subtotal,
-      total: subtotal + (deliveryFee - discountPrice),
+      total: total,
       deliveryFee: deliveryFee,
       discount: discount ?? currentState?.discount,
-      selectedLocationId: currentState?.selectedLocationId ?? 0,
+      deliveryLocation: selectedLocation ?? currentState?.deliveryLocation,
     );
   }
 
@@ -79,13 +91,23 @@ class CartState extends _$CartState {
   }
 
   /// Calculate delivery fee based on the Travelling Salesman Problem (TSP)
-  double _calculateDeliveryFee(Set<LocationDetails> locations) {
+  double _calculateDeliveryFee(
+    Set<LocationDetails> locations,
+    LocationDetails? deliveryLocation,
+  ) {
     if (locations.isEmpty) return 0;
 
     final points = locations.toList();
-    final route = _findNearestNeighborRoute(points);
 
-    // Calculate total distance along route
+    // Get current delivery location from state
+    if (deliveryLocation == null) return 0;
+
+    // Find route between vendor locations
+    final route = _findNearestNeighborRoute(points)
+      // Add delivery location as final destination
+      ..add(deliveryLocation);
+
+    // Calculate total distance along route including to delivery location
     var totalDistance = 0.0;
     for (var i = 0; i < route.length - 1; i++) {
       totalDistance += _calculateDistance(
@@ -156,12 +178,13 @@ class CartState extends _$CartState {
   }
 
   /// Save the cart to shared preferences
-  Future<void> _saveCart(List<Product> products) async {
-    await PreferencesHelper.setStringList(
+  /// and update the state
+  Future<void> _saveCart(Cart cart) async {
+    await PreferencesHelper.setString(
       key: kCartKey,
-      value: products.map((product) => product.toJson()).toList(),
+      value: cart.toJson(),
     );
-    state = AsyncData(_calculateCart(products));
+    state = AsyncData(cart);
   }
 
   /// Check if a product is in the cart
@@ -180,7 +203,7 @@ class CartState extends _$CartState {
 
     final currentProducts = state.valueOrNull?.products ?? [];
     final updatedProducts = [product, ...currentProducts];
-    await _saveCart(updatedProducts);
+    await _saveCart(_computeCart(products: updatedProducts));
     await showToast('Added ${product.name} to cart');
   }
 
@@ -192,7 +215,7 @@ class CartState extends _$CartState {
     final product = currentState.products.firstWhere((p) => p.id == productId);
     final updatedProducts =
         currentState.products.where((p) => p.id != productId).toList();
-    await _saveCart(updatedProducts);
+    await _saveCart(_computeCart(products: updatedProducts));
     await showToast('Removed ${product.name} from cart');
   }
 
@@ -205,7 +228,7 @@ class CartState extends _$CartState {
       }
       return product;
     }).toList();
-    await _saveCart(updatedProducts);
+    await _saveCart(_computeCart(products: updatedProducts));
   }
 
   /// Decrement the quantity of a product in the cart
@@ -224,7 +247,7 @@ class CartState extends _$CartState {
       }
       return p;
     }).toList();
-    await _saveCart(updatedProducts);
+    await _saveCart(_computeCart(products: updatedProducts));
   }
 
   /// Clear the cart
@@ -242,9 +265,6 @@ class CartState extends _$CartState {
   /// Check if a voucher code is valid
   /// and apply the discount to the cart
   Future<void> applyDiscount({required String voucherCode}) async {
-    final currentState = state.valueOrNull;
-    if (currentState == null) return;
-
     final user = ref.read(authControllerProvider);
     final userId = user.maybeWhen(
       data: (user) => user.id,
@@ -274,9 +294,14 @@ class CartState extends _$CartState {
 
     final discount = DiscountMapper.fromJson(response.data!);
 
-    final updatedCart =
-        _calculateCart(currentState.products, discount: discount);
-    state = AsyncData(updatedCart);
+    await _saveCart(_computeCart(discount: discount));
     await showToast('Discount applied');
+  }
+
+  /// Select a location for delivery
+  /// and update the delivery fee
+  Future<void> selectDeliveryLocation(LocationDetails location) async {
+    await _saveCart(_computeCart(selectedLocation: location));
+    await showToast('Delivery location selected');
   }
 }

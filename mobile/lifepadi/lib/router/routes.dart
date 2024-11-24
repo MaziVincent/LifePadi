@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -28,7 +29,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
         TypedGoRoute<CategoriesRoute>(path: 'categories'),
         TypedGoRoute<VendorsRoute>(path: 'vendors'),
-        TypedGoRoute<ReceiptRoute>(path: 'receipts/:id'),
+        TypedGoRoute<ReceiptRoute>(path: 'receipts/:orderId'),
       ],
     ),
     TypedGoRoute<OrdersRoute>(
@@ -344,13 +345,16 @@ class CheckoutRoute extends GoRouteData {
 }
 
 class ReceiptRoute extends GoRouteData {
-  ReceiptRoute({required this.id});
+  ReceiptRoute({required this.orderId});
 
-  final int id;
+  final int orderId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ReceiptPage(id: id);
+    return ReceiptPage(
+      orderId: orderId,
+      receipt: state.extra as Receipt?,
+    );
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
@@ -521,4 +525,19 @@ class TrackOrderMapRoute extends GoRouteData {
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+/// Payment route
+@TypedGoRoute<PaymentRoute>(path: '/payment')
+class PaymentRoute extends GoRouteData {
+  const PaymentRoute({
+    required this.link,
+  });
+
+  final String link;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PaymentPage(transactionLink: link);
+  }
 }

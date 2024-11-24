@@ -1,12 +1,17 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/cart.dart';
+import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
+import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class CheckoutPage extends HookConsumerWidget {
@@ -19,7 +24,7 @@ class CheckoutPage extends HookConsumerWidget {
     return Scaffold(
       appBar: const MyAppBar(title: 'Checkout'),
       body: switch (cart) {
-        AsyncData(:final value) => _CheckoutContent(cart: value),
+        AsyncData(:final value) => _CheckoutContent(cart: value, ref: ref),
         AsyncError(:final error) => Center(
             child: Text(
               error.toString(),
@@ -38,9 +43,11 @@ class CheckoutPage extends HookConsumerWidget {
 class _CheckoutContent extends HookWidget {
   const _CheckoutContent({
     required this.cart,
+    required this.ref,
   });
 
   final Cart cart;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +101,94 @@ class _CheckoutContent extends HookWidget {
           ],
         ),
         30.verticalSpace,
-        PrimaryButton(
-          text: 'Proceed to Pay',
+        PrimaryActionButton(
+          label: 'Proceed to Pay',
           onPressed: () async {
-            // TODO: Call payment provider to process payment.
+            await showToast('Please wait, creating order...');
 
-            // After that, go to receipt page
-            await context.push(ReceiptRoute(id: 1).location);
+            try {
+              // Create order
+              final order = await ref.read(
+                storeOrderProvider(
+                  instruction: deliveryInstruction.value,
+                  totalAmount: cart.total,
+                ).future,
+              );
+
+              // Create order items with the order id
+              for (final product in cart.products) {
+                await ref.read(
+                  storeOrderItemProvider(
+                    orderId: order.id,
+                    productId: product.id,
+                    quantity: product.quantity,
+                    amount: product.price,
+                    productName: product.name,
+                    description: product.description,
+                  ).future,
+                );
+              }
+
+              await showToast('Order created successfully');
+              // Get payment link
+              final paymentLink = await ref.read(
+                paymentLinkProvider(
+                  orderId: order.id,
+                  amount: cart.subtotal,
+                  deliveryFee: cart.deliveryFee,
+                  totalAmount: cart.total,
+                  voucherCode: cart.discount?.code,
+                ).future,
+              );
+
+              await showToast('Processing payment...');
+              // Use webview to process payment
+              if (context.mounted) {
+                final receipt = await context
+                    .push<Receipt>(PaymentRoute(link: paymentLink).location);
+
+                if (receipt != null && receipt.status) {
+                  // payment successful
+                  await showToast('Payment received');
+                  // Create delivery
+                  await ref
+                      .read(
+                    storeDeliveryProvider(
+                      orderId: order.id,
+                      fee: receipt.deliveryFee,
+                      addressId: cart.deliveryLocation!.id!,
+                    ).future,
+                  )
+                      .then((_) async {
+                    // After that, go to receipt page
+                    await showToast('Checkout successful 🎉');
+                    if (context.mounted) {
+                      context.go(
+                        ReceiptRoute(orderId: order.id).location,
+                        extra: receipt,
+                      );
+                    }
+                  });
+                }
+              }
+            } on PaymentFailedException catch (e) {
+              if (context.mounted) {
+                await displayError(
+                  context,
+                  title: 'Payment failed',
+                  description: e.message,
+                );
+              } else {
+                await showToast(
+                  e.message,
+                  isLong: true,
+                  gravity: ToastGravity.CENTER,
+                );
+              }
+            } catch (e, s) {
+              logger.e('Error creating order', error: e, stackTrace: s);
+              await handleError(e, context.mounted ? context : null);
+            }
           },
         ),
       ],

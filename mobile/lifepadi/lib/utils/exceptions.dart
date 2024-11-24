@@ -39,3 +39,9 @@ class InvalidDiscountCodeException implements Exception {
   const InvalidDiscountCodeException(this.message);
   final String message;
 }
+
+/// Exception thrown when payment fails.
+class PaymentFailedException implements Exception {
+  const PaymentFailedException(this.message);
+  final String message;
+}

@@ -21,7 +21,6 @@ class CartPage extends HookConsumerWidget {
     final cartAsync = ref.watch(cartStateProvider);
     final isExpanded = useState(false);
     final locations = ref.watch(locationsProvider);
-    final selectedLocation = ref.watch(selectedLocationProvider);
 
     void togglePanel() => isExpanded.value = !isExpanded.value;
 
@@ -47,14 +46,16 @@ class CartPage extends HookConsumerWidget {
                 12.verticalSpace,
                 locations.when(
                   data: (locations) {
-                    final selectedLocationAddress = selectedLocation != null
-                        ? locations
-                            .where(
-                              (location) => location.id == selectedLocation,
-                            )
-                            .firstOrNull
-                            ?.address
-                        : null;
+                    final selectedLocationAddress =
+                        cart.deliveryLocation != null
+                            ? locations
+                                .where(
+                                  (location) =>
+                                      location.id == cart.deliveryLocation?.id,
+                                )
+                                .firstOrNull
+                                ?.address
+                            : null;
 
                     return LocationCard(
                       onTap: () async {
@@ -189,7 +190,7 @@ class CartPage extends HookConsumerWidget {
                   PrimaryButton(
                     text: 'Proceed to checkout',
                     onPressed: () async {
-                      if (selectedLocation == null) {
+                      if (cart.deliveryLocation == null) {
                         if (context.mounted) {
                           await displayError(
                             context,

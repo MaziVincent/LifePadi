@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:lifepadi/models/discount.dart';
+import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 
 part 'cart.mapper.dart';
@@ -12,8 +13,7 @@ class Cart with CartMappable {
     required this.subtotal,
     required this.deliveryFee,
     this.discount,
-    this.selectedLocationId =
-        1, // ? I assume this is for the default location for now
+    this.deliveryLocation,
   });
 
   final List<Product> products;
@@ -21,5 +21,5 @@ class Cart with CartMappable {
   final double total;
   final double deliveryFee;
   final Discount? discount;
-  final int selectedLocationId;
+  final LocationDetails? deliveryLocation;
 }
