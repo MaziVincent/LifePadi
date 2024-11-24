@@ -100,37 +100,12 @@ class ReceiptPage extends StatelessWidget {
                   'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur',
             ),
             const MyDivider(),
-            32.82.verticalSpace,
-            Material(
-              shape: const CircleBorder(),
-              child: InkWell(
-                onTap: () {
-                  // TODO: Implement receipt pdf/image download
-                },
-                customBorder: const CircleBorder(),
-                child: Ink(
-                  width: 40.25.h,
-                  height: 40.25.h,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFF4F4F4),
-                    shape: CircleBorder(),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12.07.w,
-                    vertical: 11.57.h,
-                  ),
-                  child: Assets.icons.download.svg(
-                    height: 24.15.h,
-                    width: 24.15.h,
-                  ),
-                ),
-              ),
-            ),
-            32.77.verticalSpace,
+            const Spacer(),
             PrimaryButton(
-              onPressed: () => context.go(const HomeRoute().location),
-              text: 'Back to Home',
+              onPressed: () => context.go(const OrdersRoute().location),
+              text: 'Go to Orders',
             ),
+            const Spacer(),
           ],
         ),
       ),
