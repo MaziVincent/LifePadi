@@ -371,7 +371,7 @@ namespace Api.Services
                 request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 //add the auth token to the header
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
 
                 //send request and get the respond
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
