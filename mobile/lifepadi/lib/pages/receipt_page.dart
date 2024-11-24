@@ -109,7 +109,7 @@ class _ReceiptContent extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
-        8.verticalSpace,
+        4.verticalSpace,
         Text(
           'Successful',
           style: context.textTheme.bodySmall?.copyWith(

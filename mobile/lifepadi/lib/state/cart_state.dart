@@ -187,6 +187,17 @@ class CartState extends _$CartState {
     state = AsyncData(cart);
   }
 
+  /// Clear the cart
+  ///
+  /// Remove it from shared preferences
+  /// and update the state.
+  Future<void> clearCart() async {
+    await PreferencesHelper.remove(kCartKey);
+    state = AsyncData(
+      Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0),
+    );
+  }
+
   /// Check if a product is in the cart
   bool isInCart(int productId) {
     return state.valueOrNull?.products
@@ -248,18 +259,6 @@ class CartState extends _$CartState {
       return p;
     }).toList();
     await _saveCart(_computeCart(products: updatedProducts));
-  }
-
-  /// Clear the cart
-  Future<void> clearCart() async {
-    await PreferencesHelper.setStringList(key: kCartKey, value: []);
-
-    state = AsyncData(
-      state.valueOrNull?.copyWith(products: []) ??
-          Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0),
-    );
-
-    await showToast('Cart cleared');
   }
 
   /// Check if a voucher code is valid

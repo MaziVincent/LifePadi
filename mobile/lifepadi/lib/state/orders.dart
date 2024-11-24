@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/exceptions.dart';
@@ -201,6 +202,8 @@ Future<void> storeDelivery(
   }
 
   // Invalidate the orders provider to refresh the list
+  ref.invalidate(ordersProvider);
 
   // Clear cart
+  await ref.read(cartStateProvider.notifier).clearCart();
 }
