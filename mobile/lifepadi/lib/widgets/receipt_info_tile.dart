@@ -34,9 +34,12 @@ class ReceiptInfoTile extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 9.64.h),
-      child: Wrap(
-        alignment: WrapAlignment.spaceBetween,
-        children: children,
+      child: SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          children: children,
+        ),
       ),
     );
   }
