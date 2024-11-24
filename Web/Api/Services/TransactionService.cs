@@ -494,6 +494,9 @@ namespace Api.Services
                     transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
                     transaction.TotalAmount = paymentRes.data!.metadata!.totalAmount;
                     transaction.OrderId = (int)paymentRes.data!.metadata!.orderId!;
+                    transaction.DeliveryFee = paymentRes.data!.metadata!.deliveryFee;
+                    transaction.PaidAt = paymentRes.data!.paid_at;
+                    transaction.PaymentChannel = paymentRes.data!.channel;
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
@@ -527,7 +530,7 @@ namespace Api.Services
                     await _dbContext.Transactions.AddAsync(transaction);
                     await _dbContext.SaveChangesAsync();
 
-                    return paymentRes!;
+                    return transaction!;
                 }
                 throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
             }

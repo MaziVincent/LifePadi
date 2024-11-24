@@ -16,6 +16,10 @@ namespace Api.DTO
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }
         public OrderDtoLite? Order { get; set; }
+
+        public DateTime? PaidAt { get; set; }
+        public string? PaymentChannel {get; set;}
+        public double? DeliveryFee {get; set;}
     }
 
     public class TransactionDtoLite
