@@ -1,5 +1,4 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:lifepadi/utils/helpers.dart';
 
 part 'receipt.mapper.dart';
 
@@ -16,62 +15,20 @@ class Receipt with ReceiptMappable {
     required this.totalAmount,
   });
 
-  @MappableField(key: 'status')
+  @MappableField(key: 'StatusBool')
   final bool status;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<String>(key: 'reference'),
-  )
+  @MappableField(key: 'TransactionRef')
   final String reference;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<DateTime>(key: 'paid_at'),
-  )
+  @MappableField(key: 'PaidAt')
   final DateTime paidAt;
-  @MappableField(key: 'data', hook: ReceiptHook<String>(key: 'channel'))
+  @MappableField(key: 'PaymentChannel')
   final String channel;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<int>(key: 'orderId', isMetadata: true),
-  )
+  @MappableField(key: 'OrderId')
   final int orderId;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<double>(key: 'amount', isMetadata: true),
-  )
+  @MappableField(key: 'AmountPaid')
   final double amount;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<double>(key: 'deliveryFee', isMetadata: true),
-  )
+  @MappableField(key: 'DeliveryFee')
   final double deliveryFee;
-  @MappableField(
-    key: 'data',
-    hook: ReceiptHook<double>(key: 'totalAmount', isMetadata: true),
-  )
+  @MappableField(key: 'TotalAmount')
   final double totalAmount;
-}
-
-class ReceiptHook<T> extends MappingHook {
-  const ReceiptHook({
-    required this.key,
-    this.isMetadata = false,
-  });
-
-  final String key;
-  final bool isMetadata;
-
-  @override
-  T beforeDecode(Object? value) {
-    final data = value! as JsonMap;
-    final rawValue =
-        // ignore: avoid_dynamic_calls
-        isMetadata ? data['metadata'][key] : data[key];
-
-    if (T == DateTime) {
-      return DateTime.parse(rawValue as String) as T;
-    } else {
-      return rawValue as T;
-    }
-  }
 }

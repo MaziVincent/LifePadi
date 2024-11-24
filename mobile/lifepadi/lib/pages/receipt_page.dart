@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
@@ -78,9 +79,22 @@ class ReceiptPage extends StatelessWidget {
             ? _ReceiptContent(receipt: receipt!)
             : Consumer(
                 builder: (context, ref, child) {
-                  return const Center(
-                    child: Text('FETCH AND DISPLAY RECEIPT!'),
-                  );
+                  final receipt = ref.watch(receiptProvider(orderId));
+
+                  return switch (receipt) {
+                    AsyncData(:final value) => _ReceiptContent(receipt: value),
+                    AsyncError(:final error) => Center(
+                        child: Text(
+                          error.toString(),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    _ => const Center(child: GreenyLoadingWheel()),
+                  };
                 },
               ),
       ),
@@ -119,7 +133,8 @@ class _ReceiptContent extends StatelessWidget {
           ),
         ),
         25.66.verticalSpace,
-        ReceiptInfoTile(left: 'Channel', right: receipt.channel.capitalize()),
+        ReceiptInfoTile(
+            left: 'Payment Channel', right: receipt.channel.capitalize()),
         ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
         ReceiptInfoTile(
           left: 'Delivery fee',

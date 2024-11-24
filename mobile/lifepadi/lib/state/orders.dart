@@ -171,7 +171,7 @@ Future<Receipt> confirmPayment(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  if (response.data?['status'] != true) {
+  if (response.data?['StatusBool'] != true) {
     throw PaymentFailedException(response.data?['message'] as String);
   }
 
@@ -206,4 +206,17 @@ Future<void> storeDelivery(
 
   // Clear cart
   await ref.read(cartStateProvider.notifier).clearCart();
+}
+
+/// Get receipt by order id
+@riverpod
+FutureOr<Receipt> receipt(Ref ref, int orderId) async {
+  final client = ref.read(dioProvider());
+  final response =
+      await client.get<JsonMap>('/transaction/transactionbyorderid/$orderId');
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+
+  return ReceiptMapper.fromMap(response.data!);
 }

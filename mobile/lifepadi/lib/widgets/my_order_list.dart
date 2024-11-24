@@ -26,6 +26,7 @@ class MyOrderList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // FIXME: Fix controller has been disposed error when switching between tabs.
     final controller = usePagingController<int, Order>(
       firstPageKey: 1,
       fetchPage: (pageKey, controller) => _fetchPage(

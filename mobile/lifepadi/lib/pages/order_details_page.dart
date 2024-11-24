@@ -28,7 +28,24 @@ class OrderDetailsPage extends ConsumerWidget {
           MyIconButton(
             icon: Remix.more_2_fill,
             onPressed: () {
-              // Can have popup menu with option: Get Receipt (Go to receipt page).
+              showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
+                color: Colors.white,
+                items: [
+                  PopupMenuItem<dynamic>(
+                    child: Text(
+                      'View Receipt',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        color: const Color(0xFF27272A),
+                      ),
+                    ),
+                    onTap: () =>
+                        context.push(ReceiptRoute(orderId: id).location),
+                  ),
+                ],
+              );
             },
           ),
         ],
