@@ -140,7 +140,8 @@ namespace Api.Services
                     .Include(d => d.Order)
                     .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
-                    .Include(a => a.Address)
+                    .Include(a => a.DeliveryAddress)
+                    .Include(a => a.PickupAddress)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;

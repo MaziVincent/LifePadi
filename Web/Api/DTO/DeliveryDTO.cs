@@ -6,6 +6,8 @@ namespace Api.DTO
     {
         public int Id { get; set; }
         public string? PickupAddress { get; set; }
+        public int? PickupAddressId { get; set; }
+        public AddressDto? PickUpAddress {get; set;}
         public string? PickupType { get; set; }
         public double DeliveryFee { get; set; }
         public string? Status { get; set; }
@@ -14,8 +16,8 @@ namespace Api.DTO
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
         public string? DeliveryAddress { get; set;}
-        public int? AddressId { get; set; }
-        public AddressDto? Address { get; set; }
+        public int? DeliveryAddressId { get; set; }
+        public AddressDto? DelAddress { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
