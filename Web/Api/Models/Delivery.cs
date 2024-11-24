@@ -5,8 +5,10 @@
         public int Id { get; set; }
         public string? PickupAddress { get; set; }
         public string? DeliveryAddress { get; set; }
+        public int? AddressId { get; set; }
+        public Address? Address { get; set; }
         public string? PickupType { get; set; }
-        public Double DeliveryFee { get; set; }
+        public double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public int OrderId { get; set; }
         public Order? Order { get; set; }

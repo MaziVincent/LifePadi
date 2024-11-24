@@ -140,6 +140,8 @@ namespace Api.Services
                     .Include(d => d.Order)
                     .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
+                    .Include(a => a.Address)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
                 var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);

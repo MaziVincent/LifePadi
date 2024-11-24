@@ -7,8 +7,8 @@ namespace Api.Models
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
-        public Double TotalAmount { get; set; }
-        public Double AmountPaid { get; set; }  
+        public double TotalAmount { get; set; }
+        public double AmountPaid { get; set; }  
         public string? Status { get; set; }
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }

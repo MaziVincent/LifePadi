@@ -50,7 +50,7 @@ namespace Api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest("Invalid form");
+                if (!ModelState.IsValid) return BadRequest("Invalid request");
                 var newDelivery = await _idelivery.createAsync(delivery);
                 return Ok(newDelivery);
             }
