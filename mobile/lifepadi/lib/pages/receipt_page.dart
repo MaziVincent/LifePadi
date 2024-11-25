@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/orders.dart';
@@ -137,7 +138,8 @@ class _ReceiptContent extends StatelessWidget {
           left: 'Payment Channel',
           right: receipt.channel.capitalize(),
         ),
-        ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
+        if (receipt.type == CheckoutType.cart)
+          ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
         ReceiptInfoTile(
           left: 'Delivery fee',
           right: receipt.deliveryFee.currency,

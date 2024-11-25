@@ -533,12 +533,14 @@ class TrackOrderMapRoute extends GoRouteData {
 class PaymentRoute extends GoRouteData {
   const PaymentRoute({
     required this.link,
+    this.type = CheckoutType.cart,
   });
 
   final String link;
+  final CheckoutType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return PaymentPage(transactionLink: link);
+    return PaymentPage(transactionLink: link, type: type);
   }
 }

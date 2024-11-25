@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/utils/cache_for.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -108,8 +110,7 @@ FutureOr<void> storeOrderItem(
   required String productName,
   required String description,
 }) async {
-  final client =
-      ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
+  final client = ref.read(dioProvider());
   final response = await client.post<String>(
     '/orderitem/create',
     data: {
@@ -136,8 +137,7 @@ FutureOr<String> paymentLink(
   required double amount,
   String? voucherCode,
 }) async {
-  final client =
-      ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
+  final client = ref.read(dioProvider());
   final response = await client.post<String>(
     '/transaction/MobilePaystackCheckout',
     data: {
@@ -163,6 +163,7 @@ FutureOr<String> paymentLink(
 Future<Receipt> confirmPayment(
   Ref ref, {
   required Map<String, String> queryParameters,
+  required CheckoutType type,
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
@@ -177,7 +178,7 @@ Future<Receipt> confirmPayment(
     throw PaymentFailedException(response.data?['message'] as String);
   }
 
-  return ReceiptMapper.fromMap(response.data!);
+  return ReceiptMapper.fromMap(response.data!..addAll({'type': type}));
 }
 
 /// Create delivery
@@ -188,7 +189,9 @@ Future<void> storeDelivery(
   Ref ref, {
   required int orderId,
   required double fee,
-  required int addressId,
+  int? deliveryAddressId,
+  CheckoutType type = CheckoutType.cart,
+  int? pickupAddressId,
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.post<String>(
@@ -196,7 +199,8 @@ Future<void> storeDelivery(
     data: {
       'OrderId': orderId,
       'DeliveryFee': fee,
-      'AddressId': addressId,
+      'DeliveryAddressId': deliveryAddressId,
+      'PickupAddressId': pickupAddressId,
     },
   );
   if (response.data == null) {
@@ -206,8 +210,13 @@ Future<void> storeDelivery(
   // Invalidate the orders provider to refresh the list
   ref.invalidate(ordersProvider);
 
-  // Clear cart
-  await ref.read(cartStateProvider.notifier).clearCart();
+  if (type == CheckoutType.cart) {
+    // Clear cart
+    await ref.read(cartStateProvider.notifier).clearCart();
+  } else {
+    // Clear logistics
+    await ref.read(logisticsStateProvider.notifier).clearLogistics();
+  }
 }
 
 /// Get receipt by order id

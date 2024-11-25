@@ -20,16 +20,28 @@ class Logistics with LogisticsMappable {
     this.deliveryFee = 0,
   });
 
+  @MappableField(key: 'Id')
   final int id;
+  @MappableField(key: 'SenderName')
   final String senderName;
+  @MappableField(key: 'SenderPhone')
   final String senderPhone;
+  @MappableField(key: 'SenderAddress')
   final LocationDetails pickupLocation;
+  @MappableField(key: 'ReceiverName')
   final String receiverName;
+  @MappableField(key: 'ReceiverPhone')
   final String receiverPhone;
+  @MappableField(key: 'ReceiverAddress')
   final LocationDetails dropoffLocation;
+  @MappableField(key: 'Item')
   final String item;
+  @MappableField(key: 'ItemDescription')
   final String? description;
+  @MappableField(key: 'ItemWeight')
   final double? weight;
+  @MappableField(key: 'IsFragile')
   final bool fragile;
+  @MappableField(key: 'DeliveryFee')
   final double deliveryFee;
 }

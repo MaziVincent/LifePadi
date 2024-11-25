@@ -1,6 +1,9 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/logistics.dart';
+import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/location_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -63,7 +66,7 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
       description: description,
       weight: weight,
       fragile: fragile,
-      deliveryFee: deliveryFee,
+      deliveryFee: double.parse(deliveryFee.toStringAsFixed(1)),
     );
 
     // Save logistics data
@@ -74,5 +77,31 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
     state = AsyncData(logistics);
 
     await showToast('Logistics details saved');
+  }
+}
+
+/// Store a new logistics order.
+@riverpod
+Future<void> storeLogistics(Ref ref, {required int orderId}) async {
+  final logistics = await ref.read(logisticsStateProvider.future);
+  if (logistics == null) {
+    throw Exception('No logistics data to store');
+  }
+
+  final client = ref.read(dioProvider());
+  final response = await client.post<String>(
+    '/logistics/create',
+    data: logistics.toMap()
+      ..remove('Id')
+      ..remove('SenderAddress')
+      ..remove('ReceiverAddress')
+      ..addAll({
+        'SenderAddressId': logistics.pickupLocation.id,
+        'ReceiverAddressId': logistics.dropoffLocation.id,
+        'OrderId': orderId,
+      }),
+  );
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
   }
 }

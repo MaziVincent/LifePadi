@@ -1,9 +1,16 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/logistics.dart';
+import 'package:lifepadi/models/receipt.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/logistics.dart';
+import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -16,8 +23,9 @@ class LogisticsCheckout extends ConsumerWidget {
     final logistics = ref.watch(logisticsStateProvider);
 
     return switch (logistics) {
-      AsyncData(:final value) =>
-        _LogisticsCheckoutContent(logistics: value!, ref: ref),
+      AsyncData(:final value) => value != null
+          ? _LogisticsCheckoutContent(logistics: value, ref: ref)
+          : const Center(child: Text('No logistics found')),
       AsyncError(:final error) => Center(
           child: Text(
             error.toString(),
@@ -76,14 +84,6 @@ class _LogisticsCheckoutContent extends HookWidget {
               title: 'Delivery fee',
               price: logistics.deliveryFee,
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 12.h),
-              child: PaymentPrice(
-                title: 'Total',
-                amount: logistics.deliveryFee,
-                description: kTotalDescription,
-              ),
-            ),
           ],
         ),
         30.verticalSpace,
@@ -91,6 +91,85 @@ class _LogisticsCheckoutContent extends HookWidget {
           label: 'Proceed to Pay',
           onPressed: () async {
             await showToast('Please wait, creating order...');
+
+            try {
+              // Create order
+              final order = await ref.read(
+                storeOrderProvider(
+                  instruction: deliveryInstruction.value,
+                  totalAmount: logistics.deliveryFee,
+                  type: CheckoutType.logistics.name.capitalize(),
+                ).future,
+              );
+
+              // Create logistics with the order id
+              await ref.read(storeLogisticsProvider(orderId: order.id).future);
+
+              await showToast('Order created successfully');
+              // Get payment link
+              final paymentLink = await ref.read(
+                paymentLinkProvider(
+                  orderId: order.id,
+                  amount: logistics.deliveryFee,
+                  deliveryFee: logistics.deliveryFee,
+                  totalAmount: logistics.deliveryFee,
+                ).future,
+              );
+
+              await showToast('Processing payment...');
+              // Use webview to process payment
+              if (context.mounted) {
+                final receipt = await context.push<Receipt>(
+                  PaymentRoute(
+                    link: paymentLink,
+                    type: CheckoutType.logistics,
+                  ).location,
+                );
+
+                if (receipt != null && receipt.status) {
+                  // payment successful
+                  await showToast('Payment received');
+                  // Create delivery
+                  await ref
+                      .read(
+                    storeDeliveryProvider(
+                      orderId: order.id,
+                      fee: receipt.deliveryFee,
+                      deliveryAddressId: logistics.dropoffLocation.id,
+                      type: CheckoutType.logistics,
+                      pickupAddressId: logistics.pickupLocation.id,
+                    ).future,
+                  )
+                      .then((_) async {
+                    // After that, go to receipt page
+                    await showToast('Checkout successful 🎉');
+                    if (context.mounted) {
+                      context.go(
+                        ReceiptRoute(orderId: order.id).location,
+                        extra: receipt,
+                      );
+                    }
+                  });
+                }
+              }
+            } on PaymentFailedException catch (e) {
+              if (context.mounted) {
+                await displayError(
+                  context,
+                  title: 'Payment failed',
+                  description: e.message,
+                );
+              } else {
+                await showToast(
+                  e.message,
+                  isLong: true,
+                  gravity: ToastGravity.CENTER,
+                );
+              }
+            } catch (e, s) {
+              logger.e('Error creating order', error: e, stackTrace: s);
+              await handleError(e, context.mounted ? context : null);
+            }
           },
         ),
       ],

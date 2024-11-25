@@ -154,7 +154,7 @@ class _CartCheckoutContent extends HookWidget {
                     storeDeliveryProvider(
                       orderId: order.id,
                       fee: receipt.deliveryFee,
-                      addressId: cart.deliveryLocation!.id!,
+                      deliveryAddressId: cart.deliveryLocation!.id,
                     ).future,
                   )
                       .then((_) async {

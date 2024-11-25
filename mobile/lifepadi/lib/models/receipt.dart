@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 
 part 'receipt.mapper.dart';
 
@@ -13,6 +14,7 @@ class Receipt with ReceiptMappable {
     required this.amount,
     required this.deliveryFee,
     required this.totalAmount,
+    this.type = CheckoutType.cart,
   });
 
   @MappableField(key: 'StatusBool')
@@ -31,4 +33,5 @@ class Receipt with ReceiptMappable {
   final double deliveryFee;
   @MappableField(key: 'TotalAmount')
   final double totalAmount;
+  final CheckoutType type;
 }

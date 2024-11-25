@@ -11,6 +11,7 @@ class CheckoutPage extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(title: 'Checkout'),
       body: switch (type) {
+        CheckoutType.logistics => const LogisticsCheckout(),
         _ => const CartCheckout(),
       },
     );

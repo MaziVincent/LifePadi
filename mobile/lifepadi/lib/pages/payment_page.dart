@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -9,9 +10,11 @@ class PaymentPage extends ConsumerStatefulWidget {
   const PaymentPage({
     super.key,
     required this.transactionLink,
+    required this.type,
   });
 
   final String transactionLink;
+  final CheckoutType type;
 
   @override
   ConsumerState<PaymentPage> createState() => _PaymentPageState();
@@ -57,8 +60,12 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
     logger
       ..d('Payment confirmation query params: ')
       ..d(queryParameters);
-    final receipt = await ref
-        .read(confirmPaymentProvider(queryParameters: queryParameters).future);
+    final receipt = await ref.read(
+      confirmPaymentProvider(
+        queryParameters: queryParameters,
+        type: widget.type,
+      ).future,
+    );
 
     if (context.mounted) {
       // ignore: use_build_context_synchronously
