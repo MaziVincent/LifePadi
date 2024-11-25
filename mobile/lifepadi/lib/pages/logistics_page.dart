@@ -1,19 +1,21 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class LogisticsPage extends HookWidget {
+class LogisticsPage extends HookConsumerWidget {
   const LogisticsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final itemName = useState<String>('');
     final description = useState('');
     final receiverName = useState('');
@@ -22,6 +24,9 @@ class LogisticsPage extends HookWidget {
     final senderNameController = useTextEditingController();
     final senderPhoneController = useTextEditingController();
     final formKey = useMemoized(GlobalKey<FormState>.new);
+    final pickupLocation = ref.watch(pickupLocationProvider);
+    final dropoffLocation = ref.watch(dropoffLocationProvider);
+    final locations = ref.watch(locationsProvider);
 
     const itemNames = [
       'Documents',
@@ -146,12 +151,21 @@ class LogisticsPage extends HookWidget {
                   onTap: () async {
                     await displayBottomPanel(
                       context,
-                      child: const EditLocationModalForm(
+                      child: EditLocationModalForm(
                         title: 'Pickup Location',
+                        selectedLocationId: pickupLocation?.id,
+                        onLocationSelected: (location) {
+                          ref.read(pickupLocationProvider.notifier).state =
+                              location;
+                        },
                       ),
                     );
                   },
-                  address: 'Soja, Lekki Lagos...',
+                  address: locations.whenOrNull(
+                        data: (locations) =>
+                            pickupLocation?.address ?? 'Select pickup location',
+                      ) ??
+                      'Loading locations...',
                 ),
                 16.verticalSpace,
                 const SectionTitle(
@@ -163,12 +177,22 @@ class LogisticsPage extends HookWidget {
                   onTap: () async {
                     await displayBottomPanel(
                       context,
-                      child: const EditLocationModalForm(
+                      child: EditLocationModalForm(
                         title: 'Drop-off location',
+                        selectedLocationId: dropoffLocation?.id,
+                        onLocationSelected: (location) {
+                          ref.read(dropoffLocationProvider.notifier).state =
+                              location;
+                        },
                       ),
                     );
                   },
-                  address: '3RD FLOOR DREAMLINK CONCEPTS',
+                  address: locations.whenOrNull(
+                        data: (locations) =>
+                            dropoffLocation?.address ??
+                            'Select drop-off location',
+                      ) ??
+                      'Loading locations...',
                 ),
                 16.verticalSpace,
                 const SectionTitle(
@@ -205,7 +229,13 @@ class LogisticsPage extends HookWidget {
                   label: 'Proceed to Checkout',
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      // Just a dummy action to show the next page
+                      if (pickupLocation == null || dropoffLocation == null) {
+                        await showToast(
+                          'Please select both pickup and drop-off locations',
+                          gravity: ToastGravity.CENTER,
+                        );
+                        return;
+                      }
                       await context.push(CheckoutRoute().location);
                     }
                   },

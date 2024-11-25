@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -16,14 +15,17 @@ class EditLocationModalForm extends HookConsumerWidget {
   const EditLocationModalForm({
     super.key,
     this.title = 'Delivery Location',
+    this.onLocationSelected,
+    this.selectedLocationId,
   });
 
   final String title;
+  final void Function(LocationDetails location)? onLocationSelected;
+  final int? selectedLocationId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locations = ref.watch(locationsProvider);
-    final cart = ref.watch(cartStateProvider);
 
     return SingleChildScrollView(
       child: Column(
@@ -80,11 +82,10 @@ class EditLocationModalForm extends HookConsumerWidget {
                   _buildLocation(
                     context,
                     location: location,
-                    isDefault: location.id == cart.value?.deliveryLocation?.id,
+                    isDefault: location.id == selectedLocationId,
                     onTap: () {
-                      ref
-                          .read(cartStateProvider.notifier)
-                          .selectDeliveryLocation(location);
+                      onLocationSelected?.call(location);
+                      context.pop();
                     },
                   ),
               ].separatedBy(16.verticalSpace),

@@ -188,3 +188,6 @@ Future<void> deleteLocation(Ref ref, {required int id}) async {
   // Invalidate the locations provider to refresh the list
   ref.invalidate(locationsProvider);
 }
+
+final pickupLocationProvider = StateProvider<LocationDetails?>((ref) => null);
+final dropoffLocationProvider = StateProvider<LocationDetails?>((ref) => null);
