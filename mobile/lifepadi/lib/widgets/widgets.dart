@@ -35,7 +35,6 @@ export 'mock_products_skeleton.dart';
 export 'my_app_bar.dart';
 export 'my_divider.dart';
 export 'my_order_list.dart';
-export 'my_sliver_list.dart';
 export 'notification_tile.dart';
 export 'onboarding_feature.dart';
 export 'onboarding_navigation.dart';
