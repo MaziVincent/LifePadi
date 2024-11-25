@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
@@ -20,12 +21,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
     TypedGoRoute<HomeRoute>(
       path: '/',
       routes: [
-        TypedGoRoute<CartRoute>(
-          path: 'cart',
-          routes: [
-            TypedGoRoute<CheckoutRoute>(path: 'checkout'),
-          ],
-        ),
+        TypedGoRoute<CartRoute>(path: 'cart'),
         TypedGoRoute<NotificationRoute>(path: 'notifications'),
         TypedGoRoute<CategoriesRoute>(path: 'categories'),
         TypedGoRoute<VendorsRoute>(path: 'vendors'),
@@ -333,12 +329,17 @@ class VendorsRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 
+@TypedGoRoute<CheckoutRoute>(path: '/checkout')
 class CheckoutRoute extends GoRouteData {
-  CheckoutRoute();
+  CheckoutRoute({
+    this.type = CheckoutType.cart,
+  });
+
+  final CheckoutType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const CheckoutPage();
+    return CheckoutPage(type: type);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

@@ -58,6 +58,7 @@ class SelectInputField<T> extends StatelessWidget {
       style: inputTextStyle(context, forUserEnteredText: true),
       validator: (value) =>
           value == null ? 'Please select ${labelText.toLowerCase()}' : null,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

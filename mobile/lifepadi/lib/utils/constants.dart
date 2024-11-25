@@ -47,11 +47,10 @@ final kTestCacheTime = 10.seconds;
 /// The cache time for the app on production
 final kCacheTime = 10.minutes;
 
-/// Key for the wishlist in the shared preferences
+// Shared preferences keys
 const kWishlistKey = 'wishlist';
-
-/// Key for the cart in the shared preferences
-const String kCartKey = 'cart';
+const kCartKey = 'cart';
+const kLogisticsKey = 'logistics_key';
 
 const kGoogleMapsApiKey = 'AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k';
 

@@ -4,9 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/location.dart';
+import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -28,6 +30,7 @@ class LogisticsPage extends HookConsumerWidget {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final pickupLocation = ref.watch(pickupLocationProvider);
     final dropoffLocation = ref.watch(dropoffLocationProvider);
+    final user = ref.watch(authControllerProvider);
     final locations = ref.watch(locationsProvider);
 
     const itemNames = [
@@ -127,29 +130,23 @@ class LogisticsPage extends HookConsumerWidget {
                           ),
                         ),
                         4.horizontalSpace,
-                        Consumer(
-                          builder: (context, ref, child) {
-                            final user = ref.watch(authControllerProvider);
-
-                            return SwitchInput(
-                              value: useCurrentDetails.value,
-                              height: 25.h,
-                              width: 35.w,
-                              onChanged: (value) {
-                                // Fill the inputs with the current user details
-                                // or clear it
-                                useCurrentDetails.value = value;
-                                if (value) {
-                                  senderNameController.text =
-                                      user.valueOrNull?.name ?? '';
-                                  senderPhoneController.text =
-                                      user.valueOrNull?.phoneNumber ?? '';
-                                } else {
-                                  senderNameController.text = '';
-                                  senderPhoneController.text = '';
-                                }
-                              },
-                            );
+                        SwitchInput(
+                          value: useCurrentDetails.value,
+                          height: 25.h,
+                          width: 35.w,
+                          onChanged: (value) {
+                            // Fill the inputs with the current user details
+                            // or clear it
+                            useCurrentDetails.value = value;
+                            if (value) {
+                              senderNameController.text =
+                                  user.valueOrNull?.name ?? '';
+                              senderPhoneController.text =
+                                  user.valueOrNull?.phoneNumber ?? '';
+                            } else {
+                              senderNameController.text = '';
+                              senderPhoneController.text = '';
+                            }
                           },
                         ),
                       ],
@@ -271,7 +268,30 @@ class LogisticsPage extends HookConsumerWidget {
                         );
                         return;
                       }
-                      await context.push(CheckoutRoute().location);
+
+                      // Save logistics details
+                      await ref
+                          .read(logisticsStateProvider.notifier)
+                          .saveLogistics(
+                            senderName: senderNameController.text,
+                            senderPhone: senderPhoneController.text,
+                            pickupLocation: pickupLocation,
+                            receiverName: receiverName.value,
+                            receiverPhone: receiverPhone.value,
+                            dropoffLocation: dropoffLocation,
+                            item: itemName.value,
+                            description: description.value,
+                            weight: weight.value,
+                            fragile: isFragile.value,
+                          );
+
+                      await showToast('Logistics details saved');
+
+                      if (context.mounted) {
+                        await context.push(
+                          CheckoutRoute(type: CheckoutType.logistics).location,
+                        );
+                      }
                     }
                   },
                 ),

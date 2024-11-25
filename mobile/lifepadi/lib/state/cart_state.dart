@@ -1,6 +1,3 @@
-import 'dart:math' show pi, sin, cos, sqrt, atan2;
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/models/cart.dart';
 import 'package:lifepadi/models/discount.dart';
 import 'package:lifepadi/models/location_details.dart';
@@ -10,13 +7,14 @@ import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/location_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cart_state.g.dart';
 
 @Riverpod(keepAlive: true)
-class CartState extends _$CartState {
+class CartState extends _$CartState with LocationUtils {
   @override
   Future<Cart> build() async {
     return _getCart();
@@ -110,7 +108,7 @@ class CartState extends _$CartState {
     // Calculate total distance along route including to delivery location
     var totalDistance = 0.0;
     for (var i = 0; i < route.length - 1; i++) {
-      totalDistance += _calculateDistance(
+      totalDistance += calculateDistance(
         route[i].latLng,
         route[i + 1].latLng,
       );
@@ -136,7 +134,7 @@ class CartState extends _$CartState {
 
       // Find nearest unvisited point
       for (var i = 0; i < unvisited.length; i++) {
-        final distance = _calculateDistance(
+        final distance = calculateDistance(
           current.latLng,
           unvisited[i].latLng,
         );
@@ -151,30 +149,6 @@ class CartState extends _$CartState {
     }
 
     return route;
-  }
-
-  /// Convert degrees to radians
-  double _getRadians(double degrees) => degrees * pi / 180;
-
-  /// Use the Haversine formula to calculate distance in km
-  /// between two points
-  double _calculateDistance(LatLng start, LatLng end) {
-    const earthRadiusKm = 6371;
-    final startLatRadians = _getRadians(start.latitude);
-    final endLatRadians = _getRadians(end.latitude);
-    final latitudeDiffRadians = _getRadians(end.latitude - start.latitude);
-    final longitudeDiffRadians = _getRadians(end.longitude - start.longitude);
-
-    final haversineA =
-        sin(latitudeDiffRadians / 2) * sin(latitudeDiffRadians / 2) +
-            cos(startLatRadians) *
-                cos(endLatRadians) *
-                sin(longitudeDiffRadians / 2) *
-                sin(longitudeDiffRadians / 2);
-
-    final greatCircleDistance =
-        2 * atan2(sqrt(haversineA), sqrt(1 - haversineA));
-    return earthRadiusKm * greatCircleDistance;
   }
 
   /// Save the cart to shared preferences

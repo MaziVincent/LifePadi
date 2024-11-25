@@ -68,6 +68,7 @@ FutureOr<Order> storeOrder(
   Ref ref, {
   String? instruction,
   required double totalAmount,
+  String? type,
 }) async {
   final client =
       ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
@@ -86,6 +87,7 @@ FutureOr<Order> storeOrder(
       'CustomerId': userId,
       'Instruction': instruction,
       'TotalAmount': totalAmount,
+      'Type': type,
     },
   );
   if (response.data == null) {
