@@ -87,7 +87,7 @@ class LogisticsPage extends HookConsumerWidget {
                           'Use current details',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: const Color(0xFF21D1A5),
-                            fontSize: 12.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -98,8 +98,8 @@ class LogisticsPage extends HookConsumerWidget {
 
                             return SwitchInput(
                               value: useCurrentDetails.value,
-                              height: 20.h,
-                              width: 30.w,
+                              height: 25.h,
+                              width: 35.w,
                               onChanged: (value) {
                                 // Fill the inputs with the current user details
                                 // or clear it
