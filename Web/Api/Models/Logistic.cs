@@ -11,12 +11,17 @@ namespace Api.Models
         public string? SenderName { get; set; }
         public string? SenderPhone { get; set; }
         public string? SenderAddress { get; set; }
+        public int? SenderAddressId  {get; set;}
+        public Address? SenderAddressModel  {get; set;}
         public string? ReceiverName { get; set; }
         public string? ReceiverPhone { get; set; }
         public string? ReceiverAddress { get; set; }
+        public int? RecieverAddressId {get; set;}
+        public Address? RecieverAddressModel {get; set;}
         public string? Item { get; set; }
         public string? ItemDescription { get; set; }
-        public string? ItemWeight { get; set; }
+        public double? ItemWeight { get; set; }
+        public bool? IsFragile {get; set; }
         public int OrderId { get; set; }
         public Order? Order { get; set; }
         public string? TrackingNumber { get; set; }
