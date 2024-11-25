@@ -44,10 +44,15 @@ class CartPage extends HookConsumerWidget {
               children: [
                 const SectionTitle('Location'),
                 12.verticalSpace,
-                locations.when(
-                  data: (locations) {
-                    final selectedLocationAddress =
-                        cart.deliveryLocation != null
+                LocationCard(
+                  onTap: () async {
+                    await displayBottomPanel(
+                      context,
+                      child: const EditLocationModalForm(),
+                    );
+                  },
+                  address: locations.whenOrNull(
+                        data: (locations) => cart.deliveryLocation != null
                             ? locations
                                 .where(
                                   (location) =>
@@ -55,31 +60,11 @@ class CartPage extends HookConsumerWidget {
                                 )
                                 .firstOrNull
                                 ?.address
-                            : null;
-
-                    return LocationCard(
-                      onTap: () async {
-                        await displayBottomPanel(
-                          context,
-                          child: const EditLocationModalForm(),
-                        );
-                      },
-                      address: locations.isEmpty
-                          ? 'Add a delivery location'
-                          : selectedLocationAddress ??
-                              'Select a delivery location',
-                    );
-                  },
-                  error: (error, _) => Center(
-                    child: Text(
-                      error.toString(),
-                      style: context.textTheme.bodyLarge?.copyWith(
-                        color: kDarkPrimaryColor,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  loading: () => const GreenyLoadingWheel(),
+                            : locations.isEmpty
+                                ? 'Add a delivery location'
+                                : 'Select a delivery location',
+                      ) ??
+                      'Loading locations...',
                 ),
                 18.verticalSpace,
                 Row(
