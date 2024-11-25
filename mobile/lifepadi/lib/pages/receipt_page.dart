@@ -134,7 +134,9 @@ class _ReceiptContent extends StatelessWidget {
         ),
         25.66.verticalSpace,
         ReceiptInfoTile(
-            left: 'Payment Channel', right: receipt.channel.capitalize()),
+          left: 'Payment Channel',
+          right: receipt.channel.capitalize(),
+        ),
         ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
         ReceiptInfoTile(
           left: 'Delivery fee',

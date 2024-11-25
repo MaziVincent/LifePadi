@@ -18,12 +18,12 @@ class LogisticsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final itemName = useState<String>('');
-    final description = useState('');
-    final receiverName = useState('');
+    final item = useState<String>('');
+    final descriptionController = useTextEditingController();
+    final receiverNameController = useTextEditingController();
     final receiverPhone = useState('');
     final useCurrentDetails = useState(false);
-    final weight = useState<double?>(null);
+    final weightController = useTextEditingController();
     final isFragile = useState(false);
     final senderNameController = useTextEditingController();
     final senderPhoneController = useTextEditingController();
@@ -33,7 +33,7 @@ class LogisticsPage extends HookConsumerWidget {
     final user = ref.watch(authControllerProvider);
     final locations = ref.watch(locationsProvider);
 
-    const itemNames = [
+    const items = [
       'Documents',
       'Food Stuff',
       'Money',
@@ -42,6 +42,57 @@ class LogisticsPage extends HookConsumerWidget {
       'Phone',
       'I prefer not to say',
     ];
+
+    // Restore saved logistics details if any
+    useEffect(
+      () {
+        Future.microtask(() async {
+          final logistics = await ref.read(logisticsStateProvider.future);
+          logger
+            ..d('Saved logistics:')
+            ..d(logistics);
+          if (logistics == null) return;
+          if (!context.mounted) return;
+
+          final shouldRestore = await openChoiceDialog(
+            context: context,
+            title: 'Restore Saved Details',
+            description:
+                'Would you like to restore your previously saved logistics details?',
+            yesText: 'Restore',
+            cancelText: 'Discard',
+            icon: Icons.restore,
+            iconColor: Colors.white,
+            iconBackgroundColor: const Color(0xFF21D1A5),
+          );
+          logger
+            ..i('Should restore:')
+            ..i(shouldRestore);
+
+          if (shouldRestore == true) {
+            item.value = logistics.item;
+            descriptionController.text = logistics.description ?? '';
+            receiverNameController.text = logistics.receiverName;
+            receiverPhone.value = logistics.receiverPhone;
+            weightController.text = logistics.weight?.toString() ?? '';
+            isFragile.value = logistics.fragile;
+            senderNameController.text = logistics.senderName;
+            senderPhoneController.text = logistics.senderPhone;
+
+            // Restore locations
+            ref.read(pickupLocationProvider.notifier).state =
+                logistics.pickupLocation;
+            ref.read(dropoffLocationProvider.notifier).state =
+                logistics.dropoffLocation;
+          } else {
+            // Clear saved logistics details
+            await ref.read(logisticsStateProvider.notifier).clearLogistics();
+          }
+        });
+        return null;
+      },
+      [],
+    );
 
     return Scaffold(
       appBar: const MyAppBar(title: 'Logistics'),
@@ -60,18 +111,20 @@ class LogisticsPage extends HookConsumerWidget {
                 ),
                 16.verticalSpace,
                 SelectInputField<String>(
-                  hintText: 'Name of Item',
-                  labelText: 'Item Name',
-                  items: itemNames,
-                  onChanged: (value) => itemName.value = value ?? '',
+                  hintText: 'What are you sending?',
+                  labelText: 'Item',
+                  items: items,
+                  onChanged: (value) => item.value = value ?? '',
+                  // Only set value if it exists in items list
+                  value: items.contains(item.value) ? item.value : null,
                 ),
                 16.verticalSpace,
                 InputField(
                   hintText: 'Enter description',
                   labelText: 'Description',
-                  onChanged: (value) => description.value = value,
+                  controller: descriptionController,
                   keyboardType: TextInputType.multiline,
-                  hasValue: description.value.isNotEmpty,
+                  hasValue: descriptionController.text.isNotEmpty,
                   maxLines: 3,
                   maxLength: 100,
                   textInputAction: TextInputAction.newline,
@@ -96,10 +149,10 @@ class LogisticsPage extends HookConsumerWidget {
                 InputField(
                   hintText: 'Enter package weight in kg',
                   labelText: 'Weight (kg)',
-                  onChanged: (value) => weight.value = double.tryParse(value),
+                  controller: weightController,
                   keyboardType:
                       const TextInputType.numberWithOptions(decimal: true),
-                  hasValue: weight.value != null,
+                  hasValue: weightController.text.isNotEmpty,
                   validator: (value) {
                     if (value == null || value.isEmpty) return null;
                     final weightValue = double.tryParse(value);
@@ -161,7 +214,6 @@ class LogisticsPage extends HookConsumerWidget {
                   keyboardType: TextInputType.text,
                   hasValue: senderNameController.text.isNotEmpty,
                   autofillHints: const [
-                    AutofillHints.givenName,
                     AutofillHints.name,
                   ],
                   validator: ValidationBuilder(
@@ -235,12 +287,10 @@ class LogisticsPage extends HookConsumerWidget {
                 InputField(
                   hintText: 'Enter name of receiver',
                   labelText: 'Receiver name',
-                  onChanged: (value) => receiverName.value = value,
+                  controller: receiverNameController,
                   keyboardType: TextInputType.text,
-                  hasValue: receiverName.value.isNotEmpty,
-                  initialValue: receiverName.value,
+                  hasValue: receiverNameController.text.isNotEmpty,
                   autofillHints: const [
-                    AutofillHints.givenName,
                     AutofillHints.name,
                   ],
                   validator: ValidationBuilder(
@@ -276,12 +326,12 @@ class LogisticsPage extends HookConsumerWidget {
                             senderName: senderNameController.text,
                             senderPhone: senderPhoneController.text,
                             pickupLocation: pickupLocation,
-                            receiverName: receiverName.value,
+                            receiverName: receiverNameController.text,
                             receiverPhone: receiverPhone.value,
                             dropoffLocation: dropoffLocation,
-                            item: itemName.value,
-                            description: description.value,
-                            weight: weight.value,
+                            item: item.value,
+                            description: descriptionController.text,
+                            weight: double.tryParse(weightController.text),
                             fragile: isFragile.value,
                           );
 

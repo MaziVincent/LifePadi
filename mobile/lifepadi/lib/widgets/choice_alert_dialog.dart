@@ -70,7 +70,7 @@ class ChoiceAlertDialog extends StatelessWidget {
               if (hasCancel)
                 Expanded(
                   child: PrimaryOutlineChoiceButton(
-                    onPressed: onCancel ?? () => context.pop(),
+                    onPressed: onCancel ?? () => context.pop(false),
                     text: cancelText ?? 'Cancel',
                   ),
                 ),
@@ -79,7 +79,7 @@ class ChoiceAlertDialog extends StatelessWidget {
                 child: PrimaryChoiceButton(
                   onPressed: () {
                     onYes?.call();
-                    context.pop();
+                    context.pop(true);
                   },
                   text: yesText ?? 'Yes',
                 ),
