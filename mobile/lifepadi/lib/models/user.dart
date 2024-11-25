@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:lifepadi/models/user_role.dart';
+import 'package:lifepadi/utils/extensions.dart';
 
 part 'user.mapper.dart';
 
@@ -45,7 +46,7 @@ sealed class User with UserMappable {
   static const fromMap = UserMapper.fromMap;
   static const fromJson = UserMapper.fromJson;
 
-  String get name => '$firstName $lastName';
+  String get name => '${firstName.capitalize()} ${lastName.capitalize()}';
 }
 
 @MappableClass(discriminatorValue: 'Customer')

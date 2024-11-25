@@ -6,14 +6,18 @@ import 'package:lifepadi/utils/helpers.dart';
 class PhoneInputField extends StatelessWidget {
   const PhoneInputField({
     super.key,
-    required this.phone,
+    this.phone,
     this.child,
     this.onChildTap,
     this.label = 'Phone number',
-  });
+    this.controller,
+  }) : assert(
+          phone != null || controller != null,
+          'Either phone or controller must be provided',
+        );
 
-  /// The phone number notifier
-  final ValueNotifier<String> phone;
+  /// The phone number notifier, optional if controller is provided
+  final ValueNotifier<String>? phone;
 
   /// The child widget to be displayed as the suffix icon
   final Widget? child;
@@ -24,12 +28,22 @@ class PhoneInputField extends StatelessWidget {
   /// The label for the input field
   final String label;
 
+  /// The controller for the input field
+  final TextEditingController? controller;
+
   @override
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
       autoValidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: PhoneNumber(isoCode: 'NG', phoneNumber: phone.value),
-      onInputChanged: (PhoneNumber number) => phone.value = number.phoneNumber!,
+      initialValue: PhoneNumber(
+        isoCode: 'NG',
+        phoneNumber: phone?.value ?? controller?.text ?? '',
+      ),
+      onInputChanged: (PhoneNumber number) {
+        if (phone != null) {
+          phone!.value = number.phoneNumber!;
+        }
+      },
       inputBorder: const OutlineInputBorder(),
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.DIALOG,
@@ -46,7 +60,9 @@ class PhoneInputField extends StatelessWidget {
       inputDecoration: InputDecoration(
         border: inputBorder(),
         enabledBorder: inputBorder(
-          color: phone.value.isNotEmpty ? const Color(0xFF21D1A5) : null,
+          color: (phone?.value ?? controller?.text ?? '').isNotEmpty
+              ? const Color(0xFF21D1A5)
+              : null,
         ),
         focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
         errorBorder: inputBorder(color: Colors.redAccent),
@@ -71,6 +87,7 @@ class PhoneInputField extends StatelessWidget {
               )
             : null,
       ),
+      textFieldController: controller,
     );
   }
 }

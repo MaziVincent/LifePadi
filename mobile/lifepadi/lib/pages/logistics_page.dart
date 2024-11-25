@@ -1,5 +1,7 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -11,11 +13,11 @@ class LogisticsPage extends HookWidget {
   Widget build(BuildContext context) {
     final itemName = useState<String>('');
     final description = useState('');
-    final senderName = useState('');
-    final senderPhone = useState('');
     final receiverName = useState('');
     final receiverPhone = useState('');
     final useCurrentDetails = useState(false);
+    final senderNameController = useTextEditingController();
+    final senderPhoneController = useTextEditingController();
 
     const itemNames = [
       'Documents',
@@ -79,15 +81,29 @@ class LogisticsPage extends HookWidget {
                         ),
                       ),
                       4.horizontalSpace,
-                      SwitchInput(
-                        value: useCurrentDetails.value,
-                        height: 20.h,
-                        width: 30.w,
-                        onChanged: (value) {
-                          // Fill the inputs with the current user details or clear it
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final user = ref.watch(authControllerProvider);
 
-                          // For now, just update the UI
-                          useCurrentDetails.value = value;
+                          return SwitchInput(
+                            value: useCurrentDetails.value,
+                            height: 20.h,
+                            width: 30.w,
+                            onChanged: (value) {
+                              // Fill the inputs with the current user details
+                              // or clear it
+                              useCurrentDetails.value = value;
+                              if (value) {
+                                senderNameController.text =
+                                    user.valueOrNull?.name ?? '';
+                                senderPhoneController.text =
+                                    user.valueOrNull?.phoneNumber ?? '';
+                              } else {
+                                senderNameController.text = '';
+                                senderPhoneController.text = '';
+                              }
+                            },
+                          );
                         },
                       ),
                     ],
@@ -98,10 +114,9 @@ class LogisticsPage extends HookWidget {
               InputField(
                 hintText: 'Enter name of sender',
                 labelText: 'Sender name',
-                onChanged: (value) => senderName.value = value,
+                controller: senderNameController,
                 keyboardType: TextInputType.text,
-                hasValue: senderName.value.isNotEmpty,
-                initialValue: senderName.value,
+                hasValue: senderNameController.text.isNotEmpty,
                 autofillHints: const [
                   AutofillHints.givenName,
                   AutofillHints.name,
@@ -109,8 +124,8 @@ class LogisticsPage extends HookWidget {
               ),
               16.verticalSpace,
               PhoneInputField(
-                phone: senderPhone,
                 label: 'Sender phone number',
+                controller: senderPhoneController,
               ),
               16.verticalSpace,
               const SectionTitle(
