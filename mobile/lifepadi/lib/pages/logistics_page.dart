@@ -21,6 +21,8 @@ class LogisticsPage extends HookConsumerWidget {
     final receiverName = useState('');
     final receiverPhone = useState('');
     final useCurrentDetails = useState(false);
+    final weight = useState<double?>(null);
+    final isFragile = useState(false);
     final senderNameController = useTextEditingController();
     final senderPhoneController = useTextEditingController();
     final formKey = useMemoized(GlobalKey<FormState>.new);
@@ -63,7 +65,7 @@ class LogisticsPage extends HookConsumerWidget {
                 16.verticalSpace,
                 InputField(
                   hintText: 'Enter description',
-                  labelText: 'Description (Optional)',
+                  labelText: 'Description',
                   onChanged: (value) => description.value = value,
                   keyboardType: TextInputType.multiline,
                   hasValue: description.value.isNotEmpty,
@@ -71,7 +73,40 @@ class LogisticsPage extends HookConsumerWidget {
                   maxLength: 100,
                   textInputAction: TextInputAction.newline,
                 ),
-                8.verticalSpace,
+                16.verticalSpace,
+                Row(
+                  children: [
+                    const SectionTitle(
+                      'Is it fragile?',
+                      color: Color(0xFF1C1C20),
+                    ),
+                    8.horizontalSpace,
+                    SwitchInput(
+                      value: isFragile.value,
+                      height: 30.h,
+                      width: 40.w,
+                      onChanged: (value) => isFragile.value = value,
+                    ),
+                  ],
+                ),
+                16.verticalSpace,
+                InputField(
+                  hintText: 'Enter package weight in kg',
+                  labelText: 'Weight (kg)',
+                  onChanged: (value) => weight.value = double.tryParse(value),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  hasValue: weight.value != null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return null;
+                    final weightValue = double.tryParse(value);
+                    if (weightValue == null || weightValue <= 0) {
+                      return 'Please enter a valid weight';
+                    }
+                    return null;
+                  },
+                ),
+                16.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
