@@ -1,5 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
@@ -8,9 +9,23 @@ class LogisticsPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = useState<String>('');
-    final quantity = useState('');
+    final itemName = useState<String>('');
     final description = useState('');
+    final senderName = useState('');
+    final senderPhone = useState('');
+    final receiverName = useState('');
+    final receiverPhone = useState('');
+    final useCurrentDetails = useState(false);
+
+    const itemNames = [
+      'Documents',
+      'Food Stuff',
+      'Money',
+      'Clothing',
+      'Electronics',
+      'Phone',
+      'I prefer not to say',
+    ];
 
     return Scaffold(
       appBar: const MyAppBar(title: 'Logistics'),
@@ -26,20 +41,11 @@ class LogisticsPage extends HookWidget {
                 color: Color(0xFF1C1C20),
               ),
               16.verticalSpace,
-              InputField(
+              SelectInputField<String>(
                 hintText: 'Name of Item',
                 labelText: 'Item Name',
-                onChanged: (value) => name.value = value,
-                keyboardType: TextInputType.text,
-                hasValue: name.value.isNotEmpty,
-              ),
-              16.verticalSpace,
-              InputField(
-                hintText: 'Enter quantity',
-                labelText: 'Quantity',
-                onChanged: (value) => quantity.value = value,
-                keyboardType: TextInputType.number,
-                hasValue: quantity.value.isNotEmpty,
+                items: itemNames,
+                onChanged: (value) => itemName.value = value ?? '',
               ),
               16.verticalSpace,
               InputField(
@@ -53,6 +59,60 @@ class LogisticsPage extends HookWidget {
                 textInputAction: TextInputAction.newline,
               ),
               8.verticalSpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SectionTitle(
+                    'Sender information',
+                    color: Color(0xFF1C1C20),
+                  ),
+
+                  /// Use current details switch
+                  Row(
+                    children: [
+                      Text(
+                        'Use current details',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF21D1A5),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      4.horizontalSpace,
+                      SwitchInput(
+                        value: useCurrentDetails.value,
+                        height: 20.h,
+                        width: 30.w,
+                        onChanged: (value) {
+                          // Fill the inputs with the current user details or clear it
+
+                          // For now, just update the UI
+                          useCurrentDetails.value = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              16.verticalSpace,
+              InputField(
+                hintText: 'Enter name of sender',
+                labelText: 'Sender name',
+                onChanged: (value) => senderName.value = value,
+                keyboardType: TextInputType.text,
+                hasValue: senderName.value.isNotEmpty,
+                initialValue: senderName.value,
+                autofillHints: const [
+                  AutofillHints.givenName,
+                  AutofillHints.name,
+                ],
+              ),
+              16.verticalSpace,
+              PhoneInputField(
+                phone: senderPhone,
+                label: 'Sender phone number',
+              ),
+              16.verticalSpace,
               const SectionTitle(
                 'Pickup Location',
                 color: Color(0xFF1C1C20),
@@ -62,7 +122,9 @@ class LogisticsPage extends HookWidget {
                 onTap: () async {
                   await displayBottomPanel(
                     context,
-                    child: const EditLocationModalForm(),
+                    child: const EditLocationModalForm(
+                      title: 'Pickup Location',
+                    ),
                   );
                 },
                 address: 'Soja, Lekki Lagos...',
@@ -77,10 +139,35 @@ class LogisticsPage extends HookWidget {
                 onTap: () async {
                   await displayBottomPanel(
                     context,
-                    child: const EditLocationModalForm(),
+                    child: const EditLocationModalForm(
+                      title: 'Drop-off location',
+                    ),
                   );
                 },
                 address: '3RD FLOOR DREAMLINK CONCEPTS',
+              ),
+              16.verticalSpace,
+              const SectionTitle(
+                'Receiver information',
+                color: Color(0xFF1C1C20),
+              ),
+              16.verticalSpace,
+              InputField(
+                hintText: 'Enter name of receiver',
+                labelText: 'Receiver name',
+                onChanged: (value) => receiverName.value = value,
+                keyboardType: TextInputType.text,
+                hasValue: receiverName.value.isNotEmpty,
+                initialValue: receiverName.value,
+                autofillHints: const [
+                  AutofillHints.givenName,
+                  AutofillHints.name,
+                ],
+              ),
+              16.verticalSpace,
+              PhoneInputField(
+                phone: receiverPhone,
+                label: 'Receiver phone number',
               ),
               16.verticalSpace,
               const MyDivider(

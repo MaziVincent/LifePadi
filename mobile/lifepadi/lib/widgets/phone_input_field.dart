@@ -9,6 +9,7 @@ class PhoneInputField extends StatelessWidget {
     required this.phone,
     this.child,
     this.onChildTap,
+    this.label = 'Phone number',
   });
 
   /// The phone number notifier
@@ -19,6 +20,9 @@ class PhoneInputField extends StatelessWidget {
 
   /// Callback to be executed when the suffix icon is tapped
   final VoidCallback? onChildTap;
+
+  /// The label for the input field
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,7 @@ class PhoneInputField extends StatelessWidget {
           context,
           color: const Color(0xFF858585),
         ),
-        labelText: 'Phone number',
+        labelText: label,
         floatingLabelStyle: floatingLabelTextStyle(),
         contentPadding: kInputPadding,
         floatingLabelBehavior: FloatingLabelBehavior.auto,

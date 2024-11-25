@@ -15,7 +15,10 @@ import 'package:remixicon/remixicon.dart';
 class EditLocationModalForm extends HookConsumerWidget {
   const EditLocationModalForm({
     super.key,
+    this.title = 'Delivery Location',
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,9 +37,9 @@ class EditLocationModalForm extends HookConsumerWidget {
                 color: kDarkPrimaryColor,
               ),
               5.horizontalSpace,
-              const SectionTitle(
-                'Delivery Location',
-                color: Color(0xFF1C1C20),
+              SectionTitle(
+                title,
+                color: const Color(0xFF1C1C20),
               ),
             ],
           ),

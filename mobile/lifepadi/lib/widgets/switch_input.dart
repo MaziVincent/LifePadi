@@ -7,16 +7,19 @@ class SwitchInput extends StatelessWidget {
     super.key,
     required this.value,
     required this.onChanged,
+    this.width,
+    this.height,
   });
 
   final bool value;
   final ValueChanged<bool> onChanged;
+  final double? width, height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.53.h,
-      width: 30.83.w,
+      height: height ?? 40.53.h,
+      width: width ?? 30.83.w,
       child: FittedBox(
         fit: BoxFit.cover,
         child: Switch.adaptive(
