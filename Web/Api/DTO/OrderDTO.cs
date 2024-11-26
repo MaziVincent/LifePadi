@@ -58,6 +58,7 @@ namespace Api.DTO
         public string? Order_Id { get; set; }
         public double? TotalAmount { get; set; }
         public string? DeliveryAddress { get; set; }
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<OrderItemDto>? OrderItems { get; set; }

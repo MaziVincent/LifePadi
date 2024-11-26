@@ -98,6 +98,7 @@ namespace Api.Services
                         .Include(o => o.Customer)
                         .OrderByDescending(o => o.CreatedAt)
                         .Where(o => o.CustomerId == id)
+                        .AsSplitQuery()
                         .ToListAsync();
                     var singleOrderDto = _mapper.Map<List<SingleOrderDto>>(normalOrders);
                     foreach (var item in singleOrderDto)
@@ -157,7 +158,7 @@ namespace Api.Services
         {
             try
             {
-                var order = await _dbContext!.Orders
+                var order = await _dbContext!.Orders.Where(o => o.Id == id)
                     .Include(o => o.Customer)
                     .Include(o => o.OrderItems)!
                         .ThenInclude(i => i.Product)
@@ -167,7 +168,8 @@ namespace Api.Services
                             .ThenInclude(p => p!.Vendor)
                                 .ThenInclude(v => v!.Addresses)
                     .AsSplitQuery()
-                    .FirstOrDefaultAsync(o => o.Id == id);
+                    .FirstOrDefaultAsync();
+
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<SingleOrderDto>(order);
