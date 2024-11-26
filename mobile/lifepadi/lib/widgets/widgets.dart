@@ -4,6 +4,7 @@ export 'package:flutter/material.dart';
 export 'package:super_sliver_list/super_sliver_list.dart';
 
 export 'account_management_tile.dart';
+export 'address_row.dart';
 export 'avatar.dart';
 export 'bottom_panel.dart';
 export 'buttons/buttons.dart';
@@ -54,6 +55,8 @@ export 'profile_detail_info.dart';
 export 'profile_image_and_location.dart';
 export 'receipt_info_tile.dart';
 export 'receiver_chat_bubble.dart';
+export 'rider_order_list.dart';
+export 'rider_order_tile.dart';
 export 'scaffold_with_nav_bar.dart';
 export 'section_title.dart';
 export 'select_input_field.dart';

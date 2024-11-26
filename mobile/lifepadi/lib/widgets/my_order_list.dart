@@ -2,6 +2,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -94,7 +95,7 @@ class MyOrderList extends HookConsumerWidget {
                         status: OrderStatus.pending,
                         orderId: BoneMock.subtitle,
                         isDelivered: false,
-                        type: BoneMock.city,
+                        type: CheckoutType.cart,
                         items: [],
                         createdAt: DateTime.now(),
                       ),

@@ -11,6 +11,7 @@ class ActionButton extends HookWidget {
     required this.label,
     required this.icon,
   });
+
   final AsyncCallback onPressed;
   final Widget label;
   final Widget icon;

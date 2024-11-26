@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:lifepadi/models/product.dart';
 
 part 'order_item.mapper.dart';
 
@@ -15,6 +16,7 @@ class OrderItem with OrderItemMappable {
     this.weight,
     this.isFragile,
     required this.productId,
+    this.product,
   });
 
   @MappableField(key: 'Id')
@@ -37,4 +39,6 @@ class OrderItem with OrderItemMappable {
   final int productId;
   @MappableField(key: 'OrderId')
   final int orderId;
+  @MappableField(key: 'Product')
+  final Product? product;
 }

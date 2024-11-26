@@ -96,4 +96,16 @@ extension StringCasingExtension on String {
   /// Turns the rest of the letters to lowercase
   String capitalize() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+
+  /// Pluralize a string with the suffix 's' or 'es'
+  /// if the [count] is greater than 1.
+  /// [count] must be non-negative.
+  /// If [count] is 0, the string is returned as is.
+  String pluralize(int count) {
+    assert(count >= 0, 'Count must be non-negative');
+
+    if (count == 1) return this;
+
+    return '$this${endsWith('s') ? 'es' : 's'}';
+  }
 }

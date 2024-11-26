@@ -1,4 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/order_item.dart';
 
 part 'order.mapper.dart';
@@ -25,6 +27,8 @@ class Order with OrderMappable {
     required this.type,
     required this.items,
     required this.createdAt,
+    this.deliveryLocation,
+    this.pickupLocation,
   });
 
   @MappableField(key: 'Id')
@@ -36,7 +40,7 @@ class Order with OrderMappable {
   @MappableField(key: 'IsDelivered')
   final bool isDelivered;
   @MappableField(key: 'Type')
-  final String type;
+  final CheckoutType type;
   @MappableField(key: 'OrderItems')
   final List<OrderItem> items;
   @MappableField(key: 'CreatedAt')
@@ -45,4 +49,8 @@ class Order with OrderMappable {
         0,
         (previousValue, element) => previousValue + element.totalAmount,
       );
+  @MappableField(key: 'DeliveryLocation')
+  final LocationDetails? deliveryLocation;
+  @MappableField(key: 'PickupLocation')
+  final LocationDetails? pickupLocation;
 }
