@@ -160,9 +160,12 @@ namespace Api.Services
                 var order = await _dbContext!.Orders
                     .Include(o => o.Customer)
                     .Include(o => o.OrderItems)!
-                    .ThenInclude(i => i.Product).
-                    ThenInclude(i => i!.Vendor)!
-                    .ThenInclude(a => a!.Addresses)
+                        .ThenInclude(i => i.Product)
+                            .ThenInclude(p => p!.Category)
+                    .Include(o => o.OrderItems)!
+                        .ThenInclude(i => i.Product)
+                            .ThenInclude(p => p!.Vendor)
+                                .ThenInclude(v => v!.Addresses)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(o => o.Id == id);
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
