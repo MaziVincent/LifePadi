@@ -120,12 +120,23 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}/getOrders")]
-        public async Task<IActionResult> getRiderOrders(int id)
+        public async Task<IActionResult> getRiderOrders(int id, [FromQuery] SearchPaging props)
         {
             try
             {
-                var orders = await _irider!.getRiderOrders(id);
-                return Ok(orders);
+                var orders = await _irider!.getRiderOrders(props, id);
+                
+                var result = _mapper.Map<List<OrderDto>>(orders);
+
+                var dataList = new
+                {
+                    orders.TotalCount,
+                    orders.TotalPages,
+                    orders.CurrentPage,
+                    orders.PageSize
+                };
+
+                return Ok(new { result, dataList });
             }
             catch (Exception ex)
             {

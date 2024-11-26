@@ -16,7 +16,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<GetRiderDto>> nonActiveRiders();
         public Task<IEnumerable<DeliveryDtoLite>> successfulDeliveries(int riderId);
         public Task<IEnumerable<DeliveryDtoLite>> pendingDeliveries(int riderId);
-        public Task<IEnumerable<OrderDto>> getRiderOrders(int id);
+        public Task<PagedList<Order>> getRiderOrders(SearchPaging props, int id);
         public Task<IEnumerable<DeliveryDto>> getRiderDeliveries(int id);
         public Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
         public Task<string> activateRider(int id);

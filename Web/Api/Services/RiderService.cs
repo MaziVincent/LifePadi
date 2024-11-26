@@ -114,12 +114,12 @@ namespace Api.Services
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
                         .ToListAsync();
-                        
+
                     ridersList = ridersList.Concat(ridersLs);
                     var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 
                     return result;
-                    
+
                 }
                 var riders = await _dbContext.Riders
                         .Include(r => r.Deliveries)
@@ -172,23 +172,32 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDto>> getRiderOrders(int id)
+        public async Task<PagedList<Order>> getRiderOrders(SearchPaging props, int id)
         {
             try
             {
-                var deliverise = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
-                    .Where(d => d.RiderId == id)
-                    .ToListAsync();
-                if (deliverise == null) return null!;
-                var orderList = new List<Order>();
-                foreach (var delivery in deliverise)
-                {
-                    orderList.Append(delivery.Order!);
+                IQueryable<Order> listOfOrders = Enumerable.Empty<Order>().AsQueryable();
 
-                }
-                var OrderDto = _mapper.Map<List<OrderDto>>(orderList);
-                return OrderDto;
+                var deliveries = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Include(d => d.Order)
+                    .Where(d => d.RiderId == id)
+                    .AsSplitQuery()
+                    .ToListAsync();
+
+                if (deliveries == null || !deliveries.Any()) return null!;
+
+                var orderList = deliveries
+                    .Where(d => d.Order != null) // Ensure no null orders are added
+                    .Select(d => d.Order!)       // Extract orders from deliveries
+                    .ToList();
+
+                 listOfOrders = listOfOrders.Concat(orderList);
+                    var result = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
+
+                return result;
+
+               
             }
             catch (Exception ex)
             {
