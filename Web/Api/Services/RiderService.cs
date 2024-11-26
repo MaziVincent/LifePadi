@@ -194,29 +194,47 @@ namespace Api.Services
                         .ToListAsync();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
 >>>>>>> 836ec36 (changed all DTO to Dto)
 =======
+=======
+>>>>>>> 57dd2cb (rider commit)
 <<<<<<< HEAD
 =======
                         
 >>>>>>> 589567d (Finishing touches on the admin portal)
+<<<<<<< HEAD
 >>>>>>> a2698f4 (Finishing touches on the admin portal)
+=======
+=======
+
+>>>>>>> 11badd3 (rider commit)
+>>>>>>> 57dd2cb (rider commit)
                     ridersList = ridersList.Concat(ridersLs);
                     var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 
                     return result;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> 57dd2cb (rider commit)
                     
 =======
                     var getRiderDto1 = _mapper.Map<List<GetRiderDto>>(riders1);
                     return getRiderDto1;
 >>>>>>> b8c66da (changed all DTO to Dto)
+<<<<<<< HEAD
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+=======
+
+>>>>>>> 11badd3 (rider commit)
+>>>>>>> 57dd2cb (rider commit)
                 }
                 var riders = await _dbContext.Riders
                         .Include(r => r.Deliveries)
@@ -281,6 +299,7 @@ namespace Api.Services
             {
                 IQueryable<Order> listOfOrders = Enumerable.Empty<Order>().AsQueryable();
 
+<<<<<<< HEAD
                     if(props.SearchString is null){
 
                 var deliveries = await _dbContext.Deliveries
@@ -291,6 +310,12 @@ namespace Api.Services
                     .ThenInclude(p => p!.Vendor)
                     .Where(d => d.RiderId == id)
                     .OrderByDescending(d => d.CreatedAt)
+=======
+                var deliveries = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Include(d => d.Order)
+                    .Where(d => d.RiderId == id)
+>>>>>>> 57dd2cb (rider commit)
                     .AsSplitQuery()
                     .ToListAsync();
 
@@ -298,13 +323,18 @@ namespace Api.Services
 
                 var orderList = deliveries
                     .Where(d => d.Order != null) // Ensure no null orders are added
+<<<<<<< HEAD
                     .Select(d => d.Order!)
+=======
+                    .Select(d => d.Order!)       // Extract orders from deliveries
+>>>>>>> 57dd2cb (rider commit)
                     .ToList();
 
                  listOfOrders = listOfOrders.Concat(orderList);
                     var result = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
 
                 return result;
+<<<<<<< HEAD
                     }
 
                            
@@ -333,6 +363,8 @@ namespace Api.Services
                     var resultWithSearch = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
 
                 return resultWithSearch;
+=======
+>>>>>>> 57dd2cb (rider commit)
 
                
             }

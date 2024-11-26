@@ -461,7 +461,166 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> get(int id)
+        {
+            try
+            {
+                var rider = await _irider!.getAsync(id);
+                if (rider == null) return NotFound();
+                return Ok(rider);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/getOrders")]
+        public async Task<IActionResult> getRiderOrders(int id, [FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var orders = await _irider!.getRiderOrders(props, id);
+                
+                var result = _mapper.Map<List<OrderDto>>(orders);
+
+                var dataList = new
+                {
+                    orders.TotalCount,
+                    orders.TotalPages,
+                    orders.CurrentPage,
+                    orders.PageSize
+                };
+
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("nonactive")]
+        public async Task<IActionResult> nonactiveRiders()
+        {
+            try
+            {
+                var riders = await _irider!.nonActiveRiders();
+                return Ok(riders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> search([FromQuery] string searchString)
+        {
+            try
+            {
+                var riders = await _irider!.searchAsync(searchString);
+                return Ok(riders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{riderId}/successfulDeliveries")]
+        public async Task<IActionResult> successfulDelivries(int riderId)
+        {
+            try
+            {
+                var delivries = await _irider!.successfulDeliveries(riderId);
+                return Ok(delivries);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{riderId}/pendingDeliveries")]
+        public async Task<IActionResult> pendingDelivries(int riderId)
+        {
+            try
+            {
+                var delivries = await _irider!.pendingDeliveries(riderId);
+                return Ok(delivries);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> update(int id, [FromForm] CreateRiderDto rider)
+        {
+            try
+            {
+                var updatedRider = await _irider!.updateAsync(rider, id);
+                if (updatedRider == null) return NotFound();
+                return Ok(updatedRider);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("uploadIdentity/{id}")]
+        public async Task<IActionResult> uploadIdentity(int id, ImageDto imageFile)
+        {
+            try
+            {
+                if (imageFile.Image == null) return BadRequest("Please add an image");
+                var res = await _irider!.uploadRiderIdentityImg(id, imageFile.Image!);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("verify/{id}")]
+        public async Task<IActionResult> verifyRider(int id)
+        {
+            try
+            {
+                var res = await _irider!.verifyRider(id);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("toggleStatus/{id}")]
+        public async Task<IActionResult> toggleRiderStatus(int id)
+        {
+            try
+            {
+                var res = await _irider!.toggleRiderStatus(id);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+>>>>>>> 57dd2cb (rider commit)
     }
 }
