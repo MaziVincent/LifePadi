@@ -211,7 +211,12 @@ class RegisterRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<RiderRoute>(path: '/rider')
+@TypedGoRoute<RiderRoute>(
+  path: '/rider',
+  routes: [
+    TypedGoRoute<RiderOrderDetailsRoute>(path: 'orders/:id'),
+  ],
+)
 class RiderRoute extends GoRouteData {
   const RiderRoute();
 
@@ -250,6 +255,19 @@ class ProductDetailsRoute extends GoRouteData {
 
 class OrderDetailsRoute extends GoRouteData {
   const OrderDetailsRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return OrderDetailsPage(id: id);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+class RiderOrderDetailsRoute extends GoRouteData {
+  const RiderOrderDetailsRoute({required this.id});
 
   final int id;
 
