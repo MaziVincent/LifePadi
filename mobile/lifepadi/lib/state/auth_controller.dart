@@ -75,6 +75,7 @@ class AuthController extends _$AuthController {
       ..invalidate(locationsProvider)
       ..invalidate(ordersProvider)
       ..invalidate(orderProvider)
+      ..invalidate(riderOrdersProvider)
       ..invalidate(productProvider)
       ..invalidate(vendorsProvider)
       ..invalidate(vendorProductsProvider)

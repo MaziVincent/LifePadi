@@ -45,7 +45,7 @@ FutureOr<List<Order>> orders(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['result'] as List);
+  final data = List<JsonMap>.from(response.data!['orders'] as List);
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();
