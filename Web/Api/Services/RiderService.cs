@@ -211,6 +211,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.OrderItems)!
                     .ThenInclude(o => o.Product)
                     .ThenInclude(p => p!.Vendor)
+                    .ThenInclude(v => v!.Addresses)
                     .Where(d => d.RiderId == id)
                     .AsSplitQuery()
                     .ToListAsync();
