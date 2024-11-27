@@ -139,7 +139,7 @@ class _ReceiptContent extends StatelessWidget {
           right: receipt.channel.capitalize(),
         ),
         if (receipt.type == CheckoutType.cart)
-          ReceiptInfoTile(left: 'Subtotal', right: receipt.amount.currency),
+          ReceiptInfoTile(left: 'Subtotal', right: receipt.subtotal.currency),
         ReceiptInfoTile(
           left: 'Delivery fee',
           right: receipt.deliveryFee.currency,
