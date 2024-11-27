@@ -194,7 +194,7 @@ namespace Api.Services
 
                 var orderList = deliveries
                     .Where(d => d.Order != null) // Ensure no null orders are added
-                    .Select(d => d.Order!)       // Extract orders from deliveries
+                    .Select(d => d.Order!)
                     .ToList();
 
                  listOfOrders = listOfOrders.Concat(orderList);
@@ -220,7 +220,8 @@ namespace Api.Services
 
                 var orderListWithSearch = deliveriesWithSearch
                     .Where(d => d.Order != null) // Ensure no null orders are added
-                    .Select(d => d.Order!)     // Extract orders from deliveries
+                    .Select(d => d.Order!) 
+                    .Where(o => o.SearchString!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToList();
 
                  listOfOrders = listOfOrders.Concat(orderListWithSearch);

@@ -9,6 +9,7 @@ namespace Api.Models
         public string? TransactionRef { get; set; }
         public double TotalAmount { get; set; }
         public double AmountPaid { get; set; }  
+        public double? SubTotal { get; set; }  
         public string? Status { get; set; }
         public bool? StatusBool { get; set; }
         public int? VoucherId { get; set; }

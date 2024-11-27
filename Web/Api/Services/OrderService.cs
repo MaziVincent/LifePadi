@@ -106,7 +106,8 @@ namespace Api.Services
                         var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
                         if (delivery != null)
                         {
-                            item.DeliveryAddress = delivery.DeliveryAddress;
+                            item.DeliveryAddress = delivery.DelAddress;
+                            item.PickUpAddress = delivery.PickUpAddress;
                         }
                     }
                     orderList = orderList.Concat(singleOrderDto);
@@ -126,7 +127,8 @@ namespace Api.Services
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
                     if (delivery != null)
                     {
-                        item.DeliveryAddress = delivery.DeliveryAddress;
+                        item.DeliveryAddress = delivery.DelAddress;
+                        item.PickUpAddress = delivery.PickUpAddress;
                     }
                 }
                 orderList = orderList.Concat(newSingleOrderDto);
@@ -171,12 +173,16 @@ namespace Api.Services
                     .AsSplitQuery()
                     .FirstOrDefaultAsync();
 
-                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
+                var delivery = await _dbContext.Deliveries
+                .Include(d => d.DelAddress)
+                .Include(d => d.PickUpAddress)
+                .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<SingleOrderDto>(order);
                 if (delivery != null)
                 {
-                    OrderDto.DeliveryAddress = delivery.DeliveryAddress;
+                    OrderDto.DeliveryAddress = delivery.DelAddress;
+                    OrderDto.PickUpAddress = delivery.PickUpAddress;
                 }
                 return OrderDto;
             }
@@ -340,7 +346,7 @@ namespace Api.Services
                 initialOrder.IsDelivered = order.IsDelivered;
                 initialOrder.Type = order.Type;
                 initialOrder.Instruction = order.Instruction;
-                initialOrder.SearchString = initialOrder.Status!.ToUpper() + " " + initialOrder.Type!.ToUpper();
+                initialOrder.SearchString = order.Status!.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
                 _dbContext.Orders.Attach(initialOrder);
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(initialOrder);
@@ -359,9 +365,18 @@ namespace Api.Services
                 var order = await _dbContext!.Orders.FirstOrDefaultAsync(o => o.Id == id);
                 if (order == null) return null!;
                 order.Status = status;
+                order.SearchString = status!.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
                 _dbContext.Orders.Attach(order);
+
+                if(status == "Completed"){
+                    var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
+                    delivery!.Status = "Delivered";
+                }
+
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(order);
+
+                
                 return OrderDto;
             }
             catch (Exception ex)
