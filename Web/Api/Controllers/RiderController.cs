@@ -123,6 +123,7 @@ namespace Api.Controllers
         public async Task<IActionResult> getRiderOrders(int id, [FromQuery] SearchPaging props)
         {
             try
+            
             {
                 var orders = await _irider!.getRiderOrders(props, id);
                 

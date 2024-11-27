@@ -118,6 +118,7 @@ namespace Api.Services
                     .Include(o => o.Customer)
                     .OrderByDescending(o => o.CreatedAt)
                     .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString.ToLower()))
+                    .AsSplitQuery()
                     .ToListAsync();
                 var newSingleOrderDto = _mapper.Map<List<SingleOrderDto>>(orders);
                 foreach (var item in newSingleOrderDto)

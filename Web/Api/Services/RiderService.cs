@@ -178,9 +178,14 @@ namespace Api.Services
             {
                 IQueryable<Order> listOfOrders = Enumerable.Empty<Order>().AsQueryable();
 
+                    if(props.SearchString is null){
+
                 var deliveries = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
+                   .Include(d => d.Rider)
                     .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(o => o.Product)
+                    .ThenInclude(p => p!.Vendor)
                     .Where(d => d.RiderId == id)
                     .AsSplitQuery()
                     .ToListAsync();
@@ -196,6 +201,31 @@ namespace Api.Services
                     var result = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
 
                 return result;
+                    }
+
+                           
+
+                var deliveriesWithSearch = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Include(d => d.Order)
+                    .ThenInclude(o => o!.OrderItems)!
+                    .ThenInclude(o => o.Product)
+                    .ThenInclude(p => p!.Vendor)
+                    .Where(d => d.RiderId == id)
+                    .AsSplitQuery()
+                    .ToListAsync();
+
+                if (deliveriesWithSearch == null || !deliveriesWithSearch.Any()) return null!;
+
+                var orderListWithSearch = deliveriesWithSearch
+                    .Where(d => d.Order != null) // Ensure no null orders are added
+                    .Select(d => d.Order!)     // Extract orders from deliveries
+                    .ToList();
+
+                 listOfOrders = listOfOrders.Concat(orderListWithSearch);
+                    var resultWithSearch = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
+
+                return resultWithSearch;
 
                
             }
