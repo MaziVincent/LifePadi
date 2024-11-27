@@ -38,6 +38,7 @@ class TrackOrderPage extends StatelessWidget {
               // Implement tracking order with QR code scan
             },
           ),
+          // TODO: Only show this button if the order is ongoing
           MyIconButton(
             icon: Remix.map_pin_5_line,
             iconColor: kDarkPrimaryColor,

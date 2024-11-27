@@ -1,8 +1,11 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
+import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/mock_data.dart';
@@ -20,34 +23,40 @@ class OrderDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final paymentMethod = paymentMethods[1];
     final order = ref.watch(orderProvider(id));
+    final user = ref.watch(authControllerProvider);
 
     return Scaffold(
       appBar: MyAppBar(
         title: 'Order Details',
         actions: [
-          MyIconButton(
-            icon: Remix.more_2_fill,
-            onPressed: () {
-              showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
-                color: Colors.white,
-                items: [
-                  PopupMenuItem<dynamic>(
-                    child: Text(
-                      'View Receipt',
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontSize: 14.sp,
-                        color: const Color(0xFF27272A),
-                      ),
-                    ),
-                    onTap: () =>
-                        context.push(ReceiptRoute(orderId: id).location),
-                  ),
-                ],
-              );
-            },
-          ),
+          switch (user) {
+            AsyncData(:final value) => value is Customer
+                ? MyIconButton(
+                    icon: Remix.more_2_fill,
+                    onPressed: () {
+                      showMenu(
+                        context: context,
+                        position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
+                        color: Colors.white,
+                        items: [
+                          PopupMenuItem<dynamic>(
+                            child: Text(
+                              'View Receipt',
+                              style: context.textTheme.bodyMedium?.copyWith(
+                                fontSize: 14.sp,
+                                color: const Color(0xFF27272A),
+                              ),
+                            ),
+                            onTap: () => context
+                                .push(ReceiptRoute(orderId: id).location),
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                : const SizedBox.shrink(),
+            _ => const SizedBox.shrink(),
+          },
         ],
       ),
       body: Stack(
@@ -63,50 +72,76 @@ class OrderDetailsPage extends ConsumerWidget {
                   ),
                 ),
               ),
-            AsyncData(:final value) =>
-              _OrderDetailsContent(order: value, paymentMethod: paymentMethod),
+            AsyncData(:final value) => _OrderDetailsContent(order: value),
             _ => const Center(child: GreenyLoadingWheel()),
           },
           switch (order) {
-            AsyncLoading() => const SizedBox.shrink(),
-            _ => BottomPanel(
-                height: 182.h,
+            AsyncError() => BottomPanel(
+                height: 100.h,
                 child: Column(
                   children: <Widget>[
                     PrimaryOutlineButton(
-                      onPressed: () =>
-                          context.push(TrackOrderRoute(id: id).location),
-                      text: 'Track Order',
+                      onPressed: () => ref.refresh(orderProvider(id).future),
+                      text: 'Retry',
                     ),
-                    PrimaryButton(
-                      onPressed: () {
-                        // TODO: Implement Buy Again
-                      },
-                      text: 'Buy Again',
-                    ),
+                  ],
+                ),
+              ),
+            AsyncData(:final value) => BottomPanel(
+                height: 182.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (value.status == OrderStatus.pending) ...[
+                      PrimaryButton(
+                        onPressed: () {
+                          // Implement Make Payment
+                        },
+                        text: 'Make Payment',
+                      ),
+                      PrimaryOutlineButton(
+                        onPressed: () => {
+                          // Implement Cancel Order
+                        },
+                        text: 'Cancel Order',
+                      ),
+                    ],
+                    if (value.status == OrderStatus.ongoing ||
+                        value.status == OrderStatus.completed)
+                      PrimaryOutlineButton(
+                        onPressed: () =>
+                            context.push(TrackOrderRoute(id: id).location),
+                        text: 'Track Order',
+                      ),
+                    if (canBuyAgain(value))
+                      PrimaryButton(
+                        onPressed: () {
+                          // TODO: Implement Buy Again
+                        },
+                        text: 'Buy Again',
+                      ),
                   ].separatedBy(17.verticalSpace),
                 ),
               ),
+            _ => const SizedBox.shrink(),
           },
         ],
       ),
     );
+  }
+
+  bool canBuyAgain(Order order) {
+    return order.type == CheckoutType.cart &&
+        order.status == OrderStatus.ongoing &&
+        order.status == OrderStatus.completed;
   }
 }
 
 class _OrderDetailsContent extends StatelessWidget {
   const _OrderDetailsContent({
     required this.order,
-    required this.paymentMethod,
   });
 
-  final ({
-    double? balance,
-    String description,
-    int id,
-    Image image,
-    bool isDefault
-  }) paymentMethod;
   final Order order;
 
   @override
@@ -165,52 +200,51 @@ class _OrderDetailsContent extends StatelessWidget {
           ),
         ),
 
-        /// Price info
-        const SectionTitle('Total Items'),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Column(
-            children: <Widget>[
-              for (final item in order.items)
+        /// Price info by vendors
+        // TODO: Implement this
+        if (order.type == CheckoutType.cart) ...[
+          const SectionTitle('Total Items'),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            child: Column(
+              children: <Widget>[
+                for (final item in order.items)
+                  PriceBreakdownItem(
+                    title: item.name,
+                    price: item.amount * item.quantity,
+                    isFirst: order.items.first == item,
+                    quantity: item.quantity,
+                  ),
                 PriceBreakdownItem(
-                  title: item.name,
-                  price: item.amount * item.quantity,
-                  isFirst: order.items.first == item,
-                  quantity: item.quantity,
+                  title: 'Sub total',
+                  price: order.totalAmount,
+                  isFinal: true,
                 ),
-              PriceBreakdownItem(
-                title: 'Sub total',
-                price: order.totalAmount,
-                isFinal: true,
-              ),
-            ].separatedBy(const MyDivider()),
+              ].separatedBy(const MyDivider()),
+            ),
           ),
-        ),
+        ],
 
-        /// Location
+        /// Locations
+        if (order.type == CheckoutType.logistics) ...[
+          const SectionTitle(
+            'Pickup Location',
+            color: Color(0xFF27272A),
+          ),
+          LocationCard(
+            address: order.pickupLocation?.address ?? 'No address',
+            child: const SizedBox.shrink(),
+          ),
+        ],
         const SectionTitle(
-          'Location',
+          'Delivery Location',
           color: Color(0xFF27272A),
         ),
         LocationCard(
-          onTap: () {
-            // TODO: Open bottom sheet to update location
-          },
-          address: 'Soja, Lekki Lagos...',
+          address: order.deliveryLocation?.address ?? 'No address',
+          child: const SizedBox.shrink(),
         ),
 
-        /// Payment method
-        const SectionTitle('Payment Method'),
-        PaymentMethodInfo(
-          onTap: () {
-            // TODO: Change payment method
-          },
-          image: paymentMethod.image,
-          description: paymentMethod.description,
-          balance: paymentMethod.balance,
-          id: paymentMethod.id,
-          isDefault: paymentMethod.isDefault,
-        ),
         10.verticalSpace,
         182.verticalSpace,
       ].separatedBy(14.verticalSpace),

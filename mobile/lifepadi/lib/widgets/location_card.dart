@@ -8,14 +8,14 @@ import 'package:skeletonizer/skeletonizer.dart';
 class LocationCard extends StatelessWidget {
   const LocationCard({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.address,
     this.isDefault = false,
     this.child,
     this.padding,
   });
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String address;
   final bool isDefault;
   final Widget? child;

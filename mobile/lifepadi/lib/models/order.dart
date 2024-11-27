@@ -29,6 +29,7 @@ class Order with OrderMappable {
     required this.createdAt,
     this.deliveryLocation,
     this.pickupLocation,
+    required this.totalAmount,
   });
 
   @MappableField(key: 'Id')
@@ -45,12 +46,10 @@ class Order with OrderMappable {
   final List<OrderItem> items;
   @MappableField(key: 'CreatedAt')
   final DateTime createdAt;
-  double get totalAmount => items.fold(
-        0,
-        (previousValue, element) => previousValue + element.totalAmount,
-      );
+  @MappableField(key: 'TotalAmount')
+  final double totalAmount;
   @MappableField(key: 'DeliveryAddress')
   final LocationDetails? deliveryLocation;
-  @MappableField(key: 'PickupAddress')
+  @MappableField(key: 'PickUpAddress')
   final LocationDetails? pickupLocation;
 }

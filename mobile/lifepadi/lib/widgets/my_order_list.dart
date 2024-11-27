@@ -98,6 +98,7 @@ class MyOrderList extends HookConsumerWidget {
                         type: CheckoutType.cart,
                         items: [],
                         createdAt: DateTime.now(),
+                        totalAmount: 10000,
                       ),
                       isMock: true,
                     ),
