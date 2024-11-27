@@ -31,7 +31,7 @@ class AddressRow extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 0.7.sw,
+              width: 0.6.sw,
               child: Text(
                 address,
                 style: context.textTheme.bodyMedium,

@@ -1,154 +1,126 @@
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/models/category.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lifepadi/models/checkout_type.dart';
-import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/order.dart';
-import 'package:lifepadi/models/order_item.dart';
-import 'package:lifepadi/models/product.dart';
-import 'package:lifepadi/models/vendor.dart';
+import 'package:lifepadi/state/orders.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/layouts/my_paged_list_view.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class RiderOrderList extends StatelessWidget {
-  const RiderOrderList({super.key, required this.status});
+/// Displays a list of orders based on the status provided.
+class RiderOrderList extends HookConsumerWidget {
+  const RiderOrderList({
+    super.key,
+    required this.status,
+    this.pageSize = 5,
+  });
 
   final OrderStatus status;
+  final int pageSize;
 
   @override
-  Widget build(BuildContext context) {
-    final dummyOrders = [
-      Order(
-        id: 1,
-        orderId: 'ORD001',
-        status: OrderStatus.pending,
-        items: [
-          OrderItem(
-            id: 454,
-            quantity: 1,
-            amount: 15000,
-            totalAmount: 15000,
-            name: 'Cake',
-            description: 'Eat cake of life',
-            orderId: 1,
-            productId: 70,
-            product: Product(
-              id: 70,
-              name: 'Cake',
-              description: 'Eat cake of life',
-              price: 15000,
-              imageUrl: 'https://via.placeholder.com/150',
-              vendor: Vendor(
-                id: 147,
-                name: 'Oma Sweet',
-                address: LocationDetails(
-                  latitude: 0,
-                  longitude: 0,
-                  address: 'Azuiyi Udene, Abakaliki 480105, Ebonyi',
-                  city: 'Abakaliki',
-                  state: 'Ebonyi',
-                  postalCode: '480105',
-                  sublocality: 'Azuiyi Udene',
-                  localGovernmentArea: 'Abakaliki',
-                ),
-                phoneNumber: '08138699452',
-              ),
-              category: Category(
-                id: 1,
-                name: 'Drinks',
-                icon: 'https://via.placeholder.com/150',
-              ),
-            ),
-          ),
-          OrderItem(
-            id: 455,
-            quantity: 1,
-            amount: 1200,
-            totalAmount: 1200,
-            name: 'Bottle Water',
-            description: 'Drink of life',
-            orderId: 1,
-            productId: 71,
-            product: Product(
-              id: 71,
-              name: 'Bottle Water',
-              description: 'Drink of life',
-              price: 1200,
-              vendor: Vendor(
-                id: 148,
-                name: 'Dreamlink Concepts, Abakaliki',
-                address: LocationDetails(
-                  latitude: 0,
-                  longitude: 0,
-                  address: '83VP+87C, Kpiri Kpiri, Abakaliki 480211, Ebonyi',
-                  city: 'Abakaliki',
-                  state: 'Ebonyi',
-                  postalCode: '480211',
-                  sublocality: 'Kpiri Kpiri',
-                  localGovernmentArea: 'Abakaliki',
-                ),
-                phoneNumber: '07012345678',
-              ),
-              imageUrl: 'https://via.placeholder.com/150',
-              category: Category(
-                id: 1,
-                name: 'Drinks',
-                icon: 'https://via.placeholder.com/150',
-              ),
-            ),
-          ),
-        ],
-        isDelivered: false,
-        type: CheckoutType.cart,
-        createdAt: DateTime.now(),
-        deliveryLocation: LocationDetails(
-          latitude: 0,
-          longitude: 0,
-          address: 'Ebonyi State University, Abakaliki 480211, Ebonyi',
-          city: 'Abakaliki',
-          state: 'Ebonyi',
-          postalCode: '480105',
-          sublocality: 'Azuiyi Udene',
-          localGovernmentArea: 'Abakaliki',
-        ),
-      ),
-      Order(
-        id: 2,
-        orderId: 'ORD002',
-        status: OrderStatus.pending,
-        items: [],
-        isDelivered: false,
-        type: CheckoutType.logistics,
-        createdAt: DateTime.now(),
-        pickupLocation: LocationDetails(
-          latitude: 0,
-          longitude: 0,
-          address: '83VP+87C, Kpiri Kpiri, Abakaliki 480211, Ebonyi',
-          city: 'Abakaliki',
-          state: 'Ebonyi',
-          postalCode: '480211',
-          sublocality: 'Kpiri Kpiri',
-          localGovernmentArea: 'Abakaliki',
-        ),
-        deliveryLocation: LocationDetails(
-          latitude: 0,
-          longitude: 0,
-          address: 'Azuiyi Udene, Abakaliki 480105, Ebonyi',
-          city: 'Abakaliki',
-          state: 'Ebonyi',
-          postalCode: '480105',
-          sublocality: 'Azuiyi Udene',
-          localGovernmentArea: 'Abakaliki',
-        ),
-      ),
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useMemoized(
+      () => PagingController<int, Order>(firstPageKey: 1),
+      [], // Empty dependency array - controller persists for widget lifetime
+    );
 
-    return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-      itemCount: dummyOrders.length,
-      separatorBuilder: (context, index) => SizedBox(height: 16.h),
-      itemBuilder: (context, index) {
-        final order = dummyOrders[index];
-        return RiderOrderTile(order: order);
+    final mounted = useRef(true);
+    useEffect(
+      () {
+        mounted.value = true;
+        return () {
+          mounted.value = false;
+        };
       },
+      [],
+    );
+
+    useEffect(
+      () {
+        controller.addPageRequestListener((pageKey) async {
+          try {
+            final orderStatus = status.toValue().toString();
+            final result = await ref.read(
+              riderOrdersProvider(pageNumber: pageKey, status: orderStatus)
+                  .future,
+            );
+
+            if (!mounted.value) return;
+
+            final isLastPage = result.length < pageSize;
+            if (isLastPage) {
+              controller.appendLastPage(result);
+            } else {
+              controller.appendPage(result, pageKey + 1);
+            }
+          } catch (error, stackTrace) {
+            if (!mounted.value) return;
+            controller.error = error;
+
+            logger.d(
+              'Error in rider order list',
+              error: error,
+              stackTrace: stackTrace,
+            );
+          }
+        });
+
+        // Refresh when status changes
+        // ignore: cascade_invocations
+        controller.refresh();
+
+        return controller.dispose;
+      },
+      [status], // Only recreate listener when status changes
+    );
+
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(controller.refresh),
+      child: MyPagedListView<int, Order>.separated(
+        pagingController: controller,
+        padding: kHorizontalPadding,
+        builderDelegate: PagedChildBuilderDelegate<Order>(
+          itemBuilder: (context, order, index) {
+            return RiderOrderTile(order: order);
+          },
+          firstPageProgressIndicatorBuilder: (_) {
+            return Column(
+              children: [
+                for (var i = 0; i < pageSize; i++)
+                  Skeletonizer(
+                    child: RiderOrderTile(
+                      order: Order(
+                        id: 233,
+                        status: OrderStatus.completed,
+                        orderId: BoneMock.subtitle,
+                        isDelivered: false,
+                        type: CheckoutType.cart,
+                        items: [],
+                        createdAt: DateTime.now(),
+                      ),
+                      isMock: true,
+                    ),
+                  ),
+              ].separatedBy(18.verticalSpace),
+            );
+          },
+          newPageProgressIndicatorBuilder: (_) => Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 11.h),
+              child: const OrangeyLoadingWheel(),
+            ),
+          ),
+          noItemsFoundIndicatorBuilder: (context) =>
+              const Center(child: Text('No orders found')),
+        ),
+        separatorBuilder: (context, index) => 18.verticalSpace,
+      ),
     );
   }
 }

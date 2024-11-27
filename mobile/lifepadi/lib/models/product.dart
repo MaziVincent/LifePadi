@@ -14,7 +14,7 @@ class Product with ProductMappable {
     required this.imageUrl,
     required this.vendor,
     this.quantity = 1,
-    required this.category,
+    this.category,
   });
 
   @MappableField(key: 'Id')
@@ -31,5 +31,5 @@ class Product with ProductMappable {
   final Vendor vendor;
   final int quantity;
   @MappableField(key: 'Category')
-  final Category category;
+  final Category? category;
 }

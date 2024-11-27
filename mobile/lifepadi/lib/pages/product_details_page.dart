@@ -120,7 +120,7 @@ class _ProductDetailsContent extends StatelessWidget {
         8.verticalSpace,
         Row(
           children: [
-            CategoryPill(text: product.category.name),
+            CategoryPill(text: product.category?.name ?? 'Uncategorized'),
           ],
         ),
         8.verticalSpace,

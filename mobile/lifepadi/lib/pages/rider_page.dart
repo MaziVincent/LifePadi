@@ -15,7 +15,7 @@ class RiderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: MyAppBar(
           title: 'Deliveries',
@@ -51,7 +51,6 @@ class RiderPage extends StatelessWidget {
           bottom: TabBar(
             tabs: [
               Tab(text: 'New Orders', height: 39.h),
-              Tab(text: 'In Progress', height: 39.h),
               Tab(text: 'Completed', height: 39.h),
             ],
             dividerHeight: 0,
@@ -73,7 +72,6 @@ class RiderPage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            RiderOrderList(status: OrderStatus.pending),
             RiderOrderList(status: OrderStatus.ongoing),
             RiderOrderList(status: OrderStatus.completed),
           ],

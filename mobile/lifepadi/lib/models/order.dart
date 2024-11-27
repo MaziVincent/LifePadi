@@ -49,8 +49,8 @@ class Order with OrderMappable {
         0,
         (previousValue, element) => previousValue + element.totalAmount,
       );
-  @MappableField(key: 'DeliveryLocation')
+  @MappableField(key: 'DeliveryAddress')
   final LocationDetails? deliveryLocation;
-  @MappableField(key: 'PickupLocation')
+  @MappableField(key: 'PickupAddress')
   final LocationDetails? pickupLocation;
 }

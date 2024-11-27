@@ -2,31 +2,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
-import 'package:lifepadi/models/order_item.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class RiderOrderTile extends StatelessWidget {
-  const RiderOrderTile({super.key, required this.order});
+  const RiderOrderTile({
+    super.key,
+    required this.order,
+    this.isMock = false,
+  });
 
   final Order order;
+  final bool isMock;
 
   @override
   Widget build(BuildContext context) {
     final isLogistics = order.type == CheckoutType.logistics;
 
-    // Group items by vendor
-    final vendorItemsMap = <int, List<OrderItem>>{};
-    for (final item in order.items) {
-      if (item.product?.vendor != null) {
-        final vendorId = item.product!.vendor.id;
-        vendorItemsMap.putIfAbsent(vendorId, () => []).add(item);
-      }
-    }
-
     return GestureDetector(
-      onTap: () => context.go(const RiderOrderDetailsRoute(id: 348).location),
+      onTap: isMock
+          ? null
+          : () => context.go(const RiderOrderDetailsRoute(id: 348).location),
       child: Card(
         elevation: 2,
         child: Padding(
@@ -48,9 +45,7 @@ class RiderOrderTile extends StatelessWidget {
                       ),
                       4.verticalSpace,
                       Text(
-                        isLogistics
-                            ? 'Logistics Delivery'
-                            : '${vendorItemsMap.length} ${'vendor'.pluralize(vendorItemsMap.length)}',
+                        isLogistics ? 'Logistics Delivery' : 'Cart Order',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: Colors.grey,
                         ),
@@ -61,45 +56,18 @@ class RiderOrderTile extends StatelessWidget {
                 ],
               ),
               16.verticalSpace,
-              if (isLogistics) ...[
+              if (isLogistics)
                 AddressRow(
                   icon: Icons.location_on,
                   title: 'Pickup Location',
                   address: order.pickupLocation?.address ?? 'No address',
                 ),
-                8.verticalSpace,
-                AddressRow(
-                  icon: Icons.flag,
-                  title: 'Drop-off Location',
-                  address: order.deliveryLocation?.address ?? 'No address',
-                ),
-              ] else ...[
-                ...vendorItemsMap.entries.map((entry) {
-                  final items = entry.value;
-                  final vendor = items.first.product?.vendor;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AddressRow(
-                        icon: Icons.store,
-                        title: vendor?.name ?? 'Unknown Vendor',
-                        address: vendor?.address.address ?? 'No address',
-                      ),
-                      8.verticalSpace,
-                      Padding(
-                        padding: EdgeInsets.only(left: 28.w),
-                        child: Text(
-                          '${items.length} ${'item'.pluralize(items.length)}',
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      16.verticalSpace,
-                    ],
-                  );
-                }),
-              ],
+              8.verticalSpace,
+              AddressRow(
+                icon: Icons.flag,
+                title: isLogistics ? 'Drop-off Location' : 'Delivery Location',
+                address: order.deliveryLocation?.address ?? 'No address',
+              ),
             ],
           ),
         ),
