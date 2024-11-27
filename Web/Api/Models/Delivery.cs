@@ -10,7 +10,7 @@ namespace Api.Models
         public Address? PickUpAddress {get; set;}
         
         public int? DeliveryAddressId { get; set; }
-        public Address? DelAddress { get; set; }
+        public Address? DeliveryAddress { get; set; }
         
         public string? PickupType { get; set; }
         public double DeliveryFee { get; set; }
@@ -19,7 +19,7 @@ namespace Api.Models
         public Order? Order { get; set; }
         public int? RiderId { get; set; }
         public Rider? Rider { get; set; }
-        public string? DeliveryAddress { get; set; }
+        public string? DelAddress { get; set; }
         public string? PickupAddress { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

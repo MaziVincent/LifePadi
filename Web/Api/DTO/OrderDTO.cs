@@ -57,8 +57,8 @@ namespace Api.DTO
         public string? Instruction { get; set; }
         public string? Order_Id { get; set; }
         public double? TotalAmount { get; set; }
-        public Address? DeliveryAddress { get; set; }
-        public Address? PickUpAddress { get; set; }
+        public AddressDtoLite? DeliveryAddress { get; set; }
+        public AddressDtoLite? PickUpAddress { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

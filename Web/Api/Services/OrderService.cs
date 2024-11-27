@@ -106,8 +106,8 @@ namespace Api.Services
                         var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
                         if (delivery != null)
                         {
-                            item.DeliveryAddress = delivery.DelAddress;
-                            item.PickUpAddress = delivery.PickUpAddress;
+                             item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
+                             item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                         }
                     }
                     orderList = orderList.Concat(singleOrderDto);
@@ -127,8 +127,8 @@ namespace Api.Services
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
                     if (delivery != null)
                     {
-                        item.DeliveryAddress = delivery.DelAddress;
-                        item.PickUpAddress = delivery.PickUpAddress;
+                        item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
+                        item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                     }
                 }
                 orderList = orderList.Concat(newSingleOrderDto);
@@ -174,15 +174,15 @@ namespace Api.Services
                     .FirstOrDefaultAsync();
 
                 var delivery = await _dbContext.Deliveries
-                .Include(d => d.DelAddress)
+                .Include(d => d.DeliveryAddress)
                 .Include(d => d.PickUpAddress)
                 .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<SingleOrderDto>(order);
                 if (delivery != null)
                 {
-                    OrderDto.DeliveryAddress = delivery.DelAddress;
-                    OrderDto.PickUpAddress = delivery.PickUpAddress;
+                    OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
+                    OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
                 }
                 return OrderDto;
             }
