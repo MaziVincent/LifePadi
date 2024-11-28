@@ -16,8 +16,8 @@ namespace Api.Models
         public string? ReceiverName { get; set; }
         public string? ReceiverPhone { get; set; }
         public string? ReceiverAddressOld { get; set; }
-        public int? RecieverAddressId {get; set;}
-        public Address? RecieverAddress {get; set;}
+        public int? ReceiverAddressId {get; set;}
+        public Address? ReceiverAddress {get; set;}
         public string? Item { get; set; }
         public string? ItemDescription { get; set; }
         public double? ItemWeight { get; set; }

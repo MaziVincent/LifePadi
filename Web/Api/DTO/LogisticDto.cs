@@ -11,12 +11,12 @@ namespace Api.DTO
         public int Id { get; set; }
         public string? SenderName { get; set; }
         public string? SenderPhone { get; set; } 
-        public int? SenderAddressId {get; set;}
+        public int SenderAddressId {get; set;}
         public AddressDtoLite? SenderAddress {get; set;}
         public string? ReceiverName { get; set; }
         public string? ReceiverPhone { get; set; }
-         public int? RecieverAddressId {get; set;}
-        public AddressDtoLite? RecieverAddress {get; set;}
+        public int ReceiverAddressId {get; set;}
+        public AddressDtoLite? ReceiverAddress {get; set;}
         public string? Item { get; set; }
         public string? ItemDescription { get; set; }
         public double? ItemWeight { get; set; }

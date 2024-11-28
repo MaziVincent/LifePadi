@@ -16,4 +16,7 @@ Content-Type: application/json
     "customerId":20
 }
 
+###
+GET https://localhost:7216/api/order/get/366
+
  
