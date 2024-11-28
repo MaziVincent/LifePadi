@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
+import 'package:lifepadi/models/order_item.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -144,6 +145,15 @@ class _OrderDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create a map to group items by vendor
+    final itemsByVendor = <String, List<OrderItem>>{};
+    if (order.type == CheckoutType.cart) {
+      for (final item in order.items) {
+        final vendorName = item.product?.vendor.name ?? 'Unknown Vendor';
+        itemsByVendor.putIfAbsent(vendorName, () => []).add(item);
+      }
+    }
+
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
       children: [
@@ -199,22 +209,51 @@ class _OrderDetailsContent extends StatelessWidget {
         ),
 
         /// Price info by vendors
-        // TODO: Implement this
+        if (order.type == CheckoutType.cart)
+          for (final vendor in itemsByVendor.entries) ...[
+            SectionTitle(vendor.key),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              child: Column(
+                children: <Widget>[
+                  for (final item in vendor.value)
+                    PriceBreakdownItem(
+                      title: item.name,
+                      price: item.amount * item.quantity,
+                      isFirst: vendor.value.first == item,
+                      quantity: item.quantity,
+                    ),
+                ].separatedBy(const MyDivider()),
+              ),
+            ),
+          ],
+
         if (order.type == CheckoutType.cart) ...[
-          const SectionTitle('Total Items'),
-          Padding(
+          const SectionTitle(
+            'Payment Summary',
+            color: Color(0xFF27272A),
+          ),
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: const Color(0xFFE5E5E5)),
+            ),
             child: Column(
-              children: <Widget>[
-                for (final item in order.items)
-                  PriceBreakdownItem(
-                    title: item.name,
-                    price: item.amount * item.quantity,
-                    isFirst: order.items.first == item,
-                    quantity: item.quantity,
-                  ),
+              children: [
                 PriceBreakdownItem(
                   title: 'Sub total',
+                  price: order.totalAmount - order.deliveryFee,
+                  isFinal: true,
+                ),
+                PriceBreakdownItem(
+                  title: 'Delivery Fee',
+                  price: order.deliveryFee,
+                  isFinal: true,
+                ),
+                PriceBreakdownItem(
+                  title: 'Total',
                   price: order.totalAmount,
                   isFinal: true,
                 ),
