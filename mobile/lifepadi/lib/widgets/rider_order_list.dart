@@ -104,7 +104,7 @@ class RiderOrderList extends HookConsumerWidget {
                         items: [],
                         createdAt: DateTime.now(),
                         totalAmount: 10000,
-                        deliveryFee: 0,
+                        deliveryFee: 1000,
                       ),
                       isMock: true,
                     ),

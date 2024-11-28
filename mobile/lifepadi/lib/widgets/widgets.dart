@@ -39,6 +39,7 @@ export 'my_order_list.dart';
 export 'notification_tile.dart';
 export 'onboarding_feature.dart';
 export 'onboarding_navigation.dart';
+export 'order_details_content.dart';
 export 'order_status_widget.dart';
 export 'order_tile.dart';
 export 'pagination_dots.dart';

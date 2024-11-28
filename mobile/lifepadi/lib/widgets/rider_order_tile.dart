@@ -23,7 +23,7 @@ class RiderOrderTile extends StatelessWidget {
     return GestureDetector(
       onTap: isMock
           ? null
-          : () => context.go(const RiderOrderDetailsRoute(id: 348).location),
+          : () => context.go(RiderOrderDetailsRoute(id: order.id).location),
       child: Card(
         elevation: 2,
         child: Padding(
