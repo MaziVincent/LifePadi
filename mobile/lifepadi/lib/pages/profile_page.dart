@@ -98,27 +98,18 @@ class ProfilePage extends HookConsumerWidget {
                   onTap: () => context.push(const WishlistRoute().location),
                 ),
                 SettingsTile(
-                  title: 'Chats',
-                  onTap: () => context.push(const ChatsRoute().location),
-                ),
-                SettingsTile(
-                  title: 'Wallet',
-                  onTap: () => context.push(const WalletRoute().location),
+                  title: 'Customer support',
+                  onTap: () => context.push(const SupportRoute().location),
                 ),
                 SettingsTile(
                   title: 'Settings',
                   onTap: () => context.push(const SettingsRoute().location),
                 ),
-                SettingsTile(
-                  title: 'Customer support',
-                  onTap: () => context.push(const SupportRoute().location),
-                ),
               ].separatedBy(5.verticalSpace),
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h)
-                .copyWith(top: 12.h),
+            padding: kHorizontalPadding.copyWith(top: 12.h),
             sliver: const SliverToBoxAdapter(
               child: LogoutButton(),
             ),
