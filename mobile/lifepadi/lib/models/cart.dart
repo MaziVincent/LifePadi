@@ -22,4 +22,5 @@ class Cart with CartMappable {
   final double deliveryFee;
   final Discount? discount;
   final LocationDetails? deliveryLocation;
+  bool get isEmpty => products.isEmpty;
 }

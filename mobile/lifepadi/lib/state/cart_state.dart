@@ -165,10 +165,17 @@ class CartState extends _$CartState with LocationUtils {
   ///
   /// Remove it from shared preferences
   /// and update the state.
-  Future<void> clearCart() async {
+  Future<void> clearCart({bool keepDeliveryLocation = false}) async {
     await PreferencesHelper.remove(kCartKey);
     state = AsyncData(
-      Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0),
+      Cart(
+        products: [],
+        total: 0,
+        subtotal: 0,
+        deliveryFee: 0,
+        deliveryLocation:
+            keepDeliveryLocation ? state.valueOrNull?.deliveryLocation : null,
+      ),
     );
   }
 
@@ -273,8 +280,13 @@ class CartState extends _$CartState with LocationUtils {
 
   /// Select a location for delivery
   /// and update the delivery fee
-  Future<void> selectDeliveryLocation(LocationDetails location) async {
+  Future<void> selectDeliveryLocation(
+    LocationDetails location, {
+    bool notifyDefault = false,
+  }) async {
     await _saveCart(_computeCart(selectedLocation: location));
-    await showToast('Delivery location selected');
+    await showToast(
+      '${notifyDefault && location.isDefault ? 'Default ' : ''}Delivery location selected',
+    );
   }
 }

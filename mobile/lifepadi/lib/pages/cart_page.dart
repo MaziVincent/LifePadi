@@ -21,6 +21,32 @@ class CartPage extends HookConsumerWidget {
     final cartAsync = ref.watch(cartStateProvider);
     final isExpanded = useState(false);
     final locations = ref.watch(locationsProvider);
+    final hasInitialized = useState(false);
+
+    useEffect(
+      () {
+        if (!hasInitialized.value) {
+          locations.whenData((locationsList) {
+            final cart = ref.read(cartStateProvider).valueOrNull;
+            if (cart?.deliveryLocation == null) {
+              final defaultLocation = locationsList.firstWhere(
+                (location) => location.isDefault,
+                orElse: () => locationsList.first,
+              );
+              if (defaultLocation.isDefault) {
+                ref.read(cartStateProvider.notifier).selectDeliveryLocation(
+                      defaultLocation,
+                      notifyDefault: true,
+                    );
+              }
+            }
+            hasInitialized.value = true;
+          });
+        }
+        return null;
+      },
+      [locations],
+    );
 
     void togglePanel() => isExpanded.value = !isExpanded.value;
 
@@ -65,9 +91,7 @@ class CartPage extends HookConsumerWidget {
                                 )
                                 .firstOrNull
                                 ?.address
-                            : locations.isEmpty
-                                ? 'Add a delivery location'
-                                : 'Select a delivery location',
+                            : 'Select a delivery location',
                       ) ??
                       'Loading locations...',
                 ),
@@ -77,8 +101,12 @@ class CartPage extends HookConsumerWidget {
                   children: [
                     const SectionTitle('Items in Cart'),
                     IconButton(
-                      onPressed: () =>
-                          ref.read(cartStateProvider.notifier).clearCart(),
+                      onPressed: cart.isEmpty
+                          ? null // Disables the clear button if the cart is empty
+                          : () =>
+                              ref.read(cartStateProvider.notifier).clearCart(
+                                    keepDeliveryLocation: true,
+                                  ),
                       icon: const Icon(IconsaxPlusLinear.trash),
                       iconSize: 24.sp,
                     ),
