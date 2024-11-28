@@ -75,7 +75,7 @@ class _LocationsContent extends StatelessWidget {
               context.push(EditLocationRoute(id: location.id!).location);
             },
             address: location.address,
-            isDefault: locations.first.id == location.id,
+            isDefault: location.isDefault,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),
 

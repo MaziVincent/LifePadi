@@ -99,6 +99,8 @@ FutureOr<List<LocationDetails>> locations(Ref ref) async {
   }
 
   final data = List<JsonMap>.from(response.data!);
+  // FIXME: Remove this when default location issue is resolved
+  data.firstOrNull?['isDefault'] = true;
 
   ref.cache();
   return data.map(LocationDetailsMapper.fromMap).toList();

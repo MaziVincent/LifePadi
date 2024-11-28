@@ -67,33 +67,58 @@ class EditLocationPage extends HookConsumerWidget {
     return Scaffold(
       appBar: MyAppBar(
         title: 'Edit Location #$id',
-        actions: [
-          if (oldLocation is AsyncData<LocationDetails>)
-            MyIconButton(
-              onPressed: () async {
-                await ref
-                    .read(deleteLocationProvider(id: id).future)
-                    .then((value) {
-                  if (context.mounted) {
-                    openSuccessDialog(
-                      context: context,
-                      title: 'Location deleted',
-                      description:
-                          'Location #$id has been deleted from your locations.',
-                      onOk: () => context.pop(),
+        actions: switch (oldLocation) {
+          AsyncData(value: final location) => [
+              MyIconButton(
+                onPressed: () async {
+                  await ref
+                      .read(deleteLocationProvider(id: id).future)
+                      .then((value) {
+                    if (context.mounted) {
+                      openSuccessDialog(
+                        context: context,
+                        title: 'Location deleted',
+                        description:
+                            'Location #$id has been deleted from your locations.',
+                        onOk: () => context.pop(),
+                      );
+                    }
+                  }).onError((error, _) async {
+                    await handleError(
+                      error,
+                      context.mounted ? context : null,
                     );
-                  }
-                }).onError((error, _) async {
-                  await handleError(
-                    error,
-                    context.mounted ? context : null,
-                  );
-                });
-              },
-              icon: IconsaxPlusLinear.trash,
-              iconColor: Colors.red,
-            ),
-        ],
+                  });
+                },
+                icon: IconsaxPlusLinear.trash,
+                iconColor: Colors.red,
+              ),
+              if (!location.isDefault)
+                MyIconButton(
+                  icon: Remix.more_2_fill,
+                  onPressed: () {
+                    showMenu(
+                      context: context,
+                      position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
+                      color: Colors.white,
+                      items: [
+                        PopupMenuItem<dynamic>(
+                          child: Text(
+                            'Make Default',
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontSize: 14.sp,
+                              color: const Color(0xFF27272A),
+                            ),
+                          ),
+                          onTap: () {},
+                        ),
+                      ],
+                    );
+                  },
+                ),
+            ],
+          _ => [],
+        },
       ),
       body: Stack(
         children: [

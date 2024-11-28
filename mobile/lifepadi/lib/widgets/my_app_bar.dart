@@ -56,7 +56,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           if (actions != null) ...[
             ...actions!,
-            24.horizontalSpace,
+            16.horizontalSpace,
           ],
         ],
         bottom: bottom,
