@@ -17,7 +17,7 @@ class Logistics with LogisticsMappable {
     this.description,
     this.weight,
     required this.fragile,
-    this.deliveryFee = 0,
+    this.deliveryFee = 0.0,
   });
 
   @MappableField(key: 'Id')

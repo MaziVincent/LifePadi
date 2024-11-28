@@ -233,6 +233,100 @@ class _OrderDetailsContent extends StatelessWidget {
             address: order.pickupLocation?.address ?? 'No address',
             child: const SizedBox.shrink(),
           ),
+
+          // Add Sender Information
+          const SectionTitle(
+            'Sender Information',
+            color: Color(0xFF27272A),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: const Color(0xFFE5E5E5)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (order.logistics?.isNotEmpty ?? false) ...[
+                  Text(
+                    order.logistics!.first.senderName,
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF27272A),
+                    ),
+                  ),
+                  4.verticalSpace,
+                  Text(
+                    order.logistics!.first.senderPhone,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontSize: 14.sp,
+                      color: const Color(0xFF7F7F89),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+
+          // Add Item Details
+          if (order.logistics?.isNotEmpty ?? false) ...[
+            const SectionTitle(
+              'Item Details',
+              color: Color(0xFF27272A),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: const Color(0xFFE5E5E5)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    order.logistics!.first.item,
+                    style: context.textTheme.titleMedium?.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF27272A),
+                    ),
+                  ),
+                  if (order.logistics!.first.description != null) ...[
+                    4.verticalSpace,
+                    Text(
+                      order.logistics!.first.description!,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        color: const Color(0xFF7F7F89),
+                      ),
+                    ),
+                  ],
+                  if (order.logistics!.first.weight != null) ...[
+                    4.verticalSpace,
+                    Text(
+                      'Weight: ${order.logistics!.first.weight}kg',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        color: const Color(0xFF7F7F89),
+                      ),
+                    ),
+                  ],
+                  4.verticalSpace,
+                  Text(
+                    'Fragile: ${order.logistics!.first.fragile ? 'Yes' : 'No'}',
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontSize: 14.sp,
+                      color: const Color(0xFF7F7F89),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
         SectionTitle(
           order.type == CheckoutType.cart
@@ -244,6 +338,65 @@ class _OrderDetailsContent extends StatelessWidget {
           address: order.deliveryLocation?.address ?? 'No address',
           child: const SizedBox.shrink(),
         ),
+
+        if (order.type == CheckoutType.logistics &&
+            order.logistics?.isNotEmpty == true) ...[
+          const SectionTitle(
+            'Receiver Information',
+            color: Color(0xFF27272A),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: const Color(0xFFE5E5E5)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  order.logistics!.first.receiverName,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF27272A),
+                  ),
+                ),
+                4.verticalSpace,
+                Text(
+                  order.logistics!.first.receiverPhone,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF7F7F89),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Add Delivery Fee
+          const SectionTitle(
+            'Delivery Fee',
+            color: Color(0xFF27272A),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: const Color(0xFFE5E5E5)),
+            ),
+            child: Text(
+              '₦${order.deliveryFee}',
+              style: context.textTheme.titleMedium?.copyWith(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF27272A),
+              ),
+            ),
+          ),
+        ],
 
         10.verticalSpace,
         182.verticalSpace,

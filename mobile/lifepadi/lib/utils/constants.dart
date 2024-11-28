@@ -58,3 +58,9 @@ const kDeliveryPricePerKm = 300.0;
 
 const kTotalDescription =
     'This is the total amount of all the items in your cart including the delivery fee and any other charges.';
+
+final kTileDecoration = BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(8.r),
+  border: Border.all(color: const Color(0xFFE5E5E5)),
+);

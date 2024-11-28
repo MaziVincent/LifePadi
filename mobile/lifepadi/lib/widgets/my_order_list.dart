@@ -99,6 +99,7 @@ class MyOrderList extends HookConsumerWidget {
                         items: [],
                         createdAt: DateTime.now(),
                         totalAmount: 10000,
+                        deliveryFee: 1000,
                       ),
                       isMock: true,
                     ),

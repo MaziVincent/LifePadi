@@ -97,9 +97,7 @@ Future<void> storeLogistics(
       'ReceiverAddressId': logistics.dropoffLocation.id,
       'OrderId': orderId,
     });
-  logger
-    ..i('Storing logistics order')
-    ..d(requestData);
+
   final response = await client.post<String>(
     '/logistics/create',
     data: requestData,
