@@ -57,6 +57,7 @@ namespace Api.DTO
         public string? Instruction { get; set; }
         public string? Order_Id { get; set; }
         public double? TotalAmount { get; set; }
+        public double? DeliveryFee { get; set; }
         public AddressDtoLite? DeliveryAddress { get; set; }
         public AddressDtoLite? PickUpAddress { get; set; }
         public List<LogisticDto>? Logistics { get; set; }

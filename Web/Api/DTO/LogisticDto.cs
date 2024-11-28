@@ -40,8 +40,8 @@ namespace Api.DTO
         public AddressDtoLite? SenderAddress { get; set; }
         public string? ReceiverName { get; set; }
         public string? ReceiverPhone { get; set; }
-        public int? RecieverAddressId { get; set; }
-        public AddressDtoLite? RecieverAddress { get; set; }
+        public int ReceiverAddressId {get; set;}
+        public AddressDtoLite? ReceiverAddress {get; set;}
         public string? Item { get; set; }
         public string? ItemDescription { get; set; }
         public double? ItemWeight { get; set; }

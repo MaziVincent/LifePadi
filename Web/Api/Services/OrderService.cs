@@ -184,6 +184,7 @@ namespace Api.Services
                 {
                     OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
                     OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
+                    OrderDto.DeliveryFee = delivery.DeliveryFee;
                 }
                 return OrderDto;
             }
