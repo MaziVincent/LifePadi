@@ -163,6 +163,7 @@ namespace Api.Services
             {
                 var order = await _dbContext!.Orders.Where(o => o.Id == id)
                     .Include(o => o.Customer)
+                    .Include(o => o.Logistics)
                     .Include(o => o.OrderItems)!
                         .ThenInclude(i => i.Product)
                             .ThenInclude(p => p!.Category)

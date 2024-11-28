@@ -10,14 +10,14 @@ namespace Api.Models
         public int Id { get; set; }
         public string? SenderName { get; set; }
         public string? SenderPhone { get; set; }
-        public string? SenderAddress { get; set; }
+        public string? SenderAddressOld { get; set; }
         public int? SenderAddressId  {get; set;}
-        public Address? SenderAddressModel  {get; set;}
+        public Address? SenderAddress {get; set;}
         public string? ReceiverName { get; set; }
         public string? ReceiverPhone { get; set; }
-        public string? ReceiverAddress { get; set; }
+        public string? ReceiverAddressOld { get; set; }
         public int? RecieverAddressId {get; set;}
-        public Address? RecieverAddressModel {get; set;}
+        public Address? RecieverAddress {get; set;}
         public string? Item { get; set; }
         public string? ItemDescription { get; set; }
         public double? ItemWeight { get; set; }

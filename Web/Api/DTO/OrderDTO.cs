@@ -59,9 +59,10 @@ namespace Api.DTO
         public double? TotalAmount { get; set; }
         public AddressDtoLite? DeliveryAddress { get; set; }
         public AddressDtoLite? PickUpAddress { get; set; }
+        public List<LogisticDto>? Logistics { get; set; }
         
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } 
+        public DateTime UpdatedAt { get; set; } 
         public List<OrderItemDto>? OrderItems { get; set; }
     }
 }
