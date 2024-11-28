@@ -57,9 +57,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
 
   Future<void> confirmPayment({required String redirectUrl}) async {
     final queryParameters = Uri.parse(redirectUrl).queryParameters;
-    logger
-      ..d('Payment confirmation query params: ')
-      ..d(queryParameters);
+
     final receipt = await ref.read(
       confirmPaymentProvider(
         queryParameters: queryParameters,

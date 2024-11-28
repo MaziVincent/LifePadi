@@ -102,8 +102,23 @@ class _LogisticsCheckoutContent extends HookWidget {
                 ).future,
               );
 
+              await ref.read(
+                storeDeliveryProvider(
+                  orderId: order.id,
+                  fee: logistics.deliveryFee,
+                  deliveryAddressId: logistics.dropoffLocation.id,
+                  type: CheckoutType.logistics,
+                  pickupAddressId: logistics.pickupLocation.id,
+                ).future,
+              );
+
               // Create logistics with the order id
-              await ref.read(storeLogisticsProvider(orderId: order.id).future);
+              await ref.read(
+                storeLogisticsProvider(
+                  orderId: order.id,
+                  logistics: logistics,
+                ).future,
+              );
 
               await showToast('Order created successfully');
               // Get payment link
@@ -128,28 +143,12 @@ class _LogisticsCheckoutContent extends HookWidget {
 
                 if (receipt != null && receipt.status) {
                   // payment successful
-                  await showToast('Payment received');
-                  // Create delivery
-                  await ref
-                      .read(
-                    storeDeliveryProvider(
-                      orderId: order.id,
-                      fee: receipt.deliveryFee,
-                      deliveryAddressId: logistics.dropoffLocation.id,
-                      type: CheckoutType.logistics,
-                      pickupAddressId: logistics.pickupLocation.id,
-                    ).future,
-                  )
-                      .then((_) async {
-                    // After that, go to receipt page
-                    await showToast('Checkout successful 🎉');
-                    if (context.mounted) {
-                      context.go(
-                        ReceiptRoute(orderId: order.id).location,
-                        extra: receipt,
-                      );
-                    }
-                  });
+                  if (context.mounted) {
+                    context.go(
+                      ReceiptRoute(orderId: order.id).location,
+                      extra: receipt,
+                    );
+                  }
                 }
               }
             } on PaymentFailedException catch (e) {

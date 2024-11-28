@@ -48,9 +48,6 @@ class LogisticsPage extends HookConsumerWidget {
       () {
         Future.microtask(() async {
           final logistics = await ref.read(logisticsStateProvider.future);
-          logger
-            ..d('Saved logistics:')
-            ..d(logistics);
           if (logistics == null) return;
           if (!context.mounted) return;
 
@@ -331,11 +328,9 @@ class LogisticsPage extends HookConsumerWidget {
                             dropoffLocation: dropoffLocation,
                             item: item.value,
                             description: descriptionController.text,
-                            weight: double.tryParse(weightController.text),
+                            weight: double.tryParse(weightController.text) ?? 0,
                             fragile: isFragile.value,
                           );
-
-                      await showToast('Logistics details saved');
 
                       if (context.mounted) {
                         await context.push(

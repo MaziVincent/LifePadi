@@ -48,7 +48,12 @@ class CartPage extends HookConsumerWidget {
                   onTap: () async {
                     await displayBottomPanel(
                       context,
-                      child: const EditLocationModalForm(),
+                      child: EditLocationModalForm(
+                        selectedLocationId: cart.deliveryLocation?.id,
+                        onLocationSelected: (location) => ref
+                            .read(cartStateProvider.notifier)
+                            .selectDeliveryLocation(location),
+                      ),
                     );
                   },
                   address: locations.whenOrNull(

@@ -8,7 +8,6 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -21,7 +20,6 @@ class OrderDetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final paymentMethod = paymentMethods[1];
     final order = ref.watch(orderProvider(id));
     final user = ref.watch(authControllerProvider);
 
@@ -236,9 +234,11 @@ class _OrderDetailsContent extends StatelessWidget {
             child: const SizedBox.shrink(),
           ),
         ],
-        const SectionTitle(
-          'Delivery Location',
-          color: Color(0xFF27272A),
+        SectionTitle(
+          order.type == CheckoutType.cart
+              ? 'Delivery Location'
+              : 'Drop-off Location',
+          color: const Color(0xFF27272A),
         ),
         LocationCard(
           address: order.deliveryLocation?.address ?? 'No address',

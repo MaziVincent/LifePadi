@@ -72,8 +72,7 @@ FutureOr<Order> storeOrder(
   required double totalAmount,
   String? type,
 }) async {
-  final client =
-      ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
+  final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
   final userId = user.maybeWhen(
     data: (user) => user.id,
@@ -178,7 +177,11 @@ Future<Receipt> confirmPayment(
     throw PaymentFailedException(response.data?['message'] as String);
   }
 
-  return ReceiptMapper.fromMap(response.data!..addAll({'type': type}));
+  final receipt = ReceiptMapper.fromMap(response.data!..addAll({'type': type}));
+
+  await resetStateAfterCheckout(ref, type: type);
+
+  return receipt;
 }
 
 /// Create delivery
@@ -205,17 +208,6 @@ Future<void> storeDelivery(
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
-  }
-
-  // Invalidate the orders provider to refresh the list
-  ref.invalidate(ordersProvider);
-
-  if (type == CheckoutType.cart) {
-    // Clear cart
-    await ref.read(cartStateProvider.notifier).clearCart();
-  } else {
-    // Clear logistics
-    await ref.read(logisticsStateProvider.notifier).clearLogistics();
   }
 }
 
@@ -266,4 +258,22 @@ FutureOr<List<Order>> riderOrders(
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();
+}
+
+/// Reset the state data after a successful checkout
+/// has been completed.
+Future<void> resetStateAfterCheckout(
+  Ref<Object?> ref, {
+  required CheckoutType type,
+}) async {
+  // Invalidate the orders provider to refresh the list
+  ref.invalidate(ordersProvider);
+
+  if (type == CheckoutType.cart) {
+    // Clear cart
+    await ref.read(cartStateProvider.notifier).clearCart();
+  } else {
+    // Clear logistics
+    await ref.read(logisticsStateProvider.notifier).clearLogistics();
+  }
 }

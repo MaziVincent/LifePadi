@@ -113,6 +113,15 @@ class _CartCheckoutContent extends HookWidget {
                 ).future,
               );
 
+              // Create delivery
+              await ref.read(
+                storeDeliveryProvider(
+                  orderId: order.id,
+                  fee: cart.deliveryFee,
+                  deliveryAddressId: cart.deliveryLocation!.id,
+                ).future,
+              );
+
               // Create order items with the order id
               for (final product in cart.products) {
                 await ref.read(
@@ -146,27 +155,13 @@ class _CartCheckoutContent extends HookWidget {
                     .push<Receipt>(PaymentRoute(link: paymentLink).location);
 
                 if (receipt != null && receipt.status) {
-                  // payment successful
-                  await showToast('Payment received');
-                  // Create delivery
-                  await ref
-                      .read(
-                    storeDeliveryProvider(
-                      orderId: order.id,
-                      fee: receipt.deliveryFee,
-                      deliveryAddressId: cart.deliveryLocation!.id,
-                    ).future,
-                  )
-                      .then((_) async {
-                    // After that, go to receipt page
-                    await showToast('Checkout successful 🎉');
-                    if (context.mounted) {
-                      context.go(
-                        ReceiptRoute(orderId: order.id).location,
-                        extra: receipt,
-                      );
-                    }
-                  });
+                  // After that, go to receipt page
+                  if (context.mounted) {
+                    context.go(
+                      ReceiptRoute(orderId: order.id).location,
+                      extra: receipt,
+                    );
+                  }
                 }
               }
             } on PaymentFailedException catch (e) {

@@ -82,24 +82,27 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
 
 /// Store a new logistics order.
 @riverpod
-Future<void> storeLogistics(Ref ref, {required int orderId}) async {
-  final logistics = await ref.read(logisticsStateProvider.future);
-  if (logistics == null) {
-    throw Exception('No logistics data to store');
-  }
-
+Future<void> storeLogistics(
+  Ref ref, {
+  required int orderId,
+  required Logistics logistics,
+}) async {
   final client = ref.read(dioProvider());
+  final requestData = logistics.toMap()
+    ..remove('Id')
+    ..remove('SenderAddress')
+    ..remove('ReceiverAddress')
+    ..addAll({
+      'SenderAddressId': logistics.pickupLocation.id,
+      'ReceiverAddressId': logistics.dropoffLocation.id,
+      'OrderId': orderId,
+    });
+  logger
+    ..i('Storing logistics order')
+    ..d(requestData);
   final response = await client.post<String>(
     '/logistics/create',
-    data: logistics.toMap()
-      ..remove('Id')
-      ..remove('SenderAddress')
-      ..remove('ReceiverAddress')
-      ..addAll({
-        'SenderAddressId': logistics.pickupLocation.id,
-        'ReceiverAddressId': logistics.dropoffLocation.id,
-        'OrderId': orderId,
-      }),
+    data: requestData,
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
