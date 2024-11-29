@@ -373,6 +373,7 @@ namespace Api.Services
                 if(status == "Completed"){
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
+                    
                 }
 
                 await _dbContext.SaveChangesAsync();

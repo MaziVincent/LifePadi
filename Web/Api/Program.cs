@@ -75,6 +75,9 @@ builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 
 
+builder.Services.AddSignalR();
+
+
 //enable CORS
 builder.Services.AddCors(c =>
 {
@@ -97,6 +100,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+app.UseRouting();
+
+app.MapHub<LocationHub>("/hubs/location");
 
 app.UseCors("AllowAllOrigin");
 
