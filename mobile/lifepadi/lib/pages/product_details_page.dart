@@ -138,7 +138,7 @@ class _ProductDetailsContent extends StatelessWidget {
         HeaderWithSeeAll(
           title: 'Ratings & Review',
           onSeeAllTap: () {
-            // TODO: Go to reviews page.
+            // TODO: Pull up reviews modal.
           },
         ),
         5.verticalSpace,

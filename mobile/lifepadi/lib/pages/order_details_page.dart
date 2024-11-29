@@ -8,6 +8,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -84,6 +85,7 @@ class OrderDetailsPage extends ConsumerWidget {
                   AsyncData(value: final user) => _BottomPanelContent(
                       order: order,
                       user: user,
+                      ref: ref,
                     ),
                   _ => const SizedBox.shrink(),
                 },
@@ -100,10 +102,12 @@ class _BottomPanelContent extends StatelessWidget {
   const _BottomPanelContent({
     required this.order,
     required this.user,
+    required this.ref,
   });
 
   final Order order;
   final User user;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +149,30 @@ class _BottomPanelContent extends StatelessWidget {
             text: 'Buy Again',
           ),
         if (user is Rider && order.status == OrderStatus.ongoing)
-          PrimaryButton(
-            onPressed: () {
-              // Implement Mark as Delivered
+          PrimaryActionButton(
+            onPressed: () async {
+              try {
+                await ref
+                    .read(markAsDeliveredProvider(order.id).future)
+                    .then((_) async {
+                  // show success message
+                  if (context.mounted) {
+                    await openSuccessDialog(
+                      context: context,
+                      title: 'Order Delivered',
+                      description: 'Order has been marked as delivered',
+                      onOk: () => context.pop(),
+                    );
+                  }
+                });
+              } catch (error, stackTrace) {
+                logger.e(
+                  "Couldn't mark order as delivered",
+                  error: error,
+                  stackTrace: stackTrace,
+                );
+                await handleError(error, context.mounted ? context : null);
+              }
             },
             text: 'Mark as Delivered',
           ),

@@ -277,3 +277,17 @@ Future<void> resetStateAfterCheckout(
     await ref.read(logisticsStateProvider.notifier).clearLogistics();
   }
 }
+
+/// Mark an order as delivered
+/// This is called by the rider after the order has been delivered.
+@riverpod
+Future<void> markAsDelivered(Ref ref, int orderId) async {
+  final client = ref.read(dioProvider());
+  final response = await client.put<String>(
+    '/order/updatestatus/$orderId',
+    queryParameters: {'status': 'successful'},
+  );
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+}
