@@ -9,7 +9,7 @@ class PrimaryActionButton extends HookWidget {
   const PrimaryActionButton({
     super.key,
     required this.onPressed,
-    required this.label,
+    required this.text,
     this.iconWidget,
     this.radius,
     this.loadingWheelSize,
@@ -17,7 +17,7 @@ class PrimaryActionButton extends HookWidget {
   });
 
   final AsyncCallback? onPressed;
-  final String label;
+  final String text;
   final Widget? iconWidget;
   final double? radius, loadingWheelSize, fontSize;
 
@@ -41,7 +41,7 @@ class PrimaryActionButton extends HookWidget {
         AsyncSnapshot(connectionState: ConnectionState.waiting) => null,
         _ => onPressed != null ? pressButton : null,
       },
-      text: label,
+      text: text,
       iconWidget: switch (snapshot) {
         AsyncSnapshot(connectionState: ConnectionState.waiting) =>
           OrangeyLoadingWheel(size: loadingSize),

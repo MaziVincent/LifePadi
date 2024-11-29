@@ -181,7 +181,7 @@ class LoginPage extends HookConsumerWidget {
                           ),
                           25.verticalSpace,
                           PrimaryActionButton(
-                            label: 'Login',
+                            text: 'Login',
                             onPressed: () async {
                               if (!formKey.currentState!.validate()) return;
 

@@ -100,7 +100,7 @@ class _CartCheckoutContent extends HookWidget {
         ),
         30.verticalSpace,
         PrimaryActionButton(
-          label: 'Proceed to Pay',
+          text: 'Proceed to Pay',
           onPressed: () async {
             await showToast('Please wait, creating order...');
 

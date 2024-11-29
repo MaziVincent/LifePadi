@@ -143,7 +143,7 @@ class RegisterPage extends HookConsumerWidget {
                             /// Verify phone number button
                             Flexible(
                               child: PrimaryActionButton(
-                                label: isPhoneVerified.value ? '' : 'Verify',
+                                text: isPhoneVerified.value ? '' : 'Verify',
                                 radius: 8.r,
                                 iconWidget: isPhoneVerified.value
                                     ? const Icon(
@@ -254,7 +254,7 @@ class RegisterPage extends HookConsumerWidget {
                         ),
                         25.verticalSpace,
                         PrimaryActionButton(
-                          label: 'Register',
+                          text: 'Register',
                           onPressed: () async {
                             if (!formKey.currentState!.validate()) return;
 

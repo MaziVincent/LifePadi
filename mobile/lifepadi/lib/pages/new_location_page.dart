@@ -183,7 +183,7 @@ class NewLocationPage extends HookConsumerWidget {
                     ),
                     12.22.verticalSpace,
                     PrimaryActionButton(
-                      label: 'Confirm Address',
+                      text: 'Confirm Address',
                       onPressed: selectedLocation.value == null
                           ? () => showToast('Please drag to choose a location')
                           : () async {

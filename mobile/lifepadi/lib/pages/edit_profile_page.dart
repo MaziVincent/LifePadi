@@ -219,7 +219,7 @@ class _EditProfileContent extends StatelessWidget {
           ].separatedBy(16.verticalSpace),
           33.verticalSpace,
           PrimaryActionButton(
-            label: 'Update',
+            text: 'Update',
             onPressed: () async {
               // Validate the input fields
               if (!formKey.currentState!.validate()) return;

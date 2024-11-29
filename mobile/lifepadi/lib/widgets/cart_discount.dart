@@ -53,7 +53,7 @@ class CartDiscount extends HookWidget {
               child: Consumer(
                 builder: (context, ref, _) {
                   return PrimaryActionButton(
-                    label: 'use',
+                    text: 'use',
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         // Use the voucher code

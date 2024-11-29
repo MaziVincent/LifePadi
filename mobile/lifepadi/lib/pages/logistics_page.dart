@@ -305,7 +305,7 @@ class LogisticsPage extends HookConsumerWidget {
                 ),
                 30.verticalSpace,
                 PrimaryActionButton(
-                  label: 'Proceed to Checkout',
+                  text: 'Proceed to Checkout',
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       if (pickupLocation == null || dropoffLocation == null) {

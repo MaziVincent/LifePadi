@@ -136,7 +136,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
                             ),
                           25.verticalSpace,
                           PrimaryActionButton(
-                            label: 'Continue',
+                            text: 'Continue',
                             onPressed: () async {
                               if (!formKey.currentState!.validate()) return;
 
