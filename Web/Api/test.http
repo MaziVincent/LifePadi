@@ -23,6 +23,7 @@ GET https://localhost:7216/api/order/get/367
 GET https://localhost:7216/api/order/getall
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
@@ -156,3 +157,6 @@ Content-Type: application/json
 
  
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+ 
+>>>>>>> 5bd78d3 (add signalR to the project)
