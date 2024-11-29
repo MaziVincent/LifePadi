@@ -102,9 +102,11 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.MapHub<LocationHub>("/hubs/location");
 
 app.UseCors("AllowAllOrigin");
+
+app.MapHub<LocationHub>("/hubs/location");
+
 
 app.UseAuthentication();
 
