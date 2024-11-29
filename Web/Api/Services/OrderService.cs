@@ -758,6 +758,7 @@ namespace Api.Services
                 if(status == "Completed"){
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
+<<<<<<< HEAD
                     string Topic = $"order-{order.CustomerId}";
                     string Title = $"Order Completed ";
                     string Body = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
@@ -769,6 +770,9 @@ namespace Api.Services
                     };
                     await _fcmService.SendGeneralNotification(message);
 
+=======
+                    
+>>>>>>> 66834e5 (add signalR to the project)
                 }
 
                 await _dbContext.SaveChangesAsync();

@@ -114,9 +114,11 @@ builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 
 
+<<<<<<< HEAD
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 =======
+<<<<<<< HEAD
 //builder.Services.AddScoped<ITransaction, TransactionService>();
 //builder.Services.AddScoped<IOrder, OrderService>();
 =======
@@ -134,6 +136,11 @@ builder.Services.AddScoped<IVoucher, VoucherService>();
 
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+builder.Services.AddSignalR();
+
+>>>>>>> 3ae0fdd (add signalR to the project)
+>>>>>>> 66834e5 (add signalR to the project)
 
 //enable CORS
 builder.Services.AddCors(c =>
@@ -170,6 +177,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseRouting();
 
+<<<<<<< HEAD
 
 app.UseCors("AllowAllOrigin");
 
@@ -180,6 +188,9 @@ app.MapHub<ChatHub>("/chatHub");
 
 
 app.UseAuthentication();
+=======
+app.MapHub<LocationHub>("/hubs/location");
+>>>>>>> 66834e5 (add signalR to the project)
 
 app.UseCors("AllowAllOrigin");
 

@@ -22,6 +22,7 @@ GET https://localhost:7216/api/order/get/367
 ###
 GET https://localhost:7216/api/order/getall
 
+<<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
@@ -123,3 +124,6 @@ GET https://localhost:7216/api/vendorcategory/vendors/2
 
 
 
+=======
+ 
+>>>>>>> 66834e5 (add signalR to the project)
