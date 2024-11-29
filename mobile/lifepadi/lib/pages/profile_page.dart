@@ -98,6 +98,10 @@ class ProfilePage extends HookConsumerWidget {
                   onTap: () => context.push(const WishlistRoute().location),
                 ),
                 SettingsTile(
+                  title: 'Wallet',
+                  onTap: () => context.push(const WalletRoute().location),
+                ),
+                SettingsTile(
                   title: 'Customer support',
                   onTap: () => context.push(const SupportRoute().location),
                 ),
