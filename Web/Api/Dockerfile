@@ -1,24 +1,15 @@
-# Stage 1: Build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-
-# Copy everything and restore dependencies
-COPY *.csproj ./
+COPY . .
 RUN dotnet restore
-
-# Copy the rest of the application and build it
-COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Stage 2: Run
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+COPY --from=build /app/out .
 
-# Copy the build output from the first stage
-COPY --from=build-env /app/out .
-
-# Expose the port your application listens on
-EXPOSE 80
-
-# Define the entry point for the container
+# Expose port for App Engine
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "Api.dll"]

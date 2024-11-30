@@ -23,6 +23,6 @@ GET https://localhost:7216/api/order/get/367
 GET https://localhost:7216/api/order/getall
 
 ###
-POST https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/hubs/location/negotiate
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 
  
