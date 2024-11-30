@@ -42,7 +42,8 @@ class TrackOrderPage extends StatelessWidget {
           MyIconButton(
             icon: Remix.map_pin_5_line,
             iconColor: kDarkPrimaryColor,
-            onPressed: () => context.push(TrackOrderMapRoute(id: id).location),
+            onPressed: () =>
+                context.push(const TrackOrderMapRoute(riderId: 51).location),
           ),
         ],
       ),

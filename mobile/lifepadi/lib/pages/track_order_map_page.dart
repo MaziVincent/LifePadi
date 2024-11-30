@@ -6,11 +6,12 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:location/location.dart';
+import 'package:signalr_netcore/signalr_client.dart';
 
 class TrackOrderMapPage extends StatefulWidget {
-  const TrackOrderMapPage({super.key, required this.id});
+  const TrackOrderMapPage({super.key, required this.riderId});
 
-  final int id;
+  final int riderId;
 
   @override
   State<TrackOrderMapPage> createState() => _TrackOrderMapPageState();
@@ -29,6 +30,8 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+
+  HubConnection? hubConnection;
 
   Future<void> getCurrentLocation() async {
     final location = Location();
@@ -88,6 +91,31 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
     }
   }
 
+  Future<void> setupSignalR() async {
+    hubConnection =
+        HubConnectionBuilder().withUrl('$kRemoteApiUrl/hubs/location').build();
+
+    try {
+      await hubConnection?.start();
+      await hubConnection?.invoke('SubscribeToRider', args: [widget.riderId]);
+
+      hubConnection?.on('LocationUpdated', (List<Object?>? args) {
+        if (args != null && args.isNotEmpty && mounted) {
+          final latitude = args[0]!;
+          final longitude = args[1]!;
+          setState(() {
+            currentLocation = LocationData.fromMap({
+              'latitude': latitude as double,
+              'longitude': longitude as double,
+            });
+          });
+        }
+      });
+    } catch (e) {
+      logger.e('SignalR connection error', error: e);
+    }
+  }
+
   void setCustomMarkerIcon() {
     sourceIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueBlue,
@@ -107,13 +135,15 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
     setCustomMarkerIcon();
     getPolyPoints();
+    setupSignalR();
   }
 
   @override
   void dispose() {
+    hubConnection?.invoke('UnsubscribeFromRider', args: [widget.riderId]);
+    hubConnection?.stop();
     locationSubscription?.cancel();
     _controller.future.then(
       (controller) => controller.dispose(),
@@ -125,7 +155,7 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Track Order #${widget.id}'),
+      appBar: const MyAppBar(title: 'Track Order'),
       body: currentLocation == null
           ? const GreenyLoadingWheel()
           : GoogleMap(
