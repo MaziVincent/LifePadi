@@ -17,7 +17,7 @@ class GetStartedPage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * .42,
+              height: MediaQuery.sizeOf(context).height * .40,
               child: Stack(
                 children: [
                   Assets.images.handPackageToLady.image(

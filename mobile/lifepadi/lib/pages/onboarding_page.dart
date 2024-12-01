@@ -40,7 +40,7 @@ class OnboardingPage extends HookWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 0.85.sh,
+              height: 0.8.sh,
               child: PageView.builder(
                 itemCount: features.length,
                 onPageChanged: (index) => currentPage.value = index,
