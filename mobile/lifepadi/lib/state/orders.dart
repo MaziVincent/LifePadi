@@ -137,15 +137,19 @@ FutureOr<String> paymentLink(
   String? voucherCode,
 }) async {
   final client = ref.read(dioProvider());
+  final requestData = {
+    'OrderId': orderId,
+    'Amount': amount,
+    'DeliveryFee': deliveryFee,
+    'TotalAmount': totalAmount,
+    'VoucherCode': voucherCode ?? '',
+  };
+  logger
+    ..d('Payment request data:')
+    ..d(requestData);
   final response = await client.post<String>(
     '/transaction/MobilePaystackCheckout',
-    data: {
-      'OrderId': orderId,
-      'Amount': amount,
-      'DeliveryFee': deliveryFee,
-      'TotalAmount': totalAmount,
-      'VoucherCode': voucherCode ?? '',
-    },
+    data: requestData,
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');

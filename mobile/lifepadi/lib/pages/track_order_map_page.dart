@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -9,9 +8,18 @@ import 'package:location/location.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 class TrackOrderMapPage extends StatefulWidget {
-  const TrackOrderMapPage({super.key, required this.riderId});
+  const TrackOrderMapPage({
+    super.key,
+    required this.riderId,
+    required this.orderId,
+    required this.destinationLatitude,
+    required this.destinationLongitude,
+  });
 
+  final int orderId;
   final int riderId;
+  final double destinationLatitude;
+  final double destinationLongitude;
 
   @override
   State<TrackOrderMapPage> createState() => _TrackOrderMapPageState();
@@ -19,96 +27,47 @@ class TrackOrderMapPage extends StatefulWidget {
 
 class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
-  StreamSubscription<LocationData>? locationSubscription;
-
-  static const LatLng sourceLocation = LatLng(37.4220541, -122.0853242);
-  static const LatLng destination = LatLng(37.4116103, -122.0713127);
-
-  List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
-
-  BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
-
   HubConnection? hubConnection;
 
-  Future<void> getCurrentLocation() async {
-    final location = Location();
-
-    try {
-      final currentLoc = await location.getLocation();
-      if (mounted) {
-        setState(() {
-          currentLocation = currentLoc;
-        });
-      }
-
-      final googleMapController = await _controller.future;
-
-      locationSubscription = location.onLocationChanged.listen((newLocation) {
-        if (!mounted) return;
-
-        setState(() {
-          currentLocation = newLocation;
-        });
-
-        googleMapController
-            .animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(newLocation.latitude!, newLocation.longitude!),
-              zoom: 13.5,
-            ),
-          ),
-        )
-            .catchError((dynamic error) {
-          logger.e('Map controller error', error: error);
-        });
-      });
-    } catch (e) {
-      logger.e('Location error', error: e);
-    }
-  }
-
-  Future<void> getPolyPoints() async {
-    final polylinePoints = PolylinePoints();
-
-    final result = await polylinePoints.getRouteBetweenCoordinates(
-      request: PolylineRequest(
-        origin: PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-        destination: PointLatLng(destination.latitude, destination.longitude),
-        mode: TravelMode.driving,
-      ),
-      googleApiKey: kGoogleMapsApiKey,
-    );
-
-    if (result.points.isNotEmpty) {
-      for (final point in result.points) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      }
-      setState(() {});
-    }
-  }
-
   Future<void> setupSignalR() async {
-    hubConnection =
-        HubConnectionBuilder().withUrl('$kRemoteApiUrl/hubs/location').build();
+    hubConnection = HubConnectionBuilder()
+        .withUrl(kSignalRUrl)
+        .withAutomaticReconnect()
+        .build();
 
     try {
       await hubConnection?.start();
-      await hubConnection?.invoke('SubscribeToRider', args: [widget.riderId]);
+      await hubConnection
+          ?.invoke('SubscribeToRider', args: [widget.riderId.toString()]);
 
-      hubConnection?.on('LocationUpdated', (List<Object?>? args) {
+      hubConnection?.on('LocationUpdated', (List<Object?>? args) async {
         if (args != null && args.isNotEmpty && mounted) {
-          final latitude = args[0]!;
-          final longitude = args[1]!;
+          final latitude = args[0]! as double;
+          final longitude = args[1]! as double;
+          final riderId = int.tryParse(args[2]!.toString());
+
+          if (riderId != widget.riderId) return;
+
+          logger.d('[Customer] LocationUpdated: $latitude, $longitude');
           setState(() {
             currentLocation = LocationData.fromMap({
-              'latitude': latitude as double,
-              'longitude': longitude as double,
+              'latitude': latitude,
+              'longitude': longitude,
             });
           });
+
+          final googleMapController = await _controller.future;
+          await googleMapController.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(latitude, longitude),
+                zoom: 13.5,
+              ),
+            ),
+          );
         }
       });
     } catch (e) {
@@ -117,12 +76,8 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   }
 
   void setCustomMarkerIcon() {
-    sourceIcon = BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueBlue,
-    );
-
     destinationIcon = BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueMagenta,
+      BitmapDescriptor.hueBlue,
     );
 
     currentLocationIcon = BitmapDescriptor.defaultMarkerWithHue(
@@ -136,15 +91,14 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   void initState() {
     super.initState();
     setCustomMarkerIcon();
-    getPolyPoints();
     setupSignalR();
   }
 
   @override
   void dispose() {
-    hubConnection?.invoke('UnsubscribeFromRider', args: [widget.riderId]);
+    hubConnection
+        ?.invoke('UnsubscribeFromRider', args: [widget.riderId.toString()]);
     hubConnection?.stop();
-    locationSubscription?.cancel();
     _controller.future.then(
       (controller) => controller.dispose(),
       onError: (dynamic e) => logger.e('Controller dispose error', error: e),
@@ -155,7 +109,7 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(title: 'Track Order'),
+      appBar: MyAppBar(title: 'Track Order #${widget.orderId}'),
       body: currentLocation == null
           ? const GreenyLoadingWheel()
           : GoogleMap(
@@ -166,14 +120,6 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
                 ),
                 zoom: 13.5,
               ),
-              polylines: {
-                Polyline(
-                  polylineId: const PolylineId('route'),
-                  points: polylineCoordinates,
-                  color: kDarkPrimaryColor,
-                  width: 6,
-                ),
-              },
               markers: {
                 Marker(
                   markerId: const MarkerId('currentLocation'),
@@ -184,13 +130,11 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
                   icon: currentLocationIcon,
                 ),
                 Marker(
-                  markerId: const MarkerId('source'),
-                  position: sourceLocation,
-                  icon: sourceIcon,
-                ),
-                Marker(
                   markerId: const MarkerId('destination'),
-                  position: destination,
+                  position: LatLng(
+                    widget.destinationLatitude,
+                    widget.destinationLongitude,
+                  ),
                   icon: destinationIcon,
                 ),
               },

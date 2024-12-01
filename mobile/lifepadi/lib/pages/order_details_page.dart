@@ -137,8 +137,10 @@ class _BottomPanelContent extends StatelessWidget {
         ],
         if (user is Customer && orderIsTrackable)
           PrimaryOutlineButton(
-            onPressed: () =>
-                context.push(TrackOrderRoute(id: order.id).location),
+            onPressed: () => context.push(
+              TrackOrderRoute(orderId: order.id).location,
+              extra: order,
+            ),
             text: 'Track Order',
           ),
         if (canBuyAgain)

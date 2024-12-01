@@ -2,6 +2,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -11,9 +12,10 @@ import 'package:remixicon/remixicon.dart';
 import '../utils/constants.dart';
 
 class TrackOrderPage extends StatelessWidget {
-  const TrackOrderPage({super.key, required this.id});
+  const TrackOrderPage({super.key, required this.riderId, required this.order});
 
-  final int id;
+  final int riderId;
+  final Order order;
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +30,19 @@ class TrackOrderPage extends StatelessWidget {
       appBar: MyAppBar(
         title: 'Track Order',
         actions: [
-          /// QR code button
-          MyIconButton(
-            iconWidget: Assets.icons.scan.svg(
-              height: 18.h,
-              width: 18.h,
+          if (order.status == OrderStatus.ongoing)
+            MyIconButton(
+              icon: Remix.map_pin_5_line,
+              iconColor: kDarkPrimaryColor,
+              onPressed: () => context.push(
+                TrackOrderMapRoute(
+                  orderId: order.id,
+                  riderId: riderId,
+                  latitude: order.deliveryLocation!.latitude,
+                  longitude: order.deliveryLocation!.longitude,
+                ).location,
+              ),
             ),
-            onPressed: () {
-              // Implement tracking order with QR code scan
-            },
-          ),
-          // TODO: Only show this button if the order is ongoing
-          MyIconButton(
-            icon: Remix.map_pin_5_line,
-            iconColor: kDarkPrimaryColor,
-            onPressed: () =>
-                context.push(const TrackOrderMapRoute(riderId: 51).location),
-          ),
         ],
       ),
       body: Stack(
@@ -137,16 +135,12 @@ class TrackOrderPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '1.2 km away |',
+                              '1.2km away',
                               style: urbanistStyle,
                             ),
                             Assets.icons.star.image(
                               height: 12.05.h,
                               width: 12.05.h,
-                            ),
-                            Text(
-                              '4.9',
-                              style: urbanistStyle,
                             ),
                           ].separatedBy(5.16.horizontalSpace),
                         ),

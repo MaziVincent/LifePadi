@@ -56,28 +56,31 @@ class NewLocationPage extends HookConsumerWidget {
         children: [
           currentLocation.when(
             data: (location) {
-              return GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: location.latLng,
-                  zoom: 15,
-                ),
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                onCameraMove: (position) {
-                  // Update selected location when camera moves
-                  getAddressFromCoordinates(position.target);
-                },
-                onMapCreated: (GoogleMapController controller) {
-                  mapController.value = controller;
-                  controller.animateCamera(
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                        target: location.latLng,
-                        zoom: 15,
+              return Padding(
+                padding: EdgeInsets.only(bottom: 172.h),
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: location.latLng,
+                    zoom: 15,
+                  ),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  onCameraMove: (position) {
+                    // Update selected location when camera moves
+                    getAddressFromCoordinates(position.target);
+                  },
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController.value = controller;
+                    controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: location.latLng,
+                          zoom: 15,
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
             loading: () => const Center(child: GreenyLoadingWheel()),
@@ -106,7 +109,7 @@ class NewLocationPage extends HookConsumerWidget {
           switch (currentLocation) {
             AsyncLoading() => const SizedBox.shrink(),
             _ => BottomPanel(
-                height: 190.h,
+                height: 192.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

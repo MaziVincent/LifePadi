@@ -13,14 +13,14 @@ import 'package:lifepadi/widgets/widgets.dart';
 import 'package:location/location.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
-class RiderPage extends StatefulWidget {
+class RiderPage extends ConsumerStatefulWidget {
   const RiderPage({super.key});
 
   @override
-  State<RiderPage> createState() => _RiderPageState();
+  ConsumerState<RiderPage> createState() => _RiderPageState();
 }
 
-class _RiderPageState extends State<RiderPage> {
+class _RiderPageState extends ConsumerState<RiderPage> {
   StreamSubscription<LocationData>? locationSubscription;
   HubConnection? hubConnection;
   Location location = Location();
@@ -44,20 +44,25 @@ class _RiderPageState extends State<RiderPage> {
     }
 
     // Setup SignalR
-    hubConnection =
-        HubConnectionBuilder().withUrl('$kRemoteApiUrl/hubs/location').build();
+    hubConnection = HubConnectionBuilder().withUrl(kSignalRUrl).build();
 
     try {
       await hubConnection?.start();
 
       // Start location tracking
-      locationSubscription = location.onLocationChanged.listen((locationData) {
+      locationSubscription =
+          location.onLocationChanged.listen((locationData) async {
         if (locationData.latitude == null || locationData.longitude == null) {
           return;
         }
-        hubConnection?.invoke(
+        logger.d(
+          '[Rider] Locationchanged: ${locationData.latitude}, ${locationData.longitude}',
+        );
+        final rider = await ref.read(authControllerProvider.future);
+        await hubConnection?.invoke(
           'UpdateLocation',
           args: [
+            rider.id.toString(),
             locationData.latitude! as Object,
             locationData.longitude! as Object,
           ],

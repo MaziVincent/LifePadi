@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/wishlist.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 
@@ -31,17 +30,19 @@ class StoreNameWithWishlistAndShare extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            product.vendor.name,
-            style: context.textTheme.bodyLarge?.copyWith(
-              color: kDarkPrimaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          Expanded(
+            child: Text(
+              product.vendor.name,
+              style: context.textTheme.bodyLarge?.copyWith(
+                color: kDarkPrimaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Consumer(
                 builder: (context, ref, child) {
@@ -63,16 +64,7 @@ class StoreNameWithWishlistAndShare extends StatelessWidget {
                   );
                 },
               ),
-              CircularButton(
-                onTap: () {
-                  // TODO: Implement sharing of product
-                },
-                child: Assets.icons.share.image(
-                  width: 16.sp,
-                  height: 16.sp,
-                ),
-              ),
-            ].separatedBy(10.horizontalSpace),
+            ],
           ),
         ],
       ),

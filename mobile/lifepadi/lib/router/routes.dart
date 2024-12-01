@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
@@ -32,8 +33,8 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
       path: '/orders',
       routes: [
         TypedGoRoute<OrderDetailsRoute>(path: ':id'),
-        TypedGoRoute<TrackOrderRoute>(path: 'track/:id'),
-        TypedGoRoute<TrackOrderMapRoute>(path: 'track/:riderId/map'),
+        TypedGoRoute<TrackOrderRoute>(path: ':orderId/track'),
+        TypedGoRoute<TrackOrderMapRoute>(path: ':orderId/track/:riderId/map'),
       ],
     ),
     TypedGoRoute<ErrandsRoute>(
@@ -280,13 +281,18 @@ class RiderOrderDetailsRoute extends GoRouteData {
 }
 
 class TrackOrderRoute extends GoRouteData {
-  const TrackOrderRoute({required this.id});
+  const TrackOrderRoute({required this.orderId});
 
-  final int id;
+  final int orderId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return TrackOrderPage(id: id);
+    final order = state.extra! as Order;
+    return TrackOrderPage(
+      // FIXME: API not returning rider with order
+      riderId: 51,
+      order: order,
+    );
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
@@ -534,13 +540,26 @@ class WalletRoute extends GoRouteData {
 }
 
 class TrackOrderMapRoute extends GoRouteData {
-  const TrackOrderMapRoute({required this.riderId});
+  const TrackOrderMapRoute({
+    required this.orderId,
+    required this.riderId,
+    required this.latitude,
+    required this.longitude,
+  });
 
+  final int orderId;
   final int riderId;
+  final double latitude;
+  final double longitude;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return TrackOrderMapPage(riderId: riderId);
+    return TrackOrderMapPage(
+      riderId: riderId,
+      orderId: orderId,
+      destinationLatitude: latitude,
+      destinationLongitude: longitude,
+    );
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

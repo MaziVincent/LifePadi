@@ -124,27 +124,30 @@ class EditLocationPage extends HookConsumerWidget {
         children: [
           oldLocation.when(
             data: (location) {
-              return GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: location.latLng,
-                  zoom: 15,
-                ),
-                myLocationButtonEnabled: false,
-                onCameraMove: (position) {
-                  // Update selected location when camera moves
-                  getAddressFromCoordinates(position.target);
-                },
-                onMapCreated: (GoogleMapController controller) {
-                  mapController.value = controller;
-                  controller.animateCamera(
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                        target: location.latLng,
-                        zoom: 15,
+              return Padding(
+                padding: EdgeInsets.only(bottom: 172.h),
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: location.latLng,
+                    zoom: 15,
+                  ),
+                  myLocationButtonEnabled: false,
+                  onCameraMove: (position) {
+                    // Update selected location when camera moves
+                    getAddressFromCoordinates(position.target);
+                  },
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController.value = controller;
+                    controller.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: location.latLng,
+                          zoom: 15,
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
             loading: () => const Center(child: GreenyLoadingWheel()),
@@ -172,7 +175,7 @@ class EditLocationPage extends HookConsumerWidget {
             ),
           switch (oldLocation) {
             AsyncData() => BottomPanel(
-                height: 190.h,
+                height: 195.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
