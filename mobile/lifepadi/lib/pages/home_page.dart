@@ -74,6 +74,7 @@ class HomePage extends HookConsumerWidget {
           ],
         ),
         actions: [
+          // TODO: Show number of items in cart as badge
           MyIconButton(
             icon: IconsaxPlusLinear.shopping_cart,
             onPressed: () => context.go(CartRoute().location),

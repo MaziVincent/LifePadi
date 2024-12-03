@@ -224,7 +224,7 @@ class CartPage extends HookConsumerWidget {
                           gravity: ToastGravity.CENTER,
                         );
                       } else {
-                        CheckoutRoute().go(context);
+                        await CheckoutRoute().push<bool>(context);
                       }
                     },
                   ),
