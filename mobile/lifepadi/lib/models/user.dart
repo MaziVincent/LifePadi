@@ -94,6 +94,8 @@ class Rider extends User with RiderMappable {
   final String? identityNumber;
   @MappableField(key: 'EmergencyContact')
   final String? emergencyContact;
+
+  String get internationalPhone => '+234${phoneNumber.substring(1)}';
 }
 
 @MappableClass(discriminatorValue: 'Guest')

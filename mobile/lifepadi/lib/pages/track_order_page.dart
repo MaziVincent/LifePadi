@@ -8,6 +8,7 @@ import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/rider_distance_away.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/constants.dart';
 
@@ -137,15 +138,19 @@ class TrackOrderPage extends StatelessWidget {
                       ),
                     ),
                     MyOutlineIconButton(
-                      onPressed: () {
-                        // TODO: Use url_launcher to open whatsapp chat with rider
-                      },
+                      onPressed: () async => launchUrl(
+                        Uri.parse(
+                          'https://wa.me/${order.rider!.internationalPhone}',
+                        ),
+                      ),
                       icon: IconsaxPlusLinear.messages_2,
                     ),
                     MyOutlineIconButton(
-                      onPressed: () {
-                        // TODO: Use url_launcher to open phone call with rider's number
-                      },
+                      onPressed: () async => launchUrl(
+                        Uri.parse(
+                          'tel:${order.rider!.internationalPhone}',
+                        ),
+                      ),
                       icon: IconsaxPlusLinear.call,
                     ),
                   ].separatedBy(12.horizontalSpace),
