@@ -45,7 +45,15 @@ FutureOr<List<Order>> orders(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['orders'] as List);
+  var data = List<JsonMap>.from(response.data!['orders'] as List);
+
+  // strip auth on rider if it contains a rider key
+  data = data.map((order) {
+    if (order.containsKey('Rider') && order['Rider'] != null) {
+      stripAuth(order['Rider'] as JsonMap);
+    }
+    return order;
+  }).toList();
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();
@@ -58,6 +66,11 @@ FutureOr<Order> order(Ref ref, int id) async {
   final response = await client.get<JsonMap>('/order/get/$id');
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
+  }
+
+  // strip auth on rider if it contains a rider key
+  if (response.data!.containsKey('Rider') && response.data!['Rider'] != null) {
+    stripAuth(response.data!['Rider'] as JsonMap);
   }
 
   ref.cache();

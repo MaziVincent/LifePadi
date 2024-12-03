@@ -12,9 +12,8 @@ import 'package:remixicon/remixicon.dart';
 import '../utils/constants.dart';
 
 class TrackOrderPage extends StatelessWidget {
-  const TrackOrderPage({super.key, required this.riderId, required this.order});
+  const TrackOrderPage({super.key, required this.order});
 
-  final int riderId;
   final Order order;
 
   @override
@@ -30,16 +29,16 @@ class TrackOrderPage extends StatelessWidget {
       appBar: MyAppBar(
         title: 'Track Order',
         actions: [
-          if (order.status == OrderStatus.ongoing)
+          if (order.status == OrderStatus.ongoing && order.rider != null)
             MyIconButton(
               icon: Remix.map_pin_5_line,
               iconColor: kDarkPrimaryColor,
               onPressed: () => context.push(
                 TrackOrderMapRoute(
                   orderId: order.id,
-                  riderId: riderId,
-                  latitude: order.deliveryLocation!.latitude,
-                  longitude: order.deliveryLocation!.longitude,
+                  riderId: order.rider!.id,
+                  latitude: order.deliveryLocation.latitude,
+                  longitude: order.deliveryLocation.longitude,
                 ).location,
               ),
             ),
@@ -132,17 +131,9 @@ class TrackOrderPage extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              '1.2km away',
-                              style: urbanistStyle,
-                            ),
-                            Assets.icons.star.image(
-                              height: 12.05.h,
-                              width: 12.05.h,
-                            ),
-                          ].separatedBy(5.16.horizontalSpace),
+                        Text(
+                          '1.2km away',
+                          style: urbanistStyle,
                         ),
                       ],
                     ),

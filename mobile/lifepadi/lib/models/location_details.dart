@@ -13,8 +13,8 @@ class LocationDetails with LocationDetailsMappable {
     required this.city,
     required this.state,
     this.country = 'Nigeria',
-    required this.postalCode,
-    required this.sublocality,
+    this.postalCode,
+    this.sublocality,
     required this.localGovernmentArea,
     this.isDefault = false,
   });

@@ -66,7 +66,7 @@ class RiderOrderTile extends StatelessWidget {
               AddressRow(
                 icon: Icons.flag,
                 title: isLogistics ? 'Drop-off Location' : 'Delivery Location',
-                address: order.deliveryLocation?.address ?? 'No address',
+                address: order.deliveryLocation.address,
               ),
             ],
           ),

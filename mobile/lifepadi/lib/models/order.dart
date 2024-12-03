@@ -3,6 +3,7 @@ import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/logistics.dart';
 import 'package:lifepadi/models/order_item.dart';
+import 'package:lifepadi/models/user.dart';
 
 part 'order.mapper.dart';
 
@@ -28,11 +29,12 @@ class Order with OrderMappable {
     required this.type,
     required this.items,
     required this.createdAt,
-    this.deliveryLocation,
+    required this.deliveryLocation,
     this.pickupLocation,
     required this.totalAmount,
     this.logistics,
     this.deliveryFee = 0.0,
+    this.rider,
   });
 
   @MappableField(key: 'Id')
@@ -52,11 +54,13 @@ class Order with OrderMappable {
   @MappableField(key: 'TotalAmount')
   final double totalAmount;
   @MappableField(key: 'DeliveryAddress')
-  final LocationDetails? deliveryLocation;
+  final LocationDetails deliveryLocation;
   @MappableField(key: 'PickUpAddress')
   final LocationDetails? pickupLocation;
   @MappableField(key: 'Logistics')
   final List<Logistics>? logistics;
   @MappableField(key: 'DeliveryFee')
   final double deliveryFee;
+  @MappableField(key: 'Rider')
+  final Rider? rider;
 }

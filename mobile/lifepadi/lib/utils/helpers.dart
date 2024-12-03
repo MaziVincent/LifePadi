@@ -232,7 +232,6 @@ Future<void> handleError(
 }
 
 JsonMap stripAuth(JsonMap json) {
-  json['Email'] = '';
   json['accessToken'] = '';
   json['refreshToken'] = '';
   json['Role'] = UserRole.guest.toValue();

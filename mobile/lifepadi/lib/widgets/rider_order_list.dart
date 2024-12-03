@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -105,6 +106,14 @@ class RiderOrderList extends HookConsumerWidget {
                         createdAt: DateTime.now(),
                         totalAmount: 10000,
                         deliveryFee: 1000,
+                        deliveryLocation: LocationDetails(
+                          address: BoneMock.address,
+                          latitude: 0,
+                          longitude: 0,
+                          city: BoneMock.city,
+                          state: BoneMock.city,
+                          localGovernmentArea: BoneMock.city,
+                        ),
                       ),
                       isMock: true,
                     ),

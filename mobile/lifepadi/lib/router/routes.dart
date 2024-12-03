@@ -289,8 +289,6 @@ class TrackOrderRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final order = state.extra! as Order;
     return TrackOrderPage(
-      // FIXME: API not returning rider with order
-      riderId: 51,
       order: order,
     );
   }
