@@ -16,7 +16,7 @@ class TrackOrderMapPage extends StatefulWidget {
     required this.destinationLongitude,
   });
 
-  final int orderId;
+  final String orderId;
   final int riderId;
   final double destinationLatitude;
   final double destinationLongitude;

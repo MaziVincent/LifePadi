@@ -545,7 +545,7 @@ class TrackOrderMapRoute extends GoRouteData {
     required this.longitude,
   });
 
-  final int orderId;
+  final String orderId;
   final int riderId;
   final double latitude;
   final double longitude;
