@@ -12,6 +12,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 /// Cart checkout widget
@@ -155,6 +156,17 @@ class _CartCheckoutContent extends HookWidget {
                     .push<Receipt>(PaymentRoute(link: paymentLink).location);
 
                 if (receipt != null && receipt.status) {
+                  // Show success notification
+                  await NotificationUtils.showNotification(
+                    id: order.id,
+                    title: 'Order successful',
+                    body:
+                        'Order #${order.orderId} has been placed successfully.',
+                    payload: {
+                      'route': OrderDetailsRoute(id: order.id).location,
+                    },
+                  );
+
                   // After that, go to receipt page
                   if (context.mounted) {
                     context.go(

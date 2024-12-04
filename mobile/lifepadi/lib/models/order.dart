@@ -54,7 +54,7 @@ class Order with OrderMappable {
   @MappableField(key: 'TotalAmount')
   final double totalAmount;
   @MappableField(key: 'DeliveryAddress')
-  final LocationDetails deliveryLocation;
+  final LocationDetails? deliveryLocation;
   @MappableField(key: 'PickUpAddress')
   final LocationDetails? pickupLocation;
   @MappableField(key: 'Logistics')

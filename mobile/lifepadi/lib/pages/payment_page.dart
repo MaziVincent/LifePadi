@@ -39,9 +39,10 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
             // Clear the cart
             ref
                 .read(cartStateProvider.notifier)
-                .clearCart(keepDeliveryLocation: true);
-            // Clear the logisitics
-            ref.read(logisticsStateProvider.notifier).clearLogistics();
+                .clearCart(keepDeliveryLocation: true)
+                .ignore();
+
+            ref.read(logisticsStateProvider.notifier).setAsPaid().ignore();
           },
           onProgress: (int progress) {
             // Update loading bar

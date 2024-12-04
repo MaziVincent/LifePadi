@@ -31,8 +31,8 @@ class TrackOrderPage extends StatelessWidget {
                 TrackOrderMapRoute(
                   orderId: order.orderId,
                   riderId: order.rider!.id,
-                  latitude: order.deliveryLocation.latitude,
-                  longitude: order.deliveryLocation.longitude,
+                  latitude: order.deliveryLocation!.latitude,
+                  longitude: order.deliveryLocation!.longitude,
                 ).location,
               ),
             ),

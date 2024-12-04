@@ -7,7 +7,6 @@ import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
-import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -157,9 +156,6 @@ FutureOr<String> paymentLink(
     'TotalAmount': totalAmount,
     'VoucherCode': voucherCode ?? '',
   };
-  logger
-    ..d('Payment request data:')
-    ..d(requestData);
   final response = await client.post<String>(
     '/transaction/MobilePaystackCheckout',
     data: requestData,
@@ -289,9 +285,6 @@ Future<void> resetStateAfterCheckout(
   if (type == CheckoutType.cart) {
     // Clear cart
     await ref.read(cartStateProvider.notifier).clearCart();
-  } else {
-    // Clear logistics
-    await ref.read(logisticsStateProvider.notifier).clearLogistics();
   }
 }
 

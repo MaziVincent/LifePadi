@@ -3,15 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/theme/theme.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
 
 void main() async {
-  // Lock app to portraint orientation
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Lock app to portrait orientation
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Initialize awesome notifications
+  await NotificationUtils.initialize();
 
   // Load shared preferences
   await PreferencesHelper.load();

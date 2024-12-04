@@ -13,6 +13,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsCheckout extends ConsumerWidget {
@@ -142,7 +143,17 @@ class _LogisticsCheckoutContent extends HookWidget {
                 );
 
                 if (receipt != null && receipt.status) {
-                  // payment successful
+                  // show success notification
+                  await NotificationUtils.showNotification(
+                    id: order.id,
+                    title: 'Order successful',
+                    body:
+                        'Logistics order #${order.orderId} has been placed successfully.',
+                    payload: {
+                      'route': OrderDetailsRoute(id: order.id).location,
+                    },
+                  );
+
                   if (context.mounted) {
                     context.go(
                       ReceiptRoute(orderId: order.id).location,

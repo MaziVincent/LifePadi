@@ -111,6 +111,7 @@ class ProductTileBase extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   7.74.verticalSpace,
                   Row(

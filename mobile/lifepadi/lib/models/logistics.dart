@@ -18,6 +18,7 @@ class Logistics with LogisticsMappable {
     this.weight,
     required this.fragile,
     this.deliveryFee = 0.0,
+    this.isPaid = false,
   });
 
   @MappableField(key: 'Id')
@@ -44,4 +45,5 @@ class Logistics with LogisticsMappable {
   final bool fragile;
   @MappableField(key: 'DeliveryFee')
   final double deliveryFee;
+  final bool isPaid;
 }

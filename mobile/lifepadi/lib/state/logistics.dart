@@ -78,6 +78,22 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
 
     await showToast('Logistics details saved');
   }
+
+  /// Set isPaid to true
+  /// This is called after the payment has been confirmed.
+  Future<void> setAsPaid() async {
+    final logistics = state.valueOrNull;
+    if (logistics == null) {
+      throw const ServerErrorException('Logistics data is null');
+    }
+
+    final updatedLogistics = logistics.copyWith(isPaid: true);
+    await PreferencesHelper.setString(
+      key: kLogisticsKey,
+      value: updatedLogistics.toJson(),
+    );
+    state = AsyncData(updatedLogistics);
+  }
 }
 
 /// Store a new logistics order.

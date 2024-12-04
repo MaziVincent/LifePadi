@@ -50,6 +50,11 @@ class LogisticsPage extends HookConsumerWidget {
           final logistics = await ref.read(logisticsStateProvider.future);
           if (logistics == null) return;
           if (!context.mounted) return;
+          if (logistics.isPaid) {
+            // Clear saved logistics details
+            await ref.read(logisticsStateProvider.notifier).clearLogistics();
+            return;
+          }
 
           final shouldRestore = await openChoiceDialog(
             context: context,
