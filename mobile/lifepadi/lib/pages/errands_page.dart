@@ -26,9 +26,9 @@ class ErrandsPage extends ConsumerWidget {
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  crossAxisSpacing: 10.r,
+                  crossAxisSpacing: 12.r,
                   mainAxisSpacing: 10.r,
-                  childAspectRatio: 0.7.r,
+                  childAspectRatio: 0.6.r,
                 ),
                 itemCount: errands.length,
                 itemBuilder: (context, index) {
