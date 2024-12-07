@@ -747,6 +747,9 @@ namespace Api.Services
                 if (initialDelivery == null) return null!;
                 initialDelivery.DeliveryFee = delivery.DeliveryFee;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
                 initialDelivery.RiderId = delivery.RiderId;
                 initialDelivery.OrderId = delivery.OrderId;
                 initialDelivery.UpdatedAt = DateTime.UtcNow;

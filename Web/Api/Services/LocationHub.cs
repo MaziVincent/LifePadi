@@ -13,7 +13,7 @@ namespace Api.Services
         public async Task UpdateLocation(string riderId, double latitude, double longitude)
         {
             // Broadcast location to a specific user group
-            await Clients.Group(riderId).SendAsync("LocationUpdated", latitude, longitude);
+            await Clients.Group(riderId).SendAsync("LocationUpdated", latitude, longitude, riderId);
         }
 
         // User subscribes to rider's updates

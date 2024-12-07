@@ -183,6 +183,9 @@ namespace Api.Migrations
                         .HasColumnType("timestamp with time zone");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
                     b.Property<int?>("DeliveryAddressId")
                         .HasColumnType("integer");
 =======
@@ -202,10 +205,13 @@ namespace Api.Migrations
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("integer");
+<<<<<<< HEAD
 =======
                     b.Property<string>("PickupAddress")
                         .HasColumnType("text");
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
 
                     b.Property<string>("PickupType")
                         .HasColumnType("text");

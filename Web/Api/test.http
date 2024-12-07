@@ -27,10 +27,17 @@ GET https://localhost:7216/api/order/getall
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
 ###
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
+
+###
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 
 ###
+<<<<<<< HEAD
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
+=======
+POST https://localhost:7216/hub/notification/negotiate
+>>>>>>> d23f0ab (transaction, order, notification commit)
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/notification
@@ -42,6 +49,7 @@ Content-Type: application/json
 }
 
 ###
+<<<<<<< HEAD
 GET https://localhost:7216/api/order/get/395
 
 ###
@@ -127,3 +135,9 @@ GET https://localhost:7216/api/vendorcategory/vendors/2
 =======
  
 >>>>>>> 66834e5 (add signalR to the project)
+=======
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+
+
+ 
+>>>>>>> d23f0ab (transaction, order, notification commit)

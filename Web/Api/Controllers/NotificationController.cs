@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Api.Services;
+<<<<<<< HEAD
 using Api.Interfaces;
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
 using Api.DTO;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,6 +17,7 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class NotificationController : ControllerBase
     {
+<<<<<<< HEAD
        // private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IFcmService _fcmService;
 
@@ -58,6 +62,20 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
            
+=======
+        private readonly IHubContext<NotificationHub> _hubContext;
+
+        public NotificationController(IHubContext<NotificationHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendNotification([FromBody] NotificationRequest request)
+        {
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", request.Title, request.Message);
+            return Ok();
+>>>>>>> d23f0ab (transaction, order, notification commit)
         }
 
     }

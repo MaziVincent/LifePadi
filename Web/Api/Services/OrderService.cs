@@ -11,11 +11,14 @@ using Api.Exceptions;
 using Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+<<<<<<< HEAD
 =======
 >>>>>>> 28d4101 (finished with rider and order)
 =======
 using Api.Exceptions;
 >>>>>>> 52db56c (made some changes in the delivery and order)
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
 
 namespace Api.Services
 {
@@ -25,6 +28,7 @@ namespace Api.Services
         private readonly IMapper _mapper;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         private readonly IFcmService _fcmService;
         // private readonly UpdateOrderAmount updateOrderAmount;
         public OrderService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
@@ -32,6 +36,15 @@ namespace Api.Services
             _dbContext = dBContext;
             _mapper = mapper;
             _fcmService = fcmService;
+=======
+        private readonly IHubContext<NotificationHub> _hubContext;
+        // private readonly UpdateOrderAmount updateOrderAmount;
+        public OrderService(DBContext dBContext, IMapper mapper, IHubContext<NotificationHub> hubContext)
+        {
+            _dbContext = dBContext;
+            _mapper = mapper;
+            _hubContext = hubContext;
+>>>>>>> d23f0ab (transaction, order, notification commit)
             // updateOrderAmount = new UpdateOrderAmount(dBContext);
         }
         public async Task<PagedList<Order>> allAsync(SearchPaging props)
@@ -195,11 +208,14 @@ namespace Api.Services
                              item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
                              item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                             item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
+<<<<<<< HEAD
                         }
 
                         var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == item.Id);
                         if(transaction != null){
                             item.PaymentChannel = transaction.PaymentChannel;
+=======
+>>>>>>> d23f0ab (transaction, order, notification commit)
                         }
                     }
                     orderList = orderList.Concat(singleOrderDto);
@@ -329,7 +345,11 @@ namespace Api.Services
                 var delivery = await _dbContext.Deliveries
                 .Include(d => d.DeliveryAddress)
                 .Include(d => d.PickUpAddress)
+<<<<<<< HEAD
                 .Include(d => d.Rider).ThenInclude(r => r!.Addresses)
+=======
+                .Include(d => d.Rider)
+>>>>>>> d23f0ab (transaction, order, notification commit)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
@@ -339,6 +359,7 @@ namespace Api.Services
                     OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
                     OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
                     OrderDto.DeliveryFee = delivery.DeliveryFee;
+<<<<<<< HEAD
 
                     if (delivery.Rider is not null) {
                         OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
@@ -352,6 +373,9 @@ namespace Api.Services
                         }
                     }
                    
+=======
+                    OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
+>>>>>>> d23f0ab (transaction, order, notification commit)
                 }
                 return OrderDto;
             }
@@ -759,6 +783,7 @@ namespace Api.Services
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
 <<<<<<< HEAD
+<<<<<<< HEAD
                     string Topic = $"order-{order.CustomerId}";
                     string Title = $"Order Completed ";
                     string Body = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
@@ -773,6 +798,12 @@ namespace Api.Services
 =======
                     
 >>>>>>> 66834e5 (add signalR to the project)
+=======
+                    string Title = $"Order Completed ";
+                    string Message = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
+                    await _hubContext.Clients.All.SendAsync("ReceiveNotification", Title, Message);
+
+>>>>>>> d23f0ab (transaction, order, notification commit)
                 }
 
                 await _dbContext.SaveChangesAsync();
