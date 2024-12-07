@@ -5,6 +5,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Api.Exceptions;
 using Api.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Api.Services
 {
@@ -12,12 +14,14 @@ namespace Api.Services
     {
         private readonly DBContext? _dbContext;
         private readonly IMapper _mapper;
-        private readonly UpdateOrderAmount updateOrderAmount;
-        public OrderService(DBContext dBContext, IMapper mapper)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        // private readonly UpdateOrderAmount updateOrderAmount;
+        public OrderService(DBContext dBContext, IMapper mapper, IHubContext<NotificationHub> hubContext)
         {
             _dbContext = dBContext;
             _mapper = mapper;
-            updateOrderAmount = new UpdateOrderAmount(dBContext);
+            _hubContext = hubContext;
+            // updateOrderAmount = new UpdateOrderAmount(dBContext);
         }
         public async Task<PagedList<Order>> allAsync(SearchPaging props)
         {
@@ -30,10 +34,11 @@ namespace Api.Services
                .Include(o => o.OrderItems)
                .AsSplitQuery()
                .OrderByDescending(o => o.CreatedAt)
+               .AsSplitQuery()
                .ToListAsync();
                 orderList = orderList.Concat(_orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
-                updateOrderAmount.OrderAmount();
+               
                 return result;
             }
             catch (Exception ex)
@@ -103,11 +108,17 @@ namespace Api.Services
                     var singleOrderDto = _mapper.Map<List<SingleOrderDto>>(normalOrders);
                     foreach (var item in singleOrderDto)
                     {
-                        var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
+                        var delivery = await _dbContext.Deliveries
+                        .Include(d => d.Rider)
+                        .Include(d => d.DeliveryAddress)
+                        .Include(d => d.PickUpAddress)
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync(d => d.OrderId == item.Id);
                         if (delivery != null)
                         {
                              item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
                              item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
+                            item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                         }
                     }
                     orderList = orderList.Concat(singleOrderDto);
@@ -124,11 +135,17 @@ namespace Api.Services
                 var newSingleOrderDto = _mapper.Map<List<SingleOrderDto>>(orders);
                 foreach (var item in newSingleOrderDto)
                 {
-                    var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == item.Id);
+                    var delivery = await _dbContext.Deliveries
+                    .Include(d => d.Rider)
+                    .Include(d => d.DeliveryAddress)
+                    .Include(d => d.PickUpAddress)
+                    .AsSplitQuery()
+                    .FirstOrDefaultAsync(d => d.OrderId == item.Id);
                     if (delivery != null)
                     {
                         item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
                         item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
+                        item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                     }
                 }
                 orderList = orderList.Concat(newSingleOrderDto);
@@ -177,6 +194,8 @@ namespace Api.Services
                 var delivery = await _dbContext.Deliveries
                 .Include(d => d.DeliveryAddress)
                 .Include(d => d.PickUpAddress)
+                .Include(d => d.Rider)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
                 var OrderDto = _mapper.Map<SingleOrderDto>(order);
@@ -185,6 +204,7 @@ namespace Api.Services
                     OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
                     OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
                     OrderDto.DeliveryFee = delivery.DeliveryFee;
+                    OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                 }
                 return OrderDto;
             }
@@ -373,7 +393,10 @@ namespace Api.Services
                 if(status == "Completed"){
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
-                    
+                    string Title = $"Order Completed ";
+                    string Message = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
+                    await _hubContext.Clients.All.SendAsync("ReceiveNotification", Title, Message);
+
                 }
 
                 await _dbContext.SaveChangesAsync();

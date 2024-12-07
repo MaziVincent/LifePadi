@@ -106,6 +106,7 @@ app.UseRouting();
 app.UseCors("AllowAllOrigin");
 
 app.MapHub<LocationHub>("/hubs/location");
+app.MapHub<NotificationHub>("/hubs/notification");
 
 
 app.UseAuthentication();

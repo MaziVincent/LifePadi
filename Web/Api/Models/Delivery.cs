@@ -19,8 +19,6 @@ namespace Api.Models
         public Order? Order { get; set; }
         public int? RiderId { get; set; }
         public Rider? Rider { get; set; }
-        public string? DelAddress { get; set; }
-        public string? PickupAddress { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }

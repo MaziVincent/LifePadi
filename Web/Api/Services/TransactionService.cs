@@ -350,12 +350,12 @@ namespace Api.Services
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                var redirect_url = _config["Base_Url:Remote"] + "/transaction/paystack-confirmPayment";
+                var redirect_url = _config["Base_Url:Remote_GCP"] + "/transaction/paystack-confirmPayment";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var payload = new
                 {
                     email = order.Customer!.Email,
-                    amount = initiatePaymentDto.TotalAmount * 100,
+                    amount = Math.Round(initiatePaymentDto.TotalAmount * 100, 1),
                     reference = tx_ref,
                     callback_url = redirect_url,
                     metadata = customerData

@@ -61,6 +61,7 @@ namespace Api.DTO
         public AddressDtoLite? DeliveryAddress { get; set; }
         public AddressDtoLite? PickUpAddress { get; set; }
         public List<LogisticDto>? Logistics { get; set; }
+        public RiderDtoLite? Rider { get; set; }
         
         public DateTime CreatedAt { get; set; } 
         public DateTime UpdatedAt { get; set; } 

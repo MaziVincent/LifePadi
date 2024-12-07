@@ -38,7 +38,7 @@ namespace Api.DTO
     public class InitiatePaymentDto
     {
         public double Amount { get; set; }
-        public double? TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
         public double DeliveryFee { get; set; }
         public int OrderId { get; set; }
         public string? VoucherCode { get; set; }

@@ -141,7 +141,7 @@ namespace Api.Services
                     .ThenInclude(o => o!.Customer)
                     .Include(d => d.Rider)
                     .Include(a => a.DeliveryAddress)
-                    .Include(a => a.PickupAddress)
+                    .Include(a => a.PickUpAddress)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
@@ -231,7 +231,7 @@ namespace Api.Services
                         .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
                         .OrderByDescending(d => d.CreatedAt)
-                        .Where(d => d.RiderId == riderId && d.PickupAddress!.ToLower().Contains(props.SearchString.ToLower()))
+                        .Where(d => d.RiderId == riderId )
                         .ToListAsync();
                     deliveryList = deliveryList.Concat(_mapper.Map<List<DeliveryDto>>(deliveries));
                     var result = PagedList<DeliveryDto>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
@@ -435,7 +435,6 @@ namespace Api.Services
                 var initialDelivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
                 if (initialDelivery == null) return null!;
                 initialDelivery.DeliveryFee = delivery.DeliveryFee;
-                initialDelivery.PickupAddress = delivery.PickupAddress;
                 initialDelivery.RiderId = delivery.RiderId;
                 initialDelivery.OrderId = delivery.OrderId;
                 initialDelivery.UpdatedAt = DateTime.UtcNow;

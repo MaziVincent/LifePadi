@@ -5,7 +5,6 @@ namespace Api.DTO
     public class DeliveryDto
     {
         public int Id { get; set; }
-        public string? PickupAddress { get; set; }
         public int? PickupAddressId { get; set; }
         public AddressDto? PickUpAddress {get; set;}
         public string? PickupType { get; set; }
@@ -15,7 +14,6 @@ namespace Api.DTO
         public OrderDto? Order { get; set; }
         public int? RiderId { get; set; }
         public RiderDtoLite? Rider { get; set; }
-        public string? DelAddress { get; set;}
         public int? DeliveryAddressId { get; set; }
         public AddressDto? DeliveryAddress { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

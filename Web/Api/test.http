@@ -23,6 +23,25 @@ GET https://localhost:7216/api/order/get/367
 GET https://localhost:7216/api/order/getall
 
 ###
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
+
+###
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
+
+###
+POST https://localhost:7216/hub/notification/negotiate
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/api/notification
+Content-Type: application/json
+
+{
+    "Title":"Small notification",
+    "Message":"something something"
+}
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+
 
  
