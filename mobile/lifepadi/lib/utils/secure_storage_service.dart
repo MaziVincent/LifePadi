@@ -2,11 +2,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Handles data related to flutter secure storage
 class SecureStorageService {
-  final _storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+  final _storage = FlutterSecureStorage(
+    aOptions: _getAndroidOptions(),
+    iOptions: _getIOSOptions(),
+  );
 
   static AndroidOptions _getAndroidOptions() => const AndroidOptions(
         encryptedSharedPreferences: true,
         sharedPreferencesName: 'FSS',
+      );
+
+  static IOSOptions _getIOSOptions() => const IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock,
       );
 
   /// Add one item - key/value pairs

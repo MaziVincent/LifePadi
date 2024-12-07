@@ -44,7 +44,10 @@ class _RiderPageState extends ConsumerState<RiderPage> {
     }
 
     // Setup SignalR
-    hubConnection = HubConnectionBuilder().withUrl(kSignalRUrl).build();
+    hubConnection = HubConnectionBuilder()
+        .withUrl(kSignalRLocation)
+        .withAutomaticReconnect()
+        .build();
 
     try {
       await hubConnection?.start();

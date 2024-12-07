@@ -34,7 +34,7 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
 
   Future<void> setupSignalR() async {
     hubConnection = HubConnectionBuilder()
-        .withUrl(kSignalRUrl)
+        .withUrl(kSignalRLocation)
         .withAutomaticReconnect()
         .build();
 

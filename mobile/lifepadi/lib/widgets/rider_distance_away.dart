@@ -35,7 +35,7 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
 
   Future<void> setupRiderLocation() async {
     hubConnection = HubConnectionBuilder()
-        .withUrl(kSignalRUrl)
+        .withUrl(kSignalRLocation)
         .withAutomaticReconnect()
         .build();
 

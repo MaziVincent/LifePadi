@@ -11,6 +11,7 @@ import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/state/product.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/state/wishlist.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -25,7 +26,6 @@ part 'auth_controller.g.dart';
 @riverpod
 class AuthController extends _$AuthController {
   final SecureStorageService _secureStorage = SecureStorageService();
-  final _credentialsKey = 'currentUser';
 
   @override
   Future<User> build() async {
@@ -52,14 +52,14 @@ class AuthController extends _$AuthController {
   /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
   Future<User> _loginRecoveryAttempt() async {
     try {
-      final credentials = await _secureStorage.get(_credentialsKey);
+      final credentials = await _secureStorage.get(kCredentialsKey);
       if (credentials == null) {
         throw const UnauthorizedException('No credentials found');
       }
 
       return UserMapper.fromJson(credentials);
     } catch (_, __) {
-      await _secureStorage.remove(_credentialsKey);
+      await _secureStorage.remove(kCredentialsKey);
       return Future.value(const Guest());
     }
   }
@@ -81,7 +81,7 @@ class AuthController extends _$AuthController {
       ..invalidate(vendorProductsProvider)
       ..invalidate(wishlistProvider);
 
-    await _secureStorage.remove(_credentialsKey);
+    await _secureStorage.remove(kCredentialsKey);
     state = const AsyncData(Guest());
   }
 
@@ -129,7 +129,7 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> _saveDetailsToStorage(User user) async => _secureStorage.add(
-        key: _credentialsKey,
+        key: kCredentialsKey,
         value: user.toJson(),
       );
 
@@ -141,7 +141,7 @@ class AuthController extends _$AuthController {
     listenSelf((_, next) {
       if (next.isLoading) return;
       if (next.hasError) {
-        _secureStorage.remove(_credentialsKey).ignore();
+        _secureStorage.remove(kCredentialsKey).ignore();
         return;
       }
 
@@ -149,7 +149,7 @@ class AuthController extends _$AuthController {
       if (user.isAuth) {
         _saveDetailsToStorage(user).ignore();
       } else {
-        _secureStorage.remove(_credentialsKey).ignore();
+        _secureStorage.remove(kCredentialsKey).ignore();
       }
     });
   }

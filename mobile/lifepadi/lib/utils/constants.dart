@@ -40,8 +40,11 @@ const kRadialGradient = RadialGradient(
 
 const kRemoteApiUrl = 'https://lifepadi-948405839190.us-east1.run.app/api';
 
-const kSignalRUrl =
+const kSignalRLocation =
     'https://lifepadi-948405839190.us-east1.run.app/hubs/location';
+
+const kSignalRNotification =
+    'https://lifepadi-948405839190.us-east1.run.app/hubs/notification';
 
 /// The cache time for the app on test
 final kTestCacheTime = 10.seconds;
@@ -66,3 +69,9 @@ final kTileDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(8.r),
   border: Border.all(color: const Color(0xFFE5E5E5)),
 );
+
+const String kCredentialsKey = 'currentUser';
+
+// Background tasks
+const kPingRider = 'lifepadi.pingRider';
+const kCustomerNotification = 'lifepadi.customerNotification';

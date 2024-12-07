@@ -59,6 +59,10 @@ dependencies:
   awesome_notifications: ^0.10.0
   # Awesome plugins for remote push notifications
   awesome_notifications_fcm: ^0.10.0
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      ref: b783000
 
 dev_dependencies:
   build_runner: ^2.4.12

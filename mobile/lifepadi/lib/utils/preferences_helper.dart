@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferencesHelper {
   static SharedPreferences? _prefs;
   static final Map<String, dynamic> _memoryPrefs = {};
+  static const String _notificationsKey = 'notifications';
 
   static Future<void> load() async {
     _prefs ??= await SharedPreferences.getInstance();
@@ -121,5 +122,20 @@ class PreferencesHelper {
   static Future<void> clear() async {
     await _prefs!.clear();
     _memoryPrefs.clear();
+  }
+
+  static Future<void> saveNotification(
+    Map<String, dynamic> notification,
+  ) async {
+    final notifications = getNotifications()..add(notification);
+    await _prefs!.setString(_notificationsKey, jsonEncode(notifications));
+  }
+
+  static List<Map<String, dynamic>> getNotifications() {
+    final notificationsJson = _prefs!.getString(_notificationsKey);
+    if (notificationsJson == null) return [];
+
+    final decoded = jsonDecode(notificationsJson) as List;
+    return decoded.cast<Map<String, dynamic>>();
   }
 }
