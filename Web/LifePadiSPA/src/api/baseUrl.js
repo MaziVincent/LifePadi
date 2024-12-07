@@ -120,6 +120,7 @@ const baseUrl = 'https://localhost:7216/api/'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9bb5b03 (still working on register)
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
@@ -174,6 +175,9 @@ const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.o
 <<<<<<< HEAD
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 >>>>>>> 151e6be (baseurl)
+=======
+const baseUrl = "https://lifepadi-948405839190.us-east1.run.app/api/";
+>>>>>>> 23710e2 (base)
 //const baseUrl ='https://localhost:7216/api/'
 =======
 //const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
