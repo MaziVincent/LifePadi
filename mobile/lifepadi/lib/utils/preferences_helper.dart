@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:lifepadi/models/notification.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
   static SharedPreferences? _prefs;
   static final Map<String, dynamic> _memoryPrefs = {};
-  static const String _notificationsKey = 'notifications';
 
   static Future<void> load() async {
     _prefs ??= await SharedPreferences.getInstance();
@@ -138,11 +138,11 @@ class PreferencesHelper {
     );
     final notifications = getNotifications()..add(notification);
     final jsonList = notifications.map((n) => n.toMap()).toList();
-    await _prefs!.setString(_notificationsKey, jsonEncode(jsonList));
+    await _prefs!.setString(kNotificationKey, jsonEncode(jsonList));
   }
 
   static List<Notification> getNotifications() {
-    final notificationsJson = _prefs!.getString(_notificationsKey);
+    final notificationsJson = _prefs!.getString(kNotificationKey);
     if (notificationsJson == null) return [];
 
     try {
@@ -158,6 +158,6 @@ class PreferencesHelper {
 
   /// Clear all the notifications
   static Future<void> clearNotifications() async {
-    await _prefs!.remove(_notificationsKey);
+    await _prefs!.remove(kNotificationKey);
   }
 }

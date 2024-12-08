@@ -9,7 +9,8 @@ class Notification with NotificationMappable {
     required this.title,
     required this.body,
     required this.route,
-  }) : createdAt = DateTime.now();
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
 
   final int id;
   final String title;

@@ -82,6 +82,30 @@ extension ReadableDateTime on DateTime {
   String get shortMonth {
     return DateFormat.MMM().format(this);
   }
+
+  /// Time ago in words.
+  /// e.g. 5m ago, 1h ago, 2d ago, etc.
+  /// 13th Jun for very old dates
+  /// 13th Jun, 2023 for dates in the past year
+  String timeAgo({bool withoutAgo = false}) {
+    final now = DateTime.now();
+    final difference = now.difference(this);
+    final suffix = withoutAgo ? '' : ' ago';
+
+    if (difference.inMinutes < 1) {
+      return 'now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes}m$suffix';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours}h$suffix';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d$suffix';
+    } else if (difference.inDays < 365) {
+      return DateFormat('d MMM').format(this);
+    } else {
+      return DateFormat('d MMM, yyyy').format(this);
+    }
+  }
 }
 
 extension ListRepetition<T> on List<T> {

@@ -14,6 +14,7 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -83,7 +84,7 @@ class HomePage extends HookConsumerWidget {
           MyIconButton(
             onPressed: () => context.go(NotificationRoute().location),
             icon: MdiIcons.bellBadgeOutline,
-            showBadge: true,
+            showBadge: PreferencesHelper.getNotifications().isNotEmpty,
           ),
         ],
       ),
