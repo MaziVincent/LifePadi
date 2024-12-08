@@ -73,6 +73,7 @@ builder.Services.AddScoped<IFavourite, FavouriteService>();
 builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
+builder.Services.AddScoped<IFcmService, FcmService>();
 
 
 builder.Services.AddSignalR();

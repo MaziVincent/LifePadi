@@ -29,7 +29,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNum
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 
 ###
-POST https://localhost:7216/hub/notification/negotiate
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/notification
@@ -42,6 +42,17 @@ Content-Type: application/json
 
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+
+###
+
+POST https://localhost:7216/api/notification/sendgeneral
+Content-Type: application/json
+
+{
+    "Topic":"General Notification",
+    "Title":"Small notification",
+    "Body":"something something"
+}
 
 
  
