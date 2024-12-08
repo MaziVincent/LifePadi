@@ -14,6 +14,7 @@ import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -57,6 +58,9 @@ class AuthController extends _$AuthController {
         throw const UnauthorizedException('No credentials found');
       }
 
+      await NotificationUtils.susbcribeToTopic(
+        'orders-${UserMapper.fromJson(credentials).id}',
+      );
       return UserMapper.fromJson(credentials);
     } catch (_, __) {
       await _secureStorage.remove(kCredentialsKey);
@@ -82,6 +86,9 @@ class AuthController extends _$AuthController {
       ..invalidate(wishlistProvider);
 
     await _secureStorage.remove(kCredentialsKey);
+    await NotificationUtils.unsuscribeFromTopic(
+      'orders-${state.requireValue.id}',
+    );
     state = const AsyncData(Guest());
   }
 
@@ -122,6 +129,7 @@ class AuthController extends _$AuthController {
       if (hasEverLoggedIn == null) {
         await PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
       }
+      await NotificationUtils.susbcribeToTopic('orders-${user.id}');
       state = AsyncData(user);
     } catch (e) {
       rethrow;

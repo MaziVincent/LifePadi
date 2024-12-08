@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:lifepadi/models/notification.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -124,18 +125,39 @@ class PreferencesHelper {
     _memoryPrefs.clear();
   }
 
-  static Future<void> saveNotification(
-    Map<String, dynamic> notification,
-  ) async {
+  static Future<void> saveNotification({
+    required String title,
+    required String body,
+    required String? route,
+  }) async {
+    final notification = Notification(
+      id: DateTime.now().millisecondsSinceEpoch,
+      title: title,
+      body: body,
+      route: route,
+    );
     final notifications = getNotifications()..add(notification);
-    await _prefs!.setString(_notificationsKey, jsonEncode(notifications));
+    final jsonList = notifications.map((n) => n.toMap()).toList();
+    await _prefs!.setString(_notificationsKey, jsonEncode(jsonList));
   }
 
-  static List<Map<String, dynamic>> getNotifications() {
+  static List<Notification> getNotifications() {
     final notificationsJson = _prefs!.getString(_notificationsKey);
     if (notificationsJson == null) return [];
 
-    final decoded = jsonDecode(notificationsJson) as List;
-    return decoded.cast<Map<String, dynamic>>();
+    try {
+      final decoded = jsonDecode(notificationsJson) as List<dynamic>;
+      return decoded
+          .map((e) => Notification.fromMap(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      logger.e('Error parsing notifications: $e');
+      return [];
+    }
+  }
+
+  /// Clear all the notifications
+  static Future<void> clearNotifications() async {
+    await _prefs!.remove(_notificationsKey);
   }
 }
