@@ -81,4 +81,3 @@ const String kCredentialsKey = 'currentUser';
 
 // Background tasks
 const kPingRider = 'lifepadi.pingRider';
-const kCustomerNotification = 'lifepadi.customerNotification';

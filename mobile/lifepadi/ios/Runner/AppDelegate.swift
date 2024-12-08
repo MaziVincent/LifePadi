@@ -24,8 +24,6 @@ import flutter_secure_storage
     }
 
     WorkmanagerPlugin.registerPeriodicTask(withIdentifier: "lifepadi.pingRider", frequency: NSNumber(value: 5 * 60))
-
-    WorkmanagerPlugin.registerPeriodicTask(withIdentifier: "lifepadi.customerNotification", frequency: NSNumber(value: 3 * 60))
     
     // This function registers the desired plugins to be used within a notification background action
     SwiftAwesomeNotificationsPlugin.setPluginRegistrantCallback { registry in          

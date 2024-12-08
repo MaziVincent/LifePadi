@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/theme/theme.dart';
+import 'package:lifepadi/utils/background.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
@@ -27,6 +30,25 @@ void main() async {
   await NotificationUtils.listenForFcmNotifications();
 
   await NotificationUtils.susbcribeToTopic('general');
+
+  final workmanager = Workmanager();
+
+  // Initialize Workmanager
+  await workmanager.initialize(
+    bgCallbackDispatcher,
+    isInDebugMode: true,
+  );
+
+  await workmanager.registerPeriodicTask(
+    kPingRider,
+    kPingRider,
+    frequency: const Duration(minutes: 5),
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+    ),
+    existingWorkPolicy: ExistingWorkPolicy.replace,
+    backoffPolicy: BackoffPolicy.exponential,
+  );
 
   runApp(
     const ProviderScope(
