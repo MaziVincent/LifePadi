@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -66,18 +67,36 @@ class NotificationPage extends HookWidget {
                 ),
               ]
             : notifications.value.reversed.map((notification) {
-                return NotificationTile(
-                  title: notification.title,
-                  description: notification.body,
-                  time: notification.createdAt.timeAgo(withoutAgo: true),
-                  primaryAction: notification.route != null
-                      ? (
-                          text: 'View',
-                          onTap: () {
-                            context.push(notification.route!);
-                          },
-                        )
-                      : null,
+                return Dismissible(
+                  key: ValueKey(notification.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 20.w),
+                    color: Colors.red,
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                  onDismissed: (_) async {
+                    notifications.value = notifications.value
+                        .where((n) => n.id != notification.id)
+                        .toList();
+                    await PreferencesHelper.saveNotifications(
+                      notifications.value,
+                    );
+                  },
+                  child: NotificationTile(
+                    title: notification.title,
+                    description: notification.body,
+                    time: notification.createdAt.timeAgo(withoutAgo: true),
+                    primaryAction: notification.route != null
+                        ? (
+                            text: 'View',
+                            onTap: () {
+                              context.push(notification.route!);
+                            },
+                          )
+                        : null,
+                  ),
                 );
               }).toList(),
       ),

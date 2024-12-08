@@ -137,8 +137,13 @@ class PreferencesHelper {
       route: route,
     );
     final notifications = getNotifications()..add(notification);
-    final jsonList = notifications.map((n) => n.toMap()).toList();
-    await _prefs!.setString(kNotificationKey, jsonEncode(jsonList));
+    await _prefs!.setString(kNotificationKey, jsonEncode(notifications));
+  }
+
+  static Future<void> saveNotifications(
+    List<Notification> notifications,
+  ) async {
+    await _prefs!.setString(kNotificationKey, jsonEncode(notifications));
   }
 
   static List<Notification> getNotifications() {
@@ -147,9 +152,7 @@ class PreferencesHelper {
 
     try {
       final decoded = jsonDecode(notificationsJson) as List<dynamic>;
-      return decoded
-          .map((e) => Notification.fromMap(e as Map<String, dynamic>))
-          .toList();
+      return decoded.map((e) => Notification.fromJson(e as String)).toList();
     } catch (e) {
       logger.e('Error parsing notifications: $e');
       return [];
