@@ -74,15 +74,7 @@ class EditProfilePage extends HookConsumerWidget {
             gender: gender,
           );
         },
-        error: (error, _) => Center(
-          child: Text(
-            error.toString(),
-            style: context.textTheme.bodyMedium?.copyWith(
-              color: kDarkPrimaryColor,
-              fontSize: 16.sp,
-            ),
-          ),
-        ),
+        error: (error, _) => MyErrorWidget(error: error),
         loading: () => const Center(child: GreenyLoadingWheel()),
       ),
     );

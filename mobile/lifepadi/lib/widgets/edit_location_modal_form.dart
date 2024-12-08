@@ -89,17 +89,7 @@ class EditLocationModalForm extends HookConsumerWidget {
                     },
                   ),
               ].separatedBy(16.verticalSpace),
-            AsyncError(:final error) => [
-                Center(
-                  child: Text(
-                    error.toString(),
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: kDarkPrimaryColor,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
+            AsyncError(:final error) => [MyErrorWidget(error: error)],
             _ => [const Center(child: GreenyLoadingWheel())],
           },
           16.verticalSpace,

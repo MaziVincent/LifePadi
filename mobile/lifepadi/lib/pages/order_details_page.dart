@@ -59,16 +59,7 @@ class OrderDetailsPage extends ConsumerWidget {
       body: Stack(
         children: [
           switch (orderAsync) {
-            AsyncError(:final error) => Center(
-                child: Text(
-                  error.toString(),
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF27272A),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
+            AsyncError(:final error) => MyErrorWidget(error: error),
             AsyncData(value: final order) => switch (userAsync) {
                 AsyncData(value: final user) => OrderDetailsContent(
                     order: order,

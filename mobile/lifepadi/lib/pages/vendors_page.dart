@@ -22,7 +22,7 @@ class VendorsPage extends ConsumerWidget {
       body: Padding(
         padding: kHorizontalPadding.copyWith(top: 8.h),
         child: switch (vendors) {
-          AsyncError(:final error) => Text(error.toString()),
+          AsyncError(:final error) => MyErrorWidget(error: error),
           AsyncData(value: final vendors) => GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,

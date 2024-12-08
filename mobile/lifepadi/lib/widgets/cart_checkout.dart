@@ -25,15 +25,7 @@ class CartCheckout extends ConsumerWidget {
 
     return switch (cart) {
       AsyncData(:final value) => _CartCheckoutContent(cart: value, ref: ref),
-      AsyncError(:final error) => Center(
-          child: Text(
-            error.toString(),
-            style: context.textTheme.bodyLarge?.copyWith(
-              color: kDarkPrimaryColor,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
+      AsyncError(:final error) => MyErrorWidget(error: error),
       _ => const Center(child: GreenyLoadingWheel()),
     };
   }

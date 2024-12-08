@@ -42,16 +42,7 @@ class ProductDetailsPage extends ConsumerWidget {
         ],
       ),
       body: switch (product) {
-        AsyncError(:final error) => Center(
-            child: Text(
-              error.toString(),
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: kDarkTextColor,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
+        AsyncError(:final error) => MyErrorWidget(error: error),
         AsyncData(:final value) => _ProductDetailsContent(product: value),
         _ => const Center(child: GreenyLoadingWheel()),
       },

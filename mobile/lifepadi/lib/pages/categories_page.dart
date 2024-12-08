@@ -24,7 +24,7 @@ class CategoriesPage extends ConsumerWidget {
       body: Padding(
         padding: kHorizontalPadding.copyWith(top: 8.h),
         child: switch (categories) {
-          AsyncError(:final error) => Text(error.toString()),
+          AsyncError(:final error) => MyErrorWidget(error: error),
           AsyncData(value: final categories) => GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,

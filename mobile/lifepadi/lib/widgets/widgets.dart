@@ -36,6 +36,7 @@ export 'logo_with_name.dart';
 export 'mock_products_skeleton.dart';
 export 'my_app_bar.dart';
 export 'my_divider.dart';
+export 'my_error_widget.dart';
 export 'my_order_list.dart';
 export 'notification_tile.dart';
 export 'onboarding_feature.dart';

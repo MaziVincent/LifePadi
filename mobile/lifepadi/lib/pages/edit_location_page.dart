@@ -151,15 +151,7 @@ class EditLocationPage extends HookConsumerWidget {
               );
             },
             loading: () => const Center(child: GreenyLoadingWheel()),
-            error: (error, _) => Center(
-              child: Text(
-                error.toString(),
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: kDarkPrimaryColor,
-                  fontSize: 16.sp,
-                ),
-              ),
-            ),
+            error: (error, _) => MyErrorWidget(error: error),
           ),
           if (oldLocation is AsyncData<LocationDetails>)
             // Center marker

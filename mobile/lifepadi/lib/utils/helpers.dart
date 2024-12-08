@@ -201,23 +201,7 @@ Future<void> handleError(
   dynamic error,
   BuildContext? context,
 ) async {
-  String? title;
-  var description = error.toString();
-
-  if (error is DioException) {
-    title = switch (error.error) {
-      final Exception e when e is SocketException => 'No Internet Connection',
-      final Exception e when e is InvalidDiscountCodeException =>
-        'Invalid Discount Code',
-      _ => null,
-    };
-
-    description = error.error is SocketException
-        ? 'Please check your internet connection and try again'
-        : error.response?.data.toString() ?? // Has a response
-            error.message ?? // Dio Exception
-            error.error.toString(); // Not Dio Exception
-  }
+  final (:title, :description) = getErrorInfo(error);
 
   context != null
       ? await displayError(
@@ -269,4 +253,26 @@ Product makeFakeProduct({required int id}) {
       icon: 'http://${BoneMock.city}',
     ),
   );
+}
+
+({String title, String description}) getErrorInfo(dynamic error) {
+  var title = 'An error occured';
+  var description = error.toString();
+
+  if (error is DioException) {
+    title = switch (error.error) {
+      final Exception e when e is SocketException => 'No Internet Connection',
+      final Exception e when e is InvalidDiscountCodeException =>
+        'Invalid Discount Code',
+      _ => 'An error occured',
+    };
+
+    description = error.error is SocketException
+        ? 'Please check your internet connection and try again'
+        : error.response?.data.toString() ?? // Has a response
+            error.message ?? // Dio Exception
+            error.error.toString(); // Not Dio Exception
+  }
+
+  return (title: title, description: description);
 }

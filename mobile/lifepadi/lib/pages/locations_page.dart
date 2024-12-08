@@ -25,15 +25,7 @@ class LocationsPage extends ConsumerWidget {
         onRefresh: () async => ref.refresh(locationsProvider),
         child: switch (locations) {
           AsyncData(:final value) => _LocationsContent(locations: value),
-          AsyncError(:final error) => Center(
-              child: Text(
-                error.toString(),
-                style: context.textTheme.bodyLarge?.copyWith(
-                  color: kDarkPrimaryColor,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+          AsyncError(:final error) => MyErrorWidget(error: error),
           _ => Skeletonizer(
               child: SuperListView(
                 padding: kHorizontalPadding.copyWith(top: 24.h, bottom: 20.h),

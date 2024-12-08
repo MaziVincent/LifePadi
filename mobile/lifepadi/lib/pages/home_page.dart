@@ -87,7 +87,7 @@ class HomePage extends HookConsumerWidget {
       body: SuperListView(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
         children: [
-          // Try searchfield package when implementing this
+          // TODO: Try searchfield package when implementing this
           TextFormField(
             cursorColor: kDarkPrimaryColor,
             decoration: InputDecoration(
@@ -133,10 +133,9 @@ class HomePage extends HookConsumerWidget {
           16.verticalSpace,
           const SectionTitle('Stores and Vendors'),
           16.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: vendors.when(
-              data: (data) => [
+          vendors.when(
+            data: (data) => Row(
+              children: [
                 for (final vendor in data)
                   VendorCard(
                     name: vendor.name,
@@ -154,10 +153,10 @@ class HomePage extends HookConsumerWidget {
                   onTap: () => VendorsRoute().go(context),
                 ),
               ].separatedBy(10.horizontalSpace),
-              error: (error, stackTrace) => [
-                const Text('Woah, something went wrong'),
-              ],
-              loading: () => [
+            ),
+            error: (error, _) => MyErrorWidget(error: error),
+            loading: () => Row(
+              children: [
                 for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
                     child: VendorCard(
@@ -175,10 +174,9 @@ class HomePage extends HookConsumerWidget {
             onSeeAllTap: () => context.go(const ErrandsRoute().location),
           ),
           16.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: errands.when(
-              data: (data) => [
+          errands.when(
+            data: (data) => Row(
+              children: [
                 for (final errand in data)
                   ErrandCard(
                     name: errand.name,
@@ -188,10 +186,10 @@ class HomePage extends HookConsumerWidget {
                     ),
                   ),
               ].separatedBy(10.horizontalSpace),
-              error: (error, stackTrace) => [
-                const Text('Woah, something went wrong'),
-              ],
-              loading: () => [
+            ),
+            error: (error, _) => MyErrorWidget(error: error),
+            loading: () => Row(
+              children: [
                 for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
                     child: ErrandCard(
@@ -251,7 +249,7 @@ class HomePage extends HookConsumerWidget {
                 ],
               );
             },
-            error: (err, _) => const Text("Woah, something's gone wrong"),
+            error: (err, _) => MyErrorWidget(error: err),
             loading: () => Column(
               children: [
                 Skeletonizer(

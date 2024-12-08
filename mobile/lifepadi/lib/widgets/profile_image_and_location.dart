@@ -19,7 +19,7 @@ class ProfileImageAndLocation extends ConsumerWidget {
 
     return switch (user) {
       AsyncData(:final value) => _ProfilePageContent(user: value),
-      AsyncError(:final error) => Text(error.toString()),
+      AsyncError(:final error) => MyErrorWidget(error: error),
       _ => const OrangeyLoadingWheel(),
     };
   }

@@ -65,7 +65,7 @@ class ProfilePage extends HookConsumerWidget {
                   child: switch (user) {
                     AsyncData(:final value) =>
                       _PersonalDetailsContent(user: value),
-                    AsyncError(:final error) => Text(error.toString()),
+                    AsyncError(:final error) => MyErrorWidget(error: error),
                     _ => const GreenyLoadingWheel(),
                   },
                 ),

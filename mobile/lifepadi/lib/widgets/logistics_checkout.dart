@@ -27,15 +27,7 @@ class LogisticsCheckout extends ConsumerWidget {
       AsyncData(:final value) => value != null
           ? _LogisticsCheckoutContent(logistics: value, ref: ref)
           : const Center(child: Text('No logistics found')),
-      AsyncError(:final error) => Center(
-          child: Text(
-            error.toString(),
-            style: context.textTheme.bodyLarge?.copyWith(
-              color: kDarkPrimaryColor,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
+      AsyncError(:final error) => MyErrorWidget(error: error),
       _ => const Center(child: GreenyLoadingWheel()),
     };
   }

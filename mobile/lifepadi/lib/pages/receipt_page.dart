@@ -84,16 +84,7 @@ class ReceiptPage extends StatelessWidget {
 
                   return switch (receipt) {
                     AsyncData(:final value) => _ReceiptContent(receipt: value),
-                    AsyncError(:final error) => Center(
-                        child: Text(
-                          error.toString(),
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: Colors.black,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                    AsyncError(:final error) => MyErrorWidget(error: error),
                     _ => const Center(child: GreenyLoadingWheel()),
                   };
                 },

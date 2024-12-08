@@ -32,7 +32,7 @@ class PrimaryActionButton extends HookWidget {
         await future;
       } catch (exception) {
         if (!context.mounted) return;
-        await showToast('Something went wrong $exception');
+        await handleError(exception, context);
       }
     }
 
