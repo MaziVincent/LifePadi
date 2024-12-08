@@ -34,10 +34,14 @@ POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 
 ###
 <<<<<<< HEAD
+<<<<<<< HEAD
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
 =======
 POST https://localhost:7216/hub/notification/negotiate
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
+>>>>>>> 37744e4 (i added firebse cloud messaging)
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/notification
@@ -137,6 +141,17 @@ GET https://localhost:7216/api/vendorcategory/vendors/2
 >>>>>>> 66834e5 (add signalR to the project)
 =======
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+
+###
+
+POST https://localhost:7216/api/notification/sendgeneral
+Content-Type: application/json
+
+{
+    "Topic":"General Notification",
+    "Title":"Small notification",
+    "Body":"something something"
+}
 
 
  

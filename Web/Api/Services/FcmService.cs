@@ -2,18 +2,26 @@ using Api.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Http;
 using Newtonsoft.Json;
+<<<<<<< HEAD
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using System.Net.Http;
 using System.Text;
 using Api.DTO;
+=======
+using System.Net.Http;
+using System.Text;
+>>>>>>> 37744e4 (i added firebse cloud messaging)
 
 public class FcmService : IFcmService
 {
     private readonly HttpClient _httpClient;
     private readonly string _fcmEndpoint = "https://fcm.googleapis.com/v1/projects/lifepadi-17e8c/messages:send";
     private readonly GoogleCredential _googleCredential;
+<<<<<<< HEAD
     private readonly FirebaseApp _firebaseApp;
+=======
+>>>>>>> 37744e4 (i added firebse cloud messaging)
 
     public FcmService()
     {
@@ -21,7 +29,10 @@ public class FcmService : IFcmService
         _googleCredential = GoogleCredential
             .FromFile("lifepadi-17e8c-firebase.json")
             .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 37744e4 (i added firebse cloud messaging)
     }
 
     public async Task<string> SendNotificationAsync(string targetToken, string title, string body)
@@ -81,11 +92,20 @@ public class FcmService : IFcmService
             Method = HttpMethod.Post,
             RequestUri = new Uri(_fcmEndpoint),
             Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(notification), Encoding.UTF8, "application/json"),
+<<<<<<< HEAD
 
         };
 
         request.Headers.Add("Authorization", $"Bearer {token}");
 
+=======
+            Headers =
+            {
+                { "Authorization", $"Bearer {token}" }
+            }
+        };
+
+>>>>>>> 37744e4 (i added firebse cloud messaging)
         var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
@@ -97,6 +117,7 @@ public class FcmService : IFcmService
             Console.WriteLine($"Error sending notification: {responseBody}");
         }
     }
+<<<<<<< HEAD
 
 
     public async Task<object> SendGeneralNotification(NotificationRequest message)
@@ -149,4 +170,6 @@ public class FcmService : IFcmService
         }
 
     }
+=======
+>>>>>>> 37744e4 (i added firebse cloud messaging)
 }

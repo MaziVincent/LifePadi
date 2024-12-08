@@ -109,9 +109,12 @@ builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 builder.Services.AddScoped<IFcmService, FcmService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
+=======
+>>>>>>> 37744e4 (i added firebse cloud messaging)
 
 
 <<<<<<< HEAD
