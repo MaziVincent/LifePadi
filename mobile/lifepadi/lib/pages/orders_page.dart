@@ -1,8 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/order.dart';
-import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -23,13 +20,10 @@ class OrdersPage extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          actions: [
-            MyIconButton(
-              icon: IconsaxPlusLinear.shopping_cart,
-              onPressed: () => context.push(CartRoute().location),
-            ),
+          actions: const [
+            CartIconWidget(),
           ],
-          height: 126.h,
+          height: 136.h,
           bottom: TabBar(
             tabs: [
               Tab(text: 'Pending', height: 39.h),

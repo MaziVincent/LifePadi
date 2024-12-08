@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/utils/constants.dart';
 
 class MyIconButton extends StatelessWidget {
   const MyIconButton({
@@ -41,7 +42,7 @@ class MyIconButton extends StatelessWidget {
                 width: 6.r,
                 height: 6.r,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFC01212),
+                  color: kDarkPrimaryColor,
                   shape: BoxShape.circle,
                 ),
               ),

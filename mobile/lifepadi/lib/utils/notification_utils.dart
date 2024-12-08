@@ -113,7 +113,7 @@ class NotificationUtils {
     // Terminated
     await FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message != null) {
-        if (message.notification?.title == null) return;
+        if (message.notification == null) return;
         final route = message.data['route'] as String?;
 
         await PreferencesHelper.saveNotification(
@@ -126,7 +126,7 @@ class NotificationUtils {
 
     // Background
     FirebaseMessaging.onBackgroundMessage((message) async {
-      if (message.notification?.title == null) return;
+      if (message.notification == null) return;
       final route = message.data['route'] as String?;
 
       await PreferencesHelper.saveNotification(
@@ -138,7 +138,7 @@ class NotificationUtils {
 
     // Foreground
     FirebaseMessaging.onMessage.listen((message) async {
-      if (message.notification?.title == null) return;
+      if (message.notification == null) return;
       final route = message.data['route'] as String?;
 
       await PreferencesHelper.saveNotification(

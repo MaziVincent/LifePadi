@@ -1,8 +1,6 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/vendor_products.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -35,7 +33,7 @@ class ProductsPage extends HookWidget {
           preferredSize: Size(12.h, double.infinity),
           child: 12.verticalSpace,
         ),
-        height: 87.h,
+        height: 95.h,
         actions: [
           MyIconButton(
             icon: IconsaxPlusLinear.search_normal,
@@ -43,10 +41,7 @@ class ProductsPage extends HookWidget {
               // TODO: Implement products search
             },
           ),
-          MyIconButton(
-            icon: IconsaxPlusLinear.shopping_cart,
-            onPressed: () => context.push(CartRoute().location),
-          ),
+          const CartIconWidget(),
         ],
       ),
       body: Padding(

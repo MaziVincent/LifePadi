@@ -10,6 +10,7 @@ export 'bottom_panel.dart';
 export 'buttons/buttons.dart';
 export 'cart_checkout.dart';
 export 'cart_discount.dart';
+export 'cart_icon_widget.dart';
 export 'cart_item.dart';
 export 'category_card.dart';
 export 'category_pill.dart';

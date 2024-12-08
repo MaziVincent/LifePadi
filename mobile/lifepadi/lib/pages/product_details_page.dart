@@ -2,10 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/product.dart';
@@ -14,8 +12,6 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
-
-import '../router/routes.dart';
 
 class ProductDetailsPage extends ConsumerWidget {
   const ProductDetailsPage({super.key, required this.id});
@@ -28,16 +24,14 @@ class ProductDetailsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: MyAppBar(
+        height: 85.h,
         title: product.when(
           data: (product) => product.name,
           loading: () => 'Loading...',
           error: (error, _) => 'An error occurred',
         ),
         actions: [
-          MyIconButton(
-            icon: IconsaxPlusLinear.shopping_cart,
-            onPressed: () => context.go(CartRoute().location),
-          ),
+          const CartIconWidget(),
           2.horizontalSpace,
           MyIconButton(
             icon: Remix.more_2_fill,
