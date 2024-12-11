@@ -1,13 +1,14 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/location.dart';
-import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/location_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
-import 'package:signalr_netcore/signalr_client.dart';
 
 class RiderDistanceAway extends ConsumerStatefulWidget {
   const RiderDistanceAway({
@@ -31,36 +32,27 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
   );
 
   LatLng? riderLocation;
-  HubConnection? hubConnection;
+  StreamSubscription<RemoteMessage>? _messageSubscription;
 
   Future<void> setupRiderLocation() async {
-    hubConnection = HubConnectionBuilder()
-        .withUrl(kSignalRLocation)
-        .withAutomaticReconnect()
-        .build();
+    await FirebaseMessaging.instance
+        .subscribeToTopic('tracking-${widget.riderId}');
 
-    try {
-      await hubConnection?.start();
-      await hubConnection
-          ?.invoke('SubscribeToRider', args: [widget.riderId.toString()]);
+    _messageSubscription =
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (!mounted) return;
 
-      hubConnection?.on('LocationUpdated', (List<Object?>? args) async {
-        if (args != null && args.isNotEmpty && mounted) {
-          final latitude = args[0]! as double;
-          final longitude = args[1]! as double;
-          final riderId = int.tryParse(args[2]!.toString());
+      final data = message.data;
+      final latitude = double.tryParse(data['Latitude'].toString());
+      final longitude = double.tryParse(data['Longitude'].toString());
 
-          if (riderId != widget.riderId) return;
+      if (latitude == null || longitude == null) return;
 
-          logger.d('[Customer] LocationUpdated: $latitude, $longitude');
-          setState(() {
-            riderLocation = LatLng(latitude, longitude);
-          });
-        }
+      logger.d('[Customer] LocationUpdated: $latitude, $longitude');
+      setState(() {
+        riderLocation = LatLng(latitude, longitude);
       });
-    } catch (e) {
-      logger.e('SignalR connection error', error: e);
-    }
+    });
   }
 
   @override
@@ -71,9 +63,9 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
 
   @override
   void dispose() {
-    hubConnection
-        ?.invoke('UnsubscribeFromRider', args: [widget.riderId.toString()]);
-    hubConnection?.stop();
+    FirebaseMessaging.instance
+        .unsubscribeFromTopic('tracking-${widget.riderId}');
+    _messageSubscription?.cancel();
     super.dispose();
   }
 
