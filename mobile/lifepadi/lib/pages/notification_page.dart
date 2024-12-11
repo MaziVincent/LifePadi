@@ -58,7 +58,7 @@ class NotificationPage extends HookWidget {
             ? [
                 const Center(
                   child: Text(
-                    'No notifications',
+                    'None yet, enjoy the silence😊',
                     style: TextStyle(
                       fontSize: 18,
                       color: kDarkTextColor,
