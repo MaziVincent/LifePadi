@@ -18,7 +18,8 @@ class CartIconWidget extends ConsumerWidget {
     return Badge(
       label: Text(
         cartAsync.when(
-          data: (cart) => cart.products.length.toString(),
+          data: (cart) =>
+              '${cart.products.length < 99 ? cart.products.length : '99+'}',
           error: (_, __) => '0',
           loading: () => '0',
         ),

@@ -33,7 +33,7 @@ class ProductsPage extends HookWidget {
           preferredSize: Size(12.h, double.infinity),
           child: 12.verticalSpace,
         ),
-        height: 95.h,
+        height: 103.h,
         actions: [
           MyIconButton(
             icon: IconsaxPlusLinear.search_normal,

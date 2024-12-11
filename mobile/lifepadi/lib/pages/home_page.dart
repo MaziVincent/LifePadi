@@ -31,7 +31,7 @@ class HomePage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: MyAppBar(
-        height: 85.h,
+        height: 90.h,
         title: Row(
           children: [
             MyIconButton(

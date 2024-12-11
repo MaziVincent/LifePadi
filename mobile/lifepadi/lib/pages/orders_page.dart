@@ -23,7 +23,7 @@ class OrdersPage extends StatelessWidget {
           actions: const [
             CartIconWidget(),
           ],
-          height: 136.h,
+          height: 143.h,
           bottom: TabBar(
             tabs: [
               Tab(text: 'Pending', height: 39.h),

@@ -24,7 +24,7 @@ class ProductDetailsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: MyAppBar(
-        height: 85.h,
+        height: 90.h,
         title: product.when(
           data: (product) => product.name,
           loading: () => 'Loading...',
