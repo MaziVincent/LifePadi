@@ -77,8 +77,8 @@ FutureOr<List<Vendor>> vendorsByServiceId(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = jsonDecode(response.data!) as List<String>;
+  final data = List<JsonMap>.from(jsonDecode(response.data!) as List);
 
   ref.cache();
-  return data.map(VendorMapper.fromJson).toList();
+  return data.map(VendorMapper.fromMap).toList();
 }

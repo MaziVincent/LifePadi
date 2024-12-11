@@ -17,7 +17,6 @@ class MyErrorWidget extends StatelessWidget {
     final (:title, :description) = getErrorInfo(error);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
@@ -28,6 +27,7 @@ class MyErrorWidget extends StatelessWidget {
         Text(
           description,
           style: context.textTheme.bodySmall,
+          textAlign: TextAlign.justify,
         ),
       ].separatedBy(4.verticalSpace),
     );

@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
+import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -22,7 +24,7 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vendors = ref.watch(vendorsProvider(pageSize: 3));
-    final errands = ref.watch(errandsProvider(pageSize: 4));
+    final services = ref.watch(servicesProvider(pageSize: 4));
     final activeCategoryIndex = useState(0);
     final categories = ref.watch(categoriesProvider());
     final locationDetails = ref.watch(currentLocationProvider);
@@ -172,15 +174,18 @@ class HomePage extends HookConsumerWidget {
             onSeeAllTap: () => context.go(const ErrandsRoute().location),
           ),
           16.verticalSpace,
-          errands.when(
+          services.when(
             data: (data) => Row(
               children: [
-                for (final errand in data)
+                for (final service in data)
                   ServiceCard(
-                    name: errand.name,
-                    imageUrl: errand.iconUrl,
+                    name: service.name,
+                    imageUrl: service.iconUrl,
                     onTap: () => context.push(
-                      SingleServiceRoute(id: errand.id).location,
+                      SingleServiceRoute(
+                        id: service.id,
+                        name: service.name,
+                      ).location,
                     ),
                   ),
               ].separatedBy(10.horizontalSpace),

@@ -40,7 +40,8 @@ class VendorsPage extends StatelessWidget {
           /// Vendors by service id
           : Consumer(
               builder: (context, ref, child) {
-                final vendorsAsync = ref.watch(vendorsProvider());
+                final vendorsAsync = ref
+                    .watch(vendorsByServiceIdProvider(serviceId: serviceId!));
 
                 return _VendorsContent(vendorsAsync: vendorsAsync);
               },
