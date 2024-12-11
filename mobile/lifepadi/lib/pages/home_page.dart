@@ -2,12 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
-import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
@@ -178,11 +176,11 @@ class HomePage extends HookConsumerWidget {
             data: (data) => Row(
               children: [
                 for (final errand in data)
-                  ErrandCard(
+                  ServiceCard(
                     name: errand.name,
                     imageUrl: errand.iconUrl,
                     onTap: () => context.push(
-                      SingleErrandRoute(id: errand.id).location,
+                      SingleServiceRoute(id: errand.id).location,
                     ),
                   ),
               ].separatedBy(10.horizontalSpace),
@@ -192,7 +190,7 @@ class HomePage extends HookConsumerWidget {
               children: [
                 for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
-                    child: ErrandCard(
+                    child: ServiceCard(
                       name: BoneMock.name,
                       imageUrl: Assets.icons.cookingGas.path,
                       onTap: () {},

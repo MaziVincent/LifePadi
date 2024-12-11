@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ErrandCard extends StatelessWidget {
-  const ErrandCard({
+class ServiceCard extends StatelessWidget {
+  const ServiceCard({
     super.key,
     required this.name,
     required this.imageUrl,

@@ -1,10 +1,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-part 'errand.mapper.dart';
+part 'service.mapper.dart';
 
 @MappableClass()
-class Errand with ErrandMappable {
-  Errand({
+class Service with ServiceMappable {
+  Service({
     required this.id,
     required this.name,
     required this.iconUrl,

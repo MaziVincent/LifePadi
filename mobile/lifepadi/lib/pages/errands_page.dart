@@ -8,21 +8,21 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ErrandsPage extends ConsumerWidget {
-  const ErrandsPage({super.key});
+class ServicesPage extends ConsumerWidget {
+  const ServicesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final errandsState = ref.watch(errandsProvider());
+    final servicesAsync = ref.watch(servicesProvider());
 
     return Scaffold(
-      appBar: const MyAppBar(title: 'Service Errands'),
+      appBar: const MyAppBar(title: 'Services/Errands'),
       body: RefreshIndicator.adaptive(
-        onRefresh: () => ref.refresh(errandsProvider().future),
+        onRefresh: () async => ref.refresh(servicesProvider().future),
         child: Padding(
           padding: kHorizontalPadding.copyWith(top: 8.h),
-          child: errandsState.when(
-            data: (errands) {
+          child: servicesAsync.when(
+            data: (services) {
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
@@ -30,14 +30,18 @@ class ErrandsPage extends ConsumerWidget {
                   mainAxisSpacing: 10.r,
                   childAspectRatio: 0.6.r,
                 ),
-                itemCount: errands.length,
+                itemCount: services.length,
                 itemBuilder: (context, index) {
-                  final errand = errands[index];
-                  return ErrandCard(
-                    name: errand.name,
-                    imageUrl: errand.iconUrl,
-                    onTap: () =>
-                        context.go(SingleErrandRoute(id: errand.id).location),
+                  final service = services[index];
+                  return ServiceCard(
+                    name: service.name,
+                    imageUrl: service.iconUrl,
+                    onTap: () => context.go(
+                      SingleServiceRoute(
+                        id: service.id,
+                        name: service.name,
+                      ).location,
+                    ),
                   );
                 },
               );
@@ -52,7 +56,7 @@ class ErrandsPage extends ConsumerWidget {
                 ),
                 itemCount: 6,
                 itemBuilder: (context, index) {
-                  return ErrandCard(
+                  return ServiceCard(
                     name: BoneMock.name,
                     imageUrl: Assets.icons.cookingGas.path,
                     onTap: () {},
@@ -67,7 +71,8 @@ class ErrandsPage extends ConsumerWidget {
                   children: [
                     Text('Error: $error'),
                     ElevatedButton(
-                      onPressed: () => ref.refresh(errandsProvider().future),
+                      onPressed: () async =>
+                          ref.refresh(servicesProvider().future),
                       child: const Text('Retry'),
                     ),
                   ],

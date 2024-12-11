@@ -75,7 +75,7 @@ class AuthController extends _$AuthController {
     ref
       ..invalidate(cartStateProvider)
       ..invalidate(categoriesProvider)
-      ..invalidate(errandsProvider())
+      ..invalidate(servicesProvider)
       ..invalidate(locationsProvider)
       ..invalidate(ordersProvider)
       ..invalidate(orderProvider)

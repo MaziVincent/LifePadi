@@ -40,7 +40,7 @@ final GlobalKey<NavigatorState> shellNavigatorKey =
     TypedGoRoute<ErrandsRoute>(
       path: '/errands',
       routes: [
-        TypedGoRoute<SingleErrandRoute>(path: ':id'),
+        TypedGoRoute<SingleServiceRoute>(path: ':id'),
       ],
     ),
     TypedGoRoute<LogisticsRoute>(path: '/logistics'),
@@ -102,7 +102,7 @@ class ErrandsRoute extends GoRouteData {
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return const NoTransitionPage(child: ErrandsPage());
+    return const NoTransitionPage(child: ServicesPage());
   }
 }
 
@@ -444,14 +444,21 @@ class ProductsRoute extends GoRouteData {
   }
 }
 
-class SingleErrandRoute extends GoRouteData {
-  const SingleErrandRoute({required this.id});
+class SingleServiceRoute extends GoRouteData {
+  const SingleServiceRoute({
+    required this.id,
+    required this.name,
+  });
 
   final int id;
+  final String name;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SingleErrandPage(id: id);
+    return VendorsPage(
+      serviceId: id,
+      serviceName: name,
+    );
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
