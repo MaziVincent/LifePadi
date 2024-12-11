@@ -64,12 +64,16 @@ Future<void> pingRiderLocation() async {
     ..options.headers.addAll({
       'Content-Type': 'application/json',
     });
+  final requestData = {
+    'RiderId': user.id,
+    'Latitude': locationData.latitude,
+    'Longitude': locationData.longitude,
+  };
+  logger
+    ..d('Sending rider location')
+    ..d(requestData);
   await client.post<String>(
     '$kRemoteApiUrl/location/rider',
-    data: {
-      'RiderId': user.id,
-      'Latitude': locationData.latitude,
-      'Longitude': locationData.longitude,
-    },
+    data: requestData,
   );
 }

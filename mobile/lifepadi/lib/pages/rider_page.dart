@@ -11,21 +11,18 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:location/location.dart';
-import 'package:signalr_netcore/signalr_client.dart';
 
-class RiderPage extends ConsumerStatefulWidget {
+class RiderPage extends StatefulWidget {
   const RiderPage({super.key});
 
   @override
-  ConsumerState<RiderPage> createState() => _RiderPageState();
+  State<RiderPage> createState() => _RiderPageState();
 }
 
-class _RiderPageState extends ConsumerState<RiderPage> {
-  StreamSubscription<LocationData>? locationSubscription;
-  HubConnection? hubConnection;
+class _RiderPageState extends State<RiderPage> {
   Location location = Location();
 
-  Future<void> setupLocationTracking() async {
+  Future<void> requestForLocationPermission() async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
 
@@ -42,53 +39,16 @@ class _RiderPageState extends ConsumerState<RiderPage> {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) return;
     }
-
-    // Setup SignalR
-    hubConnection = HubConnectionBuilder()
-        .withUrl(kSignalRLocation)
-        .withAutomaticReconnect()
-        .build();
-
-    try {
-      await hubConnection?.start();
-
-      // Start location tracking
-      locationSubscription =
-          location.onLocationChanged.listen((locationData) async {
-        if (locationData.latitude == null || locationData.longitude == null) {
-          return;
-        }
-        logger.d(
-          '[Rider] Locationchanged: ${locationData.latitude}, ${locationData.longitude}',
-        );
-        final rider = await ref.read(authControllerProvider.future);
-        await hubConnection?.invoke(
-          'UpdateLocation',
-          args: [
-            rider.id.toString(),
-            locationData.latitude! as Object,
-            locationData.longitude! as Object,
-          ],
-        ).catchError((dynamic error) {
-          logger.e('Error sending location update', error: error);
-          return error;
-        });
-      });
-    } catch (e) {
-      logger.e('SignalR connection error', error: e);
-    }
   }
 
   @override
   void initState() {
     super.initState();
-    setupLocationTracking();
+    requestForLocationPermission();
   }
 
   @override
   void dispose() {
-    locationSubscription?.cancel();
-    hubConnection?.stop();
     super.dispose();
   }
 
