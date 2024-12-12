@@ -46,6 +46,9 @@ const kRadialGradient = RadialGradient(
 
 const kRemoteApiUrl = 'https://lifepadi-948405839190.us-east1.run.app/api';
 
+const kSignalRLocationUrl =
+    'https://lifepadi-948405839190.us-east1.run.app/hubs/location';
+
 /// The cache time for the app on test
 final kTestCacheTime = 10.seconds;
 

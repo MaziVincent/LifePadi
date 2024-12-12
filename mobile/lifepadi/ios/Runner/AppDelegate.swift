@@ -12,6 +12,7 @@ import flutter_secure_storage
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // Google Maps API Key
     GMSServices.provideAPIKey("AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k")
     GeneratedPluginRegistrant.register(with: self)
     UNUserNotificationCenter.current().delegate = self

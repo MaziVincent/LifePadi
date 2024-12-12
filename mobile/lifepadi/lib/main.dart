@@ -5,11 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/theme/theme.dart';
-import 'package:lifepadi/utils/background.dart';
-import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
@@ -40,8 +37,8 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  /// Listen for FCM notifications
-  /// // Terminated
+  // Listen for FCM notifications
+  // Terminated
   await FirebaseMessaging.instance.getInitialMessage().then((message) async {
     if (message != null) {
       if (message.notification == null) return;
@@ -71,25 +68,6 @@ void main() async {
   });
 
   await FirebaseMessaging.instance.subscribeToTopic('general');
-
-  final workmanager = Workmanager();
-
-  // Initialize Workmanager
-  await workmanager.initialize(
-    bgCallbackDispatcher,
-    isInDebugMode: true,
-  );
-
-  await workmanager.registerPeriodicTask(
-    kPingRider,
-    kPingRider,
-    frequency: const Duration(minutes: 1),
-    constraints: Constraints(
-      networkType: NetworkType.connected,
-    ),
-    existingWorkPolicy: ExistingWorkPolicy.replace,
-    backoffPolicy: BackoffPolicy.exponential,
-  );
 
   runApp(
     const ProviderScope(

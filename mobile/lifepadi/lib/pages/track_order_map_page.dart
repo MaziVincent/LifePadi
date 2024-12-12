@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:location/location.dart';
+import 'package:signalr_netcore/signalr_client.dart';
 
 class TrackOrderMapPage extends StatefulWidget {
   const TrackOrderMapPage({
@@ -29,43 +30,49 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   LocationData? currentLocation;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
-  StreamSubscription<RemoteMessage>? _messageSubscription;
+  HubConnection? hubConnection;
 
-  Future<void> setupLocationTracking() async {
-    logger.d('[TOMAp] Subscribing to rider ${widget.riderId} updates');
-    await FirebaseMessaging.instance
-        .subscribeToTopic('Tracking-${widget.riderId}');
+  Future<void> setupSignalR() async {
+    hubConnection = HubConnectionBuilder()
+        .withUrl(kSignalRLocationUrl)
+        .withAutomaticReconnect()
+        .build();
 
-    _messageSubscription =
-        FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      if (!mounted) return;
+    try {
+      await hubConnection?.start();
+      await hubConnection
+          ?.invoke('SubscribeToRider', args: [widget.riderId.toString()]);
 
-      final data = message.data;
-      final latitude = double.tryParse(data['Latitude'].toString());
-      final longitude = double.tryParse(data['Longitude'].toString());
+      hubConnection?.on('LocationUpdated', (List<Object?>? args) async {
+        if (args != null && args.isNotEmpty && mounted) {
+          final latitude = args[0]! as double;
+          final longitude = args[1]! as double;
+          final riderId = int.tryParse(args[2]!.toString());
 
-      if (latitude == null || longitude == null) return;
+          if (riderId != widget.riderId) return;
 
-      logger.d(
-        '[Customer|TOMAp] Rider ${widget.riderId} loc: $latitude, $longitude',
-      );
-      setState(() {
-        currentLocation = LocationData.fromMap({
-          'latitude': latitude,
-          'longitude': longitude,
-        });
+          logger.d('[Customer] LocationUpdated: $latitude, $longitude');
+          setState(() {
+            currentLocation = LocationData.fromMap({
+              'latitude': latitude,
+              'longitude': longitude,
+            });
+          });
+
+          final googleMapController = await _controller.future;
+          await googleMapController.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(latitude, longitude),
+                zoom: 13.5,
+              ),
+            ),
+          );
+        }
       });
-
-      final googleMapController = await _controller.future;
-      await googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(latitude, longitude),
-            zoom: 13.5,
-          ),
-        ),
-      );
-    });
+    } catch (e) {
+      logger.e('SignalR connection error', error: e);
+    }
   }
 
   void setCustomMarkerIcon() {
@@ -84,14 +91,14 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   void initState() {
     super.initState();
     setCustomMarkerIcon();
-    setupLocationTracking();
+    setupSignalR();
   }
 
   @override
   void dispose() {
-    FirebaseMessaging.instance
-        .unsubscribeFromTopic('tracking-${widget.riderId}');
-    _messageSubscription?.cancel();
+    hubConnection
+        ?.invoke('UnsubscribeFromRider', args: [widget.riderId.toString()]);
+    hubConnection?.stop();
     _controller.future.then(
       (controller) => controller.dispose(),
       onError: (dynamic e) => logger.e('Controller dispose error', error: e),
