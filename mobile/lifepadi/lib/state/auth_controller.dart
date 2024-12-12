@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/client.dart';
@@ -14,7 +15,6 @@ import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -58,7 +58,7 @@ class AuthController extends _$AuthController {
         throw const UnauthorizedException('No credentials found');
       }
 
-      await NotificationUtils.susbcribeToTopic(
+      await FirebaseMessaging.instance.subscribeToTopic(
         'orders-${UserMapper.fromJson(credentials).id}',
       );
       return UserMapper.fromJson(credentials);
@@ -86,7 +86,7 @@ class AuthController extends _$AuthController {
       ..invalidate(wishlistProvider);
 
     await _secureStorage.remove(kCredentialsKey);
-    await NotificationUtils.unsuscribeFromTopic(
+    await FirebaseMessaging.instance.unsubscribeFromTopic(
       'orders-${state.requireValue.id}',
     );
     state = const AsyncData(Guest());
@@ -129,7 +129,7 @@ class AuthController extends _$AuthController {
       if (hasEverLoggedIn == null) {
         await PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
       }
-      await NotificationUtils.susbcribeToTopic('orders-${user.id}');
+      await FirebaseMessaging.instance.subscribeToTopic('orders-${user.id}');
       state = AsyncData(user);
     } catch (e) {
       rethrow;

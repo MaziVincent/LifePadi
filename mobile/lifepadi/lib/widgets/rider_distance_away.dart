@@ -35,8 +35,9 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
   StreamSubscription<RemoteMessage>? _messageSubscription;
 
   Future<void> setupRiderLocation() async {
+    logger.d('[RDAway] Subscribing to rider ${widget.riderId} updates');
     await FirebaseMessaging.instance
-        .subscribeToTopic('tracking-${widget.riderId}');
+        .subscribeToTopic('Tracking-${widget.riderId}');
 
     _messageSubscription =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -48,7 +49,9 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
 
       if (latitude == null || longitude == null) return;
 
-      logger.d('[Customer] LocationUpdated: $latitude, $longitude');
+      logger.d(
+        '[Customer|RDAway] Rider ${widget.riderId} loc: $latitude, $longitude',
+      );
       setState(() {
         riderLocation = LatLng(latitude, longitude);
       });

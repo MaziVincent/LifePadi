@@ -1,9 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
-import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart' hide Notification;
 
 class NotificationUtils {
@@ -87,65 +85,8 @@ class NotificationUtils {
     );
   }
 
-  /// Subscribe to a topic
-  static Future<void> susbcribeToTopic(String topic) async {
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
-  }
-
-  /// Unsubscribe from a topic
-  static Future<void> unsuscribeFromTopic(String topic) async {
-    await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
-  }
-
   /// Delete a notification by its id
   static Future<void> deleteNotification(int id) async {
     await AwesomeNotifications().cancel(id);
-  }
-
-  /// Get the FCM token
-  /// This token is used to send notifications to a specific device
-  static Future<String?> getFcmToken() async {
-    return FirebaseMessaging.instance.getToken();
-  }
-
-  /// Listen for FCM notifications
-  static Future<void> listenForFcmNotifications() async {
-    // Terminated
-    await FirebaseMessaging.instance.getInitialMessage().then((message) async {
-      if (message != null) {
-        if (message.notification == null) return;
-        final route = message.data['route'] as String?;
-
-        await PreferencesHelper.saveNotification(
-          title: message.notification?.title ?? '',
-          body: message.notification?.body ?? '',
-          route: route,
-        );
-      }
-    });
-
-    // Background
-    FirebaseMessaging.onBackgroundMessage((message) async {
-      if (message.notification == null) return;
-      final route = message.data['route'] as String?;
-
-      await PreferencesHelper.saveNotification(
-        title: message.notification?.title ?? '',
-        body: message.notification?.body ?? '',
-        route: route,
-      );
-    });
-
-    // Foreground
-    FirebaseMessaging.onMessage.listen((message) async {
-      if (message.notification == null) return;
-      final route = message.data['route'] as String?;
-
-      await PreferencesHelper.saveNotification(
-        title: message.notification?.title ?? '',
-        body: message.notification?.body ?? '',
-        route: route,
-      );
-    });
   }
 }

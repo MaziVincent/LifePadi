@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,18 @@ import 'package:workmanager/workmanager.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
+
+@pragma('vm:entry-point')
+Future<void> _handleFcmBackgroundMessage(RemoteMessage message) async {
+  if (message.notification == null) return;
+  final route = message.data['route'] as String?;
+
+  await PreferencesHelper.saveNotification(
+    title: message.notification?.title ?? '',
+    body: message.notification?.body ?? '',
+    route: route,
+  );
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +40,37 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  await NotificationUtils.listenForFcmNotifications();
+  /// Listen for FCM notifications
+  /// // Terminated
+  await FirebaseMessaging.instance.getInitialMessage().then((message) async {
+    if (message != null) {
+      if (message.notification == null) return;
+      final route = message.data['route'] as String?;
 
-  await NotificationUtils.susbcribeToTopic('general');
+      await PreferencesHelper.saveNotification(
+        title: message.notification?.title ?? '',
+        body: message.notification?.body ?? '',
+        route: route,
+      );
+    }
+  });
+
+  // Background
+  FirebaseMessaging.onBackgroundMessage(_handleFcmBackgroundMessage);
+
+  // Foreground
+  FirebaseMessaging.onMessage.listen((message) async {
+    if (message.notification == null) return;
+    final route = message.data['route'] as String?;
+
+    await PreferencesHelper.saveNotification(
+      title: message.notification?.title ?? '',
+      body: message.notification?.body ?? '',
+      route: route,
+    );
+  });
+
+  await FirebaseMessaging.instance.subscribeToTopic('general');
 
   final workmanager = Workmanager();
 
@@ -42,7 +83,7 @@ void main() async {
   await workmanager.registerPeriodicTask(
     kPingRider,
     kPingRider,
-    frequency: const Duration(minutes: 5),
+    frequency: const Duration(minutes: 1),
     constraints: Constraints(
       networkType: NetworkType.connected,
     ),

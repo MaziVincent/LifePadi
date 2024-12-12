@@ -32,12 +32,12 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   StreamSubscription<RemoteMessage>? _messageSubscription;
 
   Future<void> setupLocationTracking() async {
+    logger.d('[TOMAp] Subscribing to rider ${widget.riderId} updates');
     await FirebaseMessaging.instance
-        .subscribeToTopic('tracking-${widget.riderId}');
+        .subscribeToTopic('Tracking-${widget.riderId}');
 
     _messageSubscription =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      logger.d('[Customer] LocationUpdated lis: ${message.data}');
       if (!mounted) return;
 
       final data = message.data;
@@ -46,7 +46,9 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
 
       if (latitude == null || longitude == null) return;
 
-      logger.d('[Customer] LocationUpdated: $latitude, $longitude');
+      logger.d(
+        '[Customer|TOMAp] Rider ${widget.riderId} loc: $latitude, $longitude',
+      );
       setState(() {
         currentLocation = LocationData.fromMap({
           'latitude': latitude,
