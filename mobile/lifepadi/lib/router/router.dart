@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,7 +11,7 @@ import 'routes.dart';
 part 'router.g.dart';
 
 bool hasLoggedInBefore() {
-  final hasLoggedIn = PreferencesHelper.getBool('hasEverLoggedIn');
+  final hasLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
 
   if (hasLoggedIn == null) {
     return false;

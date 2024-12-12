@@ -1,5 +1,9 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class SettingsPage extends HookWidget {
@@ -7,7 +11,9 @@ class SettingsPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final biometricsEnabled = useState(true);
+    final biometricsEnabled = useState(
+      PreferencesHelper.getBool(kBiometricsKey) ?? false,
+    );
 
     return Scaffold(
       appBar: const MyAppBar(
@@ -18,13 +24,21 @@ class SettingsPage extends HookWidget {
         children: [
           SettingTile(
             name: 'Biometrics',
-            child: SwitchInput(
-              value: biometricsEnabled.value,
-              onChanged: (value) {
-                // TODO: Update biometrics setting
-
-                // For now, just update the UI
-                biometricsEnabled.value = value;
+            child: Consumer(
+              builder: (context, ref, child) {
+                return SwitchInput(
+                  value: biometricsEnabled.value,
+                  onChanged: (value) async {
+                    try {
+                      await ref
+                          .read(authControllerProvider.notifier)
+                          .setBiometricsEnabled(enabled: value);
+                      biometricsEnabled.value = value;
+                    } catch (e) {
+                      await showToast(getErrorInfo(e).description);
+                    }
+                  },
+                );
               },
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/state/product.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/state/wishlist.dart';
+import 'package:lifepadi/utils/biometric_service.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -27,6 +28,7 @@ part 'auth_controller.g.dart';
 @riverpod
 class AuthController extends _$AuthController {
   final SecureStorageService _secureStorage = SecureStorageService();
+  final BiometricService _biometricService = BiometricService();
 
   @override
   Future<User> build() async {
@@ -44,14 +46,25 @@ class AuthController extends _$AuthController {
 
     _persistenceRefreshLogic();
 
-    return _loginRecoveryAttempt();
+    if (await canRestoreAuth()) {
+      final isBiometricEnabled =
+          PreferencesHelper.getBool(kBiometricsKey) ?? false;
+      if (isBiometricEnabled) {
+        final authenticated = await _biometricService.authenticate();
+        if (!authenticated) {
+          return const Guest();
+        }
+      }
+    }
+
+    return attemptLoginRecovery();
   }
 
   /// Tries to perform a login with the saved token on the persistant storage.
   ///
   // ignore: comment_references
   /// If _anything_ goes wrong, deletes the internal token and returns a [Auth.signedOut].
-  Future<User> _loginRecoveryAttempt() async {
+  Future<User> attemptLoginRecovery() async {
     try {
       final credentials = await _secureStorage.get(kCredentialsKey);
       if (credentials == null) {
@@ -61,9 +74,13 @@ class AuthController extends _$AuthController {
       await FirebaseMessaging.instance.subscribeToTopic(
         'orders-${UserMapper.fromJson(credentials).id}',
       );
-      return UserMapper.fromJson(credentials);
+      final user = UserMapper.fromJson(credentials);
+      state = AsyncData(user);
+      return user;
     } catch (_, __) {
-      await _secureStorage.remove(kCredentialsKey);
+      if (!(await canRestoreAuth())) {
+        await _secureStorage.remove(kCredentialsKey);
+      }
       return Future.value(const Guest());
     }
   }
@@ -130,9 +147,9 @@ class AuthController extends _$AuthController {
       final user = User.fromMap(response.data!);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
-      final hasEverLoggedIn = PreferencesHelper.getBool('hasEverLoggedIn');
+      final hasEverLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
       if (hasEverLoggedIn == null) {
-        await PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
+        await PreferencesHelper.setBool(key: kHasEverLoggedIn, value: true);
       }
       final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
       if (notificationsEnabled) {
@@ -154,10 +171,12 @@ class AuthController extends _$AuthController {
   /// When the auth object is in an error state, we choose to remove the token
   /// Otherwise, we expect the current auth value to be reflected in our persitence API
   void _persistenceRefreshLogic() {
-    listenSelf((_, next) {
+    listenSelf((_, next) async {
       if (next.isLoading) return;
       if (next.hasError) {
-        _secureStorage.remove(kCredentialsKey).ignore();
+        if (!(await canRestoreAuth())) {
+          await _secureStorage.remove(kCredentialsKey);
+        }
         return;
       }
 
@@ -165,7 +184,9 @@ class AuthController extends _$AuthController {
       if (user.isAuth) {
         _saveDetailsToStorage(user).ignore();
       } else {
-        _secureStorage.remove(kCredentialsKey).ignore();
+        if (!(await canRestoreAuth())) {
+          await _secureStorage.remove(kCredentialsKey);
+        }
       }
     });
   }
@@ -341,5 +362,33 @@ class AuthController extends _$AuthController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<bool> isBiometricsSupported() async {
+    return _biometricService.isSupported();
+  }
+
+  Future<void> setBiometricsEnabled({required bool enabled}) async {
+    if (enabled) {
+      final isSupported = await isBiometricsSupported();
+      if (!isSupported) {
+        throw const BiometricAuthenticationException(
+          'Device does not support biometric authentication',
+        );
+      }
+      final authenticated = await _biometricService.authenticate();
+      if (!authenticated) {
+        throw const BiometricAuthenticationException(
+          'Biometric authentication failed',
+        );
+      }
+    }
+    await PreferencesHelper.setBool(key: kBiometricsKey, value: enabled);
+  }
+
+  /// Check if there's auth to restore in secure storage
+  Future<bool> canRestoreAuth() async {
+    final credentials = await _secureStorage.get(kCredentialsKey);
+    return credentials != null;
   }
 }

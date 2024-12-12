@@ -6,11 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/biometric_service.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
 
 import '../state/auth_controller.dart';
 
@@ -27,6 +30,33 @@ class LoginPage extends HookConsumerWidget {
     final email = useState('');
     final password = useState('');
     final phone = useState('');
+    final showBiometrics = useState(false);
+
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          final hasEverLoggedIn =
+              PreferencesHelper.getBool(kHasEverLoggedIn) ?? false;
+          if (!hasEverLoggedIn) return;
+
+          final isBiometricsEnabled =
+              PreferencesHelper.getBool(kBiometricsKey) ?? false;
+          if (!isBiometricsEnabled) return;
+
+          final isSupported = await ref
+              .read(authControllerProvider.notifier)
+              .isBiometricsSupported();
+          if (!isSupported) return;
+
+          final canRestoreAuth =
+              await ref.read(authControllerProvider.notifier).canRestoreAuth();
+          showBiometrics.value = canRestoreAuth;
+        });
+
+        return null;
+      },
+      [],
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -69,13 +99,42 @@ class LoginPage extends HookConsumerWidget {
                             ),
                           ),
                           7.verticalSpace,
-                          Text(
-                            'Sign in to your account.',
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: const Color(0xFF999999),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w300,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Sign in to your account.',
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: const Color(0xFF999999),
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              if (showBiometrics.value)
+                                IconButton(
+                                  icon: const Icon(Remix.fingerprint_line),
+                                  iconSize: 30.sp,
+                                  onPressed: () async {
+                                    try {
+                                      final authenticated =
+                                          await BiometricService()
+                                              .authenticate();
+                                      if (authenticated) {
+                                        // Attempt to restore previous login
+                                        await ref
+                                            .read(
+                                              authControllerProvider.notifier,
+                                            )
+                                            .attemptLoginRecovery();
+                                      }
+                                    } catch (e) {
+                                      await showToast(
+                                        'Biometric authentication failed',
+                                      );
+                                    }
+                                  },
+                                ),
+                            ],
                           ),
                           16.28.verticalSpace,
                           if (usePhone.value)

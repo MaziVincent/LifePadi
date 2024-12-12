@@ -61,6 +61,8 @@ const kCartKey = 'cart';
 const kLogisticsKey = 'logistics';
 const kNotificationKey = 'notifications';
 const kNotificationSettingsKey = 'notification_settings';
+const kBiometricsKey = 'biometrics_enabled';
+const kHasEverLoggedIn = 'hasEverLoggedIn';
 
 const kGoogleMapsApiKey = 'AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k';
 

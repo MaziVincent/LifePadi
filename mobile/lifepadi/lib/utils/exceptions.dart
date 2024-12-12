@@ -45,3 +45,9 @@ class PaymentFailedException implements Exception {
   const PaymentFailedException(this.message);
   final String message;
 }
+
+/// Exception thrown when biometric authentication fails.
+class BiometricAuthenticationException implements Exception {
+  const BiometricAuthenticationException(this.message);
+  final String message;
+}
