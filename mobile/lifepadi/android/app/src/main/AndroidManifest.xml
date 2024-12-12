@@ -39,7 +39,7 @@
             android:value="2" />
         <!-- Google maps api key -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k"/>
+        android:value="AIzaSyCDCjPcOfiVWRTDuH260B3nVRUmSuoHBoo"/>
     </application>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
