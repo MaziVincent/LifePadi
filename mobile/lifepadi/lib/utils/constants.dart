@@ -60,6 +60,7 @@ const kWishlistKey = 'wishlist';
 const kCartKey = 'cart';
 const kLogisticsKey = 'logistics';
 const kNotificationKey = 'notifications';
+const kNotificationSettingsKey = 'notification_settings';
 
 const kGoogleMapsApiKey = 'AIzaSyC2RpKHucfu2rnTI_O5JXTiUCc0jyliA9k';
 

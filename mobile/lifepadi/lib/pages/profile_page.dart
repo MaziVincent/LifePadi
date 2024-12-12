@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -8,14 +9,18 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
 
 class ProfilePage extends HookConsumerWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showNotifications = useState(true);
+    final showNotifications =
+        useState(PreferencesHelper.getNotificationsEnabled());
     final user = ref.watch(authControllerProvider);
 
     return Scaffold(
@@ -82,11 +87,43 @@ class ProfilePage extends HookConsumerWidget {
                         name: 'Notification',
                         child: SwitchInput(
                           value: showNotifications.value,
-                          onChanged: (value) {
-                            // TODO: Update notification settings
-
-                            // For now, just update the UI
-                            showNotifications.value = value;
+                          onChanged: (value) async {
+                            if (!value) {
+                              final confirmed = await openChoiceDialog(
+                                context: context,
+                                title: 'Disable Notifications',
+                                description:
+                                    'Are you sure you want to disable notifications? You might miss important updates.',
+                                onYes: () async {
+                                  await PreferencesHelper
+                                      .setNotificationsEnabled(enabled: false);
+                                  await FirebaseMessaging.instance
+                                      .unsubscribeFromTopic('general');
+                                  if (user.value?.isAuth == true) {
+                                    await FirebaseMessaging.instance
+                                        .unsubscribeFromTopic(
+                                      'orders-${user.value?.id}',
+                                    );
+                                  }
+                                  showNotifications.value = false;
+                                },
+                                icon: Remix.question_line,
+                              );
+                              if (confirmed != true) return;
+                            } else {
+                              await PreferencesHelper.setNotificationsEnabled(
+                                enabled: true,
+                              );
+                              await FirebaseMessaging.instance
+                                  .subscribeToTopic('general');
+                              if (user.value?.isAuth == true) {
+                                await FirebaseMessaging.instance
+                                    .subscribeToTopic(
+                                  'orders-${user.value?.id}',
+                                );
+                              }
+                              showNotifications.value = true;
+                            }
                           },
                         ),
                       ),

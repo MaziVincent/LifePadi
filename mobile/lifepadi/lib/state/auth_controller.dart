@@ -69,6 +69,14 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> logout() async {
+    final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
+    if (notificationsEnabled) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('general');
+      await FirebaseMessaging.instance.unsubscribeFromTopic(
+        'orders-${state.requireValue.id}',
+      );
+    }
+
     await PreferencesHelper.clear();
 
     // Clear all the cached data
@@ -86,9 +94,6 @@ class AuthController extends _$AuthController {
       ..invalidate(wishlistProvider);
 
     await _secureStorage.remove(kCredentialsKey);
-    await FirebaseMessaging.instance.unsubscribeFromTopic(
-      'orders-${state.requireValue.id}',
-    );
     state = const AsyncData(Guest());
   }
 
@@ -129,7 +134,10 @@ class AuthController extends _$AuthController {
       if (hasEverLoggedIn == null) {
         await PreferencesHelper.setBool(key: 'hasEverLoggedIn', value: true);
       }
-      await FirebaseMessaging.instance.subscribeToTopic('orders-${user.id}');
+      final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
+      if (notificationsEnabled) {
+        await FirebaseMessaging.instance.subscribeToTopic('orders-${user.id}');
+      }
       state = AsyncData(user);
     } catch (e) {
       rethrow;

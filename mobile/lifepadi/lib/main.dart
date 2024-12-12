@@ -67,7 +67,10 @@ void main() async {
     );
   });
 
-  await FirebaseMessaging.instance.subscribeToTopic('general');
+  final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
+  if (notificationsEnabled) {
+    await FirebaseMessaging.instance.subscribeToTopic('general');
+  }
 
   runApp(
     const ProviderScope(

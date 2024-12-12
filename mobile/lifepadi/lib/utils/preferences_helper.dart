@@ -125,11 +125,22 @@ class PreferencesHelper {
     _memoryPrefs.clear();
   }
 
+  static bool getNotificationsEnabled() {
+    return getBool(kNotificationSettingsKey) ?? true;
+  }
+
+  static Future<void> setNotificationsEnabled({required bool enabled}) async {
+    await setBool(key: kNotificationSettingsKey, value: enabled);
+  }
+
   static Future<void> saveNotification({
     required String title,
     required String body,
     required String? route,
   }) async {
+    // Only save if notifications are enabled
+    if (!getNotificationsEnabled()) return;
+
     final notification = Notification(
       id: DateTime.now().millisecondsSinceEpoch,
       title: title,
