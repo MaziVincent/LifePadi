@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Api.DTO;
+using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
@@ -11,22 +12,80 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
 {
-    public class WithdrawalService : IWalletDepositeAndWithdrawal<WithdrawalDto>
+    public class WithdrawalService : IWalletWithdrawal
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        string errorMsg = "Withdrawal not found";
-        public WithdrawalService(DBContext context, IMapper mapper)
+        private readonly IVoucher _ivoucher;
+        readonly string errorMsg = "Withdrawal not found";
+        public WithdrawalService(DBContext context, IMapper mapper, IVoucher ivoucher)
         {
             _context = context;
             _mapper = mapper;
+            _ivoucher = ivoucher;
         }
         public async Task<WithdrawalDto> createAsync(WithdrawalDto t)
         {
             try
             {
+                var wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == t.WalletId) ?? throw new Exceptions.ServiceException("Wallet not found");
+                if (wallet.Balance < t.Amount + t.DeliveryFee)
+                    throw new Exceptions.ServiceException("Insufficient balance");
                 var withdrawal = _mapper.Map<Withdrawal>(t);
+                var tx_ref = GenerateTxRef.genTx_rf();
+                withdrawal.ReferenceId = tx_ref;
+                withdrawal.TransactionId = GenerateTxRef.genTxId();
+                withdrawal.Status = "successful";
+                withdrawal.Type = "purchase Transaction";
+                withdrawal.PaymentMethod = "withdrawal";
+                withdrawal.CreatedAt = DateTime.UtcNow;
+                withdrawal.UpdatedAt = DateTime.UtcNow;
+
+                wallet.InitialBalance = wallet.Balance;
+                wallet.Balance -= t.Amount;
+                wallet.UpdatedAt = DateTime.UtcNow;
+
+                // create a transaction
+                var transaction = new Transaction();
+                transaction.TotalAmount = t.Amount + t.DeliveryFee;
+                if (t.VoucherId != null)
+                {
+                    var voucher = await _ivoucher.searchWithCode(t.VoucherId);
+                    var dorder = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
+                    var customerVoucher = await _context.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
+                    if (customerVoucher == null)
+                    {
+                        var newCustomerVoucher = new CustomerVoucher
+                        {
+                            CustomerId = dorder!.CustomerId,
+                            VoucherId = voucher.Id,
+                            TransactionId = transaction.Id
+                        };
+                        await _context.CustomerVouchers.AddAsync(newCustomerVoucher);
+                    }
+                    else
+                    {
+                        customerVoucher.TransactionId = transaction.Id;
+                    }
+                    await _context.SaveChangesAsync();
+                    transaction.VoucherId = voucher.Id;
+                }
+                transaction.AmountPaid = t.Amount + t.DeliveryFee;
+                transaction.OrderId = t.OrderId;
+                transaction.TransactionRef = tx_ref;
+                transaction.PaymentId = withdrawal.TransactionId;
+                transaction.Status = "withdrawal";
+                transaction.UpdatedAt = DateTime.UtcNow;
+
+                //update order status to ongoing
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
+                if (order == null) throw new Exceptions.ServiceException("Order not found");
+                order.Status = "Ongoing";
+                order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
+
+                await _context.Transactions.AddAsync(transaction);
                 await _context.Withdrawals.AddAsync(withdrawal);
+                _context.Wallets.Attach(wallet);
                 await _context.SaveChangesAsync();
                 return _mapper.Map<WithdrawalDto>(withdrawal);
             }
@@ -49,7 +108,7 @@ namespace Api.Services
                 {
                     totalAmountDeposited = totalAmountDepositedSum,
                     totalAmountWithdrawn = totalAmountWithdrawnSum,
-                    totalAmount = totalAmount
+                    totalBalanceAmount = totalAmount
                 };
             }
             catch (Exception ex)

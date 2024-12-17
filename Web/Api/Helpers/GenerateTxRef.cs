@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Text;
 
 namespace Api.Helpers
 {
@@ -15,6 +16,19 @@ namespace Api.Helpers
             }
 
             return "LifePadi-" + sb.ToString();
+        }
+
+        public static BigInteger genTxId()
+        {
+            Random random = new Random();
+            const string chars = "0123456789";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 10; i++)
+            {
+                sb.Append(chars[random.Next(chars.Length)]);
+            }
+
+            return BigInteger.Parse(sb.ToString());
         }
     }
 }

@@ -13,9 +13,6 @@ namespace Api.Interfaces
         public Task<List<WalletDto>> getAllAsync();
         public Task<WalletDto> updateAsync(int id, WalletDto walletDto);
         public Task<string> deleteAsync(int id);
-        public Task<WalletDto> depositAsync(int id, double amount);
-        public Task<WalletDto> withdrawAsync(int id, double amount);
-        public Task<WalletDto> transferAsync(int fromId, int toId, double amount);
         public Task<double> getBalance(int id);
         public Task<double> getInitialBalance(int id);
         public Task<WalletDto> getWalletByCustomerId(int customerId);

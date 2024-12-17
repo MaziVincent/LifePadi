@@ -14,15 +14,11 @@ namespace Api.Services
     {
         private readonly DBContext _context;
         private readonly IMapper _mapper;
-        private readonly DepositeService _depositeService;
-        private readonly WithdrawalService _withdrawalService;
         readonly string errorMsg = "Wallet not found";
-        public WalletService(DBContext context, IMapper mapper, DepositeService depositeService, WithdrawalService withdrawalService)
+        public WalletService(DBContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _depositeService = depositeService;
-            _withdrawalService = withdrawalService;
         }
         public async Task<WalletDto> createAsync(WalletDto walletDto)
         {
@@ -54,27 +50,6 @@ namespace Api.Services
             }
         }
 
-        public async Task<WalletDto> depositAsync(int id, double amount)
-        {
-            try
-            {
-                Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
-                var deposite = await _depositeService.createAsync(new DepositeDto
-                {
-                    Amount = amount,
-                    WalletId = wallet.Id,
-                    Type = "Deposit"
-                });
-                wallet.InitialBalance = wallet.Balance;
-                wallet.Balance += amount;
-                await _context.SaveChangesAsync();
-                return _mapper.Map<WalletDto>(wallet);
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
 
         public async Task<List<WalletDto>> getAllAsync()
         {
@@ -174,62 +149,6 @@ namespace Api.Services
             }
         }
 
-        public async Task<WalletDto> transferAsync(int fromId, int toId, double amount)
-        {
-            try
-            {
-                Wallet fromWallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == fromId) ?? throw new Exceptions.ServiceException("Sender wallet not found");
-                Wallet toWallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == toId) ?? throw new Exceptions.ServiceException("Receiver wallet not found");
-                if (fromWallet.Balance < amount)
-                {
-                    throw new Exceptions.ServiceException("Insufficient balance");
-                }
-                fromWallet.InitialBalance = fromWallet.Balance;
-                fromWallet.Balance -= amount;
-                toWallet.InitialBalance = toWallet.Balance;
-                toWallet.Balance += amount;
-                //make a deposite record for towalletId and make a withdrawal record for fromWalletId and create the notification
-                var withdrawal = await _withdrawalService.createAsync(new WithdrawalDto
-                {
-                    Amount = amount,
-                    WalletId = fromWallet.Id,
-                    Type = "Transfer"
-                });
-                var deposite = await _depositeService.createAsync(new DepositeDto
-                {
-                    Amount = amount,
-                    WalletId = toWallet.Id,
-                    Type = "Transfer"
-                });
-                var fromWalletNotification = new WalletNotification
-                {
-                    WalletId = fromWallet.Id,
-                    Message = $"You transfered {amount} to {toWallet.Customer?.FirstName} {toWallet.Customer?.LastName}",
-                    Title = "Transfer out",
-                    Type = "Transfer",
-                }; 
-                var toWalletNotification = new WalletNotification
-                {
-                    WalletId = toWallet.Id,
-                    Message = $"You received {amount} from {fromWallet.Customer?.FirstName} {fromWallet.Customer?.LastName}",
-                    Title = "Transfer in",
-                    Type = "Transfer",
-                };
-                _context.Wallets.Attach(fromWallet);
-                _context.Wallets.Attach(toWallet);
-                await _context.Deposites.AddAsync(_mapper.Map<Deposite>(deposite));
-                await _context.Withdrawals.AddAsync(_mapper.Map<Withdrawal>(withdrawal));
-                await _context.WalletNotifications.AddAsync(fromWalletNotification);
-                await _context.WalletNotifications.AddAsync(toWalletNotification);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<WalletDto>(fromWallet);
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
         public async Task<WalletDto> updateAsync(int id, WalletDto walletDto)
         {
             try
@@ -249,30 +168,5 @@ namespace Api.Services
             }
         }
 
-        public async Task<WalletDto> withdrawAsync(int id, double amount)
-        {
-            try
-            {
-                Wallet wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id) ?? throw new Exceptions.ServiceException(errorMsg);
-                if (wallet.Balance < amount)
-                {
-                    throw new Exceptions.ServiceException("Insufficient balance");
-                }
-                var withdrawal = await _withdrawalService.createAsync(new WithdrawalDto
-                {
-                    Amount = amount,
-                    WalletId = wallet.Id,
-                    Type = "Withdrawal"
-                });
-                wallet.InitialBalance = wallet.Balance;
-                wallet.Balance -= amount;
-                await _context.SaveChangesAsync();
-                return _mapper.Map<WalletDto>(wallet);
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
     }
 }
