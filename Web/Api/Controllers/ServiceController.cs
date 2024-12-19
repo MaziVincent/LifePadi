@@ -237,8 +237,11 @@ namespace Api.Controllers
             try
             {
                 var response = await _iservice.ChangeActivation(id);
+<<<<<<< HEAD
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
                 return Ok(response);
             }catch (Exception ex)
             {
@@ -246,6 +249,7 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
         [HttpGet("{id}/getVendors")]
         public async Task<IActionResult> getVendors(int id)
         {
@@ -259,6 +263,8 @@ namespace Api.Controllers
             }
         }
 
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
 
     }
 }

@@ -626,6 +626,7 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
+<<<<<<< HEAD
 =======
                 if (imgPath == null) throw new Exception("Can not upload image");
                 service.ServiceIconUrl = imgPath;
@@ -639,6 +640,8 @@ namespace Api.Services
             {
                 throw new Exception(ex.Message);
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
             }
         }
     }

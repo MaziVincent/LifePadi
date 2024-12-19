@@ -59,6 +59,7 @@ namespace Api.Controllers
 
         [HttpPost("general")]
         public async Task<IActionResult> SendGeneralNotification([FromBody] NotificationRequest request)
+<<<<<<< HEAD
         {
             try{
                 var response = await _fcmService.SendGeneralNotification(request);
@@ -104,6 +105,16 @@ namespace Api.Controllers
              await _fcmService.SendTopicNotificationAsync(request.Topic!, request.Title!, request.Body!);
             return Ok();
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+        {
+            try{
+                var response = await _fcmService.SendGeneralNotification(request);
+                return Ok(response);
+            }catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+           
+>>>>>>> 0ca0962 (notification, location and other commits)
         }
 
     }

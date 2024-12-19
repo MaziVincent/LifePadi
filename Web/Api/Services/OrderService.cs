@@ -29,6 +29,7 @@ namespace Api.Services
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         private readonly IFcmService _fcmService;
         // private readonly UpdateOrderAmount updateOrderAmount;
         public OrderService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
@@ -38,13 +39,20 @@ namespace Api.Services
             _fcmService = fcmService;
 =======
         private readonly IHubContext<NotificationHub> _hubContext;
+=======
+        private readonly IFcmService _fcmService;
+>>>>>>> 0ca0962 (notification, location and other commits)
         // private readonly UpdateOrderAmount updateOrderAmount;
-        public OrderService(DBContext dBContext, IMapper mapper, IHubContext<NotificationHub> hubContext)
+        public OrderService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+<<<<<<< HEAD
             _hubContext = hubContext;
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+            _fcmService = fcmService;
+>>>>>>> 0ca0962 (notification, location and other commits)
             // updateOrderAmount = new UpdateOrderAmount(dBContext);
         }
         public async Task<PagedList<Order>> allAsync(SearchPaging props)
@@ -784,6 +792,7 @@ namespace Api.Services
                     delivery!.Status = "Delivered";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     string Topic = $"order-{order.CustomerId}";
                     string Title = $"Order Completed ";
                     string Body = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
@@ -799,9 +808,18 @@ namespace Api.Services
                     
 >>>>>>> 66834e5 (add signalR to the project)
 =======
+=======
+                    string Topic = $"order-{order.CustomerId}";
+>>>>>>> 0ca0962 (notification, location and other commits)
                     string Title = $"Order Completed ";
-                    string Message = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
-                    await _hubContext.Clients.All.SendAsync("ReceiveNotification", Title, Message);
+                    string Body = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
+                    NotificationRequest message = new NotificationRequest
+                    {
+                        Topic = Topic,
+                        Title = Title,
+                        Body = Body
+                    };
+                    await _fcmService.SendGeneralNotification(message);
 
 >>>>>>> d23f0ab (transaction, order, notification commit)
                 }

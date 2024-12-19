@@ -24,9 +24,13 @@ GET https://localhost:7216/api/order/getall
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
+=======
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
@@ -36,6 +40,7 @@ POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 ###
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
 =======
 POST https://localhost:7216/hub/notification/negotiate
@@ -43,6 +48,9 @@ POST https://localhost:7216/hub/notification/negotiate
 =======
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
 >>>>>>> 37744e4 (i added firebse cloud messaging)
+=======
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
+>>>>>>> 0ca0962 (notification, location and other commits)
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/notification
@@ -55,7 +63,11 @@ Content-Type: application/json
 
 ###
 <<<<<<< HEAD
+<<<<<<< HEAD
 GET https://localhost:7216/api/order/get/395
+=======
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+>>>>>>> 0ca0962 (notification, location and other commits)
 
 ###
 
@@ -79,6 +91,7 @@ Content-Type: application/json
     "Longitude":"8.0957946"
 }
 
+<<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
 
@@ -160,3 +173,8 @@ Content-Type: application/json
 =======
  
 >>>>>>> 5bd78d3 (add signalR to the project)
+=======
+
+>>>>>>> 6bb1bd3 (notification, location and other commits)
+ 
+>>>>>>> 0ca0962 (notification, location and other commits)

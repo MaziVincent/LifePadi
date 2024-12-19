@@ -1211,12 +1211,15 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     b.Property<bool?>("IsVerified")
 =======
                     b.Property<bool?>("IsActive")
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
                         .HasColumnType("boolean");
 
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
                     b.Property<bool?>("IsVerified")
                         .HasColumnType("boolean");
 

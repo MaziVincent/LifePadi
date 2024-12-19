@@ -41,4 +41,11 @@ namespace Api.DTO
         public string? Destination {get; set;}  
 
     }
+
+    public class RiderLocation
+    {
+        public string? RiderId { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
+    }
 }

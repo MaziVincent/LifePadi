@@ -704,6 +704,7 @@ namespace Api.Services
 
 
         }
+<<<<<<< HEAD
 
         public async Task<string> activateVendor(int id)
         {
@@ -760,3 +761,9 @@ namespace Api.Services
     }
 }
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+    }
+    
+    }
+
+>>>>>>> 0ca0962 (notification, location and other commits)

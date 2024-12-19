@@ -6,11 +6,14 @@ using Api.Models;
 using Api.Services;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+<<<<<<< HEAD
 =======
 using Api.Interfaces;
 using Api.Models;
 using Api.Services;
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 0ca0962 (notification, location and other commits)
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
