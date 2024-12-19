@@ -52,7 +52,7 @@ namespace Api.Services
                 var folderName = "Riders";
                 var newRider = _mapper.Map<Rider>(rider);
                 newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
-                newRider.IsActive = true;
+                newRider.IsActive = false;
                 newRider.IsVerified = false;
                 newRider.SearchString = rider.FirstName!.ToUpper() + " " + rider.LastName!.ToUpper() + " " + rider.Email!.ToUpper() + " " + rider.PhoneNumber;
                 var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
@@ -113,6 +113,7 @@ namespace Api.Services
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
+                        .AsSplitQuery()
                         .ToListAsync();
 
                     ridersList = ridersList.Concat(ridersLs);
@@ -125,6 +126,7 @@ namespace Api.Services
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
+                        .AsSplitQuery()
                         .ToListAsync();
                 ridersList = ridersList.Concat(riders);
                 var response = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
