@@ -45,6 +45,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("Rider already exists")) return Conflict(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

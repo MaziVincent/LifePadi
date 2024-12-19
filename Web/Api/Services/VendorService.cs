@@ -405,6 +405,34 @@ namespace Api.Services
 
 
         }
+
+        public async Task<string> activateVendor(int id)
+        {
+            try{
+                var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
+                if(vendor == null) throw new ServiceException("Vendor does not exist");
+                vendor.IsActive = true;
+                _dbContext!.Vendors!.Update(vendor);
+                await _dbContext!.SaveChangesAsync();
+                return "Vendor activated successfully";
+            }catch(Exception ex){
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> deactivateVendor(int id)
+        {
+            try{
+                var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
+                if(vendor == null) throw new ServiceException("Vendor does not exist");
+                vendor.IsActive = false;
+                _dbContext!.Vendors!.Update(vendor);
+                await _dbContext!.SaveChangesAsync();
+                return "Vendor deactivated successfully";
+            }catch(Exception ex){
+                throw new ServiceException(ex.Message);
+            }
+        }
     }
     
     }

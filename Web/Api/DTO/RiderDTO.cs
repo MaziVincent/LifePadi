@@ -81,6 +81,6 @@ namespace Api.DTO
         public string? IdentityImgUrl { get; set; }
         public string? EmergencyContact { get; set; }
         public bool? IsVerified { get; set; }
-        public string? IsActive {get; set;}
+        public bool? IsActive {get; set;}
     }
 }
