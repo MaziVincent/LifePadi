@@ -45,13 +45,24 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
 
 ###
 
-POST https://localhost:7216/api/notification/sendgeneral
+POST https://lifepadi-948405839190.us-east1.run.app/api/notification/general
 Content-Type: application/json
 
 {
-    "Topic":"General Notification",
-    "Title":"Small notification",
+    "Topic":"general",
+    "Title":"Small notification ",
     "Body":"something something"
+}
+
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/api/location/rider
+Content-Type: application/json
+
+{
+    "RiderId":"51",
+    "Latitude":"6.3266352",
+    "Longitude":"8.0957946"
 }
 
 

@@ -14,13 +14,13 @@ namespace Api.Services
     {
         private readonly DBContext? _dbContext;
         private readonly IMapper _mapper;
-        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IFcmService _fcmService;
         // private readonly UpdateOrderAmount updateOrderAmount;
-        public OrderService(DBContext dBContext, IMapper mapper, IHubContext<NotificationHub> hubContext)
+        public OrderService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
         {
             _dbContext = dBContext;
             _mapper = mapper;
-            _hubContext = hubContext;
+            _fcmService = fcmService;
             // updateOrderAmount = new UpdateOrderAmount(dBContext);
         }
         public async Task<PagedList<Order>> allAsync(SearchPaging props)
@@ -393,9 +393,16 @@ namespace Api.Services
                 if(status == "Completed"){
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
+                    string Topic = $"order-{order.CustomerId}";
                     string Title = $"Order Completed ";
-                    string Message = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
-                    await _hubContext.Clients.All.SendAsync("ReceiveNotification", Title, Message);
+                    string Body = $"Your Order {order.Order_Id} is delivered and completed. We hope you enjoyed our service";
+                    NotificationRequest message = new NotificationRequest
+                    {
+                        Topic = Topic,
+                        Title = Title,
+                        Body = Body
+                    };
+                    await _fcmService.SendGeneralNotification(message);
 
                 }
 

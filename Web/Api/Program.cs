@@ -2,6 +2,8 @@ using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
 using Api.Services;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -43,6 +45,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
         };
     });
+
+//Firebase App Initialization
+ FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("lifepadi-17e8c-firebase.json")
+});
 
 //For Json Serializer
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>

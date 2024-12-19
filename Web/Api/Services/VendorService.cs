@@ -65,6 +65,7 @@ namespace Api.Services
                 var vendorExist = await vendorExists(vendor.Email!);
                 if (vendorExist) throw new AlreadyExistException("Vendor already exists");
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
+                newVendor.IsActive = false;
                 newVendor.SearchString = vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
 
@@ -354,7 +355,7 @@ namespace Api.Services
                         .Where(p => p.VendorId == id)
                         .Include(p => p.Category)
                         .Include(p => p.Vendor)
-                        .ThenInclude(v => v.Addresses!)
+                        .ThenInclude(v => v!.Addresses!)
                         .AsSplitQuery()
                         .OrderByDescending(p => p.CreatedAt)
                         .ToListAsync();
@@ -382,5 +383,29 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
             }
         }
+    
+    public async Task<object> changeVendorActivation(int id){
+        var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
+        if(vendor == null) throw new ServiceException("Vendor does not exist");
+        if(vendor.IsActive == false){
+            vendor.IsActive = true;
+            _dbContext!.Vendors!.Update(vendor);
+            await _dbContext!.SaveChangesAsync();
+            return new{
+                message = "Vendor activated successfully",
+            };
+        }
+            vendor.IsActive = false;
+            _dbContext!.Vendors!.Update(vendor);
+            await _dbContext!.SaveChangesAsync();
+            return new
+            {
+                message = "Vendor Deactivated successfully",
+            };
+
+
+        }
     }
-}
+    
+    }
+

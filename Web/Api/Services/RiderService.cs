@@ -35,7 +35,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = true;
-                _dbContext.Riders.Attach(rider);
+                _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider activated";
             }
@@ -76,7 +76,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = false;
-                _dbContext.Riders.Attach(rider);
+                _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider deactivated";
             }
