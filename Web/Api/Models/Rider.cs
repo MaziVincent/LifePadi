@@ -7,7 +7,6 @@
         public string? IdentityNumber { get; set; }
         public string? IdentityImgUrl { get; set; }
         public string? EmergencyContact { get; set; }
-        public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
         public List<Delivery>? Deliveries { get; set; }
         public List<RiderReview>? RiderReviews { get; set; }

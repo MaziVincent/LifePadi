@@ -28,7 +28,7 @@ namespace Api.Services
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<string> activateRider(int id)
+        public async Task<object> activateRider(int id)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Api.Services
                 rider.IsActive = true;
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
-                return "Rider activated";
+                return new { success = "Rider activated" };
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> deactivateRider(int id)
+        public async Task<object> deactivateRider(int id)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Api.Services
                 rider.IsActive = false;
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
-                return "Rider deactivated";
+                return new { success = "Rider deactivated" };
             }
             catch (Exception ex)
             {
@@ -114,7 +114,6 @@ namespace Api.Services
                     var ridersLs = await _dbContext.Riders
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
-                        .Where(r => r.IsActive == true)
                         .AsSplitQuery()
                         .ToListAsync();
 
