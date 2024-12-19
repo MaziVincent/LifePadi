@@ -21,6 +21,9 @@ builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
 builder.Services.AddHttpClient<CustomerService>();
 builder.Services.AddHttpClient<TransactionService>();
 
+//SignalR
+builder.Services.AddSignalR();
+
 //Automaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
