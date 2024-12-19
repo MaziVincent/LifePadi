@@ -182,5 +182,35 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPut("activate/{id}")]
+        public async Task<IActionResult> activate(int id)
+        {
+            try
+            {
+                var response = await _ivendor.activateVendor(id);
+                if (response == null) return NotFound();
+                return Ok(new {success = response});
+            }catch(Exception ex)
+            {
+                if (ex.Message.Contains("Vendor does not exist")) return NotFound();
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("deactivate/{id}")]
+        public async Task<IActionResult> deactivate(int id)
+        {
+            try
+            {
+                var response = await _ivendor.deactivateVendor(id);
+                if (response == null) return NotFound();
+                return Ok(new {success = response});
+            }catch(Exception ex)
+            {
+                if (ex.Message.Contains("Vendor does not exist")) return NotFound();
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

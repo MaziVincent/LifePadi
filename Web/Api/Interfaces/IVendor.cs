@@ -19,5 +19,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfVendors();
         public Task<bool> vendorExists(string email);
         public Task<PagedList<ProductDto>> getVendorProducts(int id, SearchPaging props);
+        public Task<string> activateVendor(int id);
+        public Task<string> deactivateVendor(int id);
     }
 }
