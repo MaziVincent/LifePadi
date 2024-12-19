@@ -9,7 +9,7 @@ const useActivate = () => {
 
 
     try {
-      const response = await axiosPrivate.post(url, {
+      const response = await axiosPrivate.put(url, {
         signal: controller.signal,
         headers: {
           Authorization: `Bearer ${token}`,

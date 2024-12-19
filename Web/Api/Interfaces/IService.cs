@@ -16,6 +16,7 @@ namespace Api.Interfaces
         public Task<IEnumerable<ServiceDto>> searchByName(string name);
         public Task<bool> nameExists(string name);
         public Task<bool> isActive(int id);
+        public Task<object> ChangeActivation(int id);
         public Task<IEnumerable<ServiceDtoLite>> nonActiveService();
         public Task<ServiceDto> uploadImgUrl(int id, IFormFile image);
         public Task<IEnumerable<ProductDto>> getServiceProducts(int id);

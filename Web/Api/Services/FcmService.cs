@@ -2,14 +2,18 @@ using Api.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Http;
 using Newtonsoft.Json;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
 using System.Net.Http;
 using System.Text;
+using Api.DTO;
 
 public class FcmService : IFcmService
 {
     private readonly HttpClient _httpClient;
     private readonly string _fcmEndpoint = "https://fcm.googleapis.com/v1/projects/lifepadi-17e8c/messages:send";
     private readonly GoogleCredential _googleCredential;
+    private readonly FirebaseApp _firebaseApp;
 
     public FcmService()
     {
@@ -17,6 +21,7 @@ public class FcmService : IFcmService
         _googleCredential = GoogleCredential
             .FromFile("lifepadi-17e8c-firebase.json")
             .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
+
     }
 
     public async Task<string> SendNotificationAsync(string targetToken, string title, string body)
@@ -76,11 +81,10 @@ public class FcmService : IFcmService
             Method = HttpMethod.Post,
             RequestUri = new Uri(_fcmEndpoint),
             Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(notification), Encoding.UTF8, "application/json"),
-            Headers =
-            {
-                { "Authorization", $"Bearer {token}" }
-            }
+
         };
+
+        request.Headers.Add("Authorization", $"Bearer {token}");
 
         var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
@@ -92,5 +96,57 @@ public class FcmService : IFcmService
             var responseBody = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"Error sending notification: {responseBody}");
         }
+    }
+
+
+    public async Task<object> SendGeneralNotification(NotificationRequest message)
+    {
+
+        try
+        {
+            Message fcmMessage = new Message()
+            {
+                Topic = message.Topic,
+                Notification = new FirebaseAdmin.Messaging.Notification()
+                {
+                    Title = message.Title,
+                    Body = message.Body
+                }
+            };
+
+            var response = await FirebaseMessaging.DefaultInstance.SendAsync(fcmMessage);
+            return new { success = "Message sent successfully", message = response };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
+    }
+
+    public async Task<object> SendRiderLocation(RiderLocation location)
+    {
+
+        try
+        {
+            Message fcmMessage = new Message()
+            {
+                Topic = $"Tracking-{location.RiderId}",
+                Data = new Dictionary<string, string>
+        {
+            { "Latitude", location.Latitude.ToString()! },
+            { "Longitude", location.Longitude.ToString()! },
+            { "RiderId", location.RiderId! }
+        }
+            };
+
+            var response = await FirebaseMessaging.DefaultInstance.SendAsync(fcmMessage);
+            return new { success = "Message sent successfully", message = response };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
     }
 }

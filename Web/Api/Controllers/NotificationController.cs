@@ -41,11 +41,23 @@ namespace Api.Controllers
         }
 
 
-        [HttpPost("sendgeneral")]
-        public async Task<IActionResult> SendGeneralFcmNotification([FromBody] NotificationRequest request)
+        // [HttpPost("sendgeneral")]
+        // public async Task<IActionResult> SendGeneralFcmNotification([FromBody] NotificationRequest request)
+        // {
+        //      await _fcmService.SendTopicNotificationAsync(request.Topic!, request.Title!, request.Body!);
+        //     return Ok();
+        // }
+
+        [HttpPost("general")]
+        public async Task<IActionResult> SendGeneralNotification([FromBody] NotificationRequest request)
         {
-             await _fcmService.SendTopicNotificationAsync(request.Topic!, request.Title!, request.Body!);
-            return Ok();
+            try{
+                var response = await _fcmService.SendGeneralNotification(request);
+                return Ok(response);
+            }catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+           
         }
 
     }

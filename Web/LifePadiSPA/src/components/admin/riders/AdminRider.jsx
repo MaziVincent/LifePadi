@@ -11,6 +11,7 @@ import Alert from "@mui/material/Alert";
 import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import DeActivateDialogue from "../subcomponents/DeActivateDialogue";
+import ActivateDialogue from "../subcomponents/ActivateDialogue";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -62,7 +63,7 @@ const AdminRider = () => {
     queryFn: () =>
       getRiders(`${url}/all?PageNumber=${page}&SearchString=${search}`),
     keepPreviousData: true,
-    staleTime: 20000,
+    staleTime: 2000,
     refetchOnMount: "always",
   });
 
@@ -110,7 +111,15 @@ const AdminRider = () => {
         handleClose={dispatch}
         Id={state.id}
         url={url}
-        entity={'rider'}
+        entity={"rider"}
+      />
+
+      <ActivateDialogue
+        open={state.activate}
+        handleClose={dispatch}
+        Id={state.id}
+        url={url}
+        entity={"rider"}
       />
 
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
@@ -219,7 +228,11 @@ const AdminRider = () => {
                   </thead>
                   <tbody>
                     {data?.result.map((rider) => (
-                      <tr className="dark:hover:bg-darkHover hover:bg-graybg cursor-pointer" key={rider.Id} onClick={()=>navigate(`/admin/rider/${rider.Id}`)}>
+                      <tr
+                        className="dark:hover:bg-darkHover hover:bg-graybg cursor-pointer"
+                        key={rider.Id}
+                        onClick={() => navigate(`/admin/rider/${rider.Id}`)}
+                      >
                         <th className="flex gap-3 px-6 py-4 font-normal justify-start text-gray-900">
                           <div className="relative h-10 w-10">
                             <img
@@ -249,7 +262,9 @@ const AdminRider = () => {
                             </span>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-center">{rider.PhoneNumber}</td>
+                        <td className="px-6 py-4 text-center">
+                          {rider.PhoneNumber}
+                        </td>
                         <td className="px-6 py-4 text-center flex justify-center">
                           <div className="flex gap-2">
                             {rider.IsVerified ? (
@@ -264,87 +279,87 @@ const AdminRider = () => {
                           </div>
                         </td>
                         <td className="px-3 py-4 ">
-                        <div className="flex justify-end gap-4 ">
-                        {rider.IsActive ? (
-                          <a
-                            x-data="{ tooltip: 'Delete' }"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              dispatch({type:"id", payload:rider.Id})
-                              dispatch({type:"deActivate"});
-                            }}
-                          >
-                            <svg
-                              className="w-6 h-6 text-red "
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeWidth="2"
-                                d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                              />
-                            </svg>
-                          </a>
-                        ) : (
-                          <a
-                            x-data="{ tooltip: 'Delete' }"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              dispatch({type:"id", payload:rider.Id})
-                              dispatch({type:"activate"});
-                            }}
-                          >
-                            <svg
-                              className="w-6 h-6 text-green-600 "
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M5 11.917 9.724 16.5 19 7.5"
-                              />
-                            </svg>
-                          </a>
-                        )}
+                          <div className="flex justify-end gap-5 ">
+                            {rider.IsActive ? (
+                              <button
+                                x-data="{ tooltip: 'Delete' }"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  dispatch({ type: "id", payload: rider.Id });
+                                  dispatch({ type: "deActivate" });
+                                }}
+                              >
+                                <svg
+                                  className="w-6 h-6 text-red "
+                                  aria-hidden="true"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="24"
+                                  height="24"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeWidth="2"
+                                    d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                  />
+                                </svg>
+                              </button>
+                            ) : (
+                              <button
+                                x-data="{ tooltip: 'Delete' }"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  dispatch({ type: "id", payload: rider.Id });
+                                  dispatch({ type: "activate" });
+                                }}
+                              >
+                                <svg
+                                  className="w-8 h-8 text-lightgreen "
+                                  aria-hidden="true"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="24"
+                                  height="24"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M5 11.917 9.724 16.5 19 7.5"
+                                  />
+                                </svg>
+                              </button>
+                            )}
 
-                        <a
-                          x-data="{ tooltip: 'Edite' }"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            dispatch({type:"rider", payload:rider})
-                            dispatch({type:"edit"});
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="h-6 w-6"
-                            x-tooltip="tooltip"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                            />
-                          </svg>
-                        </a>
-                      </div>
+                            <button
+                              x-data="{ tooltip: 'Edite' }"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                dispatch({ type: "rider", payload: rider });
+                                dispatch({ type: "edit" });
+                              }}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="h-6 w-6"
+                                x-tooltip="tooltip"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                                />
+                              </svg>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -357,9 +372,7 @@ const AdminRider = () => {
               aria-label="Table navigation"
             >
               <Pagination
-                count={
-                  data?.dataList.TotalPages
-                }
+                count={data?.dataList.TotalPages}
                 page={page}
                 onChange={handlePageChange}
                 variant="outlined"

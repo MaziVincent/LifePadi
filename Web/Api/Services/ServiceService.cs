@@ -147,7 +147,11 @@ namespace Api.Services
             try
             {
                 var service = await _dbContext!.Services.Include(s => s.Vendors)!
-                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
+                    .ThenInclude(v => v.Addresses)
+                    .Include(s => s.Vendors!)
+                    .ThenInclude(v => v.Products)
+                    .AsSplitQuery()
+                    .FirstOrDefaultAsync(s => s.Id == id);
                 var vendors = _mapper!.Map<List<VendorDtoLite>>(service!.Vendors);
                 return vendors;
             }
@@ -311,6 +315,35 @@ namespace Api.Services
                 var ServiceDto = _mapper!.Map<ServiceDto>(service);
                 return ServiceDto;
 
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+
+        public async Task<object> ChangeActivation(int id)
+        {
+            try
+            {
+                var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
+                if (service!.IsActive == true){
+                    service.IsActive = false;
+                    _dbContext.Update(service);
+                    await _dbContext.SaveChangesAsync();
+                    return new
+                    {
+                        message = "Service deactivated Successfully",
+                    }; 
+                }
+                service.IsActive = true;
+                _dbContext.Update(service);
+                await _dbContext.SaveChangesAsync();
+                return new
+                {
+                    message = "Service Activated Successfully",
+                };
             }
             catch (Exception ex)
             {

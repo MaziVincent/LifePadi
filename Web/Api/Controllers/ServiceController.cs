@@ -172,6 +172,19 @@ namespace Api.Controllers
             }
         }
 
+          [HttpPut("changeactivation")]
+        public async Task<IActionResult> changeActivation(int id)
+        {
+            try
+            {
+                var response = await _iservice.ChangeActivation(id);
+                return Ok(response);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }
