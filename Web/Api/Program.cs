@@ -77,6 +77,10 @@ builder.Services.AddScoped<IFavourite, FavouriteService>();
 builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
+builder.Services.AddScoped<IFcmService, FcmService>();
+
+
+builder.Services.AddSignalR();
 
 
 builder.Logging.ClearProviders();
@@ -104,8 +108,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+app.UseRouting();
+
 
 app.UseCors("AllowAllOrigin");
+
+app.MapHub<LocationHub>("/hubs/location");
+app.MapHub<NotificationHub>("/hubs/notification");
+
 
 app.UseAuthentication();
 

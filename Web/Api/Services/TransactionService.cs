@@ -119,7 +119,7 @@ namespace Api.Services
                     var paidTransaction = new PaymentDetailsDto
                     {
                         Status = initial_transaction.Status,
-                        Data = {}
+                        Data = { }
                     };
                     return paidTransaction;
                 }
@@ -325,6 +325,75 @@ namespace Api.Services
             }
         }
 
+        public async Task<object> MobilePaystackCheckout(InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
+                if (payment != null)
+                {
+                    return new
+                    {
+                        message = "Already paid for this order",
+                    };
+                }
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.Id == initiatePaymentDto.OrderId);
+                if (order == null) throw new Exceptions.ServiceException("Order not found");
+                var customerData = new
+                {
+                    voucherCode = initiatePaymentDto.VoucherCode,
+                    orderId = initiatePaymentDto.OrderId,
+                    amount = initiatePaymentDto.Amount,
+                    totalAmount = initiatePaymentDto.TotalAmount,
+                    deliveryFee = initiatePaymentDto.DeliveryFee,
+                    createdAt = DateTime.UtcNow
+                };
+                var tx_ref = GenerateTxRef.genTx_rf();
+                // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
+                var redirect_url = _config["Base_Url:Remote_GCP"] + "/transaction/paystack-confirmPayment";
+                string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var payload = new
+                {
+                    email = order.Customer!.Email,
+                    amount = Math.Round(initiatePaymentDto.TotalAmount * 100, 1),
+                    reference = tx_ref,
+                    callback_url = redirect_url,
+                    metadata = customerData
+                };
+
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+
+                var request = new HttpRequestMessage(HttpMethod.Post, paymentUrl);
+
+                //create an an instance of IHttpclientFactory
+                var client = _ClientFactory.CreateClient();
+
+                request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                //add the auth token to the header
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+
+                //send request and get the respond
+                HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var apiString = await response.Content.ReadAsStringAsync();
+                    var paymentRes = JsonConvert.DeserializeObject<PaystackJsonResponse>(apiString);
+                    string link = paymentRes!.data!.authorization_url!;
+                    return new
+                    {
+                        link = link
+                    };
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<object> PaystackCheckout(InitiatePaymentDto initiatePaymentDto)
         {
             try
@@ -332,7 +401,8 @@ namespace Api.Services
                 var payment = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == initiatePaymentDto.OrderId);
                 if (payment != null)
                 {
-                    return new {
+                    return new
+                    {
                         message = "Already paid for this order",
                     };
                 }
@@ -351,12 +421,13 @@ namespace Api.Services
                 var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 // var redirect_url = _config["Base_Url:Local"] + "/transaction/paystack-confirmPayment";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
-                var payload = new {
-                        email = order.Customer!.Email,
-                        amount = initiatePaymentDto.TotalAmount * 100,
-                        reference = tx_ref,
-                        callback_url = redirect_url,
-                        metadata = customerData
+                var payload = new
+                {
+                    email = order.Customer!.Email,
+                    amount = initiatePaymentDto.TotalAmount * 100,
+                    reference = tx_ref,
+                    callback_url = redirect_url,
+                    metadata = customerData
                 };
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -379,7 +450,8 @@ namespace Api.Services
                     var apiString = await response.Content.ReadAsStringAsync();
                     var paymentRes = JsonConvert.DeserializeObject<PaystackJsonResponse>(apiString);
                     string link = paymentRes!.data!.authorization_url!;
-                    return new {
+                    return new
+                    {
                         link = link
                     };
                 }
@@ -398,15 +470,16 @@ namespace Api.Services
                 var initial_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.TransactionRef == reference);
                 if (initial_transaction != null)
                 {
-                    return new {
+                    return new
+                    {
                         message = "Transaction already verified",
                     };
                 }
 
-                string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" +reference;
+                string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -416,16 +489,20 @@ namespace Api.Services
                     //insert transaction into the database
                     var transaction = new Transaction();
                     transaction.Status = paymentRes!.data!.status;
-                    transaction.AmountPaid = (Double) paymentRes.data!.amount! / 100;
+                    transaction.StatusBool = paymentRes!.status;
+                    transaction.AmountPaid = (Double)paymentRes.data!.amount! / 100;
                     transaction.TransactionRef = reference;
                     transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
                     transaction.TotalAmount = paymentRes.data!.metadata!.totalAmount;
                     transaction.OrderId = (int)paymentRes.data!.metadata!.orderId!;
+                    transaction.DeliveryFee = paymentRes.data!.metadata!.deliveryFee;
+                    transaction.PaidAt = paymentRes.data!.paid_at;
+                    transaction.PaymentChannel = paymentRes.data!.channel;
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
                         var dorder = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == transaction.OrderId);
-                        var customerVoucher =  await _dbContext.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
+                        var customerVoucher = await _dbContext.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
                         if (customerVoucher == null)
                         {
                             var newCustomerVoucher = new CustomerVoucher
@@ -435,7 +512,8 @@ namespace Api.Services
                                 TransactionId = transaction.Id
                             };
                             await _dbContext.CustomerVouchers.AddAsync(newCustomerVoucher);
-                        }else
+                        }
+                        else
                         {
                             customerVoucher.TransactionId = transaction.Id;
                         }
@@ -453,7 +531,7 @@ namespace Api.Services
                     await _dbContext.Transactions.AddAsync(transaction);
                     await _dbContext.SaveChangesAsync();
 
-                    return paymentRes!;
+                    return transaction!;
                 }
                 throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
             }
@@ -482,7 +560,8 @@ namespace Api.Services
             {
                 var transactions = await _dbContext.Transactions.Where(t => t.Status == "pending").CountAsync();
                 return transactions;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }

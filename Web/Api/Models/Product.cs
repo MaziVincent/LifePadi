@@ -6,7 +6,7 @@
         public string? Name { get; set; }
         public string? Description { get; set; }
         public bool? Status { get; set; }
-        public Double? Price { get; set; }
+        public double? Price { get; set; }
         public string? ProductImgUrl { get; set; }
         public string? Tag { get; set; }
         public int CategoryId { get; set; }

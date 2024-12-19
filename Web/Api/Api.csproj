@@ -6,23 +6,26 @@
     <UserSecretsId>2432d05d-5086-4fba-b142-82b27c60dc51</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.0"/>
-    <PackageReference Include="AutoMapper" Version="13.0.1"/>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-    <PackageReference Include="Bogus" Version="35.5.1"/>
-    <PackageReference Include="CloudinaryDotNet" Version="1.26.2"/>
-    <PackageReference Include="FuzzySharp" Version="2.0.2"/>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4"/>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4"/>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Bogus" Version="35.5.1" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4"/>
     <PackageReference Include="RestClient.Net" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0"/>
+
   </ItemGroup>
 </Project>

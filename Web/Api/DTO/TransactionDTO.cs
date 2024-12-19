@@ -9,13 +9,18 @@ namespace Api.DTO
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
-        public Double TotalAmount { get; set; }
-        public Double AmountPaid { get; set; }
+        public double TotalAmount { get; set; }
+        public double AmountPaid { get; set; }
         public string? Status { get; set; }
+        public bool? StatusBool { get; set; }
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }
         public OrderDtoLite? Order { get; set; }
+
+        public DateTime? PaidAt { get; set; }
+        public string? PaymentChannel {get; set;}
+        public double? DeliveryFee {get; set;}
     }
 
     public class TransactionDtoLite
@@ -23,8 +28,8 @@ namespace Api.DTO
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
-        public Double TotalAmount { get; set; }
-        public Double AmountPaid { get; set; }
+        public double TotalAmount { get; set; }
+        public double AmountPaid { get; set; }
         public string? Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -32,9 +37,9 @@ namespace Api.DTO
 
     public class InitiatePaymentDto
     {
-        public Double Amount { get; set; }
-        public Double? TotalAmount { get; set; }
-        public Double DeliveryFee { get; set; }
+        public double Amount { get; set; }
+        public double TotalAmount { get; set; }
+        public double DeliveryFee { get; set; }
         public int OrderId { get; set; }
         public string? VoucherCode { get; set; }
 
@@ -45,7 +50,7 @@ namespace Api.DTO
         public int Id { get; set; }
         public BigInteger PaymentId { get; set; }
         public string? TransactionRef { get; set; }
-        public Double TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
         public string? Status { get; set; }
         public int? VoucherId { get; set; }
         public VoucherDto? Voucher { get; set; }
@@ -58,7 +63,7 @@ namespace Api.DTO
     public class MakePaymentDetails
     {
         public string? tx_ref { get; set; }
-        public Double amount { get; set; }
+        public double amount { get; set; }
         public string? name { get; set; }
         public string? redirect_url { get; set; }
         public string? currency { get; set; }
@@ -71,8 +76,8 @@ namespace Api.DTO
     {
         public string? voucherCode { get; set; }
         public int orderId { get; set; }
-        public Double totalAmount { get; set; }
-        public Double deliveryFee { get; set; }
+        public double totalAmount { get; set; }
+        public double deliveryFee { get; set; }
         public DateTime? createdAt { get; set; }
 
     }

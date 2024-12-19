@@ -28,7 +28,9 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("confirmPayment")]
+
+
+            [HttpGet("confirmPayment")]
         public async Task<IActionResult> confirmPayment([FromQuery] AfterPayment transactionInfo)
         {
             try
@@ -99,13 +101,27 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPost("MobilePaystackCheckout")]
+        public async Task<IActionResult> mobilePaystackCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
+        {
+            try
+            {
+                var response = await _itran.MobilePaystackCheckout(initiatePaymentDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("paystack-confirmPayment")]
         public async Task<IActionResult> paystackVerifyPayment([FromQuery] string reference)
         {
             try
             {
                 var response = await _itran.PaystackVerifyPayment(reference);
-                Console.WriteLine($"response {response}");
+               // Console.WriteLine($"response {response}");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -120,7 +136,7 @@ namespace Api.Controllers
             try
             {
                 var response = await _itran.GetTransactionByOrderId(orderId);
-                if (response == null) return StatusCode(404, "Transaction not found");
+                if (response == null) return StatusCode(404, " Transaction not found ");
                 return Ok(response);
             }
             catch (Exception ex)

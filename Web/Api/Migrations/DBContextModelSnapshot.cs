@@ -147,8 +147,8 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DeliveryAddress")
-                        .HasColumnType("text");
+                    b.Property<int?>("DeliveryAddressId")
+                        .HasColumnType("integer");
 
                     b.Property<double>("DeliveryFee")
                         .HasColumnType("double precision");
@@ -156,8 +156,8 @@ namespace Api.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PickupAddress")
-                        .HasColumnType("text");
+                    b.Property<int?>("PickUpAddressId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PickupType")
                         .HasColumnType("text");
@@ -173,7 +173,11 @@ namespace Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DeliveryAddressId");
+
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("PickUpAddressId");
 
                     b.HasIndex("RiderId");
 
@@ -262,19 +266,25 @@ namespace Api.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool?>("IsFragile")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Item")
                         .HasColumnType("text");
 
                     b.Property<string>("ItemDescription")
                         .HasColumnType("text");
 
-                    b.Property<string>("ItemWeight")
-                        .HasColumnType("text");
+                    b.Property<double?>("ItemWeight")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ReceiverAddress")
+                    b.Property<int?>("ReceiverAddressId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReceiverAddressOld")
                         .HasColumnType("text");
 
                     b.Property<string>("ReceiverName")
@@ -283,7 +293,10 @@ namespace Api.Migrations
                     b.Property<string>("ReceiverPhone")
                         .HasColumnType("text");
 
-                    b.Property<string>("SenderAddress")
+                    b.Property<int?>("SenderAddressId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SenderAddressOld")
                         .HasColumnType("text");
 
                     b.Property<string>("SenderName")
@@ -304,6 +317,10 @@ namespace Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ReceiverAddressId");
+
+                    b.HasIndex("SenderAddressId");
 
                     b.ToTable("Logistics");
                 });
@@ -571,14 +588,29 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<double?>("DeliveryFee")
+                        .HasColumnType("double precision");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PaymentChannel")
+                        .HasColumnType("text");
 
                     b.Property<BigInteger>("PaymentId")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
+
+                    b.Property<bool?>("StatusBool")
+                        .HasColumnType("boolean");
+
+                    b.Property<double?>("SubTotal")
+                        .HasColumnType("double precision");
 
                     b.Property<double>("TotalAmount")
                         .HasColumnType("double precision");
@@ -1071,17 +1103,29 @@ namespace Api.Migrations
 
             modelBuilder.Entity("Api.Models.Delivery", b =>
                 {
+                    b.HasOne("Api.Models.Address", "DeliveryAddress")
+                        .WithMany()
+                        .HasForeignKey("DeliveryAddressId");
+
                     b.HasOne("Api.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Models.Address", "PickUpAddress")
+                        .WithMany()
+                        .HasForeignKey("PickUpAddressId");
+
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany("Deliveries")
                         .HasForeignKey("RiderId");
 
+                    b.Navigation("DeliveryAddress");
+
                     b.Navigation("Order");
+
+                    b.Navigation("PickUpAddress");
 
                     b.Navigation("Rider");
                 });
@@ -1124,7 +1168,19 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Api.Models.Address", "ReceiverAddress")
+                        .WithMany()
+                        .HasForeignKey("ReceiverAddressId");
+
+                    b.HasOne("Api.Models.Address", "SenderAddress")
+                        .WithMany()
+                        .HasForeignKey("SenderAddressId");
+
                     b.Navigation("Order");
+
+                    b.Navigation("ReceiverAddress");
+
+                    b.Navigation("SenderAddress");
                 });
 
             modelBuilder.Entity("Api.Models.Order", b =>

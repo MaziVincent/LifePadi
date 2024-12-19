@@ -78,6 +78,7 @@ namespace Api.Services
                     var normalLogistics = await _context.Logistics.OrderByDescending(l => l.CreatedAt)
                     .Include(l => l.Order)
                     .ThenInclude(o => o!.Customer)
+                    .AsSplitQuery()
                     .ToListAsync();
                     logisticList = logisticList.Concat(normalLogistics);
                     var returnList = PagedList<Logistic>.ToPagedList(logisticList, props.PageNumber, props.PageSize);
@@ -88,6 +89,7 @@ namespace Api.Services
                     .Include(l => l.Order)
                     .ThenInclude(o => o!.Customer)
                     .Where(l => l.Item!.Contains(props.SearchString))
+                    .AsSplitQuery()
                     .ToListAsync();
                 logisticList = logisticList.Concat(searchLogistics);
                 var returnList2 = PagedList<Logistic>.ToPagedList(logisticList, props.PageNumber, props.PageSize);

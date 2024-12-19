@@ -12,6 +12,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v3
@@ -32,14 +39,6 @@ jobs:
 
     - name: Package Lambda function
       run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1 # Change to your region
 
     - name: Upload to S3
       run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
