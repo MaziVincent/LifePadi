@@ -36,7 +36,7 @@ class ProductTileBase extends StatelessWidget {
         borderRadius: BorderRadius.circular(13.77.r),
       ),
       child: Ink(
-        height: 127.36.h,
+        height: 135.36.h,
         width: double.infinity,
         padding: EdgeInsets.only(
           top: 12.05.h,
