@@ -52,7 +52,7 @@ namespace Api.Services
                 var folderName = "Riders";
                 var newRider = _mapper.Map<Rider>(rider);
                 newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
-                newRider.IsActive = false;
+                newRider.IsActive = true;
                 newRider.IsVerified = false;
                 newRider.SearchString = rider.FirstName!.ToUpper() + " " + rider.LastName!.ToUpper() + " " + rider.Email!.ToUpper() + " " + rider.PhoneNumber;
                 var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
