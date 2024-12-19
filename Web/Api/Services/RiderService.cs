@@ -39,6 +39,7 @@ namespace Api.Services
         }
 
         public async Task<object> activateRider(int id)
+<<<<<<< HEAD
 =======
             _cloudinary = new Cloudinary( account );
 =======
@@ -48,6 +49,8 @@ namespace Api.Services
 
         public async Task<string> activateRider(int id)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 9f19389 (rider commit)
         {
             try
             {
@@ -113,6 +116,7 @@ namespace Api.Services
         }
 
         public async Task<object> deactivateRider(int id)
+<<<<<<< HEAD
 =======
                 var newRider = _mapper.Map<Rider>(rider);
                 newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
@@ -135,6 +139,8 @@ namespace Api.Services
 
         public async Task<string> deactivateRider(int id)
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 9f19389 (rider commit)
         {
             try
             {
@@ -146,6 +152,7 @@ namespace Api.Services
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return new { success = "Rider deactivated" };
+<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -157,6 +164,8 @@ namespace Api.Services
 >>>>>>> d354473 (rider service commit)
                 await _dbContext.SaveChangesAsync();
                 return "Rider deactivated";
+=======
+>>>>>>> 9f19389 (rider commit)
             }
             catch (Exception ex)
             {
@@ -198,9 +207,12 @@ namespace Api.Services
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                         .Where(r => r.IsActive == true)
 >>>>>>> d354473 (rider service commit)
+=======
+>>>>>>> 9f19389 (rider commit)
                         .AsSplitQuery()
                         .ToListAsync();
 <<<<<<< HEAD

@@ -95,6 +95,7 @@ namespace Api.Interfaces
 >>>>>>> 57dd2cb (rider commit)
         public Task<IEnumerable<DeliveryDto>> getRiderDeliveries(int id);
         public Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg);
+<<<<<<< HEAD
 >>>>>>> 836ec36 (changed all DTO to Dto)
         public Task<string> activateRider(int id);
         public Task<string> verifyRider(int id);
@@ -106,6 +107,12 @@ namespace Api.Interfaces
 =======
 >>>>>>> 4641615 (finished with delivery service and controller)
 =======
+=======
+        public Task<object> activateRider(int id);
+        public Task<string> toggleRiderStatus(int id);
+        public Task<string> verifyRider(int id);
+        public Task<object> deactivateRider(int id);
+>>>>>>> 9f19389 (rider commit)
         public Task<int> totalNumberOfRiders();
         public Task<int> totalNumberOfNonActiveRiders();
         public Task<int> totalNumberOfActiveRiders();

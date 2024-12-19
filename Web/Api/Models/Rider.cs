@@ -8,6 +8,9 @@
         public string? IdentityImgUrl { get; set; }
         public string? EmergencyContact { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9f19389 (rider commit)
         public bool? IsVerified { get; set; }
         public List<Delivery>? Deliveries { get; set; }
         public List<RiderReview>? RiderReviews { get; set; }
