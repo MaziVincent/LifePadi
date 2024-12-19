@@ -187,14 +187,12 @@ class CartState extends _$CartState with LocationUtils {
   }
 
   /// Add a product to the cart
-  Future<void> addToCart(Product product) async {
-    if (isInCart(product.id)) {
-      await incrementQuantity(product.id);
-      return;
-    }
-
+  Future<void> addToCart(Product product, {int quantity = 1}) async {
     final currentProducts = state.valueOrNull?.products ?? [];
-    final updatedProducts = [product, ...currentProducts];
+    final updatedProducts = [
+      product.copyWith(quantity: quantity),
+      ...currentProducts,
+    ];
     await _saveCart(_computeCart(products: updatedProducts));
     await showToast('Added ${product.name} to cart');
   }

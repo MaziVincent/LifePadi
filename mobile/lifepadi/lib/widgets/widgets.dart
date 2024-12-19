@@ -54,6 +54,7 @@ export 'price_filter_tab.dart';
 export 'product_tile.dart';
 export 'profile_detail_info.dart';
 export 'profile_image_and_location.dart';
+export 'quantity_widget.dart';
 export 'receipt_info_tile.dart';
 export 'receiver_chat_bubble.dart';
 export 'rider_order_list.dart';

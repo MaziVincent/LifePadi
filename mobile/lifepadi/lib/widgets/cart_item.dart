@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/widgets/quantity_widget.dart';
 import 'package:remixicon/remixicon.dart';
 
 class CartItem extends StatelessWidget {
@@ -86,62 +86,10 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 8.verticalSpace,
-                Row(
-                  children: [
-                    /// Decrement button
-                    InkWell(
-                      onTap: onDecrement,
-                      child: Ink(
-                        width: 40.h,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: const Color(0xFFDCDCE2),
-                          ),
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                        child: const Icon(IconsaxPlusLinear.minus),
-                      ),
-                    ),
-
-                    /// Input value
-                    Container(
-                      width: 40.h,
-                      height: 40.h,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xFFDCDCE2),
-                        ),
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        '$quantity',
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF27272A),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-
-                    /// Increment button
-                    InkWell(
-                      onTap: onIncrement,
-                      child: Ink(
-                        width: 40.h,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xFFDCDCE2),
-                          ),
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                        child: const Icon(IconsaxPlusLinear.add),
-                      ),
-                    ),
-                  ].separatedBy(4.horizontalSpace),
+                QuantityWidget(
+                  onDecrement: onDecrement,
+                  quantity: quantity,
+                  onIncrement: onIncrement,
                 ),
               ],
             ),

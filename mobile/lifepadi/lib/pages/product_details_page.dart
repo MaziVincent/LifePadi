@@ -50,7 +50,7 @@ class ProductDetailsPage extends ConsumerWidget {
   }
 }
 
-class _ProductDetailsContent extends StatelessWidget {
+class _ProductDetailsContent extends HookWidget {
   const _ProductDetailsContent({
     required this.product,
   });
@@ -59,6 +59,8 @@ class _ProductDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final quantity = useState(1);
+
     return SuperListView(
       padding: kHorizontalPadding,
       children: [
@@ -177,17 +179,42 @@ class _ProductDetailsContent extends StatelessWidget {
                   (p) => p.id == product.id,
                 ) ??
                 false;
+            final productInCart = cartAsync.valueOrNull?.products
+                .firstWhereOrNull((p) => p.id == product.id);
 
-            return PrimaryButton(
-              onPressed: () async {
-                final notifier = ref.read(cartStateProvider.notifier);
-                if (isInCart) {
-                  await notifier.removeFromCart(product.id);
-                } else {
-                  await notifier.addToCart(product);
-                }
-              },
-              text: isInCart ? 'Remove from Cart' : 'Add to Cart',
+            return Row(
+              children: [
+                QuantityWidget(
+                  quantity: isInCart ? productInCart!.quantity : quantity.value,
+                  onIncrement: () => isInCart
+                      ? ref
+                          .read(cartStateProvider.notifier)
+                          .incrementQuantity(product.id)
+                      : quantity.value++,
+                  onDecrement: () => isInCart
+                      ? ref
+                          .read(cartStateProvider.notifier)
+                          .decrementQuantity(product.id)
+                      : quantity.value--,
+                ),
+                16.horizontalSpace,
+                Expanded(
+                  child: PrimaryButton(
+                    onPressed: () async {
+                      final notifier = ref.read(cartStateProvider.notifier);
+                      if (isInCart) {
+                        await notifier.removeFromCart(product.id);
+                      } else {
+                        await notifier.addToCart(
+                          product,
+                          quantity: quantity.value,
+                        );
+                      }
+                    },
+                    text: isInCart ? 'Remove from Cart' : 'Add to Cart',
+                  ),
+                ),
+              ],
             );
           },
         ),
