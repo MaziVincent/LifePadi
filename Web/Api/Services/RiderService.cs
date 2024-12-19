@@ -55,6 +55,9 @@ namespace Api.Services
                 if (rider == null) return null!;
                 rider.IsActive = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d354473 (rider service commit)
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return new { success = "Rider activated" };
@@ -139,6 +142,7 @@ namespace Api.Services
                 if (rider == null) return null!;
                 rider.IsActive = false;
 <<<<<<< HEAD
+<<<<<<< HEAD
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return new { success = "Rider deactivated" };
@@ -148,6 +152,9 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
 =======
                 _dbContext.Riders.Attach(rider);
+=======
+                _dbContext.Riders.Update(rider);
+>>>>>>> d354473 (rider service commit)
                 await _dbContext.SaveChangesAsync();
                 return "Rider deactivated";
             }
@@ -190,6 +197,10 @@ namespace Api.Services
                     var ridersLs = await _dbContext.Riders
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
+<<<<<<< HEAD
+=======
+                        .Where(r => r.IsActive == true)
+>>>>>>> d354473 (rider service commit)
                         .AsSplitQuery()
                         .ToListAsync();
 <<<<<<< HEAD

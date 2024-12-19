@@ -48,6 +48,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Bogus" Version="35.5.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
     <PackageReference Include="FuzzySharp" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
@@ -60,10 +61,14 @@
     </PackageReference>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d354473 (rider service commit)
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
     <PackageReference Include="RestClient.Net" Version="6.0.0" />
+<<<<<<< HEAD
     <PackageReference Include="RabbitMQ.Client" Version="7.0.0" />
   </ItemGroup>
 <<<<<<< HEAD
@@ -89,6 +94,8 @@
     <PackageReference Include="RestClient.Net" Version="6.0.0" />
 >>>>>>> 3ae0fdd (add signalR to the project)
 >>>>>>> 66834e5 (add signalR to the project)
+=======
+>>>>>>> d354473 (rider service commit)
   </ItemGroup>
 </Project>
 >>>>>>> 52db56c (made some changes in the delivery and order)
