@@ -1,53 +1,50 @@
-/// Exception thrown when a request returns 401.
-class UnauthorizedException implements Exception {
-  const UnauthorizedException(this.message);
+/// Base exception class for all app exceptions
+abstract class AppException implements Exception {
+  const AppException(this.message);
   final String message;
+}
+
+/// Exception thrown when a request returns 401.
+class UnauthorizedException extends AppException {
+  const UnauthorizedException(super.message);
 }
 
 /// Exception thrown when a request returns 500.
-class ServerErrorException implements Exception {
-  const ServerErrorException(this.message);
-  final String message;
+class ServerErrorException extends AppException {
+  const ServerErrorException(super.message);
 }
 
 /// Phone number verification failed.
-class PhoneVerificationFailedException implements Exception {
-  const PhoneVerificationFailedException(this.message);
-  final String message;
+class PhoneVerificationFailedException extends AppException {
+  const PhoneVerificationFailedException(super.message);
 }
 
 /// Exception thrown when there is error in location service.
-class LocationServiceException implements Exception {
-  const LocationServiceException(this.message);
-  final String message;
+class LocationServiceException extends AppException {
+  const LocationServiceException(super.message);
 }
 
 /// Exception thrown when location permission is denied.
-class LocationPermissionException implements Exception {
-  const LocationPermissionException(this.message);
-  final String message;
+class LocationPermissionException extends AppException {
+  const LocationPermissionException(super.message);
 }
 
 /// Exception thrown when location details could not be fetched.
-class LocationDetailsException implements Exception {
-  const LocationDetailsException(this.message);
-  final String message;
+class LocationDetailsException extends AppException {
+  const LocationDetailsException(super.message);
 }
 
 /// Exception thrown when a discount code is invalid.
-class InvalidDiscountCodeException implements Exception {
-  const InvalidDiscountCodeException(this.message);
-  final String message;
+class InvalidDiscountCodeException extends AppException {
+  const InvalidDiscountCodeException(super.message);
 }
 
 /// Exception thrown when payment fails.
-class PaymentFailedException implements Exception {
-  const PaymentFailedException(this.message);
-  final String message;
+class PaymentFailedException extends AppException {
+  const PaymentFailedException(super.message);
 }
 
 /// Exception thrown when biometric authentication fails.
-class BiometricAuthenticationException implements Exception {
-  const BiometricAuthenticationException(this.message);
-  final String message;
+class BiometricAuthenticationException extends AppException {
+  const BiometricAuthenticationException(super.message);
 }

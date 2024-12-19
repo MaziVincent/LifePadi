@@ -261,17 +261,28 @@ Product makeFakeProduct({required int id}) {
 
   if (error is DioException) {
     title = switch (error.error) {
+      final Exception e when e is HttpException => 'Poor connection',
       final Exception e when e is SocketException => 'No Internet Connection',
       final Exception e when e is InvalidDiscountCodeException =>
         'Invalid Discount Code',
+      final Exception e when e is PhoneVerificationFailedException =>
+        'Phone verification failed',
+      final Exception e when e is PaymentFailedException => 'Payment Failed',
       _ => 'An error occured',
     };
 
-    description = error.error is SocketException
-        ? 'Please check your internet connection and try again'
-        : error.response?.data.toString() ?? // Has a response
-            error.message ?? // Dio Exception
-            error.error.toString(); // Not Dio Exception
+    if (error.response != null) {
+      description = error.response!.data.toString();
+    } else {
+      description = error.message ??
+          switch (error.error) {
+            final Exception e when e is HttpException => e.message,
+            final Exception e when e is SocketException =>
+              'Please check your internet connection and try again',
+            final Exception e when e is AppException => e.message,
+            _ => error.error.toString(),
+          };
+    }
   }
 
   return (title: title, description: description);
