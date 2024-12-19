@@ -66,8 +66,9 @@ builder.Services.AddScoped<IEmailVerification, EmailVerificationService>();
 builder.Services.AddScoped<IReview<ProductReviewDto>, ProductReviewService>();
 builder.Services.AddScoped<IReview<VendorReviewDto>, VendorReviewService>();
 builder.Services.AddScoped<IReview<RiderReviewDto>, RiderReviewService>();
-builder.Services.AddScoped<IWalletDepositeAndWithdrawal<DepositeDto>, DepositeService>();
-builder.Services.AddScoped<IWalletDepositeAndWithdrawal<WithdrawalDto>, WithdrawalService>();
+builder.Services.AddScoped<IWallet, WalletService>();
+builder.Services.AddScoped<IWalletDeposite, DepositeService>();
+builder.Services.AddScoped<IWalletWithdrawal, WithdrawalService>();
 builder.Services.AddScoped<IWalletNotification, WalletNotificationService>();
 builder.Services.AddScoped<IFavourite, FavouriteService>();
 builder.Services.AddScoped<ILogistic, LogisticService>();
@@ -78,6 +79,9 @@ builder.Services.AddScoped<IFcmService, FcmService>();
 
 builder.Services.AddSignalR();
 
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 //enable CORS
 builder.Services.AddCors(c =>
