@@ -50,6 +50,8 @@ namespace Api.Services
             try
             {
                 var folderName = "Riders";
+                var  initialRider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Email == rider.Email || r.PhoneNumber == rider.PhoneNumber);
+                if (initialRider != null) throw new Exceptions.ServiceException("Rider already exists");
                 var newRider = _mapper.Map<Rider>(rider);
                 newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
                 newRider.IsActive = false;
