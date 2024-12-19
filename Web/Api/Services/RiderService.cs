@@ -35,7 +35,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = true;
-                _dbContext.Riders.Attach(rider);
+                _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider activated";
             }
@@ -76,7 +76,7 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = false;
-                _dbContext.Riders.Attach(rider);
+                _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider deactivated";
             }
@@ -113,6 +113,7 @@ namespace Api.Services
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.IsActive == true)
+                        .AsSplitQuery()
                         .ToListAsync();
 
                     ridersList = ridersList.Concat(ridersLs);
@@ -125,6 +126,7 @@ namespace Api.Services
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
+                        .AsSplitQuery()
                         .ToListAsync();
                 ridersList = ridersList.Concat(riders);
                 var response = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
