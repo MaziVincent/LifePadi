@@ -20,8 +20,8 @@ const Color kStrokeColor = Color(0xFFEBEBF0);
 /// 0xFF139D01
 const Color kBrightGreen = Color(0xFF139D01);
 
-/// 0xFFE53E3E
-const Color kDanger = Color(0xFFE53E3E);
+/// 0xFFF52311
+const Color kDangerColor = Color(0xFFF52311);
 
 /// 0xFFE5E5E5
 const Color kLightDanger = Color(0xFFFFF5F5);

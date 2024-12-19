@@ -1,5 +1,8 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -60,12 +63,36 @@ class SettingsPage extends HookWidget {
               // TODO: Go to FAQ page
             },
           ),
-          SettingTile(
-            name: 'Delete Account',
-            onTap: () {
-              // TODO: Go to FAQ page
+          Consumer(
+            builder: (context, ref, child) {
+              return SettingTile(
+                name: 'Delete Account',
+                onTap: () async {
+                  final confirm = await openChoiceDialog(
+                    context: context,
+                    title: 'Delete Account',
+                    description:
+                        'Are you sure you want to delete your account? This action can not be undone.',
+                    icon: IconsaxPlusLinear.trash,
+                  );
+
+                  if (confirm == true) {
+                    try {
+                      await ref
+                          .read(authControllerProvider.notifier)
+                          .deleteAccount();
+                      if (context.mounted) {
+                        context.go(const GetStartedRoute().location);
+                      }
+                      await showToast('Account deleted successfully');
+                    } catch (e) {
+                      await showToast(getErrorInfo(e).description);
+                    }
+                  }
+                },
+                textColor: kDangerColor,
+              );
             },
-            textColor: const Color(0xFFF52311),
           ),
         ],
       ),

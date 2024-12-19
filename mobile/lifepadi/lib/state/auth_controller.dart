@@ -319,6 +319,7 @@ class AuthController extends _$AuthController {
     }
   }
 
+  /// Make a request to reset the user's password
   Future<String> resetPassword({
     required String newPassword,
     required int userId,
@@ -364,10 +365,12 @@ class AuthController extends _$AuthController {
     }
   }
 
+  /// Check if biometrics is supported on the device
   Future<bool> isBiometricsSupported() async {
     return _biometricService.isSupported();
   }
 
+  /// Enable or disable biometric authentication
   Future<void> setBiometricsEnabled({required bool enabled}) async {
     if (enabled) {
       final isSupported = await isBiometricsSupported();
@@ -390,5 +393,21 @@ class AuthController extends _$AuthController {
   Future<bool> canRestoreAuth() async {
     final credentials = await _secureStorage.get(kCredentialsKey);
     return credentials != null;
+  }
+
+  /// Remove the user's account
+  Future<void> deleteAccount() async {
+    final client = ref.read(dioProvider());
+
+    try {
+      final response = await client
+          .delete<String>('/customer/delete/${state.requireValue.id}');
+      if (response.data == null) {
+        throw const ServerErrorException('No data returned from server');
+      }
+      await logout();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
