@@ -17,5 +17,6 @@ namespace Api.Interfaces
         public Task<double> getInitialBalance(int id);
         public Task<WalletDto> getWalletByCustomerId(int customerId);
         public Task<object> getCustomerWalletStat(int customerId);
+        public Task<List<DepositeDto>> lastFiveTransactions(int walletId);
     }
 }

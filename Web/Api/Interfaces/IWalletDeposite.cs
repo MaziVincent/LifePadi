@@ -29,5 +29,6 @@ namespace Api.Interfaces
         public Task<object> customerTransactionStats(int customerId);
         public Task<object> initiateWalletDeposit(InitiateDepositeDto initiateDepositeDto);
         public Task<object> confirmWalletDeposit(string reference);
+        public Task<object> initiateWalletDepositWeb(InitiateDepositeDto initiateDepositeDto);
     }
 }

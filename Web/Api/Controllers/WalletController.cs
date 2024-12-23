@@ -138,6 +138,19 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("last-five-transactions/{walletId}")]
+        public async Task<IActionResult> getLastFiveTransactions(int walletId)
+        {
+            try
+            {
+                var transactions = await _wallet.lastFiveTransactions(walletId);
+                return Ok(transactions);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         
     }
 }

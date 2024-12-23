@@ -201,6 +201,24 @@ namespace Api.Controllers
             }
         }
 
+        [HttpPost("initiate-web")]
+        public async Task<IActionResult> initiateWeb([FromBody] InitiateDepositeDto initiateDepositeDto)
+        {
+            try
+            {
+                var response = await _walletDeposite.initiateWalletDepositWeb(initiateDepositeDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Wallet not found"))
+                {
+                    return NotFound(ex.Message);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("initiate")]
         public async Task<IActionResult> initiate([FromBody] InitiateDepositeDto initiateDepositeDto)
         {

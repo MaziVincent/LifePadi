@@ -149,6 +149,53 @@ namespace Api.Services
             }
         }
 
+        public async Task<List<DepositeDto>> lastFiveTransactions(int walletId)
+        {
+            try
+            {
+                IQueryable<DepositeDto> transactions =
+                (from d in _context.Deposites
+                where d.WalletId == walletId
+                orderby d.CreatedAt descending
+                select new DepositeDto 
+                {
+                    Id = d.Id,
+                    Amount = d.Amount,
+                    CreatedAt = d.CreatedAt,
+                    WalletId = d.WalletId,
+                    ReferenceId = d.ReferenceId,
+                    TransactionId = d.TransactionId,
+                    PaymentMethod = d.PaymentMethod,
+                    Status = d.Status,
+                    Type = "Deposite"
+                     // Map withdrawal data to DepositeDto
+                }
+                ).Take(5)
+                .Union
+                (from w in _context.Withdrawals
+                    where w.WalletId == walletId
+                    orderby w.CreatedAt descending
+                    select new DepositeDto { 
+                        Id = w.Id,
+                        Amount = -w.Amount,
+                        CreatedAt = w.CreatedAt,
+                        WalletId = w.WalletId,
+                        ReferenceId = w.ReferenceId,
+                        TransactionId = w.TransactionId,
+                        PaymentMethod = w.PaymentMethod,
+                        Status = w.Status,
+                        Type = "Withdrawal"
+                     }  // Map withdrawal data to DepositeDto
+                ).Take(5);
+
+                return await transactions.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
         public async Task<WalletDto> updateAsync(int id, WalletDto walletDto)
         {
             try
