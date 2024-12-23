@@ -121,6 +121,7 @@ const baseUrl = 'https://localhost:7216/api/'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 9bb5b03 (still working on register)
 =======
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/"
@@ -222,6 +223,10 @@ const baseUrl ='https://localhost:7216/api/'
 const baseUrl = "https://4i2f5way3slxupj3rkqood3wje0txtca.lambda-url.us-east-1.on.aws/api/";
 //const baseUrl ='https://localhost:7216/api/'
 >>>>>>> 89ccae8 (base)
+=======
+//const baseUrl = "https://lifepadi-948405839190.us-east1.run.app/api/";
+const baseUrl ='https://localhost:7216/api/'
+>>>>>>> b8f4bee (wallet added to login)
 //'http://localhost:3500/'
 >>>>>>> 0ab4b1c (Google Maps Controller)
 

@@ -69,7 +69,11 @@ namespace Api.Controllers
                     Role = user.Role,
                     refreshToken = user.RefreshToken,
                     accessToken = user.AccessToken,
+<<<<<<< HEAD
                     Wallet = user.Wallet
+=======
+                    wallet = user.Wallet
+>>>>>>> 22aabbf (wallet added to login)
                 };
                 return Ok(token);
             }
