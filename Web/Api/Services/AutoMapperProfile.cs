@@ -112,7 +112,9 @@ namespace Api.Services
 
             //Wallet
             CreateMap<Wallet, WalletDto>();
+            CreateMap<Wallet, WalletDtoLite>();
             CreateMap<WalletDto, Wallet>();
+            CreateMap<WalletDtoLite, Wallet>();
 
             //Deposite
             CreateMap<Deposite, DepositeDto>();

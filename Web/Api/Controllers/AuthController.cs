@@ -8,6 +8,7 @@ using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Interfaces;
+using AutoMapper;
 
 namespace Api.Controllers
 {
@@ -19,12 +20,14 @@ namespace Api.Controllers
         private readonly IConfiguration _config;
         private readonly IOtherService _oService;
         private readonly IEmailVerification _emailVerify;
-        public AuthController(DBContext context, IConfiguration config, IOtherService oService, IEmailVerification emailVerify)
+        private readonly IMapper _mapper;
+        public AuthController(DBContext context, IConfiguration config, IOtherService oService, IEmailVerification emailVerify, IMapper mapper)
         {
             _context = context;
             _config = config;
             _oService = oService;
             _emailVerify = emailVerify;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -37,17 +40,7 @@ namespace Api.Controllers
                 {
                     return NotFound("Invalid email or password");
                 }
-                var genTokenDTO = new GenTokenDto
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Role = user.Role
-                };
-                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
-                var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
-                var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
-                dbUser!.RefreshToken = refreshToken;
-                await _context.SaveChangesAsync();
+               
                 //put refreshToken in a cookie
                 var cookieOptions = new CookieOptions
                 {
@@ -58,7 +51,7 @@ namespace Api.Controllers
                     Path = "/",
 
                 };
-                Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+                Response.Cookies.Append("refreshToken", user.RefreshToken!, cookieOptions);
 
                 var token = new
                 {
@@ -69,8 +62,9 @@ namespace Api.Controllers
                     PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
                     Role = user.Role,
-                    refreshToken = refreshToken,
-                    accessToken = accessToken
+                    refreshToken = user.RefreshToken,
+                    accessToken = user.AccessToken,
+                    wallet = user.Wallet
                 };
                 return Ok(token);
             }
@@ -103,6 +97,18 @@ namespace Api.Controllers
                     throw new Exceptions.ServiceException("Invalid email or password");
                 }
                 var Type = _oService.Strip(user.GetType().ToString());
+                var genTokenDTO = new GenTokenDto
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Role = Type
+                };
+                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
+                var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
+                user!.RefreshToken = refreshToken;
+                await _context.SaveChangesAsync();
+                var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.CustomerId == user.Id);
+                var walletDto = _mapper.Map<WalletDtoLite>(wallet);
                 return new LoggedInUserDto
                 {
                     Id = user.Id,
@@ -111,7 +117,10 @@ namespace Api.Controllers
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
                     ContactAddress = user.ContactAddress,
-                    Role = Type
+                    RefreshToken = refreshToken,
+                    AccessToken = accessToken,
+                    Role = Type,
+                    Wallet = walletDto
                 };
             }
             catch (Exception ex)
@@ -203,7 +212,7 @@ namespace Api.Controllers
             return Ok("Logout Successfully");
         }
 
-        [HttpPost("password-reset/{UserId}")]
+        [HttpPut("password-reset/{UserId}")]
         public async Task<IActionResult> PasswordReset(int UserId, [FromForm] string NewPassword)
         {
             try

@@ -22,6 +22,8 @@ namespace Api.DTO
         public string? Role { get; set; }
         public string? ContactAddress { get; set; }
         public string? RefreshToken {get; set; }
+        public string? AccessToken { get; set; }
+        public WalletDtoLite? Wallet { get; set; }
 
     }
 }
