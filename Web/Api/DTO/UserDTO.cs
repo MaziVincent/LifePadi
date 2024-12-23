@@ -38,6 +38,7 @@ namespace Api.DTO
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public class UserDtoLiteMessage
 =======
         public string? ContactAdress { get; set; }
@@ -50,6 +51,9 @@ namespace Api.DTO
 
     public class UserDTOLite
 >>>>>>> 9a80707 (created the interfaces and the DTOs)
+=======
+    public class UserDtoLiteMessage
+>>>>>>> 568d50b (done with chat messages)
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -59,13 +63,19 @@ namespace Api.DTO
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 568d50b (done with chat messages)
         public string? ContactAddress { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> 568d50b (done with chat messages)
     public class UserDtoLite
     {
         public int Id { get; set; }

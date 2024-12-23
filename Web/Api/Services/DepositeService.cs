@@ -393,6 +393,8 @@ namespace Api.Services
         }
 
         public async Task<object> initiateWalletDepositWeb(InitiateDepositeDto initiateDepositeDto)
+<<<<<<< HEAD
+=======
         {
             try
             {
@@ -454,6 +456,69 @@ namespace Api.Services
         }
 
         public async Task<object> initiateWalletDeposit(InitiateDepositeDto initiateDepositeDto)
+>>>>>>> 568d50b (done with chat messages)
+        {
+            try
+            {
+                var wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == initiateDepositeDto.WalletId);
+                if (wallet == null) throw new Exceptions.ServiceException("Wallet not found");
+                var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == wallet.CustomerId);
+                var depositeData = new
+                {
+                    amount = initiateDepositeDto.Amount,
+                    walletId = initiateDepositeDto.WalletId,
+                    type = "Deposite",
+                    CreatedAt = DateTime.UtcNow
+                };
+                var tx_ref = GenerateTxRef.genTx_rf();
+                var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
+                // var redirect_url = _config["Base_Url:Local"] + "/walletDeposite/confirmDeposite";
+                string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var payload = new
+                {
+                    email = customer!.Email,
+                    amount = initiateDepositeDto.Amount * 100,
+                    reference = tx_ref,
+                    callback_url = redirect_url,
+                    metadata = depositeData
+                };
+
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+
+                var request = new HttpRequestMessage(HttpMethod.Post, paymentUrl);
+
+                //create an an instance of IHttpclientFactory
+                var client = _ClientFactory.CreateClient();
+
+                request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                //add the auth token to the header
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+                // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
+<<<<<<< HEAD
+
+                //send request and get the respond
+                HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var apiString = await response.Content.ReadAsStringAsync();
+                    var paymentRes = JsonConvert.DeserializeObject<PaystackJsonResponse>(apiString);
+                    string link = paymentRes!.data!.authorization_url!;
+                    return new
+                    {
+                        link = link
+                    };
+                }
+                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<object> initiateWalletDeposit(InitiateDepositeDto initiateDepositeDto)
         {
             try
             {
@@ -492,6 +557,8 @@ namespace Api.Services
                 //add the auth token to the header
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
+=======
+>>>>>>> 568d50b (done with chat messages)
 
                 //send request and get the respond
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
@@ -531,7 +598,11 @@ namespace Api.Services
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
+<<<<<<< HEAD
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+=======
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
+>>>>>>> 568d50b (done with chat messages)
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)

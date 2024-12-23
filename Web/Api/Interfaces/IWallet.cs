@@ -19,7 +19,10 @@ namespace Api.Interfaces
         public Task<double> getInitialBalance(int id);
         public Task<WalletDto> getWalletByCustomerId(int customerId);
         public Task<object> getCustomerWalletStat(int customerId);
+<<<<<<< HEAD
         public Task<PagedList<Transaction>> GetTransactionsAsync(int walletId, SearchPaging props);
+=======
+>>>>>>> 568d50b (done with chat messages)
         public Task<List<DepositeDto>> lastFiveTransactions(int walletId);
     }
 }

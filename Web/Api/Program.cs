@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 568d50b (done with chat messages)
 using Api.Chat;
 using Api.DTO;
 using Api.Interfaces;
@@ -113,14 +116,23 @@ builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 builder.Services.AddScoped<IFcmService, FcmService>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 =======
 >>>>>>> 37744e4 (i added firebse cloud messaging)
+=======
+>>>>>>> 568d50b (done with chat messages)
 
 
 <<<<<<< HEAD
+=======
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
+
+
+>>>>>>> 8def299 (done with chat messages)
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 =======
@@ -192,6 +204,7 @@ app.MapHub<NotificationHub>("/hubs/notification");
 
 app.MapHub<ChatHub>("/chatHub");
 
+<<<<<<< HEAD
 
 app.UseAuthentication();
 =======
@@ -199,6 +212,8 @@ app.MapHub<LocationHub>("/hubs/location");
 >>>>>>> 66834e5 (add signalR to the project)
 
 app.UseCors("AllowAllOrigin");
+=======
+>>>>>>> 568d50b (done with chat messages)
 
 app.UseAuthentication();
 

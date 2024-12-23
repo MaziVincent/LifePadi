@@ -16,6 +16,9 @@ namespace Api.Services
 
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 568d50b (done with chat messages)
         public AutoMapperProfile()
         {
             //user
@@ -157,6 +160,7 @@ namespace Api.Services
             //Message
             CreateMap<Message, MessageDto>();
             CreateMap<MessageDto, Message>();
+<<<<<<< HEAD
 =======
         public AutoMapperProfile() {
             //user
@@ -272,6 +276,8 @@ namespace Api.Services
             CreateMap<Voucher, VoucherDto>();
             CreateMap<VoucherDto, Voucher>();
 >>>>>>> 836ec36 (changed all DTO to Dto)
+=======
+>>>>>>> 568d50b (done with chat messages)
         }
     }
 }

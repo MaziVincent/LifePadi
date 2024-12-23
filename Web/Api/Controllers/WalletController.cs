@@ -175,6 +175,9 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 568d50b (done with chat messages)
         [HttpGet("last-five-transactions/{walletId}")]
         public async Task<IActionResult> getLastFiveTransactions(int walletId)
         {
@@ -182,6 +185,7 @@ namespace Api.Controllers
             {
                 var transactions = await _wallet.lastFiveTransactions(walletId);
                 return Ok(transactions);
+<<<<<<< HEAD
 =======
         [HttpGet("deposites/{walletId}")]
         public async Task<IActionResult> getDeposites(int walletId, SearchPaging props)
@@ -514,6 +518,8 @@ namespace Api.Controllers
             {
                 var response = await _walletWithdrawal.getByAmountRange(startAmount, endAmount);
                 return Ok(response);
+=======
+>>>>>>> 568d50b (done with chat messages)
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
