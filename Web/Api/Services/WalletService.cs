@@ -215,5 +215,39 @@ namespace Api.Services
             }
         }
 
+
+        public async Task<PagedList<TransactionDto>> GetTransactionsAsync(int walletId, SearchPaging props)
+        {
+            try
+            {
+                IQueryable<TransactionDto> transactionList = Enumerable.Empty<TransactionDto>().AsQueryable();
+                if (props.SearchString == null)
+                {
+                    var walletTransactions = await _context.Transactions
+                     .Include(t => t.Wallet).Where(t => t.WalletId == walletId)
+                     .OrderByDescending(w => w.CreatedAt).ToListAsync();
+
+                    transactionList.Concat(_mapper.Map<List<TransactionDto>>(walletTransactions).AsQueryable());
+                    var result = PagedList<TransactionDto>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+                else
+                {
+                    var transactions = await _context.Transactions
+                    .Include(t => t.Wallet).Where(t => t.WalletId == walletId)
+                    .Where(t => t.Type!.Contains(props.SearchString) || t.Status!.Contains(props.SearchString))
+                    .OrderByDescending(w => w.CreatedAt).ToListAsync();
+                    transactionList.Concat(_mapper.Map<List<TransactionDto>>(transactions).AsQueryable());
+                    var result = PagedList<TransactionDto>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+
     }
 }

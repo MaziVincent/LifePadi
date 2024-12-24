@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Api.DTO;
 using Api.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -14,10 +15,12 @@ namespace Api.Controllers
     public class WalletController : ControllerBase
     {
         private readonly IWallet _wallet;
+        private readonly IMapper _mapper;
 
-        public WalletController(IWallet wallet)
+        public WalletController(IWallet wallet, IMapper mapper)
         {
             _wallet = wallet;
+            _mapper = mapper;
         }
 //wallet controller
 
@@ -151,6 +154,29 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpGet("transactions/{walletId}")]
+        public async Task<IActionResult> getTransactions(int walletId, SearchPaging props)
+        {
+            try
+            {
+                var response = await _wallet.GetTransactionsAsync(walletId, props);
+                var result = _mapper.Map<List<TransactionDto>>(response);
+                var dataList = new
+                {
+                    response.PageSize,
+                    response.TotalPages,
+                    response.TotalCount,
+                    response.CurrentPage,
+                    response.HasNext
+                };
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

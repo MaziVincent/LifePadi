@@ -498,6 +498,7 @@ namespace Api.Services
                     transaction.DeliveryFee = paymentRes.data!.metadata!.deliveryFee;
                     transaction.PaidAt = paymentRes.data!.paid_at;
                     transaction.PaymentChannel = paymentRes.data!.channel;
+                    transaction.Type = "Payment";
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);

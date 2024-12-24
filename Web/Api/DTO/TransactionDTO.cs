@@ -31,6 +31,9 @@ namespace Api.DTO
         public double TotalAmount { get; set; }
         public double AmountPaid { get; set; }
         public string? Status { get; set; }
+        public string? Type { get; set; }
+        public string? PaymentChannel { get; set; }
+        public Wallet? Wallet { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

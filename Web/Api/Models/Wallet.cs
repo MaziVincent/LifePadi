@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace Api.Models
@@ -18,4 +19,6 @@ namespace Api.Models
         public List<Withdrawal>? Withdrawals { get; set; }
 
     }
+
+   
 }

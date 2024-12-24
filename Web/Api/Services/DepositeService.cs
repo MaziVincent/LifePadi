@@ -469,7 +469,7 @@ namespace Api.Services
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                var redirect_url = _config["Base_Url:Local"] + "/walletDeposite/confirmDeposite";
+                var redirect_url = _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var payload = new
                 {
@@ -541,7 +541,18 @@ namespace Api.Services
 
                     //insert transaction into the database
                     var transaction = new Transaction();
+                    transaction.Status = paymentRes!.data!.status;
+                    transaction.StatusBool = paymentRes!.status;
+                    transaction.AmountPaid = (Double)paymentRes.data!.amount! / 100;
                     transaction.TransactionRef = reference;
+                    transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
+                    transaction.TotalAmount = paymentRes.data!.metadata!.amount;
+                    transaction.PaidAt = paymentRes.data!.paid_at;
+                    transaction.PaymentChannel = paymentRes.data!.channel;
+                    transaction.Type = "Deposit";
+                    transaction.WalletId = paymentRes.data.metadata!.walletId;
+
+
                     var deposite = new Deposite();
                     deposite.Status = paymentRes!.data!.status;
                     deposite.Type = "Deposit";
@@ -561,7 +572,8 @@ namespace Api.Services
                     wallet.UpdatedAt = DateTime.UtcNow;
 
                     await _context.Deposites.AddAsync(deposite);
-                    _context.Wallets.Attach(wallet);
+                    await _context.Transactions.AddAsync(transaction);
+                    _context.Wallets.Update(wallet);
                     await _context.SaveChangesAsync();
 
                     return paymentRes!;

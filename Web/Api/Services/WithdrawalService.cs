@@ -36,13 +36,13 @@ namespace Api.Services
                 withdrawal.ReferenceId = tx_ref;
                 withdrawal.TransactionId = GenerateTxRef.genTxId();
                 withdrawal.Status = "successful";
-                withdrawal.Type = "purchase Transaction";
+                withdrawal.Type = "Purchase Transaction";
                 withdrawal.PaymentMethod = "withdrawal";
                 withdrawal.CreatedAt = DateTime.UtcNow;
                 withdrawal.UpdatedAt = DateTime.UtcNow;
 
                 wallet.InitialBalance = wallet.Balance;
-                wallet.Balance -= t.Amount;
+                wallet.Balance -= t.TotalAmount;
                 wallet.UpdatedAt = DateTime.UtcNow;
 
                 // create a transaction
@@ -74,8 +74,10 @@ namespace Api.Services
                 transaction.OrderId = t.OrderId;
                 transaction.TransactionRef = tx_ref;
                 transaction.PaymentId = withdrawal.TransactionId;
-                transaction.Status = "withdrawal";
+                transaction.Status = "successful";
+                transaction.Type = "Withdrawal";
                 transaction.UpdatedAt = DateTime.UtcNow;
+                transaction.WalletId = t.WalletId;
 
                 //update order status to ongoing
                 var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
