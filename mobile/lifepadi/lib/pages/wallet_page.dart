@@ -202,7 +202,51 @@ class WalletPage extends HookWidget {
                           ),
                         ],
                       ),
-                    ].separatedBy(14.verticalSpace),
+                      16.verticalSpace,
+
+                      /// Transaction history list
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 24.r,
+                                child: const Icon(
+                                  Remix.exchange_funds_line,
+                                  color: kDarkPrimaryColor,
+                                ),
+                              ),
+                              title: Text(
+                                'Transaction Title',
+                                style: montserratStyle.copyWith(
+                                  color: kDarkTextColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              subtitle: Text(
+                                'Transaction description',
+                                style: montserratStyle.copyWith(
+                                  color: kDarkTextColor,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              trailing: Text(
+                                r'+$100',
+                                style: montserratStyle.copyWith(
+                                  color: kDarkTextColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
