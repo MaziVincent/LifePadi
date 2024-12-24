@@ -48,3 +48,8 @@ class PaymentFailedException extends AppException {
 class BiometricAuthenticationException extends AppException {
   const BiometricAuthenticationException(super.message);
 }
+
+/// Exception thrown when there's error in wallet endpoint
+class WalletException extends AppException {
+  const WalletException(super.message);
+}

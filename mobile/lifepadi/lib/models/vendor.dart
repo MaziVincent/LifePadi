@@ -4,7 +4,7 @@ import 'package:lifepadi/utils/helpers.dart';
 
 part 'vendor.mapper.dart';
 
-@MappableClass(discriminatorValue: 'Vendor')
+@MappableClass()
 class Vendor with VendorMappable {
   const Vendor({
     required this.id,

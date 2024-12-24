@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:lifepadi/models/user_role.dart';
+import 'package:lifepadi/models/wallet.dart';
 import 'package:lifepadi/utils/extensions.dart';
 
 part 'user.mapper.dart';
@@ -63,12 +64,14 @@ class Customer extends User with CustomerMappable {
     super.address,
     this.dateOfBirth,
     this.gender,
+    required this.wallet,
   });
 
   @MappableField(key: 'DateOfBirth')
   final DateTime? dateOfBirth;
   @MappableField(key: 'Gender')
   final String? gender;
+  final Wallet wallet;
 }
 
 @MappableClass(discriminatorValue: 'Rider')

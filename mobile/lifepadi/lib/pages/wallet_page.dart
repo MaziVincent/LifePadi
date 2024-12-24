@@ -1,13 +1,19 @@
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/utils/mock_data.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../utils/constants.dart';
 
-class WalletPage extends StatelessWidget {
+class WalletPage extends HookWidget {
   const WalletPage({super.key});
 
   @override
@@ -16,6 +22,25 @@ class WalletPage extends StatelessWidget {
       color: kDarkTextColor,
       fontSize: 16.sp,
       fontWeight: FontWeight.w600,
+    );
+    final balance = useState<double>(0);
+    final isLoading = useState(false);
+    final animationController = useAnimationController(
+      duration: const Duration(seconds: 1),
+    );
+
+    useEffect(
+      () {
+        if (isLoading.value) {
+          animationController.repeat();
+        } else {
+          animationController
+            ..stop()
+            ..reset();
+        }
+        return null;
+      },
+      [isLoading.value],
     );
 
     return Scaffold(
@@ -38,15 +63,6 @@ class WalletPage extends StatelessWidget {
           ),
           padding: EdgeInsets.only(top: 75.h),
         ),
-        actions: [
-          MyIconButton(
-            icon: Remix.more_2_fill,
-            onPressed: () {},
-            backgroundColor: const Color(0x19F5F5F5),
-            iconColor: Colors.white,
-          ),
-          24.horizontalSpace,
-        ],
         leading: Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: const Align(
@@ -74,13 +90,67 @@ class WalletPage extends StatelessWidget {
                     ),
                   ),
                   4.verticalSpace,
-                  Text(
-                    51547.currency,
-                    style: context.textTheme.displaySmall?.copyWith(
-                      color: Colors.white,
-                      fontSize: 40.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Consumer(
+                        builder: (context, ref, child) {
+                          Future<void> getBalance() async {
+                            final user =
+                                await ref.read(authControllerProvider.future);
+                            if (user is Customer) {
+                              balance.value = user.wallet.balance;
+                            }
+                          }
+
+                          getBalance().ignore();
+
+                          return Skeletonizer(
+                            enabled: isLoading.value,
+                            child: Text(
+                              balance.value.currency,
+                              style: context.textTheme.displaySmall?.copyWith(
+                                color: Colors.white,
+                                fontSize: 40.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      6.horizontalSpace,
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return GestureDetector(
+                            onTap: () async {
+                              if (isLoading.value) return;
+                              try {
+                                isLoading.value = true;
+
+                                final walletBalance =
+                                    await ref.watch(balanceProvider.future);
+                                balance.value = walletBalance;
+
+                                isLoading.value = false;
+                              } catch (e) {
+                                await handleError(
+                                  e,
+                                  context.mounted ? context : null,
+                                );
+                              }
+                            },
+                            child: RotationTransition(
+                              turns: animationController,
+                              child: Icon(
+                                Remix.refresh_line,
+                                color: Colors.white,
+                                size: 20.sp,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   // 40.verticalSpace,
                 ],
@@ -108,15 +178,7 @@ class WalletPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// Manage Cards
-                      Text(
-                        'Manage Cards',
-                        style: montserratStyle,
-                      ),
-                      for (final paymentMethod in paymentMethods.skip(1))
-                        WalletCard(paymentMethod: paymentMethod),
-
-                      /// Transaction History
+                      /// Recent Transaction History
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -168,18 +230,13 @@ class WalletPage extends StatelessWidget {
                     ],
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       /// Wallet actions
                       WalletAction(
                         onTap: () {},
                         label: 'Top Up',
                         icon: Remix.upload_line,
-                      ),
-                      WalletAction(
-                        onTap: () {},
-                        label: 'Add Card',
-                        icon: Remix.download_line,
                       ),
                       WalletAction(
                         onTap: () {},
