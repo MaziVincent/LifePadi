@@ -189,7 +189,8 @@ class WalletPage extends HookWidget {
                         style: montserratStyle,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () => context
+                            .push(const TransactionHistoryRoute().location),
                         child: Text(
                           'See all',
                           style:
@@ -364,7 +365,8 @@ class WalletPage extends HookWidget {
                     icon: Remix.upload_line,
                   ),
                   WalletAction(
-                    onTap: () {},
+                    onTap: () =>
+                        context.push(const TransactionHistoryRoute().location),
                     label: 'History',
                     icon: Remix.exchange_funds_line,
                   ),

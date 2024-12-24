@@ -33,6 +33,7 @@ export 'splash_page.dart';
 export 'support_page.dart';
 export 'track_order_map_page.dart';
 export 'track_order_page.dart';
+export 'transaction_history_page.dart';
 export 'vendors_page.dart';
 export 'wallet_page.dart';
 export 'wishlist_page.dart';

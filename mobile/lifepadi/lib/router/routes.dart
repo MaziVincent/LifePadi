@@ -588,3 +588,17 @@ class PaymentRoute extends GoRouteData {
     return PaymentPage(transactionLink: link, type: type);
   }
 }
+
+/// Transaction history route
+///
+/// This route shows all the transactions made by the user
+/// on his/her wallet.
+@TypedGoRoute<TransactionHistoryRoute>(path: '/transactions')
+class TransactionHistoryRoute extends GoRouteData {
+  const TransactionHistoryRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TransactionHistoryPage();
+  }
+}
