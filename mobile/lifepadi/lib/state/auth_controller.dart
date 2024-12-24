@@ -410,4 +410,19 @@ class AuthController extends _$AuthController {
       rethrow;
     }
   }
+
+  /// Update the user's balance in the wallet
+  Future<void> updateBalance(double balance) async {
+    await state.maybeWhen(
+      data: (user) async {
+        if (user is Customer) {
+          final updated =
+              user.copyWith(wallet: user.wallet.copyWith(balance: balance));
+          await _saveDetailsToStorage(updated);
+          state = AsyncData(updated);
+        }
+      },
+      orElse: () {},
+    );
+  }
 }

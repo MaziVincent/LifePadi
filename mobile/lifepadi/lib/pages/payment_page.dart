@@ -4,6 +4,7 @@ import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/orders.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -52,7 +53,8 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
             setState(() => loadingPercentage = 100);
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (request.url.contains('/transaction/paystack-confirmPayment')) {
+            if (request.url.contains('/transaction/paystack-confirmPayment') ||
+                request.url.contains('/walletDeposite/confirmDeposite')) {
               await showToast('Confirming payment...');
               await confirmPayment(redirectUrl: request.url);
               return NavigationDecision.prevent;
@@ -67,6 +69,16 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
   Future<void> confirmPayment({required String redirectUrl}) async {
     final queryParameters = Uri.parse(redirectUrl).queryParameters;
 
+    if (widget.type == CheckoutType.topUp) {
+      final status = await ref.read(
+        confirmDepositProvider(queryParameters: queryParameters).future,
+      );
+
+      // ignore: use_build_context_synchronously
+      context.pop(status);
+      return;
+    }
+
     final receipt = await ref.read(
       confirmPaymentProvider(
         queryParameters: queryParameters,
@@ -74,10 +86,8 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
       ).future,
     );
 
-    if (context.mounted) {
-      // ignore: use_build_context_synchronously
-      context.pop(receipt);
-    }
+    // ignore: use_build_context_synchronously
+    context.pop(receipt);
   }
 
   @override

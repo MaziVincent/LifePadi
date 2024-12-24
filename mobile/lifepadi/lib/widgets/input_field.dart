@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 
@@ -21,13 +22,14 @@ class InputField extends StatelessWidget {
     this.maxLength,
     this.initialValue,
     this.controller,
+    this.prefixIcon,
   }) : assert(
           controller == null || (initialValue == null && onChanged == null),
           'Cannot provide both an initialValue/onChanged and a controller',
         );
 
   /// The child widget to be displayed as the suffix icon
-  final Widget? child;
+  final Widget? child, prefixIcon;
 
   /// Callback to be executed when the suffix icon is tapped
   final VoidCallback? onChildTap;
@@ -93,6 +95,12 @@ class InputField extends StatelessWidget {
               )
             : null,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
+        prefixIcon: prefixIcon != null
+            ? Padding(
+                padding: EdgeInsets.only(left: 16.w, top: 9.h),
+                child: prefixIcon,
+              )
+            : null,
       ),
       keyboardType: keyboardType,
       textInputAction: textInputAction,

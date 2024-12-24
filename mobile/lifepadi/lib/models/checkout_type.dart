@@ -12,4 +12,8 @@ enum CheckoutType {
   /// For logistics checkout
   @MappableValue('Logistics')
   logistics,
+
+  /// For wallet top-up
+  @MappableValue('TopUp')
+  topUp,
 }

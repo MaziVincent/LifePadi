@@ -1,8 +1,11 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -28,6 +31,23 @@ class WalletPage extends HookWidget {
     final animationController = useAnimationController(
       duration: const Duration(seconds: 1),
     );
+
+    Future<void> refreshBalance(WidgetRef ref) async {
+      if (isLoading.value) return;
+      try {
+        isLoading.value = true;
+
+        final walletBalance = await ref.watch(balanceProvider.future);
+        balance.value = walletBalance;
+
+        isLoading.value = false;
+      } catch (e) {
+        await handleError(
+          e,
+          context.mounted ? context : null,
+        );
+      }
+    }
 
     useEffect(
       () {
@@ -122,23 +142,7 @@ class WalletPage extends HookWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           return GestureDetector(
-                            onTap: () async {
-                              if (isLoading.value) return;
-                              try {
-                                isLoading.value = true;
-
-                                final walletBalance =
-                                    await ref.watch(balanceProvider.future);
-                                balance.value = walletBalance;
-
-                                isLoading.value = false;
-                              } catch (e) {
-                                await handleError(
-                                  e,
-                                  context.mounted ? context : null,
-                                );
-                              }
-                            },
+                            onTap: () async => refreshBalance(ref),
                             child: RotationTransition(
                               turns: animationController,
                               child: Icon(
@@ -158,142 +162,163 @@ class WalletPage extends HookWidget {
             ),
           ),
 
-          Stack(
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: double.infinity,
-                  height: 0.7.sh,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFBFBFB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.r),
-                        topRight: Radius.circular(30.r),
-                      ),
-                    ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: double.infinity,
+              height: 0.7.sh,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFFBFBFB),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.r),
+                    topRight: Radius.circular(30.r),
                   ),
-                  padding: kHorizontalPadding.copyWith(top: 79.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+              padding: kHorizontalPadding.copyWith(top: 79.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Recent Transaction History
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      /// Recent Transaction History
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Transaction History',
-                            style: montserratStyle,
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'See all',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
+                      Text(
+                        'Transaction History',
+                        style: montserratStyle,
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          'See all',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: kDarkPrimaryColor,
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      16.verticalSpace,
-
-                      /// Transaction history list
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 24.r,
-                                child: const Icon(
-                                  Remix.exchange_funds_line,
-                                  color: kDarkPrimaryColor,
-                                ),
-                              ),
-                              title: Text(
-                                'Transaction Title',
-                                style: montserratStyle.copyWith(
-                                  color: kDarkTextColor,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              subtitle: Text(
-                                'Transaction description',
-                                style: montserratStyle.copyWith(
-                                  color: kDarkTextColor,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              trailing: Text(
-                                r'+$100',
-                                style: montserratStyle.copyWith(
-                                  color: kDarkTextColor,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            );
-                          },
                         ),
                       ),
                     ],
                   ),
-                ),
-              ),
+                  16.verticalSpace,
 
-              /// Wallet actions tile
-              Positioned(
-                top: 0.15.sh, // Half the height of the balance widget
-                left: 24.w,
-                right: 24.w,
-                child: Container(
-                  width: double.infinity,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
+                  /// Transaction history list
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 24.r,
+                            child: const Icon(
+                              Remix.exchange_funds_line,
+                              color: kDarkPrimaryColor,
+                            ),
+                          ),
+                          title: Text(
+                            'Transaction Title',
+                            style: montserratStyle.copyWith(
+                              color: kDarkTextColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Transaction description',
+                            style: montserratStyle.copyWith(
+                              color: kDarkTextColor,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          trailing: Text(
+                            r'+$100',
+                            style: montserratStyle.copyWith(
+                              color: kDarkTextColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x14000000),
-                        blurRadius: 12,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      /// Wallet actions
-                      WalletAction(
-                        onTap: () {},
-                        label: 'Top Up',
-                        icon: Remix.upload_line,
-                      ),
-                      WalletAction(
-                        onTap: () {},
-                        label: 'History',
-                        icon: Remix.exchange_funds_line,
-                      ),
-                    ].separatedBy(
-                      SizedBox(height: 24.h, child: const VerticalDivider()),
-                    ),
+                ],
+              ),
+            ),
+          ),
+
+          /// Wallet actions tile
+          Positioned(
+            top: 0.15.sh, // Half the height of the balance widget
+            left: 24.w,
+            right: 24.w,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                shadows: const [
+                  BoxShadow(
+                    color: Color(0x14000000),
+                    blurRadius: 12,
+                    offset: Offset(0, 2),
                   ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  /// Wallet actions
+                  WalletAction(
+                    onTap: () async {
+                      await displayBottomPanel(
+                        context,
+                        bottomPadding: 10,
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            return TopupBottomSheet(
+                              currentBalance: balance.value,
+                              onTopup: (amount) async {
+                                final paymentLink = await ref.watch(
+                                  walletDepositProvider(amount: amount).future,
+                                );
+                                if (context.mounted) {
+                                  final result = await context.push<bool>(
+                                    PaymentRoute(
+                                      link: paymentLink,
+                                      type: CheckoutType.topUp,
+                                    ).location,
+                                  );
+                                  if (result == true) {
+                                    await refreshBalance(ref);
+                                  }
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    label: 'Top Up',
+                    icon: Remix.upload_line,
+                  ),
+                  WalletAction(
+                    onTap: () {},
+                    label: 'History',
+                    icon: Remix.exchange_funds_line,
+                  ),
+                ].separatedBy(
+                  SizedBox(height: 24.h, child: const VerticalDivider()),
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),

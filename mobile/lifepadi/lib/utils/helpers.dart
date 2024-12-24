@@ -95,17 +95,18 @@ TextStyle? inputTextStyleForUserEnteredText(BuildContext context) {
 Future<bool?> displayBottomPanel(
   BuildContext context, {
   required Widget child,
+  double? bottomPadding,
 }) {
   return showModalBottomSheet<bool>(
     context: context,
+    isScrollControlled: true,
     builder: (BuildContext context) {
-      return Container(
+      return Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        width: double.infinity,
         child: Padding(
-          padding: kHorizontalPadding.copyWith(bottom: 20.h),
+          padding: kHorizontalPadding.copyWith(bottom: bottomPadding ?? 20.h),
           child: child,
         ),
       );
