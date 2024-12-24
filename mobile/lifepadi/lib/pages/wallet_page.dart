@@ -206,42 +206,93 @@ class WalletPage extends HookWidget {
 
                   /// Transaction history list
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 24.r,
-                            child: const Icon(
-                              Remix.exchange_funds_line,
-                              color: kDarkPrimaryColor,
-                            ),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final transactionsAsync =
+                            ref.watch(transactionHistoryProvider());
+
+                        return transactionsAsync.when(
+                          data: (transactions) {
+                            return transactions.isEmpty
+                                ? const Center(
+                                    child: Text('No transactions found'),
+                                  )
+                                : SuperListView.separated(
+                                    itemCount: transactions.length,
+                                    separatorBuilder: (context, index) =>
+                                        16.verticalSpace,
+                                    itemBuilder: (context, index) {
+                                      final transaction = transactions[index];
+                                      return ListTile(
+                                        onTap: () => context.push(
+                                          ReceiptRoute(
+                                            orderId: transaction.orderId,
+                                            goBack: true,
+                                          ).location,
+                                          extra: transaction,
+                                        ),
+                                        leading: Icon(
+                                          transaction.type == CheckoutType.topUp
+                                              ? Remix.arrow_up_s_line
+                                              : Remix.arrow_down_s_line,
+                                          color: transaction.type ==
+                                                  CheckoutType.topUp
+                                              ? const Color(0xFF21D1A5)
+                                              : const Color(0xFFE02020),
+                                        ),
+                                        title: Text(
+                                          transaction.type == CheckoutType.topUp
+                                              ? 'Top Up'
+                                              : 'Debit',
+                                          style: context.textTheme.bodyMedium
+                                              ?.copyWith(
+                                            color: kDarkTextColor,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          transaction.paidAt.readable,
+                                          style: context.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: const Color(0xFFC2C8D0),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        trailing: Text(
+                                          transaction.totalAmount.currency,
+                                          style: context.textTheme.bodyMedium
+                                              ?.copyWith(
+                                            color: transaction.type ==
+                                                    CheckoutType.topUp
+                                                ? const Color(0xFF21D1A5)
+                                                : const Color(0xFFE02020),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                          },
+                          loading: () => Column(
+                            children: [
+                              for (var i = 0; i < 5; i++)
+                                const Skeletonizer(
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Remix.arrow_up_s_line,
+                                      color: Color(0xFF21D1A5),
+                                    ),
+                                    title: Text('Top Up'),
+                                    subtitle: Text('2021-09-12 12:00:00'),
+                                    trailing: Text('₦10,000.00'),
+                                  ),
+                                ),
+                            ].separatedBy(16.verticalSpace),
                           ),
-                          title: Text(
-                            'Transaction Title',
-                            style: montserratStyle.copyWith(
-                              color: kDarkTextColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          subtitle: Text(
-                            'Transaction description',
-                            style: montserratStyle.copyWith(
-                              color: kDarkTextColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          trailing: Text(
-                            r'+$100',
-                            style: montserratStyle.copyWith(
-                              color: kDarkTextColor,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          error: (error, _) => MyErrorWidget(error: error),
                         );
                       },
                     ),
@@ -298,6 +349,9 @@ class WalletPage extends HookWidget {
                                   );
                                   if (result == true) {
                                     await refreshBalance(ref);
+                                    ref.invalidate(
+                                      transactionHistoryProvider(),
+                                    );
                                   }
                                 }
                               },

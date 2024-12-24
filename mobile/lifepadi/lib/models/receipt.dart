@@ -11,9 +11,9 @@ class Receipt with ReceiptMappable {
     required this.paidAt,
     required this.channel,
     required this.orderId,
-    required this.deliveryFee,
+    this.deliveryFee,
     required this.totalAmount,
-    this.type = CheckoutType.cart,
+    required this.type,
   });
 
   @MappableField(key: 'StatusBool')
@@ -26,10 +26,11 @@ class Receipt with ReceiptMappable {
   final String channel;
   @MappableField(key: 'OrderId')
   final int orderId;
-  double get subtotal => totalAmount - deliveryFee;
+  double get subtotal => totalAmount - (deliveryFee ?? 0);
   @MappableField(key: 'DeliveryFee')
-  final double deliveryFee;
+  final double? deliveryFee;
   @MappableField(key: 'TotalAmount')
   final double totalAmount;
+  @MappableField(key: 'Type')
   final CheckoutType type;
 }

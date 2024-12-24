@@ -7,7 +7,6 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
-import 'package:remixicon/remixicon.dart';
 
 import '../utils/assets.gen.dart';
 import '../utils/constants.dart';
@@ -17,10 +16,12 @@ class ReceiptPage extends StatelessWidget {
     super.key,
     required this.orderId,
     this.receipt,
+    this.goBack = false,
   });
 
   final int orderId;
   final Receipt? receipt;
+  final bool goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +45,13 @@ class ReceiptPage extends StatelessWidget {
           ),
           padding: EdgeInsets.only(top: 75.h),
         ),
-        actions: [
-          MyIconButton(
-            icon: Remix.more_2_fill,
-            onPressed: () {},
-            backgroundColor: const Color(0x19F5F5F5),
-            iconColor: Colors.white,
-          ),
-          24.horizontalSpace,
-        ],
         leading: Padding(
           padding: EdgeInsets.only(left: 16.w),
           child: Align(
             child: GlassmorphicBackButton(
-              onPressed: () => context.go(const OrdersRoute().location),
+              onPressed: () => goBack
+                  ? context.pop()
+                  : context.go(const OrdersRoute().location),
             ),
           ),
         ),
@@ -77,13 +71,14 @@ class ReceiptPage extends StatelessWidget {
         ),
         padding: kHorizontalPadding.copyWith(top: 28.h),
         child: receipt != null
-            ? _ReceiptContent(receipt: receipt!)
+            ? _ReceiptContent(receipt: receipt!, goBack: goBack)
             : Consumer(
                 builder: (context, ref, child) {
                   final receipt = ref.watch(receiptProvider(orderId));
 
                   return switch (receipt) {
-                    AsyncData(:final value) => _ReceiptContent(receipt: value),
+                    AsyncData(:final value) =>
+                      _ReceiptContent(receipt: value, goBack: goBack),
                     AsyncError(:final error) => MyErrorWidget(error: error),
                     _ => const Center(child: GreenyLoadingWheel()),
                   };
@@ -97,9 +92,11 @@ class ReceiptPage extends StatelessWidget {
 class _ReceiptContent extends StatelessWidget {
   const _ReceiptContent({
     required this.receipt,
+    required this.goBack,
   });
 
   final Receipt receipt;
+  final bool goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +128,11 @@ class _ReceiptContent extends StatelessWidget {
         ),
         if (receipt.type == CheckoutType.cart)
           ReceiptInfoTile(left: 'Subtotal', right: receipt.subtotal.currency),
-        ReceiptInfoTile(
-          left: 'Delivery fee',
-          right: receipt.deliveryFee.currency,
-        ),
+        if (receipt.deliveryFee != null)
+          ReceiptInfoTile(
+            left: 'Delivery fee',
+            right: receipt.deliveryFee!.currency,
+          ),
         ReceiptInfoTile(left: 'Total', right: receipt.totalAmount.currency),
         ReceiptInfoTile(
           left: 'Txn Reference',
@@ -145,10 +143,19 @@ class _ReceiptContent extends StatelessWidget {
           left: 'Date & Time',
           right: receipt.paidAt.readable,
         ),
+        ReceiptInfoTile(
+          left: 'Transaction Type',
+          right: switch (receipt.type) {
+            CheckoutType.cart => 'Cart Payment',
+            CheckoutType.logistics => 'Logistics Payment',
+            CheckoutType.topUp => 'Deposit',
+          },
+        ),
         const Spacer(),
         PrimaryButton(
-          onPressed: () => context.go(const OrdersRoute().location),
-          text: 'Go to Orders',
+          onPressed: () =>
+              goBack ? context.pop() : context.go(const OrdersRoute().location),
+          text: goBack ? 'Back' : 'Go to Orders',
         ),
         const Spacer(),
       ],

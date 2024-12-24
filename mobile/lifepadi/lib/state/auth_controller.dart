@@ -6,11 +6,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/client.dart';
-import 'package:lifepadi/state/errands.dart';
 import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/state/product.dart';
+import 'package:lifepadi/state/services.dart';
 import 'package:lifepadi/state/vendors.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/biometric_service.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -108,7 +109,9 @@ class AuthController extends _$AuthController {
       ..invalidate(productProvider)
       ..invalidate(vendorsProvider)
       ..invalidate(vendorProductsProvider)
-      ..invalidate(wishlistProvider);
+      ..invalidate(vendorsByServiceIdProvider)
+      ..invalidate(wishlistProvider)
+      ..invalidate(transactionHistoryProvider);
 
     await _secureStorage.remove(kCredentialsKey);
     state = const AsyncData(Guest());

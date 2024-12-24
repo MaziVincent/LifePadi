@@ -6,7 +6,7 @@ import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'errands.g.dart';
+part 'services.g.dart';
 
 @riverpod
 FutureOr<List<Service>> services(Ref ref, {int pageSize = 200}) async {

@@ -368,15 +368,17 @@ class CheckoutRoute extends GoRouteData {
 }
 
 class ReceiptRoute extends GoRouteData {
-  ReceiptRoute({required this.orderId});
+  ReceiptRoute({required this.orderId, this.goBack = false});
 
   final int orderId;
+  final bool goBack;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ReceiptPage(
       orderId: orderId,
       receipt: state.extra as Receipt?,
+      goBack: goBack,
     );
   }
 
