@@ -241,6 +241,14 @@ class LogisticsPage extends HookConsumerWidget {
                         title: 'Pickup Location',
                         selectedLocationId: pickupLocation?.id,
                         onLocationSelected: (location) {
+                          if (location.id == dropoffLocation?.id) {
+                            showToast(
+                              'Pickup location must be different from drop-off location',
+                              gravity: ToastGravity.CENTER,
+                              isLong: true,
+                            );
+                            return;
+                          }
                           ref.read(pickupLocationProvider.notifier).state =
                               location;
                         },
@@ -267,6 +275,14 @@ class LogisticsPage extends HookConsumerWidget {
                         title: 'Drop-off location',
                         selectedLocationId: dropoffLocation?.id,
                         onLocationSelected: (location) {
+                          if (location.id == pickupLocation?.id) {
+                            showToast(
+                              'Drop-off location must be different from pickup location',
+                              gravity: ToastGravity.CENTER,
+                              isLong: true,
+                            );
+                            return;
+                          }
                           ref.read(dropoffLocationProvider.notifier).state =
                               location;
                         },
