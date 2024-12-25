@@ -43,13 +43,14 @@ class _CartCheckoutContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final deliveryInstruction = useState('');
+    final selectedPaymentMethod = useState(-1);
+
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            16.verticalSpace,
             InputField(
               hintText: 'Do you have any delivery instruction?',
               labelText: 'Delivery instruction (Optional)',
@@ -91,10 +92,23 @@ class _CartCheckoutContent extends HookWidget {
             ),
           ],
         ),
+        16.verticalSpace,
+        PaymentMethodSelector(
+          selectedPaymentMethod: selectedPaymentMethod,
+          totalAmount: cart.total,
+        ),
         30.verticalSpace,
         PrimaryActionButton(
           text: 'Proceed to Pay',
           onPressed: () async {
+            if (selectedPaymentMethod.value == -1) {
+              await displayError(
+                context,
+                title: 'Select payment method',
+                description: 'Please select a payment method to proceed.',
+              );
+              return;
+            }
             await showToast('Please wait, creating order...');
 
             try {

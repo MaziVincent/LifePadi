@@ -18,15 +18,11 @@ List<
   ),
   (
     id: 2,
-    description: '2345 3456 4564 Access bank',
-    image: Assets.icons.mastercard.image(),
-    balance: null,
-    isDefault: false,
-  ),
-  (
-    id: 3,
-    description: '2345 3456 4564 Access bank',
-    image: Assets.icons.verve.image(),
+    description: 'Paystack',
+    image: Assets.icons.paystack.image(
+      height: 24,
+      width: 24,
+    ),
     balance: null,
     isDefault: false,
   ),

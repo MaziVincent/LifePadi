@@ -80,6 +80,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/path-to-location.svg
   SvgGenImage get pathToLocation => const SvgGenImage('assets/icons/path-to-location.svg');
 
+  /// File path: assets/icons/paystack.png
+  AssetGenImage get paystack => const AssetGenImage('assets/icons/paystack.png');
+
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
@@ -104,9 +107,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/success.svg
   SvgGenImage get success => const SvgGenImage('assets/icons/success.svg');
 
-  /// File path: assets/icons/verve.png
-  AssetGenImage get verve => const AssetGenImage('assets/icons/verve.png');
-
   /// File path: assets/icons/voucher.svg
   SvgGenImage get voucher => const SvgGenImage('assets/icons/voucher.svg');
 
@@ -130,6 +130,7 @@ class $AssetsIconsGen {
         mapPin,
         mastercard,
         pathToLocation,
+        paystack,
         restaurant,
         scan,
         share,
@@ -138,7 +139,6 @@ class $AssetsIconsGen {
         starHalf,
         successCheckOpen,
         success,
-        verve,
         voucher
       ];
 }

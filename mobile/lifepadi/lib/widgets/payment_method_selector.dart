@@ -1,20 +1,44 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:lifepadi/utils/constants.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/models/wallet.dart';
+import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/utils/mock_data.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class PaymentMethodSelector extends StatelessWidget {
   const PaymentMethodSelector({
     super.key,
     required this.selectedPaymentMethod,
+    required this.totalAmount,
   });
 
   final ValueNotifier<int> selectedPaymentMethod;
+  final double totalAmount;
 
   @override
   Widget build(BuildContext context) {
+    final paymentMethods = [
+      PaymentMethod(
+        id: 1,
+        name: 'Lifepadi wallet',
+        imagePath: Assets.images.logoDark.path,
+        isDefault: true,
+      ),
+      PaymentMethod(
+        id: 2,
+        name: 'Paystack',
+        imagePath: Assets.icons.paystack.path,
+        isDefault: false,
+      ),
+    ];
+
+    // Initialize with wallet payment if not already selected
+    if (selectedPaymentMethod.value == -1) {
+      selectedPaymentMethod.value = 1; // Default to wallet payment
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,26 +51,33 @@ class PaymentMethodSelector extends StatelessWidget {
           ),
         ),
         for (final paymentMethod in paymentMethods)
-          PaymentMethodCheckbox(
-            selectedPaymentMethod: selectedPaymentMethod,
-            image: paymentMethod.image,
-            description: paymentMethod.description,
-            balance: paymentMethod.balance,
-            id: paymentMethod.id,
-            isDefault: paymentMethod.isDefault,
+          Consumer(
+            builder: (context, ref, child) {
+              final user = ref.watch(authControllerProvider);
+              final walletBalance = user.maybeWhen(
+                data: (user) => user is Customer ? user.wallet.balance : 0.0,
+                orElse: () => 0.0,
+              );
+
+              final isWalletDisabled =
+                  paymentMethod.id == 1 && walletBalance < totalAmount;
+
+              // If wallet is disabled and it's currently selected, switch to Paystack
+              if (isWalletDisabled && selectedPaymentMethod.value == 1) {
+                selectedPaymentMethod.value = 2;
+              }
+
+              return PaymentMethodCheckbox(
+                selectedPaymentMethod: selectedPaymentMethod,
+                imagePath: paymentMethod.imagePath,
+                name: paymentMethod.name,
+                balance: paymentMethod.id == 1 ? walletBalance : null,
+                id: paymentMethod.id,
+                isDefault: paymentMethod.isDefault,
+                disabled: isWalletDisabled,
+              );
+            },
           ),
-        PrimaryOutlineButton(
-          text: 'Add new card'.toUpperCase(),
-          onPressed: () {
-            // Open add new card bottom sheet with drag handle.
-          },
-          textStyle: context.textTheme.bodyLarge?.copyWith(
-            color: kDarkPrimaryColor,
-            fontWeight: FontWeight.w700,
-            fontSize: 14.sp,
-          ),
-          icon: IconsaxPlusLinear.card_add,
-        ),
       ].separatedBy(14.verticalSpace),
     );
   }
