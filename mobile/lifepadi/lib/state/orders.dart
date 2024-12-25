@@ -7,6 +7,7 @@ import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -285,6 +286,11 @@ Future<void> resetStateAfterCheckout(
   if (type == CheckoutType.cart) {
     // Clear cart
     await ref.read(cartStateProvider.notifier).clearCart();
+  }
+
+  if (type == CheckoutType.logistics) {
+    // Clear logistics
+    await ref.read(logisticsStateProvider.notifier).clearLogistics();
   }
 
   if (fromWallet) {

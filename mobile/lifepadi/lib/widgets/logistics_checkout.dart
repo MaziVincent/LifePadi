@@ -9,6 +9,7 @@ import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/orders.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -135,44 +136,55 @@ class _LogisticsCheckoutContent extends HookWidget {
               );
 
               await showToast('Order created successfully');
-              // Get payment link
-              final paymentLink = await ref.read(
-                paymentLinkProvider(
-                  orderId: order.id,
-                  amount: logistics.deliveryFee,
-                  deliveryFee: logistics.deliveryFee,
-                  totalAmount: logistics.deliveryFee,
-                ).future,
-              );
-
-              await showToast('Processing payment...');
-              // Use webview to process payment
-              if (context.mounted) {
-                final receipt = await context.push<Receipt>(
-                  PaymentRoute(
-                    link: paymentLink,
-                    type: CheckoutType.logistics,
-                  ).location,
+              // Process payment
+              Receipt? receipt;
+              if (selectedPaymentMethod.value == 2) {
+                // Get payment link
+                final paymentLink = await ref.read(
+                  paymentLinkProvider(
+                    orderId: order.id,
+                    amount: logistics.deliveryFee,
+                    deliveryFee: logistics.deliveryFee,
+                    totalAmount: logistics.deliveryFee,
+                  ).future,
                 );
 
-                if (receipt != null && receipt.status) {
-                  // show success notification
-                  await NotificationUtils.showNotification(
-                    id: order.id,
-                    title: 'Order successful',
-                    body:
-                        'Logistics order #${order.orderId} has been placed successfully.',
-                    payload: {
-                      'route': OrderDetailsRoute(id: order.id).location,
-                    },
-                  );
+                await showToast('Processing payment...');
+                // Use webview to process payment
+                if (context.mounted) {
+                  receipt = await context
+                      .push<Receipt>(PaymentRoute(link: paymentLink).location);
+                }
+              } else if (selectedPaymentMethod.value == 1) {
+                // Use wallet to process payment
+                receipt = await ref.read(
+                  walletPaymentProvider(
+                    type: CheckoutType.logistics,
+                    amount: logistics.deliveryFee,
+                    orderId: order.id,
+                    deliveryFee: logistics.deliveryFee,
+                    totalAmount: logistics.deliveryFee,
+                  ).future,
+                );
+              }
 
-                  if (context.mounted) {
-                    context.go(
-                      ReceiptRoute(orderId: order.id).location,
-                      extra: receipt,
-                    );
-                  }
+              if (receipt != null && receipt.status) {
+                // show success notification
+                await NotificationUtils.showNotification(
+                  id: order.id,
+                  title: 'Order successful',
+                  body:
+                      'Logistics order #${order.orderId} has been placed successfully.',
+                  payload: {
+                    'route': OrderDetailsRoute(id: order.id).location,
+                  },
+                );
+
+                if (context.mounted) {
+                  context.go(
+                    ReceiptRoute(orderId: order.id).location,
+                    extra: receipt,
+                  );
                 }
               }
             } on PaymentFailedException catch (e) {

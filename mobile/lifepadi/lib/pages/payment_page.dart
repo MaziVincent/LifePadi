@@ -56,7 +56,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
           onNavigationRequest: (NavigationRequest request) async {
             if (request.url.contains('/transaction/paystack-confirmPayment') ||
                 request.url.contains('/walletDeposite/confirmDeposite')) {
-              await showToast('Confirming payment...');
+              await showToast('Confirming payment');
               await confirmPayment(redirectUrl: request.url);
               return NavigationDecision.prevent;
             }
