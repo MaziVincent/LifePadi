@@ -35,6 +35,7 @@ class Order with OrderMappable {
     this.logistics,
     this.deliveryFee = 0.0,
     this.rider,
+    this.customer,
   });
 
   @MappableField(key: 'Id')
@@ -63,4 +64,6 @@ class Order with OrderMappable {
   final double deliveryFee;
   @MappableField(key: 'Rider')
   final Rider? rider;
+  @MappableField(key: 'Customer')
+  final Customer? customer;
 }

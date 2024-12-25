@@ -69,9 +69,14 @@ FutureOr<Order> order(Ref ref, int id) async {
     throw const ServerErrorException('No data returned from the server');
   }
 
-  // strip auth on rider if it contains a rider key
+  // strip auth on rider
   if (response.data!.containsKey('Rider') && response.data!['Rider'] != null) {
     stripAuth(response.data!['Rider'] as JsonMap);
+  }
+  // strip auth on customer
+  if (response.data!.containsKey('Customer') &&
+      response.data!['Customer'] != null) {
+    stripAuth(response.data!['Customer'] as JsonMap, addWallet: true);
   }
 
   ref.cache();

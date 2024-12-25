@@ -136,6 +136,8 @@ class OrderDetailsContent extends StatelessWidget {
           ),
         ],
 
+        // TODO: Show payment method
+
         /// Locations
         if (order.type == CheckoutType.logistics) ...[
           const SectionTitle(
@@ -251,6 +253,45 @@ class OrderDetailsContent extends StatelessWidget {
           address: order.deliveryLocation!.address,
           child: const SizedBox.shrink(),
         ),
+
+        // Display customer information for cart orders
+        if (order.type == CheckoutType.cart &&
+            user is Rider &&
+            order.customer != null) ...[
+          const SectionTitle(
+            'Receiver Information',
+            color: Color(0xFF27272A),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: const Color(0xFFE5E5E5)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  order.customer!.name,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF27272A),
+                  ),
+                ),
+                4.verticalSpace,
+                Text(
+                  order.customer!.phoneNumber,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF7F7F89),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
 
         if (order.type == CheckoutType.logistics &&
             order.logistics?.isNotEmpty == true) ...[
