@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
@@ -5,7 +6,9 @@ import 'package:lifepadi/models/order_item.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
 
 class OrderDetailsContent extends StatelessWidget {
   const OrderDetailsContent({
@@ -174,11 +177,27 @@ class OrderDetailsContent extends StatelessWidget {
                     ),
                   ),
                   4.verticalSpace,
-                  Text(
-                    order.logistics!.first.senderPhone,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontSize: 14.sp,
-                      color: const Color(0xFF7F7F89),
+                  GestureDetector(
+                    onTap: () async => Clipboard.setData(
+                      ClipboardData(text: order.logistics!.first.senderPhone),
+                    ).then((_) async => showToast('Copied to clipboard')),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          order.logistics!.first.senderPhone,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontSize: 14.sp,
+                            color: const Color(0xFF7F7F89),
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Icon(
+                          Remix.file_copy_line,
+                          size: 16.sp,
+                          color: const Color(0xFF7F7F89),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -281,11 +300,27 @@ class OrderDetailsContent extends StatelessWidget {
                   ),
                 ),
                 4.verticalSpace,
-                Text(
-                  order.customer!.phoneNumber,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontSize: 14.sp,
-                    color: const Color(0xFF7F7F89),
+                GestureDetector(
+                  onTap: () async => Clipboard.setData(
+                    ClipboardData(text: order.customer!.phoneNumber),
+                  ).then((_) async => showToast('Copied to clipboard')),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        order.customer!.phoneNumber,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          color: const Color(0xFF7F7F89),
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Icon(
+                        Remix.file_copy_line,
+                        size: 16.sp,
+                        color: const Color(0xFF7F7F89),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -318,11 +353,27 @@ class OrderDetailsContent extends StatelessWidget {
                   ),
                 ),
                 4.verticalSpace,
-                Text(
-                  order.logistics!.first.receiverPhone,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    fontSize: 14.sp,
-                    color: const Color(0xFF7F7F89),
+                GestureDetector(
+                  onTap: () async => Clipboard.setData(
+                    ClipboardData(text: order.logistics!.first.receiverPhone),
+                  ).then((_) async => showToast('Copied to clipboard')),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        order.logistics!.first.receiverPhone,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          color: const Color(0xFF7F7F89),
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Icon(
+                        Remix.file_copy_line,
+                        size: 16.sp,
+                        color: const Color(0xFF7F7F89),
+                      ),
+                    ],
                   ),
                 ),
               ],
