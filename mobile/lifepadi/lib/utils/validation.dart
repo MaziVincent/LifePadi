@@ -28,14 +28,6 @@ StringValidationCallback buildPasswordValidator() {
         RegExp('[a-z]'),
         'Password must contain at least one lowercase letter',
       )
-      .regExp(
-        RegExp('[0-9]'),
-        'Password must contain at least one digit',
-      )
-      .regExp(
-        RegExp(r'[!@#$%^&*(),.?":{}|<>]'),
-        'Password must contain at least one special character',
-      )
       .build();
 }
 
