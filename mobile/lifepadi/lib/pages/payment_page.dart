@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/logistics.dart';
@@ -93,7 +94,19 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(title: 'Lifepadi Payment'),
+      appBar: MyAppBar(
+        title: switch (widget.type) {
+          CheckoutType.cart => 'Cart Payment',
+          CheckoutType.logistics => 'Logistics Payment',
+          CheckoutType.topUp => 'Top Up',
+        },
+        actions: [
+          IconButton(
+            icon: const Icon(IconsaxPlusLinear.refresh_2),
+            onPressed: () async => controller.reload(),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           WebViewWidget(controller: controller),

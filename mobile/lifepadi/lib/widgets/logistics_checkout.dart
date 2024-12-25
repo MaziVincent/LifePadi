@@ -45,7 +45,7 @@ class _LogisticsCheckoutContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final deliveryInstruction = useState('');
-    final selectedPaymentMethod = useState(-1);
+    final selectedPaymentMethod = useState(1);
 
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),

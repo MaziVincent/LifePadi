@@ -7,6 +7,7 @@ import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -185,13 +186,11 @@ Future<Receipt> confirmPayment(
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-
   if (response.data?['StatusBool'] != true) {
     throw PaymentFailedException(response.data?['message'] as String);
   }
 
-  final receipt = ReceiptMapper.fromMap(response.data!..addAll({'type': type}));
-
+  final receipt = ReceiptMapper.fromMap(response.data!);
   await resetStateAfterCheckout(ref, type: type);
 
   return receipt;
@@ -278,6 +277,7 @@ FutureOr<List<Order>> riderOrders(
 Future<void> resetStateAfterCheckout(
   Ref<Object?> ref, {
   required CheckoutType type,
+  bool fromWallet = false,
 }) async {
   // Invalidate the orders provider to refresh the list
   ref.invalidate(ordersProvider);
@@ -285,6 +285,11 @@ Future<void> resetStateAfterCheckout(
   if (type == CheckoutType.cart) {
     // Clear cart
     await ref.read(cartStateProvider.notifier).clearCart();
+  }
+
+  if (fromWallet) {
+    // Invalidate the balance provider to refresh the wallet balance
+    ref.invalidate(balanceProvider);
   }
 }
 

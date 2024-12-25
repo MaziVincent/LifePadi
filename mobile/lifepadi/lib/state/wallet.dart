@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -132,4 +134,58 @@ FutureOr<List<Receipt>> transactionHistory(
 
   ref.cache();
   return data.map(ReceiptMapper.fromMap).toList();
+}
+
+/// Process payment using the user's wallet.
+///
+/// This method is called when the user chooses
+/// to pay with their wallet.
+@riverpod
+Future<Receipt> walletPayment(
+  Ref ref, {
+  required CheckoutType type,
+  required double amount,
+  required int orderId,
+  int? voucherId,
+  required double deliveryFee,
+  required double totalAmount,
+}) async {
+  final client =
+      ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
+  final user = ref.read(authControllerProvider);
+  final walletId = user.maybeWhen(
+    data: (user) => user is Customer ? user.wallet.id : -1,
+    orElse: () => null,
+  );
+  if (walletId == null) {
+    throw const UnauthorizedException('No user found');
+  }
+  if (walletId == -1) {
+    throw const WalletException('This user is not a customer');
+  }
+  final response = await client.post<JsonMap>(
+    '/walletwithdrawal/withdraw/$walletId',
+    data: {
+      'Amount': amount,
+      'OrderId': orderId,
+      'VoucherId': voucherId,
+      'DeliveryFee': deliveryFee,
+      'TotalAmount': totalAmount,
+      'WalletId': walletId,
+      'Type': type.toValue().toString(),
+    },
+  );
+  if (response.data == null) {
+    throw const ServerErrorException('No data returned from the server');
+  }
+  if (response.data?['StatusBool'] != true) {
+    throw PaymentFailedException(
+      response.data?['message'] as String? ?? 'Could not process payment',
+    );
+  }
+
+  final receipt = ReceiptMapper.fromMap(response.data!);
+  await resetStateAfterCheckout(ref, type: type, fromWallet: true);
+
+  return receipt;
 }

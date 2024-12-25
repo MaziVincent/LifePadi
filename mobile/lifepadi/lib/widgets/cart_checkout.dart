@@ -4,10 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/cart.dart';
+import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/orders.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -43,7 +45,7 @@ class _CartCheckoutContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final deliveryInstruction = useState('');
-    final selectedPaymentMethod = useState(-1);
+    final selectedPaymentMethod = useState(1);
 
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
@@ -142,44 +144,59 @@ class _CartCheckoutContent extends HookWidget {
                   ).future,
                 );
               }
-
               await showToast('Order created successfully');
-              // Get payment link
-              final paymentLink = await ref.read(
-                paymentLinkProvider(
-                  orderId: order.id,
-                  amount: cart.subtotal,
-                  deliveryFee: cart.deliveryFee,
-                  totalAmount: cart.total,
-                  voucherCode: cart.discount?.code,
-                ).future,
-              );
 
-              await showToast('Processing payment...');
-              // Use webview to process payment
-              if (context.mounted) {
-                final receipt = await context
-                    .push<Receipt>(PaymentRoute(link: paymentLink).location);
+              // Process payment
+              Receipt? receipt;
+              if (selectedPaymentMethod.value == 2) {
+                // Get payment link
+                final paymentLink = await ref.read(
+                  paymentLinkProvider(
+                    orderId: order.id,
+                    amount: cart.subtotal,
+                    deliveryFee: cart.deliveryFee,
+                    totalAmount: cart.total,
+                    voucherCode: cart.discount?.code,
+                  ).future,
+                );
 
-                if (receipt != null && receipt.status) {
-                  // Show success notification
-                  await NotificationUtils.showNotification(
-                    id: order.id,
-                    title: 'Order successful',
-                    body:
-                        'Order #${order.orderId} has been placed successfully.',
-                    payload: {
-                      'route': OrderDetailsRoute(id: order.id).location,
-                    },
+                await showToast('Processing payment...');
+                // Use webview to process payment
+                if (context.mounted) {
+                  receipt = await context
+                      .push<Receipt>(PaymentRoute(link: paymentLink).location);
+                }
+              } else if (selectedPaymentMethod.value == 1) {
+                // Use wallet to process payment
+                receipt = await ref.read(
+                  walletPaymentProvider(
+                    type: CheckoutType.cart,
+                    amount: cart.total,
+                    orderId: order.id,
+                    deliveryFee: cart.deliveryFee,
+                    totalAmount: cart.total,
+                    voucherId: cart.discount?.id,
+                  ).future,
+                );
+              }
+
+              if (receipt != null && receipt.status) {
+                // Show success notification
+                await NotificationUtils.showNotification(
+                  id: order.id,
+                  title: 'Order successful',
+                  body: 'Order #${order.orderId} has been placed successfully.',
+                  payload: {
+                    'route': OrderDetailsRoute(id: order.id).location,
+                  },
+                );
+
+                // After that, go to receipt page
+                if (context.mounted) {
+                  context.go(
+                    ReceiptRoute(orderId: order.id).location,
+                    extra: receipt,
                   );
-
-                  // After that, go to receipt page
-                  if (context.mounted) {
-                    context.go(
-                      ReceiptRoute(orderId: order.id).location,
-                      extra: receipt,
-                    );
-                  }
                 }
               }
             } on PaymentFailedException catch (e) {

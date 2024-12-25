@@ -34,11 +34,6 @@ class PaymentMethodSelector extends StatelessWidget {
       ),
     ];
 
-    // Initialize with wallet payment if not already selected
-    if (selectedPaymentMethod.value == -1) {
-      selectedPaymentMethod.value = 1; // Default to wallet payment
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
