@@ -45,6 +45,7 @@ class _LogisticsCheckoutContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final deliveryInstruction = useState('');
+    final selectedPaymentMethod = useState(-1);
 
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
@@ -77,12 +78,32 @@ class _LogisticsCheckoutContent extends HookWidget {
               title: 'Delivery fee',
               price: logistics.deliveryFee,
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 12.h),
+              child: PaymentPrice(
+                title: 'Total',
+                amount: logistics.deliveryFee,
+              ),
+            ),
           ],
+        ),
+        16.verticalSpace,
+        PaymentMethodSelector(
+          selectedPaymentMethod: selectedPaymentMethod,
+          totalAmount: logistics.deliveryFee,
         ),
         30.verticalSpace,
         PrimaryActionButton(
           text: 'Proceed to Pay',
           onPressed: () async {
+            if (selectedPaymentMethod.value == -1) {
+              await displayError(
+                context,
+                title: 'Select payment method',
+                description: 'Please select a payment method to proceed.',
+              );
+              return;
+            }
             await showToast('Please wait, creating order...');
 
             try {
