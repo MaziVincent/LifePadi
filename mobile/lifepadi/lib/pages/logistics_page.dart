@@ -262,9 +262,29 @@ class LogisticsPage extends HookConsumerWidget {
                       'Loading locations...',
                 ),
                 16.verticalSpace,
-                const SectionTitle(
-                  'Drop-off Location',
-                  color: Color(0xFF1C1C20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SectionTitle(
+                      'Drop-off Location',
+                      color: Color(0xFF1C1C20),
+                    ),
+                    if (pickupLocation != null && dropoffLocation != null)
+                      Center(
+                        child: MyIconButton(
+                          icon: Icons.swap_vert,
+                          onPressed: () {
+                            final tempPickup = pickupLocation;
+                            ref.read(pickupLocationProvider.notifier).state =
+                                dropoffLocation;
+                            ref.read(dropoffLocationProvider.notifier).state =
+                                tempPickup;
+                          },
+                          backgroundColor: const Color(0xFFF1F1FD),
+                          iconColor: const Color(0xFF21D1A5),
+                        ),
+                      ),
+                  ],
                 ),
                 16.verticalSpace,
                 LocationCard(
