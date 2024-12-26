@@ -25,7 +25,7 @@ class RiderDistanceAway extends ConsumerStatefulWidget {
 
 class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
     with LocationUtils {
-   final urbanistStyle = GoogleFonts.urbanist(
+  final urbanistStyle = GoogleFonts.urbanist(
     color: const Color(0xFF616161),
     fontSize: 12.05.sp,
     fontWeight: FontWeight.w500,
@@ -94,7 +94,7 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
         }
 
         return Text(
-          '${distanceAway.toStringAsFixed(1)}km away',
+          '${distanceAway.toStringAsFixed(2)}km away',
           style: urbanistStyle,
         );
       },
