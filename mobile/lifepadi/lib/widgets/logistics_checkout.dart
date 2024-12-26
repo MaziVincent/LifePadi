@@ -143,7 +143,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                 final paymentLink = await ref.read(
                   paymentLinkProvider(
                     orderId: order.id,
-                    amount: logistics.deliveryFee,
+                    amount: 0,
                     deliveryFee: logistics.deliveryFee,
                     totalAmount: logistics.deliveryFee,
                   ).future,
@@ -160,7 +160,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                 receipt = await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.logistics,
-                    amount: logistics.deliveryFee,
+                    amount: 0,
                     orderId: order.id,
                     deliveryFee: logistics.deliveryFee,
                     totalAmount: logistics.deliveryFee,
