@@ -35,8 +35,9 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   Future<void> setupSignalR() async {
     hubConnection = HubConnectionBuilder()
         .withUrl(kSignalRLocationUrl)
-        .withAutomaticReconnect()
-        .build();
+        .withAutomaticReconnect(
+      retryDelays: const [0, 100, 200, 300, 400, 500, 1000, 2000, 4000],
+    ).build();
 
     try {
       await hubConnection?.start();
@@ -47,9 +48,6 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
         if (args != null && args.isNotEmpty && mounted) {
           final latitude = args[0]! as double;
           final longitude = args[1]! as double;
-          final riderId = int.tryParse(args[2]!.toString());
-
-          if (riderId != widget.riderId) return;
 
           logger.d('[Customer] LocationUpdated: $latitude, $longitude');
           setState(() {

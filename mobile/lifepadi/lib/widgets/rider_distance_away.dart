@@ -25,21 +25,15 @@ class RiderDistanceAway extends ConsumerStatefulWidget {
 
 class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
     with LocationUtils {
-  final urbanistStyle = GoogleFonts.urbanist(
-    color: const Color(0xFF616161),
-    fontSize: 12.05.sp,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.17.r,
-  );
-
   LatLng? riderLocation;
   HubConnection? hubConnection;
 
   Future<void> setupRiderLocation() async {
     hubConnection = HubConnectionBuilder()
         .withUrl(kSignalRLocationUrl)
-        .withAutomaticReconnect()
-        .build();
+        .withAutomaticReconnect(
+      retryDelays: const [0, 100, 200, 300, 400, 500, 1000, 2000, 4000],
+    ).build();
 
     try {
       await hubConnection?.start();
@@ -48,11 +42,9 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
 
       hubConnection?.on('LocationUpdated', (List<Object?>? args) async {
         if (args != null && args.isNotEmpty && mounted) {
+          logger.i('[Customer|RDA]: $args');
           final latitude = args[0]! as double;
           final longitude = args[1]! as double;
-          final riderId = int.tryParse(args[2]!.toString());
-
-          if (riderId != widget.riderId) return;
 
           logger.d('[Customer] LocationUpdated: $latitude, $longitude');
           setState(() {
@@ -81,25 +73,33 @@ class _RiderDistanceAwayState extends ConsumerState<RiderDistanceAway>
 
   @override
   Widget build(BuildContext context) {
-    final currentLocation = ref.watch(currentLocationProvider);
+    final currentLocation =
+        ref.read(currentLocationProvider.notifier).currentLatLng();
+    final urbanistStyle = GoogleFonts.urbanist(
+      color: const Color(0xFF616161),
+      fontSize: 12.05.sp,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.17.r,
+    );
 
-    return currentLocation.when(
-      data: (current) {
-        var distanceAway = 0.0;
-        if (riderLocation != null) {
-          distanceAway = calculateDistance(current.latLng, riderLocation!);
-        }
-        if (distanceAway == 0.0) {
+    return FutureBuilder<LatLng>(
+      future: currentLocation,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || riderLocation == null) {
           return const SizedBox.shrink();
         }
 
+        final currentLatLng = snapshot.data!;
+        final distance = calculateDistance(
+          currentLatLng,
+          riderLocation!,
+        );
+
         return Text(
-          '${distanceAway.toStringAsFixed(2)}km away',
+          '${distance.toStringAsFixed(2)} km away',
           style: urbanistStyle,
         );
       },
-      error: (_, __) => const SizedBox.shrink(),
-      loading: SizedBox.shrink,
     );
   }
 }
