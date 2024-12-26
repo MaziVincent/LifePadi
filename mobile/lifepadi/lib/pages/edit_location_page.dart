@@ -193,19 +193,19 @@ class EditLocationPage extends HookConsumerWidget with LocationUtils {
                         ),
                         IconButton(
                           onPressed: () async {
-                            if (oldLocation
-                                case AsyncData(value: final location)) {
-                              if (mapController.value != null) {
-                                await mapController.value!.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                    CameraPosition(
-                                      target: location.latLng,
-                                      zoom: 15,
-                                    ),
+                            final currentLocation = await ref.read(
+                              currentLocationProvider.future,
+                            );
+                            if (mapController.value != null) {
+                              selectedLocation.value = currentLocation;
+                              await mapController.value!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: currentLocation.latLng,
+                                    zoom: 15,
                                   ),
-                                );
-                                selectedLocation.value = location;
-                              }
+                                ),
+                              );
                             }
                           },
                           icon: Icon(
