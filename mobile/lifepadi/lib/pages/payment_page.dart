@@ -38,13 +38,18 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
         NavigationDelegate(
           onPageStarted: (String url) {
             setState(() => loadingPercentage = 0);
-            // Clear the cart
-            ref
-                .read(cartStateProvider.notifier)
-                .clearCart(keepDeliveryLocation: true)
-                .ignore();
+            if (widget.type == CheckoutType.cart) {
+              // Clear the cart
+              ref
+                  .read(cartStateProvider.notifier)
+                  .clearCart(keepDeliveryLocation: true)
+                  .ignore();
+            }
 
-            ref.read(logisticsStateProvider.notifier).setAsPaid().ignore();
+            if (widget.type == CheckoutType.logistics) {
+              // Set the logistics as paid
+              ref.read(logisticsStateProvider.notifier).setAsPaid().ignore();
+            }
           },
           onProgress: (int progress) {
             // Update loading bar
