@@ -64,10 +64,14 @@ Content-Type: application/json
 ###
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 GET https://localhost:7216/api/order/get/395
 =======
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
 >>>>>>> 0ca0962 (notification, location and other commits)
+=======
+GET https://localhost:7216/api/order/get/395
+>>>>>>> 8ad4440 (wallet and transaction commits)
 
 ###
 
@@ -91,6 +95,7 @@ Content-Type: application/json
     "Longitude":"8.0957946"
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
@@ -178,3 +183,41 @@ Content-Type: application/json
 >>>>>>> 6bb1bd3 (notification, location and other commits)
  
 >>>>>>> 0ca0962 (notification, location and other commits)
+=======
+
+>>>>>>> 6bb1bd3 (notification, location and other commits)
+ 
+=======
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/wallet/transactions/8
+
+###
+ PUT https://localhost:7216/api/rider/updateLocation/51
+Content-Type: application/json
+
+{
+    "RiderId":"51",
+    "Latitude":"6.3266352",
+    "Longitude":"8.0957946"
+}
+
+###
+ POST https://localhost:7216/api/walletwithdrawal/withdraw/8
+Content-Type: application/json
+
+{
+    "WalletId":8,
+    "Amount":"5000",
+    "DeliveryFee":"1000",
+    "TotalAmount":"6000",
+    "OrderId":426,
+    "Type":"Wallet"
+}
+
+###
+DELETE https://localhost:7216/api/address/delete/93
+>>>>>>> d99b6c5 (wallet and transaction commits)
+>>>>>>> 8ad4440 (wallet and transaction commits)

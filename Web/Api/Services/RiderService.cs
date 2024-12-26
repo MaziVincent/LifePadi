@@ -1031,6 +1031,7 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         public async Task<PagedList<Rider>> getAllActive(SearchPaging props)
         {
@@ -1082,5 +1083,7 @@ namespace Api.Services
             }
         }
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
     }
 }

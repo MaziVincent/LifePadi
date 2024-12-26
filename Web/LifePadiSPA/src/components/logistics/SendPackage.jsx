@@ -730,10 +730,14 @@ const sendPackage = () => {
                   <button
                     type="submit"
 <<<<<<< HEAD
+<<<<<<< HEAD
                     disabled={isSubmitting }
 =======
                     disabled={isSubmitting || !isValid}
 >>>>>>> 56c4b95 (completed logistics)
+=======
+                    disabled={isSubmitting }
+>>>>>>> 8ad4440 (wallet and transaction commits)
                     className="w-full text-accent bg-background flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
                     {isSubmitting ? <LoadingGif /> : " Proceed "}

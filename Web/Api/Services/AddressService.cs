@@ -50,10 +50,15 @@ namespace Api.Services
                 var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
 <<<<<<< HEAD
+<<<<<<< HEAD
                 var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
                 if (defaultAddress == null) address.DefaultAddress = true;
 =======
 >>>>>>> 67ef8ba (updated payment)
+=======
+                var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
+                if (defaultAddress == null) address.DefaultAddress = true;
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();
@@ -97,6 +102,9 @@ namespace Api.Services
                 var address = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.Id == id);
                 if (address == null) return null!;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 var delivery = await _dbContext
                 .Deliveries.FirstOrDefaultAsync(d => d.PickUpAddressId == id || d.DeliveryAddressId == id);
                 if (delivery != null) {

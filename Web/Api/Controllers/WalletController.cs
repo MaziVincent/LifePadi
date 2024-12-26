@@ -202,6 +202,9 @@ namespace Api.Controllers
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
         [HttpGet("transactions/{id}")]
         public async Task<IActionResult> getTransactions(int id, [FromQuery] SearchPaging props)
         {

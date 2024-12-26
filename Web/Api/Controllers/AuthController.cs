@@ -70,10 +70,14 @@ namespace Api.Controllers
                     refreshToken = user.RefreshToken,
                     accessToken = user.AccessToken,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     Wallet = user.Wallet
 =======
                     wallet = user.Wallet
 >>>>>>> 22aabbf (wallet added to login)
+=======
+                    Wallet = user.Wallet
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 };
                 return Ok(token);
             }

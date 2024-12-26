@@ -123,9 +123,12 @@ namespace Api.DTO
         public bool? IsVerified { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+<<<<<<< HEAD
 =======
         public bool? IsVerified { get; set; }
 >>>>>>> 28d4101 (finished with rider and order)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

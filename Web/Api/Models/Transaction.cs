@@ -16,6 +16,7 @@ namespace Api.Models
         public int? VoucherId { get; set; }
         public Voucher? Voucher { get; set; }
         public int? OrderId { get; set; }
+<<<<<<< HEAD
 =======
         public Double TotalAmount { get; set; }
         public Double AmountPaid { get; set; }  
@@ -24,6 +25,8 @@ namespace Api.Models
         public Voucher? Voucher { get; set; }
         public int OrderId { get; set; }
 >>>>>>> 7f9ad44 (done with payment and voucher)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
         public Order? Order { get; set; }
         public DateTime? PaidAt { get; set; }
         public string? PaymentChannel {get; set;}

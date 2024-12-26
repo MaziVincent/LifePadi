@@ -39,6 +39,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfUnverifiedRiders();
         public Task<object> getRiderStats();
         public Task<string> updateDefaultLocation(int id, RiderLocation location);
+<<<<<<< HEAD
         public Task<PagedList<Rider>> getAllActive(SearchPaging props);
 =======
         public Task<IEnumerable<RiderDTO>> getAllAsync();
@@ -120,5 +121,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfUnverifiedRiders();
         public Task<object> getRiderStats();
 >>>>>>> 98415b4 (done with dashboard)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
     }
 }

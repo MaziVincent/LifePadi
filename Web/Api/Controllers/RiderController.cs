@@ -621,6 +621,25 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 >>>>>>> 57dd2cb (rider commit)
+=======
+
+        [HttpPut("updateLocation/{id}")]
+        public async Task<IActionResult> updateLocation(int id, [FromBody]RiderLocation location)
+        {
+            try
+            {
+                var res = await _irider!.updateDefaultLocation(id, location);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+   
+>>>>>>> 8ad4440 (wallet and transaction commits)
     }
 }

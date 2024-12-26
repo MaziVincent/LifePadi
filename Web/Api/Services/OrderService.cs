@@ -354,10 +354,14 @@ namespace Api.Services
                 .Include(d => d.DeliveryAddress)
                 .Include(d => d.PickUpAddress)
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .Include(d => d.Rider).ThenInclude(r => r!.Addresses)
 =======
                 .Include(d => d.Rider)
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+                .Include(d => d.Rider).ThenInclude(r => r!.Addresses)
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
@@ -368,6 +372,9 @@ namespace Api.Services
                     OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
                     OrderDto.DeliveryFee = delivery.DeliveryFee;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
 
                     if (delivery.Rider is not null) {
                         OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
@@ -381,9 +388,12 @@ namespace Api.Services
                         }
                     }
                    
+<<<<<<< HEAD
 =======
                     OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
 >>>>>>> d23f0ab (transaction, order, notification commit)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 }
                 return OrderDto;
             }

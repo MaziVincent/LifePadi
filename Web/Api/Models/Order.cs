@@ -24,6 +24,7 @@
 <<<<<<< HEAD
         public double? TotalAmount { get; set; } = 0;
         public string? PaymentChannel { get; set; }
+<<<<<<< HEAD
 =======
         public int? RiderId { get; set; }
         public Rider? Rider { get; set; }
@@ -31,6 +32,8 @@
 =======
         
 >>>>>>> 4641615 (finished with delivery service and controller)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
         public List<OrderItem>? OrderItems { get; set; }
         public List<Logistic>? Logistics { get; set; }
 

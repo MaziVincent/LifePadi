@@ -599,10 +599,14 @@ namespace Api.Services
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
 <<<<<<< HEAD
+<<<<<<< HEAD
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
 =======
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_key"]);
 >>>>>>> 568d50b (done with chat messages)
+=======
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+>>>>>>> 8ad4440 (wallet and transaction commits)
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)

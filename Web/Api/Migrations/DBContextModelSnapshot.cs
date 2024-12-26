@@ -48,6 +48,9 @@ namespace Api.Migrations
                     b.Property<bool?>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
 

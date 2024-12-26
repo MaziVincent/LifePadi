@@ -20,9 +20,13 @@ namespace Api.Interfaces
         public Task<WalletDto> getWalletByCustomerId(int customerId);
         public Task<object> getCustomerWalletStat(int customerId);
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Transaction>> GetTransactionsAsync(int walletId, SearchPaging props);
 =======
 >>>>>>> 568d50b (done with chat messages)
+=======
+        public Task<PagedList<Transaction>> GetTransactionsAsync(int walletId, SearchPaging props);
+>>>>>>> 8ad4440 (wallet and transaction commits)
         public Task<List<DepositeDto>> lastFiveTransactions(int walletId);
     }
 }

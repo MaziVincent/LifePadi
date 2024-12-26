@@ -17,12 +17,15 @@
         public int UserId { get; set; }
         public User? User { get; set; }
 
+<<<<<<< HEAD
 =======
         public string? Longitude { get; set; }
         public string? Latitude { get; set; }
         public int CustomerId { get; set; }
         public Customer? Customer { get; set; }
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set ; } = DateTime.UtcNow;
     }

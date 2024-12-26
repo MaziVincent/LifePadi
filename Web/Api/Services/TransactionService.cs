@@ -706,6 +706,9 @@ namespace Api.Services
                     if (order == null) throw new Exceptions.ServiceException("Order not found");
                     order.Status = "Ongoing";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8ad4440 (wallet and transaction commits)
                     order.PaymentChannel = paymentRes.data!.channel;
                     order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
 =======
