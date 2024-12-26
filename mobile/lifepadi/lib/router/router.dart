@@ -64,8 +64,12 @@ GoRouter router(Ref ref) {
         const ResetPasswordRoute().location,
       ];
       final isLoggingIn = guestRoutes.contains(state.uri.path);
+      final canRestoreAuth =
+          await ref.read(authControllerProvider.notifier).canRestoreAuth();
       final locationBasedOnPreviousLogin = hasLoggedInBefore()
-          ? const GetStartedRoute().location
+          ? (canRestoreAuth
+              ? const LoginRoute().location
+              : const GetStartedRoute().location)
           : const OnboardingRoute().location;
 
       if (isAuth.value.unwrapPrevious().hasError) {

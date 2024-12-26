@@ -51,10 +51,7 @@ class AuthController extends _$AuthController {
       final isBiometricEnabled =
           PreferencesHelper.getBool(kBiometricsKey) ?? false;
       if (isBiometricEnabled) {
-        final authenticated = await _biometricService.authenticate();
-        if (!authenticated) {
-          return const Guest();
-        }
+        return const Guest();
       }
     }
 
@@ -395,7 +392,11 @@ class AuthController extends _$AuthController {
   /// Check if there's auth to restore in secure storage
   Future<bool> canRestoreAuth() async {
     final credentials = await _secureStorage.get(kCredentialsKey);
-    return credentials != null;
+    if (credentials != null) {
+      final user = UserMapper.fromJson(credentials);
+      return user is! Rider;
+    }
+    return false;
   }
 
   /// Remove the user's account
