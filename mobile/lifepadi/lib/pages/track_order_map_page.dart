@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -12,14 +13,12 @@ class TrackOrderMapPage extends StatefulWidget {
     super.key,
     required this.riderId,
     required this.orderId,
-    required this.destinationLatitude,
-    required this.destinationLongitude,
+    required this.destination,
   });
 
   final String orderId;
   final int riderId;
-  final double destinationLatitude;
-  final double destinationLongitude;
+  final LatLng destination;
 
   @override
   State<TrackOrderMapPage> createState() => _TrackOrderMapPageState();
@@ -27,10 +26,11 @@ class TrackOrderMapPage extends StatefulWidget {
 
 class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   final Completer<GoogleMapController> _controller = Completer();
-  LocationData? currentLocation;
+  LocationData? riderLocation;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor riderLocationIcon = BitmapDescriptor.defaultMarker;
   HubConnection? hubConnection;
+  List<LatLng> polylineCoordinates = [];
 
   Future<void> setupSignalR() async {
     hubConnection = HubConnectionBuilder()
@@ -51,10 +51,13 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
 
           logger.d('[Customer] LocationUpdated: $latitude, $longitude');
           setState(() {
-            currentLocation = LocationData.fromMap({
+            riderLocation = LocationData.fromMap({
               'latitude': latitude,
               'longitude': longitude,
             });
+            if (polylineCoordinates.isEmpty) {
+              getPolyPoints();
+            }
           });
 
           final googleMapController = await _controller.future;
@@ -62,7 +65,7 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
             CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(latitude, longitude),
-                zoom: 13.5,
+                zoom: 15,
               ),
             ),
           );
@@ -73,12 +76,36 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
     }
   }
 
+  Future<void> getPolyPoints() async {
+    final polylinePoints = PolylinePoints();
+
+    final result = await polylinePoints.getRouteBetweenCoordinates(
+      request: PolylineRequest(
+        origin:
+            PointLatLng(riderLocation!.latitude!, riderLocation!.longitude!),
+        destination: PointLatLng(
+          widget.destination.latitude,
+          widget.destination.longitude,
+        ),
+        mode: TravelMode.driving,
+      ),
+      googleApiKey: kGoogleMapsApiKey,
+    );
+
+    if (result.points.isNotEmpty) {
+      for (final point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+      setState(() {});
+    }
+  }
+
   void setCustomMarkerIcon() {
     destinationIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueBlue,
     );
 
-    currentLocationIcon = BitmapDescriptor.defaultMarkerWithHue(
+    riderLocationIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueRed,
     );
 
@@ -108,30 +135,38 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(title: 'Track Order #${widget.orderId}'),
-      body: currentLocation == null
+      body: riderLocation == null
           ? const GreenyLoadingWheel()
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(
-                  currentLocation!.latitude!,
-                  currentLocation!.longitude!,
+                  riderLocation!.latitude!,
+                  riderLocation!.longitude!,
                 ),
-                zoom: 13.5,
+                zoom: 15,
               ),
+              polylines: {
+                Polyline(
+                  polylineId: const PolylineId('route'),
+                  points: polylineCoordinates,
+                  color: kDarkPrimaryColor,
+                  width: 6,
+                ),
+              },
               markers: {
                 Marker(
-                  markerId: const MarkerId('currentLocation'),
+                  markerId: const MarkerId('riderLocation'),
                   position: LatLng(
-                    currentLocation!.latitude!,
-                    currentLocation!.longitude!,
+                    riderLocation!.latitude!,
+                    riderLocation!.longitude!,
                   ),
-                  icon: currentLocationIcon,
+                  icon: riderLocationIcon,
                 ),
                 Marker(
                   markerId: const MarkerId('destination'),
                   position: LatLng(
-                    widget.destinationLatitude,
-                    widget.destinationLongitude,
+                    widget.destination.latitude,
+                    widget.destination.longitude,
                   ),
                   icon: destinationIcon,
                 ),
