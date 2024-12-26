@@ -23,7 +23,7 @@ const Color kBrightGreen = Color(0xFF139D01);
 /// 0xFFF52311
 const Color kDangerColor = Color(0xFFF52311);
 
-/// 0xFFE5E5E5
+/// 0xFFFFF5F5
 const Color kLightDanger = Color(0xFFFFF5F5);
 
 /// This horizontal padding is used in many places in the app, I
@@ -70,12 +70,6 @@ const kDeliveryPricePerKm = 300.0;
 
 const kTotalDescription =
     'This is the total amount of all the items in your cart including the delivery fee and any other charges.';
-
-final kTileDecoration = BoxDecoration(
-  color: Colors.white,
-  borderRadius: BorderRadius.circular(8.r),
-  border: Border.all(color: const Color(0xFFE5E5E5)),
-);
 
 const String kCredentialsKey = 'currentUser';
 

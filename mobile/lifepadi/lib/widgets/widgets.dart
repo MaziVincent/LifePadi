@@ -20,6 +20,7 @@ export 'chat_reply.dart';
 export 'chat_tile.dart';
 export 'choice_alert_dialog.dart';
 export 'countdown_transition.dart';
+export 'cute_container.dart';
 export 'distance_tab.dart';
 export 'edit_location_modal_form.dart';
 export 'filter_modal.dart';

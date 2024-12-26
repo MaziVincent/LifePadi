@@ -110,13 +110,7 @@ class OrderDetailsContent extends StatelessWidget {
             'Payment Summary',
             color: Color(0xFF27272A),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE5E5E5)),
-            ),
+          CuteContainer(
             child: Column(
               children: [
                 PriceBreakdownItem(
@@ -157,13 +151,7 @@ class OrderDetailsContent extends StatelessWidget {
             'Sender Information',
             color: Color(0xFF27272A),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE5E5E5)),
-            ),
+          CuteContainer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -211,13 +199,7 @@ class OrderDetailsContent extends StatelessWidget {
               'Item Details',
               color: Color(0xFF27272A),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: const Color(0xFFE5E5E5)),
-              ),
+            CuteContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -281,13 +263,7 @@ class OrderDetailsContent extends StatelessWidget {
             'Receiver Information',
             color: Color(0xFF27272A),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE5E5E5)),
-            ),
+          CuteContainer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -334,13 +310,7 @@ class OrderDetailsContent extends StatelessWidget {
             'Receiver Information',
             color: Color(0xFF27272A),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE5E5E5)),
-            ),
+          CuteContainer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -385,13 +355,7 @@ class OrderDetailsContent extends StatelessWidget {
             'Delivery Fee',
             color: Color(0xFF27272A),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE5E5E5)),
-            ),
+          CuteContainer(
             child: Text(
               '₦${order.deliveryFee}',
               style: context.textTheme.titleMedium?.copyWith(
