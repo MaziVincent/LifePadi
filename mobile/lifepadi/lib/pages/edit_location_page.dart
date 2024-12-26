@@ -213,7 +213,7 @@ class EditLocationPage extends HookConsumerWidget {
                             }
                           },
                           icon: Icon(
-                            IconsaxPlusLinear.search_normal,
+                            IconsaxPlusLinear.gps,
                             size: 20.sp,
                             color: kDarkPrimaryColor,
                           ),
@@ -230,7 +230,7 @@ class EditLocationPage extends HookConsumerWidget {
                         5.horizontalSpace,
                         Expanded(
                           child: Text(
-                            'Drag map to set your delivery location or click the search icon to use your current location',
+                            'Drag map to set your delivery location or click the gps icon to use your current location',
                             style: context.textTheme.bodyMedium?.copyWith(
                               color: const Color(0xFF5F5F5F),
                               fontSize: 12.sp,
