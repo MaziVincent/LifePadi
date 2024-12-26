@@ -50,6 +50,7 @@ export 'payment_method_selector.dart';
 export 'payment_price.dart';
 export 'phone_input_field.dart';
 export 'phone_verification_widget.dart';
+export 'place_search_widget.dart';
 export 'price_breakdown_item.dart';
 export 'price_filter_tab.dart';
 export 'product_tile.dart';
