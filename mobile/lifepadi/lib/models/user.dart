@@ -71,6 +71,7 @@ class Customer extends User with CustomerMappable {
   final DateTime? dateOfBirth;
   @MappableField(key: 'Gender')
   final String? gender;
+  @MappableField(key: 'Wallet')
   final Wallet wallet;
 }
 

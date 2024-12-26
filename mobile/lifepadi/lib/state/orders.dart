@@ -53,6 +53,10 @@ FutureOr<List<Order>> orders(
     if (order.containsKey('Rider') && order['Rider'] != null) {
       stripAuth(order['Rider'] as JsonMap);
     }
+    // strip auth on customer
+    if (order.containsKey('Customer') && order['Customer'] != null) {
+      stripAuth(order['Customer'] as JsonMap, addWallet: true);
+    }
     return order;
   }).toList();
 

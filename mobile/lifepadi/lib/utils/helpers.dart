@@ -221,7 +221,7 @@ JsonMap stripAuth(JsonMap json, {bool addWallet = false}) {
   json['refreshToken'] = '';
   json['Role'] = UserRole.guest.toValue();
   if (addWallet) {
-    json['wallet'] = {
+    json['Wallet'] = {
       'Id': -1,
       'Balance': 1000,
     };

@@ -150,8 +150,7 @@ Future<Receipt> walletPayment(
   required double deliveryFee,
   required double totalAmount,
 }) async {
-  final client =
-      ref.read(dioProvider(logRequestBody: true, logResponseBody: true));
+  final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
   final walletId = user.maybeWhen(
     data: (user) => user is Customer ? user.wallet.id : -1,
