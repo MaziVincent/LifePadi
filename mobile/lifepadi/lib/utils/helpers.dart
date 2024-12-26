@@ -92,12 +92,12 @@ TextStyle? inputTextStyleForUserEnteredText(BuildContext context) {
   );
 }
 
-Future<bool?> displayBottomPanel(
+Future<dynamic> displayBottomPanel(
   BuildContext context, {
   required Widget child,
   double? bottomPadding,
 }) {
-  return showModalBottomSheet<bool>(
+  return showModalBottomSheet<dynamic>(
     context: context,
     isScrollControlled: true,
     builder: (BuildContext context) {
