@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -100,13 +101,14 @@ class _TrackOrderMapPageState extends State<TrackOrderMapPage> {
     }
   }
 
-  void setCustomMarkerIcon() {
+  Future<void> setCustomMarkerIcon() async {
     destinationIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueBlue,
     );
 
-    riderLocationIcon = BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueRed,
+    riderLocationIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(32, 48)),
+      Assets.icons.riderPin.path,
     );
 
     setState(() {});

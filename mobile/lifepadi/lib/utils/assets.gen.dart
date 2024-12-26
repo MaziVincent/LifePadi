@@ -86,6 +86,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant => const AssetGenImage('assets/icons/restaurant.png');
 
+  /// File path: assets/icons/rider-pin.png
+  AssetGenImage get riderPin => const AssetGenImage('assets/icons/rider-pin.png');
+
   /// File path: assets/icons/scan.svg
   SvgGenImage get scan => const SvgGenImage('assets/icons/scan.svg');
 
@@ -132,6 +135,7 @@ class $AssetsIconsGen {
         pathToLocation,
         paystack,
         restaurant,
+        riderPin,
         scan,
         share,
         speedBus,
