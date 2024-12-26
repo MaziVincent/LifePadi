@@ -66,7 +66,7 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
       description: description,
       weight: weight,
       fragile: fragile,
-      deliveryFee: double.parse(deliveryFee.toStringAsFixed(1)),
+      deliveryFee: double.parse(deliveryFee.toStringAsFixed(0)),
     );
 
     // Save logistics data

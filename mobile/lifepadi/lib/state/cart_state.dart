@@ -62,9 +62,9 @@ class CartState extends _$CartState with LocationUtils {
       deliveryFee -= discountPrice;
     }
 
-    deliveryFee = double.parse(deliveryFee.toStringAsFixed(1));
+    deliveryFee = double.parse(deliveryFee.toStringAsFixed(0));
     var total = subtotal + (deliveryFee - discountPrice);
-    total = double.parse(total.toStringAsFixed(1));
+    total = double.parse(total.toStringAsFixed(0));
 
     return Cart(
       products: products,
