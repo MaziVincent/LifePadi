@@ -41,6 +41,8 @@ namespace Api.Services
             {
                 var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
+                var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
+                if (defaultAddress == null) address.DefaultAddress = true;
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();
@@ -59,7 +61,14 @@ namespace Api.Services
             {
                 var address = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.Id == id);
                 if (address == null) return null!;
-                _dbContext.Addresses.Remove(address);
+                var delivery = await _dbContext
+                .Deliveries.FirstOrDefaultAsync(d => d.PickUpAddressId == id || d.DeliveryAddressId == id);
+                if (delivery != null) {
+                    address.IsActive = false;
+                    _dbContext.Addresses.Update(address);
+                }else{
+                    _dbContext.Addresses.Remove(address);
+                }
                 await _dbContext.SaveChangesAsync();
                 return "Deleted successfuly";
             }
@@ -115,7 +124,8 @@ namespace Api.Services
         {
             try
             {
-                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId).ToListAsync();
+                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId)
+                .Where(a => a.IsActive == true).ToListAsync();
                 if (addresses == null) return null!;
                 var AddressDtoLite = _mapper.Map<List<AddressDtoLite>>(addresses);
                 return AddressDtoLite;

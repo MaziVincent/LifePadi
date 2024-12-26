@@ -1,3 +1,4 @@
+using Api.Chat;
 using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
@@ -86,9 +87,8 @@ builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 builder.Services.AddScoped<IFcmService, FcmService>();
-
-
-builder.Services.AddSignalR();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 
 
 builder.Logging.ClearProviders();
@@ -123,6 +123,8 @@ app.UseCors("AllowAllOrigin");
 
 app.MapHub<LocationHub>("/hubs/location");
 app.MapHub<NotificationHub>("/hubs/notification");
+
+app.MapHub<ChatHub>("/chatHub");
 
 
 app.UseAuthentication();

@@ -262,5 +262,21 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("updateLocation/{id}")]
+        public async Task<IActionResult> updateLocation(int id, [FromBody]RiderLocation location)
+        {
+            try
+            {
+                var res = await _irider!.updateDefaultLocation(id, location);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+   
     }
 }

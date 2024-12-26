@@ -498,6 +498,8 @@ namespace Api.Services
                     transaction.DeliveryFee = paymentRes.data!.metadata!.deliveryFee;
                     transaction.PaidAt = paymentRes.data!.paid_at;
                     transaction.PaymentChannel = paymentRes.data!.channel;
+                    transaction.SubTotal = paymentRes.data!.metadata!.amount;
+                    transaction.Type = "Payment";
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
@@ -525,6 +527,7 @@ namespace Api.Services
                     var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == (int)paymentRes!.data!.metadata!.orderId!);
                     if (order == null) throw new Exceptions.ServiceException("Order not found");
                     order.Status = "Ongoing";
+                    order.PaymentChannel = paymentRes.data!.channel;
                     order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
                     // await _dbContext.SaveChangesAsync();
 

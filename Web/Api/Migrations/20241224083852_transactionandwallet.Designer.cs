@@ -4,6 +4,7 @@ using System.Numerics;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20241224083852_transactionandwallet")]
+    partial class transactionandwallet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +41,6 @@ namespace Api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("DefaultAddress")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<double?>("Latitude")
@@ -389,9 +389,6 @@ namespace Api.Migrations
                     b.Property<string>("Order_Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("PaymentChannel")
-                        .HasColumnType("text");
-
                     b.Property<string>("SearchString")
                         .HasColumnType("text");
 
@@ -635,7 +632,7 @@ namespace Api.Migrations
                     b.Property<double?>("DeliveryFee")
                         .HasColumnType("double precision");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("PaidAt")
@@ -1345,7 +1342,9 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Api.Models.Voucher", "Voucher")
                         .WithMany("Transactions")

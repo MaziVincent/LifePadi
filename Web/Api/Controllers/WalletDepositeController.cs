@@ -11,6 +11,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class WalletDepositeController : ControllerBase
     {
         private readonly IWalletDeposite _walletDeposite;
@@ -197,6 +198,24 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("initiate-web")]
+        public async Task<IActionResult> initiateWeb([FromBody] InitiateDepositeDto initiateDepositeDto)
+        {
+            try
+            {
+                var response = await _walletDeposite.initiateWalletDepositWeb(initiateDepositeDto);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Wallet not found"))
+                {
+                    return NotFound(ex.Message);
+                }
                 return BadRequest(ex.Message);
             }
         }

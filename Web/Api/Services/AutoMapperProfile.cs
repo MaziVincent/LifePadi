@@ -8,7 +8,8 @@ namespace Api.Services
     public class AutoMapperProfile : Profile
 
     {
-        public AutoMapperProfile() {
+        public AutoMapperProfile()
+        {
             //user
             CreateMap<UserDtoLite, User>();
             CreateMap<User, UserDtoLite>();
@@ -17,6 +18,7 @@ namespace Api.Services
             CreateMap<Admin, AuthUserDto>();
             CreateMap<AuthUserDto, User>();
             CreateMap<GenTokenDto, AuthUserDto>();
+            CreateMap<User, UserDtoLiteMessage>();
 
             //Customer
             CreateMap<CustomerDto, Customer>();
@@ -47,7 +49,7 @@ namespace Api.Services
             CreateMap<Order, SingleOrderDto>();
             CreateMap<SingleOrderDto, Order>();
             CreateMap<SingleOrderDto, OrderDto>();
-            CreateMap<OrderDto, SingleOrderDto > ();
+            CreateMap<OrderDto, SingleOrderDto>();
 
             //Product
             CreateMap<ProductDto, Product>();
@@ -112,7 +114,9 @@ namespace Api.Services
 
             //Wallet
             CreateMap<Wallet, WalletDto>();
+            CreateMap<Wallet, WalletDtoLite>();
             CreateMap<WalletDto, Wallet>();
+            CreateMap<WalletDtoLite, Wallet>();
 
             //Deposite
             CreateMap<Deposite, DepositeDto>();
@@ -141,6 +145,10 @@ namespace Api.Services
             //VoucherNotification
             CreateMap<VoucherNotification, VoucherNotificationDto>();
             CreateMap<VoucherNotificationDto, VoucherNotification>();
+
+            //Message
+            CreateMap<Message, MessageDto>();
+            CreateMap<MessageDto, Message>();
         }
     }
 }

@@ -509,5 +509,40 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+
+        public async Task<string> updateDefaultLocation(int id, RiderLocation location)
+        {
+            try
+            {
+                var address = await _dbContext.Addresses.Where(a => a.DefaultAddress == true).FirstOrDefaultAsync(a => a.UserId == id);
+
+                if (address == null){
+                    var newAddress = new Address
+                    {
+                        UserId = id,
+                        DefaultAddress = true,
+                        Latitude = location.Latitude,
+                        Longitude = location.Longitude,
+                    };
+                    await _dbContext.Addresses.AddAsync(newAddress);
+                    await _dbContext.SaveChangesAsync();
+                    return "Default location updated";
+                }
+                else{
+                    address.Latitude = location.Latitude;
+                    address.Longitude = location.Longitude;
+                    _dbContext.Addresses.Update(address);
+                    await _dbContext.SaveChangesAsync();
+                    return "Default location updated";
+                }
+                
+               
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
     }
 }
