@@ -44,8 +44,9 @@ class OrderDetailsPage extends ConsumerWidget {
                                 color: const Color(0xFF27272A),
                               ),
                             ),
-                            onTap: () => context
-                                .push(ReceiptRoute(orderId: id).location),
+                            onTap: () => context.push(
+                              ReceiptRoute(orderId: id, goBack: true).location,
+                            ),
                           ),
                         ],
                       );
