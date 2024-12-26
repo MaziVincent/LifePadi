@@ -79,7 +79,7 @@ class EditLocationPage extends HookConsumerWidget {
                         context: context,
                         title: 'Location deleted',
                         description:
-                            'Location #$id has been deleted from your locations.',
+                            'Location #$id has been removed from your locations.',
                         onOk: () => context.pop(),
                       );
                     }
@@ -110,7 +110,9 @@ class EditLocationPage extends HookConsumerWidget {
                               color: const Color(0xFF27272A),
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Implement make default location
+                          },
                         ),
                       ],
                     );
