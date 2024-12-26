@@ -2,8 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/checkout_type.dart';
-import 'package:lifepadi/state/cart_state.dart';
-import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -38,18 +36,6 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
         NavigationDelegate(
           onPageStarted: (String url) {
             setState(() => loadingPercentage = 0);
-            if (widget.type == CheckoutType.cart) {
-              // Clear the cart
-              ref
-                  .read(cartStateProvider.notifier)
-                  .clearCart(keepDeliveryLocation: true)
-                  .ignore();
-            }
-
-            if (widget.type == CheckoutType.logistics) {
-              // Set the logistics as paid
-              ref.read(logisticsStateProvider.notifier).setAsPaid().ignore();
-            }
           },
           onProgress: (int progress) {
             // Update loading bar

@@ -183,6 +183,10 @@ Future<Receipt> walletPayment(
     );
   }
 
+  // Update the user's balance
+  await ref.read(balanceProvider.future);
+
+  // Return the receipt
   final receipt = ReceiptMapper.fromMap(response.data!);
   await resetStateAfterCheckout(ref, type: type, fromWallet: true);
 

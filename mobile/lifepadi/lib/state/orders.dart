@@ -5,7 +5,9 @@ import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -289,6 +291,18 @@ Future<void> resetStateAfterCheckout(
 }) async {
   // Invalidate the orders provider to refresh the list
   ref.invalidate(ordersProvider);
+
+  if (type == CheckoutType.cart) {
+    // Clear the cart
+    await ref
+        .read(cartStateProvider.notifier)
+        .clearCart(keepDeliveryLocation: true);
+  }
+
+  if (type == CheckoutType.logistics) {
+    // Set the logistics as paid
+    await ref.read(logisticsStateProvider.notifier).setAsPaid();
+  }
 
   if (fromWallet) {
     // Invalidate the balance provider to refresh the wallet balance
