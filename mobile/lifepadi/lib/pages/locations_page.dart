@@ -7,6 +7,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -49,7 +50,7 @@ class LocationsPage extends ConsumerWidget {
   }
 }
 
-class _LocationsContent extends StatelessWidget {
+class _LocationsContent extends ConsumerWidget {
   const _LocationsContent({
     required this.locations,
   });
@@ -57,18 +58,64 @@ class _LocationsContent extends StatelessWidget {
   final List<LocationDetails> locations;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 24.h, bottom: 20.h),
       children: [
         for (final location in locations)
-          LocationCard(
-            onTap: () {
-              context.push(EditLocationRoute(id: location.id!).location);
+          Dismissible(
+            key: ValueKey(
+              '${DateTime.now().millisecondsSinceEpoch}{location.id!}',
+            ),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(right: 20.w),
+              color: kDangerColor,
+              child: Icon(
+                IconsaxPlusLinear.trash,
+                color: Colors.white,
+                size: 24.sp,
+              ),
+            ),
+            confirmDismiss: (direction) async {
+              return openChoiceDialog(
+                context: context,
+                title: 'Delete location',
+                description: 'Are you sure you want to delete this location?',
+                icon: IconsaxPlusLinear.trash,
+              );
             },
-            address: location.address,
-            isDefault: location.isDefault,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            onDismissed: (direction) async {
+              await ref
+                  .read(deleteLocationProvider(id: location.id!).future)
+                  .then((value) {
+                if (context.mounted) {
+                  openSuccessDialog(
+                    context: context,
+                    title: 'Location deleted',
+                    description:
+                        'Location #${location.id} has been removed from your locations.',
+                    onOk: () => context.pop(),
+                  );
+                }
+              }).onError((error, _) async {
+                logger.e('Error deleting location', error: error);
+                await handleError(
+                  error,
+                  context.mounted ? context : null,
+                );
+                ref.invalidate(locationsProvider);
+              });
+            },
+            child: LocationCard(
+              onTap: () {
+                context.push(EditLocationRoute(id: location.id!).location);
+              },
+              address: location.address,
+              isDefault: location.isDefault,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            ),
           ),
 
         /// Add new location button

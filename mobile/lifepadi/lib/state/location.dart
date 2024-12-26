@@ -163,8 +163,7 @@ FutureOr<LocationDetails> updateLocation(
 @riverpod
 Future<void> deleteLocation(Ref ref, {required int id}) async {
   final client = ref.watch(dioProvider());
-  // ignore: inference_failure_on_function_invocation
-  await client.delete('/address/delete/$id');
+  await client.delete<dynamic>('/address/delete/$id');
 
   // Invalidate the locations provider to refresh the list
   ref.invalidate(locationsProvider);
