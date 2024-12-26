@@ -281,14 +281,13 @@ Product makeFakeProduct({required int id}) {
     if (error.response != null) {
       description = error.response!.data.toString();
     } else {
-      description = error.message ??
-          switch (error.error) {
-            final Exception e when e is HttpException => e.message,
-            final Exception e when e is SocketException =>
-              'Please check your internet connection and try again',
-            final Exception e when e is AppException => e.message,
-            _ => error.error.toString(),
-          };
+      description = switch (error.error) {
+        final Exception e when e is HttpException => e.message,
+        final Exception e when e is SocketException =>
+          'Please check your internet connection and try again',
+        final Exception e when e is AppException => e.message,
+        _ => error.message ?? error.error.toString(),
+      };
     }
   }
 
