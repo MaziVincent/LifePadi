@@ -64,7 +64,7 @@ namespace Api.Controllers
                     Role = user.Role,
                     refreshToken = user.RefreshToken,
                     accessToken = user.AccessToken,
-                    wallet = user.Wallet
+                    Wallet = user.Wallet
                 };
                 return Ok(token);
             }

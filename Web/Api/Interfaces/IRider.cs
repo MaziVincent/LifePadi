@@ -29,5 +29,6 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfVerifiedRiders();
         public Task<int> totalNumberOfUnverifiedRiders();
         public Task<object> getRiderStats();
+        public Task<string> updateDefaultLocation(int id, RiderLocation location);
     }
 }

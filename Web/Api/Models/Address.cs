@@ -12,8 +12,10 @@
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
         public bool? DefaultAddress {get; set;} = false;
+        public bool? IsActive { get; set; } = true;
         public int UserId { get; set; }
         public User? User { get; set; }
+
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set ; } = DateTime.UtcNow;
     }

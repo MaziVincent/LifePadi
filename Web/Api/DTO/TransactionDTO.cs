@@ -1,5 +1,4 @@
 ﻿using Api.Models;
-using Bogus.DataSets;
 using System.Numerics;
 
 namespace Api.DTO
@@ -20,7 +19,10 @@ namespace Api.DTO
 
         public DateTime? PaidAt { get; set; }
         public string? PaymentChannel {get; set;}
+        public string? Type { get; set; }
         public double? DeliveryFee {get; set;}
+       // public WalletDtoLite? Wallet { get; set; }
+
     }
 
     public class TransactionDtoLite

@@ -216,29 +216,31 @@ namespace Api.Services
         }
 
 
-        public async Task<PagedList<TransactionDto>> GetTransactionsAsync(int walletId, SearchPaging props)
+        public async Task<PagedList<Transaction>> GetTransactionsAsync(int id, SearchPaging props)
         {
             try
             {
-                IQueryable<TransactionDto> transactionList = Enumerable.Empty<TransactionDto>().AsQueryable();
+                IQueryable<Transaction> transactionList = Enumerable.Empty<Transaction>().AsQueryable();
                 if (props.SearchString == null)
                 {
                     var walletTransactions = await _context.Transactions
-                     .Include(t => t.Wallet).Where(t => t.WalletId == walletId)
-                     .OrderByDescending(w => w.CreatedAt).ToListAsync();
+                     .Include(t => t.Wallet).Where(t => t.WalletId == id)
+                     .OrderByDescending(t => t.CreatedAt)
+                     .AsSplitQuery().ToListAsync();
 
-                    transactionList.Concat(_mapper.Map<List<TransactionDto>>(walletTransactions).AsQueryable());
-                    var result = PagedList<TransactionDto>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
+                    transactionList = transactionList.Concat(walletTransactions);
+                    var result = PagedList<Transaction>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 else
                 {
                     var transactions = await _context.Transactions
-                    .Include(t => t.Wallet).Where(t => t.WalletId == walletId)
+                    .Include(t => t.Wallet).Where(t => t.WalletId == id)
                     .Where(t => t.Type!.Contains(props.SearchString) || t.Status!.Contains(props.SearchString))
-                    .OrderByDescending(w => w.CreatedAt).ToListAsync();
-                    transactionList.Concat(_mapper.Map<List<TransactionDto>>(transactions).AsQueryable());
-                    var result = PagedList<TransactionDto>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
+                    .OrderByDescending(w => w.CreatedAt)
+                    .AsSplitQuery().ToListAsync();
+                   transactionList =  transactionList.Concat(transactions);
+                    var result = PagedList<Transaction>.ToPagedList(transactionList, props.PageNumber, props.PageSize);
                     return result;
                 }
             }

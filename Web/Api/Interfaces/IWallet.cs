@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.DTO;
+using Api.Models;
 using Api.Services;
 
 namespace Api.Interfaces
@@ -18,7 +19,7 @@ namespace Api.Interfaces
         public Task<double> getInitialBalance(int id);
         public Task<WalletDto> getWalletByCustomerId(int customerId);
         public Task<object> getCustomerWalletStat(int customerId);
-        public Task<PagedList<TransactionDto>> GetTransactionsAsync(int walletId, SearchPaging props);
+        public Task<PagedList<Transaction>> GetTransactionsAsync(int walletId, SearchPaging props);
         public Task<List<DepositeDto>> lastFiveTransactions(int walletId);
     }
 }

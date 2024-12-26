@@ -155,12 +155,12 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("transactions/{walletId}")]
-        public async Task<IActionResult> getTransactions(int walletId, SearchPaging props)
+        [HttpGet("transactions/{id}")]
+        public async Task<IActionResult> getTransactions(int id, [FromQuery] SearchPaging props)
         {
             try
             {
-                var response = await _wallet.GetTransactionsAsync(walletId, props);
+                var response = await _wallet.GetTransactionsAsync(id, props);
                 var result = _mapper.Map<List<TransactionDto>>(response);
                 var dataList = new
                 {

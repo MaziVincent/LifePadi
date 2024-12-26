@@ -194,7 +194,7 @@ namespace Api.Services
                 var delivery = await _dbContext.Deliveries
                 .Include(d => d.DeliveryAddress)
                 .Include(d => d.PickUpAddress)
-                .Include(d => d.Rider)
+                .Include(d => d.Rider).ThenInclude(r => r!.Addresses)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(d => d.OrderId == id);
                 if (order == null) return null!;
@@ -204,7 +204,19 @@ namespace Api.Services
                     OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
                     OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
                     OrderDto.DeliveryFee = delivery.DeliveryFee;
-                    OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
+
+                    if (delivery.Rider is not null) {
+                        OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
+                        foreach (var item in delivery!.Rider!.Addresses!)
+                        {
+                            if (item.DefaultAddress == true)
+                            {
+                                OrderDto.Rider.Longitude = item.Longitude;
+                                OrderDto.Rider.Latitude = item.Latitude;
+                            }
+                        }
+                    }
+                   
                 }
                 return OrderDto;
             }

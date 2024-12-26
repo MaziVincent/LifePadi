@@ -41,7 +41,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
+GET https://localhost:7216/api/order/get/395
 
 ###
 
@@ -65,4 +65,34 @@ Content-Type: application/json
     "Longitude":"8.0957946"
 }
 
- 
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/wallet/transactions/8
+
+###
+ PUT https://localhost:7216/api/rider/updateLocation/51
+Content-Type: application/json
+
+{
+    "RiderId":"51",
+    "Latitude":"6.3266352",
+    "Longitude":"8.0957946"
+}
+
+###
+ POST https://localhost:7216/api/walletwithdrawal/withdraw/8
+Content-Type: application/json
+
+{
+    "WalletId":8,
+    "Amount":"5000",
+    "DeliveryFee":"1000",
+    "TotalAmount":"6000",
+    "OrderId":426,
+    "Type":"Wallet"
+}
+
+###
+DELETE https://localhost:7216/api/address/delete/93

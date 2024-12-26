@@ -24,19 +24,20 @@ namespace Api.Services
             _mapper = mapper;
             _ivoucher = ivoucher;
         }
-        public async Task<WithdrawalDto> createAsync(WithdrawalDto t)
+
+        public async Task<TransactionDto> createAsync(WithdrawalDto t)
         {
             try
             {
                 var wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == t.WalletId) ?? throw new Exceptions.ServiceException("Wallet not found");
-                if (wallet.Balance < t.Amount + t.DeliveryFee)
+                if (wallet.Balance < t.TotalAmount)
                     throw new Exceptions.ServiceException("Insufficient balance");
                 var withdrawal = _mapper.Map<Withdrawal>(t);
                 var tx_ref = GenerateTxRef.genTx_rf();
                 withdrawal.ReferenceId = tx_ref;
                 withdrawal.TransactionId = GenerateTxRef.genTxId();
                 withdrawal.Status = "successful";
-                withdrawal.Type = "Purchase Transaction";
+                withdrawal.Type = t.Type;
                 withdrawal.PaymentMethod = "withdrawal";
                 withdrawal.CreatedAt = DateTime.UtcNow;
                 withdrawal.UpdatedAt = DateTime.UtcNow;
@@ -47,7 +48,7 @@ namespace Api.Services
 
                 // create a transaction
                 var transaction = new Transaction();
-                transaction.TotalAmount = t.Amount + t.DeliveryFee;
+                transaction.TotalAmount = t.TotalAmount;
                 if (t.VoucherId != null)
                 {
                     var voucher = await _ivoucher.searchWithCode(t.VoucherId);
@@ -70,26 +71,33 @@ namespace Api.Services
                     await _context.SaveChangesAsync();
                     transaction.VoucherId = voucher.Id;
                 }
-                transaction.AmountPaid = t.Amount + t.DeliveryFee;
+                transaction.AmountPaid = t.TotalAmount;
                 transaction.OrderId = t.OrderId;
                 transaction.TransactionRef = tx_ref;
                 transaction.PaymentId = withdrawal.TransactionId;
                 transaction.Status = "successful";
-                transaction.Type = "Withdrawal";
+                transaction.Type = t.Type;
                 transaction.UpdatedAt = DateTime.UtcNow;
                 transaction.WalletId = t.WalletId;
+                transaction.PaymentChannel = "Wallet";
+                transaction.StatusBool = true;
+                transaction.PaidAt = DateTime.UtcNow;
+                transaction.DeliveryFee = t.DeliveryFee;
+                transaction.SubTotal = t.Amount;
 
                 //update order status to ongoing
                 var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
-                if (order == null) throw new Exceptions.ServiceException("Order not found");
+                if(order == null) throw new Exceptions.ServiceException("Order not found");
                 order.Status = "Ongoing";
+                order.PaymentChannel = "Wallet";
                 order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
 
                 await _context.Transactions.AddAsync(transaction);
                 await _context.Withdrawals.AddAsync(withdrawal);
+                 _context.Update(order);
                 _context.Wallets.Attach(wallet);
                 await _context.SaveChangesAsync();
-                return _mapper.Map<WithdrawalDto>(withdrawal);
+                return _mapper.Map<TransactionDto>(transaction);
             }
             catch (Exception ex)
             {
@@ -418,5 +426,7 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+
     }
 }

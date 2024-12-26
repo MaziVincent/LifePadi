@@ -6,7 +6,7 @@ namespace Api.Interfaces
 {
     public interface IWalletWithdrawal
     {
-        public Task<WithdrawalDto> createAsync(WithdrawalDto t);
+        public Task<TransactionDto> createAsync(WithdrawalDto t);
         public Task<WithdrawalDto> getAsync(int id);
         public Task<PagedList<WithdrawalDto>> getAllAsync(SearchPaging props);
         public Task<WithdrawalDto> updateAsync(int id, WithdrawalDto t);

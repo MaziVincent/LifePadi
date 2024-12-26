@@ -12,7 +12,7 @@ const AssignRider = ({ id, open, handleClose }) =>{
     const update = useUpdate();
     const fetch = useFetch();
     const { auth } = useAuth();
-    const url = `${baseUrl}rider/all`;
+    const url = `${baseUrl}rider/all?PageSize=10`;
     const queryClient = useQueryClient();
 
     const getRiders = async (url) => {

@@ -11,6 +11,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class WalletDepositeController : ControllerBase
     {
         private readonly IWalletDeposite _walletDeposite;
