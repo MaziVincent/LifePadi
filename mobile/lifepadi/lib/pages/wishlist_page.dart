@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class WishlistPage extends ConsumerWidget {
@@ -44,7 +45,28 @@ class WishlistPage extends ConsumerWidget {
                 ),
               )
             else
-              ...products.map((product) => ProductTile(product: product)),
+              ...products.map(
+                (product) => Dismissible(
+                  key: ValueKey(product.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 20.w),
+                    color: Colors.red,
+                    child: const Icon(
+                      MdiIcons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onDismissed: (direction) async {
+                    await ref
+                        .read(wishlistProvider.notifier)
+                        .removeFromWishlist(product.id);
+                    await showToast('Removed ${product.name} from wishlist');
+                  },
+                  child: ProductTile(product: product),
+                ),
+              ),
           ].separatedBy(11.verticalSpace),
         ),
       ),
