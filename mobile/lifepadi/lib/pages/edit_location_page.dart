@@ -24,6 +24,7 @@ class EditLocationPage extends HookConsumerWidget with LocationUtils {
     final oldLocation = ref.watch(locationProvider(id: id));
     final selectedLocation = useState<LocationDetails?>(null);
     final isLoading = useState(false);
+    final searchTextController = useTextEditingController();
     final mapController = useState<GoogleMapController?>(null);
 
     // Initialize selectedLocation when oldLocation data is available
@@ -47,6 +48,17 @@ class EditLocationPage extends HookConsumerWidget with LocationUtils {
       } finally {
         isLoading.value = false;
       }
+    }
+
+    Future<void> showSearchModal() async {
+      await displayBottomPanel(
+        context,
+        child: PlaceSearchWidget(
+          searchTextController: searchTextController,
+          selectedLocation: selectedLocation,
+          mapController: mapController,
+        ),
+      );
     }
 
     return Scaffold(
@@ -191,28 +203,40 @@ class EditLocationPage extends HookConsumerWidget with LocationUtils {
                             ],
                           ),
                         ),
-                        IconButton(
-                          onPressed: () async {
-                            final currentLocation = await ref.read(
-                              currentLocationProvider.future,
-                            );
-                            if (mapController.value != null) {
-                              selectedLocation.value = currentLocation;
-                              await mapController.value!.animateCamera(
-                                CameraUpdate.newCameraPosition(
-                                  CameraPosition(
-                                    target: currentLocation.latLng,
-                                    zoom: 15,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          icon: Icon(
-                            IconsaxPlusLinear.gps,
-                            size: 20.sp,
-                            color: kDarkPrimaryColor,
-                          ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                final currentLocation = await ref.read(
+                                  currentLocationProvider.future,
+                                );
+                                if (mapController.value != null) {
+                                  await mapController.value!.animateCamera(
+                                    CameraUpdate.newCameraPosition(
+                                      CameraPosition(
+                                        target: currentLocation.latLng,
+                                        zoom: 15,
+                                      ),
+                                    ),
+                                  );
+                                  selectedLocation.value = currentLocation;
+                                }
+                              },
+                              icon: Icon(
+                                IconsaxPlusLinear.gps,
+                                size: 20.sp,
+                                color: kDarkPrimaryColor,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: showSearchModal,
+                              icon: Icon(
+                                IconsaxPlusLinear.search_normal,
+                                size: 20.sp,
+                                color: kDarkPrimaryColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
