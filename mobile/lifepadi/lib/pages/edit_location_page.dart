@@ -187,7 +187,7 @@ class EditLocationPage extends HookConsumerWidget {
                                 const Text('Loading address...')
                               else
                                 SectionTitle(
-                                  selectedLocation.value?.address ??
+                                  selectedLocation.value?.shortAddress ??
                                       'Choose Location',
                                   color: const Color(0xFF1C1C20),
                                   handleOverFlow: true,

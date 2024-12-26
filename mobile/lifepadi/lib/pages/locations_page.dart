@@ -66,7 +66,7 @@ class _LocationsContent extends StatelessWidget {
             onTap: () {
               context.push(EditLocationRoute(id: location.id!).location);
             },
-            address: location.address,
+            address: location.shortAddress,
             isDefault: location.isDefault,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),

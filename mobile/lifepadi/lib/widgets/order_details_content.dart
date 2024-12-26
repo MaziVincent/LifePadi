@@ -150,7 +150,7 @@ class OrderDetailsContent extends StatelessWidget {
             color: Color(0xFF27272A),
           ),
           LocationCard(
-            address: order.pickupLocation?.address ?? 'No address',
+            address: order.pickupLocation?.shortAddress ?? 'No address',
             child: const SizedBox.shrink(),
           ),
 
@@ -259,7 +259,7 @@ class OrderDetailsContent extends StatelessWidget {
           color: const Color(0xFF27272A),
         ),
         LocationCard(
-          address: order.deliveryLocation!.address,
+          address: order.deliveryLocation!.shortAddress,
           child: const SizedBox.shrink(),
         ),
 

@@ -90,7 +90,7 @@ class CartPage extends HookConsumerWidget {
                                       location.id == cart.deliveryLocation?.id,
                                 )
                                 .firstOrNull
-                                ?.address
+                                ?.shortAddress
                             : 'Select a delivery location',
                       ) ??
                       'Loading locations...',
