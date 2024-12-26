@@ -257,8 +257,7 @@ class LogisticsPage extends HookConsumerWidget {
                   },
                   address: locations.whenOrNull(
                         data: (locations) =>
-                            pickupLocation?.shortAddress ??
-                            'Select pickup location',
+                            pickupLocation?.address ?? 'Select pickup location',
                       ) ??
                       'Loading locations...',
                 ),
@@ -312,7 +311,7 @@ class LogisticsPage extends HookConsumerWidget {
                   },
                   address: locations.whenOrNull(
                         data: (locations) =>
-                            dropoffLocation?.shortAddress ??
+                            dropoffLocation?.address ??
                             'Select drop-off location',
                       ) ??
                       'Loading locations...',

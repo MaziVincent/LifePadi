@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -7,6 +7,7 @@ import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/location_utils.dart';
 import 'package:location/location.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,13 +15,13 @@ part 'location.g.dart';
 
 /// Get the current location of the user
 @riverpod
-class CurrentLocation extends _$CurrentLocation {
+class CurrentLocation extends _$CurrentLocation with LocationUtils {
   @override
   Future<LocationDetails> build() async {
-    return _getCurrentLocation();
+    return _currentLocation();
   }
 
-  Future<LocationDetails> _getCurrentLocation() async {
+  Future<LocationDetails> _currentLocation() async {
     final location = Location();
 
     bool serviceEnabled;
@@ -47,30 +48,8 @@ class CurrentLocation extends _$CurrentLocation {
     // Get current location
     final currentLocation = await location.getLocation();
 
-    // Get address details using geocoding
-    final placemarks = await geocoding.placemarkFromCoordinates(
-      currentLocation.latitude!,
-      currentLocation.longitude!,
-    );
-
-    if (placemarks.isEmpty) {
-      throw const LocationDetailsException(
-        'Could not determine location details',
-      );
-    }
-
-    final placemark = placemarks.first;
-
-    return LocationDetails(
-      latitude: currentLocation.latitude!,
-      longitude: currentLocation.longitude!,
-      address: '${placemark.street}',
-      city: '${placemark.locality}',
-      state: '${placemark.administrativeArea}',
-      country: '${placemark.country}',
-      postalCode: '${placemark.postalCode}',
-      sublocality: '${placemark.subLocality}',
-      localGovernmentArea: '${placemark.subAdministrativeArea}',
+    return locationDetailsFromLatLng(
+      LatLng(currentLocation.latitude!, currentLocation.longitude!),
     );
   }
 

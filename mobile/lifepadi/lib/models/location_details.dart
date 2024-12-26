@@ -41,11 +41,4 @@ class LocationDetails with LocationDetailsMappable {
   final bool isDefault;
 
   LatLng get latLng => LatLng(latitude, longitude);
-
-  /// Returns the full address of the location
-  String get fullAddress => '$address, $sublocality, $city, $state, $country';
-
-  /// Returns the short address of the location
-  String get shortAddress =>
-      '$address${sublocality != null && sublocality!.isNotEmpty ? ', $sublocality' : ''}, $city';
 }

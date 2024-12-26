@@ -58,7 +58,7 @@ class HomePage extends HookConsumerWidget {
                   width: 120.w,
                   child: Text(
                     locationDetails.when(
-                      data: (data) => data.shortAddress,
+                      data: (data) => data.address,
                       loading: () => 'Fetching location...',
                       error: (_, __) => 'Could not fetch location',
                     ),

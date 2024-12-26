@@ -1,6 +1,5 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,11 +10,13 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/location_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
-class NewLocationPage extends HookConsumerWidget {
+class NewLocationPage extends HookConsumerWidget with LocationUtils {
   const NewLocationPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLocation = ref.watch(currentLocationProvider);
@@ -27,25 +28,10 @@ class NewLocationPage extends HookConsumerWidget {
     Future<void> getAddressFromCoordinates(LatLng position) async {
       isLoading.value = true;
       try {
-        final placemarks = await geocoding.placemarkFromCoordinates(
-          position.latitude,
-          position.longitude,
-        );
-
-        if (placemarks.isNotEmpty) {
-          final placemark = placemarks.first;
-          selectedLocation.value = LocationDetails(
-            latitude: position.latitude,
-            longitude: position.longitude,
-            address: '${placemark.street}',
-            city: '${placemark.locality}',
-            state: '${placemark.administrativeArea}',
-            country: '${placemark.country}',
-            postalCode: '${placemark.postalCode}',
-            sublocality: '${placemark.subLocality}',
-            localGovernmentArea: '${placemark.subAdministrativeArea}',
-          );
-        }
+        selectedLocation.value = await locationDetailsFromLatLng(position);
+      } catch (e) {
+        logger.e('Error fetching address', error: e);
+        await handleError(e, context.mounted ? context : null);
       } finally {
         isLoading.value = false;
       }
@@ -134,7 +120,7 @@ class NewLocationPage extends HookConsumerWidget {
                               else
                                 Expanded(
                                   child: Text(
-                                    selectedLocation.value?.shortAddress ??
+                                    selectedLocation.value?.address ??
                                         'Choose Location',
                                     style: Theme.of(context)
                                         .textTheme
@@ -229,8 +215,8 @@ class NewLocationPage extends HookConsumerWidget {
                                     context: context,
                                     title: 'Location saved',
                                     description:
-                                        '${value.shortAddress} have been saved to your locations.',
-                                    onOk: () => context.pop(),
+                                        '${value.address} have been saved to your locations.',
+                                    onOk: context.pop,
                                   );
                                 }
                               }).onError((error, _) async {

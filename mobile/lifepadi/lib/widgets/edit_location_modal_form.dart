@@ -121,7 +121,7 @@ class EditLocationModalForm extends HookConsumerWidget {
           ),
           5.horizontalSpace,
           Text(
-            location.shortAddress,
+            location.address,
             style: context.textTheme.bodySmall?.copyWith(
               color: isDefault ? kDarkPrimaryColor : const Color(0xFF5F5F5F),
               fontSize: 12.sp,

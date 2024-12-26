@@ -60,13 +60,13 @@ class RiderOrderTile extends StatelessWidget {
                 AddressRow(
                   icon: Icons.location_on,
                   title: 'Pickup Location',
-                  address: order.pickupLocation?.shortAddress ?? 'No address',
+                  address: order.pickupLocation?.address ?? 'No address',
                 ),
               8.verticalSpace,
               AddressRow(
                 icon: Icons.flag,
                 title: isLogistics ? 'Drop-off Location' : 'Delivery Location',
-                address: order.deliveryLocation?.shortAddress ?? 'No address',
+                address: order.deliveryLocation?.address ?? 'No address',
               ),
             ],
           ),
