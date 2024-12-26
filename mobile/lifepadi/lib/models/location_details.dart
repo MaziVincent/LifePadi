@@ -15,7 +15,7 @@ class LocationDetails with LocationDetailsMappable {
     this.country = 'Nigeria',
     this.postalCode,
     this.sublocality,
-    required this.localGovernmentArea,
+    this.localGovernmentArea,
     this.isDefault = false,
   });
 
@@ -37,7 +37,7 @@ class LocationDetails with LocationDetailsMappable {
   final String? sublocality;
   final String country;
   @MappableField(key: 'LocalGovt')
-  final String localGovernmentArea;
+  final String? localGovernmentArea;
   final bool isDefault;
 
   LatLng get latLng => LatLng(latitude, longitude);

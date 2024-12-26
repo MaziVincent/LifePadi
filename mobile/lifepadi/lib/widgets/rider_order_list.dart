@@ -112,7 +112,6 @@ class RiderOrderList extends HookConsumerWidget {
                           longitude: 0,
                           city: BoneMock.city,
                           state: BoneMock.city,
-                          localGovernmentArea: BoneMock.city,
                         ),
                       ),
                       isMock: true,

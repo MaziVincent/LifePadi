@@ -70,7 +70,6 @@ class PlaceSearchWidget extends StatelessWidget {
                 address: prediction.description!,
                 city: prediction.structuredFormatting?.mainText ?? '',
                 state: prediction.structuredFormatting?.secondaryText ?? '',
-                localGovernmentArea: '',
               );
 
               selectedLocation.value = location;

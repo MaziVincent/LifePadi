@@ -24,6 +24,22 @@ class CurrentLocation extends _$CurrentLocation with LocationUtils {
   Future<LocationDetails> _currentLocation() async {
     final location = Location();
 
+    // Check for location permissions
+    await checkForLocationPermissions(location);
+
+    // Get current location
+    final currentLocation = await location.getLocation();
+
+    return locationDetailsFromLatLng(
+      LatLng(currentLocation.latitude!, currentLocation.longitude!),
+    );
+  }
+
+  Future<void> refreshLocation() async {
+    ref.invalidateSelf();
+  }
+
+  Future<void> checkForLocationPermissions(Location location) async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
 
@@ -44,17 +60,18 @@ class CurrentLocation extends _$CurrentLocation with LocationUtils {
         throw const LocationPermissionException('Location permission denied');
       }
     }
+  }
+
+  Future<LatLng> currentLatLng() async {
+    final location = Location();
+
+    // Check for location permissions
+    await checkForLocationPermissions(location);
 
     // Get current location
     final currentLocation = await location.getLocation();
 
-    return locationDetailsFromLatLng(
-      LatLng(currentLocation.latitude!, currentLocation.longitude!),
-    );
-  }
-
-  Future<void> refreshLocation() async {
-    ref.invalidateSelf();
+    return LatLng(currentLocation.latitude!, currentLocation.longitude!);
   }
 }
 

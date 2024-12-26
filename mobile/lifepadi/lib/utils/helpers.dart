@@ -251,7 +251,6 @@ Product makeFakeProduct({required int id}) {
         latitude: 0,
         longitude: 0,
         sublocality: BoneMock.subtitle,
-        localGovernmentArea: BoneMock.subtitle,
       ),
     ),
     category: Category(
