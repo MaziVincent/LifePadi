@@ -171,7 +171,7 @@ class _CartCheckoutContent extends HookWidget {
                 receipt = await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.cart,
-                    amount: cart.total,
+                    amount: cart.subtotal,
                     orderId: order.id,
                     deliveryFee: cart.deliveryFee,
                     totalAmount: cart.total,
