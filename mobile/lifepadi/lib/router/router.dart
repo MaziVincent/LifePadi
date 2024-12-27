@@ -10,16 +10,6 @@ import 'routes.dart';
 
 part 'router.g.dart';
 
-bool hasLoggedInBefore() {
-  final hasLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
-
-  if (hasLoggedIn == null) {
-    return false;
-  }
-
-  return true;
-}
-
 /// Exposes a [GoRouter] that uses a [Listenable] to refresh its internal state.
 ///
 /// With Riverpod, we can't register a dependency via an Inherited Widget,
@@ -37,9 +27,7 @@ GoRouter router(Ref ref) {
   final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
 
   ref
-    ..onDispose(isAuth.dispose) // don't forget to clean after yourselves (:
-    // update the listenable, when some provider value changes
-    // here, we are just interested in wheter the user's logged in
+    ..onDispose(isAuth.dispose)
     ..listen(
       authControllerProvider
           .select((value) => value.whenData((value) => value.isAuth)),
@@ -64,40 +52,24 @@ GoRouter router(Ref ref) {
         const ResetPasswordRoute().location,
       ];
       final isLoggingIn = guestRoutes.contains(state.uri.path);
-      final canRestoreAuth =
-          await ref.read(authControllerProvider.notifier).canRestoreAuth();
-      final locationBasedOnPreviousLogin = hasLoggedInBefore()
-          ? (canRestoreAuth
-              ? const LoginRoute().location
-              : const GetStartedRoute().location)
-          : const OnboardingRoute().location;
+      final isSplash = state.uri.path == const SplashRoute().location;
 
-      if (isAuth.value.unwrapPrevious().hasError) {
-        return isLoggingIn ? null : locationBasedOnPreviousLogin;
-      }
+      if (isSplash) return null; // Let splash page handle its own navigation
+
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
         return const SplashRoute().location;
       }
-
-      final auth = isAuth.value.requireValue;
-
-      final isSplash = state.uri.path == const SplashRoute().location;
-      if (isSplash) {
-        // awaiting the loading animation on the splash screen
-        return Future.delayed(
-          const Duration(seconds: 4),
-          () =>
-              auth ? const HomeRoute().location : locationBasedOnPreviousLogin,
-        );
+      if (isAuth.value.unwrapPrevious().hasError) {
+        return isLoggingIn ? null : const GetStartedRoute().location;
       }
 
-      // Check if path is in guestRoutes
+      final auth = isAuth.value.requireValue;
       if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
-      return auth ? null : locationBasedOnPreviousLogin;
+      return auth ? null : const GetStartedRoute().location;
     },
   );
-  ref.onDispose(router.dispose); // always clean up after yourselves (:
+  ref.onDispose(router.dispose);
 
   return router;
 }

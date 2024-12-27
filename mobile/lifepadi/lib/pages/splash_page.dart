@@ -1,19 +1,67 @@
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-class SplashPage extends StatelessWidget {
+bool hasLoggedInBefore() {
+  final hasLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
+  return hasLoggedIn ?? false;
+}
+
+class SplashPage extends HookConsumerWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useAnimationController(duration: 4.seconds);
+
+    useEffect(
+      () {
+        controller
+          ..addStatusListener((status) async {
+            if (status == AnimationStatus.completed) {
+              final canRestoreAuth = await ref
+                  .read(authControllerProvider.notifier)
+                  .canRestoreAuth();
+              final auth = ref.read(authControllerProvider);
+
+              String nextRoute;
+              if (auth.value?.isAuth ?? false) {
+                nextRoute = const HomeRoute().location;
+              } else {
+                nextRoute = hasLoggedInBefore()
+                    ? (canRestoreAuth
+                        ? const LoginRoute().location
+                        : const GetStartedRoute().location)
+                    : const OnboardingRoute().location;
+              }
+
+              if (context.mounted) {
+                context.go(nextRoute);
+              }
+            }
+          })
+          ..forward();
+        return null;
+      },
+      [controller],
+    );
+
     return Scaffold(
       body: Stack(
         children: [
           Align(
             child: Assets.animations.logo.lottie(
               repeat: false,
+              controller: controller,
             ),
           ),
           Column(
