@@ -27,26 +27,61 @@ class VendorsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(title: serviceName ?? 'Stores and Vendors'),
-      body: serviceId == null
-          ? const _AllVendorsContent()
-          : _ServiceVendorsContent(serviceId: serviceId!),
+      body: _VendorContent(serviceId: serviceId),
     );
   }
 }
 
-class _AllVendorsContent extends HookConsumerWidget {
-  const _AllVendorsContent();
+mixin VendorPagingLogic {
+  final pageSize = 15;
 
-  static const _pageSize = 15;
+  Future<void> fetchVendorPage(
+    WidgetRef ref,
+    int pageKey,
+    PagingController<int, Vendor> controller,
+    Future<List<Vendor>> Function() vendorsFetcher,
+  ) async {
+    try {
+      final vendors = await vendorsFetcher();
+      final isLastPage = vendors.length < pageSize;
+      if (isLastPage) {
+        controller.appendLastPage(vendors);
+      } else {
+        controller.appendPage(vendors, pageKey + 1);
+      }
+    } catch (e) {
+      controller.error = e;
+    }
+  }
+}
+
+class _VendorContent extends HookConsumerWidget with VendorPagingLogic {
+  _VendorContent({this.serviceId});
+
+  final int? serviceId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pagingController = usePagingController<int, Vendor>(
       firstPageKey: 1,
-      fetchPage: (pageKey, controller) => _fetchPage(
+      fetchPage: (pageKey, controller) => fetchVendorPage(
         ref,
         pageKey,
         controller,
+        () => serviceId == null
+            ? ref.read(
+                vendorsProvider(
+                  pageNumber: pageKey,
+                  pageSize: pageSize,
+                ).future,
+              )
+            : ref.read(
+                vendorsByServiceIdProvider(
+                  serviceId: serviceId!,
+                  pageNumber: pageKey,
+                  pageSize: pageSize,
+                ).future,
+              ),
       ),
     );
 
@@ -69,82 +104,13 @@ class _AllVendorsContent extends HookConsumerWidget {
             ),
             firstPageProgressIndicatorBuilder: (context) =>
                 const _VendorsLoadingGrid(),
-            noItemsFoundIndicatorBuilder: (context) =>
-                const Center(child: Text('No vendors found')),
-          ),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 8.6.r,
-            mainAxisSpacing: 12.05.r,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _fetchPage(
-    WidgetRef ref,
-    int pageKey,
-    PagingController<int, Vendor> controller,
-  ) async {
-    try {
-      final vendors = await ref.read(
-        vendorsProvider(
-          pageNumber: pageKey,
-          pageSize: _pageSize,
-        ).future,
-      );
-
-      final isLastPage = vendors.length < _pageSize;
-      if (isLastPage) {
-        controller.appendLastPage(vendors);
-      } else {
-        controller.appendPage(vendors, pageKey + 1);
-      }
-    } catch (e) {
-      controller.error = e;
-    }
-  }
-}
-
-class _ServiceVendorsContent extends HookConsumerWidget {
-  const _ServiceVendorsContent({required this.serviceId});
-
-  final int serviceId;
-  static const _pageSize = 15;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final pagingController = usePagingController<int, Vendor>(
-      firstPageKey: 1,
-      fetchPage: (pageKey, controller) => _fetchPage(
-        ref,
-        pageKey,
-        controller,
-      ),
-    );
-
-    return Padding(
-      padding: kHorizontalPadding.copyWith(top: 8.h),
-      child: RefreshIndicator.adaptive(
-        onRefresh: () => Future.sync(pagingController.refresh),
-        child: PagedGridView<int, Vendor>(
-          pagingController: pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Vendor>(
-            itemBuilder: (context, vendor, index) => VendorCard(
-              name: vendor.name,
-              image: CachedNetworkImageProvider(vendor.imageUrl ?? ''),
-              onTap: () => context.push(
-                ProductsRoute(
-                  vendorId: vendor.id,
-                  vendorName: vendor.name,
-                ).location,
+            noItemsFoundIndicatorBuilder: (context) => Center(
+              child: Text(
+                serviceId == null
+                    ? 'No vendors found'
+                    : 'No vendors found for this service',
               ),
             ),
-            firstPageProgressIndicatorBuilder: (context) =>
-                const _VendorsLoadingGrid(),
-            noItemsFoundIndicatorBuilder: (context) =>
-                const Center(child: Text('No vendors found for this service')),
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
@@ -154,31 +120,6 @@ class _ServiceVendorsContent extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _fetchPage(
-    WidgetRef ref,
-    int pageKey,
-    PagingController<int, Vendor> controller,
-  ) async {
-    try {
-      final vendors = await ref.read(
-        vendorsByServiceIdProvider(
-          serviceId: serviceId,
-          pageNumber: pageKey,
-          pageSize: _pageSize,
-        ).future,
-      );
-
-      final isLastPage = vendors.length < _pageSize;
-      if (isLastPage) {
-        controller.appendLastPage(vendors);
-      } else {
-        controller.appendPage(vendors, pageKey + 1);
-      }
-    } catch (e) {
-      controller.error = e;
-    }
   }
 }
 
