@@ -8,6 +8,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends HookWidget {
   const SettingsPage({super.key});
@@ -47,21 +48,15 @@ class SettingsPage extends HookWidget {
           ),
           SettingTile(
             name: 'Terms and Conditions',
-            onTap: () {
-              // TODO: Go to terms and conditions page
-            },
+            onTap: () async => launchUrl(Uri.parse(kTermsAndConditionsUrl)),
           ),
           SettingTile(
             name: 'Privacy Policy',
-            onTap: () {
-              // TODO: Go to privacy policy page
-            },
+            onTap: () async => launchUrl(Uri.parse(kPrivacyPolicyUrl)),
           ),
           SettingTile(
             name: 'FAQ',
-            onTap: () {
-              // TODO: Go to FAQ page
-            },
+            onTap: () async => launchUrl(Uri.parse(kFaqUrl)),
           ),
           Consumer(
             builder: (context, ref, child) {
