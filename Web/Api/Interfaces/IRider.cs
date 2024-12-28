@@ -30,5 +30,6 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfUnverifiedRiders();
         public Task<object> getRiderStats();
         public Task<string> updateDefaultLocation(int id, RiderLocation location);
+        public Task<PagedList<Rider>> getAllActive(SearchPaging props);
     }
 }

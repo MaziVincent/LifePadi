@@ -47,6 +47,9 @@ import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import TrackOrder from "./components/customer/TrackOrder";
+import PrivacyPolicy from "./components/home/PrivacyPolicy";
+import TermsAndCondition from "./components/home/TermsAndCondition";
+import Faq from "./components/home/Faq";
 
 function App() {
   const queryClient = new QueryClient();
@@ -78,6 +81,21 @@ function App() {
             path="logistics"
             element={<Logistics />}
           />
+          <Route
+            path="privacypolicy"
+            element={<PrivacyPolicy />}
+          />
+
+          <Route
+            path="termsandconditions"
+            element={<TermsAndCondition />}
+          />
+
+          <Route
+            path="faq"
+            element={<Faq />}
+          />
+
           <Route
             index
             element={<Home />}
@@ -263,7 +281,6 @@ function App() {
             </Route>
           </Route>
         </Route>
-       
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>

@@ -89,6 +89,7 @@ builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 builder.Services.AddScoped<IFcmService, FcmService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
+builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 
 
 builder.Logging.ClearProviders();

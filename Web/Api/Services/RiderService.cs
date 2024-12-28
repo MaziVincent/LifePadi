@@ -190,6 +190,7 @@ namespace Api.Services
                     .ThenInclude(o => o.Product)
                     .ThenInclude(p => p!.Vendor)
                     .Where(d => d.RiderId == id)
+                    .OrderByDescending(d => d.CreatedAt)
                     .AsSplitQuery()
                     .ToListAsync();
 
@@ -216,6 +217,7 @@ namespace Api.Services
                     .ThenInclude(p => p!.Vendor)
                     .ThenInclude(v => v!.Addresses)
                     .Where(d => d.RiderId == id)
+                    .OrderByDescending(d => d.CreatedAt)
                     .AsSplitQuery()
                     .ToListAsync();
 
@@ -544,5 +546,45 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+        public async Task<PagedList<Rider>> getAllActive(SearchPaging props)
+        {
+            try
+            {
+                IQueryable<Rider> ridersList = Enumerable.Empty<Rider>().AsQueryable();
+                if (props.SearchString is null)
+                {
+                    var ridersLs = await _dbContext.Riders
+                        .Include(r => r.Deliveries)
+                        .Where(r => r.IsActive == true)
+                        .OrderByDescending(r => r.CreatedAt)
+                        .AsSplitQuery()
+                        .ToListAsync();
+
+                    ridersList = ridersList.Concat(ridersLs);
+                    var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
+
+                    return result;
+
+                }
+                var riders = await _dbContext.Riders
+                        .Include(r => r.Deliveries)
+                        .OrderByDescending(r => r.CreatedAt)
+                        .Where(r => r.IsActive == true)
+                        .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
+                        .AsSplitQuery()
+                        .ToListAsync();
+                ridersList = ridersList.Concat(riders);
+                var response = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
     }
 }

@@ -96,3 +96,7 @@ Content-Type: application/json
 
 ###
 DELETE https://localhost:7216/api/address/delete/93
+
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSize=10
