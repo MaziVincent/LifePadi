@@ -69,6 +69,7 @@ namespace Api.Services
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id)
                     .AsSplitQuery()
+                    .OrderBy(c => Guid.NewGuid())
                     .ToListAsync();
                     productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
                     var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
@@ -78,6 +79,7 @@ namespace Api.Services
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .AsSplitQuery()
+                    .OrderBy(c => Guid.NewGuid())
                     .ToListAsync();
                 productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
@@ -112,6 +114,7 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .AsSplitQuery()
+                    .OrderBy(c => Guid.NewGuid()) // Randomize the result
                     .FirstOrDefaultAsync(c => c.Id == id);
                 var products = _mapper.Map<List<ProductDto>>(category!.Products);
                 return products;
