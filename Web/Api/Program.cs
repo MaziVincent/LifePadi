@@ -130,6 +130,7 @@ builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 =======
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
+builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 
 
 >>>>>>> 8def299 (done with chat messages)

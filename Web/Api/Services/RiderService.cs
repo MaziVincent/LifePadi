@@ -333,12 +333,15 @@ namespace Api.Services
                     .ThenInclude(p => p!.Vendor)
                     .Where(d => d.RiderId == id)
                     .OrderByDescending(d => d.CreatedAt)
+<<<<<<< HEAD
 =======
                 var deliveries = await _dbContext.Deliveries
                     .Include(d => d.Rider)
                     .Include(d => d.Order)
                     .Where(d => d.RiderId == id)
 >>>>>>> 57dd2cb (rider commit)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
                     .AsSplitQuery()
                     .ToListAsync();
 
@@ -1032,6 +1035,9 @@ namespace Api.Services
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
 
         public async Task<PagedList<Rider>> getAllActive(SearchPaging props)
         {
@@ -1072,6 +1078,7 @@ namespace Api.Services
             }
         }
 
+<<<<<<< HEAD
 =======
             }catch(Exception ex)
 =======
@@ -1085,5 +1092,7 @@ namespace Api.Services
 >>>>>>> 28d4101 (finished with rider and order)
 =======
 >>>>>>> 8ad4440 (wallet and transaction commits)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
     }
 }

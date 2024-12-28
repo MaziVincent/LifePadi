@@ -1296,16 +1296,22 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Customer", "Customer")
                         .WithMany()
+<<<<<<< HEAD
 =======
                     b.HasOne("Api.Models.Customer", "Customer")
                         .WithMany("Addresses")
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
                 });
 
             modelBuilder.Entity("Api.Models.CustomerVoucher", b =>

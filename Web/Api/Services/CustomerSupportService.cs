@@ -5,8 +5,11 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using MailKit.Net.Smtp;
 using MimeKit;
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
 
 namespace Api.Services
 {
@@ -53,6 +56,7 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         public async Task<string> SendEmailAsync(EmailDto email)
         {
@@ -82,5 +86,7 @@ namespace Api.Services
             throw new Exceptions.ServiceException(ex.Message);
             }
         }
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
     }
 }

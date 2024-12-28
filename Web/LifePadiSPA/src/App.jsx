@@ -107,6 +107,9 @@ import OrderDetails from "./components/customer/OrderDetails";
 import TryLogistics from "./components/logistics/TryLogistics";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import TrackOrder from "./components/customer/TrackOrder";
+import PrivacyPolicy from "./components/home/PrivacyPolicy";
+import TermsAndCondition from "./components/home/TermsAndCondition";
+import Faq from "./components/home/Faq";
 
 >>>>>>> fd293ff (Google Maps Controller)
 function App() {
@@ -140,6 +143,7 @@ function App() {
             element={<Logistics />}
           />
           <Route
+<<<<<<< HEAD
             path="about"
             element={<About />}
           />
@@ -152,6 +156,8 @@ function App() {
             element={<Logistics />}
           />
           <Route
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
             path="privacypolicy"
             element={<PrivacyPolicy />}
           />
@@ -522,7 +528,6 @@ function App() {
 =======
 >>>>>>> 369df67 (changes)
         </Route>
-       
 
         {/* PROTECTED ROUTES FOR VENDOR */}
         <Route element={<PersistLogin />}>

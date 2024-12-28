@@ -43,6 +43,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 
         [HttpPost("send")]
         public async Task<IActionResult> sendSupport([FromBody] EmailDto email)
@@ -58,5 +59,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
     }
 }

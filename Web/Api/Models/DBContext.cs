@@ -38,9 +38,13 @@ namespace Api.Models
         public DbSet<VoucherNotification> VoucherNotifications { get; set; }
         public DbSet<Message> Messages { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public DbSet<CustomerSupport> CustomerSupports { get; set; }
 =======
 >>>>>>> 568d50b (done with chat messages)
+=======
+        public DbSet<CustomerSupport> CustomerSupports { get; set; }
+>>>>>>> 9391cc8 (faq, customer support and term)
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

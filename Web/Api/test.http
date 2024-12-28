@@ -219,5 +219,15 @@ Content-Type: application/json
 
 ###
 DELETE https://localhost:7216/api/address/delete/93
+<<<<<<< HEAD
 >>>>>>> d99b6c5 (wallet and transaction commits)
+<<<<<<< HEAD
 >>>>>>> 8ad4440 (wallet and transaction commits)
+=======
+=======
+
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSize=10
+>>>>>>> 5d7a329 (faq, customer support and term)
+>>>>>>> 9391cc8 (faq, customer support and term)

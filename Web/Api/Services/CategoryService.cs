@@ -120,10 +120,13 @@ namespace Api.Services
                     .Where(c => c.Id == id)
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
+<<<<<<< HEAD
 =======
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .Where(c => c.Id == id)
 >>>>>>> db55c17 (added a route for products under a category with pagination)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
                     .ToListAsync();
                     productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
                     var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
@@ -135,10 +138,13 @@ namespace Api.Services
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
+<<<<<<< HEAD
 =======
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
 >>>>>>> db55c17 (added a route for products under a category with pagination)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
                     .ToListAsync();
                 productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);

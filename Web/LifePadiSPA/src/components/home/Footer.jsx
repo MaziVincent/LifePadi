@@ -10,6 +10,9 @@ const Footer = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
         >
           <path
             fill="#111827"
@@ -92,6 +95,9 @@ const Footer = () => {
                   </Link>
                 </li>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
 
                 <li className="mb-4">
                   <Link
@@ -101,8 +107,11 @@ const Footer = () => {
                     FAQs
                   </Link>
                 </li>
+<<<<<<< HEAD
 =======
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
               </ul>
             </div>
             <div>
@@ -135,6 +144,7 @@ const Footer = () => {
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <Link
                     to="privacypolicy"
                     className="hover:underline"
@@ -152,19 +162,27 @@ const Footer = () => {
 =======
                   <a
                     href="#"
+=======
+                  <Link
+                    to="privacypolicy"
+>>>>>>> 9391cc8 (faq, customer support and term)
                     className="hover:underline"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="termsandconditions"
                     className="hover:underline"
                   >
                     Terms &amp; Conditions
+<<<<<<< HEAD
                   </a>
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+                  </Link>
+>>>>>>> 9391cc8 (faq, customer support and term)
                 </li>
               </ul>
             </div>
@@ -243,6 +261,7 @@ const Footer = () => {
               </svg>
             </a>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             <a
               href="#"
@@ -279,6 +298,8 @@ const Footer = () => {
               </svg>
             </a>
 >>>>>>> 43afb5b (Landing page and about page)
+=======
+>>>>>>> 9391cc8 (faq, customer support and term)
           </div>
         </div>
       </div>

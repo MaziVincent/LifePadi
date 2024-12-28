@@ -40,6 +40,7 @@ namespace Api.Interfaces
         public Task<object> getRiderStats();
         public Task<string> updateDefaultLocation(int id, RiderLocation location);
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<PagedList<Rider>> getAllActive(SearchPaging props);
 =======
         public Task<IEnumerable<RiderDTO>> getAllAsync();
@@ -123,5 +124,8 @@ namespace Api.Interfaces
 >>>>>>> 98415b4 (done with dashboard)
 =======
 >>>>>>> 8ad4440 (wallet and transaction commits)
+=======
+        public Task<PagedList<Rider>> getAllActive(SearchPaging props);
+>>>>>>> 9391cc8 (faq, customer support and term)
     }
 }

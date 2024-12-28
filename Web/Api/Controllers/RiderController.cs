@@ -639,7 +639,36 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
    
 >>>>>>> 8ad4440 (wallet and transaction commits)
+=======
+
+      [HttpGet("allActive")]
+        public async Task<IActionResult> getAllActive([FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var riders = await _irider!.getAllActive(props);
+
+                var result = _mapper.Map<List<AuthRiderDto>>(riders);
+
+                var dataList = new
+                {
+                    riders.TotalCount,
+                    riders.TotalPages,
+                    riders.CurrentPage,
+                    riders.PageSize
+                };
+
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+>>>>>>> 9391cc8 (faq, customer support and term)
     }
 }
