@@ -12,13 +12,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'vendors.g.dart';
 
 /// Return a list of vendors.
-@riverpod
-FutureOr<List<Vendor>> vendors(Ref ref, {int pageSize = 200}) async {
+@Riverpod(keepAlive: true)
+FutureOr<List<Vendor>> vendors(
+  Ref ref, {
+  int pageSize = 10,
+  int pageNumber = 1,
+}) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
     '/vendor/all',
     queryParameters: {
-      'pageNumber': 1,
+      'pageNumber': pageNumber,
       'pageSize': pageSize,
     },
   );
@@ -59,17 +63,18 @@ FutureOr<List<Product>> vendorProducts(
 }
 
 /// Return a list of vendors by service id
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<Vendor>> vendorsByServiceId(
   Ref ref, {
   required int serviceId,
-  int pageSize = 200,
+  int pageSize = 10,
+  int pageNumber = 1,
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<String>(
     '/service/getvendors/$serviceId',
     queryParameters: {
-      'pageNumber': 1,
+      'pageNumber': pageNumber,
       'pageSize': pageSize,
     },
   );
