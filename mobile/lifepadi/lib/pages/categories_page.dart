@@ -12,7 +12,9 @@ import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class CategoriesPage extends ConsumerWidget {
-  const CategoriesPage({super.key});
+  const CategoriesPage({super.key, required this.type});
+
+  final CategoryType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +22,12 @@ class CategoriesPage extends ConsumerWidget {
     final random = Random();
 
     return Scaffold(
-      appBar: const MyAppBar(title: 'Categories'),
+      appBar: MyAppBar(
+        title: switch (type) {
+          CategoryType.product => 'Product Categories',
+          CategoryType.vendor => 'Vendor Categories',
+        },
+      ),
       body: Padding(
         padding: kHorizontalPadding.copyWith(top: 8.h),
         child: switch (categories) {
@@ -51,7 +58,7 @@ class CategoriesPage extends ConsumerWidget {
                 ),
                 itemCount: 12,
                 itemBuilder: (context, index) => CategoryCard(
-                  category: Category(
+                  category: ProductCategory(
                     id: random.nextInt(20),
                     name: BoneMock.name,
                     icon: 'http://${BoneMock.city}',

@@ -253,7 +253,7 @@ Product makeFakeProduct({required int id}) {
         sublocality: BoneMock.subtitle,
       ),
     ),
-    category: Category(
+    category: ProductCategory(
       id: 1,
       name: BoneMock.name,
       icon: 'http://${BoneMock.city}',

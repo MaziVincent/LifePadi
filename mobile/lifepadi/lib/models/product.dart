@@ -31,5 +31,5 @@ class Product with ProductMappable {
   final Vendor vendor;
   final int quantity;
   @MappableField(key: 'Category')
-  final Category? category;
+  final ProductCategory? category;
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
@@ -331,11 +332,13 @@ class NewLocationRoute extends GoRouteData {
 }
 
 class CategoriesRoute extends GoRouteData {
-  CategoriesRoute();
+  CategoriesRoute({required this.type});
+
+  final CategoryType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const CategoriesPage();
+    return CategoriesPage(type: type);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;

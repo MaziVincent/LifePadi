@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/location.dart';
@@ -208,7 +209,8 @@ class HomePage extends HookConsumerWidget {
           16.verticalSpace,
           HeaderWithSeeAll(
             title: 'Categories',
-            onSeeAllTap: () => context.go(CategoriesRoute().location),
+            onSeeAllTap: () => context
+                .go(CategoriesRoute(type: CategoryType.product).location),
           ),
           13.87.verticalSpace,
           categories.when(

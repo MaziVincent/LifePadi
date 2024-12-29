@@ -5,7 +5,7 @@ import 'package:lifepadi/utils/extensions.dart';
 
 part 'user.mapper.dart';
 
-/// Represents the current user's authentication state.
+/// Handles the current user's authentication and authorization.
 @MappableClass(discriminatorKey: 'Role')
 sealed class User with UserMappable {
   const User({
@@ -50,6 +50,7 @@ sealed class User with UserMappable {
   String get name => '${firstName.capitalize()} ${lastName.capitalize()}';
 }
 
+/// Represents a customer that uses the app.
 @MappableClass(discriminatorValue: 'Customer')
 class Customer extends User with CustomerMappable {
   const Customer({
@@ -75,6 +76,7 @@ class Customer extends User with CustomerMappable {
   final Wallet wallet;
 }
 
+/// Represents a rider that uses the app.
 @MappableClass(discriminatorValue: 'Rider')
 class Rider extends User with RiderMappable {
   const Rider({
@@ -102,6 +104,7 @@ class Rider extends User with RiderMappable {
   String get internationalPhone => '+234${phoneNumber.substring(1)}';
 }
 
+/// Represents a guest that uses the app.
 @MappableClass(discriminatorValue: 'Guest')
 class Guest extends User with GuestMappable {
   const Guest()
