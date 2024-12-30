@@ -108,7 +108,28 @@ class EditLocationPage extends HookConsumerWidget with LocationUtils {
                             ),
                           ),
                           onTap: () {
-                            // TODO: Implement make default location
+                            ref
+                                .read(
+                              setDefaultLocationProvider(
+                                id: id,
+                              ).future,
+                            )
+                                .then((value) {
+                              if (context.mounted) {
+                                openSuccessDialog(
+                                  context: context,
+                                  title: 'Location updated',
+                                  description:
+                                      '${location.address} is now your default location.',
+                                  onOk: () => context.pop(),
+                                );
+                              }
+                            }).onError((error, _) async {
+                              await handleError(
+                                error,
+                                context.mounted ? context : null,
+                              );
+                            });
                           },
                         ),
                       ],
