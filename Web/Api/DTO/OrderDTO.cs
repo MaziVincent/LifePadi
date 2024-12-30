@@ -12,7 +12,7 @@ namespace Api.DTO
         public string? Type { get; set; }
         public string? Instruction { get; set; }
         public string? Order_Id { get; set; }
-        public double? TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<OrderItemDto>? OrderItems { get; set; }

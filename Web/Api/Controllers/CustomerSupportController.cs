@@ -43,5 +43,20 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("send")]
+        public async Task<IActionResult> sendSupport([FromBody] EmailDto email)
+        {
+
+            try
+            {
+                var result = await _iSupport.SendEmailAsync(email);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

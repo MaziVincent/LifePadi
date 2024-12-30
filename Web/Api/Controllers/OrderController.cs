@@ -59,6 +59,10 @@ namespace Api.Controllers
         {
             try
             {
+                if(!ModelState.IsValid){
+                    return BadRequest();
+                }
+                
                 var newOrder = await _iorder.createAsync(order);
                 return Ok(newOrder);
             }

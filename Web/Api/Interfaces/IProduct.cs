@@ -25,6 +25,6 @@ namespace Api.Interfaces
         public Task<string> toogleProductStatus(int id);
         public Task<object> getVendorProductStat(int vendorId);
         public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
-
+        public Task<SearchDTO> SearchAsync(SearchPaging props);
     }
 }

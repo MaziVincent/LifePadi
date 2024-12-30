@@ -113,16 +113,20 @@ namespace Api.Controllers
         }
 
         [HttpGet("vendors/{id}")]
-        public async Task<IActionResult> getAllVendors(int id)
+        public async Task<IActionResult> getAllVendors(int id, [FromQuery] SearchPaging props)
         {
             try
             {
-                var vendors = await _ivendorCategoryService.getAllVendors(id);
-                if (vendors == null)
+                var vendors = await _ivendorCategoryService.getAllVendors(id, props);
+                var result = _mapper.Map<List<VendorDtoLite>>(vendors);
+                var dataList = new
                 {
-                    return NotFound(notFound);
-                }
-                return Ok(vendors);
+                    vendors.PageSize,
+                    vendors.TotalPages,
+                    vendors.TotalCount,
+                    vendors.CurrentPage
+                };
+                return Ok(new { result, dataList });
             }
             catch (Exception ex)
             {

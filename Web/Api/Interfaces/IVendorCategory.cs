@@ -15,6 +15,6 @@ namespace Api.Interfaces
         public Task<VendorCategoryDto> CreateAsync(CreateVendorCategoryDto vc);
         public Task<VendorCategoryDto> UpdateAsync(int id, CreateVendorCategoryDto vc);
         public Task<bool> DeleteAsync(int id);
-        public Task<IEnumerable<VendorCategoryDto>> getAllVendors(int id);
+        public Task<PagedList<VendorDtoLite>> getAllVendors(int id, SearchPaging props);
     }
 }

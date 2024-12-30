@@ -11,5 +11,6 @@ namespace Api.Interfaces
 
         public Task<IEnumerable<CustomerSupportDto>> allAsync();
         public Task<string> createAsync(CustomerSupportDto support);
+        public Task<string> SendEmailAsync(EmailDto email);
     }
 }
