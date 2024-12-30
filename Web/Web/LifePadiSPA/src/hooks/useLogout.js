@@ -1,0 +1,32 @@
+
+import axios from '../api/axios'
+import useAuth from './useAuth'
+
+
+const useLogout = () => {
+    const {setAuth} = useAuth();
+
+    const logout = async () => {
+         setAuth({});
+         localStorage.removeItem("refreshToken")
+         try{
+            const response = await axios.get('auth/logOut', {
+                withCredentials:true,
+                credentials: 'include',
+                headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json",},
+
+            });
+
+            return response.data;
+         }
+
+         catch(error){
+
+            console.log({error:error, })
+                
+         }
+    }
+    return logout;
+}
+ 
+export default useLogout;

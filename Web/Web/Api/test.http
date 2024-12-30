@@ -1,0 +1,125 @@
+GET https://localhost:7216/api/voucher/all
+
+###
+
+GET https://localhost:7216/api/vendor/all
+
+###
+GET https://localhost:7216/api/address/all
+ 
+###
+
+PUT https://localhost:7216/api/address/setasdefault/80
+Content-Type: application/json
+
+{
+    "customerId":20
+}
+
+###
+GET https://localhost:7216/api/order/get/367
+
+###
+GET https://localhost:7216/api/order/getall
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/api/notification
+Content-Type: application/json
+
+{
+    "Title":"Small notification",
+    "Message":"something something"
+}
+
+###
+GET https://localhost:7216/api/order/get/395
+
+###
+
+POST https://lifepadi-948405839190.us-east1.run.app/api/notification/general
+Content-Type: application/json
+
+{
+    "Topic":"general",
+    "Title":"Small notification ",
+    "Body":"something something"
+}
+
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/api/location/rider
+Content-Type: application/json
+
+{
+    "RiderId":"51",
+    "Latitude":"6.3266352",
+    "Longitude":"8.0957946"
+}
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/wallet/transactions/8
+
+###
+ PUT https://localhost:7216/api/rider/updateLocation/51
+Content-Type: application/json
+
+{
+    "RiderId":"51",
+    "Latitude":"6.3266352",
+    "Longitude":"8.0957946"
+}
+
+###
+ POST https://localhost:7216/api/walletwithdrawal/withdraw/8
+Content-Type: application/json
+
+{
+    "WalletId":8,
+    "Amount":"5000",
+    "DeliveryFee":"1000",
+    "TotalAmount":"6000",
+    "OrderId":426,
+    "Type":"Wallet"
+}
+
+###
+DELETE https://localhost:7216/api/address/delete/93
+
+
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSize=10
+
+
+###
+GET https://localhost:7216/api/product/searchAll?SearchString=dr
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/api/customersupport/send
+Content-Type: application/json
+
+{
+    "Subject":"Customer Support",
+    "Message" : "This is customer support message"
+}
+
+###
+POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
+
+###
+GET https://localhost:7216/api/vendorcategory/vendors/2
+
+
+
+
