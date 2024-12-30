@@ -225,6 +225,11 @@ namespace Api.Services
 =======
 >>>>>>> d23f0ab (transaction, order, notification commit)
                         }
+
+                        var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == item.Id);
+                        if(transaction != null){
+                            item.PaymentChannel = transaction.PaymentChannel;
+                        }
                     }
                     orderList = orderList.Concat(singleOrderDto);
                     var normalResult = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);

@@ -44,6 +44,9 @@ namespace Api.Controllers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6b6a266 (search commit)
 
         [HttpPost("send")]
         public async Task<IActionResult> sendSupport([FromBody] EmailDto email)
@@ -59,7 +62,10 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+<<<<<<< HEAD
 =======
 >>>>>>> 9391cc8 (faq, customer support and term)
+=======
+>>>>>>> 6b6a266 (search commit)
     }
 }

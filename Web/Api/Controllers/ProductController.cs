@@ -413,6 +413,9 @@ namespace Api.Controllers
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6b6a266 (search commit)
 
         [HttpGet("searchAll")]
         public async Task<IActionResult> searchAll([FromQuery] SearchPaging props)
@@ -428,9 +431,12 @@ namespace Api.Controllers
             }
         }
 
+<<<<<<< HEAD
 =======
 >>>>>>> ee48634 (done with service, category and product controllers.)
 =======
 >>>>>>> db55c17 (added a route for products under a category with pagination)
+=======
+>>>>>>> 6b6a266 (search commit)
     }
 }

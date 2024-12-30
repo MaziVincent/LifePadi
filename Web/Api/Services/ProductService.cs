@@ -876,6 +876,7 @@ namespace Api.Services
 
         }
 
+<<<<<<< HEAD
 =======
                 if (imgPath == null) throw new Exception("Can not upload the product image");
                 product.ProductImgUrl = imgPath;
@@ -890,5 +891,7 @@ namespace Api.Services
             }
         }
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+>>>>>>> 6b6a266 (search commit)
     }
 }

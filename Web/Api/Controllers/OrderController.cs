@@ -108,6 +108,7 @@ namespace Api.Controllers
                     return BadRequest();
                 }
                 
+<<<<<<< HEAD
                 var newOrder = await _iorder.createAsync(order);
                 return Ok(newOrder);
             }
@@ -123,6 +124,8 @@ namespace Api.Controllers
         {
             try
             {
+=======
+>>>>>>> 6b6a266 (search commit)
                 var newOrder = await _iorder.createAsync(order);
                 return Ok(newOrder);
             }catch (Exception ex)

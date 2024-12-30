@@ -37,6 +37,7 @@ namespace Api.Interfaces
         public Task<object> getVendorProductStat(int vendorId);
         public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
 <<<<<<< HEAD
+<<<<<<< HEAD
         public Task<SearchDTO> SearchAsync(SearchPaging props);
 =======
         public Task<IEnumerable<ProductDTO>> allAsync();
@@ -80,5 +81,8 @@ namespace Api.Interfaces
 >>>>>>> db55c17 (added a route for products under a category with pagination)
 
 >>>>>>> ee48634 (done with service, category and product controllers.)
+=======
+        public Task<SearchDTO> SearchAsync(SearchPaging props);
+>>>>>>> 6b6a266 (search commit)
     }
 }
