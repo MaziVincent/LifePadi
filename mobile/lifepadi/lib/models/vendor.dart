@@ -9,7 +9,7 @@ class Vendor with VendorMappable {
   const Vendor({
     required this.id,
     required this.name,
-    required this.address,
+    this.address,
     required this.phoneNumber,
     this.imageUrl,
     this.openingHours,
@@ -21,7 +21,7 @@ class Vendor with VendorMappable {
   @MappableField(key: 'Name')
   final String name;
   @MappableField(key: 'Addresses', hook: VendorAddressHook())
-  final LocationDetails address;
+  final LocationDetails? address;
   @MappableField(key: 'PhoneNumber')
   final String phoneNumber;
   @MappableField(key: 'VendorImgUrl')
@@ -38,8 +38,10 @@ class VendorAddressHook extends MappingHook {
   /// Decode the address from a list of json objects
   /// Return the first address from the list
   @override
-  LocationDetails beforeDecode(Object? value) {
-    final addresses = value! as List;
+  LocationDetails? beforeDecode(Object? value) {
+    if (value == null) return null;
+    final addresses = value as List;
+    if (addresses.isEmpty) return null;
     return LocationDetailsMapper.fromMap(JsonMap.from(addresses.first as Map));
   }
 
@@ -47,7 +49,8 @@ class VendorAddressHook extends MappingHook {
   /// Return the address as a list
   @override
   Object? beforeEncode(Object? value) {
-    final address = value! as LocationDetails;
+    if (value == null) return null;
+    final address = value as LocationDetails;
     return [address.toMap()];
   }
 }

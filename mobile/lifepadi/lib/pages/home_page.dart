@@ -88,14 +88,13 @@ class HomePage extends HookConsumerWidget {
       body: SuperListView(
         padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
         children: [
-          // TODO: Try searchfield package when implementing this
           TextFormField(
             cursorColor: kDarkPrimaryColor,
             decoration: InputDecoration(
               border: inputBorder(),
               enabledBorder: inputBorder(),
               focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
-              hintText: 'Search product',
+              hintText: 'Search for products, categories, vendors, etc.',
               hintStyle: inputTextStyle(context),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
@@ -124,12 +123,9 @@ class HomePage extends HookConsumerWidget {
               fontWeight: FontWeight.w400,
               letterSpacing: 0.12.r,
             ),
-            onTapOutside: (e) => FocusScope.of(context).unfocus(),
-            onFieldSubmitted: (String? value) {
-              logger
-                ..i('Search value:')
-                ..i(value);
-            },
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            onFieldSubmitted: (String query) =>
+                context.push(SearchRoute(query: query).location),
           ),
           16.verticalSpace,
           const SectionTitle('Stores and Vendors'),

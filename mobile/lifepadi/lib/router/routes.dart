@@ -345,11 +345,17 @@ class CategoriesRoute extends GoRouteData {
 }
 
 class VendorsRoute extends GoRouteData {
-  VendorsRoute();
+  VendorsRoute({
+    this.categoryId,
+    this.name,
+  });
+
+  final int? categoryId;
+  final String? name;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const VendorsPage();
+    return VendorsPage(categoryId: categoryId, name: name);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
@@ -463,7 +469,7 @@ class SingleServiceRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return VendorsPage(
       serviceId: id,
-      serviceName: name,
+      name: name,
     );
   }
 
@@ -603,5 +609,17 @@ class TransactionHistoryRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const TransactionHistoryPage();
+  }
+}
+
+@TypedGoRoute<SearchRoute>(path: '/search')
+class SearchRoute extends GoRouteData {
+  const SearchRoute({this.query});
+
+  final String? query;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SearchPage(query: query);
   }
 }

@@ -66,7 +66,6 @@ class Categories extends _$Categories {
 
   /// Fetches the vendors of a category from the server.
   Future<List<Vendor>> categoryVendors({
-    int pageSize = 6,
     int categoryId = 1,
     int pageNumber = 1,
   }) async {

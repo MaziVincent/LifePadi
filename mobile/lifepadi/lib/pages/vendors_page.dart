@@ -6,6 +6,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lifepadi/hooks/hooks.dart';
 import 'package:lifepadi/models/vendor.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -17,17 +18,26 @@ class VendorsPage extends StatelessWidget {
   const VendorsPage({
     super.key,
     this.serviceId,
-    this.serviceName,
-  });
+    this.categoryId,
+    this.name,
+  }) : assert(
+          ((serviceId == null) != (categoryId == null) && (name != null)) ||
+              ((serviceId == null) && (categoryId == null)),
+          'Either serviceId or categoryId must be provided, but not both. '
+          'If you want to show all vendors, do not provide any of them. '
+          'If you want to show vendors for a service, provide serviceId and name. '
+          'If you want to show vendors for a category, provide categoryId and name.',
+        );
 
   final int? serviceId;
-  final String? serviceName;
+  final int? categoryId;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: serviceName ?? 'Stores and Vendors'),
-      body: _VendorContent(serviceId: serviceId),
+      appBar: MyAppBar(title: name ?? 'Stores and Vendors'),
+      body: _VendorContent(serviceId: serviceId, categoryId: categoryId),
     );
   }
 }
@@ -56,9 +66,10 @@ mixin VendorPagingLogic {
 }
 
 class _VendorContent extends HookConsumerWidget with VendorPagingLogic {
-  _VendorContent({this.serviceId});
+  _VendorContent({this.serviceId, this.categoryId});
 
   final int? serviceId;
+  final int? categoryId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,20 +79,27 @@ class _VendorContent extends HookConsumerWidget with VendorPagingLogic {
         ref,
         pageKey,
         controller,
-        () => serviceId == null
+        () => serviceId != null
             ? ref.read(
-                vendorsProvider(
-                  pageNumber: pageKey,
-                  pageSize: pageSize,
-                ).future,
-              )
-            : ref.read(
                 vendorsByServiceIdProvider(
                   serviceId: serviceId!,
                   pageNumber: pageKey,
                   pageSize: pageSize,
                 ).future,
-              ),
+              )
+            : categoryId != null
+                ? ref
+                    .read(categoriesProvider(pageSize: pageSize).notifier)
+                    .categoryVendors(
+                      pageNumber: pageKey,
+                      categoryId: categoryId!,
+                    )
+                : ref.read(
+                    vendorsProvider(
+                      pageNumber: pageKey,
+                      pageSize: pageSize,
+                    ).future,
+                  ),
       ),
     );
 

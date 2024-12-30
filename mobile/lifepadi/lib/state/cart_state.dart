@@ -82,7 +82,7 @@ class CartState extends _$CartState with LocationUtils {
 
     // Add all vendor locations
     for (final product in products) {
-      locations.add(product.vendor.address);
+      locations.add(product.vendor.address!);
     }
 
     return locations;

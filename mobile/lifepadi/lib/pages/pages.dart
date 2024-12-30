@@ -26,6 +26,7 @@ export 'receipt_page.dart';
 export 'register_page.dart';
 export 'reset_password_page.dart';
 export 'rider_page.dart';
+export 'search_page.dart';
 export 'services_page.dart';
 export 'settings_page.dart';
 export 'single_chat_page.dart';
