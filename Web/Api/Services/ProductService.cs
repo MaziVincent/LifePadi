@@ -190,12 +190,14 @@ namespace Api.Services
                 var totalProducts = products.Count;
                 var totalActiveProducts = products.Count(p => p.Status == true);
                 var totalInactiveProducts = products.Count(p => p.Status == false);
-                return new {
+                return new
+                {
                     TotalProducts = totalProducts,
                     TotalActiveProducts = totalActiveProducts,
                     TotalInactiveProducts = totalInactiveProducts
                 };
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
@@ -330,7 +332,8 @@ namespace Api.Services
                 _dbContext.Products.Attach(product);
                 await _dbContext.SaveChangesAsync();
                 return "Product status updated";
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
@@ -420,5 +423,103 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+        public async Task<SearchDTO> SearchAsync(SearchPaging props)
+        {
+            if (string.IsNullOrWhiteSpace(props.SearchString))
+                return new SearchDTO();
+
+            string searchTerm = props.SearchString?.ToLower()!;
+
+            int skip = (props.PageNumber - 1) * props.PageSize;
+
+            // Count total matches for each category
+            var totalVendorCategories = await _dbContext.VendorCategories
+                .CountAsync(vc => EF.Functions.Like(vc.Name!.ToLower(), $"%{searchTerm}%"));
+
+            var totalCategories = await _dbContext.Categories
+                .CountAsync(c => EF.Functions.Like(c.Name!.ToLower(), $"%{searchTerm}%"));
+
+            var totalProducts = await _dbContext.Products
+                .CountAsync(p => EF.Functions.Like(p.Name!.ToLower(), $"%{searchTerm}%") ||
+                                 EF.Functions.Like(p.Description!.ToLower(), $"%{searchTerm}%"));
+
+            var totalVendors = await _dbContext.Vendors
+                .CountAsync(v => EF.Functions.Like(v.Name!.ToLower(), $"%{searchTerm}%") ||
+                                 EF.Functions.Like(v.Tag!.ToLower(), $"%{searchTerm}%"));
+
+            var totalServices = await _dbContext.Services
+                .CountAsync(s => EF.Functions.Like(s.Name!.ToLower(), $"%{searchTerm}%") ||
+                                 EF.Functions.Like(s.Description!.ToLower(), $"%{searchTerm}%"));
+
+
+            var vendorCategoriesTask = await _dbContext.VendorCategories
+                .Where(vc => EF.Functions.Like(vc.Name!.ToLower(), $"%{searchTerm}%"))
+                .Skip(skip)
+                .Take(props.PageSize)
+                .ToListAsync();
+
+            var categoriesTask = await _dbContext.Categories
+                .Where(c => EF.Functions.Like(c.Name!.ToLower(), $"%{searchTerm}%"))
+                .Skip(skip)
+                .Take(props.PageSize)
+                .ToListAsync();
+
+            var productsTask = await _dbContext.Products.Include(p => p.Vendor)
+                .Where(p => EF.Functions.Like(p.Name!.ToLower(), $"%{searchTerm}%") ||
+                            EF.Functions.Like(p.Description!.ToLower(), $"%{searchTerm}%"))
+                .Skip(skip)
+                .Take(props.PageSize)
+                .ToListAsync();
+
+            var vendorsTask = await _dbContext.Vendors
+                .Where(v => EF.Functions.Like(v.Name!.ToLower(), $"%{searchTerm}%") ||
+                            EF.Functions.Like(v.Tag!.ToLower(), $"%{searchTerm}%"))
+                .Skip(skip)
+                .Take(props.PageSize)
+                .ToListAsync();
+
+            var servicesTask = await _dbContext.Services
+                .Where(s => EF.Functions.Like(s.Name!.ToLower(), $"%{searchTerm}%") ||
+                            EF.Functions.Like(s.Description!.ToLower(), $"%{searchTerm}%"))
+                .Skip(skip)
+                .Take(props.PageSize)
+                .ToListAsync();
+
+            // Find the list with the most content
+            var totals = new Dictionary<string, int>
+    {
+        { "VendorCategories", totalVendorCategories },
+        { "Categories", totalCategories },
+        { "Products", totalProducts },
+        { "Vendors", totalVendors },
+        { "Services", totalServices }
+    };
+
+            var maxContent = totals.OrderByDescending(t => t.Value).First();
+            var maxTotalCount = maxContent.Value;
+
+            // Calculate pagination metadata
+            var totalPages = (int)Math.Ceiling((double)maxTotalCount / props.PageSize);
+
+
+            return new SearchDTO
+            {
+                VendorCategories = _mapper.Map<List<VendorCategoryDtoLite>>(vendorCategoriesTask),
+                Categories = _mapper.Map<List<CategoryDtoLite>>(categoriesTask),
+                Products = _mapper.Map<List<ProductDtoLite>>(productsTask),
+                Vendors = _mapper.Map<List<VendorDtoLite>>(vendorsTask),
+                Services = _mapper.Map<List<ServiceDtoLite>>(servicesTask),
+
+                // Metadata for the list with the most content
+                CurrentPage = props.PageNumber,
+                TotalPages = totalPages,
+                TotalCount = maxTotalCount,
+                HasNext = props.PageNumber < totalPages,
+                HasPrevious = props.PageNumber > 1
+            };
+
+        }
+
     }
 }

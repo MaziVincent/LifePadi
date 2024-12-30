@@ -99,18 +99,24 @@ namespace Api.Services
             }
         }
 
-        public async Task<IEnumerable<VendorCategoryDto>> getAllVendors(int id)
+        public async Task<PagedList<VendorDtoLite>> getAllVendors(int id, SearchPaging props)
         {
+            IQueryable<VendorDtoLite> vendorsList = Enumerable.Empty<VendorDtoLite>().AsQueryable();
+
             try
             {
-                var vendorCategory = await _context.VendorCategories.Include(v => v.Vendors).FirstOrDefaultAsync(v => v.Id == id);
-                if (vendorCategory == null)
+                var vendors = await _context.Vendors.Include(v => v.Addresses)
+                .Where(v => v.VendorCategoryId == id)
+                .AsSplitQuery()
+                .ToListAsync();
+                if (vendors == null)
                 {
                     return null!;
                 }
-                var vendors = vendorCategory.Vendors;
-                var vendorCategoryDtos = _mapper.Map<IEnumerable<VendorCategoryDto>>(vendors);
-                return vendorCategoryDtos;
+                var vendorsDto = _mapper.Map<List<VendorDtoLite>>(vendors);
+                vendorsList = vendorsList.Concat(vendorsDto);
+                var result = PagedList<VendorDtoLite>.ToPagedList(vendorsList, props.PageNumber, props.PageSize);
+                return result;
             }
             catch (Exception ex)
             {

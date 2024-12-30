@@ -255,5 +255,20 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("searchAll")]
+        public async Task<IActionResult> searchAll([FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var result = await _iproduct!.SearchAsync(props);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -120,6 +120,11 @@ namespace Api.Services
                              item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                             item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                         }
+
+                        var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == item.Id);
+                        if(transaction != null){
+                            item.PaymentChannel = transaction.PaymentChannel;
+                        }
                     }
                     orderList = orderList.Concat(singleOrderDto);
                     var normalResult = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);

@@ -5,6 +5,8 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace Api.Services
 {
@@ -49,6 +51,35 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<string> SendEmailAsync(EmailDto email)
+        {
+            try
+            {
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress("Life Padi Support", "info@lifepadi.com"));
+            emailMessage.To.Add(new MailboxAddress("", "primeobjective20@gmail.com"));
+            emailMessage.Subject = email.Subject;
+
+            var bodyBuilder = new BodyBuilder { HtmlBody = email.Message };
+            emailMessage.Body = bodyBuilder.ToMessageBody();
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.zoho.com", 587, false);
+                client.Authenticate("info@lifepadi.com", "October@1992");
+
+                await client.SendAsync(emailMessage);
+                client.Disconnect(true);
+            }
+
+            return "Support Message Sent Successfully";
+            }
+            catch (Exception ex)
+            {
+            throw new Exceptions.ServiceException(ex.Message);
             }
         }
     }
