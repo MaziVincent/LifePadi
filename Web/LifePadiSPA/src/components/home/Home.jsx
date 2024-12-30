@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
-<<<<<<< HEAD
 import { motion } from "framer-motion";
 import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
 import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
@@ -27,14 +26,8 @@ import { Link } from "react-router-dom";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MopedIcon from "@mui/icons-material/Moped";
 import Groups3Icon from "@mui/icons-material/Groups3";
-<<<<<<< HEAD
 import FadeIn from "./FadeIn"
 import ntachi from "../../assets/images/ntachi.png"
-<<<<<<< HEAD
-=======
->>>>>>> 43afb5b (Landing page and about page)
-=======
->>>>>>> 28e0a99 (rider corrections and other)
 
 import { ChevronRight } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
@@ -50,21 +43,12 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-=======
-import HeroAnimation1 from "../../assets/lottie/HeroAnimation1.json"
-import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json"
-import Hero1 from "../../assets/lottie/Hero1.json"
-
-
-const Home = () => {
->>>>>>> eda1965 (User Dashboard and Landing Page)
   const lottieStyle = {
     position: "relative",
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
-<<<<<<< HEAD
     zIndex: 10,
     padding: 0,
     margin: 0,
@@ -72,18 +56,8 @@ const Home = () => {
 
   const vendors = [
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
       text: "Ntachi-Osa Restaurant",
       src: ntachi,
-=======
-      text: "Everyday Supermarket",
-      src: everyday,
->>>>>>> 43afb5b (Landing page and about page)
-=======
-      text: "Ntachi-Osa Restaurant",
-      src: ntachi,
->>>>>>> 28e0a99 (rider corrections and other)
     },
     {
       text: "Shoprite Supermarket",
@@ -133,35 +107,20 @@ const Home = () => {
         </div>
       </section>
 
-<<<<<<< HEAD
       <section className="flex justify-center px-4  md:h-auto py-5 ">
-=======
-      <section className="flex justify-center px-4 h-screen md:h-auto ">
->>>>>>> 43afb5b (Landing page and about page)
         <div className=" md:flex w-full lg:w-3/4 ">
           <div className="  flex flex-col justify-center ">
             <div className="">
               <div className=" py-3 text-center md:text-start ">
-<<<<<<< HEAD
                 <h2 className="text-center text-3xl md:text-6xl font-bold  ">
-=======
-                <h2 className="text-center text-3xl md:text-6xl font-bold ">
->>>>>>> 43afb5b (Landing page and about page)
                   Try the app
                 </h2>
               </div>
               <div className=" pb-3">
                 <p className=" text-center font-normal text-base px-5 text-grayTxt">
-<<<<<<< HEAD
                 Enjoy the ease of swift delivery from countless services, 
                 offering a wide range of cuisines, grocery shopping,
                  errands, and more! We, your padi, we ensure your satisfaction every time.
-=======
-                  Experience the convenience of swift delivery from numerous
-                  restaurants, featuring a broad spectrum of cuisines, including
-                  African, Continental, and many more! Your cravings will be
-                  satisfied in no time.
->>>>>>> 43afb5b (Landing page and about page)
                 </p>
               </div>
             </div>
@@ -183,7 +142,6 @@ const Home = () => {
               </button>
             </div>
           </div>
-<<<<<<< HEAD
           <FadeIn
             delay={0.4}
             direction="left"
@@ -196,15 +154,6 @@ const Home = () => {
               />
             </div>
           </FadeIn>
-=======
-          <div className="md:w-1/2 flex justify-center items-start  h-3/5 md:h-auto p-6 md:p-4">
-            <img
-              src={iphone}
-              alt=""
-              className="w-3/6 h-full"
-            />
-          </div>
->>>>>>> 43afb5b (Landing page and about page)
         </div>
       </section>
       <section className="pb-20">
@@ -243,11 +192,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-<<<<<<< HEAD
                     <span className="animate-bounce">
-=======
-                    <span>
->>>>>>> 43afb5b (Landing page and about page)
                       <StorefrontIcon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">
@@ -281,11 +226,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-<<<<<<< HEAD
                     <span className="animate-bounce">
-=======
-                    <span>
->>>>>>> 43afb5b (Landing page and about page)
                       <MopedIcon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">Become a Padi </h2>
@@ -315,11 +256,7 @@ const Home = () => {
                 </div>
                 <div className=" px-4 ">
                   <div className=" flex gap-2 justify-center">
-<<<<<<< HEAD
                     <span className="animate-bounce">
-=======
-                    <span>
->>>>>>> 43afb5b (Landing page and about page)
                       <Groups3Icon sx={{ color: green[600] }} />
                     </span>
                     <h2 className="text-2xl font-semibold">Build with us </h2>
@@ -364,18 +301,13 @@ const Home = () => {
         </div>
         <div className="flex flex-col items-center gap-20">
           <h2 className="text-4xl lg:text-6xl font-bold"> Our Top Vendors </h2>
-<<<<<<< HEAD
           <div className="grid grid-cols-1 md:grid-cols-3 justify-center items-center gap-6 lg:w-4/6  px-6">
-=======
-          <div className="grid grid-cols-2 md:grid-cols-3 justify-center items-center gap-6 lg:w-4/6 ">
->>>>>>> 43afb5b (Landing page and about page)
             {vendors.map((ven) => (
               <div
                 key={ven.text}
                 className="flex flex-col items-center justify-center "
               >
                 <div
-<<<<<<< HEAD
                   className="relative w-64 h-64 bg-contain bg-center bg-no-repeat "
                   style={{
                     backgroundImage: `url(${ven.src})`,
@@ -385,17 +317,6 @@ const Home = () => {
                   {/* <img src={ven.src} alt="" className="h-full w-full object-fill" /> */}
                 </div>
                 <h3 className=" text-xl text-center text-primary bg-background rounded-xl p-2 font-semibold">
-=======
-                  className="relative w-44 h-44 bg-cover bg-center "
-                  style={{
-                    backgroundImage: `url(${ven.src})`,
-                    clipPath: `polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)`,
-                  }}
-                >
-                  {/* Optional content inside the blob */}
-                </div>
-                <h3 className=" text-xl text-center text-gray-800">
->>>>>>> 43afb5b (Landing page and about page)
                   {ven.text}
                 </h3>
               </div>
@@ -406,11 +327,7 @@ const Home = () => {
               We Deliver Everything
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-4 lg:w-4/6 ">
-<<<<<<< HEAD
               <div className="flex flex-col items-center h-48 mb-6">
-=======
-              <div className="flex flex-col items-center h-48 ">
->>>>>>> 43afb5b (Landing page and about page)
                 <div
                   className="h-2/3 w-36 bg-cover bg-repeat bg-center "
                   style={{
@@ -473,21 +390,12 @@ const Home = () => {
               </div>
             </div>
             <div className=" w-full flex justify-center mt-8">
-<<<<<<< HEAD
               <Link
                 to="/shop"
                 className=" text-accent font-semibold bg-secondary rounded-xl flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 px-7 py-3 text-center "
               >
                 Explore our Store
               </Link>
-=======
-              <button
-                type="button"
-                className=" text-white bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-base px-5 py-2.5 text-center "
-              >
-                Explore our Store
-              </button>
->>>>>>> 43afb5b (Landing page and about page)
             </div>
           </div>
         </div>
@@ -508,7 +416,6 @@ const Home = () => {
 
         <div className=" bg-accent h-auto pt-20 pb-10 flex justify-center">
           <div className=" flex w-10/12">
-<<<<<<< HEAD
             <div className=" bg-background rounded-3xl w-11/12 py-8">
               <FadeIn
                 delay={0.3}
@@ -553,38 +460,12 @@ const Home = () => {
                   delay={0.8}
                   direction="up"
                 >
-=======
-            <div className=" bg-background rounded-3xl w-11/12 pb-8">
-              <h1 className=" text-6xl max-md:text-3xl max-md:pr-10 font-bold p-8 ">
-                Place your order in seconds
-              </h1>
-
-              <div className=" flex items-start  flex-col md:flex-row ">
-                <Link className=" py-3 px-2 rounded-lg ">
-                  <img
-                    src={PlayStore}
-                    alt=""
-                    className="w-40"
-                  />
-                </Link>
-                <Link className="py-3 px-2 rounded-lg">
-                  <img
-                    src={AppStore}
-                    alt=""
-                    className=" w-40"
-                  />
-                </Link>
-              </div>
-
-              <div className=" w-full flex justify-start px-2 ">
->>>>>>> 43afb5b (Landing page and about page)
                 <button
                   type="button"
                   className=" text-accent h-14 w-40 bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-base px-2 py-2.5 text-center "
                 >
                   Explore our Store
                 </button>
-<<<<<<< HEAD
                 </FadeIn>
               </div>
               <div className="flex justify-center">
@@ -611,45 +492,11 @@ const Home = () => {
                   />
                 </div>
               </div>
-=======
-              </div>
-              <div className="flex justify-center">
-              <div className="h-96 max-md:h-48 mt-8 px-2 ">
-                <img
-                  src={buyingfood}
-                  alt=""
-                  className="h-full"
-                />
-              </div>
-              <div className="hidden w-1/2 md:flex md:justify-center  rounded-3xl h-96">
-                <img
-                  src={iphone}
-                  alt=""
-                  className="h-full"
-                />
-              </div>
-              </div>
-              
->>>>>>> 43afb5b (Landing page and about page)
             </div>
           </div>
         </div>
       </section>
     </main>
-=======
-    zIndex: -1,
-    padding:0,
-    margin:0,
-    border:"2px solid red"
-  };
-  return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className=" w-screen h-5/6  text-center">
-        <Lottie animationData={HeroAnimation2} loop={true} autoPlay={true} style={lottieStyle}  ></Lottie>
-        {/* <button onClick={()=>getAddress()}>get address</button> */}
-      </div>
-    </section>
->>>>>>> eda1965 (User Dashboard and Landing Page)
   );
 };
 

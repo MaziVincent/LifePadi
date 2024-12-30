@@ -3,19 +3,9 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth"
 import useRefreshToken from "../../hooks/useRefreshToken";
-<<<<<<< HEAD
-import logo from "../../assets/images/Logonamedark.svg"
-=======
-import CircularProgress from '@mui/material/CircularProgress';
 import logo from "../../assets/images/Logonamedark.svg"
 
 
-<<<<<<< HEAD
->>>>>>> 43afb5b (Landing page and about page)
-
-
-=======
->>>>>>> 9174884 (require auth commit)
 const PersistLogin = () => {
 
     const [isLoading, setIsLoading] = useState(true)

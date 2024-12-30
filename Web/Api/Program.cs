@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 568d50b (done with chat messages)
 using Api.Chat;
 using Api.DTO;
 using Api.Interfaces;
@@ -9,14 +5,6 @@ using Api.Models;
 using Api.Services;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-<<<<<<< HEAD
-=======
-using Api.Interfaces;
-using Api.Models;
-using Api.Services;
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,15 +21,11 @@ builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
     builder.Configuration.GetConnectionString("LifePadiDBConnection")
     ));
 
-<<<<<<< HEAD
 builder.Services.AddHttpClient<CustomerService>();
 builder.Services.AddHttpClient<TransactionService>();
 
 //SignalR
 builder.Services.AddSignalR();
-=======
-builder.Services.AddHttpClient();
->>>>>>> 7f9ad44 (done with payment and voucher)
 
 //Automaper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -77,26 +61,14 @@ options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoop
 
 builder.Services.AddScoped<IUser, UserService>();
 builder.Services.AddScoped<IVendor, VendorService>();
-<<<<<<< HEAD
-<<<<<<< HEAD
 builder.Services.AddScoped<IRider, RiderService>();
-=======
-//builder.Services.AddScoped<IRider, RiderService>();
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-builder.Services.AddScoped<IRider, RiderService>();
->>>>>>> 28d4101 (finished with rider and order)
 builder.Services.AddScoped<ICustomer, CustomerService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService,  ServiceService>();
-<<<<<<< HEAD
-<<<<<<< HEAD
 builder.Services.AddScoped<IOrder, OrderService>();
 builder.Services.AddScoped<IOrderItem, OrderItemService>();
-<<<<<<< HEAD
-<<<<<<< HEAD
 builder.Services.AddScoped<ITransaction, TransactionService>();
 builder.Services.AddScoped<IDelivery, DeliveryService>();
 builder.Services.AddScoped<IVoucher, VoucherService>();
@@ -115,72 +87,23 @@ builder.Services.AddScoped<ILogistic, LogisticService>();
 builder.Services.AddScoped<ICustomerVoucher, CustomerVoucherService>();
 builder.Services.AddScoped<IVoucherNotification, VoucherNotificationService>();
 builder.Services.AddScoped<IFcmService, FcmService>();
-<<<<<<< HEAD
-<<<<<<< HEAD
-builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
-builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
-=======
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
->>>>>>> 568d50b (done with chat messages)
-
-
-<<<<<<< HEAD
-=======
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 
 
->>>>>>> 8def299 (done with chat messages)
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-=======
-<<<<<<< HEAD
-//builder.Services.AddScoped<ITransaction, TransactionService>();
-//builder.Services.AddScoped<IOrder, OrderService>();
-=======
-builder.Services.AddScoped<IOrder, OrderService>();
->>>>>>> 28d4101 (finished with rider and order)
-//builder.Services.AddScoped<IOrderItem, OrderItemService>();
-=======
->>>>>>> 4641615 (finished with delivery service and controller)
-//builder.Services.AddScoped<ITransaction, TransactionService>();
-=======
-builder.Services.AddScoped<ITransaction, TransactionService>();
->>>>>>> 7f9ad44 (done with payment and voucher)
-builder.Services.AddScoped<IDelivery, DeliveryService>();
-builder.Services.AddScoped<IVoucher, VoucherService>();
-
-
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-builder.Services.AddSignalR();
-
->>>>>>> 3ae0fdd (add signalR to the project)
->>>>>>> 66834e5 (add signalR to the project)
 
 //enable CORS
 builder.Services.AddCors(c =>
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     c.AddPolicy("AllowAllOrigin", options => options.WithOrigins("https://lifepadi.com", "http://localhost:5173", "https://www.lifepadi.com")
-=======
-    c.AddPolicy("AllowAllOrigin", options => options.WithOrigins(["http://localhost:5173", "https://lifepadi.com/"])
->>>>>>> 36b043e (updated origins)
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials());
     
-=======
-    c.AddPolicy("AllowAllOrigin", options => options.AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
->>>>>>> ee48634 (done with service, category and product controllers.)
 });
 
 
@@ -196,7 +119,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-<<<<<<< HEAD
 
 app.UseCors("AllowAllOrigin");
 
@@ -205,16 +127,6 @@ app.MapHub<NotificationHub>("/hubs/notification");
 
 app.MapHub<ChatHub>("/chatHub");
 
-<<<<<<< HEAD
-
-app.UseAuthentication();
-=======
-app.MapHub<LocationHub>("/hubs/location");
->>>>>>> 66834e5 (add signalR to the project)
-
-app.UseCors("AllowAllOrigin");
-=======
->>>>>>> 568d50b (done with chat messages)
 
 app.UseAuthentication();
 

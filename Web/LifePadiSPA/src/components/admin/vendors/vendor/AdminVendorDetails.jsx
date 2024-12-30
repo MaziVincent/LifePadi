@@ -7,13 +7,6 @@ import useAuth from "../../../../hooks/useAuth";
 import baseUrl from "../../../../api/baseUrl";
 import toast, { Toaster } from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import Pagination from "@mui/material/Pagination";
->>>>>>> a0030da (vendor and product commit)
-=======
->>>>>>> 4dc5d34 (worked on product component)
 import Alert from "@mui/material/Alert";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialogue from "../../subcomponents/DeleteDialogue";
@@ -38,15 +31,7 @@ const reducer = (state, action) => {
     case "upload":
       return { ...state, upload: !state.upload };
     case "product":
-<<<<<<< HEAD
-<<<<<<< HEAD
         return { ...state, product: action.payload };
-=======
-        return { ...state, product: !state.upload };
->>>>>>> a0030da (vendor and product commit)
-=======
-        return { ...state, product: action.payload };
->>>>>>> 4dc5d34 (worked on product component)
 
     default:
       throw new Error();
@@ -132,11 +117,7 @@ const AdminVendorDetails = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-<<<<<<< HEAD
                 className="h-6 w-6 text-red"
-=======
-                className="h-6 w-6 text-red-500"
->>>>>>> a0030da (vendor and product commit)
                 x-tooltip="tooltip"
               >
                 <path
@@ -198,24 +179,10 @@ const AdminVendorDetails = () => {
     queryKey: ["vendor", id],
     queryFn: () => getVendorAndProducts(`${url}`),
     staleTime: 20000,
-<<<<<<< HEAD
-<<<<<<< HEAD
     refetchOnMount: "always",
   });
 
   //console.log(data.products);
-=======
-    //refetchOnMount: "always",
-  });
-
-  //console.log(data);
->>>>>>> a0030da (vendor and product commit)
-=======
-    refetchOnMount: "always",
-  });
-
-  //console.log(data.products);
->>>>>>> 4dc5d34 (worked on product component)
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900">
@@ -226,11 +193,7 @@ const AdminVendorDetails = () => {
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/vendorcategory"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> a0030da (vendor and product commit)
             >
               Category
             </Link>
@@ -238,11 +201,7 @@ const AdminVendorDetails = () => {
             <Link
               to={`/admin/vendorcategory/${data?.vendor?.VendorCategoryId}`}
               aria-current="page"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> a0030da (vendor and product commit)
             >
               Vendor Category
             </Link>
@@ -250,11 +209,7 @@ const AdminVendorDetails = () => {
             <Link
               to="#"
               aria-current="page"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> a0030da (vendor and product commit)
             >
               {data?.vendor?.Name}
             </Link>
@@ -266,15 +221,7 @@ const AdminVendorDetails = () => {
               <div className="rounded-full flex items-center justify-center border-4 w-28">
                 <img
                   src={data?.vendor?.VendorImgUrl}
-<<<<<<< HEAD
-<<<<<<< HEAD
                   className="w-full rounded-full"
-=======
-                  className="w-full"
->>>>>>> a0030da (vendor and product commit)
-=======
-                  className="w-full rounded-full"
->>>>>>> 4dc5d34 (worked on product component)
                 />
               </div>
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold">
@@ -324,21 +271,10 @@ const AdminVendorDetails = () => {
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "open" })}
-<<<<<<< HEAD
                   className="flex items-center gap-1 justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <i className="line-icon-Add font-bold text-lg"></i>
                   Create Product
-=======
-                  className="flex items-center gap-1 justify-center text-green-600 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                >
-                  <i className="line-icon-Add font-bold text-lg"></i>
-<<<<<<< HEAD
-                  Create Vendor
->>>>>>> a0030da (vendor and product commit)
-=======
-                  Create Product
->>>>>>> 4dc5d34 (worked on product component)
                 </button>
               </div>
             </div>
@@ -371,41 +307,12 @@ const AdminVendorDetails = () => {
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}
                   onRowClick={(row) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
                     navigate(`/admin/product/${row.id}`);
                   }}
                   className="cursor-pointer bg-primary"
                 />
               )}
             </div>
-=======
-                    navigate(`/admin/vendor/${row.id}`);
-=======
-                    navigate(`/admin/product/${row.id}`);
->>>>>>> 4dc5d34 (worked on product component)
-                  }}
-                  className="cursor-pointer"
-                />
-              )}
-            </div>
-<<<<<<< HEAD
-            <nav
-              className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-              aria-label="Table navigation"
-            >
-              {/* <Pagination
-                  count={data?.dataList.TotalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                  variant="outlined"
-                  shape="rounded"
-                  className="dark:text-gray-50 dark:bg-gray-200"
-                /> */}
-            </nav>
->>>>>>> a0030da (vendor and product commit)
-=======
->>>>>>> a2698f4 (Finishing touches on the admin portal)
           </div>
         </div>
       </section>

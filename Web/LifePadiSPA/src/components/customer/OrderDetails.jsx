@@ -21,24 +21,10 @@ const OrderDetails = () => {
     return response.data;
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   const getData = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
     //console.log(response);
-=======
-  const getDelivery = async (url) => {
-    const response = await fetch(url, auth.accessToken);
-
-    console.log(response);
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-  const getData = async (url) => {
-    const response = await fetch(url, auth.accessToken);
-
-    //console.log(response);
->>>>>>> 0ab5359 (incremental changes)
     return response.data;
   };
 
@@ -62,24 +48,12 @@ const OrderDetails = () => {
     isLoading: deliveryLoading,
   } = useQuery({
     queryKey: ["delivery"],
-<<<<<<< HEAD
-<<<<<<< HEAD
     queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
-=======
-    queryFn: () => getDelivery(`${baseUrl}delivery/order/get/${id}`),
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-    queryFn: () => getData(`${baseUrl}delivery/order/get/${id}`),
->>>>>>> 0ab5359 (incremental changes)
     keepPreviousData: true,
     staleTime: 10000,
     refetchOnMount: "always",
   });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0ab5359 (incremental changes)
   const {
     data: transaction,
     isError: transactionError,
@@ -110,11 +84,6 @@ const OrderDetails = () => {
 
   console.log(logistics);
 
-<<<<<<< HEAD
-=======
->>>>>>> 7fa87ff (user dashboard commit)
-=======
->>>>>>> 0ab5359 (incremental changes)
 
   return (
     <section className=" p-2 text-gray-900 dark:text-primary pb-10">
@@ -125,15 +94,7 @@ const OrderDetails = () => {
         >
           Dashboard
         </Link>
-<<<<<<< HEAD
-<<<<<<< HEAD
           
-=======
-
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-          
->>>>>>> 50bdb11 (added amount to voucher)
         <Link
           to="#"
           aria-current="page"
@@ -284,15 +245,7 @@ const OrderDetails = () => {
         {deliveryError && (
           <p className="flex items-center justify-center">
             {" "}
-<<<<<<< HEAD
-<<<<<<< HEAD
             <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
-=======
-            <Alert severity="error">Error Fetching Delivery Data..</Alert>
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-            <Alert severity="error" className="" >You currently have no delivery Information..</Alert>
->>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {deliverySuccess && (
@@ -321,21 +274,9 @@ const OrderDetails = () => {
           </p>
         )}
         {deliveryError && (
-<<<<<<< HEAD
-<<<<<<< HEAD
           <p className="flex items-center justify-center ">
             {" "}
             <Alert severity="error">Rider is yet to be assigned..</Alert>
-=======
-          <p className="flex items-center justify-center">
-            {" "}
-            <Alert severity="error">Error Fetching Rider Data..</Alert>
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-          <p className="flex items-center justify-center ">
-            {" "}
-            <Alert severity="error">Rider is yet to be assigned..</Alert>
->>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {deliverySuccess && (
@@ -346,7 +287,6 @@ const OrderDetails = () => {
             </h1>{" "}
             <p>
               {" "}
-<<<<<<< HEAD
               Rider Full Name : {delivery.Rider?.FirstName}{" "}
               {delivery.Rider?.LastName}
             </p>
@@ -367,15 +307,7 @@ const OrderDetails = () => {
         {transactionError && (
           <p className="flex items-center justify-center">
             {" "}
-<<<<<<< HEAD
-<<<<<<< HEAD
             <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
-=======
-            <Alert severity="error"> No Transaction Data ..</Alert>
->>>>>>> 0ab5359 (incremental changes)
-=======
-            <Alert severity="error"> No Payment Information or Order is yet to be Paid for ..</Alert>
->>>>>>> 50bdb11 (added amount to voucher)
           </p>
         )}
         {transactionSuccess && (
@@ -401,7 +333,6 @@ const OrderDetails = () => {
 
 {
           logistics &&  <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
-<<<<<<< HEAD
           {" "}
           <h1 className="font-bold text-center text-xl">
             Logistics Details{" "}
@@ -453,75 +384,6 @@ const OrderDetails = () => {
         }
 
 
-=======
-              Rider Full Name : {delivery.Rider.FirstName}{" "}
-              {delivery.Rider.LastName}
-            </p>
-            <p> Rider Phone Number : {delivery.Rider.PhoneNumber}</p>
-            <p>
-              {" "}
-              Rider Status : {delivery.Rider.IsActive ? "Active" : " In-Active"}
-            </p>
-          </div>
-        )}
-        <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
-=======
->>>>>>> 0ab5359 (incremental changes)
-          {" "}
-          <h1 className="font-bold text-center text-xl">
-            Logistics Details{" "}
-          </h1>{" "}
-          <p>
-            {" "}
-            Item : {logistics.Item}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Item Description : {logistics.ItemDescription}{" "}
-          </p>
-          <p>
-            {" "}
-            Sender Address : {logistics.SenderAddress}{" "}
-          </p>
-          
-          <p>
-            {" "}
-            Sender Name : {logistics.SenderName}{" "}
-          </p>
-          <p>
-            {" "}
-            Sender Phone Number : {logistics.SenderPhone}{" "}
-          </p>
-          <p>
-            {" "}
-            Receiver Address : {logistics.RecieverAddress}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Receiver Name : {logistics.RecieverName}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Receiver Phone Number : {logistics.RecieverAddress}{" "}
-          </p>
-
-          
-          <p>
-            {" "}
-            Tracking Number :{" "}
-            {logistics.TrackingNumber ? logistics.TrackingNumber : "Not Available"}
-          </p>
-        </div>
-<<<<<<< HEAD
->>>>>>> 7fa87ff (user dashboard commit)
-=======
-        }
-
-
->>>>>>> 0ab5359 (incremental changes)
       </div>
     </section>
   );

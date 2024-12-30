@@ -15,15 +15,7 @@ namespace Api.Data
                     LastName = "Eze", 
                     Email = "ikenna@gmail.com",
                     PhoneNumber = "+2347062682820",
-<<<<<<< HEAD
-<<<<<<< HEAD
                     ContactAddress = "No 34 Alugbalueze street Abakaliki",
-=======
-                    ContactAdress = "No 34 Alugbalueze street Abakaliki",
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                    ContactAddress = "No 34 Alugbalueze street Abakaliki",
->>>>>>> 28d4101 (finished with rider and order)
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     SearchString = "IKENNA EZE IKENNA@GMAIL.COM",
@@ -38,15 +30,7 @@ namespace Api.Data
                     Email = "joy@gmail.com",
                     DOB = new DateTime(1992, 4, 8),
                     PhoneNumber = "+2348062682850",
-<<<<<<< HEAD
-<<<<<<< HEAD
                     ContactAddress = "Teachrs quaters Udensi Abakaliki",
-=======
-                    ContactAdress = "Teachrs quaters Udensi Abakaliki",
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                    ContactAddress = "Teachrs quaters Udensi Abakaliki",
->>>>>>> 28d4101 (finished with rider and order)
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     PasswordHash = PasswordHasher.hashPassword("ikenna123")
@@ -66,15 +50,7 @@ namespace Api.Data
                             new DateTime(30, 1, 1)  // January 1st, year 30
                         ),
                         PhoneNumber = faker.Phone.PhoneNumber(),
-<<<<<<< HEAD
-<<<<<<< HEAD
                         ContactAddress = faker.Address.FullAddress(),
-=======
-                        ContactAdress = faker.Address.FullAddress(),
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                        ContactAddress = faker.Address.FullAddress(),
->>>>>>> 28d4101 (finished with rider and order)
                         PasswordHash = PasswordHasher.hashPassword(faker.Phone.PhoneNumber()),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,

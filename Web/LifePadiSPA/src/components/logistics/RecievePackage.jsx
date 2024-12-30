@@ -23,24 +23,13 @@ const RecievePackage = ({ dispatch, open }) => {
   } = useForm({
     mode: "all",
   });
-<<<<<<< HEAD
 
-=======
->>>>>>> 56c4b95 (completed logistics)
   const { auth } = useAuth();
   const post = usePost();
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const [selectedChips, setSelectedChips] = useState([]);
   const [senderSuggestions, setSenderSuggestions] = useState([]);
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [receiverSuggestions, setReceiverSuggestions] = useState([]);
-=======
-  const [recieverSuggestions, setRecieverSuggestions] = useState([]);
->>>>>>> 56c4b95 (completed logistics)
-=======
-  const [receiverSuggestions, setReceiverSuggestions] = useState([]);
->>>>>>> 5dffde0 (forgot password and live payment)
   const [focusedField, setFocusedField] = useState(null);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const url = `${baseUrl}logistics/create`;
@@ -61,11 +50,7 @@ const RecievePackage = ({ dispatch, open }) => {
         : [...prevSelected, option]
     );
 
-<<<<<<< HEAD
    // console.log(selectedChips);
-=======
-    console.log(selectedChips);
->>>>>>> 56c4b95 (completed logistics)
   };
 
   const handleClickAway = () => {
@@ -73,22 +58,11 @@ const RecievePackage = ({ dispatch, open }) => {
   };
 
   const SenderAddress = watch("SenderAddress");
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5dffde0 (forgot password and live payment)
   const ReceiverAddress = watch("ReceiverAddress");
 
   const fetchSuggestions = async (value, field) => {
     if (value.length > 2) {
      // console.log(value);
-=======
-  const RecieverAddress = watch("RecieverAddress");
-
-  const fetchSuggestions = async (value, field) => {
-    if (value.length > 2) {
-      console.log(value);
->>>>>>> 56c4b95 (completed logistics)
       try {
         const response = await axios.get(`${baseUrl}googlemaps/autocomplete`, {
           params: {
@@ -101,15 +75,7 @@ const RecievePackage = ({ dispatch, open }) => {
         if (field === "SenderAddress") {
           setSenderSuggestions(data);
         } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
           setReceiverSuggestions(data);
-=======
-          setRecieverSuggestions(data);
->>>>>>> 56c4b95 (completed logistics)
-=======
-          setReceiverSuggestions(data);
->>>>>>> 5dffde0 (forgot password and live payment)
         }
         setFocusedField(field);
       } catch (error) {
@@ -117,15 +83,7 @@ const RecievePackage = ({ dispatch, open }) => {
       }
     } else {
       setSenderSuggestions([]);
-<<<<<<< HEAD
-<<<<<<< HEAD
       setReceiverSuggestions([]); //
-=======
-      setRecieverSuggestions([]); //
->>>>>>> 56c4b95 (completed logistics)
-=======
-      setReceiverSuggestions([]); //
->>>>>>> 5dffde0 (forgot password and live payment)
     }
   };
 
@@ -141,8 +99,6 @@ const RecievePackage = ({ dispatch, open }) => {
   const handleSuggestionClick = (suggestion) => {
     if (focusedField === "SenderAddress") {
       setValue("SenderAddress", suggestion.description); // Set pickup address in the form
-<<<<<<< HEAD
-<<<<<<< HEAD
     } else if (focusedField === "ReceiverAddress") {
       setValue("ReceiverAddress", suggestion.description); // Set delivery address in the form
     }
@@ -153,40 +109,11 @@ const RecievePackage = ({ dispatch, open }) => {
   const handleCurrentInfo = () => {
     setValue("ReceiverName", `${auth.FirstName} ${auth.LastName}`);
     setValue("ReceiverPhone", `${auth.PhoneNumber}`);
-=======
-    } else if (focusedField === "RecieverAddress") {
-      setValue("RecieverAddress", suggestion.description); // Set delivery address in the form
-=======
-    } else if (focusedField === "ReceiverAddress") {
-      setValue("ReceiverAddress", suggestion.description); // Set delivery address in the form
->>>>>>> 5dffde0 (forgot password and live payment)
-    }
-    setSenderSuggestions([]);
-    setReceiverSuggestions([]); // Clear suggestions after selection
-  };
-
-  const handleCurrentInfo = () => {
-<<<<<<< HEAD
-    setValue("RecieverName", `${auth.FirstName} ${auth.LastName}`);
-    setValue("RecieverPhone", `${auth.PhoneNumber}`);
->>>>>>> 56c4b95 (completed logistics)
-=======
-    setValue("ReceiverName", `${auth.FirstName} ${auth.LastName}`);
-    setValue("ReceiverPhone", `${auth.PhoneNumber}`);
->>>>>>> 5dffde0 (forgot password and live payment)
   };
 
   const { distance, duration, error, loading } = useDistance(
     SenderAddress,
-<<<<<<< HEAD
-<<<<<<< HEAD
     ReceiverAddress
-=======
-    RecieverAddress
->>>>>>> 56c4b95 (completed logistics)
-=======
-    ReceiverAddress
->>>>>>> 5dffde0 (forgot password and live payment)
   );
   //console.log(distance)
 
@@ -231,7 +158,6 @@ const RecievePackage = ({ dispatch, open }) => {
     }
     console.log(response);
 
-<<<<<<< HEAD
     const delivery = {
         PickupAddress: SenderAddress,
         DeliveryAddress: ReceiverAddress,
@@ -240,17 +166,12 @@ const RecievePackage = ({ dispatch, open }) => {
         PickupType: "Logistics",
       };
 
-=======
->>>>>>> 56c4b95 (completed logistics)
     cartDispatch({ type: "order", payload: res.data });
     cartDispatch({ type: "amount", payload: deliveryFee });
     cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     cartDispatch({ type: "total", payload: deliveryFee });
     cartDispatch({ type: "checkOut", payload: deliveryFee });
-<<<<<<< HEAD
     localStorage.setItem("delivery", JSON.stringify(delivery));
-=======
->>>>>>> 56c4b95 (completed logistics)
     dispatch({ type: "send" });
   };
 
@@ -270,11 +191,7 @@ const RecievePackage = ({ dispatch, open }) => {
         className=" overflow-y-auto overflow-x-auto outline-none absolute top-10 md:top-0  z-50 justify-center items-center  w-full "
       >
         <ClickAwayListener onClickAway={handleClickAway}>
-<<<<<<< HEAD
           <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-svh ">
-=======
-          <div className="flex flex-col items-center justify-center px-6   mx-auto lg:py-0 h-screen ">
->>>>>>> 56c4b95 (completed logistics)
             <div className="w-full bg-primary rounded-lg shadow  lg:w-1/2 md:mt-0  xl:p-0 dark:bg-darkMenu dark:text-primary overflow-y-auto  pb-10 ">
               <div className="flex justify-between relative items-center p-4  ">
                 <button
@@ -429,40 +346,16 @@ const RecievePackage = ({ dispatch, open }) => {
                           type="text"
                           name="delivery"
                           id="delivery"
-<<<<<<< HEAD
-<<<<<<< HEAD
                           {...register("ReceiverAddress", { required: true })}
-=======
-                          {...register("RecieverAddress", { required: true })}
->>>>>>> 56c4b95 (completed logistics)
-=======
-                          {...register("ReceiverAddress", { required: true })}
->>>>>>> 5dffde0 (forgot password and live payment)
                           className="bg-lightGray border pl-10 border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600  dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Enter Delivery Address"
                           required=""
                           onChange={(e) =>
-<<<<<<< HEAD
-<<<<<<< HEAD
                             handleInputChange(e, "ReceiverAddress")
                           }
                         />
                       </div>
                       {errors.ReceiverAddress && (
-=======
-                            handleInputChange(e, "RecieverAddress")
-                          }
-                        />
-                      </div>
-                      {errors.RecieverAddress && (
->>>>>>> 56c4b95 (completed logistics)
-=======
-                            handleInputChange(e, "ReceiverAddress")
-                          }
-                        />
-                      </div>
-                      {errors.ReceiverAddress && (
->>>>>>> 5dffde0 (forgot password and live payment)
                         <p className="text-sm text-redborder">
                           Delivery address is required
                         </p>
@@ -470,21 +363,9 @@ const RecievePackage = ({ dispatch, open }) => {
                     </div>
 
                     {/* Address Suggestions */}
-<<<<<<< HEAD
-<<<<<<< HEAD
                     {receiverSuggestions.length > 0 && (
                       <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
                         {receiverSuggestions.map((suggestion, index) => (
-=======
-                    {recieverSuggestions.length > 0 && (
-                      <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
-                        {recieverSuggestions.map((suggestion, index) => (
->>>>>>> 56c4b95 (completed logistics)
-=======
-                    {receiverSuggestions.length > 0 && (
-                      <ul className="list-none col-span-2 text-accent rounded-lg dark:bg-darkMenu">
-                        {receiverSuggestions.map((suggestion, index) => (
->>>>>>> 5dffde0 (forgot password and live payment)
                           <li
                             key={index}
                             onClick={() => handleSuggestionClick(suggestion)}
@@ -575,8 +456,6 @@ const RecievePackage = ({ dispatch, open }) => {
                     </h2>
                     <div className="col-span-2">
                       <label
-<<<<<<< HEAD
-<<<<<<< HEAD
                         htmlFor="receiver"
                         className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                       >
@@ -594,32 +473,6 @@ const RecievePackage = ({ dispatch, open }) => {
                       {errors.ReceiverName && (
                         <p className="text-sm text-redborder">
                           Receiver name is required
-=======
-                        htmlFor="reciever"
-=======
-                        htmlFor="receiver"
->>>>>>> 5dffde0 (forgot password and live payment)
-                        className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                      >
-                        Receiver Name
-                      </label>
-                      <input
-                        type="text"
-                        name="receiver"
-                        id="receiver"
-                        {...register("ReceiverName", { required: true })}
-                        className="bg-lightGray border border-gray-300 text-grayTxt text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Enter Receiver Name"
-                        required=""
-                      />
-                      {errors.ReceiverName && (
-                        <p className="text-sm text-redborder">
-<<<<<<< HEAD
-                          Reciever name is required
->>>>>>> 56c4b95 (completed logistics)
-=======
-                          Receiver name is required
->>>>>>> 5dffde0 (forgot password and live payment)
                         </p>
                       )}
                     </div>
@@ -634,15 +487,7 @@ const RecievePackage = ({ dispatch, open }) => {
                         type="phone"
                         name="phone"
                         id="phone"
-<<<<<<< HEAD
-<<<<<<< HEAD
                         {...register("ReceiverPhone", {
-=======
-                        {...register("RecieverPhone", {
->>>>>>> 56c4b95 (completed logistics)
-=======
-                        {...register("ReceiverPhone", {
->>>>>>> 5dffde0 (forgot password and live payment)
                           required: true,
                           maxLength: {
                             value: 11,
@@ -653,15 +498,7 @@ const RecievePackage = ({ dispatch, open }) => {
                         placeholder="08122334455"
                         required=""
                       />
-<<<<<<< HEAD
-<<<<<<< HEAD
                       {errors.ReceiverPhone && (
-=======
-                      {errors.RecieverPhone && (
->>>>>>> 56c4b95 (completed logistics)
-=======
-                      {errors.ReceiverPhone && (
->>>>>>> 5dffde0 (forgot password and live payment)
                         <p className="text-sm text-redborder">
                           Phone Number is required
                         </p>

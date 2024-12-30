@@ -15,15 +15,7 @@ namespace Api.Services
         private readonly IConfiguration _config;
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-<<<<<<< HEAD
-<<<<<<< HEAD
         public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper)
-=======
-        public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper) 
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public RiderService(IConfiguration config, DBContext dbContext, IMapper mapper)
->>>>>>> 98415b4 (done with dashboard)
         {
             _config = config;
             _dbContext = dbContext;
@@ -33,34 +25,16 @@ namespace Api.Services
                 _config["Cloudinary:Api_Key"],
                 _config["Cloudinary:Api_Secret"]
             );
-<<<<<<< HEAD
-<<<<<<< HEAD
             _cloudinary = new Cloudinary(account);
         }
 
         public async Task<object> activateRider(int id)
-<<<<<<< HEAD
-=======
-            _cloudinary = new Cloudinary( account );
-=======
-            _cloudinary = new Cloudinary(account);
->>>>>>> 98415b4 (done with dashboard)
-        }
-
-        public async Task<string> activateRider(int id)
->>>>>>> 28d4101 (finished with rider and order)
-=======
->>>>>>> 9f19389 (rider commit)
         {
             try
             {
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = true;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d354473 (rider service commit)
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return new { success = "Rider activated" };
@@ -72,28 +46,10 @@ namespace Api.Services
         }
 
         public async Task<AuthRiderDto> createAsync(CreateRiderDto rider)
-=======
-                _dbContext.Riders.Attach(rider);
-                await _dbContext.SaveChangesAsync();
-                return "Rider activated";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<AuthRiderDTO> createAsync(CreateRiderDTO rider)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public async Task<AuthRiderDto> createAsync(CreateRiderDto rider)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var folderName = "Riders";
-<<<<<<< HEAD
                 var  initialRider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Email == rider.Email || r.PhoneNumber == rider.PhoneNumber);
                 if (initialRider != null) throw new Exceptions.ServiceException("Rider already exists");
                 var newRider = _mapper.Map<Rider>(rider);
@@ -116,61 +72,19 @@ namespace Api.Services
         }
 
         public async Task<object> deactivateRider(int id)
-<<<<<<< HEAD
-=======
-                var newRider = _mapper.Map<Rider>(rider);
-                newRider.PasswordHash = BCrypt.Net.BCrypt.HashPassword(rider.Password);
-                newRider.IsActive = true;
-                newRider.IsVerified = false;
-                newRider.SearchString = rider.FirstName!.ToUpper() + " " + rider.LastName!.ToUpper() + " " + rider.Email!.ToUpper() + " " + rider.PhoneNumber;
-                var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
-                newRider.IdentityImgUrl = imgPath;
-                await _dbContext.Riders.AddAsync(newRider);
-                await _dbContext.SaveChangesAsync();
-                var authRiderDto = _mapper.Map<AuthRiderDto>(newRider);
-                return authRiderDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<string> deactivateRider(int id)
->>>>>>> 28d4101 (finished with rider and order)
-=======
->>>>>>> 9f19389 (rider commit)
         {
             try
             {
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null) return null!;
                 rider.IsActive = false;
-<<<<<<< HEAD
-<<<<<<< HEAD
                 _dbContext.Riders.Update(rider);
                 await _dbContext.SaveChangesAsync();
                 return new { success = "Rider deactivated" };
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                _dbContext.Riders.Attach(rider);
-=======
-                _dbContext.Riders.Update(rider);
->>>>>>> d354473 (rider service commit)
-                await _dbContext.SaveChangesAsync();
-                return "Rider deactivated";
-=======
->>>>>>> 9f19389 (rider commit)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> 28d4101 (finished with rider and order)
             }
         }
 
@@ -183,8 +97,6 @@ namespace Api.Services
                 _dbContext.Riders.Remove(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider deleted";
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -192,11 +104,7 @@ namespace Api.Services
             }
         }
 
-<<<<<<< HEAD
         public async Task<PagedList<Rider>> getAllAsync(SearchPaging props)
-=======
-        public async Task<IEnumerable<GetRiderDto>> getAllAsync(int pageNumber, int pageSize, string searchString)
->>>>>>> b8c66da (changed all DTO to Dto)
         {
             try
             {
@@ -206,58 +114,14 @@ namespace Api.Services
                     var ridersLs = await _dbContext.Riders
                         .Include(r => r.Deliveries)
                         .OrderByDescending(r => r.CreatedAt)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                        .Where(r => r.IsActive == true)
->>>>>>> d354473 (rider service commit)
-=======
->>>>>>> 9f19389 (rider commit)
                         .AsSplitQuery()
                         .ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
-=======
->>>>>>> 57dd2cb (rider commit)
-<<<<<<< HEAD
-=======
-                        
->>>>>>> 589567d (Finishing touches on the admin portal)
-<<<<<<< HEAD
->>>>>>> a2698f4 (Finishing touches on the admin portal)
-=======
-=======
-
->>>>>>> 11badd3 (rider commit)
->>>>>>> 57dd2cb (rider commit)
                     ridersList = ridersList.Concat(ridersLs);
                     var result = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 
                     return result;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-=======
->>>>>>> 57dd2cb (rider commit)
-                    
-=======
-                    var getRiderDto1 = _mapper.Map<List<GetRiderDto>>(riders1);
-                    return getRiderDto1;
->>>>>>> b8c66da (changed all DTO to Dto)
-<<<<<<< HEAD
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
-=======
-
->>>>>>> 11badd3 (rider commit)
->>>>>>> 57dd2cb (rider commit)
                 }
                 var riders = await _dbContext.Riders
                         .Include(r => r.Deliveries)
@@ -268,12 +132,7 @@ namespace Api.Services
                 ridersList = ridersList.Concat(riders);
                 var response = PagedList<Rider>.ToPagedList(ridersList, props.PageNumber, props.PageSize);
 
-<<<<<<< HEAD
                 return response;
-=======
-                var getRiderDto = _mapper.Map<List<GetRiderDto>>(riders);
-                return getRiderDto;
->>>>>>> b8c66da (changed all DTO to Dto)
 
             }
             catch (Exception ex)
@@ -322,7 +181,6 @@ namespace Api.Services
             {
                 IQueryable<Order> listOfOrders = Enumerable.Empty<Order>().AsQueryable();
 
-<<<<<<< HEAD
                     if(props.SearchString is null){
 
                 var deliveries = await _dbContext.Deliveries
@@ -333,15 +191,6 @@ namespace Api.Services
                     .ThenInclude(p => p!.Vendor)
                     .Where(d => d.RiderId == id)
                     .OrderByDescending(d => d.CreatedAt)
-<<<<<<< HEAD
-=======
-                var deliveries = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
-                    .Include(d => d.Order)
-                    .Where(d => d.RiderId == id)
->>>>>>> 57dd2cb (rider commit)
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
                     .AsSplitQuery()
                     .ToListAsync();
 
@@ -349,18 +198,13 @@ namespace Api.Services
 
                 var orderList = deliveries
                     .Where(d => d.Order != null) // Ensure no null orders are added
-<<<<<<< HEAD
                     .Select(d => d.Order!)
-=======
-                    .Select(d => d.Order!)       // Extract orders from deliveries
->>>>>>> 57dd2cb (rider commit)
                     .ToList();
 
                  listOfOrders = listOfOrders.Concat(orderList);
                     var result = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
 
                 return result;
-<<<<<<< HEAD
                     }
 
                            
@@ -389,8 +233,6 @@ namespace Api.Services
                     var resultWithSearch = PagedList<Order>.ToPagedList(listOfOrders, props.PageNumber, props.PageSize);
 
                 return resultWithSearch;
-=======
->>>>>>> 57dd2cb (rider commit)
 
                
             }
@@ -442,178 +284,16 @@ namespace Api.Services
         }
 
         public Task<IEnumerable<OrderDto>> orderLists(int id)
-=======
-            }catch (Exception ex)
-=======
-            }
-            catch (Exception ex)
->>>>>>> 98415b4 (done with dashboard)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<GetRiderDTO>> getAllAsync(int pageNumber, int pageSize, string searchString)
-        {
-            try
-            {
-                var skip = (pageNumber - 1) * pageSize;
-                if (searchString == "")
-                {
-                    var riders1 = await _dbContext.Riders.Skip(skip).Take(pageSize)
-                        .Include(r => r.Deliveries)
-                        .OrderByDescending(r => r.CreatedAt)
-                        .Where(r => r.IsActive == true)
-                        .ToListAsync();
-                    var getRiderDTO1 = _mapper.Map<List<GetRiderDTO>>(riders1);
-                    return getRiderDTO1;
-                }
-                var riders = await _dbContext.Riders.Skip(skip).Take(pageSize)
-                        .Include(r => r.Deliveries)
-                        .OrderByDescending(r => r.CreatedAt)
-                        .Where(r => r.SearchString!.ToLower().Contains(searchString.ToLower()))
-                        .ToListAsync();
-
-                var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riders);
-                return getRiderDTO;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<GetRiderDto> getAsync(int id)
-        {
-            try
-            {
-                var rider = await _dbContext.Riders.Include(r => r.Deliveries)
-                    .FirstOrDefaultAsync(r => r.Id == id);
-                if (rider == null) return null!;
-                var getRiderDto = _mapper.Map<GetRiderDto>(rider);
-                return getRiderDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<DeliveryDto>> getRiderDeliveries(int id)
-        {
-            try
-            {
-                var delivery = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
-                    .Where(d => d.RiderId == id)
-                    .ToListAsync();
-                if (delivery == null) return null!;
-                var deliveryDTO = _mapper.Map<List<DeliveryDto>>(delivery);
-                return deliveryDTO;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<OrderDto>> getRiderOrders(int id)
-        {
-            try
-            {
-                var deliverise = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
-                    .Where(d => d.RiderId == id)
-                    .ToListAsync();
-                if (deliverise == null) return null!;
-                var orderList = new List<Order>();
-                foreach (var delivery in deliverise)
-                {
-                    orderList.Append(delivery.Order);
-
-                }
-                var OrderDto = _mapper.Map<List<OrderDto>>(orderList);
-                return OrderDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<object> getRiderStats()
-        {
-            try{
-                var totalRiders = await totalNumberOfRiders();
-                var totalActiveRiders = await totalNumberOfActiveRiders();
-                var totalNonActiveRiders = await totalNumberOfNonActiveRiders();
-                var totalVerifiedRiders = await totalNumberOfVerifiedRiders();
-                var totalUnverifiedRiders = await totalNumberOfUnverifiedRiders();
-                var stats = new
-                {
-                    totalRiders,
-                    totalActiveRiders,
-                    totalNonActiveRiders,
-                    totalVerifiedRiders,
-                    totalUnverifiedRiders
-                };
-                return stats;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<GetRiderDto>> nonActiveRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.Include(r => r.Deliveries).Where(r => r.IsActive == false)
-                    .ToListAsync();
-                var getRiderDto = _mapper.Map<List<GetRiderDto>>(riders);
-                return getRiderDto;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public Task<IEnumerable<OrderDTO>> orderLists(int id)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public Task<IEnumerable<OrderDto>> orderLists(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IEnumerable<GetRiderDto>> searchAsync(string searchString)
-=======
-        public async Task<IEnumerable<GetRiderDTO>> searchAsync(string searchString)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public async Task<IEnumerable<GetRiderDto>> searchAsync(string searchString)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var riderList = new List<Rider>();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var riders = await _dbContext.Riders.Include(r => r.Deliveries).ToListAsync();
-=======
-                var riders = await _dbContext.Riders.Include(r => r.Orders).ToListAsync();
->>>>>>> 28d4101 (finished with rider and order)
-=======
-                var riders = await _dbContext.Riders.Include(r => r.Deliveries).ToListAsync();
->>>>>>> 4641615 (finished with delivery service and controller)
                 foreach (var rider in riders)
                 {
                     var searchParam = rider.SearchString!.ToLower().Split(" ");
@@ -634,8 +314,6 @@ namespace Api.Services
                     }
                 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var getRiderDto = _mapper.Map<List<GetRiderDto>>(riderList);
                 return getRiderDto;
             }
@@ -646,133 +324,19 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<DeliveryDtoLite>> successfulDeliveries(int riderId)
-=======
-                var getRiderDTO = _mapper.Map<List<GetRiderDTO>>(riderList);
-                return getRiderDTO;
-=======
-                var getRiderDto = _mapper.Map<List<GetRiderDto>>(riderList);
-                return getRiderDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<DeliveryDtoLite>> successfulDeliveries(int riderId)
         {
             try
             {
 
                 var deliveries = await _dbContext.Deliveries.OrderByDescending(r => r.CreatedAt)
                     .Include(d => d.Rider)
-                    .Where(d => d.Rider!.Id == riderId && d.Status == "successful")
-                    .ToListAsync();
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
-                return deliveryDTOLite;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfActiveRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.Where(r => r.IsActive == true).CountAsync();
-                return riders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfNonActiveRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.Where(r => r.IsActive == false).CountAsync();
-                return riders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.CountAsync();
-                return riders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfUnverifiedRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.Where(r => r.IsVerified == false).CountAsync();
-                return riders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfVerifiedRiders()
-        {
-            try
-            {
-                var riders = await _dbContext.Riders.Where(r => r.IsVerified == true).CountAsync();
-                return riders;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<DeliveryDTOLite>> unsuccessfulDeliveries(int riderId)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public async Task<IEnumerable<DeliveryDtoLite>> unsuccessfulDeliveries(int riderId)
->>>>>>> 836ec36 (changed all DTO to Dto)
-        {
-            try
-            {
-
-                var deliveries = await _dbContext.Deliveries.OrderByDescending(r => r.CreatedAt)
-                    .Include(d => d.Rider)
-<<<<<<< HEAD
                     .Where(d => d.Rider!.Id == riderId && d.Status!.ToLower() == "delivered")
                     .ToListAsync();
                 var deliveryDTOLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
-=======
-                    .Where(d => d.Rider!.Id == riderId && d.Status == "unsuccessful")
-                    .ToListAsync();
-<<<<<<< HEAD
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(deliveries);
->>>>>>> 28d4101 (finished with rider and order)
-=======
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
->>>>>>> 836ec36 (changed all DTO to Dto)
                 return deliveryDTOLite;
             }
             catch (Exception ex)
             {
-<<<<<<< HEAD
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
@@ -879,17 +443,6 @@ namespace Api.Services
         }
 
         public async Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id)
-=======
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<GetRiderDTO> updateAsync(CreateRiderDTO rider, int id)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public async Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -906,18 +459,12 @@ namespace Api.Services
                 {
                     var folderName = "Riders";
                     var imgPath = await UploadImage.uploadImg(rider.IdentityImg!, _cloudinary, folderName);
-<<<<<<< HEAD
                     if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
-=======
-                    if (imgPath == null!) throw new Exception("Can not upload the product image");
->>>>>>> 28d4101 (finished with rider and order)
                     initialRider.IdentityImgUrl = imgPath;
                 }
                 initialRider.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Riders.Attach(initialRider);
                 await _dbContext.SaveChangesAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var getRiderDto = _mapper.Map<GetRiderDto>(initialRider);
                 return getRiderDto;
             }
@@ -928,26 +475,6 @@ namespace Api.Services
         }
 
         public async Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg)
-=======
-                var getRiderDTO = _mapper.Map<GetRiderDTO>(initialRider);
-                return getRiderDTO;
-=======
-                var getRiderDto = _mapper.Map<GetRiderDto>(initialRider);
-                return getRiderDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<GetRiderDTO> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg)
->>>>>>> 28d4101 (finished with rider and order)
-=======
-        public async Task<GetRiderDto> uploadRiderIdentityImg(int id, IFormFile riderIdendityImg)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -955,7 +482,6 @@ namespace Api.Services
                 var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == id);
                 if (rider == null!) return null!;
                 var imgPath = await UploadImage.uploadImg(riderIdendityImg, _cloudinary, folderName);
-<<<<<<< HEAD
                 if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                 rider.IdentityImgUrl = imgPath;
                 _dbContext.Riders.Attach(rider);
@@ -966,18 +492,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
-                rider.IdentityImgUrl = imgPath;
-                _dbContext.Riders.Attach(rider);
-                await _dbContext.SaveChangesAsync();
-                var getRiderDto = _mapper.Map<GetRiderDto>(rider);
-                return getRiderDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> 28d4101 (finished with rider and order)
             }
         }
 
@@ -991,8 +505,6 @@ namespace Api.Services
                 _dbContext.Riders.Attach(rider);
                 await _dbContext.SaveChangesAsync();
                 return "Rider verified";
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -1034,10 +546,6 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
 
         public async Task<PagedList<Rider>> getAllActive(SearchPaging props)
         {
@@ -1078,21 +586,5 @@ namespace Api.Services
             }
         }
 
-<<<<<<< HEAD
-=======
-            }catch(Exception ex)
-=======
-            }
-            catch (Exception ex)
->>>>>>> 98415b4 (done with dashboard)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
->>>>>>> 28d4101 (finished with rider and order)
-=======
->>>>>>> 8ad4440 (wallet and transaction commits)
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
     }
 }

@@ -495,7 +495,6 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                 <div className="sm:col-span-1">
                   <label
                     htmlFor="latitude"
-<<<<<<< HEAD
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
                     Latitude
@@ -540,54 +539,6 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                 <div className="sm:col-span-1">
                   <label
                     htmlFor="code"
-=======
->>>>>>> 3d0abb7 (new commit)
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Latitude
-                  </label>
-                  <input
-                    type="text"
-                    name="latitude"
-                    id="latitude"
-                    {...register("Latitude")}
-                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Latitude of Vendor"
-                  />
-                  {/* {errors.Latitude && (
-                    <p className="text-sm text-red-400">Latitude is required</p>
-                  )} */}
-                </div>
-<<<<<<< HEAD
-=======
-
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="longitude"
-                    className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
-                  >
-                    Longitude
-                  </label>
-                  <input
-                    type="text"
-                    name="longitude"
-                    id="longitude"
-                    {...register("Longitude")}
-                    className="text-grayTxt bg-graybg border border-gray-300 text-base rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-500 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type Longitude of Vendor"
-                  />
-                  {/* {errors.Longitude && (
-                    <p className="text-sm text-red-400">
-                      Longitude is required
-                    </p>
-                  )} */}
-                </div>
-
-               
-
-                <div className="sm:col-span-1">
-                  <label
-                    htmlFor="code"
                     className="block mb-2 text-base font-medium text-gray-800 dark:text-gray-50"
                   >
                     Postal Code (Optional)
@@ -606,7 +557,6 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }) => {
                     </p>
                   )} */}
                 </div>
->>>>>>> 3d0abb7 (new commit)
               </div>
             </CustomTabPanel>
             <CustomTabPanel

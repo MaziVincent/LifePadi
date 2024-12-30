@@ -68,11 +68,7 @@ const AdminProduct = () => {
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/vendorcategory"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> 4dc5d34 (worked on product component)
             >
               Category
             </Link>
@@ -80,11 +76,7 @@ const AdminProduct = () => {
             <Link
               to={`/admin/vendor/${data?.VendorId}`}
               aria-current="page"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> 4dc5d34 (worked on product component)
             >
               Vendor
             </Link>
@@ -92,11 +84,7 @@ const AdminProduct = () => {
             <Link
               to="#"
               aria-current="page"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> 4dc5d34 (worked on product component)
             >
               {data?.Name}
             </Link>
@@ -122,21 +110,10 @@ const AdminProduct = () => {
         </div>
       </section>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
       <section className="bg-white dark:bg-gray-900 flex flex-col md:flex-row py-6 justify-evenly items-center ">
         <div>
           {" "}
           <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-redborder': 'bg-background'} font-bold cursor-pointer`}>
-=======
-      <section className="bg-white dark:bg-gray-900 flex justify-evenly items-center">
-=======
-      <section className="bg-white dark:bg-gray-900 flex flex-col md:flex-row py-6 justify-evenly items-center ">
->>>>>>> a2698f4 (Finishing touches on the admin portal)
-        <div>
-          {" "}
-          <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-red-400': 'bg-green-400'} font-bold cursor-pointer`}>
->>>>>>> 4dc5d34 (worked on product component)
             {data?.Status ? 'De-activate' : 'Activate'}
           </button>
         </div>
@@ -145,11 +122,7 @@ const AdminProduct = () => {
         </h2>
         <div>
           {" "}
-<<<<<<< HEAD
           <button onClick={() => dispatch({type:'upload'})} className="shadow-lg p-3 rounded-xl bg-blue font-bold cursor-pointer">Upload Image</button>
-=======
-          <button onClick={() => dispatch({type:'upload'})} className="shadow-lg p-3 rounded-xl bg-blue-400 font-bold cursor-pointer">Upload Image</button>
->>>>>>> 4dc5d34 (worked on product component)
         </div>
       </section>
       <UploadImageModal

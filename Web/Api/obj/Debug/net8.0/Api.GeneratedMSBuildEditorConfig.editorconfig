@@ -9,83 +9,11 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Api
 build_property.RootNamespace = Api
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
-=======
-build_property.ProjectDir = C:\works\LifePadi\Web\Api\
->>>>>>> 4088e0a (finished with delivery service and controller)
-=======
-build_property.ProjectDir = C:\works\LifePadi\Web\API\
->>>>>>> 6f7231c (done with payment and voucher)
-=======
-build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
->>>>>>> 18f5cdb (Admin service)
-=======
-build_property.ProjectDir = C:\works\LifePadi\Web\API\
->>>>>>> b964101 (added creating serviceIcon while creating the service)
-=======
-build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
->>>>>>> 93aff31 (create service modal)
-=======
-build_property.ProjectDir = c:\works\LifePadi\Web\Api\
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-build_property.ProjectDir = C:\works\LifePadi\Web\Api\
->>>>>>> 54fb00d (removed service from product)
-=======
-build_property.ProjectDir = C:\works\LifePadi\Web\Api\
->>>>>>> a2a661a (created a new service)
-=======
-build_property.ProjectDir = /Users/mac/Projects/LifePadi/Web/Api/
->>>>>>> 805ff4e (gitignore)
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
-=======
-build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\Api
->>>>>>> 4088e0a (finished with delivery service and controller)
-=======
-build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\API
->>>>>>> 6f7231c (done with payment and voucher)
-=======
-build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
->>>>>>> 18f5cdb (Admin service)
-=======
-build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\API
->>>>>>> b964101 (added creating serviceIcon while creating the service)
-=======
-build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
->>>>>>> 93aff31 (create service modal)
-=======
-build_property.MSBuildProjectDirectory = c:\works\LifePadi\Web\Api
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\Api
->>>>>>> 54fb00d (removed service from product)
-=======
-build_property.MSBuildProjectDirectory = C:\works\LifePadi\Web\Api
->>>>>>> a2a661a (created a new service)
-=======
-build_property.MSBuildProjectDirectory = /Users/mac/Projects/LifePadi/Web/Api
->>>>>>> 805ff4e (gitignore)
 build_property._RazorSourceGeneratorDebug = 

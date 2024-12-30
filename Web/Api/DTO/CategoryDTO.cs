@@ -2,15 +2,12 @@
 
 namespace Api.DTO
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     public class CategoryDto
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Icon { get; set; }
-<<<<<<< HEAD
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public List<ProductDtoLite>? Products { get; set; }
@@ -30,44 +27,5 @@ namespace Api.DTO
         public string? Name { get; set; }
         public string? Description { get; set; }
         public IFormFile? Icon { get; set; }
-=======
-    public class CategoryDTO
-=======
-    public class CategoryDto
->>>>>>> 836ec36 (changed all DTO to Dto)
-    {
-        public int? Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-=======
->>>>>>> 59a2135 (added icon to the category model)
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public List<ProductDtoLite>? Products { get; set; }
-    }
-
-    public class CategoryDtoLite
-    {
-        public int? Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public string? Icon { get; set; }
-    }
-
-    public class CreateCategoryDto
-    {
-        public int? Id { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public IFormFile? Icon { get; set; }
->>>>>>> 59a2135 (added icon to the category model)
     }
 }

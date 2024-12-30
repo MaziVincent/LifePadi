@@ -4,21 +4,8 @@ using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 using CloudinaryDotNet;
 
-=======
-=======
-using System.Linq;
->>>>>>> db55c17 (added a route for products under a category with pagination)
-using System.Linq.Expressions;
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-using CloudinaryDotNet;
-
->>>>>>> 59a2135 (added icon to the category model)
 
 namespace Api.Services
 {
@@ -26,11 +13,6 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 59a2135 (added icon to the category model)
         private readonly IConfiguration _config;
         private readonly Cloudinary _cloudinary;
         public CategoryService(DBContext dbContext, IMapper mapper, IConfiguration config)
@@ -39,23 +21,13 @@ namespace Api.Services
             _mapper = mapper;
             _config = config;
             var account = new Account(
-<<<<<<< HEAD
                 _config["Cloudinary:Cloud_Name"],
                 _config["Cloudinary:Api_Key"],
                 _config["Cloudinary:Api_Secret"]
-=======
-                _config["CloudinarySettings:CloudName"],
-                _config["CloudinarySettings:ApiKey"],
-                _config["CloudinarySettings:ApiSecret"]
->>>>>>> 59a2135 (added icon to the category model)
             );
             _cloudinary = new Cloudinary(account);
         }
-<<<<<<< HEAD
         public async Task<PagedList<Category>> allAsync(SearchPaging props)
-=======
-        public async Task<IEnumerable<CategoryDto>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
->>>>>>> b8c66da (changed all DTO to Dto)
         {
             try
             {
@@ -63,42 +35,21 @@ namespace Api.Services
 
                 if (props.SearchString is null)
                 {
-<<<<<<< HEAD
-<<<<<<< HEAD
                     var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor)
-=======
-                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt).Include(c => c.Products)
->>>>>>> 867b7f3 (added a route for vendorCategories)
-=======
-                    var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
->>>>>>> f8ebdf6 (returned vendor when getting all categories)
                     .ToListAsync();
-<<<<<<< HEAD
                     categoryList = categoryList.Concat(categories1);
                     var result = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                     return result;
-=======
-                    var CategoryDtos1 = _mapper.Map<List<CategoryDto>>(categories1);
-                    return CategoryDtos1;
->>>>>>> b8c66da (changed all DTO to Dto)
                 }
                 var categories = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
-<<<<<<< HEAD
                 categoryList = categoryList.Concat(categories);
                 var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
-=======
-                var CategoryDtos = _mapper.Map<List<CategoryDto>>(categories);
-                return CategoryDtos;
->>>>>>> b8c66da (changed all DTO to Dto)
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
             catch (Exception ex)
             {
@@ -115,47 +66,25 @@ namespace Api.Services
                 if (props.SearchString is null)
                 {
                     var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-<<<<<<< HEAD
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id)
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
-<<<<<<< HEAD
-=======
-                    .Include(c => c.Products!).ThenInclude(p => p.Vendor)
-                    .Where(c => c.Id == id)
->>>>>>> db55c17 (added a route for products under a category with pagination)
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
                     .ToListAsync();
                     productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
                     var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                     return result;
                 }
                 var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-<<<<<<< HEAD
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
                     .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .AsSplitQuery()
                     .OrderBy(c => Guid.NewGuid())
-<<<<<<< HEAD
-=======
-                .Include(c => c.Products!).ThenInclude(p => p.Vendor)
-                    .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
->>>>>>> db55c17 (added a route for products under a category with pagination)
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
                     .ToListAsync();
                 productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
                 var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
                 return returned;
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> ca028f0 (fixed product category)
-=======
->>>>>>> db55c17 (added a route for products under a category with pagination)
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -163,55 +92,10 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync()
-=======
-        public CategoryService(DBContext dbContext, IMapper mapper) 
-        { 
-=======
-        public CategoryService(DBContext dbContext, IMapper mapper)
-        {
->>>>>>> 98415b4 (done with dashboard)
-            _dbContext = dbContext;
-            _mapper = mapper;
-        }
-        public async Task<IEnumerable<CategoryDTO>> allAsync(int pageNumber = 1, int pageSize = 10, string searchString = "")
-        {
-            try
-            {
-                var skip = (pageNumber - 1) * pageSize;
-                if (searchString == "")
-                {
-                    var categories1 = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
-                    .ToListAsync();
-                    var categoryDTOs1 = _mapper.Map<List<CategoryDTO>>(categories1);
-                    return categoryDTOs1;
-                }
-                var categories = await _dbContext.Categories.Skip(skip).Take(pageSize).OrderByDescending(c => c.CreatedAt)
-                    .Where(c => c.Name!.ToLower().Contains(searchString.ToLower()))
-                    .ToListAsync();
-                var categoryDTOs = _mapper.Map<List<CategoryDTO>>(categories);
-                return categoryDTOs;
-            }
-=======
-            
->>>>>>> 4dc5d34 (worked on product component)
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<CategoryDTOLite>> allCategoryLiteAsync()
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<CategoryDtoLite>> allCategoryLiteAsync()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var categories = await _dbContext.Categories.ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var CategoryDtos = _mapper.Map<List<CategoryDtoLite>>(categories);
                 return CategoryDtos;
             }
@@ -222,33 +106,11 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> categoryProducts(int id)
-=======
-                var categoryDTOs = _mapper.Map<List<CategoryDTOLite>>(categories);
-                return categoryDTOs;
-=======
-                var CategoryDtos = _mapper.Map<List<CategoryDtoLite>>(categories);
-                return CategoryDtos;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> categoryProducts(int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> categoryProducts(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var category = await _dbContext.Categories
                     .Include(c => c.Products!)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .AsSplitQuery()
@@ -298,62 +160,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                    .ThenInclude(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(c => c.Products!)
-                    .ThenInclude(p => p.Vendor)
-                    .FirstOrDefaultAsync(c => c.Id == id);
-                var products = _mapper.Map<List<ProductDto>>(category!.Products);
-                return products;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-        public async Task<object> categoryStats()
-        {
-            try
-            {
-                var stats = new
-                {
-                    totalCategories = await numberOfCategories(),
-                    totalProducts = await _dbContext.Products.CountAsync(),
-                };
-                return stats;
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-        public async Task<CategoryDto> createAsync(CreateCategoryDto category)
-        {
-            try
-            {
-                var folderName = "ProductCategory";
-                var imgPath = await UploadImage.uploadImg(category.Icon!, _cloudinary, folderName);
-                if (imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
-                var newCategory = _mapper.Map<Category>(category);
-                newCategory.Icon = imgPath;
-                await _dbContext.Categories.AddAsync(newCategory);
-                await _dbContext.SaveChangesAsync();
-                var CategoryDto = _mapper.Map<CategoryDto>(newCategory);
-                return CategoryDto;
-            }
-            catch (Exception ex)
-            {
-<<<<<<< HEAD
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                throw new Exceptions.ServiceException(ex.Message);
->>>>>>> 867b7f3 (added a route for vendorCategories)
             }
         }
 
@@ -366,36 +172,14 @@ namespace Api.Services
                 _dbContext.Categories.Remove(category);
                 await _dbContext.SaveChangesAsync();
                 return "Category deleted";
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-<<<<<<< HEAD
             }
         }
 
         public async Task<CategoryDto> getAsync(int id)
-=======
-            }catch (Exception ex)
-=======
-            }
-            catch (Exception ex)
->>>>>>> 98415b4 (done with dashboard)
-            {
-                throw new Exception(ex.Message);
-=======
->>>>>>> 867b7f3 (added a route for vendorCategories)
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<CategoryDTO> getAsync(int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<CategoryDto> getAsync(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -403,8 +187,6 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return null!;
                 var CategoryDto = _mapper.Map<CategoryDto>(category);
@@ -417,27 +199,6 @@ namespace Api.Services
         }
 
         public async Task<CategoryDto> getByNameAsync(string name)
-=======
-                    .ThenInclude(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .FirstOrDefaultAsync(c => c.Id == id);
-                if (category == null) return null!;
-                var CategoryDto = _mapper.Map<CategoryDto>(category);
-                return CategoryDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<CategoryDTO> getByNameAsync(string name)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<CategoryDto> getByNameAsync(string name)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -445,8 +206,6 @@ namespace Api.Services
                     .Include(c => c.Products!)
                     .ThenInclude(p => p.Vendor)
                     .Include(c => c.Products!)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .FirstOrDefaultAsync(c => c.Name == name);
                 if (category == null) return null!;
                 var CategoryDto = _mapper.Map<CategoryDto>(category);
@@ -473,41 +232,6 @@ namespace Api.Services
         }
 
         public async Task<CategoryDto> updateAsync(CategoryDto category, int id)
-=======
-                    .ThenInclude(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .FirstOrDefaultAsync(c => c.Name == name);
-                if (category == null) return null!;
-                var CategoryDto = _mapper.Map<CategoryDto>(category);
-                return CategoryDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-
-        public async Task<int> numberOfCategories()
-        {
-            try
-            {
-                var count = await _dbContext.Categories.CountAsync();
-                return count;
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<CategoryDTO> updateAsync(CategoryDTO category, int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<CategoryDto> updateAsync(CategoryDto category, int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -518,8 +242,6 @@ namespace Api.Services
                 initialCategory!.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Categories.Attach(initialCategory);
                 await _dbContext.SaveChangesAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var CategoryDto = _mapper.Map<CategoryDto>(initialCategory);
                 return CategoryDto;
             }
@@ -534,63 +256,15 @@ namespace Api.Services
             try
             {
                 var vendorCategories = await _dbContext.Categories
-<<<<<<< HEAD
-<<<<<<< HEAD
     .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
     .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
     .ToListAsync();
-=======
-                    .Include(c => c.Products!)
-                    .ThenInclude(p => p.Vendor)
-                    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
-                    .ToListAsync();
->>>>>>> 867b7f3 (added a route for vendorCategories)
-=======
-    .Include(c => c.Products!.Where(p => p.VendorId == vendorId))
-    .Where(c => c.Products!.Any(p => p.VendorId == vendorId))
-    .ToListAsync();
->>>>>>> ca028f0 (fixed product category)
                 var categoryDto = _mapper.Map<List<CategoryDto>>(vendorCategories);
                 return categoryDto;
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-<<<<<<< HEAD
-            }
-        }
-
-        public async Task<string> uploadIconAsync(int id, IFormFile Icon)
-        {
-            try
-            {
-                var folderName = "ProductCategory";
-                var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id);
-                if (category == null) return null!;
-                var imgPath = await UploadImage.uploadImg(Icon, _cloudinary, folderName);
-                if (imgPath == null) throw new Exceptions.ServiceException("Cann't upload the category icon");
-                category.Icon = imgPath;
-                _dbContext.Categories.Attach(category);
-                await _dbContext.SaveChangesAsync();
-                return "Icon uploaded successfully";
-            }
-            catch (Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-=======
-                var categoryDTO = _mapper.Map<CategoryDTO>(initialCategory);
-                return categoryDTO;
-=======
-                var CategoryDto = _mapper.Map<CategoryDto>(initialCategory);
-                return CategoryDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 867b7f3 (added a route for vendorCategories)
             }
         }
 

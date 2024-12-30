@@ -15,7 +15,6 @@ export default {
       graybg: '#e5e7eb',
       redborder: '#ff8282',
       lightgreen: '#8eca8e',
-<<<<<<< HEAD
       lightyellow: '#F7DC6F',
       lightcyan: '#00FFFF',
       lightemerald: '#00FF00',
@@ -32,23 +31,6 @@ export default {
       blue: '#15c5e8',
       lightGray: '#f1f2f3',
       midnightGreen: '#073B4C',
-=======
-      lightyellow: "#F7DC6F",
-      lightcyan: "#00FFFF",
-      lightemerald: "#00FF00",
-      lightindigo: "#4B0082",
-      lightorange: "#FFA07A",
-      lightviolet: "#EE00FF",
-      lightteal: "#00FF80",
-      lightForest:'#E9F5DB', 
-      darkBg:"#181818",
-      darkMenu:"#212121",
-      darkHover:"#3D3D3D",
-      darkSecondaryText:"#AAAAAA",
-      yellow:"#e8c115",
-      blue:"#15c5e8",
-      lightGray:"#f1f2f3"
->>>>>>> eda1965 (User Dashboard and Landing Page)
     },
     extend: {},
   },

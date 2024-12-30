@@ -1,14 +1,6 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
-<<<<<<< HEAD
-<<<<<<< HEAD
 using AutoMapper;
-=======
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-using API.DTO;
-using AutoMapper;
->>>>>>> 6022c93 (added pagination and search to riders delivery)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -18,23 +10,11 @@ namespace Api.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IDelivery _idelivery;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6022c93 (added pagination and search to riders delivery)
         private readonly IMapper _mapper;
         public DeliveryController(IDelivery idelivery, IMapper mapper)
         {
             _idelivery = idelivery;
             _mapper = mapper;
-<<<<<<< HEAD
-=======
-        public DeliveryController(IDelivery idelivery) 
-        { 
-            _idelivery = idelivery;
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
->>>>>>> 6022c93 (added pagination and search to riders delivery)
         }
 
         [HttpGet("all")]
@@ -44,12 +24,8 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allAsync();
                 return Ok(deliveries);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
@@ -62,21 +38,14 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.allDeliveryLiteAsync();
                 return Ok(deliveries);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("create")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IActionResult> create(DeliveryDto delivery)
         {
             try
@@ -86,32 +55,12 @@ namespace Api.Controllers
                 return Ok(newDelivery);
             }
             catch (Exception ex)
-=======
-        public async Task<IActionResult> create([FromForm] DeliveryDTO delivery)
-=======
-        public async Task<IActionResult> create([FromForm] DeliveryDto delivery)
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
-        public async Task<IActionResult> create( DeliveryDto delivery)
->>>>>>> 5f61f19 (updated payment)
-        {
-            try
-            {
-                if (!ModelState.IsValid) return BadRequest("Invalid form");
-                var newDelivery = await _idelivery.createAsync(delivery);
-                return Ok(newDelivery);
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
-=======
-        [HttpDelete("{id}/delete")]
->>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -119,22 +68,14 @@ namespace Api.Controllers
                 var response = await _idelivery.delete(id);
                 if (response == null) return NotFound();
                 return Ok(response);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpGet("get/{id}")]
-=======
-        [HttpGet("{id}/get")]
->>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -142,22 +83,14 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getAsync(id);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpGet("order/get/{orderId}")]
-=======
-        [HttpGet("order/{orderId}/get")]
->>>>>>> 4641615 (finished with delivery service and controller)
         public async Task<IActionResult> getOrderDelivery(int orderId)
         {
             try
@@ -165,20 +98,14 @@ namespace Api.Controllers
                 var delivery = await _idelivery.getOrderDelivery(orderId);
                 if (delivery == null) return NotFound();
                 return Ok(delivery);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("rider/{riderId}")]
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
         {
             try
@@ -197,34 +124,6 @@ namespace Api.Controllers
                 return Ok(new { result, dataList });
             }
             catch (Exception ex)
-=======
-        public async Task<IActionResult> getRiderDeliveries(int riderId)
-=======
-        public async Task<IActionResult> getRiderDeliveries(int riderId, [FromQuery] SearchPaging props)
->>>>>>> 6022c93 (added pagination and search to riders delivery)
-        {
-            try
-            {
-                var deliveries = await _idelivery.getRidersDeliveries(riderId, props);
-                if (deliveries == null) return NotFound();
-<<<<<<< HEAD
-                return Ok(deliveries);
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-                var result = _mapper.Map<List<DeliveryDto>>(deliveries);
-                var dataList = new
-                {
-                    deliveries.TotalCount,
-                    deliveries.TotalPages,
-                    deliveries.PageSize,
-                    deliveries.CurrentPage
-
-                };
-                return Ok(new {result, dataList});
-            }
-            catch (Exception ex)
->>>>>>> 6022c93 (added pagination and search to riders delivery)
             {
                 return BadRequest(ex.Message);
             }
@@ -237,12 +136,8 @@ namespace Api.Controllers
             {
                 var deliveries = await _idelivery.getunSuccessfulDelivery();
                 return Ok(deliveries);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
@@ -255,35 +150,21 @@ namespace Api.Controllers
             {
                 var response = await _idelivery.getWithStatus(status);
                 return Ok(response);
-<<<<<<< HEAD
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
-=======
-        [HttpPut("{id}/update")]
-<<<<<<< HEAD
-        public async Task<IActionResult> update(int id, [FromForm] DeliveryDTO delivery)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<IActionResult> update(int id, [FromForm] DeliveryDto delivery)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var updatedDelivery = await _idelivery.updateAsync(delivery, id);
                 if (updatedDelivery == null) return NotFound();
                 return Ok(updatedDelivery);
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
@@ -350,20 +231,12 @@ namespace Api.Controllers
         }
 
         [HttpPut("updateBothStatus")]
-<<<<<<< HEAD
         public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId)
         {
             try
             {
                 var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus);
                 if (response == null) return NotFound();
-=======
-        public async Task<IActionResult> updateBothStatus([FromQuery] int deliveryId, string deliveryStatus, int orderId, string orderStatus)
-        {
-            try
-            {
-                var response = await _idelivery.updateDeliveryStatusOrderStatus(deliveryId, orderId, deliveryStatus, orderStatus);
->>>>>>> 52db56c (made some changes in the delivery and order)
                 return Ok(response);
             }
             catch (Exception ex)
@@ -371,7 +244,6 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
 
         [HttpGet("pending/rider/{riderId}")]
         public async Task<IActionResult> totalNumberOfPendingDeliveriesByRider(int riderId)
@@ -412,28 +284,9 @@ namespace Api.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
-=======
-            }catch (Exception ex)
->>>>>>> 4641615 (finished with delivery service and controller)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpPut("{id}/assignRider/{riderId}")]
-        public async Task<IActionResult> assignRiderToDelivery(int id, int riderId)
-        {
-            try
-            {
-                var delivery = await _idelivery.assynRiderTODelivery(id, riderId);
-                if (delivery == null) return NotFound();
-                return Ok(delivery);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-=======
->>>>>>> 52db56c (made some changes in the delivery and order)
     }
 }

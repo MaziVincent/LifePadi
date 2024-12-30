@@ -37,15 +37,7 @@ namespace Api.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-<<<<<<< HEAD
                     b.Property<bool?>("DefaultAddress")
-                        .HasColumnType("boolean");
-=======
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
->>>>>>> ee48634 (done with service, category and product controllers.)
-
-                    b.Property<bool?>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("IsActive")
@@ -185,44 +177,21 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d23f0ab (transaction, order, notification commit)
                     b.Property<int?>("DeliveryAddressId")
                         .HasColumnType("integer");
-=======
-                    b.Property<string>("DeliveryAddress")
-                        .HasColumnType("text");
->>>>>>> 52db56c (made some changes in the delivery and order)
 
                     b.Property<double>("DeliveryFee")
                         .HasColumnType("double precision");
 
                     b.Property<int>("OrderId")
-<<<<<<< HEAD
                         .HasColumnType("integer");
 
-<<<<<<< HEAD
                     b.Property<int?>("PickUpAddressId")
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("integer");
-<<<<<<< HEAD
-=======
-                    b.Property<string>("PickupAddress")
-                        .HasColumnType("text");
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
->>>>>>> d23f0ab (transaction, order, notification commit)
 
                     b.Property<string>("PickupType")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
                     b.Property<int?>("RiderId")
                         .HasColumnType("integer");
 
@@ -230,7 +199,6 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-<<<<<<< HEAD
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -250,9 +218,6 @@ namespace Api.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-=======
-                    b.Property<int>("RiderId")
->>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -349,11 +314,7 @@ namespace Api.Migrations
                     b.Property<int?>("ReceiverAddressId")
                         .HasColumnType("integer");
 
-<<<<<<< HEAD
                     b.Property<string>("ReceiverAddressOld")
-=======
-                    b.Property<string>("Status")
->>>>>>> 28d4101 (finished with rider and order)
                         .HasColumnType("text");
 
                     b.Property<string>("ReceiverName")
@@ -381,8 +342,6 @@ namespace Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
-=======
->>>>>>> 52db56c (made some changes in the delivery and order)
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -447,31 +406,12 @@ namespace Api.Migrations
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
-<<<<<<< HEAD
 
                     b.Property<string>("Instruction")
                         .HasColumnType("text");
 
                     b.Property<bool?>("IsDelivered")
-=======
-
-                    b.Property<bool?>("IsDelivered")
                         .HasColumnType("boolean");
-
-<<<<<<< HEAD
-                    b.Property<int?>("RiderId")
-                        .HasColumnType("integer");
-
-<<<<<<< HEAD
-                    b.Property<bool?>("Status")
->>>>>>> ee48634 (done with service, category and product controllers.)
-                        .HasColumnType("boolean");
-=======
-=======
->>>>>>> 4641615 (finished with delivery service and controller)
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
->>>>>>> 28d4101 (finished with rider and order)
 
                     b.Property<string>("Order_Id")
                         .HasColumnType("text");
@@ -487,9 +427,6 @@ namespace Api.Migrations
 
                     b.Property<double?>("TotalAmount")
                         .HasColumnType("double precision");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
 
                     b.Property<string>("Type")
                         .HasColumnType("text");
@@ -518,10 +455,6 @@ namespace Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 52db56c (made some changes in the delivery and order)
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -531,11 +464,6 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 52db56c (made some changes in the delivery and order)
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
@@ -591,16 +519,7 @@ namespace Api.Migrations
 
                     b.Property<string>("SearchString")
                         .HasColumnType("text");
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-
-=======
->>>>>>> 58020e7 (removed service from product)
                     b.Property<bool?>("Status")
                         .HasColumnType("boolean");
 
@@ -757,12 +676,9 @@ namespace Api.Migrations
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
-<<<<<<< HEAD
 
                     b.Property<bool?>("StatusBool")
                         .HasColumnType("boolean");
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
 
                     b.Property<double?>("SubTotal")
                         .HasColumnType("double precision");
@@ -782,23 +698,17 @@ namespace Api.Migrations
                     b.Property<int?>("VoucherId")
                         .HasColumnType("integer");
 
-<<<<<<< HEAD
                     b.Property<int?>("WalletId")
                         .HasColumnType("integer");
 
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("VoucherId");
 
-<<<<<<< HEAD
                     b.HasIndex("WalletId");
 
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
                     b.ToTable("Transactions");
                 });
 
@@ -895,7 +805,6 @@ namespace Api.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Api.Models.VendorCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -959,8 +868,6 @@ namespace Api.Migrations
                     b.ToTable("VendorReviews");
                 });
 
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
             modelBuilder.Entity("Api.Models.Voucher", b =>
                 {
                     b.Property<int>("Id")
@@ -978,10 +885,6 @@ namespace Api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 50bdb11 (added amount to voucher)
                     b.Property<double?>("DiscountAmount")
                         .HasColumnType("double precision");
 
@@ -989,12 +892,6 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EndDate")
-=======
-                    b.Property<int?>("DiscountPercentage")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("EndDate")
->>>>>>> 7f9ad44 (done with payment and voucher)
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("IsActive")
@@ -1006,11 +903,7 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
                     b.Property<DateTime>("StartDate")
-=======
-                    b.Property<DateTime?>("StartDate")
->>>>>>> 7f9ad44 (done with payment and voucher)
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -1033,7 +926,6 @@ namespace Api.Migrations
                     b.ToTable("Vouchers");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Api.Models.VoucherNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -1178,8 +1070,6 @@ namespace Api.Migrations
                     b.ToTable("Withdrawals");
                 });
 
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
             modelBuilder.Entity("Api.Models.Admin", b =>
                 {
                     b.HasBaseType("Api.Models.User");
@@ -1213,16 +1103,6 @@ namespace Api.Migrations
                     b.Property<string>("IdentityType")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    b.Property<bool?>("IsVerified")
-=======
-                    b.Property<bool?>("IsActive")
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-                        .HasColumnType("boolean");
-
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
                     b.Property<bool?>("IsVerified")
                         .HasColumnType("boolean");
 
@@ -1239,8 +1119,6 @@ namespace Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
                     b.Property<string>("OpeningHours")
                         .HasColumnType("text");
 
@@ -1257,32 +1135,17 @@ namespace Api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("VendorImgUrl")
-=======
-=======
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("integer");
-
->>>>>>> 58020e7 (removed service from product)
-                    b.Property<string>("VendorImgUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("VendorType")
->>>>>>> ee48634 (done with service, category and product controllers.)
                         .HasColumnType("text");
 
                     b.HasIndex("ServiceId");
 
-<<<<<<< HEAD
                     b.HasIndex("VendorCategoryId");
 
-=======
->>>>>>> 58020e7 (removed service from product)
                     b.HasDiscriminator().HasValue("Vendor");
                 });
 
             modelBuilder.Entity("Api.Models.Address", b =>
                 {
-<<<<<<< HEAD
                     b.HasOne("Api.Models.User", "User")
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
@@ -1296,22 +1159,11 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Models.Customer", "Customer")
                         .WithMany()
-<<<<<<< HEAD
-=======
-                    b.HasOne("Api.Models.Customer", "Customer")
-                        .WithMany("Addresses")
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
                 });
 
             modelBuilder.Entity("Api.Models.CustomerVoucher", b =>
@@ -1337,8 +1189,6 @@ namespace Api.Migrations
                     b.Navigation("Transaction");
 
                     b.Navigation("Voucher");
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
                 });
 
             modelBuilder.Entity("Api.Models.Delivery", b =>
@@ -1352,7 +1202,6 @@ namespace Api.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-<<<<<<< HEAD
 
                     b.HasOne("Api.Models.Address", "PickUpAddress")
                         .WithMany()
@@ -1361,20 +1210,8 @@ namespace Api.Migrations
                     b.HasOne("Api.Models.Rider", "Rider")
                         .WithMany("Deliveries")
                         .HasForeignKey("RiderId");
-=======
-
-                    b.HasOne("Api.Models.Rider", "Rider")
-                        .WithMany("Deliveries")
-<<<<<<< HEAD
-                        .HasForeignKey("RiderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
->>>>>>> ee48634 (done with service, category and product controllers.)
 
                     b.Navigation("DeliveryAddress");
-=======
-                        .HasForeignKey("RiderId");
->>>>>>> 7f9ad44 (done with payment and voucher)
 
                     b.Navigation("Order");
 
@@ -1462,17 +1299,7 @@ namespace Api.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-                    b.HasOne("Api.Models.Rider", "Rider")
-                        .WithMany("Orders")
-                        .HasForeignKey("RiderId");
->>>>>>> ee48634 (done with service, category and product controllers.)
-
-=======
->>>>>>> 4641615 (finished with delivery service and controller)
                     b.Navigation("Customer");
                 });
 
@@ -1502,19 +1329,7 @@ namespace Api.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-                    b.HasOne("Api.Models.Service", "Service")
-                        .WithMany("Products")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
->>>>>>> ee48634 (done with service, category and product controllers.)
-
-=======
->>>>>>> 58020e7 (removed service from product)
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
@@ -1593,7 +1408,6 @@ namespace Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-<<<<<<< HEAD
                     b.HasOne("Api.Models.Vendor", "Vendor")
                         .WithMany("VendorReviews")
                         .HasForeignKey("VendorId")
@@ -1670,24 +1484,6 @@ namespace Api.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("VendorCategory");
-=======
-                    b.HasOne("Api.Models.Voucher", "Voucher")
-                        .WithMany("Transactions")
-                        .HasForeignKey("VoucherId");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Voucher");
->>>>>>> 7f9ad44 (done with payment and voucher)
-                });
-
-            modelBuilder.Entity("Api.Models.Vendor", b =>
-                {
-                    b.HasOne("Api.Models.Service", "Service")
-                        .WithMany("Vendors")
-                        .HasForeignKey("ServiceId");
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Api.Models.Category", b =>
@@ -1712,7 +1508,6 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Service", b =>
                 {
                     b.Navigation("Vendors");
-<<<<<<< HEAD
                 });
 
             modelBuilder.Entity("Api.Models.User", b =>
@@ -1739,13 +1534,6 @@ namespace Api.Migrations
                     b.Navigation("Deposites");
 
                     b.Navigation("Withdrawals");
-=======
->>>>>>> 58020e7 (removed service from product)
-                });
-
-            modelBuilder.Entity("Api.Models.Voucher", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Api.Models.Customer", b =>
@@ -1764,11 +1552,8 @@ namespace Api.Migrations
             modelBuilder.Entity("Api.Models.Rider", b =>
                 {
                     b.Navigation("Deliveries");
-<<<<<<< HEAD
 
                     b.Navigation("RiderReviews");
-=======
->>>>>>> 4641615 (finished with delivery service and controller)
                 });
 
             modelBuilder.Entity("Api.Models.Vendor", b =>

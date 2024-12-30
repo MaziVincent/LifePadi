@@ -14,51 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f3b7d12e8e88d48c8dbbeccddc351472aa7775")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35c6f04f10dd7c4c9436e0b8941d5f9f85856e3b")]
->>>>>>> 4088e0a (finished with delivery service and controller)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4088e0aee0747a8cb6980679d26858402d0cb25a")]
->>>>>>> 6f7231c (done with payment and voucher)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7349b469ce6c7687859b04145c5afef593e69336")]
->>>>>>> 18f5cdb (Admin service)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b96410141d7320ba228d6d0ee8aac1b5055c78fd")]
->>>>>>> 93aff31 (create service modal)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b96410141d7320ba228d6d0ee8aac1b5055c78fd")]
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15ee6541257ea2fef36e06e7f2d52ce4174d9db8")]
->>>>>>> 54fb00d (removed service from product)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54fb00df4ea7b63eb218ba1f087138b40bf86f88")]
->>>>>>> d913f14 (done with dashboard)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f1ec52e08a5de5a2b2b84ac19401c37a55a9e5d6")]
->>>>>>> 2e24261 (git ignore)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d913f14e3a7a1ab70976aed4f92252cc80be9074")]
->>>>>>> e0958f8 (added modelstate for service)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0958f87ac348461b38f8ca85c2f3d6ff28937de")]
->>>>>>> a2a661a (created a new service)
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+575f1a3f0f5347ff49a93adccf441bb45fb84367")]
->>>>>>> 805ff4e (gitignore)
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+25eadc6a6dc15e258f9d4f36105f146178eff13f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

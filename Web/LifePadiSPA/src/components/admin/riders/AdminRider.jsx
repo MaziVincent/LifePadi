@@ -11,14 +11,7 @@ import Alert from "@mui/material/Alert";
 import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import DeActivateDialogue from "../subcomponents/DeActivateDialogue";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import ActivateDialogue from "../subcomponents/ActivateDialogue";
-=======
->>>>>>> a2698f4 (Finishing touches on the admin portal)
-=======
-import ActivateDialogue from "../subcomponents/ActivateDialogue";
->>>>>>> 0ca0962 (notification, location and other commits)
 
 const reducer = (state, action) => {
   switch (action.type) {

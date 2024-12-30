@@ -23,21 +23,13 @@ const AdminRiderDetails = () => {
     {
       field: "CreatedAt",
       headerName: "Delivery Date",
-<<<<<<< HEAD
       width: 180,
-=======
-      width: 150,
->>>>>>> a2698f4 (Finishing touches on the admin portal)
       //editable: true,
     },
     {
       field: "DeliveryFee",
       headerName: "Delivery Fee",
-<<<<<<< HEAD
       width: 100,
-=======
-      width: 150,
->>>>>>> a2698f4 (Finishing touches on the admin portal)
       //editable: true,
     },
     {
@@ -50,11 +42,7 @@ const AdminRiderDetails = () => {
     {
       field: "Status",
       headerName: "Status",
-<<<<<<< HEAD
       width: 100,
-=======
-      width: 70,
->>>>>>> a2698f4 (Finishing touches on the admin portal)
     },
   ];
 
@@ -76,22 +64,14 @@ const AdminRiderDetails = () => {
     setIdImage(!idImage)
   }
 
-<<<<<<< HEAD
   //console.log(data);
-=======
-  console.log(data);
->>>>>>> a2698f4 (Finishing touches on the admin portal)
 
   return (
     <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-10 p-3">
       <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/admin/rider"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> a2698f4 (Finishing touches on the admin portal)
             >
               Riders
             </Link>
@@ -99,11 +79,7 @@ const AdminRiderDetails = () => {
             <Link
               to="#"
               aria-current="page"
-<<<<<<< HEAD
               className="hover:border-b-2 hover:border-b-secondary dark:text-primary"
-=======
-              className="hover:border-b-2 hover:border-b-green-700"
->>>>>>> a2698f4 (Finishing touches on the admin portal)
             >
               {data?.FirstName}
             </Link>
@@ -203,11 +179,7 @@ const AdminRiderDetails = () => {
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}
                   
-<<<<<<< HEAD
                   className="cursor-pointer bg-primary"
-=======
-                  className="cursor-pointer"
->>>>>>> a2698f4 (Finishing touches on the admin portal)
                 />
               )}
             </div>

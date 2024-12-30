@@ -47,7 +47,6 @@ const LandingPageSlide = () => {
       text: "Grocery Shopping",
       src: grocery,
     },
-<<<<<<< HEAD
     {
       text: "Market Runs",
       src: Buyingfood,
@@ -61,8 +60,6 @@ const LandingPageSlide = () => {
       text: "Logistics Services",
       src: Delivery3,
     },
-=======
->>>>>>> 43afb5b (Landing page and about page)
   ];
   return (
     <>
@@ -85,26 +82,14 @@ const LandingPageSlide = () => {
             >
               {pictures.map((pic) => (
                 <SwiperSlide key={pic.text}>
-<<<<<<< HEAD
                   <div className=" h-80 lg:h-[40rem] w-full bg-accent rounded-xl border-4 relative ">
-=======
-                  <div className=" h-80 lg:h-96 w-full bg-accent rounded-xl border-4 relative ">
->>>>>>> 43afb5b (Landing page and about page)
                     <img
                       src={pic.src}
                       alt={pic.text}
                       className="w-full h-full object-fill rounded-xl"
                       loading="lazy"
                     />
-<<<<<<< HEAD
-<<<<<<< HEAD
                     <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
-=======
-                    <p className=" absolute text-xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
->>>>>>> 43afb5b (Landing page and about page)
-=======
-                    <p className=" absolute text-2xl font-bold px-2 bottom-0 w-full border-t-4 rounded-b-xl z-10 bg-primary h-10">
->>>>>>> 9174884 (require auth commit)
                       {" "}
                       {pic.text}{" "}
                     </p>

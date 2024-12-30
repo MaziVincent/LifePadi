@@ -17,16 +17,8 @@ namespace Api.Controllers.Admin
         private readonly IService _service;
         private readonly ICategory _category;
         private readonly IVoucher _voucher;
-<<<<<<< HEAD
-<<<<<<< HEAD
         private readonly IProduct _product;
         private readonly IUser _user;
-=======
->>>>>>> c824428 (added creating serviceIcon while creating the service)
-=======
-        private readonly IProduct _product;
-        private readonly IUser _user;
->>>>>>> 98415b4 (done with dashboard)
         public DashboardController(
             IOrder order,
             IOrderItem orderItem,
@@ -37,23 +29,11 @@ namespace Api.Controllers.Admin
             ICustomer customer,
             IService service,
             ICategory category,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 98415b4 (done with dashboard)
             IVoucher voucher,
             IProduct product,
             IUser user
             )
         {
-<<<<<<< HEAD
-=======
-            IVoucher voucher
-            ) 
-        { 
->>>>>>> c824428 (added creating serviceIcon while creating the service)
-=======
->>>>>>> 98415b4 (done with dashboard)
             _order = order;
             _orderItem = orderItem;
             _delivery = delivery;
@@ -64,10 +44,6 @@ namespace Api.Controllers.Admin
             _service = service;
             _category = category;
             _voucher = voucher;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 98415b4 (done with dashboard)
             _product = product;
             _user = user;
         }
@@ -310,11 +286,7 @@ namespace Api.Controllers.Admin
         {
             try
             {
-<<<<<<< HEAD
                 var stats = await _transaction.TransactionStats();
-=======
-                var stats = await _transaction.transactionStats();
->>>>>>> 98415b4 (done with dashboard)
                 return Ok(stats);
             }
             catch (Exception ex)
@@ -366,11 +338,6 @@ namespace Api.Controllers.Admin
             {
                 return BadRequest(ex.Message);
             }
-<<<<<<< HEAD
-=======
->>>>>>> c824428 (added creating serviceIcon while creating the service)
-=======
->>>>>>> 98415b4 (done with dashboard)
         }
     }
 }

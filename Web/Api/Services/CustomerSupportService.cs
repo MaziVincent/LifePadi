@@ -5,16 +5,8 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-<<<<<<< HEAD
 using MailKit.Net.Smtp;
 using MimeKit;
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
-=======
-using MailKit.Net.Smtp;
-using MimeKit;
->>>>>>> 6b6a266 (search commit)
 
 namespace Api.Services
 {
@@ -61,10 +53,6 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6b6a266 (search commit)
 
         public async Task<string> SendEmailAsync(EmailDto email)
         {
@@ -94,10 +82,5 @@ namespace Api.Services
             throw new Exceptions.ServiceException(ex.Message);
             }
         }
-<<<<<<< HEAD
-=======
->>>>>>> 9391cc8 (faq, customer support and term)
-=======
->>>>>>> 6b6a266 (search commit)
     }
 }

@@ -2,36 +2,18 @@ using Api.Interfaces;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Http;
 using Newtonsoft.Json;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using System.Net.Http;
 using System.Text;
 using Api.DTO;
-<<<<<<< HEAD
-=======
-using System.Net.Http;
-using System.Text;
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 
 public class FcmService : IFcmService
 {
     private readonly HttpClient _httpClient;
     private readonly string _fcmEndpoint = "https://fcm.googleapis.com/v1/projects/lifepadi-17e8c/messages:send";
     private readonly GoogleCredential _googleCredential;
-<<<<<<< HEAD
-<<<<<<< HEAD
     private readonly FirebaseApp _firebaseApp;
-=======
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
-    private readonly FirebaseApp _firebaseApp;
->>>>>>> 0ca0962 (notification, location and other commits)
 
     public FcmService()
     {
@@ -39,14 +21,7 @@ public class FcmService : IFcmService
         _googleCredential = GoogleCredential
             .FromFile("lifepadi-17e8c-firebase.json")
             .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
-
->>>>>>> 0ca0962 (notification, location and other commits)
     }
 
     public async Task<string> SendNotificationAsync(string targetToken, string title, string body)
@@ -106,28 +81,11 @@ public class FcmService : IFcmService
             Method = HttpMethod.Post,
             RequestUri = new Uri(_fcmEndpoint),
             Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(notification), Encoding.UTF8, "application/json"),
-<<<<<<< HEAD
-<<<<<<< HEAD
 
         };
 
         request.Headers.Add("Authorization", $"Bearer {token}");
 
-=======
-            Headers =
-            {
-                { "Authorization", $"Bearer {token}" }
-            }
-        };
-
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
-
-        };
-
-        request.Headers.Add("Authorization", $"Bearer {token}");
-
->>>>>>> 0ca0962 (notification, location and other commits)
         var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
@@ -139,10 +97,6 @@ public class FcmService : IFcmService
             Console.WriteLine($"Error sending notification: {responseBody}");
         }
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 
 
     public async Task<object> SendGeneralNotification(NotificationRequest message)
@@ -195,9 +149,4 @@ public class FcmService : IFcmService
         }
 
     }
-<<<<<<< HEAD
-=======
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 }

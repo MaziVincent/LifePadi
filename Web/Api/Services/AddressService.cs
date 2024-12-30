@@ -2,10 +2,7 @@
 using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services
@@ -21,16 +18,11 @@ namespace Api.Services
             _mapper = mapper;
         }
 
-<<<<<<< HEAD
         public async Task<IEnumerable<AddressDto>> allAsync()
-=======
-        public async Task<IEnumerable<AddressDTO>> allAsync()
->>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
                 var addresses = await _dbContext.Addresses
-<<<<<<< HEAD
                     .Include(a => a.User)
                     .OrderByDescending(a => a.CreatedAt).ToListAsync();
                 var AddressDtoLite = _mapper.Map<List<AddressDto>>(addresses);
@@ -49,16 +41,8 @@ namespace Api.Services
             {
                 var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
                 if (defaultAddress == null) address.DefaultAddress = true;
-=======
->>>>>>> 67ef8ba (updated payment)
-=======
-                var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
-                if (defaultAddress == null) address.DefaultAddress = true;
->>>>>>> 8ad4440 (wallet and transaction commits)
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();
@@ -68,30 +52,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                    .Include(a => a.Customer)
-                    .OrderByDescending(a => a.CreatedAt).ToListAsync();
-                var addressDTOLite = _mapper.Map<List<AddressDTO>>(addresses);
-                return addressDTOLite;
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<AddressDTOLite> createAsync(AddressDTO address)
-        {
-            try
-            {
-                var newaddress = _mapper.Map<Address>(address);
-                await _dbContext.Addresses.AddAsync(newaddress);
-                await _dbContext.SaveChangesAsync();
-                var addressDTOLite = _mapper.Map<AddressDTOLite>(newaddress);
-                return addressDTOLite;
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -101,10 +61,6 @@ namespace Api.Services
             {
                 var address = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.Id == id);
                 if (address == null) return null!;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8ad4440 (wallet and transaction commits)
                 var delivery = await _dbContext
                 .Deliveries.FirstOrDefaultAsync(d => d.PickUpAddressId == id || d.DeliveryAddressId == id);
                 if (delivery != null) {
@@ -197,46 +153,6 @@ namespace Api.Services
         }
 
         public async Task<AddressDtoLite> updateAsync(AddressDto address, int id)
-=======
-                _dbContext.Addresses.Remove(address);
-                await _dbContext.SaveChangesAsync();
-                return "Deleted successfuly";
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<AddressDTO> getAsync(int id)
-        {
-            try
-            {
-                var address = await _dbContext.Addresses.Include(a => a.Customer).FirstOrDefaultAsync(a => a.Id == id);
-                if (address == null) return null!;
-                var addressDTO = _mapper.Map<AddressDTO>(address);
-                return addressDTO;
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<AddressDTOLite>> getCustomersAddresses(int customerId)
-        {
-            try
-            {
-                var addresses = await _dbContext.Addresses.Where(a => a.CustomerId == customerId).ToListAsync();
-                if (addresses == null) return null!;
-                var addressDTOLite = _mapper.Map<List<AddressDTOLite>>(addresses);
-                return addressDTOLite;
-            }catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<AddressDTOLite> updateAsync(AddressDTO address, int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
         {
             try
             {
@@ -252,20 +168,12 @@ namespace Api.Services
 
                 _dbContext.Addresses.Attach(initialAddress);
                 await _dbContext.SaveChangesAsync();
-<<<<<<< HEAD
                 var AddressDtoLite = _mapper.Map<AddressDtoLite>(initialAddress);
                 return AddressDtoLite;
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                var addressDTOLite = _mapper.Map<AddressDTOLite>(initialAddress);
-                return addressDTOLite;
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
     }

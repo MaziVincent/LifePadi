@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 ﻿using System.Numerics;
 using System.Text;
-=======
-﻿using System.Text;
->>>>>>> 7f9ad44 (done with payment and voucher)
 
 namespace Api.Helpers
 {
@@ -21,7 +17,6 @@ namespace Api.Helpers
 
             return "LifePadi-" + sb.ToString();
         }
-<<<<<<< HEAD
 
         public static BigInteger genTxId()
         {
@@ -35,7 +30,5 @@ namespace Api.Helpers
 
             return BigInteger.Parse(sb.ToString());
         }
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }

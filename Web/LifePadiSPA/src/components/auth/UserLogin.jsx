@@ -11,34 +11,17 @@ import useAuth from "../../hooks/useAuth";
 //import useCart from "../../hooks/useCart";
 
 const UserLogin = () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a061db6 (phone login)
   const { auth, setAuth, persist, setPersist, login, setLogin, setRegister } =
     useAuth();
   //const {dispatch} = useCart();
-=======
-  const { auth, setAuth, persist, setPersist, login, setLogin  } = useAuth();
->>>>>>> d189281 (worked on Login)
   const url = `${baseUrl}auth/login`;
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [error, setError] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(false);
-=======
- 
->>>>>>> 5dffde0 (forgot password and live payment)
-=======
-  const [error, setError] = useState("");
-  const [type, setType] = useState("password");
-  const [icon, setIcon] = useState(false);
->>>>>>> a061db6 (phone login)
 
   const {
     register,
@@ -166,11 +149,7 @@ const UserLogin = () => {
                     onClick={() => {
                       setLogin(false);
                     }}
-<<<<<<< HEAD
                     className="dark:text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-=======
-                    className="text-lightGray bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
->>>>>>> 9174884 (require auth commit)
                     data-modal-toggle="defaultModal"
                   >
                     <svg
@@ -199,15 +178,7 @@ const UserLogin = () => {
                   >
                     <div>
                       <label
-<<<<<<< HEAD
-<<<<<<< HEAD
                         htmlFor="input"
-=======
-                        htmlFor="email"
->>>>>>> 9174884 (require auth commit)
-=======
-                        htmlFor="input"
->>>>>>> a061db6 (phone login)
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-primary"
                       >
                         Your Phone number or email
@@ -243,10 +214,6 @@ const UserLogin = () => {
                       >
                         Password
                       </label>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a061db6 (phone login)
                       <div className="flex">
                         <input
                           type={type}
@@ -315,20 +282,6 @@ const UserLogin = () => {
                           </svg>
                         </span>
                       </div>
-<<<<<<< HEAD
-=======
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required=""
-                        {...register("Password", { required: true, })}
-                        placeholder="••••••••"
-                      />
->>>>>>> 56c4b95 (completed logistics)
-=======
->>>>>>> a061db6 (phone login)
                       {errors.Password && (
                         <p className="text-sm text-redborder">
                           {" "}
@@ -362,13 +315,6 @@ const UserLogin = () => {
                         onClick={() => {
                           navigate("/forgotpassword");
                           setLogin(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 5dffde0 (forgot password and live payment)
-=======
->>>>>>> a061db6 (phone login)
                         }}
                         className="text-sm cursor-pointer font-medium text-background hover:underline dark:text-primary-500"
                       >

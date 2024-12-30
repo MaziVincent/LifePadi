@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import useCart from "../../hooks/useCart";
 import { Modal } from "@mui/material";
 import usePost from "../../hooks/usePost";
@@ -22,9 +21,6 @@ const CheckOut = () => {
     e.preventDefault();
     setLoading(true);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     setCart([]);
     localStorage.setItem("cart", JSON.stringify([]));
 
@@ -58,91 +54,6 @@ const CheckOut = () => {
     }
   };
 
-=======
-import useCart from '../../hooks/useCart'
-import { Modal } from '@mui/material'
-import usePost from '../../hooks/usePost'
-import baseUrl from '../../api/baseUrl'
-import useAuth from '../../hooks/useAuth'
-import CircularProgress from '@mui/material/CircularProgress'
-import { useState } from 'react'
-
-const CheckOut = () => {
-  const { state, dispatch } = useCart()
-  const postData = usePost()
-  const url = `${baseUrl}/transaction/initiate`
-  const { auth } = useAuth()
-  const [loading, setLoading] = useState(false)
-  // console.log(state);
-  
-  const handleMakePayment = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    const data = {
-      Amount: state.total,
-      DeliveryFee: state.deliveryFee,
-      VoucherCode: '',
-      OrderId: state.order.Id,
-      TotalAmount: state.total - state.deliveryFee,
-    }
-
-    const res = await postData(url, data, auth.token)
-    // console.log(res)
-
-    if (res.status == 200) {
-      setLoading(false)
-      window.location.href = res.data.link
-      // window.open(res.data.link, '_blank')
-      // state.checkOut = false
-    } else {
-      alert(res.response.data)
-      setLoading(false)
-    }
-    // setTimeout(() => {
-    // }, 2000);
-  }
->>>>>>> 7a64a18 (created a payment response page)
-=======
-    //Create Delivery
-
-=======
->>>>>>> 5dffde0 (forgot password and live payment)
-=======
-    setCart([]);
-    localStorage.setItem("cart", JSON.stringify([]));
-
->>>>>>> b7ff8e8 (voucher)
-    const data = {
-      Amount: Math.trunc( state.amount),
-      DeliveryFee: Math.trunc( state.deliveryFee),
-      VoucherCode: "",
-      OrderId: state.order.Id,
-      TotalAmount: Math.trunc( state.total),
-    };
-
-    try {
-     
-        const res = await postData(url, data, auth.token);
-
-        if (res.status == 200) {
-          setLoading(false);
-          window.location.href = res.data.link;
-          dispatch({ type: "RESET" });
-        } else {
-          setError("Error Proceeding to Payment");
-          setLoading(false);
-        }
-
-      // // console.log(res.data.link)
-      // setLoading(false)
-    } catch (err) {
-      console.log(err);
-      setError("Error Making Payment ");
-      loading(false);
-    }
-  };
-
->>>>>>> 5f61f19 (updated payment)
   return (
     <Modal
       open={state.checkOut}
@@ -166,15 +77,7 @@ const CheckOut = () => {
                   dispatch({ type: "checkOut" });
                   setLoading(false);
                 }}
-<<<<<<< HEAD
-<<<<<<< HEAD
                 className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-=======
-                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray-900 rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
->>>>>>> 5f61f19 (updated payment)
-=======
-                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
->>>>>>> 56c4b95 (completed logistics)
                 data-modal-toggle="defaultModal"
               >
                 <svg
@@ -211,7 +114,6 @@ const CheckOut = () => {
                   </span>
                 </p>
               </div>
-<<<<<<< HEAD
               <div className="flex justify-center">
                 <button
                   onClick={handleMakePayment}
@@ -250,36 +152,6 @@ const CheckOut = () => {
                   <span> {error}</span>
                 </div>
               )}
-<<<<<<< HEAD
-=======
-
-              <button
-                onClick={handleMakePayment}
-                type='submit'
-                disabled={loading}
-                className={`inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800`}
-              >
-                <svg
-                  className='mr-1 -ml-1 w-6 h-6'
-                  fill='currentColor'
-                  viewBox='0 0 20 20'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-                    clipRule='evenodd'
-                  ></path>
-                </svg>
-                {loading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  'Proceed to payment'
-                )}
-              </button>
->>>>>>> 7a64a18 (created a payment response page)
-=======
->>>>>>> 5f61f19 (updated payment)
             </div>
           </div>
         </div>

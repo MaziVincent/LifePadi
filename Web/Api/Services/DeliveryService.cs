@@ -1,8 +1,6 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
-using API.DTO;
-using API.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,15 +15,7 @@ namespace Api.Services
             _dbContext = dBContext;
             _mapper = mapper;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IEnumerable<DeliveryDto>> allAsync()
-=======
-        public async Task<IEnumerable<DeliveryDTO>> allAsync()
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<IEnumerable<DeliveryDto>> allAsync()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -34,8 +24,6 @@ namespace Api.Services
                     .Include(d => d.Rider)
                     .OrderByDescending(d => d.CreatedAt)
                     .ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var DeliveryDto = _mapper.Map<List<DeliveryDto>>(delivries);
                 return DeliveryDto;
             }
@@ -46,34 +34,12 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<DeliveryDtoLite>> allDeliveryLiteAsync()
-=======
-                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(delivries);
-                return deliveryDTO;
-=======
-                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(delivries);
-                return DeliveryDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<DeliveryDTOLite>> allDeliveryLiteAsync()
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<IEnumerable<DeliveryDtoLite>> allDeliveryLiteAsync()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var delivries = await _dbContext.Deliveries
                     .OrderByDescending(d => d.CreatedAt)
                     .ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(delivries);
                 return DeliveryDtoLite;
             }
@@ -124,62 +90,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(delivries);
-                return deliveryDTOLite;
-=======
-                var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(delivries);
-                return DeliveryDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<string> assynRiderTODelivery(int id, int riderId)
-        {
-            try
-            {
-                var delivery = await _dbContext.Deliveries
-                    .Include(d => d.Order)
-                    .FirstOrDefaultAsync(d => d.Id == id);
-                if (delivery == null) return null!;
-                var rider = await _dbContext.Riders.FirstOrDefaultAsync(r => r.Id == riderId);
-                if (rider == null) return null!;
-                delivery.RiderId = riderId;
-                delivery.UpdateAt = DateTime.UtcNow;
-                _dbContext.Deliveries.Attach(delivery);
-                await _dbContext.SaveChangesAsync();
-                return "Rider assign successfully";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<CreateDeliveryDto> createAsync(DeliveryDto delivery)
-        {
-            try
-            {
-                var initialDelivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == delivery.OrderId);
-                if (initialDelivery == null)
-                {
-                    var newDelivery = _mapper.Map<Delivery>(delivery);
-                    newDelivery.Status = "Pending";
-                    await _dbContext.Deliveries.AddAsync(newDelivery);
-                    await _dbContext.SaveChangesAsync();
-                    var DeliveryDto = _mapper.Map<CreateDeliveryDto>(newDelivery);
-                    return DeliveryDto;
-                }
-                throw new Exception("Already created delivery for this order");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> 4641615 (finished with delivery service and controller)
             }
         }
 
@@ -192,18 +102,10 @@ namespace Api.Services
                 _dbContext.Deliveries.Remove(delivery);
                 await _dbContext.SaveChangesAsync();
                 return "Delivery deleted";
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> 98415b4 (done with dashboard)
             }
         }
 
@@ -221,34 +123,17 @@ namespace Api.Services
                 return stats;
             }
             catch (Exception ex)
-<<<<<<< HEAD
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
 
         public async Task<DeliveryDto> getAsync(int id)
-=======
-            }catch (Exception ex)
-=======
->>>>>>> 98415b4 (done with dashboard)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<DeliveryDTO> getAsync(int id)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<DeliveryDto> getAsync(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var delivery = await _dbContext.Deliveries
                     .Include(d => d.Order)
-<<<<<<< HEAD
                     .ThenInclude(o => o!.OrderItems)!
                     .ThenInclude(oi => oi.Product)
                     .ThenInclude(p => p!.Vendor)
@@ -270,31 +155,11 @@ namespace Api.Services
         }
 
         public async Task<DeliveryDto> getCustomersOrder(int customerId)
-=======
-                    .Include(d => d.Rider)
-                    .FirstOrDefaultAsync(d => d.Id == id);
-                if (delivery == null) return null!;
-                var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
-                return DeliveryDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<DeliveryDTO> getOrderDelivery(int orderId)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<DeliveryDto> getOrderDelivery(int orderId)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var delivery = await _dbContext.Deliveries
                     .Include(d => d.Order)
-<<<<<<< HEAD
                     .ThenInclude(o => o!.OrderItems)!
                     .ThenInclude(oi => oi.Product)
                     .ThenInclude(p => p!.Vendor)
@@ -335,7 +200,6 @@ namespace Api.Services
             }
         }
 
-<<<<<<< HEAD
         public async Task<PagedList<DeliveryDto>> getRidersDeliveries(int riderId, SearchPaging props)
         {
             try
@@ -381,64 +245,6 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery()
-=======
-                    .Include(d => d.Rider)
-                    .FirstOrDefaultAsync(d => d.OrderId == orderId);
-                if (delivery == null) return null!;
-                var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
-                return DeliveryDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<DeliveryDto>> getRidersDeliveries(int riderId)
-=======
-        public async Task<PagedList<Delivery>> getRidersDeliveries(int riderId, SearchPaging props)
->>>>>>> 6022c93 (added pagination and search to riders delivery)
-        {
-            try
-            {
-                IQueryable<Delivery> deliveryList = Enumerable.Empty<Delivery>().AsQueryable();
-                if (props.SearchString is null)
-                {
-                    var deliveries = await _dbContext.Deliveries
-                        .Include(d => d.Order)
-                        .Include(d => d.Rider)
-                        .OrderByDescending(d => d.CreatedAt)
-                        .Where(d => d.RiderId == riderId)
-                        .ToListAsync();
-                    deliveryList = deliveryList.Concat(deliveries);
-                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
-                    return result;
-                }
-                else
-                {
-                    var deliveries = await _dbContext.Deliveries
-                        .Include(d => d.Order)
-                        .Include(d => d.Rider)
-                        .OrderByDescending(d => d.CreatedAt)
-                        .Where(d => d.RiderId == riderId && d.PickupAddress!.ToLower().Contains(props.SearchString.ToLower()))
-                        .ToListAsync();
-                    deliveryList = deliveryList.Concat(deliveries);
-                    var result = PagedList<Delivery>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<DeliveryDTOLite>> getunSuccessfulDelivery()
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<IEnumerable<DeliveryDtoLite>> getunSuccessfulDelivery()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -446,8 +252,6 @@ namespace Api.Services
                     .OrderByDescending(d => d.CreatedAt)
                     .Where(d => d.Status == "Unsuccessful")
                     .ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
                 return DeliveryDtoLite;
             }
@@ -458,26 +262,6 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<DeliveryDto>> getWithStatus(string status)
-=======
-                var deliveryDTOLite = _mapper.Map<List<DeliveryDTOLite>>(deliveries);
-                return deliveryDTOLite;
-=======
-                var DeliveryDtoLite = _mapper.Map<List<DeliveryDtoLite>>(deliveries);
-                return DeliveryDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<DeliveryDTO>> getWithStatus(string status)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<IEnumerable<DeliveryDto>> getWithStatus(string status)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -487,8 +271,6 @@ namespace Api.Services
                     .OrderByDescending(d => d.CreatedAt)
                     .Where(d => d.Status!.Contains(status))
                     .ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
                 return DeliveryDto;
             }
@@ -647,109 +429,12 @@ namespace Api.Services
         }
 
         public async Task<DeliveryDto> updateAsync(DeliveryDto delivery, int id)
-=======
-                var deliveryDTO = _mapper.Map<List<DeliveryDTO>>(deliveries);
-                return deliveryDTO;
-=======
-                var DeliveryDto = _mapper.Map<List<DeliveryDto>>(deliveries);
-                return DeliveryDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfDeliveries()
-        {
-            try
-            {
-                var deliveries = await _dbContext.Deliveries.CountAsync();
-                return deliveries;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfDeliveriesByRider(int riderId)
-        {
-            try
-            {
-                var deliveries = await _dbContext.Deliveries
-                    .Where(d => d.RiderId == riderId)
-                    .CountAsync();
-                return deliveries;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfPendingDeliveries()
-        {
-            try
-            {
-                var deliveries = await _dbContext.Deliveries
-                    .Where(d => d.Status == "Pending")
-                    .CountAsync();
-                return deliveries;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfSuccessfulDeliveries()
-        {
-            try
-            {
-                var deliveries = await _dbContext.Deliveries
-                    .Where(d => d.Status == "Successful")
-                    .CountAsync();
-                return deliveries;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfUnSuccessfulDeliveries()
-        {
-            try
-            {
-                var deliveries = await _dbContext.Deliveries
-                    .Where(d => d.Status == "Unsuccessful")
-                    .CountAsync();
-                return deliveries;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<DeliveryDTO> updateAsync(DeliveryDTO delivery, int id)
->>>>>>> 4641615 (finished with delivery service and controller)
-=======
-        public async Task<DeliveryDto> updateAsync(DeliveryDto delivery, int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var initialDelivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
                 if (initialDelivery == null) return null!;
                 initialDelivery.DeliveryFee = delivery.DeliveryFee;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d23f0ab (transaction, order, notification commit)
                 initialDelivery.RiderId = delivery.RiderId;
                 initialDelivery.OrderId = delivery.OrderId;
                 initialDelivery.UpdatedAt = DateTime.UtcNow;
@@ -765,40 +450,12 @@ namespace Api.Services
             }
         }
 
-<<<<<<< HEAD
         public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string deliveryStatus)
-=======
-        public async Task<string> updateDeliveryStatusOrderStatus(int deliveryId, int orderId, string DeliveryStatus, string OrderStatus)
         {
             try
             {
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == deliveryId);
                 if (delivery == null) return null!;
-                var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
-                if (order == null) return null!;
-                delivery.Status = DeliveryStatus;
-                delivery.UpdatedAt = DateTime.UtcNow;
-                order.Status = OrderStatus;
-                order.UpdatedAt = DateTime.UtcNow;
-                _dbContext.Deliveries.Attach(delivery);
-                _dbContext.Orders.Attach(order);
-                await _dbContext.SaveChangesAsync();
-
-                return "Delivery and Order status updated";
-            }catch(Exception ex)
-            {
-                throw new Exceptions.ServiceException(ex.Message);
-            }
-        }
-
-        public async Task<string> updateStatus(string status, int id)
->>>>>>> 52db56c (made some changes in the delivery and order)
-        {
-            try
-            {
-                var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == deliveryId);
-                if (delivery == null) return null!;
-<<<<<<< HEAD
                 var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
                 if (order == null) return null!;
                 delivery.Status = deliveryStatus;
@@ -806,10 +463,6 @@ namespace Api.Services
                 order.Status = "Completed";
                 order.IsDelivered = true;
                 order.UpdatedAt = DateTime.UtcNow;
-=======
-                delivery.Status = status;
-                delivery.UpdatedAt = DateTime.UtcNow;
->>>>>>> 52db56c (made some changes in the delivery and order)
                 _dbContext.Deliveries.Attach(delivery);
                 _dbContext.Orders.Attach(order);
                 await _dbContext.SaveChangesAsync();
@@ -847,21 +500,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                initialDelivery.PickupAddress = delivery.PickupAddress;
-                initialDelivery.RiderId = delivery.RiderId;
-                initialDelivery.OrderId = delivery.OrderId;
-                initialDelivery.UpdateAt = DateTime.UtcNow;
-                initialDelivery.PickupType = delivery.PickupType;
-                _dbContext.Deliveries.Attach(initialDelivery);
-                await _dbContext.SaveChangesAsync();
-                var DeliveryDto = _mapper.Map<DeliveryDto>(initialDelivery);
-                return DeliveryDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> 4641615 (finished with delivery service and controller)
             }
         }
     }

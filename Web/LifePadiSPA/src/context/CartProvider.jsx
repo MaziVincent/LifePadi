@@ -59,16 +59,10 @@ const reducer = (state, action) => {
       return { ...state, delivery: action.payload };
     case "voucherCode":
       return { ...state, voucherCode: action.payload };
-<<<<<<< HEAD
     case "voucher":
       return { ...state, voucher: action.payload };
     case "voucherMessage":
       return { ...state, voucherMessage: action.payload };
-<<<<<<< HEAD
-=======
->>>>>>> a061db6 (phone login)
-=======
->>>>>>> b7ff8e8 (voucher)
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":
@@ -81,47 +75,15 @@ const reducer = (state, action) => {
 };
 
 export const CartProvider = ({ children }) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
   const [state, dispatch] = useReducer(reducer, initialState );
-=======
-  const [state, dispatch] = useReducer(reducer, {
-    deliveryAddress: "",
-    deliveryInstruction: "",
-    address: false,
-    instruction: false,
-    error: "",
-    addresses: [],
-    vendor: null,
-    empty: false,
-    vendorChange: false,
-    deliveryFee: 0,
-    amount: 0,
-    total: 0,
-    checkOut: false,
-    order: null,
-    delivery: null,
-    gift:false,
-    voucherCode:""
-  });
->>>>>>> 56c4b95 (completed logistics)
-=======
-  const [state, dispatch] = useReducer(reducer, initialState );
->>>>>>> b7ff8e8 (voucher)
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
-  const [deliveryAddress, setDeliveryAddress ] = useState("");
-  const [deliveryInstruction, setDeliveryInstruction ] = useState("");
 
   return (
-<<<<<<< HEAD
     <CartContext.Provider
       value={{ cart, setCart, cartState, setCartState, state, dispatch }}
     >
-=======
-    <CartContext.Provider value={{ cart, setCart, cartState, setCartState,deliveryAddress, setDeliveryAddress, deliveryInstruction, setDeliveryInstruction }}>
->>>>>>> 0ab4b1c (Google Maps Controller)
       {children}
     </CartContext.Provider>
   );

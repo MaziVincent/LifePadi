@@ -1,7 +1,6 @@
 import ResponsiveLogo from "../shared/ResponsiveLogo";
 import useLocation from "../../hooks/useLocation";
 import { useEffect } from "react";
-import useFetch from "../../hooks/useFetch";
 import {
   LocationOn,
   PersonOutlined,
@@ -18,14 +17,8 @@ import { useCoordinates } from "../../hooks/useCoordinates";
 import useAddress from "../../hooks/useAddress";
 import EmptyCart from "./EmptyCart";
 import VerifyCode from "../auth/VerifyCode";
-<<<<<<< HEAD
 import CheckOut from "./CheckOut";
 import { Badge } from "@mui/material";
-<<<<<<< HEAD
-=======
->>>>>>> eda1965 (User Dashboard and Landing Page)
-=======
->>>>>>> e848b7b (Payment Response)
 
 
 const ShopHeader = () => {
@@ -33,7 +26,6 @@ const ShopHeader = () => {
   const { auth,login, setLogin, location, setLocation } = useAuth();
   const navigate = useNavigate();
   const getLocation = useLocation();
-<<<<<<< HEAD
   const {coordinates, error, loading } = useCoordinates()
   const {address, error:addError, loading:addLoading } = useAddress(coordinates.latitude, coordinates.longitude);
 
@@ -43,62 +35,16 @@ const ShopHeader = () => {
     setLocation({coordinates, address})
     //dispatch({type:"setAddress", payload: address })
   },[address])
-=======
-  const fetch = useFetch();
-  const getAddress = useAddress();
-
-  const [state, dispatch] = useReducer(reducer, {
-    login: false,
-  });
-  const handleLocation = async () => {
-    if (!location?.longitude || !location?.latitude  || location?.accuracy > 100) {
-     const {data, error} =  await getLocation();
-     console.log(data)
-     if(error){
-      console.log(error)
-      return;
-     }
-
-     setLocation(data);
-     
-      
-    } else {
-      console.log(result.data);
-    }
-  };
-
-  
-
-  useEffect(()=> {
-    // handleLocation();
-
-    // console.log(location);  
-   
-  },[])
-
-  
-  
->>>>>>> d189281 (worked on Login)
   return (
     <div className=" dark:bg-darkMenu dark:text-primary flex justify-center fixed top-0 z-40 bg-primary w-full p-4  shadow-md ">
-<<<<<<< HEAD
-<<<<<<< HEAD
       <div className=" flex justify-between w-full lg:w-10/12">
         <div className=" flex items-center md:gap-10 w-1/2 ">
-=======
-      <div className=" flex justify-between w-full lg:w-9/12">
-=======
-      <div className=" flex justify-between w-full lg:w-10/12">
->>>>>>> e848b7b (Payment Response)
-        <div className=" flex items-center md:gap-10 w-1/2">
->>>>>>> 3f80dfc (latest commit)
           <ResponsiveLogo />
           <div className="min-w-36 ">
             <Link className=" min-w-28 flex items-center font-normal text-sm max-lg:text-xs max-lg:font-medium">
               <span className=" text-secondary">
                 <LocationOn />
               </span>
-<<<<<<< HEAD
               {
                 addLoading && <>
                 <svg
@@ -123,18 +69,6 @@ const ShopHeader = () => {
               {address && 
                 <span className="line-clamp-2"> {address }  </span>
                }
-=======
-              {location ? (
-                <span> {location.address}  </span>
-              ) : (
-                <>
-                  <span className="">Enter address</span>
-                  <span>
-                    <ExpandMore />
-                  </span>{" "}
-                </>
-              )}
->>>>>>> d189281 (worked on Login)
             </Link>
           </div>
         </div>
@@ -176,25 +110,9 @@ const ShopHeader = () => {
       
       
       <Register />
-<<<<<<< HEAD
       <VerifyCode   />
       <CheckOut />
      
-=======
-      <VerifyCode />
-      {/* <div className=" absolute top-5 right-40 w-1/4 max-lg:hidden">
-        <span className=" absolute z-10 top-2 left-1">
-          <SearchOutlined />
-        </span>
-        <div className="">
-          <input
-            type="search"
-            placeholder="search the store"
-            className=" w-full pl-8 pr-2 py-2 relative z-0 bg-gray-100 focus:outline-gray-300 "
-          />
-        </div>
-      </div> */}
->>>>>>> eda1965 (User Dashboard and Landing Page)
     </div>
   );
 };

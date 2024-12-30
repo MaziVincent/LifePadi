@@ -1,21 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1795118 (still working on updating delivery status)
 import useFetch from '../../hooks/useFetch'
 import { useState } from 'react'
-<<<<<<< HEAD
-<<<<<<< HEAD
 import {
   riderDeliveriesUrl,
-=======
-import {
-  riderDeliveriesUrl,
-<<<<<<< HEAD
-  riderDeliveriesWithStatus,
->>>>>>> ed8a669 (still getting the delivery count)
-=======
->>>>>>> 5c62a96 (showing if a rider is verified or not)
   successfulDeliveriesCountUrl,
   pendingDeliveriesCountUrl,
 } from './rider_uri/RiderURI'
@@ -24,23 +10,10 @@ import useAuth from '../../hooks/useAuth'
 import { Link } from 'react-router-dom'
 import FadeMenu from './FadeMenu'
 import CircularProgress from '@mui/material/CircularProgress'
-=======
-import { ridersCountUrl, riderDeliveriesUrl } from './rider_uri/RiderURI'
-import { useQuery } from 'react-query'
-import useAuth from '../../hooks/useAuth'
-import { Link } from 'react-router-dom'
-import FadeMenu from './FadeMenu'
-<<<<<<< HEAD
->>>>>>> d8a3578 (created a modal for view and update)
-=======
-import CircularProgress from '@mui/material/CircularProgress'
->>>>>>> 1795118 (still working on updating delivery status)
 
 const RiderDashboard = () => {
   const fetch = useFetch()
   const { auth } = useAuth()
-<<<<<<< HEAD
-<<<<<<< HEAD
   
   let page = 1;
   let totalPage = 1;
@@ -48,59 +21,19 @@ const RiderDashboard = () => {
   const [search, setSearch] = useState('')
   const [isVeirfied, setIsVerified] = useState(false)
   const riderId = auth.Id
-=======
-  const [page, setpage] = useState(1)
-=======
-  let page = 1;
-  let totalPage = 1;
-  let pageSize = 5;
->>>>>>> 5c62a96 (showing if a rider is verified or not)
-  const [search, setSearch] = useState('')
-  const [isVeirfied, setIsVerified] = useState(false)
-  const riderId = 3
->>>>>>> d8a3578 (created a modal for view and update)
 
   const getRiderDeliveris = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5c62a96 (showing if a rider is verified or not)
   const getRiderPendingDeliverisCount = async (url) => {
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
   const getRiderSuccessfulDeliverisCount = async (url) => {
-<<<<<<< HEAD
     const response = await fetch(url, auth.accessToken)
     return response.data
   }
-=======
-  const getRiderDeliverisWithStatus = async (url) => {
-    const response = await fetch(url, auth.accessToken)
-    return response.data
-  }
-  const {
-    data: ridersCount,
-    isError: riderCountError,
-    isLoading: riderCountLoading,
-    isSuccess: riderCountSuccess,
-  } = useQuery({
-    queryKey: 'ridersCount',
-    queryFn: () => getRidersCount(ridersCountUrl),
-    keepPreviousData: true,
-    staleTime: 20000,
-    refetchOnMount: 'always',
-  })
->>>>>>> ed8a669 (still getting the delivery count)
-=======
-    const response = await fetch(url, auth.accessToken)
-    return response.data
-  }
->>>>>>> 5c62a96 (showing if a rider is verified or not)
 
   const {
     data: riderDeliveries,
@@ -115,45 +48,17 @@ const RiderDashboard = () => {
           riderDeliveriesUrl + riderId
         }?PageNumber=${page}&SearchString=${search}`
       ),
-=======
-  const getRiderDeliveris = async (url) => {
-    const response = await fetch(url, auth.accessToken)
-    return response.data
-  }
-  const {
-    data: ridersCount,
-    isError: riderCountError,
-    isLoading: riderCountLoading,
-    isSuccess: riderCountSuccess,
-  } = useQuery({
-    queryKey: 'ridersCount',
-    queryFn: () => getRidersCount(ridersCountUrl),
->>>>>>> d8a3578 (created a modal for view and update)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: 'always',
   })
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   if (riderDeliveriesSuccess) {
     if (riderDeliveries){
       totalPage = riderDeliveries.dataList.TotalPages;
       pageSize = riderDeliveries.dataList.PageSize;
       console.log(riderDeliveries.result);
-<<<<<<< HEAD
       if (riderDeliveries?.result[0].Rider?.isVeirfied)
-=======
-  if (riderDeliveriesSuccess) {
-    console.log(riderDeliveries)
-    if (riderDeliveries){
-      totalPage = riderDeliveries.dataList.TotalPages;
-      pageSize = riderDeliveries.dataList.PageSize;
-
-=======
->>>>>>> 556b5a3 (added a view page for vewing delivery)
-      if (riderDeliveries.result[0].Rider.isVeirfied)
->>>>>>> 5c62a96 (showing if a rider is verified or not)
       {
         setIsVerified(true)
       }
@@ -165,88 +70,6 @@ const RiderDashboard = () => {
     isError: pendingDeliveriesCountError,
     isLoading: pendingDeliveriesCountLoading,
     isSuccess: pendingDeliveriesCountSuccess,
-<<<<<<< HEAD
-  } = useQuery({
-    queryKey: 'deliveriesWithStatus',
-    queryFn: () =>
-      getRiderPendingDeliverisCount(`${pendingDeliveriesCountUrl + riderId}`),
-    keepPreviousData: true,
-    staleTime: 20000,
-    refetchOnMount: 'always',
-  })
-
-  const {
-    data: successfulDeliveriesCount,
-    isError: successfulDeliveriesCountError,
-    isLoading: successfulDeliveriesCountLoading,
-    isSuccess: successfulDeliveriesCountSuccess,
-  } = useQuery({
-    queryKey: 'successfulDeliveriesCount',
-    queryFn: () =>
-      getRiderSuccessfulDeliverisCount(
-        `${successfulDeliveriesCountUrl + riderId}`
-=======
-  if (riderCountSuccess) {
-    console.log(ridersCount)
-  }
-
-  const {
-    data: riderDeliveries,
-    isError: riderDeliveriesError,
-    isLoading: riderDeliveriesLoading,
-    isSuccess: riderDeliveriesSuccess,
-  } = useQuery({
-    queryKey: ['deliveris', page, search],
-    queryFn: () =>
-      getRiderDeliveris(
-        `${
-          riderDeliveriesUrl + riderId
-        }?PageNumber=${page}&SearchString=${search}`
->>>>>>> d8a3578 (created a modal for view and update)
-      ),
-    keepPreviousData: true,
-    staleTime: 20000,
-    refetchOnMount: 'always',
-  })
-<<<<<<< HEAD
-  const setPage = (i) => {
-    if (i > 0 && i <= totalPage) {
-      page = i;
-    }
-  }
-  const setNextPage = (page) => {
-    if (page <= totalPage) {
-      page += 1;
-    }
-  }
-  const setPreviousPage = (page) => {
-    if (page > 0) {
-      page -= 1;
-=======
-
-  if (riderDeliveriesSuccess) {
-    console.log(riderDeliveries.result)
-  }
-  const openOption = (id) => {
-    console.log(id)
-    setDataId(id)
-    if (svgRef.current) {
-      setDataId(svgRef.current.getAttribute('data-id'))
-      // console.log(dataId)
-      setAction(!action)
->>>>>>> d8a3578 (created a modal for view and update)
-    }
-  }
-<<<<<<< HEAD
-=======
-
-  const {
-    data: riderDeliveriesWithStatus,
-    isError: riderDeliveriesWithStatusError,
-    isLoading: riderDeliveriesWithStatusLoading,
-    isSuccess: riderDeliveriesWithStatusSuccess,
-=======
->>>>>>> 5c62a96 (showing if a rider is verified or not)
   } = useQuery({
     queryKey: 'deliveriesWithStatus',
     queryFn: () =>
@@ -271,33 +94,21 @@ const RiderDashboard = () => {
     staleTime: 20000,
     refetchOnMount: 'always',
   })
-<<<<<<< HEAD
-  
->>>>>>> ed8a669 (still getting the delivery count)
-=======
-
-  if (successfulDeliveriesCountSuccess) {
-    console.log(successfulDeliveriesCount)
-  }
   const setPage = (i) => {
     if (i > 0 && i <= totalPage) {
       page = i;
-      console.log(page);
     }
   }
   const setNextPage = (page) => {
     if (page <= totalPage) {
       page += 1;
-      console.log(page);
     }
   }
   const setPreviousPage = (page) => {
     if (page > 0) {
       page -= 1;
-      console.log(page);
     }
   }
->>>>>>> 5c62a96 (showing if a rider is verified or not)
 
   return (
     <div className='dark:bg-darkBg bg-primary '>
@@ -306,31 +117,11 @@ const RiderDashboard = () => {
           <dl className='grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white'>
             <div className='flex flex-col items-center justify-center'>
               <dt className='mb-2 text-3xl md:text-4xl font-extrabold'>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 {riderDeliveriesLoading ? (
                   <CircularProgress size={20} />
                 ) : (
                   riderDeliveries?.dataList?.TotalCount
                 )}
-=======
-                {riderDeliveriesLoading
-<<<<<<< HEAD
-                  ? 'Loading'
-                  : riderDeliveries.dataList.TotalCount + 'M+'}
->>>>>>> d8a3578 (created a modal for view and update)
-=======
-                  ? (<CircularProgress size={20} />)
-                  : riderDeliveriesSuccess &&
-                    riderDeliveries.dataList.TotalCount + 'M+'}
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                {riderDeliveriesLoading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  riderDeliveries && riderDeliveries.dataList.TotalCount + 'M+'
-                )}
->>>>>>> 5c62a96 (showing if a rider is verified or not)
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
                 Total Deliveries
@@ -342,11 +133,7 @@ const RiderDashboard = () => {
                   <CircularProgress size={20} />
                 ) : (
                   successfulDeliveriesCountSuccess &&
-<<<<<<< HEAD
                   successfulDeliveriesCount
-=======
-                  successfulDeliveriesCount + 'M+'
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -358,11 +145,7 @@ const RiderDashboard = () => {
                 {pendingDeliveriesCountLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-<<<<<<< HEAD
                   pendingDeliveriesCountSuccess && pendingDeliveriesCount
-=======
-                  pendingDeliveriesCountSuccess && pendingDeliveriesCount + 'M+'
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                 )}
               </dt>
               <dd className='font-light text-gray-500 dark:text-gray-400'>
@@ -409,29 +192,7 @@ const RiderDashboard = () => {
                 </form>
               </div>
               <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
-<<<<<<< HEAD
                 {isVeirfied ? (
-=======
-                {
-                  (isVeirfied ? (
-                    <button
-                      type='button'
-                      className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
-                    >
-                      {/* <i className='line-icon-Add'></i> */}
-                      Verified
-                    </button>
-                  ) : (
-                    <button
-                      type='button'
-                      className='flex items-center justify-center text-red bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
-                    >
-                      {/* <i className='line-icon-Add'></i> */}
-                      Not Verified
-                    </button>
-                  ))}
-                <div className='flex items-center space-x-3 w-full md:w-auto'>
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <button
                     type='button'
                     className='flex items-center justify-center text-secondary bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
@@ -439,28 +200,7 @@ const RiderDashboard = () => {
                     {/* <i className='line-icon-Add'></i> */}
                     Verified
                   </button>
-<<<<<<< HEAD
                 ) : (
-=======
-                  <div
-                    id='actionsDropdown'
-                    className='hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600'
-                  >
-                    <ul
-                      className='py-1 text-sm text-gray-700 dark:text-gray-200'
-                      aria-labelledby='actionsDropdownButton'
-                    >
-                      <li>
-                        <Link
-                          to='#'
-                          className='block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'
-                        >
-                          Mass Edit
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
->>>>>>> 1795118 (still working on updating delivery status)
                   <button
                     type='button'
                     className='flex items-center justify-center text-red bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
@@ -468,52 +208,7 @@ const RiderDashboard = () => {
                     {/* <i className='line-icon-Add'></i> */}
                     Not Verified
                   </button>
-<<<<<<< HEAD
                 )}
-=======
-                  <div
-                    id='filterDropdown'
-                    className='z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700'
-                  >
-                    <h6 className='mb-3 text-sm font-medium text-gray-900 dark:text-white'>
-                      Choose brand
-                    </h6>
-                    <ul
-                      className='space-y-2 text-sm'
-                      aria-labelledby='filterDropdownButton'
-                    >
-                      <li className='flex items-center'>
-                        <input
-                          id='apple'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='apple'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Apple (56)
-                        </label>
-                      </li>
-                      <li className='flex items-center'>
-                        <input
-                          id='fitbit'
-                          type='checkbox'
-                          value=''
-                          className='w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500'
-                        />
-                        <label
-                          htmlFor='fitbit'
-                          className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
-                        >
-                          Microsoft (16)
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
->>>>>>> 1795118 (still working on updating delivery status)
               </div>
             </div>
             <div className='overflow-x-auto'>
@@ -536,23 +231,17 @@ const RiderDashboard = () => {
                       IsDelivered
                     </th>
                     <th scope='col' className='px-4 py-3'>
-<<<<<<< HEAD
                       Customer Name
                     </th>
                     <th scope='col' className='px-4 py-3'>
                       Customer Phone
                     </th>
                     <th scope='col' className='px-4 py-3'>
-=======
->>>>>>> d8a3578 (created a modal for view and update)
                       <span className=''>Actions</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                   {riderDeliveriesLoading && (
                     <tr className=''>
                       <td colSpan={8} className=''>
@@ -563,32 +252,6 @@ const RiderDashboard = () => {
                     </tr>
                   )}
                   {riderDeliveries ? (
-=======
-                  {riderDeliveries &&
->>>>>>> d8a3578 (created a modal for view and update)
-=======
-                  {riderDeliveriesLoading ? (
-=======
-                  {riderDeliveriesLoading && (
->>>>>>> 556b5a3 (added a view page for vewing delivery)
-                    <tr className=''>
-                      <td colSpan={6} className=''>
-                        <div className='p-3 flex flex-row justify-center items-center w-full'>
-                          <CircularProgress />
-                        </div>
-                      </td>
-                    </tr>
-<<<<<<< HEAD
-                  ) : (
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                  )}
-<<<<<<< HEAD
-                  {riderDeliveries && (
->>>>>>> 556b5a3 (added a view page for vewing delivery)
-=======
-                  {riderDeliveries ? (
->>>>>>> f6e3ad5 (small changes)
                     riderDeliveries.result.map((delivery) => (
                       <tr
                         className='border-b dark:border-gray-700'
@@ -606,8 +269,6 @@ const RiderDashboard = () => {
                         <td className='px-4 py-3'>{delivery.Status}</td>
                         <td className='px-4 py-3'>{delivery.Order.Status}</td>
                         <td className='px-4 py-3'>
-<<<<<<< HEAD
-<<<<<<< HEAD
                           {delivery.Order?.IsDelivered ? 'True' : 'False'}
                         </td>
                         <td className='px-4 py-3'>
@@ -628,23 +289,6 @@ const RiderDashboard = () => {
                       <td colSpan={6} className='text-center'>No data found</td>
                     </tr>
                   )}
-=======
-                          {delivery.Order.IsDelivered ? 'True' : 'False'}
-=======
-                          {delivery.Order?.IsDelivered ? 'True' : 'False'}
->>>>>>> 1795118 (still working on updating delivery status)
-                        </td>
-                        <td className='px-4 py-3 flex items-center justify-end dropdown'>
-                          <FadeMenu delivery={delivery} />
-                        </td>
-                      </tr>
-<<<<<<< HEAD
-                    ))}
->>>>>>> d8a3578 (created a modal for view and update)
-=======
-                    ))
-                  )}
->>>>>>> 1795118 (still working on updating delivery status)
                 </tbody>
               </table>
             </div>
@@ -655,21 +299,10 @@ const RiderDashboard = () => {
               <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
                 Showing
                 <span className='font-semibold text-gray-900 dark:text-white m-1'>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                   1-
                   {riderDeliveriesLoading ? (
                     <CircularProgress size={20} />
                   ) : (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                    // riderDeliveriesSuccess && riderDeliveries.dataList.PageSize
->>>>>>> 5c62a96 (showing if a rider is verified or not)
-=======
->>>>>>> f6e3ad5 (small changes)
                     pageSize
                   )}
                 </span>
@@ -678,38 +311,12 @@ const RiderDashboard = () => {
                   {riderDeliveriesLoading
                     ? 'Loading'
                     : riderDeliveries?.dataList?.TotalCount}
-<<<<<<< HEAD
-=======
-                  1-10
-                </span>
-                of
-                <span className='font-semibold text-gray-900 dark:text-white m-1'>
-<<<<<<< HEAD
-                  {riderDeliveries && riderDeliveries.dataList.TotalCount}
->>>>>>> d8a3578 (created a modal for view and update)
-=======
-                  {riderDeliveriesLoading
-                    ? 'Loading'
-                    : riderDeliveries.dataList.TotalCount}
->>>>>>> 1795118 (still working on updating delivery status)
-=======
->>>>>>> 556b5a3 (added a view page for vewing delivery)
                 </span>
               </span>
               <ul className='inline-flex items-stretch -space-x-px'>
                 <li>
-<<<<<<< HEAD
-<<<<<<< HEAD
                   <button
                     onClick={() => setPreviousPage(page)}
-=======
-                  <Link
-                    to='#'
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                  <button
-                    onClick={() => setPreviousPage(page)}
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                     className='flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Previous</span>
@@ -726,8 +333,6 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-<<<<<<< HEAD
-<<<<<<< HEAD
                   </button>
                 </li>
                 {Array.from({ length: totalPage }, (_, i) => (
@@ -741,51 +346,6 @@ const RiderDashboard = () => {
                   </li>
                 ))}
                 <li className='hidden'>
-=======
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='#'
-                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    1
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='#'
-                    className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                  >
-                    2
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='#'
-                    aria-current='page'
-                    className='flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
-                  >
-                    3
-                  </Link>
-                </li>
-                <li>
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                  </button>
-                </li>
-                {Array.from({ length: totalPage }, (_, i) => (
-                  <li key={i}>
-                    <button
-                      onClick={() => setPage(i + 1)}
-                      className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                    >
-                      {i + 1}
-                    </button>
-                  </li>
-                ))}
-                <li className='hidden'>
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -793,15 +353,7 @@ const RiderDashboard = () => {
                     ...
                   </Link>
                 </li>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <li className='hidden'>
-=======
-                <li>
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                <li className='hidden'>
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                   <Link
                     to='#'
                     className='flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
@@ -810,18 +362,8 @@ const RiderDashboard = () => {
                   </Link>
                 </li>
                 <li>
-<<<<<<< HEAD
-<<<<<<< HEAD
                   <button
                     onClick={() => setNextPage(page)}
-=======
-                  <Link
-                    to='#'
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                  <button
-                    onClick={() => setNextPage(page)}
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                     className='flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   >
                     <span className='sr-only'>Next</span>
@@ -838,15 +380,7 @@ const RiderDashboard = () => {
                         clipRule='evenodd'
                       />
                     </svg>
-<<<<<<< HEAD
-<<<<<<< HEAD
                   </button>
-=======
-                  </Link>
->>>>>>> 1795118 (still working on updating delivery status)
-=======
-                  </button>
->>>>>>> 5c62a96 (showing if a rider is verified or not)
                 </li>
               </ul>
             </nav>
@@ -858,10 +392,3 @@ const RiderDashboard = () => {
 }
 
 export default RiderDashboard
-=======
-const RiderDashboard = () => {
-    return ( <> Riddr dash </> );
-}
- 
-export default RiderDashboard;
->>>>>>> a0030da (vendor and product commit)

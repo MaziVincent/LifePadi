@@ -1,25 +1,14 @@
-<<<<<<< HEAD
 import logo from "../../assets/images/Logonamedark.svg";
 import motorbike from "../../assets/images/vintage-green-motorbike.avif";
-<<<<<<< HEAD
 import background1 from "../../assets/images/background1.webp";
-=======
->>>>>>> 3f80dfc (latest commit)
 import MarqueeComp from "./MarqueeComp";
 const Contact = () => {
   return (
     <div>
-<<<<<<< HEAD
       <div
         className="h-screen flex justify-center items-center "
         style={{
           backgroundImage: `url(${background1})`,
-=======
-     <div
-        className="h-screen flex justify-center items-center "
-        style={{
-          backgroundImage: `url(${motorbike})`,
->>>>>>> 3f80dfc (latest commit)
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -41,7 +30,6 @@ const Contact = () => {
       </div>
 
       <section className="bg-white dark:bg-gray-900">
-<<<<<<< HEAD
         <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
           <div className="max-w-screen-md mb-8 lg:mb-16">
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -138,8 +126,6 @@ const Contact = () => {
       </section>
 
       <section className="bg-white dark:bg-gray-900">
-=======
->>>>>>> 3f80dfc (latest commit)
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md border-4 rounded-lg">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
             Contact Us
@@ -206,10 +192,6 @@ const Contact = () => {
         </div>
       </section>
       <section className="bg-accent h-72 flex justify-center items-center mt-10">
-<<<<<<< HEAD
-=======
-        
->>>>>>> 3f80dfc (latest commit)
         <MarqueeComp />
       </section>
     </div>
@@ -217,19 +199,3 @@ const Contact = () => {
 };
 
 export default Contact;
-=======
-import logo from "../../assets/images/Logonamedark.svg"
-
-const Contact = () => {
-    return ( <div>
-        <div className="bg-secondary h-80"></div>
-        Contact page 
-
-        <div>
-            <img src={logo} className="h-32 animate-pulse" alt="" />
-        </div>
-    </div> );
-}
- 
-export default Contact;
->>>>>>> 43afb5b (Landing page and about page)

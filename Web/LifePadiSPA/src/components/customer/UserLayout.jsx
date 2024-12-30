@@ -10,15 +10,7 @@ const UserLayout = () => {
   return (
     <main className="">
       {" "}
-<<<<<<< HEAD
-<<<<<<< HEAD
       <div className=" bg-lightGray dark:bg-darkBg dark:text-primary h-full ">
-=======
-      <div className=" bg-primary dark:bg-darkBg dark:text-primary border-3 border-red h-full ">
->>>>>>> eda1965 (User Dashboard and Landing Page)
-=======
-      <div className=" bg-lightGray dark:bg-darkBg dark:text-primary h-full ">
->>>>>>> 5f61f19 (updated payment)
         <UserHeader setAside={setAside} />
 
         {/* <!-- Sidebar --> */}
@@ -28,11 +20,7 @@ const UserLayout = () => {
           setAside={setAside}
         />
 
-<<<<<<< HEAD
         <div className={` ml-1 md:ml-20 lg:ml-56 py-20 h-full  min-h-screen`}>
-=======
-        <div className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-56 py-20 border-3 h-full border-red min-h-screen`}>
->>>>>>> eda1965 (User Dashboard and Landing Page)
           <Outlet />
         </div>
         <UserFooter />

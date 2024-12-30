@@ -17,11 +17,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
   const [isLoading, setIsLoading] = useState(false)
   const inputsRef = useRef([]);
   const post = usePost();
-<<<<<<< HEAD
   const url = `${baseUrl}customer/send-otp`;
-=======
-  const url = `${baseUrl}customer/create`;
->>>>>>> 5dffde0 (forgot password and live payment)
   const verifyUrl = `${baseUrl}customer/verify-otp`;
   const {
     verifyOTP,
@@ -29,12 +25,8 @@ const VerifyOTP = ({ otpLength = 4, }) => {
     regData,
     setRegData,
     verificationInfo,
-<<<<<<< HEAD
     setVerificationInfo,
     setForgotPassword
-=======
-    setVerificationInfo
->>>>>>> 5dffde0 (forgot password and live payment)
   } = useAuth();
 
   console.log(verificationInfo);
@@ -91,12 +83,8 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
       if(response.data?.verified == true){
       
-<<<<<<< HEAD
         setForgotPassword(true)
         setVerifyOTP(false)
-=======
-       
->>>>>>> 5dffde0 (forgot password and live payment)
         //console.log(regData)
       }
 
@@ -116,10 +104,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
   const resendOtp = async (phoneNumber) => {
 
-<<<<<<< HEAD
     setCodeError("")
-=======
->>>>>>> 5dffde0 (forgot password and live payment)
     const unformated = phoneNumber.slice(1)
     const formated = `234${unformated}`
 
@@ -132,10 +117,7 @@ const VerifyOTP = ({ otpLength = 4, }) => {
 
       if(response.status == 200 || response.data.status == "200"){
         setVerificationInfo(response.data);
-<<<<<<< HEAD
         
-=======
->>>>>>> 5dffde0 (forgot password and live payment)
          
       }else{
         setCodeError("Error Sending OTP");

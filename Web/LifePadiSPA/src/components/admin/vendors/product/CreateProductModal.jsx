@@ -7,10 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useState, useEffect } from "react";
-<<<<<<< HEAD
 import LoadingGif from "../../../shared/LodingGif"
-=======
->>>>>>> a0030da (vendor and product commit)
 
 const CreateProductModal = ({ open, handleClose, vendorId }) => {
   const post = usePost();
@@ -29,21 +26,13 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
 
   const { data, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["categories"],
-<<<<<<< HEAD
     queryFn: () => getCategories(`${baseUrl}category/allLite`),
-=======
-    queryFn: () => getCategories(`${baseUrl}category/all?PageSize=10`),
->>>>>>> a0030da (vendor and product commit)
     keepPreviousData: true,
     staleTime: 20000,
     refetchOnMount: "always",
   });
 
-<<<<<<< HEAD
  console.log(data);
-=======
- // console.log(vendorId);
->>>>>>> a0030da (vendor and product commit)
   const {
     register,
     handleSubmit,
@@ -53,25 +42,10 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
   } = useForm({ mode: "all" });
 
   const create = async (data) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
     // console.log(vendor)
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
-=======
-    const vendor = { ...data, VendorId: vendorId };
-    // console.log(vendor)
-    const formData = new FormData();
-    for (const key in vendor) {
-      formData.append(key, vendor[key]);
->>>>>>> a0030da (vendor and product commit)
-=======
-    // console.log(vendor)
-    const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
->>>>>>> 4dc5d34 (worked on product component)
     }
     const response = await post(url, formData, auth?.accessToken);
     //console.log(response.data);
@@ -87,22 +61,10 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
   });
 
   const handleCreate = (prod) => {
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     const vendor = { ...prod, VendorId: vendorId, Image:file };
     //console.log(vendor);
     mutate(vendor);
-=======
-    //console.log(prod);
-    mutate(prod);
->>>>>>> a0030da (vendor and product commit)
-=======
-
-    const vendor = { ...prod, VendorId: vendorId, Image:file };
-    //console.log(prod);
-    mutate(vendor);
->>>>>>> 4dc5d34 (worked on product component)
   };
 
   const handleChange = (event) => {
@@ -136,11 +98,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
         <Toaster />
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* <!-- Modal content --> */}
-<<<<<<< HEAD
           <div className="relative p-4 bg-primary rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
-=======
-          <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-50 sm:p-5">
->>>>>>> a0030da (vendor and product commit)
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
@@ -288,11 +246,7 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                     {isError && <option> Error Loading Category </option>}
                     {isLoading && <option> Loading Category... </option>}
 
-<<<<<<< HEAD
                     {data?.map((category) => (
-=======
-                    {data?.result?.map((category) => (
->>>>>>> a0030da (vendor and product commit)
                       <option
                         key={category.Id}
                         value={category.Id}
@@ -355,13 +309,8 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                 type="submit"
                 disabled={fileError || !isValid || isSubmitting}
                 className={`inline-flex items-center ${
-<<<<<<< HEAD
                   fileError ? "text-graybg" : "text-background"
                 } dark:text-gray-50 bg-primary-700 hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
-=======
-                  fileError ? "text-green-700" : "text-gray-700"
-                } dark:text-gray-50 bg-primary-700 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
->>>>>>> a0030da (vendor and product commit)
               >
                 <svg
                   className="mr-1 -ml-1 w-6 h-6"
@@ -375,12 +324,8 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-<<<<<<< HEAD
                 {isSubmitting ? <LoadingGif /> : "Create New Product"}
                 
-=======
-                Create New Product
->>>>>>> a0030da (vendor and product commit)
               </button>
             </form>
           </div>

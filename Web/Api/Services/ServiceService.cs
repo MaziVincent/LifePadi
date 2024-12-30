@@ -1,8 +1,5 @@
 ﻿using Api.DTO;
-<<<<<<< HEAD
 using Api.Exceptions;
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
 using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
@@ -33,7 +30,6 @@ namespace Api.Services
             _cloudinary = new Cloudinary(account);
 
         }
-<<<<<<< HEAD
         public async Task<PagedList<Service>> allAsync(SearchPaging props)
         {
             try
@@ -45,16 +41,7 @@ namespace Api.Services
                     var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                       .ThenInclude(p => p.Products)
                                       .OrderByDescending(s => s.CreatedAt)
-<<<<<<< HEAD
-<<<<<<< HEAD
                                       .Where(s => s.IsActive == true)
-=======
->>>>>>> a2698f4 (Finishing touches on the admin portal)
-=======
-=======
-                                      .Where(s => s.IsActive == true)
->>>>>>> 3ffc3a3 (added pagination and search to riders delivery)
->>>>>>> 6022c93 (added pagination and search to riders delivery)
                                       .ToListAsync();
                     servicesList = servicesList.Concat(services);
 
@@ -101,48 +88,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
-=======
-        public async Task<IEnumerable<ServiceDTO>> allAsync()
-        {
-            try
-            {
-                var services = await _dbContext!.Services.Include(s => s.Vendors)!
-                                  .ThenInclude(p => p.Products)
-                                  .OrderByDescending(s => s.CreatedAt)
-                                  .Where(s => s.IsActive == true)
-                                  .ToListAsync();
-                var serviceDTO = _mapper!.Map<List<ServiceDTO>>(services);
-                return serviceDTO;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ServiceDtoLite> createAsync(ServiceDto service)
-        {
-            try
-            {
-                string folderName = "Services";
-                var newService = _mapper!.Map<Service>(service);
-                newService.IsActive = true;
-                if (service.ServiceIcon != null)
-                {
-                    var imgPath = await UploadImage.uploadImg(service.ServiceIcon, _cloudinary!, folderName);
-                    if (imgPath == null) throw new Exception("Can not upload image");
-                    newService.ServiceIconUrl = imgPath;
-                }
-                await _dbContext!.Services.AddAsync(newService);
-                await _dbContext!.SaveChangesAsync();
-                var serviceDOLite = _mapper.Map<ServiceDtoLite>(newService);
-                return serviceDOLite;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -151,7 +96,6 @@ namespace Api.Services
             try
             {
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
-<<<<<<< HEAD
                 if (service == null) { return null!; }
                 _dbContext.Services.Remove(service!);
                 await _dbContext!.SaveChangesAsync();
@@ -214,63 +158,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
-=======
-                if (service != null) { return null!; }
-                _dbContext.Services.Remove(service!);
-                await _dbContext!.SaveChangesAsync();
-                return "Service deleted";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ServiceDto> getAsync(int id)
-        {
-            try
-            {
-                var service = await _dbContext!.Services.Include(s => s.Vendors)!
-                    .ThenInclude(p => p.Products)
-                    .FirstOrDefaultAsync(s => s.Id == id);
-                if (service == null) return null!;
-                var ServiceDto = _mapper!.Map<ServiceDto>(service);
-                return ServiceDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<IEnumerable<ProductDto>> getServiceProducts(int id)
-        {
-            try
-            {
-                var service = await _dbContext!.Services.Include(s => s.Vendors)!
-                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
-                var products = _mapper!.Map<List<ProductDto>>(service!.Vendors!.SelectMany(v => v.Products!));
-                return products;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
-            }
-        }
-
-        public async Task<IEnumerable<VendorDtoLite>> getVendorsForService(int id)
-        {
-            try
-            {
-                var service = await _dbContext!.Services.Include(s => s.Vendors)!
-                    .ThenInclude(p => p.Products).FirstOrDefaultAsync(s => s.Id == id);
-                var vendors = _mapper!.Map<List<VendorDtoLite>>(service!.Vendors);
-                return vendors;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
         }
 
@@ -281,21 +168,10 @@ namespace Api.Services
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (response!.IsActive == true) return true;
                 return false;
-<<<<<<< HEAD
-<<<<<<< HEAD
             }
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
-=======
-            }catch (Exception ex)
-=======
-            }
-            catch (Exception ex)
->>>>>>> aefa4ba (made sure the serviceicon url is saving correctly)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -303,8 +179,6 @@ namespace Api.Services
         {
             try
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == name.ToLower());
                 if (response == null) return false;
                 return true;
@@ -316,32 +190,10 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ServiceDtoLite>> nonActiveService()
-=======
-                var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name == name);
-=======
-                var response = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == name.ToLower());
->>>>>>> fff24f0 (created a new service)
-                if (response == null) return false;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ServiceDTOLite>> nonActiveService()
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ServiceDtoLite>> nonActiveService()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var services = await _dbContext!.Services.Where(s => s.IsActive == false).ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
                 return ServiceDtoLite;
             }
@@ -352,45 +204,15 @@ namespace Api.Services
         }
 
         public Task<IEnumerable<ServiceDto>> searchByName(string name)
-=======
-                var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
-                return serviceDTOLite;
-=======
-                var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
-                return ServiceDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public Task<IEnumerable<ServiceDTO>> searchByName(string name)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public Task<IEnumerable<ServiceDto>> searchByName(string name)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             throw new NotImplementedException();
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IEnumerable<ServiceDtoLite>> servicesLite()
-=======
-        public async Task<IEnumerable<ServiceDTOLite>> servicesLite()
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ServiceDtoLite>> servicesLite()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var services = await _dbContext!.Services.ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
                 return ServiceDtoLite;
             }
@@ -458,83 +280,6 @@ namespace Api.Services
         }
 
         public async Task<ServiceDtoLite> updateAsync(ServiceDto service, int id)
-=======
-                var serviceDTOLite = _mapper!.Map<List<ServiceDTOLite>>(services);
-                return serviceDTOLite;
-=======
-                var ServiceDtoLite = _mapper!.Map<List<ServiceDtoLite>>(services);
-                return ServiceDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<object> serviceStats()
-        {
-            try
-            {
-                var stats = new
-                {
-                    totalNumberOfServices = await totalNumberOfServices(),
-                    totalNumberOfActiveServices = await totalNumberOfActiveServices(),
-                    totalNumberOfNonActiveServices = await totalNumberOfNonActiveServices()
-                };
-                return stats;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfActiveServices()
-        {
-            try
-            {
-                var response = await _dbContext!.Services.Where(s => s.IsActive == true).CountAsync();
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfNonActiveServices()
-        {
-            try
-            {
-                var response = await _dbContext!.Services.Where(s => s.IsActive == false).CountAsync();
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfServices()
-        {
-            try
-            {
-                var response = await _dbContext!.Services.CountAsync();
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ServiceDTOLite> updateAsync(ServiceDTO service, int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ServiceDtoLite> updateAsync(ServiceDto service, int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -546,8 +291,6 @@ namespace Api.Services
                 initialService.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Services.Attach(initialService);
                 await _dbContext.SaveChangesAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ServiceDtoLite = _mapper!.Map<ServiceDtoLite>(initialService);
                 return ServiceDtoLite;
             }
@@ -558,26 +301,6 @@ namespace Api.Services
         }
 
         public async Task<ServiceDto> uploadImgUrl(int id, IFormFile image)
-=======
-                var serviceDTOLite = _mapper!.Map<ServiceDTOLite>(initialService);
-                return serviceDTOLite;
-=======
-                var ServiceDtoLite = _mapper!.Map<ServiceDtoLite>(initialService);
-                return ServiceDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ServiceDTO> uploadImgUrl(int id, IFormFile image)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ServiceDto> uploadImgUrl(int id, IFormFile image)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -585,7 +308,6 @@ namespace Api.Services
                 var service = await _dbContext!.Services.FirstOrDefaultAsync(s => s.Id == id);
                 if (service == null) return null!;
                 var imgPath = await UploadImage.uploadImg(image, _cloudinary!, folderName);
-<<<<<<< HEAD
                 if (imgPath == null) throw new ServiceException("Can not upload image");
                 service.ServiceIconUrl = imgPath;
                 _dbContext!.Services.Attach(service);
@@ -626,22 +348,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
-<<<<<<< HEAD
-=======
-                if (imgPath == null) throw new Exception("Can not upload image");
-                service.ServiceIconUrl = imgPath;
-                _dbContext!.Services.Attach(service);
-                await _dbContext.SaveChangesAsync();
-                var ServiceDto = _mapper!.Map<ServiceDto>(service);
-                return ServiceDto;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
             }
         }
     }

@@ -22,15 +22,6 @@ GET https://localhost:7216/api/order/get/367
 ###
 GET https://localhost:7216/api/order/getall
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-###
-GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
-
-=======
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
 
@@ -38,19 +29,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNum
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
 
 ###
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
-=======
-POST https://localhost:7216/hub/notification/negotiate
->>>>>>> d23f0ab (transaction, order, notification commit)
-=======
-POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
->>>>>>> 37744e4 (i added firebse cloud messaging)
-=======
-POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
->>>>>>> 0ca0962 (notification, location and other commits)
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/notification
@@ -62,16 +41,7 @@ Content-Type: application/json
 }
 
 ###
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 GET https://localhost:7216/api/order/get/395
-=======
-GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
->>>>>>> 0ca0962 (notification, location and other commits)
-=======
-GET https://localhost:7216/api/order/get/395
->>>>>>> 8ad4440 (wallet and transaction commits)
 
 ###
 
@@ -95,8 +65,6 @@ Content-Type: application/json
     "Longitude":"8.0957946"
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
 
@@ -155,108 +123,3 @@ GET https://localhost:7216/api/vendorcategory/vendors/2
 
 
 
-=======
- 
->>>>>>> 66834e5 (add signalR to the project)
-=======
-GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/395
-
-###
-
-POST https://localhost:7216/api/notification/sendgeneral
-Content-Type: application/json
-
-{
-    "Topic":"General Notification",
-    "Title":"Small notification",
-    "Body":"something something"
-}
-
-
- 
->>>>>>> d23f0ab (transaction, order, notification commit)
-=======
- 
->>>>>>> 5bd78d3 (add signalR to the project)
-=======
-
->>>>>>> 6bb1bd3 (notification, location and other commits)
- 
->>>>>>> 0ca0962 (notification, location and other commits)
-=======
-
->>>>>>> 6bb1bd3 (notification, location and other commits)
- 
-=======
-###
-GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDeposite?reference=LifePadi-krp7w0NuJV
-
-###
-GET https://lifepadi-948405839190.us-east1.run.app/api/wallet/transactions/8
-
-###
- PUT https://localhost:7216/api/rider/updateLocation/51
-Content-Type: application/json
-
-{
-    "RiderId":"51",
-    "Latitude":"6.3266352",
-    "Longitude":"8.0957946"
-}
-
-###
- POST https://localhost:7216/api/walletwithdrawal/withdraw/8
-Content-Type: application/json
-
-{
-    "WalletId":8,
-    "Amount":"5000",
-    "DeliveryFee":"1000",
-    "TotalAmount":"6000",
-    "OrderId":426,
-    "Type":"Wallet"
-}
-
-###
-DELETE https://localhost:7216/api/address/delete/93
-<<<<<<< HEAD
->>>>>>> d99b6c5 (wallet and transaction commits)
-<<<<<<< HEAD
->>>>>>> 8ad4440 (wallet and transaction commits)
-=======
-=======
-
-
-###
-GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSize=10
-<<<<<<< HEAD
->>>>>>> 5d7a329 (faq, customer support and term)
-<<<<<<< HEAD
->>>>>>> 9391cc8 (faq, customer support and term)
-=======
-=======
-
-
-###
-GET https://localhost:7216/api/product/searchAll?SearchString=bread
-
-###
-POST https://lifepadi-948405839190.us-east1.run.app/api/customersupport/send
-Content-Type: application/json
-
-{
-    "Subject":"Customer Support",
-    "Message" : "This is customer support message"
-}
-
-###
-POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
-
-###
-GET https://localhost:7216/api/vendorcategory/vendors/2
-
-
-
-
->>>>>>> 451a27c (search commit)
->>>>>>> 6b6a266 (search commit)

@@ -1,9 +1,6 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
-<<<<<<< HEAD
 using AutoMapper;
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -13,7 +10,6 @@ namespace Api.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly IService _iservice;
-<<<<<<< HEAD
         private readonly IMapper _mapper;
         public ServiceController(IService iservice, IMapper mapper) 
         { 
@@ -38,31 +34,13 @@ namespace Api.Controllers
                 };
                 
                 return Ok(new {result, dataList});
-=======
-        public ServiceController(IService iservice) 
-        { 
-            _iservice = iservice;
-        }
-
-        [HttpGet("all")]
-        public async Task<IActionResult> getAll()
-        {
-            try
-            {
-                var services = await _iservice.allAsync();
-                return Ok(services);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpGet("get/{id}")]
-=======
-        [HttpGet("{id}/get")]
->>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -115,18 +93,12 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpPut("uploadImg/{id}")]
         public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDto serviceIcon)
         {
             if(serviceIcon is null){
                 return BadRequest("No Image provided");
             }
-=======
-        [HttpPut("{id}/uploadImg")]
-        public async Task<IActionResult> uploadImg(int id, [FromForm] ImageDTO serviceIcon)
-        {
->>>>>>> ee48634 (done with service, category and product controllers.)
             try
             {
                 var service = await _iservice.uploadImgUrl(id, serviceIcon.Image!);
@@ -139,10 +111,6 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
         public async Task<IActionResult> create( [FromForm] ServiceDto service)
         {
             try
@@ -151,20 +119,6 @@ namespace Api.Controllers
                 if (service.Name is null || service.Description is null) return BadRequest("Name and Description are required");
                 var isNameTaken = await _iservice.nameExists(service.Name!);
                 if (!isNameTaken)
-=======
-        public async Task<IActionResult> create([FromForm] ServiceDTO service)
-        {
-            try
-            {
-                if(!ModelState.IsValid) return BadRequest("Invalid input");
-                if (service.Name is null || service.Description is null) return BadRequest("Name and Description are required");
-                var isNameTaken = await _iservice.nameExists(service.Name!);
-<<<<<<< HEAD
-                if (isNameTaken == false)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                if (!isNameTaken)
->>>>>>> fff24f0 (created a new service)
                 {
                     var newService = await _iservice.createAsync(service);
                     return Ok(newService);
@@ -176,16 +130,8 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpPut("update/{id}")]
         public async Task<IActionResult> update([FromForm] ServiceDto service, int id)
-<<<<<<< HEAD
-=======
-        [HttpPut("{id}/update")]
-        public async Task<IActionResult> update([FromForm] ServiceDTO service, int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -198,18 +144,13 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
-=======
-        [HttpDelete("{id}/delete")]
->>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _iservice.deleteAsync(id);
                 if (response == null) return NotFound();
-<<<<<<< HEAD
                 
                 return Ok(new {success = response });
             }catch (Exception ex)
@@ -237,11 +178,6 @@ namespace Api.Controllers
             try
             {
                 var response = await _iservice.ChangeActivation(id);
-<<<<<<< HEAD
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
                 return Ok(response);
             }catch (Exception ex)
             {
@@ -249,22 +185,6 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
-        [HttpGet("{id}/getVendors")]
-        public async Task<IActionResult> getVendors(int id)
-        {
-            try
-            {
-                var vendors = await _iservice.getVendorsForService(id);
-                return Ok(vendors);
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-=======
->>>>>>> 0ca0962 (notification, location and other commits)
 
     }
 }

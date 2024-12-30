@@ -23,7 +23,6 @@ namespace Api.Models
         public DbSet<Service> Services { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
-<<<<<<< HEAD
         public DbSet<VendorCategory> VendorCategories { get; set; }
         public DbSet<VendorReview> VendorReviews { get; set; }
         public DbSet<RiderReview> RiderReviews { get; set; }
@@ -37,14 +36,7 @@ namespace Api.Models
         public DbSet<CustomerVoucher> CustomerVouchers { get; set; }
         public DbSet<VoucherNotification> VoucherNotifications { get; set; }
         public DbSet<Message> Messages { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
         public DbSet<CustomerSupport> CustomerSupports { get; set; }
-=======
->>>>>>> 568d50b (done with chat messages)
-=======
-        public DbSet<CustomerSupport> CustomerSupports { get; set; }
->>>>>>> 9391cc8 (faq, customer support and term)
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,7 +46,5 @@ namespace Api.Models
                 .HasForeignKey<Wallet>(w => w.CustomerId);
             
         }
-=======
->>>>>>> 7f9ad44 (done with payment and voucher)
     }
 }

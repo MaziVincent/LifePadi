@@ -1,24 +1,7 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 18f5cdb (Admin service)
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
-=======
-    "c:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
->>>>>>> 54fb00d (removed service from product)
-=======
-    "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {}
->>>>>>> 2e24261 (git ignore)
   },
   "projects": {
     "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj": {
@@ -26,50 +9,9 @@
       "restore": {
         "projectUniqueName": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "projectName": "Api",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
         "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
-<<<<<<< HEAD
-=======
-    "C:\\works\\LifePadi\\Web\\Api\\Api.csproj": {}
-=======
-    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {}
->>>>>>> 6f7231c (done with payment and voucher)
-  },
-  "projects": {
-    "C:\\works\\LifePadi\\Web\\API\\Api.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
-        "projectName": "Api",
-        "projectPath": "C:\\works\\LifePadi\\Web\\API\\Api.csproj",
-        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
-<<<<<<< HEAD
-        "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
->>>>>>> 4088e0a (finished with delivery service and controller)
-=======
-        "outputPath": "C:\\works\\LifePadi\\Web\\API\\obj\\",
->>>>>>> 6f7231c (done with payment and voucher)
-=======
->>>>>>> 18f5cdb (Admin service)
-=======
-        "projectPath": "c:\\works\\LifePadi\\Web\\Api\\Api.csproj",
-        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
-        "outputPath": "c:\\works\\LifePadi\\Web\\Api\\obj\\",
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-        "projectPath": "C:\\works\\LifePadi\\Web\\Api\\Api.csproj",
-        "packagesPath": "C:\\Users\\Remigius\\.nuget\\packages\\",
-        "outputPath": "C:\\works\\LifePadi\\Web\\Api\\obj\\",
->>>>>>> 54fb00d (removed service from product)
-=======
-        "projectPath": "/Users/mac/Projects/LifePadi/Web/Api/Api.csproj",
-        "packagesPath": "/Users/mac/.nuget/packages/",
-        "outputPath": "/Users/mac/Projects/LifePadi/Web/Api/obj/",
->>>>>>> 2e24261 (git ignore)
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
@@ -104,6 +46,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Amazon.Lambda.AspNetCoreServer.Hosting": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[13.0.1, )"
@@ -120,9 +66,17 @@
               "target": "Package",
               "version": "[1.26.2, )"
             },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
             "FuzzySharp": {
               "target": "Package",
               "version": "[2.0.2, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.9.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -131,6 +85,10 @@
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[8.0.4, )"
+            },
+            "Microsoft.AspNetCore.SignalR": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -143,8 +101,6 @@
               "version": "[8.0.4, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.4, )"
             },
@@ -155,6 +111,14 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "RestClient.Net": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -176,15 +140,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
-<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
->>>>>>> 15ee654 (made sure the serviceicon url is saving correctly)
-=======
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
->>>>>>> 2e24261 (git ignore)
         }
       }
     }

@@ -15,18 +15,8 @@ namespace Api.Services
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
         private readonly Cloudinary _cloudinary;
-<<<<<<< HEAD
-<<<<<<< HEAD
         public ProductService(DBContext dbContext, IMapper mapper, IConfiguration config)
         {
-=======
-        public ProductService(DBContext dbContext, IMapper mapper, IConfiguration config) 
-        { 
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public ProductService(DBContext dbContext, IMapper mapper, IConfiguration config)
-        {
->>>>>>> 98415b4 (done with dashboard)
             _dbContext = dbContext;
             _mapper = mapper;
             _config = config;
@@ -35,24 +25,10 @@ namespace Api.Services
                 _config["Cloudinary:Api_Key"],
                 _config["Cloudinary:Api_Secret"]
             );
-<<<<<<< HEAD
-<<<<<<< HEAD
             _cloudinary = new Cloudinary(account);
         }
 
         public async Task<IEnumerable<ProductDto>> allAsync(int pageNumber, int pageSize, string searchString)
-<<<<<<< HEAD
-=======
-            _cloudinary = new Cloudinary( account );
-=======
-            _cloudinary = new Cloudinary(account);
->>>>>>> 98415b4 (done with dashboard)
-        }
-
-        public async Task<IEnumerable<ProductDTO>> allAsync(int pageNumber, int pageSize, string searchString)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -61,8 +37,6 @@ namespace Api.Services
                 {
                     var products1 = await _dbContext!.Products.Skip(skip).Take(pageSize)
                         .Include(p => p.Vendor)
-<<<<<<< HEAD
-<<<<<<< HEAD
                         .Include(p => p.Category)
                         .OrderByDescending(p => p.CreatedAt)
                         .Where(p => p.Status == true).ToListAsync();
@@ -84,42 +58,10 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDtoLite>> allProductLiteAsync()
-=======
-                        .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                        .Include(p => p.Category)
-                        .OrderByDescending(p => p.CreatedAt)
-                        .Where(p => p.Status == true).ToListAsync();
-                    var ProductDto1 = _mapper.Map<List<ProductDto>>(products1);
-                    return ProductDto1;
-                }
-                var products = await _dbContext.Products.Skip(skip).Take(pageSize)
-                    .Include(p => p.Vendor)
-                    .Include(p => p.Category)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => p.SearchString!.ToLower().Contains(searchString.ToLower())).ToListAsync();
-                var ProductDto = _mapper.Map<List<ProductDto>>(products);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTOLite>> allProductLiteAsync()
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDtoLite>> allProductLiteAsync()
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var products = await _dbContext.Products.OrderByDescending(p => p.CreatedAt).ToListAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ProductDtoLite = _mapper.Map<List<ProductDtoLite>>(products);
                 return ProductDtoLite;
             }
@@ -130,26 +72,6 @@ namespace Api.Services
         }
 
         public async Task<ProductDto> createAsync(CreateProductDto product)
-=======
-                var productDTOLite = _mapper.Map<List<ProductDTOLite>>(products);
-                return productDTOLite;
-=======
-                var ProductDtoLite = _mapper.Map<List<ProductDtoLite>>(products);
-                return ProductDtoLite;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ProductDTO> createAsync(CreateProductDTO product)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ProductDto> createAsync(CreateProductDto product)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -158,7 +80,6 @@ namespace Api.Services
                 newProduct.Status = true;
                 newProduct.SearchString = product.Name!.ToUpper() + " " + product.Price + " " + newProduct.Status;
                 var imgPath = await UploadImage.uploadImg(product.Image!, _cloudinary, folderName);
-<<<<<<< HEAD
                 if (imgPath == null!) throw new Exceptions.ServiceException("Can not upload the product image");
                 newProduct.ProductImgUrl = imgPath;
                 await _dbContext.Products.AddAsync(newProduct);
@@ -170,19 +91,6 @@ namespace Api.Services
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
-=======
-                if (imgPath == null!) throw new Exception("Can not upload the product image");
-                newProduct.ProductImgUrl = imgPath;
-                await _dbContext.Products.AddAsync(newProduct);
-                await _dbContext.SaveChangesAsync();
-                var ProductDto = _mapper.Map<ProductDto>(newProduct);
-
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }
         }
 
@@ -192,7 +100,6 @@ namespace Api.Services
             {
                 var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
-<<<<<<< HEAD
                 _dbContext.Products.Remove(product);
                 await _dbContext.SaveChangesAsync();
                 return "Product deleted";
@@ -204,28 +111,11 @@ namespace Api.Services
         }
 
         public async Task<ProductDto> getAsync(int id)
-=======
-                return "Product deleted";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ProductDTO> getAsync(int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ProductDto> getAsync(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var product = await _dbContext.Products
                     .Include(p => p.Vendor)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .ThenInclude(v => v!.Addresses)
                     .Include(p => p.Category)
                     .Include(p => p.ProductReviews)!
@@ -276,35 +166,11 @@ namespace Api.Services
         }
 
         public async Task<VendorDto> getProductVendor(int id)
-=======
-                    .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(p => p.Category)
-                    .FirstOrDefaultAsync(p => p.Id == id);
-                if (product == null) return null!;
-                var ProductDto = _mapper.Map<ProductDto>(product);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<VendorDTO> getProductVendor(int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<VendorDto> getProductVendor(int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var product = await _dbContext.Products.Include(p => p.Vendor).FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var vendor = _mapper.Map<VendorDto>(product.Vendor);
                 return vendor;
             }
@@ -338,25 +204,6 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> searchProduct(string searchString)
-=======
-                var vendor = _mapper.Map<VendorDTO>(product.Vendor);
-=======
-                var vendor = _mapper.Map<VendorDto>(product.Vendor);
->>>>>>> 836ec36 (changed all DTO to Dto)
-                return vendor;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> searchProduct(string searchString)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> searchProduct(string searchString)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -370,15 +217,7 @@ namespace Api.Services
                     {
                         // Fuzzy matching logic using your chosen library
                         var matchRatio = Fuzz.Ratio(word, searchString.ToLower());
-<<<<<<< HEAD
-<<<<<<< HEAD
                         if (matchRatio >= 50) // Set a threshold for acceptable similarity
-=======
-                        if (matchRatio >= 0.8) // Set a threshold for acceptable similarity
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                        if (matchRatio >= 50) // Set a threshold for acceptable similarity
->>>>>>> 96f3b7d (made some corrections on service, category and product services.)
                         {
                             isMatch = true;
                             break; // Exit inner loop if a match is found
@@ -390,8 +229,6 @@ namespace Api.Services
                     }
                 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ProductDtoList = _mapper.Map<List<ProductDto>>(productList);
                 return ProductDtoList;
             }
@@ -402,34 +239,12 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> searchProductByAll(int pageNumber, int pageSize, string name)
-=======
-                var productDTOList = _mapper.Map<List<ProductDTO>>(productList);
-                return productDTOList;
-=======
-                var ProductDtoList = _mapper.Map<List<ProductDto>>(productList);
-                return ProductDtoList;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> searchProductByAll(int pageNumber, int pageSize, string name)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> searchProductByAll(int pageNumber, int pageSize, string name)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(name.ToLower()) ||
@@ -446,39 +261,12 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> searchProductByCategory(int pageNumber, int pageSize, string categoryName)
-=======
-                    .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(p => p.Vendor)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => p.Category!.Name!.ToLower().Contains(name.ToLower()) ||
-                    p.Vendor!.Name!.ToLower().Contains(name.ToLower()) ||
-                    p.SearchString!.ToLower().Contains(name.ToLower()))
-                    .ToListAsync();
-                var ProductDto = _mapper.Map<List<ProductDto>>(products);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> searchProductByCategory(int pageNumber, int pageSize, string categoryName)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> searchProductByCategory(int pageNumber, int pageSize, string categoryName)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Category!.Name!.ToLower().Contains(categoryName.ToLower()))
@@ -493,37 +281,12 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> searchProductByService(int pageNumber, int pageSize, string serviceName)
-=======
-                    .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(p => p.Vendor)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => p.Category!.Name!.ToLower().Contains(categoryName.ToLower()))
-                    .ToListAsync();
-                var ProductDto = _mapper.Map<List<ProductDto>>(products);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> searchProductByService(int pageNumber, int pageSize, string serviceName)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> searchProductByService(int pageNumber, int pageSize, string serviceName)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.Vendor!.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
@@ -538,37 +301,12 @@ namespace Api.Services
         }
 
         public async Task<IEnumerable<ProductDto>> searchProductByVendor(int pageNumber, int pageSize, string vendorName)
-=======
-                    .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(p => p.Vendor)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .Where(p => p.Vendor!.Service!.Name!.ToLower().Contains(serviceName.ToLower()))
-                    .ToListAsync();
-                var ProductDto = _mapper.Map<List<ProductDto>>(products);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<IEnumerable<ProductDTO>> searchProductByVendor(int pageNumber, int pageSize, string vendorName)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IEnumerable<ProductDto>> searchProductByVendor(int pageNumber, int pageSize, string vendorName)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
                 var skip = (pageNumber - 1) * pageSize;
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Category)
-<<<<<<< HEAD
-<<<<<<< HEAD
                     .Include(p => p.Vendor)
                     .OrderByDescending(p => p.CreatedAt)
                     .AsQueryable()
@@ -641,69 +379,6 @@ namespace Api.Services
         }
 
         public async Task<ProductDto> updateAsync(ProductDto product, int id)
-=======
-                    .Include(p => p.Service)
-=======
->>>>>>> 58020e7 (removed service from product)
-                    .Include(p => p.Vendor)
-                    .OrderByDescending(p => p.CreatedAt)
-                    .AsQueryable()
-                    .Where(p => p.Vendor!.Name!.ToLower().Contains(vendorName.ToLower()))
-                    .ToListAsync();
-                var ProductDto = _mapper.Map<List<ProductDto>>(products);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfProducts()
-        {
-            try
-            {
-                var products = await _dbContext.Products.CountAsync();
-                return products;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfProductsByCategory(int categoryId)
-        {
-            try
-            {
-                var products = await _dbContext.Products.CountAsync(p => p.CategoryId == categoryId);
-                return products;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<int> totalNumberOfProductsByVendor(int vendorId)
-        {
-            try
-            {
-                var products = await _dbContext.Products.CountAsync(p => p.VendorId == vendorId);
-                return products;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ProductDTO> updateAsync(ProductDTO product, int id)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ProductDto> updateAsync(ProductDto product, int id)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -712,13 +387,6 @@ namespace Api.Services
                 initialProduct.Name = product.Name;
                 initialProduct.Description = product.Description;
                 initialProduct.Price = product.Price;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-                initialProduct.ServiceId = product.ServiceId;
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 58020e7 (removed service from product)
                 initialProduct.VendorId = product.VendorId;
                 initialProduct.CategoryId = product.CategoryId;
                 initialProduct.Status = product.Status;
@@ -726,8 +394,6 @@ namespace Api.Services
                 initialProduct.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Products.Attach(initialProduct);
                 await _dbContext.SaveChangesAsync();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 var ProductDto = _mapper.Map<ProductDto>(initialProduct);
                 return ProductDto;
             }
@@ -738,26 +404,6 @@ namespace Api.Services
         }
 
         public async Task<ProductDto> uploadProductImg(int id, IFormFile productImg)
-=======
-                var productDTO = _mapper.Map<ProductDTO>(initialProduct);
-                return productDTO;
-=======
-                var ProductDto = _mapper.Map<ProductDto>(initialProduct);
-                return ProductDto;
->>>>>>> 836ec36 (changed all DTO to Dto)
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-<<<<<<< HEAD
-        public async Task<ProductDTO> uploadProductImg(int id, IFormFile productImg)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<ProductDto> uploadProductImg(int id, IFormFile productImg)
->>>>>>> 836ec36 (changed all DTO to Dto)
         {
             try
             {
@@ -765,7 +411,6 @@ namespace Api.Services
                 var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
                 if (product == null) return null!;
                 var imgPath = await UploadImage.uploadImg(productImg, _cloudinary, folderName);
-<<<<<<< HEAD
                 if (imgPath == null) throw new Exceptions.ServiceException("Can not upload the product image");
                 product.ProductImgUrl = imgPath;
                 _dbContext.Products.Attach(product);
@@ -876,22 +521,5 @@ namespace Api.Services
 
         }
 
-<<<<<<< HEAD
-=======
-                if (imgPath == null) throw new Exception("Can not upload the product image");
-                product.ProductImgUrl = imgPath;
-                _dbContext.Products.Attach(product);
-                await _dbContext.SaveChangesAsync();
-                var ProductDto = _mapper.Map<ProductDto>(product);
-                return ProductDto;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 6b6a266 (search commit)
     }
 }

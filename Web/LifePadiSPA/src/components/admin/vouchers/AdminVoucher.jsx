@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 import CreateVoucher from "./CreateVoucher";
   // import EditServiceModal from "./EditServiceModal";
@@ -231,23 +229,6 @@ import CreateVoucher from "./CreateVoucher";
                           className="px-4 py-3"
                         >
                           Used
-<<<<<<< HEAD
-                        </th>
-
-                        <th
-                          scope="col"
-                          className="px-4 py-3"
-                        >
-                          Discount %
-                        </th>
-
-                        <th
-                          scope="col"
-                          className="px-4 py-3"
-                        >
-                          Discount Amt
-=======
->>>>>>> 28e0a99 (rider corrections and other)
                         </th>
 
                         <th
@@ -298,16 +279,8 @@ import CreateVoucher from "./CreateVoucher";
                           <td className="px-4 py-3">{voucher.IsExpired ? <span className="text-background"> Expired </span> : <span className="text-redborder"> Still Valid </span>}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberAvailable}</td>
                           <td className="px-4 py-3">{voucher.TotalNumberUsed}</td>
-<<<<<<< HEAD
-<<<<<<< HEAD
                           <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
                           <td className="px-4 py-3">{voucher.DiscountAmount}</td>
-=======
->>>>>>> 28e0a99 (rider corrections and other)
-=======
-                          <td className="px-4 py-3">{voucher.DiscountPercentage}</td>
-                          <td className="px-4 py-3">{voucher.DiscountAmount}</td>
->>>>>>> 50bdb11 (added amount to voucher)
                           <td className="px-4 py-3">{voucher.Description}</td>
 
                           <td className="px-4 py-3 flex items-center justify-end">
@@ -391,33 +364,3 @@ import CreateVoucher from "./CreateVoucher";
 
 
 export default AdminVoucher;
-=======
-=======
-
-
-
->>>>>>> eda1965 (User Dashboard and Landing Page)
-const AdminVoucher = () => {
-  return (
-    <div className="flex items-center justify-center">
-      <div>
-        <h1 className="text-3xl text-green-500 font-bold">
-          {" "}
-          Vouchers Coming soon ...{" "}
-        </h1>
-      </div>
-    </div>
-  );
-};
-
-<<<<<<< HEAD
-        <div><h1 className="text-3xl text-green-500 font-bold"> Vouchers Coming soon ... </h1></div>
-
-    </div> );
-}
- 
-export default AdminVoucher;
->>>>>>> a2698f4 (Finishing touches on the admin portal)
-=======
-export default AdminVoucher;
->>>>>>> eda1965 (User Dashboard and Landing Page)

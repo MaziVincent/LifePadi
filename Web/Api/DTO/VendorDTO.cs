@@ -2,8 +2,6 @@
 
 namespace Api.DTO
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     public class VendorDto
     {
         public int? Id { get; set; }
@@ -60,13 +58,8 @@ namespace Api.DTO
 
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-<<<<<<< HEAD
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
-=======
-        public string? Longitude { get; set; }
-        public string? Latitude { get; set; }
->>>>>>> a0030da (vendor and product commit)
         public string? VendorImgUrl { get; set; }
         public int? ServiceId { get; set; }
         public int? VendorCategoryId {get; set;}
@@ -93,67 +86,6 @@ namespace Api.DTO
     public class ImageDto
     {
         public IFormFile? Image { get; set; }
-=======
-    public class VendorDTO
-=======
-    public class VendorDto
->>>>>>> 836ec36 (changed all DTO to Dto)
-    {
-        public int? Id { get; set; }
-        public string? ContactAddress { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Name { get; set; }
-        public string? VendorType { get; set; }
-        public string? VendorImgUrl { get; set; }
-        public string? SearchString { get; set; }
-        public int? ServiceId { get; set; }
-        public Service? Service { get; set; }
-        public List<ProductDtoLite>? Products { get; set; }
-    }
-
-    public class VendorDtoLite
-    {
-        public string? ContactAddress { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Name { get; set; }
-        public string? VendorType { get; set; }
-        public string? VendorImgUrl { get; set; }
-        public string? SearchString { get; set; }
-<<<<<<< HEAD
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-    }
-
-    public class AuthVendorDto
-    {
-        public int? Id { get; set; }
-        public string? Email { get; set; }
-        public string? VendorType { get; set; }
-        public string? ContactAddress { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Name { get; set; }
-        public string? Password { get; set; }
-        public int? ServiceId { get; set; }
-    }
-
-    public class AuthVendorDtoLite
-    {
-        public int? Id { get; set; }
-        public string? Email { get; set; }
-        public string? VendorType { get; set; }
-        public string? ContactAddress { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Name { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-    }
-
-    public class ImageDTO
-    {
-        public IFormFile? Image { get; set; }
->>>>>>> ee48634 (done with service, category and product controllers.)
     }
 
 }

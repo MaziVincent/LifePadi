@@ -2,21 +2,9 @@
 
 namespace Api.DTO
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
     public class UserDto
     {
         public int? Id { get; set; }
-=======
-    public class UserDTO
-    {
-<<<<<<< HEAD
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
-        public int? Id { get; set; }
->>>>>>> ee48634 (done with service, category and product controllers.)
         [Required]
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
@@ -29,53 +17,24 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Password { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
         public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     public class UserDtoLiteMessage
-=======
-        public string? ContactAdress { get; set; }
-=======
-        public string? ContactAddress { get; set; }
->>>>>>> 28d4101 (finished with rider and order)
-        public string? RefreshToken { get; set; }
-        public string? SearchString { get; set; }
-    }
-
-    public class UserDTOLite
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
-    public class UserDtoLiteMessage
->>>>>>> 568d50b (done with chat messages)
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 568d50b (done with chat messages)
         public string? ContactAddress { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
 
-<<<<<<< HEAD
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
->>>>>>> 568d50b (done with chat messages)
     public class UserDtoLite
     {
         public int Id { get; set; }
@@ -84,37 +43,18 @@ namespace Api.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? ContactAddress { get; set; }
-=======
-        public string? PasswordHash { get; set; }
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-        public string? ContactAdress { get; set; }
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
-        public string? ContactAddress { get; set; }
->>>>>>> 28d4101 (finished with rider and order)
         public string? RefreshToken { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     public class AuthUserDto
-=======
-    public class AuthUserDTO
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
-    public class AuthUserDto
->>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
         public string? ContactAddress { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -128,27 +68,6 @@ namespace Api.DTO
     }
 
     public class AuthUserDtoLite
-<<<<<<< HEAD
-=======
-        public string? ContactAdress { get; set; }
-=======
-        public string? ContactAddress { get; set; }
->>>>>>> 28d4101 (finished with rider and order)
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public Token? Token { get; set; }
-    }
-
-    public class Token
-    {
-        public string? RefreshToken { get; set; }
-        public string? AccessToken { get; set; }
-    }
-
-    public class AuthUserDTOLite
->>>>>>> 9a80707 (created the interfaces and the DTOs)
-=======
->>>>>>> 836ec36 (changed all DTO to Dto)
     {
         public string? Email { get; set; }
         public string? Password { get; set; }

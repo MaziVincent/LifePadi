@@ -1,10 +1,7 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
 using AutoMapper;
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
 
 namespace Api.Controllers
 {
@@ -13,7 +10,6 @@ namespace Api.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategory _icategory;
-<<<<<<< HEAD
         private readonly IMapper _mapper;
         public CategoryController(ICategory icategory, IMapper mapper) 
         { 
@@ -35,20 +31,6 @@ namespace Api.Controllers
                     categories.CurrentPage
                 };
                 return Ok(new {result, dataList});
-=======
-        public CategoryController(ICategory icategory) 
-        { 
-            _icategory = icategory;
-        }
-
-        [HttpGet("all")]
-        public async Task<IActionResult> getAll(int pageNumber = 1, int pageSize = 10, string searchString = "")
-        {
-            try
-            {
-                var categories = await _icategory.allAsync(pageNumber, pageSize, searchString);
-                return Ok(categories);
->>>>>>> ee48634 (done with service, category and product controllers.)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -68,11 +50,7 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpGet("products/{id}")]
-=======
-        [HttpGet("{id}/products")]
->>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> getCategoryProducts(int id)
         {
             try
@@ -86,19 +64,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
-=======
-        public async Task<IActionResult> create([FromForm] CategoryDTOLite category)
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-        public async Task<IActionResult> create([FromForm] CategoryDtoLite category)
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
-        public async Task<IActionResult> create([FromForm] CreateCategoryDto category)
->>>>>>> 59a2135 (added icon to the category model)
         {
             try
             {
@@ -107,49 +73,26 @@ namespace Api.Controllers
                 return Ok(newCategory);
             }catch (Exception ex)
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
                 if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                if (ex.Message.Contains("Cann't upload the category icon")) return StatusCode(500, ex.Message);
->>>>>>> 59a2135 (added icon to the category model)
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpDelete("delete/{id}")]
-=======
-        [HttpDelete("{id}/delete")]
->>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> delete(int id)
         {
             try
             {
                 var response = await _icategory.deleteAsync(id);
                 if (response == null) return NotFound();
-<<<<<<< HEAD
-<<<<<<< HEAD
                 return Ok(new {success = response});
-=======
-                return Ok(response);
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-                return Ok(new {success = response});
->>>>>>> a2698f4 (Finishing touches on the admin portal)
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-<<<<<<< HEAD
         [HttpGet("get/{id}")]
-=======
-        [HttpGet("{id}/get")]
->>>>>>> ee48634 (done with service, category and product controllers.)
         public async Task<IActionResult> get(int id)
         {
             try
@@ -177,30 +120,8 @@ namespace Api.Controllers
             }
         }
 
-<<<<<<< HEAD
         [HttpPut("update/{id}")]
-<<<<<<< HEAD
         public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
-=======
-        [HttpPut("{id}/update")]
-=======
-<<<<<<< HEAD
->>>>>>> 7fb3cf8 (resolved merge conflicts)
-        public async Task<IActionResult> update([FromForm] CategoryDTO category ,int id)
-<<<<<<< HEAD
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
-=======
-        [HttpPut("{id}/update")]
-        public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
->>>>>>> b8c66da (changed all DTO to Dto)
-<<<<<<< HEAD
->>>>>>> 836ec36 (changed all DTO to Dto)
-=======
-=======
-        public async Task<IActionResult> update([FromForm] CategoryDto category ,int id)
->>>>>>> ce86924 (resolved merge conflicts)
->>>>>>> 7fb3cf8 (resolved merge conflicts)
         {
             try
             {
@@ -212,14 +133,8 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
         [HttpGet("vendorProductCategories/{vendorId}")]
-=======
-
-        [HttpGet("vendorCategories/{vendorId}")]
->>>>>>> 867b7f3 (added a route for vendorCategories)
         public async Task<IActionResult> vendorCategories(int vendorId)
         {
             try
@@ -231,10 +146,6 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> db55c17 (added a route for products under a category with pagination)
 
         [HttpGet("{id}/products")]
         public async Task<IActionResult> getCategoryProducts(int id, [FromQuery] SearchPaging props)
@@ -255,10 +166,6 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 59a2135 (added icon to the category model)
 
         [HttpPut("{id}/uploadIcon")]
         public async Task<IActionResult> uploadIcon(int id, [FromForm] IFormFile Icon)
@@ -274,14 +181,5 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-<<<<<<< HEAD
-=======
->>>>>>> ee48634 (done with service, category and product controllers.)
-=======
->>>>>>> 867b7f3 (added a route for vendorCategories)
-=======
->>>>>>> db55c17 (added a route for products under a category with pagination)
-=======
->>>>>>> 59a2135 (added icon to the category model)
     }
 }
