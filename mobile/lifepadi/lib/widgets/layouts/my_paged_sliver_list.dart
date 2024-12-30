@@ -12,6 +12,8 @@ import '../widgets.dart';
 /// [CustomScrollView] when added to the screen.
 /// Useful for combining multiple scrollable pieces in your UI or if you need
 /// to add some widgets preceding or following your paged list.
+/// 
+/// I created this custom layout so I could use SuperSliverList.
 class MyPagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
   const MyPagedSliverList({
     required this.pagingController,

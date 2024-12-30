@@ -9,6 +9,8 @@ import 'my_paged_sliver_list.dart';
 ///
 /// Wraps a [MyPagedSliverList] in a [BoxScrollView] so that it can be
 /// used without the need for a [CustomScrollView]. Similar to a [ListView].
+///
+/// I created this custom layout so I could use SuperSliverList.
 class MyPagedListView<PageKeyType, ItemType> extends BoxScrollView {
   const MyPagedListView({
     required this.pagingController,
