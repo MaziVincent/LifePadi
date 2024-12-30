@@ -141,8 +141,6 @@ class OrderDetailsContent extends StatelessWidget {
           ),
         ],
 
-        // TODO: Show payment method
-
         /// Locations
         if (order.type == CheckoutType.logistics) ...[
           const SectionTitle(

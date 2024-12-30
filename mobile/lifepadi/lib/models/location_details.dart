@@ -38,6 +38,7 @@ class LocationDetails with LocationDetailsMappable {
   final String country;
   @MappableField(key: 'LocalGovt')
   final String? localGovernmentArea;
+  @MappableField(key: 'DefaultAddress')
   final bool isDefault;
 
   LatLng get latLng => LatLng(latitude, longitude);

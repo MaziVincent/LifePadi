@@ -13,6 +13,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location.g.dart';
 
+final pickupLocationProvider = StateProvider<LocationDetails?>((ref) => null);
+
+final dropoffLocationProvider = StateProvider<LocationDetails?>((ref) => null);
+
 /// Get the current location of the user
 @riverpod
 class CurrentLocation extends _$CurrentLocation with LocationUtils {
@@ -95,8 +99,6 @@ FutureOr<List<LocationDetails>> locations(Ref ref) async {
   }
 
   final data = List<JsonMap>.from(response.data!);
-  // FIXME: Remove this when default location issue is resolved
-  data.firstOrNull?['isDefault'] = true;
 
   ref.cache();
   return data.map(LocationDetailsMapper.fromMap).toList();
@@ -186,6 +188,28 @@ Future<void> deleteLocation(Ref ref, {required int id}) async {
   ref.invalidate(locationsProvider);
 }
 
-final pickupLocationProvider = StateProvider<LocationDetails?>((ref) => null);
+/// Set a location as the default location
+@riverpod
+Future<void> setDefaultLocation(Ref ref, {required int id}) async {
+  final client = ref.watch(dioProvider());
 
-final dropoffLocationProvider = StateProvider<LocationDetails?>((ref) => null);
+  final user = ref.read(authControllerProvider);
+  final userId = user.maybeWhen(
+    data: (user) => user.id,
+    orElse: () => null,
+  );
+  if (userId == null) {
+    throw const UnauthorizedException('No user found');
+  }
+
+  await client.put<dynamic>(
+    '/address/setasdefault',
+    data: {
+      'AddressId': id,
+      'CustomerId': userId,
+    },
+  );
+
+  // Invalidate the locations provider to refresh the list
+  ref.invalidate(locationsProvider);
+}
