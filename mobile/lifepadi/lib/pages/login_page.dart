@@ -128,8 +128,9 @@ class LoginPage extends HookConsumerWidget {
                                             .attemptLoginRecovery();
                                       }
                                     } catch (e) {
-                                      await showToast(
-                                        'Biometric authentication failed',
+                                      logger.e(
+                                        'Error authenticating with biometrics',
+                                        error: e,
                                       );
                                     }
                                   },
