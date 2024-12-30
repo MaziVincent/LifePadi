@@ -72,12 +72,13 @@ class CategoryProducts extends HookConsumerWidget {
     PagingController<int, Product> controller,
   ) async {
     try {
-      final result =
-          await ref.read(categoriesProvider().notifier).categoryProducts(
-                pageNumber: pageKey,
-                categoryId: categoryId,
-                pageSize: pageSize,
-              );
+      final result = await ref.read(
+        categoryProductsProvider(
+          pageNumber: pageKey,
+          categoryId: categoryId,
+          pageSize: pageSize,
+        ).future,
+      );
 
       final isLastPage = result.length < pageSize;
 

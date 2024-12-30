@@ -97,13 +97,15 @@ class AuthController extends _$AuthController {
     // Clear all the cached data
     ref
       ..invalidate(cartStateProvider)
-      ..invalidate(categoriesProvider)
-      ..invalidate(servicesProvider)
+      ..invalidate(productCategoriesProvider)
+      ..invalidate(categoryProductsProvider)
+      ..invalidate(categoryVendorsProvider)
       ..invalidate(locationsProvider)
       ..invalidate(ordersProvider)
       ..invalidate(orderProvider)
       ..invalidate(riderOrdersProvider)
       ..invalidate(productProvider)
+      ..invalidate(servicesProvider)
       ..invalidate(vendorsProvider)
       ..invalidate(vendorProductsProvider)
       ..invalidate(vendorsByServiceIdProvider)

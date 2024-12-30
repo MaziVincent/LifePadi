@@ -10,6 +10,7 @@ import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 part 'routes.g.dart';
@@ -355,6 +356,7 @@ class VendorsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    logger.d('categoryId: $categoryId, name: $name');
     return VendorsPage(categoryId: categoryId, name: name);
   }
 

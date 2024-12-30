@@ -27,7 +27,7 @@ class HomePage extends HookConsumerWidget {
     final vendors = ref.watch(vendorsProvider(pageSize: 3));
     final services = ref.watch(servicesProvider(pageSize: 4));
     final activeCategoryIndex = useState(0);
-    final categories = ref.watch(categoriesProvider());
+    final categories = ref.watch(productCategoriesProvider());
     final locationDetails = ref.watch(currentLocationProvider);
 
     return Scaffold(

@@ -9,6 +9,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/vendors.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -60,6 +61,7 @@ mixin VendorPagingLogic {
         controller.appendPage(vendors, pageKey + 1);
       }
     } catch (e) {
+      logger.e('Failed to fetch vendors', error: e);
       controller.error = e;
     }
   }
@@ -88,12 +90,13 @@ class _VendorContent extends HookConsumerWidget with VendorPagingLogic {
                 ).future,
               )
             : categoryId != null
-                ? ref
-                    .read(categoriesProvider(pageSize: pageSize).notifier)
-                    .categoryVendors(
+                ? ref.read(
+                    categoryVendorsProvider(
                       pageNumber: pageKey,
                       categoryId: categoryId!,
-                    )
+                      pageSize: pageSize,
+                    ).future,
+                  )
                 : ref.read(
                     vendorsProvider(
                       pageNumber: pageKey,

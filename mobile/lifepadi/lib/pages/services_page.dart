@@ -5,6 +5,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/services.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -39,7 +40,7 @@ class ServicesPage extends ConsumerWidget {
                     onTap: () => context.go(
                       SingleServiceRoute(
                         id: service.id,
-                        name: service.name,
+                        name: service.name.capitalize(),
                       ).location,
                     ),
                   );

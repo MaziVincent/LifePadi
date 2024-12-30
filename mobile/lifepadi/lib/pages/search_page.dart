@@ -146,74 +146,115 @@ class SearchResultList extends StatelessWidget {
         if (searchResult.vendors.isNotEmpty)
           SearchResultExpandable(
             title: 'Vendors (${searchResult.vendors.length})',
-            children: searchResult.vendors
-                .map(
-                  (vendor) => VendorCard(
-                    name: vendor.name,
-                    image: CachedNetworkImageProvider(vendor.imageUrl ?? ''),
-                    onTap: () => context.push(
-                      ProductsRoute(
-                        vendorId: vendor.id,
-                        vendorName: vendor.name,
-                      ).location,
-                    ),
-                  ),
-                )
-                .toList(),
+            children: [
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: searchResult.vendors
+                    .map(
+                      (vendor) => VendorCard(
+                        name: vendor.name,
+                        image:
+                            CachedNetworkImageProvider(vendor.imageUrl ?? ''),
+                        onTap: () => context.push(
+                          ProductsRoute(
+                            vendorId: vendor.id,
+                            vendorName: vendor.name,
+                          ).location,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ),
         if (searchResult.productCategories.isNotEmpty)
           SearchResultExpandable(
             title:
                 'Product Categories (${searchResult.productCategories.length})',
-            children: searchResult.productCategories
-                .map(
-                  (category) => CategoryCard(
-                    category: category,
-                    onTap: () => context.push(
-                      ProductsRoute(
-                        categoryId: category.id,
-                        categoryName: category.name.capitalize(),
-                      ).location,
-                    ),
-                  ),
-                )
-                .toList(),
+            children: [
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: searchResult.productCategories
+                    .map(
+                      (category) => CategoryCard(
+                        category: category,
+                        onTap: () => context.push(
+                          ProductsRoute(
+                            categoryId: category.id,
+                            categoryName: category.name.capitalize(),
+                          ).location,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ),
         if (searchResult.vendorCategories.isNotEmpty)
           SearchResultExpandable(
             title:
                 'Vendor Categories (${searchResult.vendorCategories.length})',
-            children: searchResult.vendorCategories
-                .map(
-                  (category) => CategoryCard(
-                    category: category,
-                    onTap: () => context.push(
-                      VendorsRoute(
-                        categoryId: category.id,
-                        name: category.name.capitalize(),
-                      ).location,
-                    ),
-                  ),
-                )
-                .toList(),
+            children: [
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: searchResult.vendorCategories
+                    .map(
+                      (category) => CategoryCard(
+                        category: category,
+                        onTap: () => context.push(
+                          VendorsRoute(
+                            categoryId: category.id,
+                            name: category.name,
+                          ).location,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ),
         if (searchResult.services.isNotEmpty)
           SearchResultExpandable(
             title: 'Services (${searchResult.services.length})',
-            children: searchResult.services
-                .map(
-                  (service) => ServiceCard(
-                    name: service.name,
-                    imageUrl: service.iconUrl,
-                    onTap: () {},
-                  ),
-                )
-                .toList(),
+            children: [
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: searchResult.services
+                    .map(
+                      (service) => ServiceCard(
+                        name: service.name,
+                        imageUrl: service.iconUrl,
+                        onTap: () => context.push(
+                          SingleServiceRoute(
+                            id: service.id,
+                            name: service.name,
+                          ).location,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ),
         if (searchResult.hasNext)
           Center(
             child: ElevatedButton(
-              // TODO: Implement load more
               onPressed: () {},
               child: const Text('Load more'),
             ),
