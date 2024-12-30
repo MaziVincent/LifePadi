@@ -11,7 +11,6 @@ import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
-import 'package:remixicon/remixicon.dart';
 
 class ProductDetailsPage extends ConsumerWidget {
   const ProductDetailsPage({super.key, required this.id});
@@ -30,15 +29,8 @@ class ProductDetailsPage extends ConsumerWidget {
           loading: () => 'Loading...',
           error: (error, _) => 'An error occurred',
         ),
-        actions: [
-          const CartIconWidget(),
-          2.horizontalSpace,
-          MyIconButton(
-            icon: Remix.more_2_fill,
-            onPressed: () {
-              // TODO: Add a popup menu with options: share, report, add to cart, add to wishlist.
-            },
-          ),
+        actions: const [
+          CartIconWidget(),
         ],
       ),
       body: switch (product) {
