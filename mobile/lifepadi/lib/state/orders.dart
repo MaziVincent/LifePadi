@@ -294,7 +294,6 @@ Future<void> resetStateAfterCheckout(
   if (fromWallet) {
     // Invalidate the balance provider to refresh the wallet balance
     ref.invalidate(balanceProvider);
-    return;
   }
 
   // Invalidate the orders provider to refresh the list
