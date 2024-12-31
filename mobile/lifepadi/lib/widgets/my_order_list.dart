@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/order.dart';
+import 'package:lifepadi/models/payment_method.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -108,6 +109,7 @@ class MyOrderList extends HookConsumerWidget {
                           city: BoneMock.city,
                           state: BoneMock.city,
                         ),
+                        paymentMethod: paymentMethods.first,
                       ),
                       isMock: true,
                     ),

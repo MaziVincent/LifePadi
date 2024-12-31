@@ -4,8 +4,6 @@ import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/order_item.dart';
 import 'package:lifepadi/models/user.dart';
-import 'package:lifepadi/models/wallet.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -32,12 +30,6 @@ class OrderDetailsContent extends StatelessWidget {
         itemsByVendor.putIfAbsent(vendorName, () => []).add(item);
       }
     }
-    final paymentMethod = PaymentMethod(
-      id: 2,
-      name: 'Paystack',
-      imagePath: Assets.icons.paystack.path,
-      isDefault: false,
-    );
 
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
@@ -374,13 +366,12 @@ class OrderDetailsContent extends StatelessWidget {
         ],
 
         /// Payment method
-        // TODO: Show payment method here
         const SectionTitle('Payment Method'),
         PaymentMethodInfo(
-          name: paymentMethod.name,
-          imagePath: paymentMethod.imagePath,
-          id: paymentMethod.id,
-          isDefault: paymentMethod.isDefault,
+          name: order.paymentMethod!.name,
+          imagePath: order.paymentMethod!.imagePath,
+          id: order.paymentMethod!.id,
+          isDefault: order.paymentMethod!.isDefault,
         ),
 
         10.verticalSpace,

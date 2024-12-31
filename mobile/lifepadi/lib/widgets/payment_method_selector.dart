@@ -1,9 +1,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/payment_method.dart';
 import 'package:lifepadi/models/user.dart';
-import 'package:lifepadi/models/wallet.dart';
 import 'package:lifepadi/state/auth_controller.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
@@ -19,21 +18,6 @@ class PaymentMethodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paymentMethods = [
-      PaymentMethod(
-        id: 1,
-        name: 'Lifepadi wallet',
-        imagePath: Assets.images.logoDark.path,
-        isDefault: true,
-      ),
-      PaymentMethod(
-        id: 2,
-        name: 'Paystack',
-        imagePath: Assets.icons.paystack.path,
-        isDefault: false,
-      ),
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
