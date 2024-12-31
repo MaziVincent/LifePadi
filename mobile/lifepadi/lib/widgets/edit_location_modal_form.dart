@@ -120,12 +120,15 @@ class EditLocationModalForm extends HookConsumerWidget {
             color: isDefault ? kDarkPrimaryColor : const Color(0xFF464646),
           ),
           5.horizontalSpace,
-          Text(
-            location.address,
-            style: context.textTheme.bodySmall?.copyWith(
-              color: isDefault ? kDarkPrimaryColor : const Color(0xFF5F5F5F),
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
+          Expanded(
+            child: Text(
+              location.address,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: isDefault ? kDarkPrimaryColor : const Color(0xFF5F5F5F),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
