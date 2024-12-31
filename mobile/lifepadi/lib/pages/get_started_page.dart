@@ -34,9 +34,9 @@ class GetStartedPage extends StatelessWidget {
                         end: Alignment.center,
                         stops: const [0.0, 0.3, 0.6],
                         colors: [
-                          Colors.white.withOpacity(1),
-                          Colors.white.withOpacity(0.6),
-                          Colors.white.withOpacity(0),
+                          Colors.white.withValues(alpha: 1),
+                          Colors.white.withValues(alpha: 0.6),
+                          Colors.white.withValues(alpha: 0),
                         ],
                       ),
                     ),
