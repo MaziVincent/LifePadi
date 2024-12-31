@@ -78,7 +78,7 @@ class MyOrderList extends HookConsumerWidget {
     );
 
     return RefreshIndicator(
-      onRefresh: () => Future.sync(controller.refresh),
+      onRefresh: () async => ref.invalidate(ordersProvider),
       child: MyPagedListView<int, Order>.separated(
         pagingController: controller,
         padding: kHorizontalPadding,
