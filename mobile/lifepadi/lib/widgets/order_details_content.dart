@@ -366,13 +366,15 @@ class OrderDetailsContent extends StatelessWidget {
         ],
 
         /// Payment method
-        const SectionTitle('Payment Method'),
-        PaymentMethodInfo(
-          name: order.paymentMethod!.name,
-          imagePath: order.paymentMethod!.imagePath,
-          id: order.paymentMethod!.id,
-          isDefault: order.paymentMethod!.isDefault,
-        ),
+        if (order.paymentMethod != null) ...[
+          const SectionTitle('Payment Method'),
+          PaymentMethodInfo(
+            name: order.paymentMethod!.name,
+            imagePath: order.paymentMethod!.imagePath,
+            id: order.paymentMethod!.id,
+            isDefault: order.paymentMethod!.isDefault,
+          ),
+        ],
 
         10.verticalSpace,
         182.verticalSpace,
