@@ -226,6 +226,7 @@ class LogisticsPage extends HookConsumerWidget {
                 PhoneInputField(
                   label: 'Sender phone number',
                   controller: senderPhoneController,
+                  autofillHints: const [AutofillHints.telephoneNumber],
                 ),
                 16.verticalSpace,
                 const SectionTitle(
@@ -339,6 +340,7 @@ class LogisticsPage extends HookConsumerWidget {
                 PhoneInputField(
                   phone: receiverPhone,
                   label: 'Receiver phone number',
+                  autofillHints: const [AutofillHints.telephoneNumber],
                 ),
                 16.verticalSpace,
                 const MyDivider(

@@ -11,6 +11,7 @@ class PhoneInputField extends StatelessWidget {
     this.onChildTap,
     this.label = 'Phone number',
     this.controller,
+    this.autofillHints,
   }) : assert(
           phone != null || controller != null,
           'Either phone or controller must be provided',
@@ -31,6 +32,9 @@ class PhoneInputField extends StatelessWidget {
   /// The controller for the input field
   final TextEditingController? controller;
 
+  /// The autofill hints for the input field
+  final Iterable<String>? autofillHints;
+
   @override
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
@@ -49,10 +53,11 @@ class PhoneInputField extends StatelessWidget {
         selectorType: PhoneInputSelectorType.DIALOG,
         useEmoji: true,
       ),
-      autofillHints: const [
-        AutofillHints.newUsername,
-        AutofillHints.telephoneNumber,
-      ],
+      autofillHints: autofillHints ??
+          [
+            AutofillHints.newUsername,
+            AutofillHints.telephoneNumber,
+          ],
       onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
       cursorColor: kDarkPrimaryColor,
       spaceBetweenSelectorAndTextField: 0,
