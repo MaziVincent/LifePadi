@@ -41,9 +41,13 @@ class PaymentMethodSelector extends StatelessWidget {
               final isWalletDisabled =
                   paymentMethod.id == 1 && walletBalance < totalAmount;
 
-              // If wallet is disabled and it's currently selected, switch to Paystack
-              if (isWalletDisabled && selectedPaymentMethod.value == 1) {
-                selectedPaymentMethod.value = 2;
+              // Schedule payment method update for next frame if needed
+              if (isWalletDisabled &&
+                  selectedPaymentMethod.value == 1 &&
+                  context.mounted) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  selectedPaymentMethod.value = 2;
+                });
               }
 
               return PaymentMethodCheckbox(
