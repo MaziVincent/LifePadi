@@ -178,6 +178,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                   payload: {
                     'route': OrderDetailsRoute(id: order.id).location,
                   },
+                  save: true,
                 );
 
                 if (context.mounted) {

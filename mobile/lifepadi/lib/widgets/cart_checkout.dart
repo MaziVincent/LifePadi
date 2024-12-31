@@ -189,6 +189,7 @@ class _CartCheckoutContent extends HookWidget {
                   payload: {
                     'route': OrderDetailsRoute(id: order.id).location,
                   },
+                  save: true,
                 );
 
                 // After that, go to receipt page

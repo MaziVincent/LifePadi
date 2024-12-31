@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart' hide Notification;
 
 class NotificationUtils {
@@ -67,7 +68,15 @@ class NotificationUtils {
     final List<NotificationActionButton>? actionButtons,
     String channelKey = 'orders_channel',
     int id = -1,
+    bool save = false,
   }) async {
+    if (save) {
+      await PreferencesHelper.saveNotification(
+        title: title,
+        body: body,
+        route: payload?['route'],
+      );
+    }
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: id,
