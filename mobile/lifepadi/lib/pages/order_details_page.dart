@@ -115,9 +115,12 @@ class _BottomPanelContent extends StatelessWidget {
       children: <Widget>[
         if (order.status == OrderStatus.pending) ...[
           PrimaryButton(
-            onPressed: () {
-              // TODO: Implement Make Payment for pending order
-            },
+            onPressed: () async => context.push(
+              CheckoutRoute(
+                type: order.type,
+              ).location,
+              extra: order,
+            ),
             text: 'Make Payment',
           ),
           PrimaryOutlineButton(

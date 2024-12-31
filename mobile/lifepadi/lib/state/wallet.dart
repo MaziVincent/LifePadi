@@ -146,9 +146,10 @@ Future<Receipt> walletPayment(
   required CheckoutType type,
   required double amount,
   required int orderId,
-  int? voucherId,
+  String? voucherCode,
   required double deliveryFee,
   required double totalAmount,
+  bool existingOrder = false,
 }) async {
   final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
@@ -167,7 +168,7 @@ Future<Receipt> walletPayment(
     data: {
       'Amount': amount,
       'OrderId': orderId,
-      'VoucherId': voucherId,
+      'VoucherCode': voucherCode,
       'DeliveryFee': deliveryFee,
       'TotalAmount': totalAmount,
       'WalletId': walletId,
@@ -188,7 +189,12 @@ Future<Receipt> walletPayment(
 
   // Return the receipt
   final receipt = ReceiptMapper.fromMap(response.data!);
-  await resetStateAfterCheckout(ref, type: type, fromWallet: true);
+  await resetStateAfterCheckout(
+    ref,
+    type: type,
+    fromWallet: true,
+    existingOrder: existingOrder,
+  );
 
   return receipt;
 }

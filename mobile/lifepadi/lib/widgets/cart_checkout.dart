@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/cart.dart';
 import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
@@ -19,28 +20,45 @@ import 'package:lifepadi/widgets/widgets.dart';
 
 /// Cart checkout widget
 class CartCheckout extends ConsumerWidget {
-  const CartCheckout({super.key});
+  const CartCheckout({super.key, this.existingOrder});
+
+  final Order? existingOrder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cart = ref.watch(cartStateProvider);
+    return existingOrder != null
+        ? _CartCheckoutContent(
+            ref: ref,
+            existingOrder: existingOrder,
+          )
+        : Builder(
+            builder: (context) {
+              final cart = ref.watch(cartStateProvider);
 
-    return switch (cart) {
-      AsyncData(:final value) => _CartCheckoutContent(cart: value, ref: ref),
-      AsyncError(:final error) => MyErrorWidget(error: error),
-      _ => const Center(child: GreenyLoadingWheel()),
-    };
+              return switch (cart) {
+                AsyncData(:final value) =>
+                  _CartCheckoutContent(cart: value, ref: ref),
+                AsyncError(:final error) => MyErrorWidget(error: error),
+                _ => const Center(child: GreenyLoadingWheel()),
+              };
+            },
+          );
   }
 }
 
 class _CartCheckoutContent extends HookWidget {
   const _CartCheckoutContent({
-    required this.cart,
+    this.cart,
     required this.ref,
-  });
+    this.existingOrder,
+  }) : assert(
+          cart != null || existingOrder != null,
+          'Cart or existing order must not be null',
+        );
 
-  final Cart cart;
+  final Cart? cart;
   final WidgetRef ref;
+  final Order? existingOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -74,21 +92,22 @@ class _CartCheckoutContent extends HookWidget {
             ),
             8.verticalSpace,
             ...<Widget>[
-              PriceBreakdownItem(
-                title: 'Subtotal',
-                price: cart.subtotal,
-                isFirst: true,
-              ),
+              if (existingOrder == null)
+                PriceBreakdownItem(
+                  title: 'Subtotal',
+                  price: cart!.subtotal,
+                  isFirst: true,
+                ),
               PriceBreakdownItem(
                 title: 'Delivery fee',
-                price: cart.deliveryFee,
+                price: existingOrder?.deliveryFee ?? cart!.deliveryFee,
               ),
             ].separatedBy(const MyDivider()),
             Padding(
               padding: EdgeInsets.only(top: 12.h),
               child: PaymentPrice(
                 title: 'Total',
-                amount: cart.total,
+                amount: existingOrder?.totalAmount ?? cart!.total,
                 description: kTotalDescription,
               ),
             ),
@@ -97,7 +116,7 @@ class _CartCheckoutContent extends HookWidget {
         16.verticalSpace,
         PaymentMethodSelector(
           selectedPaymentMethod: selectedPaymentMethod,
-          totalAmount: cart.total,
+          totalAmount: existingOrder?.totalAmount ?? cart!.total,
         ),
         30.verticalSpace,
         PrimaryActionButton(
@@ -114,68 +133,84 @@ class _CartCheckoutContent extends HookWidget {
             await showToast('Please wait, creating order...');
 
             try {
-              // Create order
-              final order = await ref.read(
-                storeOrderProvider(
-                  instruction: deliveryInstruction.value,
-                  totalAmount: cart.total,
-                ).future,
-              );
+              var order = existingOrder;
 
-              // Create delivery
-              await ref.read(
-                storeDeliveryProvider(
-                  orderId: order.id,
-                  fee: cart.deliveryFee,
-                  deliveryAddressId: cart.deliveryLocation!.id,
-                ).future,
-              );
-
-              // Create order items with the order id
-              for (final product in cart.products) {
-                await ref.read(
-                  storeOrderItemProvider(
-                    orderId: order.id,
-                    productId: product.id,
-                    quantity: product.quantity,
-                    amount: product.price,
-                    productName: product.name,
-                    description: product.description,
+              if (order == null) {
+                // Create order
+                order = await ref.read(
+                  storeOrderProvider(
+                    instruction: deliveryInstruction.value,
+                    totalAmount: cart!.total,
                   ).future,
                 );
+
+                // Create delivery
+                await ref.read(
+                  storeDeliveryProvider(
+                    orderId: order!.id,
+                    fee: cart!.deliveryFee,
+                    deliveryAddressId: cart!.deliveryLocation!.id,
+                  ).future,
+                );
+
+                // Create order items with the order id
+                for (final product in cart!.products) {
+                  await ref.read(
+                    storeOrderItemProvider(
+                      orderId: order.id,
+                      productId: product.id,
+                      quantity: product.quantity,
+                      amount: product.price,
+                      productName: product.name,
+                      description: product.description,
+                    ).future,
+                  );
+                }
+                await showToast('Order created successfully');
               }
-              await showToast('Order created successfully');
 
               // Process payment
               Receipt? receipt;
+              final subtotal = existingOrder != null ? 0.0 : cart!.subtotal;
+              final deliveryFee =
+                  existingOrder?.deliveryFee ?? cart!.deliveryFee;
+              final totalAmount = existingOrder?.totalAmount ?? cart!.total;
+              final voucherCode =
+                  existingOrder != null ? null : cart!.discount?.code;
+              final isExistingOrder = existingOrder != null;
               if (selectedPaymentMethod.value == 2) {
                 // Get payment link
                 final paymentLink = await ref.read(
                   paymentLinkProvider(
                     orderId: order.id,
-                    amount: cart.subtotal,
-                    deliveryFee: cart.deliveryFee,
-                    totalAmount: cart.total,
-                    voucherCode: cart.discount?.code,
+                    amount: subtotal,
+                    deliveryFee: deliveryFee,
+                    totalAmount: totalAmount,
+                    voucherCode: voucherCode,
                   ).future,
                 );
 
                 await showToast('Processing payment...');
                 // Use webview to process payment
                 if (context.mounted) {
-                  receipt = await context
-                      .push<Receipt>(PaymentRoute(link: paymentLink).location);
+                  receipt = await context.push<Receipt>(
+                    PaymentRoute(
+                      link: paymentLink,
+                      isExistingOrder: isExistingOrder,
+                    ).location,
+                  );
                 }
               } else if (selectedPaymentMethod.value == 1) {
                 // Use wallet to process payment
                 receipt = await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.cart,
-                    amount: cart.subtotal,
                     orderId: order.id,
-                    deliveryFee: cart.deliveryFee,
-                    totalAmount: cart.total,
-                    voucherId: cart.discount?.id,
+                    amount: subtotal,
+                    deliveryFee: deliveryFee,
+                    totalAmount: totalAmount,
+                    voucherCode: voucherCode,
+                    existingOrder: isExistingOrder,
                   ).future,
                 );
               }
@@ -215,7 +250,11 @@ class _CartCheckoutContent extends HookWidget {
                 );
               }
             } catch (e, s) {
-              logger.e('Error creating order', error: e, stackTrace: s);
+              logger.e(
+                'Could not checkout cart order',
+                error: e,
+                stackTrace: s,
+              );
               await handleError(e, context.mounted ? context : null);
             }
           },

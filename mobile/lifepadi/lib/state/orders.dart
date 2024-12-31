@@ -187,6 +187,7 @@ Future<Receipt> confirmPayment(
   Ref ref, {
   required Map<String, String> queryParameters,
   required CheckoutType type,
+  bool existingOrder = false,
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
@@ -201,7 +202,7 @@ Future<Receipt> confirmPayment(
   }
 
   final receipt = ReceiptMapper.fromMap(response.data!);
-  await resetStateAfterCheckout(ref, type: type);
+  await resetStateAfterCheckout(ref, type: type, existingOrder: existingOrder);
 
   return receipt;
 }
@@ -288,25 +289,29 @@ Future<void> resetStateAfterCheckout(
   Ref<Object?> ref, {
   required CheckoutType type,
   bool fromWallet = false,
+  bool existingOrder = false,
 }) async {
-  // Invalidate the orders provider to refresh the list
-  ref.invalidate(ordersProvider);
-
-  if (type == CheckoutType.cart) {
-    // Clear the cart
-    await ref
-        .read(cartStateProvider.notifier)
-        .clearCart(keepDeliveryLocation: true);
-  }
-
-  if (type == CheckoutType.logistics) {
-    // Set the logistics as paid
-    await ref.read(logisticsStateProvider.notifier).setAsPaid();
-  }
-
   if (fromWallet) {
     // Invalidate the balance provider to refresh the wallet balance
     ref.invalidate(balanceProvider);
+    return;
+  }
+
+  // Invalidate the orders provider to refresh the list
+  ref.invalidate(ordersProvider);
+
+  if (!existingOrder) {
+    if (type == CheckoutType.cart) {
+      // Clear the cart
+      await ref
+          .read(cartStateProvider.notifier)
+          .clearCart(keepDeliveryLocation: true);
+    }
+
+    if (type == CheckoutType.logistics) {
+      // Set the logistics as paid
+      await ref.read(logisticsStateProvider.notifier).setAsPaid();
+    }
   }
 }
 

@@ -13,10 +13,12 @@ class PaymentPage extends ConsumerStatefulWidget {
     super.key,
     required this.transactionLink,
     required this.type,
+    required this.isExistingOrder,
   });
 
   final String transactionLink;
   final CheckoutType type;
+  final bool isExistingOrder;
 
   @override
   ConsumerState<PaymentPage> createState() => _PaymentPageState();
@@ -75,6 +77,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
       confirmPaymentProvider(
         queryParameters: queryParameters,
         type: widget.type,
+        existingOrder: widget.isExistingOrder,
       ).future,
     );
 

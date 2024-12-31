@@ -373,7 +373,8 @@ class CheckoutRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return CheckoutPage(type: type);
+    final order = state.extra as Order?;
+    return CheckoutPage(type: type, existingOrder: order);
   }
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
@@ -589,14 +590,20 @@ class PaymentRoute extends GoRouteData {
   const PaymentRoute({
     required this.link,
     this.type = CheckoutType.cart,
+    this.isExistingOrder = false,
   });
 
   final String link;
   final CheckoutType type;
+  final bool isExistingOrder;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return PaymentPage(transactionLink: link, type: type);
+    return PaymentPage(
+      transactionLink: link,
+      type: type,
+      isExistingOrder: isExistingOrder,
+    );
   }
 }
 
