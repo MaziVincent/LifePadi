@@ -116,13 +116,13 @@ class _BottomPanelContent extends StatelessWidget {
         if (order.status == OrderStatus.pending) ...[
           PrimaryButton(
             onPressed: () {
-              // Implement Make Payment
+              // TODO: Implement Make Payment for pending order
             },
             text: 'Make Payment',
           ),
           PrimaryOutlineButton(
             onPressed: () => {
-              // Implement Cancel Order
+              // TODO: Implement Cancel Order
             },
             text: 'Cancel Order',
           ),
