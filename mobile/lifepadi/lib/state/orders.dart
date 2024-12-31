@@ -315,16 +315,22 @@ Future<void> resetStateAfterCheckout(
   }
 }
 
-/// Mark an order as delivered
+/// Update the status of an order to delivered.
+///
 /// This is called by the rider after the order has been delivered.
+/// Or by the customer to cancel a pending order.
 @riverpod
-Future<void> markAsDelivered(Ref ref, int orderId) async {
+Future<void> updateOrderStatus(
+  Ref ref,
+  int orderId, {
+  required OrderStatus status,
+}) async {
   final client = ref.read(dioProvider());
-  final response = await client.put<String>(
+
+  await client.put<String>(
     '/order/updatestatus/$orderId',
-    queryParameters: {'status': 'successful'},
+    queryParameters: {'status': status.toValue().toString()},
   );
-  if (response.data == null) {
-    throw const ServerErrorException('No data returned from the server');
-  }
+
+  ref.invalidate(ordersProvider);
 }

@@ -377,7 +377,7 @@ class OrderDetailsContent extends StatelessWidget {
         ],
 
         10.verticalSpace,
-        182.verticalSpace,
+        if (order.status != OrderStatus.cancelled) 182.verticalSpace,
       ].separatedBy(14.verticalSpace),
     );
   }

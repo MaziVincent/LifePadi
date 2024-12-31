@@ -11,19 +11,22 @@ class PrimaryOutlineButton extends StatelessWidget {
     this.iconColor = kDarkPrimaryColor,
     this.icon,
     this.textStyle,
+    this.iconWidget,
   });
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final Color iconColor;
   final IconData? icon;
   final TextStyle? textStyle;
+  final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
     final roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(40.r),
     );
+    final hasIcon = icon != null || iconWidget != null;
 
     return Material(
       color: Colors.transparent,
@@ -47,23 +50,26 @@ class PrimaryOutlineButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (icon != null)
-                Icon(
-                  icon,
-                  size: 24.r,
-                  color: iconColor,
-                ),
-              if (icon != null) 6.horizontalSpace,
-              Text(
-                text,
-                style: textStyle ??
-                    context.textTheme.bodyLarge?.copyWith(
-                      color: kDarkPrimaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.sp,
-                      letterSpacing: -0.88.r,
+              if (hasIcon) ...[
+                iconWidget ??
+                    Icon(
+                      icon,
+                      size: 24.r,
+                      color: Colors.white,
                     ),
-              ),
+                if (text != '') 6.horizontalSpace,
+              ],
+              if (text != '')
+                Text(
+                  text,
+                  style: textStyle ??
+                      context.textTheme.bodyLarge?.copyWith(
+                        color: kDarkPrimaryColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.sp,
+                        letterSpacing: -0.88.r,
+                      ),
+                ),
             ],
           ),
         ),

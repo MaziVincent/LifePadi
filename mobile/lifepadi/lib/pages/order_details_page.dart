@@ -71,17 +71,20 @@ class OrderDetailsPage extends ConsumerWidget {
             _ => const Center(child: GreenyLoadingWheel()),
           },
           switch (orderAsync) {
-            AsyncData(value: final order) => BottomPanel(
-                height: 182.h,
-                child: switch (userAsync) {
-                  AsyncData(value: final user) => _BottomPanelContent(
-                      order: order,
-                      user: user,
-                      ref: ref,
+            AsyncData(value: final order) =>
+              order.status == OrderStatus.cancelled
+                  ? const SizedBox.shrink()
+                  : BottomPanel(
+                      height: 182.h,
+                      child: switch (userAsync) {
+                        AsyncData(value: final user) => _BottomPanelContent(
+                            order: order,
+                            user: user,
+                            ref: ref,
+                          ),
+                        _ => const SizedBox.shrink(),
+                      },
                     ),
-                  _ => const SizedBox.shrink(),
-                },
-              ),
             _ => const SizedBox.shrink(),
           },
         ],
@@ -123,9 +126,39 @@ class _BottomPanelContent extends StatelessWidget {
             ),
             text: 'Make Payment',
           ),
-          PrimaryOutlineButton(
-            onPressed: () => {
-              // TODO: Implement Cancel Order
+          PrimaryOutlineActionButton(
+            onPressed: () async {
+              try {
+                await ref
+                    .read(
+                  updateOrderStatusProvider(
+                    order.id,
+                    status: OrderStatus.cancelled,
+                  ).future,
+                )
+                    .then((_) async {
+                  // show success message
+                  if (context.mounted) {
+                    await openSuccessDialog(
+                      context: context,
+                      title: 'Order Cancelled',
+                      description: 'Your order has been cancelled',
+                      onOk: () {
+                        context
+                          ..pop()
+                          ..pop();
+                      },
+                    );
+                  }
+                });
+              } catch (error, stackTrace) {
+                logger.e(
+                  "Couldn't cancel order",
+                  error: error,
+                  stackTrace: stackTrace,
+                );
+                await handleError(error, context.mounted ? context : null);
+              }
             },
             text: 'Cancel Order',
           ),
@@ -150,7 +183,12 @@ class _BottomPanelContent extends StatelessWidget {
             onPressed: () async {
               try {
                 await ref
-                    .read(markAsDeliveredProvider(order.id).future)
+                    .read(
+                  updateOrderStatusProvider(
+                    order.id,
+                    status: OrderStatus.completed,
+                  ).future,
+                )
                     .then((_) async {
                   // show success message
                   if (context.mounted) {
