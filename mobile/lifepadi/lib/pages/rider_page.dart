@@ -7,6 +7,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
+import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -24,7 +25,35 @@ class _RiderPageState extends ConsumerState<RiderPage> {
   StreamSubscription<LocationData>? locationSubscription;
   HubConnection? hubConnection;
   Location location = Location();
+  DateTime? lastUpdatedAt;
 
+  /// Update rider location with a PUT request
+  ///
+  /// This is used to update the rider's location in the database
+  /// once the app is opened and then every 10 minutes.
+  Future<void> updateRiderLocationWithPutRequest({
+    required int riderId,
+    required double latitude,
+    required double longitude,
+  }) async {
+    if (lastUpdatedAt != null &&
+        DateTime.now().difference(lastUpdatedAt!) <
+            const Duration(minutes: 10)) {
+      return;
+    }
+
+    final client = ref.read(dioProvider());
+    await client.put<dynamic>(
+      '/rider/updateLocation/$riderId',
+      data: {
+        'RiderId': riderId,
+        'Latitude': latitude,
+        'Longitude': longitude,
+      },
+    );
+  }
+
+  /// Setup location tracking with SignalR
   Future<void> setupLocationTracking() async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
@@ -58,10 +87,16 @@ class _RiderPageState extends ConsumerState<RiderPage> {
         if (locationData.latitude == null || locationData.longitude == null) {
           return;
         }
-        logger.d(
-          '[Rider] Locationchanged: ${locationData.latitude}, ${locationData.longitude}',
-        );
         final rider = await ref.read(authControllerProvider.future);
+        logger.d(
+          '[Rider ${rider.id}#] (${locationData.latitude}, ${locationData.longitude})',
+        );
+        updateRiderLocationWithPutRequest(
+          riderId: rider.id,
+          latitude: locationData.latitude!,
+          longitude: locationData.longitude!,
+        ).ignore();
+
         await hubConnection?.invoke(
           'UpdateLocation',
           args: [
