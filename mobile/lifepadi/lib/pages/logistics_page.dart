@@ -73,10 +73,14 @@ class LogisticsPage extends HookConsumerWidget {
 
           if (shouldRestore == true) {
             item.value = logistics.item;
-            descriptionController.text = logistics.description ?? '';
+            if (logistics.description != null) {
+              descriptionController.text = logistics.description!;
+            }
             receiverNameController.text = logistics.receiverName;
             receiverPhone.value = logistics.receiverPhone;
-            weightController.text = logistics.weight?.toString() ?? '';
+            if (logistics.weight != null) {
+              weightController.text = logistics.weight!.toString();
+            }
             isFragile.value = logistics.fragile;
             senderNameController.text = logistics.senderName;
             senderPhoneController.text = logistics.senderPhone;
