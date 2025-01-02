@@ -29,11 +29,10 @@ class TrackOrderPage extends StatelessWidget {
               iconColor: kDarkPrimaryColor,
               onPressed: () => context.push(
                 TrackOrderMapRoute(
-                  orderId: order.orderId,
+                  orderId: order.id,
                   riderId: order.rider!.id,
-                  latitude: order.deliveryLocation!.latitude,
-                  longitude: order.deliveryLocation!.longitude,
                 ).location,
+                extra: order,
               ),
             ),
         ],

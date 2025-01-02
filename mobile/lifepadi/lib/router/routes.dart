@@ -563,21 +563,18 @@ class TrackOrderMapRoute extends GoRouteData {
   const TrackOrderMapRoute({
     required this.orderId,
     required this.riderId,
-    required this.latitude,
-    required this.longitude,
   });
 
-  final String orderId;
+  final int orderId;
   final int riderId;
-  final double latitude;
-  final double longitude;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final order = state.extra! as Order;
     return TrackOrderMapPage(
       riderId: riderId,
       orderId: orderId,
-      destination: LatLng(latitude, longitude),
+      order: order,
     );
   }
 
