@@ -44,7 +44,7 @@ class ChoiceAlertDialog extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: iconColor ?? Colors.black.withOpacity(0.5),
+              color: iconColor ?? Colors.black.withOpacity( 0.5),
               size: 48.h,
             ),
           ),

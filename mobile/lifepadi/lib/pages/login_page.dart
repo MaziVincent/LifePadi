@@ -32,6 +32,25 @@ class LoginPage extends HookConsumerWidget {
     final phone = useState('');
     final showBiometrics = useState(false);
 
+    Future<void> authenticateWithBiometrics() async {
+      try {
+        final authenticated = await BiometricService().authenticate();
+        if (authenticated) {
+          // Attempt to restore previous login
+          await ref
+              .read(
+                authControllerProvider.notifier,
+              )
+              .attemptLoginRecovery();
+        }
+      } catch (e) {
+        logger.e(
+          'Error authenticating with biometrics',
+          error: e,
+        );
+      }
+    }
+
     useEffect(
       () {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -51,6 +70,8 @@ class LoginPage extends HookConsumerWidget {
           final canRestoreAuth =
               await ref.read(authControllerProvider.notifier).canRestoreAuth();
           showBiometrics.value = canRestoreAuth;
+
+          if (showBiometrics.value) await authenticateWithBiometrics();
         });
 
         return null;
@@ -114,26 +135,8 @@ class LoginPage extends HookConsumerWidget {
                                 IconButton(
                                   icon: const Icon(Remix.fingerprint_line),
                                   iconSize: 30.sp,
-                                  onPressed: () async {
-                                    try {
-                                      final authenticated =
-                                          await BiometricService()
-                                              .authenticate();
-                                      if (authenticated) {
-                                        // Attempt to restore previous login
-                                        await ref
-                                            .read(
-                                              authControllerProvider.notifier,
-                                            )
-                                            .attemptLoginRecovery();
-                                      }
-                                    } catch (e) {
-                                      logger.e(
-                                        'Error authenticating with biometrics',
-                                        error: e,
-                                      );
-                                    }
-                                  },
+                                  onPressed: () async =>
+                                      authenticateWithBiometrics(),
                                 ),
                             ],
                           ),

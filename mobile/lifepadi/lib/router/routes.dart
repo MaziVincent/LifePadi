@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/checkout_type.dart';
@@ -563,21 +562,18 @@ class TrackOrderMapRoute extends GoRouteData {
   const TrackOrderMapRoute({
     required this.orderId,
     required this.riderId,
-    required this.latitude,
-    required this.longitude,
   });
 
-  final String orderId;
+  final int orderId;
   final int riderId;
-  final double latitude;
-  final double longitude;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final order = state.extra! as Order;
     return TrackOrderMapPage(
       riderId: riderId,
       orderId: orderId,
-      destination: LatLng(latitude, longitude),
+      order: order,
     );
   }
 
