@@ -17,7 +17,7 @@ class CircularButton extends StatelessWidget {
       color: const Color(0xFFFCFCFC),
       shape: const CircleBorder(),
       elevation: 3,
-      shadowColor: Colors.black.withValues(alpha: 0.1),
+      shadowColor: Colors.black.withOpacity(0.1),
       child: InkWell(
         onTap: onTap,
         customBorder: const CircleBorder(),
