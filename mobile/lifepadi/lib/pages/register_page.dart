@@ -255,25 +255,27 @@ class RegisterPage extends HookConsumerWidget {
                         25.verticalSpace,
                         PrimaryActionButton(
                           text: 'Register',
-                          onPressed: () async {
-                            if (!formKey.currentState!.validate()) return;
+                          onPressed: !isPhoneVerified.value
+                              ? null
+                              : () async {
+                                  if (!formKey.currentState!.validate()) return;
 
-                            await ref
-                                .read(authControllerProvider.notifier)
-                                .register(
-                                  firstName: firstName.value,
-                                  lastName: lastName.value,
-                                  email: email.value,
-                                  phoneNumber: phone.value,
-                                  password: password.value,
-                                )
-                                .onError<DioException>(
-                                  (error, stackTrace) => handleError(
-                                    error,
-                                    context.mounted ? context : null,
-                                  ),
-                                );
-                          },
+                                  await ref
+                                      .read(authControllerProvider.notifier)
+                                      .register(
+                                        firstName: firstName.value,
+                                        lastName: lastName.value,
+                                        email: email.value,
+                                        phoneNumber: phone.value,
+                                        password: password.value,
+                                      )
+                                      .onError<DioException>(
+                                        (error, stackTrace) => handleError(
+                                          error,
+                                          context.mounted ? context : null,
+                                        ),
+                                      );
+                                },
                         ),
                         17.verticalSpace,
                         Center(
