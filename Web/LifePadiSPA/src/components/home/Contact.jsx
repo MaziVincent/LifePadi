@@ -275,6 +275,8 @@ const Contact = () => {
           {success && <p className="text-background">{success} </p>}
           {error && <p className="text-background">{error} </p>}
         </div>
+      </section>
+      <section>
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
           <a
             href="#DeleteAccount"
