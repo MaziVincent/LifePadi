@@ -2,7 +2,75 @@ import logo from "../../assets/images/Logonamedark.svg";
 import motorbike from "../../assets/images/vintage-green-motorbike.avif";
 import background1 from "../../assets/images/background1.webp";
 import MarqueeComp from "./MarqueeComp";
+import usePost from "../../hooks/usePost";
+import baseUrl from "../../api/baseUrl";
+import { set, useForm } from "react-hook-form";
+import { useState } from "react";
+import LoadingGif from "../shared/LodingGif";
+
 const Contact = () => {
+  const post = usePost();
+  const url = `${baseUrl}customersupport/send`;
+  const [delAcc, setDelAcc] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+   const [successDel, setSuccessDel] = useState("");
+   const [Delerror, setDelError] = useState("");
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register:registerDel,
+    handleSubmit:handleSubmitDel,
+    reset:resetDel,
+    formState: { errors:errorsDel },
+  } = useForm();
+  
+  const sendMessage = async (data) => {
+   setSuccess("");
+    setError("");
+    setLoading(true);
+    const message = {
+      Subject: `Contact Form Message From ${data.email}`, 
+      Message: `From: ${data.email} \n
+      Subject: ${data.Subject} \n
+      ${data.Message}` 
+      
+    }
+    // console.log(message)
+    const response = await post(url, message);
+    if (response.status === 200) {
+      setSuccess("Message Sent Successfully");
+      reset()
+      setLoading(false);
+    
+    } else {
+      setError("An error occured, please try again later");
+      setLoading(false);
+    };
+  }
+
+  const sendDeleteRequest = async (data) => { 
+    setSuccess("");
+    setError("")
+    setLoading(true);
+    const message = {
+      Subject: `Account Deletion Request From ${data.Email}`,
+      Message: `From: ${data.Email} \n
+      Account Deletion Request With the following reason : 
+      ${data.Reason}`,
+    };
+    const response = await post(url, message);
+    if (response.status === 200) {
+      setSuccessDel("Account Deletion Request Sent Successfully");
+      resetDel()
+      setLoading(false);
+    } else {
+      setDelError("An error occured, please try again later");
+      setLoading(false);
+    }
+  }
+
+
   return (
     <div>
       <div
@@ -35,10 +103,6 @@ const Contact = () => {
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
               Reach out to us
             </h2>
-            {/* <p className="text-gray-500 sm:text-xl dark:text-gray-400">
-              Here at Flowbite we focus on markets where technology, innovation,
-              and capital can unlock long-term value and drive economic growth.
-            </p> */}
           </div>
           <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
             <div>
@@ -105,9 +169,9 @@ const Contact = () => {
                   viewBox="0 0 24 24"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   />
                 </svg>
               </div>
@@ -115,7 +179,8 @@ const Contact = () => {
                 Are you ready for a visit?
               </h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Our office address is <span className="text-background text-xl font-semibold">
+                Our office address is{" "}
+                <span className="text-background text-xl font-semibold">
                   {" "}
                   No. 150 Agbani Road, Igbariam, Enugu, Enugu State.
                 </span>
@@ -135,8 +200,8 @@ const Contact = () => {
             Need details about our Business plan? Let us know.
           </p>
           <form
-            action="#"
             className="space-y-8"
+            onSubmit={handleSubmit(sendMessage)}
           >
             <div>
               <label
@@ -147,11 +212,17 @@ const Contact = () => {
               </label>
               <input
                 type="email"
+                {...register("email", { required: true })}
                 id="email"
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
-                placeholder="name@flowbite.com"
-                required
+                placeholder="name@email.com"
+                required=""
               />
+              <p>
+                {errors.email && (
+                  <span className="text-redborder">Email is required </span>
+                )}
+              </p>
             </div>
             <div>
               <label
@@ -162,11 +233,17 @@ const Contact = () => {
               </label>
               <input
                 type="text"
+                {...register("Subject", { required: true })}
                 id="subject"
                 className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                 placeholder="Let us know how we can help you"
-                required
+                required=""
               />
+              <p>
+                {errors.Subject && (
+                  <span className="text-redborder">Email is required </span>
+                )}
+              </p>
             </div>
             <div className="sm:col-span-2">
               <label
@@ -178,6 +255,7 @@ const Contact = () => {
               <textarea
                 id="message"
                 rows="6"
+                {...register("Message", { required: true })}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Leave a comment..."
               ></textarea>
@@ -186,9 +264,77 @@ const Contact = () => {
               type="submit"
               className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-secondary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
-              Send message
+              {loading ? <LoadingGif /> : " Send message "}
             </button>
           </form>
+          {success && <p className="text-background">{success} </p>}
+          {error && <p className="text-background">{error} </p>}
+        </div>
+        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+          <button
+            className="text-background text-xl font-semibold hover:text-secondary"
+            onClick={() => setDelAcc(!delAcc)}
+          >
+            {" "}
+            Request Account Deletion{" "}
+          </button>
+          <form
+            className={`space-y-8 border-4 p-4 rounded-lg mt-3 ${
+              delAcc ? "block" : "hidden"
+            }`}
+            onSubmit={handleSubmitDel(sendDeleteRequest)}
+          >
+            <div>
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Your email
+              </label>
+              <input
+                type="email"
+                id="email"
+                {...registerDel("Email", { required: true })}
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                placeholder="name@email.com"
+                required
+              />
+              <p>
+                {errorsDel.Email && (
+                  <span className="text-redborder">Email is required </span>
+                )}
+              </p>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="message"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
+              >
+                Your Reason
+              </label>
+              <textarea
+                id="message"
+                rows="6"
+                {...registerDel("Reason", { required: true })}
+                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Give us a Reason you want your account deleted..."
+              ></textarea>
+              <p>
+                {errorsDel.Reason && (
+                  <span className="text-redborder">Reason is required </span>
+                )}
+              </p>
+            </div>
+            <button
+              type="submit"
+              className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-secondary sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            >
+              {loading ? <LoadingGif /> : "Delete My Account"}
+            </button>
+          </form>
+          {successDel && <p className="text-background">{successDel} </p>}
+          {Delerror && <p className="text-background">{Delerror} </p>}
         </div>
       </section>
       <section className="bg-accent h-72 flex justify-center items-center mt-10">

@@ -17,7 +17,7 @@ namespace Api.DTO
         public string? ReferenceId { get; set; }
         public string? PaymentMethod { get; set; }
         public int OrderId { get; set; }
-        public string? VoucherId { get; set; }
+        public string? VoucherCode { get; set; }
         public Double DeliveryFee { get; set; }
         public Double TotalAmount { get; set; }
         public BigInteger? TransactionId { get; set; }

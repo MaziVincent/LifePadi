@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 using Api.Helpers;
+using RestSharp;
 
 
 namespace Api.Services
@@ -324,7 +325,9 @@ namespace Api.Services
         {
             try
             {
-                var requestUri = _config["Termii:VerifyOtp_Url"]; // Termii API endpoint for verifying OTP
+                var client = new RestSharp.RestClient(_config["Termii:VerifyOtp_Url"]!);
+                var request = new RestRequest(_config["Termii:VerifyOtp_Url"], Method.Post);
+                request.AddHeader("Content-Type", "application/json");
                 var payload = new
                 {
                     pin_id = pinId,
@@ -332,14 +335,16 @@ namespace Api.Services
                     pin = pin,
                     api_key = _config["Termii:Api_Key"]
                 };
-                var jsonPayload = JsonConvert.SerializeObject(payload);
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync(requestUri, content);
-                if (response.IsSuccessStatusCode)
+                request.AddJsonBody(payload);
+
+                var response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
                 {
-                    return await response.Content.ReadAsStringAsync();
+                    return response.Content!;
                 }
-                throw new Exceptions.ServiceException(response.ReasonPhrase!);
+
+                throw new Exceptions.ServiceException(response.ErrorMessage ?? response.StatusCode.ToString());
             }
             catch (Exception ex)
             {
@@ -386,5 +391,51 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+        public async Task<string> sendOtp(string phoneNumber)
+        {
+            try
+            {
+                var phone = "+" + phoneNumber;
+                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phone);
+                if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
+
+                var client = new RestSharp.RestClient(_config["Termii:SendOtp_Url"]!);
+                var request = new RestRequest(_config["Termii:SendOtp_Url"], Method.Post);
+                request.AddHeader("Content-Type", "application/json");
+
+                var payload = new
+                {
+                    to = phoneNumber,
+                    from = _config["Termii:Sender_Id"],
+                    message_type = "NUMERIC",
+                    channel = "dnd",
+                    api_key = _config["Termii:Api_Key"],
+                    pin_length = 4,
+                    pin_placeholder = "< 1234 >",
+                    message_text = "Your Lifepadi verification code is < 1234 >, it will expire in 5 minutes",
+                    pin_attempts = 3,
+                    pin_time_to_live = 5,
+                    pin_type = "NUMERIC"
+                };
+
+                // Add body
+                request.AddJsonBody(payload);
+
+                var response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
+                {
+                    return response.Content!;
+                }
+
+                throw new Exceptions.ServiceException(response.ErrorMessage ?? response.StatusCode.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
     }
 }

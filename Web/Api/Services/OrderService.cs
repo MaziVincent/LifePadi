@@ -38,7 +38,7 @@ namespace Api.Services
                .ToListAsync();
                 orderList = orderList.Concat(_orders);
                 var result = PagedList<Order>.ToPagedList(orderList, props.PageNumber, props.PageSize);
-               
+
                 return result;
             }
             catch (Exception ex)
@@ -103,6 +103,7 @@ namespace Api.Services
                         .Include(o => o.Customer)
                         .OrderByDescending(o => o.CreatedAt)
                         .Where(o => o.CustomerId == id)
+                        .AsNoTracking()
                         .AsSplitQuery()
                         .ToListAsync();
                     var singleOrderDto = _mapper.Map<List<SingleOrderDto>>(normalOrders);
@@ -116,47 +117,50 @@ namespace Api.Services
                         .FirstOrDefaultAsync(d => d.OrderId == item.Id);
                         if (delivery != null)
                         {
-                             item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
-                             item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
+                            item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
+                            item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                             item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                         }
-
-                        var transaction = await _dbContext.Transactions.FirstOrDefaultAsync(t => t.OrderId == item.Id);
-                        if(transaction != null){
-                            item.PaymentChannel = transaction.PaymentChannel;
+                        orderList = orderList.Concat(singleOrderDto);
+                        var normalResult = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                        return normalResult;
+                    }
+                }
+                    var orders = await _dbContext!.Orders
+                        .Include(o => o.OrderItems)
+                        .Include(o => o.Customer)
+                        .OrderByDescending(o => o.CreatedAt)
+                        .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString!.ToLower()))
+                        .AsNoTracking()
+                        .AsSplitQuery()
+                        .ToListAsync();
+                    var newSingleOrderDto = _mapper.Map<List<SingleOrderDto>>(orders);
+                    foreach (var item in newSingleOrderDto)
+                    {
+                        var delivery = await _dbContext.Deliveries
+                        .Include(d => d.Rider)
+                        .Include(d => d.DeliveryAddress)
+                        .Include(d => d.PickUpAddress)
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync(d => d.OrderId == item.Id);
+                        if (delivery != null)
+                        {
+                            item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
+                            item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
+                            item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
+                        }
+                        else
+                        {
+                                var invalidOrder = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == item.Id);
+                                _dbContext.Orders.Remove(invalidOrder!);
+                                await _dbContext.SaveChangesAsync();
+                            
                         }
                     }
-                    orderList = orderList.Concat(singleOrderDto);
-                    var normalResult = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
-                    return normalResult;
+                    orderList = orderList.Concat(newSingleOrderDto);
+                    var result = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
+                    return result;
                 }
-                var orders = await _dbContext!.Orders
-                    .Include(o => o.OrderItems)
-                    .Include(o => o.Customer)
-                    .OrderByDescending(o => o.CreatedAt)
-                    .Where(o => o.CustomerId == id && o.Status!.ToLower().Contains(props.SearchString.ToLower()))
-                    .AsSplitQuery()
-                    .ToListAsync();
-                var newSingleOrderDto = _mapper.Map<List<SingleOrderDto>>(orders);
-                foreach (var item in newSingleOrderDto)
-                {
-                    var delivery = await _dbContext.Deliveries
-                    .Include(d => d.Rider)
-                    .Include(d => d.DeliveryAddress)
-                    .Include(d => d.PickUpAddress)
-                    .AsSplitQuery()
-                    .FirstOrDefaultAsync(d => d.OrderId == item.Id);
-                    if (delivery != null)
-                    {
-                        item.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
-                        item.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
-                        item.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
-                    }
-                }
-                orderList = orderList.Concat(newSingleOrderDto);
-                var result = PagedList<SingleOrderDto>.ToPagedList(orderList, props.PageNumber, props.PageSize);
-                return result;
-            }
             catch (Exception ex)
             {
                 throw new ServiceException(ex.Message);
@@ -206,11 +210,12 @@ namespace Api.Services
                 var OrderDto = _mapper.Map<SingleOrderDto>(order);
                 if (delivery != null)
                 {
-                    OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>( delivery.DeliveryAddress);
-                    OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite> (delivery.PickUpAddress);
+                    OrderDto.DeliveryAddress = _mapper.Map<AddressDtoLite>(delivery.DeliveryAddress);
+                    OrderDto.PickUpAddress = _mapper.Map<AddressDtoLite>(delivery.PickUpAddress);
                     OrderDto.DeliveryFee = delivery.DeliveryFee;
 
-                    if (delivery.Rider is not null) {
+                    if (delivery.Rider is not null)
+                    {
                         OrderDto.Rider = _mapper.Map<RiderDtoLite>(delivery.Rider);
                         foreach (var item in delivery!.Rider!.Addresses!)
                         {
@@ -221,7 +226,7 @@ namespace Api.Services
                             }
                         }
                     }
-                   
+
                 }
                 return OrderDto;
             }
@@ -407,7 +412,8 @@ namespace Api.Services
                 order.SearchString = status!.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
                 _dbContext.Orders.Attach(order);
 
-                if(status == "Completed"){
+                if (status == "Completed")
+                {
                     var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.OrderId == id);
                     delivery!.Status = "Delivered";
                     string Topic = $"order-{order.CustomerId}";
@@ -426,7 +432,7 @@ namespace Api.Services
                 await _dbContext.SaveChangesAsync();
                 var OrderDto = _mapper.Map<OrderDto>(order);
 
-                
+
                 return OrderDto;
             }
             catch (Exception ex)

@@ -113,6 +113,7 @@ namespace Api.Services
                 {
                     return null!;
                 }
+                
                 var vendorsDto = _mapper.Map<List<VendorDtoLite>>(vendors);
                 vendorsList = vendorsList.Concat(vendorsDto);
                 var result = PagedList<VendorDtoLite>.ToPagedList(vendorsList, props.PageNumber, props.PageSize);

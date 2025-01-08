@@ -9,21 +9,22 @@ GET https://localhost:7216/api/address/all
  
 ###
 
-PUT https://localhost:7216/api/address/setasdefault/80
+PUT https://localhost:7216/api/address/setasdefault
 Content-Type: application/json
 
 {
-    "customerId":20
+    "CustomerId":20,
+    "AddressId":80
 }
 
 ###
 GET https://localhost:7216/api/order/get/367
 
 ###
-GET https://localhost:7216/api/order/getall
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/all
 
 ###
-GET https://lifepadi-948405839190.us-east1.run.app/api/order/customer/17?pageNumber=1&pageSize=5&SearchString=Ongoing
+GET https://localhost:7216/api/order/customer/35?pageNumber=1&pageSize=5&SearchString=Ongoing
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
@@ -41,7 +42,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:7216/api/order/get/395
+GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/467
 
 ###
 
@@ -103,7 +104,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSi
 
 
 ###
-GET https://localhost:7216/api/product/searchAll?SearchString=bread
+GET https://localhost:7216/api/product/searchAll?SearchString=dr
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/customersupport/send
@@ -118,8 +119,37 @@ Content-Type: application/json
 POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
 
 ###
-GET https://localhost:7216/api/vendorcategory/vendors/2
+GET https://lifepadi-948405839190.us-east1.run.app/api/vendorcategory/vendors/2
 
+###
+GET https://lifepadi-948405839190.us-east1.run.app/api/vendor/all
 
+###
+POST https://localhost:7216/api/customer/send-otp
+Content-Type: application/json
 
+{
+    "PhoneNumber":"2349030604334"
+}
+
+###
+GET https://localhost:7216/api/customer/orders/400
+
+###
+POST https://v3.api.termii.com/api/sms/otp/send
+Content-Type: application/json
+
+{
+      "to": "2348138699452",
+      "from": "N-Alert",
+      "message_type": "NUMERIC",
+      "channel": "dnd",
+      "api_key": "TLGqtKdPOZZgZWuIrudhLMGErlxKKtqpIEWKYbOvXEsYaVYFEhWFzXHoUgUVrY",
+      "pin_length": 4,
+      "pin_placeholder": "< 1234 >",
+      "message_text":"Your Lifepadi verification code is < 1234 >, it will expire in 5 minutes",
+      "pin_attempts": 3,
+      "pin_time_to_live": 5,
+      "pin_type": "NUMERIC"
+    }
 

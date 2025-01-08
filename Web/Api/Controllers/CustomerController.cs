@@ -203,7 +203,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.verifyPhone(phoneNumber);
+                var response = await _icustomer!.sendOtp(phoneNumber);
                 return Ok(response);
             }
             catch (Exception ex)

@@ -505,7 +505,7 @@ namespace Api.Services
 
             return new SearchDTO
             {
-                VendorCategories = _mapper.Map<List<VendorCategoryDtoLite>>(vendorCategoriesTask),
+                VendorCategories = _mapper.Map<List<VendorCategoryDto>>(vendorCategoriesTask),
                 Categories = _mapper.Map<List<CategoryDtoLite>>(categoriesTask),
                 Products = _mapper.Map<List<ProductDtoLite>>(productsTask),
                 Vendors = _mapper.Map<List<VendorDtoLite>>(vendorsTask),
