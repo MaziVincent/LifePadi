@@ -15,43 +15,46 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-   const [successDel, setSuccessDel] = useState("");
-   const [Delerror, setDelError] = useState("");
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const [successDel, setSuccessDel] = useState("");
+  const [Delerror, setDelError] = useState("");
   const {
-    register:registerDel,
-    handleSubmit:handleSubmitDel,
-    reset:resetDel,
-    formState: { errors:errorsDel },
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm();
-  
+  const {
+    register: registerDel,
+    handleSubmit: handleSubmitDel,
+    reset: resetDel,
+    formState: { errors: errorsDel },
+  } = useForm();
+
   const sendMessage = async (data) => {
-   setSuccess("");
+    setSuccess("");
     setError("");
     setLoading(true);
     const message = {
-      Subject: `Contact Form Message From ${data.email}`, 
+      Subject: `Contact Form Message From ${data.email}`,
       Message: `From: ${data.email} \n
       Subject: ${data.Subject} \n
-      ${data.Message}` 
-      
-    }
+      ${data.Message}`,
+    };
     // console.log(message)
     const response = await post(url, message);
     if (response.status === 200) {
       setSuccess("Message Sent Successfully");
-      reset()
+      reset();
       setLoading(false);
-    
     } else {
       setError("An error occured, please try again later");
       setLoading(false);
-    };
-  }
+    }
+  };
 
-  const sendDeleteRequest = async (data) => { 
+  const sendDeleteRequest = async (data) => {
     setSuccess("");
-    setError("")
+    setError("");
     setLoading(true);
     const message = {
       Subject: `Account Deletion Request From ${data.Email}`,
@@ -62,14 +65,13 @@ const Contact = () => {
     const response = await post(url, message);
     if (response.status === 200) {
       setSuccessDel("Account Deletion Request Sent Successfully");
-      resetDel()
+      resetDel();
       setLoading(false);
     } else {
       setDelError("An error occured, please try again later");
       setLoading(false);
     }
-  }
-
+  };
 
   return (
     <div>
@@ -191,7 +193,10 @@ const Contact = () => {
       </section>
 
       <section className="bg-white dark:bg-gray-900">
-        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md border-4 rounded-lg">
+        <div
+          className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md border-4 rounded-lg"
+          id="DeleteAccount"
+        >
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
             Contact Us
           </h2>
@@ -271,13 +276,13 @@ const Contact = () => {
           {error && <p className="text-background">{error} </p>}
         </div>
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-          <button
+          <a
+            href="#DeleteAccount"
             className="text-background text-xl font-semibold hover:text-secondary"
             onClick={() => setDelAcc(!delAcc)}
           >
-            {" "}
-            Request Account Deletion{" "}
-          </button>
+            Request Account Deletion
+          </a>
           <form
             className={`space-y-8 border-4 p-4 rounded-lg mt-3 ${
               delAcc ? "block" : "hidden"
