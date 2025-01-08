@@ -14,7 +14,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public double? TotalAmount { get; set; } = 0;
-        public string? PaymentChannel { get; set; }
+        public string? PaymentMethod { get; set; } = "PayStack";
         public List<OrderItem>? OrderItems { get; set; }
         public List<Logistic>? Logistics { get; set; }
 

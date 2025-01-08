@@ -8,7 +8,7 @@ namespace Api.DTO
 {
     public class SearchDTO
     {
-        public List<VendorCategoryDtoLite>? VendorCategories { get; set; }
+        public List<VendorCategoryDto>? VendorCategories { get; set; }
         public List<CategoryDtoLite>? Categories { get; set; }
         public List<ProductDtoLite>? Products { get; set; }
         public List<VendorDtoLite>? Vendors { get; set; }

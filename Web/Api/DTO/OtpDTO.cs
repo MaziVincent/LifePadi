@@ -10,4 +10,8 @@ namespace Api.DTO
         public string? pinId { get; set; }
         public string? pin { get; set; }
     }
+    public class PhoneNumberDto
+    {
+        public string? PhoneNumber { get; set; }
+    }
 }

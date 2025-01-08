@@ -27,5 +27,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
     <PackageReference Include="RestClient.Net" Version="6.0.0" />
     <PackageReference Include="RabbitMQ.Client" Version="7.0.0" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
   </ItemGroup>
 </Project>

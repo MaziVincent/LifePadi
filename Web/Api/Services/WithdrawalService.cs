@@ -49,9 +49,9 @@ namespace Api.Services
                 // create a transaction
                 var transaction = new Transaction();
                 transaction.TotalAmount = t.TotalAmount;
-                if (t.VoucherId != null)
+                if (t.VoucherCode != null)
                 {
-                    var voucher = await _ivoucher.searchWithCode(t.VoucherId);
+                    var voucher = await _ivoucher.searchWithCode(t.VoucherCode);
                     var dorder = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
                     var customerVoucher = await _context.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
                     if (customerVoucher == null)
@@ -89,7 +89,7 @@ namespace Api.Services
                 var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
                 if(order == null) throw new Exceptions.ServiceException("Order not found");
                 order.Status = "Ongoing";
-                order.PaymentChannel = "Wallet";
+                order.PaymentMethod = "Lifepadi_Wallet";
                 order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
 
                 await _context.Transactions.AddAsync(transaction);
