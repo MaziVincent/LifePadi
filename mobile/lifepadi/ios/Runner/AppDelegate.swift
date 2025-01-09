@@ -3,7 +3,7 @@ import UIKit
 import GoogleMaps
 import workmanager
 import awesome_notifications
-import shared_preferences_ios
+import shared_preferences_foundation
 import flutter_secure_storage
 
 @main
@@ -30,7 +30,7 @@ import flutter_secure_storage
     SwiftAwesomeNotificationsPlugin.setPluginRegistrantCallback { registry in          
         SwiftAwesomeNotificationsPlugin.register(
           with: registry.registrar(forPlugin: "io.flutter.plugins.awesomenotifications.AwesomeNotificationsPlugin")!)          
-        FLTSharedPreferencesPlugin.register(
+        SharedPreferencesPlugin.register(
           with: registry.registrar(forPlugin: "io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin")!)
     }
 
