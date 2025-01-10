@@ -22,6 +22,8 @@ class SearchPage extends HookConsumerWidget {
     final searchController = useTextEditingController(text: query);
     final debouncedQuery = useDebounce(searchController.text);
     final searchQuery = useState(query ?? '');
+    final searchState =
+        ref.watch(paginatedSearchProvider(query: searchQuery.value));
 
     // Update search query when debounced value changes
     useEffect(
@@ -110,29 +112,38 @@ class SearchPage extends HookConsumerWidget {
                 ],
               ),
             )
-          : ref.watch(searchProvider(query: searchQuery.value)).when(
-                data: (searchResult) =>
-                    SearchResultList(searchResult: searchResult),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator.adaptive()),
-                error: (error, _) => Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: MyErrorWidget(error: error),
-                  ),
+          : searchState.when(
+              data: (searchResult) => SearchResultList(
+                searchResult: searchResult,
+                query: searchQuery.value,
+              ),
+              loading: () =>
+                  const Center(child: CircularProgressIndicator.adaptive()),
+              error: (error, _) => Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: MyErrorWidget(error: error),
                 ),
               ),
+            ),
     );
   }
 }
 
-class SearchResultList extends StatelessWidget {
-  const SearchResultList({super.key, required this.searchResult});
+class SearchResultList extends ConsumerWidget {
+  const SearchResultList({
+    super.key,
+    required this.searchResult,
+    required this.query,
+  });
 
   final SearchResult searchResult;
+  final String query;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final searchState = ref.watch(paginatedSearchProvider(query: query));
+
     return ListView(
       padding: kHorizontalPadding,
       children: [
@@ -254,9 +265,26 @@ class SearchResultList extends StatelessWidget {
           ),
         if (searchResult.hasNext)
           Center(
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Load more'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: ElevatedButton(
+                onPressed: searchState.isLoading
+                    ? null
+                    : () => ref
+                        .read(
+                          paginatedSearchProvider(
+                            query: query,
+                          ).notifier,
+                        )
+                        .loadMore(),
+                child: searchState.isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : const Text('Load more'),
+              ),
             ),
           ),
       ],
