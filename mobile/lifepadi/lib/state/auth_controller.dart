@@ -345,6 +345,9 @@ class AuthController extends _$AuthController {
   }
 
   /// Update a customer's profile details
+  ///
+  /// This method makes a request to the server to update the user's profile details.
+  /// If the request is successful, it updates the user's details in the secure storage.
   Future<void> updateProfile({
     required Customer customer,
   }) async {
@@ -359,9 +362,20 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from server');
       }
 
-      final updatedCustomer = CustomerMapper.fromMap(response.data!);
-      state = AsyncData(updatedCustomer);
+      final customerData = CustomerMapper.fromMap(response.data!);
+      final currentCustomer = state.requireValue as Customer;
+      final updatedCustomer = currentCustomer.copyWith(
+        firstName: customerData.firstName,
+        lastName: customerData.lastName,
+        email: customerData.email,
+        phoneNumber: customerData.phoneNumber,
+        address: customerData.address,
+        dateOfBirth: customerData.dateOfBirth,
+      );
+      // Save the updated details to the secure storage
       await _saveDetailsToStorage(updatedCustomer);
+      // Update the state with the new details
+      state = AsyncData(updatedCustomer);
     } catch (e) {
       rethrow;
     }
