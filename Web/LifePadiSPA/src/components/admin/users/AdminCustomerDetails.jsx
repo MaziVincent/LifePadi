@@ -57,7 +57,7 @@ const AdminCustomerDetails = () => {
     refetchOnMount: "always",
   });
 
- // console.log(data);
+  console.log(data);
 
   return (
     <div className="text-gray-900 dark:text-gray-50 flex flex-col gap-10 p-3">

@@ -49,7 +49,7 @@ const SendPackage = ({ dispatch, open }) => {
         : [...prevSelected, option]
     );
 
-    console.log(selectedChips);
+   // console.log(selectedChips);
   };
 
   const handleClickAway = () => {
@@ -61,15 +61,14 @@ const SendPackage = ({ dispatch, open }) => {
 
   const fetchSuggestions = async (value, field) => {
     if (value.length > 2) {
-      console.log(value);
       try {
         const response = await axios.get(`${baseUrl}googlemaps/autocomplete`, {
           params: {
             input: value,
           },
         });
-        console.log(response);
-        const data = response.data.predictions;
+       // console.log(response);
+        const data = response.data;
 
         if (field === "SenderAddress") {
           setSenderSuggestions(data);
@@ -96,10 +95,12 @@ const SendPackage = ({ dispatch, open }) => {
 
   // Handle suggestion click
   const handleSuggestionClick = (suggestion) => {
+    
     if (focusedField === "SenderAddress") {
       setValue("SenderAddress", suggestion.description); // Set pickup address in the form
     } else if (focusedField === "RecieverAddress") {
-      setValue("RecieverAddress", suggestion.description); // Set delivery address in the form
+     
+      setValue("ReceiverAddress", suggestion.description); // Set delivery address in the form
     }
     setSenderSuggestions([]);
     setRecieverSuggestions([]); // Clear suggestions after selection
@@ -114,7 +115,7 @@ const SendPackage = ({ dispatch, open }) => {
     SenderAddress,
     RecieverAddress
   );
-  //console.log(distance)
+  console.log(distance)
 
   useEffect(() => {
     if (distance) {

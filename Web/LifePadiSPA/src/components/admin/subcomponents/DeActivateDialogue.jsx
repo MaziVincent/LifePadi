@@ -4,27 +4,42 @@ import toast, { Toaster } from "react-hot-toast";
 import useDeActivate from "../../../hooks/useDeactivate";
 import useAuth from "../../../hooks/useAuth";
 import { useQueryClient } from "react-query";
+import { useState } from "react";
+import LoadingGif from "../../shared/LodingGif";
 
 const DeActivateDialogue = ({ open, handleClose, Id, url, entity }) => {
   const { auth } = useAuth();
   const del = useDeActivate();
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
 
   const handleDelete = async (_id) => {
+    setLoading(true);
     const deactivateUrl = `${url}/deactivate/${_id}`
+    try {
+      
     
-    const result = await del(deactivateUrl, auth.accessToken);
-    if (!result.success) {
-      toast.error(`error deactivating ${entity}`);
-      //handleClose({type:"deActivate"});
-      return;
+      const result = await del(deactivateUrl, auth.accessToken);
+      if (!result.success) {
+        toast.error(`error deactivating ${entity}`);
+        //handleClose({type:"deActivate"});
+        setLoading(false);
+        return;
+      }
+      toast.success(`${entity} deactivated successfully`);
+      queryClient.invalidateQueries(`${entity}s`);
+      handleClose({ type: "deActivate" });
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+       toast.error(`error deactivating ${entity}`);
+    } finally {
+      setLoading(false)
     }
-    toast.success(`${entity} deactivated successfully`);
-    queryClient.invalidateQueries(`${entity}s`);
-    handleClose({type:"deActivate"});
 
     //
   };
+//console.log(url, Id)
   return (
     <Dialog
       open={open}
@@ -88,7 +103,7 @@ const DeActivateDialogue = ({ open, handleClose, Id, url, entity }) => {
               onClick={() => handleDelete(Id)}
               className="py-2 px-3 text-sm font-medium text-center text-white bg-redborder rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
             >
-              Yes, I'm sure
+              {loading ? <LoadingGif /> : "Yes, I'm sure"}
             </button>
           </div>
         </div>

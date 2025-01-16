@@ -95,7 +95,7 @@ const AdminOrderDetails = () => {
     enabled: order?.Type === "Logistics",
   });
 
-  console.log(order);
+  //console.log(delivery);
 
   const handleAssignRider = () => {
     setAssignRider(true);
@@ -126,6 +126,11 @@ const AdminOrderDetails = () => {
             type="button"
             onClick={handleAssignRider}
             className={`inline-flex items-center  dark:text-primary bg-background hover:bg-secondary hover:text-accent focus:ring-4 focus:outline-none focus:ring-darkSecondaryText font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+            disabled={
+              order?.Status === "Delivered" ||
+              order?.Status === "Cancelled" ||
+              order?.Status === "Completed"
+            }
           >
             <svg
               className="mr-1 -ml-1 w-6 h-6"
@@ -181,6 +186,7 @@ const AdminOrderDetails = () => {
               </p>
               <p> Customer Address : {order.Customer?.ContactAddress} </p>
               <p> Customer Phone Number : {order.Customer?.PhoneNumber} </p>
+              <p> Customer Phone Number : {order.Customer?.Email} </p>
             </div>
           </div>
         )}
@@ -210,7 +216,7 @@ const AdminOrderDetails = () => {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray dark:bg-darkHover dark:text-gray-400">
                   <tr>
-                  <th
+                    <th
                       scope="col"
                       className="px-4 py-3"
                     >
@@ -307,8 +313,8 @@ const AdminOrderDetails = () => {
           <p className="flex items-center justify-center">
             {" "}
             <Alert severity="error">
-              No Delivery Data Availiable for this Order..
-              Maybe Order isn't Paid 
+              No Delivery Data Availiable for this Order.. Maybe Order isn't
+              Paid
             </Alert>
           </p>
         )}
@@ -325,10 +331,26 @@ const AdminOrderDetails = () => {
                 new Date(delivery.CreatedAt).toDateString()}
             </p>
             <p> Delivery Fee : {delivery.DeliveryFee}</p>
-            <p> Pickup Address : {delivery.PickupAddress}</p>
+            <p>
+              {delivery.PickupAddress && (
+                <span>
+                  {" "}
+                  Pickup Address : {delivery.PickupAddress?.Name},{" "}
+                  {delivery.PickupAddress?.Town}{" "}
+                </span>
+              )}
+            </p>
             <p> Pickup Type : {delivery.PickupType}</p>
-            <p> Delivery Address : {delivery.DeliveryAddress}</p>
-            <p> Status : {delivery.Status}</p>
+            <p>
+              {" "}
+              Delivery Address : {delivery.DeliveryAddress?.Name},{" "}
+              {delivery.DeliveryAddress?.Town}
+            </p>
+            <p>
+              {" "}
+              Status :{" "}
+              <span className="text-background">{delivery.Status} </span>{" "}
+            </p>
           </div>
         )}
 
@@ -359,7 +381,11 @@ const AdminOrderDetails = () => {
             <p>
               {" "}
               Rider Status :{" "}
-              {delivery.Rider?.IsActive ? "Active" : " In-Active"}
+              {delivery.Rider?.IsActive ? (
+                <span className="text-background">Active</span>
+              ) : (
+                <span className="text-redborder">In-Active</span>
+              )}
             </p>
           </div>
         )}
@@ -373,7 +399,9 @@ const AdminOrderDetails = () => {
         {transactionError && (
           <p className="flex items-center justify-center">
             {" "}
-            <Alert severity="error">Error Getting Transaction Data.. or The Order hasn't been paid For </Alert>
+            <Alert severity="error">
+              Error Getting Transaction Data.. or The Order hasn't been paid For{" "}
+            </Alert>
           </p>
         )}
         {transactionSuccess && (
@@ -382,71 +410,43 @@ const AdminOrderDetails = () => {
             <h1 className="font-bold text-center text-xl">
               Transaction Details{" "}
             </h1>{" "}
+            <p> Payment ID : {transaction.PaymentId} </p>
             <p>
               {" "}
-              Payment ID : {transaction.PaymentId}{" "}
+              Payment Status :{" "}
+              {transaction.Status === "successful" ? (
+                <span className="text-background">{transaction.Status} </span>
+              ) : (
+                <span className="text-redborder">{transaction.Status} </span>
+              )}
             </p>
-            <p> Payment Status : {transaction.Status === "success" ? <span className="text-background">{transaction.Status} </span> :
-            <span className="text-redborder">{transaction.Status} </span> }</p>
-            <p>
-              {" "}
-              Total Amount :{" "}
-              {transaction.TotalAmount}
-            </p>
+            <p> Total Amount : {transaction.TotalAmount}</p>
           </div>
         )}
 
-        {
-          logistics &&  <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
-          {" "}
-          <h1 className="font-bold text-center text-xl">
-            Logistics Details{" "}
-          </h1>{" "}
-          <p>
+        {logistics && (
+          <div className="border-2 col-span-2 p-3 dark:bg-darkMenu bg-graybg shadow-lg shadow-brown-200 rounded-lg">
             {" "}
-            Item : {logistics.Item}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Item Description : {logistics.ItemDescription}{" "}
-          </p>
-          <p>
-            {" "}
-            Sender Address : {logistics.SenderAddress}{" "}
-          </p>
-          
-          <p>
-            {" "}
-            Sender Name : {logistics.SenderName}{" "}
-          </p>
-          <p>
-            {" "}
-            Sender Phone Number : {logistics.SenderPhone}{" "}
-          </p>
-          <p>
-            {" "}
-            Receiver Address : {logistics.ReceiverAddress}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Receiver Name : {logistics.ReceiverName}{" "}
-          </p>
-
-          <p>
-            {" "}
-            Receiver Phone Number : {logistics.ReceiverPhone}{" "}
-          </p>
-
-          
-          <p>
-            {" "}
-            Tracking Number :{" "}
-            {logistics.TrackingNumber ? logistics.TrackingNumber : "Not Available"}
-          </p>
-        </div>
-        }
+            <h1 className="font-bold text-center text-xl">
+              Logistics Details{" "}
+            </h1>{" "}
+            <p> Item : {logistics.Item} </p>
+            <p> Item Description : {logistics.ItemDescription} </p>
+            <p> Sender Address : {logistics.SenderAddress?.Name} </p>
+            <p> Sender Name : {logistics.SenderName} </p>
+            <p> Sender Phone Number : {logistics.SenderPhone} </p>
+            <p> Receiver Address : {logistics.ReceiverAddress?.Name} </p>
+            <p> Receiver Name : {logistics.ReceiverName} </p>
+            <p> Receiver Phone Number : {logistics.ReceiverPhone} </p>
+            <p>
+              {" "}
+              Tracking Number :{" "}
+              {logistics.TrackingNumber
+                ? logistics.TrackingNumber
+                : "Not Available"}
+            </p>
+          </div>
+        )}
       </div>
 
       {delivery && (

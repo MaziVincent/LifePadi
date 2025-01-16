@@ -95,7 +95,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut("{id}/deactivate")]
+        [HttpPut("deactivate/{id}")]
         public async Task<IActionResult> deactivate(int id)
         {
             try

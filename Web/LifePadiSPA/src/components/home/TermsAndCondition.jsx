@@ -3,6 +3,9 @@ import React from "react";
 const TermsAndCondition = () => {
   return (
     <div className="p-6 pt-20 flex flex-col gap-3 text-lg items-center bg-gray-100 text-gray-800">
+      
+          <h1 className="text-3xl font-bold pt-5">Terms and Conditions</h1>
+      
       <div className="max-w-4xl mx-auto">
         <h2 className="text-xl font-semibold">1. General Terms</h2>
         <p>

@@ -11,30 +11,32 @@ import DeleteDialogue from "../../subcomponents/DeleteDialogue";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 import UploadImageModal from "../../subcomponents/UploadImageModal";
-
+import ActivateDialogue from "../../subcomponents/ActivateDialogue";
+import DeActivateDialogue from "../../subcomponents/DeActivateDialogue";
 
 const reducer = (state, action) => {
-    switch (action.type) {
-      case "activate":
-        return { ...state, activate: !state.activate };
-      case "delete":
-        return { ...state, delete: !state.delete };
-      case "upload":
-        return { ...state, upload: !state.upload };
-  
-      default:
-        throw new Error();
-    }
-  };
+  switch (action.type) {
+    case "activate":
+      return { ...state, activate: !state.activate };
+    case "deActivate":
+      return { ...state, deActivate: !state.deActivate };
+    case "delete":
+      return { ...state, delete: !state.delete };
+    case "upload":
+      return { ...state, upload: !state.upload };
 
+    default:
+      throw new Error();
+  }
+};
 
 const AdminProduct = () => {
-
-    const [state, dispatch] = useReducer(reducer, {
-        activate: false,
-        delete: false,
-        upload: false
-      });
+  const [state, dispatch] = useReducer(reducer, {
+    activate: false,
+    delete: false,
+    upload: false,
+    deActivate: false,
+  });
 
   const fetch = useFetch();
   const { auth } = useAuth();
@@ -51,7 +53,7 @@ const AdminProduct = () => {
   };
 
   const { data, isError, isSuccess, isLoading } = useQuery({
-    queryKey: ["product"],
+    queryKey: ["products"],
     queryFn: () => getService(`${url}/get/${id}`),
     keepPreviousData: true,
     staleTime: 10000,
@@ -112,17 +114,35 @@ const AdminProduct = () => {
 
       <section className="bg-white dark:bg-gray-900 flex flex-col md:flex-row py-6 justify-evenly items-center ">
         <div>
-          {" "}
-          <button className={`shadow-lg p-3 rounded-xl ${data?.Status?'bg-redborder': 'bg-background'} font-bold cursor-pointer`}>
-            {data?.Status ? 'De-activate' : 'Activate'}
-          </button>
+          {data?.Status ?
+            <button
+              onClick={() => dispatch({ type: "deActivate" })}
+              className="shadow-lg p-3 rounded-xl bg-redborder
+             font-bold cursor-pointer"
+            >
+             De-Activate
+            </button> :
+            <button
+              onClick={() => dispatch({ type: "activate" })}
+              className="shadow-lg p-3 rounded-xl bg-background
+             font-bold cursor-pointer"
+            >
+              Activate
+            </button>
+            
+          }
         </div>
         <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
           Price - {data?.Price ? data?.Price : 0}
         </h2>
         <div>
           {" "}
-          <button onClick={() => dispatch({type:'upload'})} className="shadow-lg p-3 rounded-xl bg-blue font-bold cursor-pointer">Upload Image</button>
+          <button
+            onClick={() => dispatch({ type: "upload" })}
+            className="shadow-lg p-3 rounded-xl bg-blue font-bold cursor-pointer"
+          >
+            Upload Image
+          </button>
         </div>
       </section>
       <UploadImageModal
@@ -130,7 +150,22 @@ const AdminProduct = () => {
         handleClose={dispatch}
         id={data?.Id}
         url={`${baseUrl}product`}
-        name={'product'}
+        name={"product"}
+      />
+
+      <DeActivateDialogue
+        open={state.deActivate}
+        handleClose={dispatch}
+        url={`${baseUrl}product`}
+        entity="product"
+        Id={id}
+      />
+      <ActivateDialogue
+        open={state.activate}
+        handleClose={dispatch}
+        url={`${baseUrl}product`}
+        entity="product"
+        Id={id}
       />
     </div>
   );

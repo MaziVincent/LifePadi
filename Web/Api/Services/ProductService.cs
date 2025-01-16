@@ -321,7 +321,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> toogleProductStatus(int id)
+        public async Task<object> toogleProductStatus(int id)
         {
             try
             {
@@ -331,7 +331,10 @@ namespace Api.Services
                 product.SearchString = product.Name!.ToUpper() + " " + product.Price + " " + product.Status;
                 _dbContext.Products.Attach(product);
                 await _dbContext.SaveChangesAsync();
-                return "Product status updated";
+                return new
+                {
+                    success = "Product status updated"
+                };
             }
             catch (Exception ex)
             {

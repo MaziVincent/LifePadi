@@ -113,20 +113,33 @@ namespace Api.Controllers
 
 
         [HttpGet("autocomplete")]
-    public async Task<IActionResult> GetAutocompleteSuggestions(string input)
-    {
-        var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
-        var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&key={apiKey}";
-        var response = await _httpClient.GetAsync(requestUri);
-
-        if (!response.IsSuccessStatusCode)
+        public async Task<IActionResult> GetAutocompleteSuggestions(string input)
         {
-            return StatusCode((int)response.StatusCode);
-        }
+            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+            var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&components=country:ng&key={apiKey}";
+            var response = await _httpClient.GetAsync(requestUri);
 
-        var result = await response.Content.ReadAsStringAsync();
-        return Ok(result);
-    }
+            if (!response.IsSuccessStatusCode)
+            {
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(result);
+
+            if (json["status"]!.ToString() != "OK")
+            {
+            return BadRequest(json["status"]!.ToString());
+            }
+
+            var suggestions = json["predictions"]?.Select(p => new
+            {
+            description = p["description"]?.ToString(),
+            placeId = p["place_id"]?.ToString()
+            });
+
+            return Ok(suggestions);
+        }
 
 
 

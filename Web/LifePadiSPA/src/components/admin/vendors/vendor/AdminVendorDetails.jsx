@@ -13,6 +13,9 @@ import DeleteDialogue from "../../subcomponents/DeleteDialogue";
 import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
+import ActivateDialogue from "../../subcomponents/ActivateDialogue";
+import DeActivateDialogue from "../../subcomponents/DeActivateDialogue";
+
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,6 +25,8 @@ const reducer = (state, action) => {
       return { ...state, edit: !state.edit };
     case "activate":
       return { ...state, activate: !state.activate };
+    case "deActivate":
+      return { ...state, deActivate: !state.deActivate };
     case "delete":
       return { ...state, delete: !state.delete };
     case "vendorId":
@@ -31,7 +36,7 @@ const reducer = (state, action) => {
     case "upload":
       return { ...state, upload: !state.upload };
     case "product":
-        return { ...state, product: action.payload };
+      return { ...state, product: action.payload };
 
     default:
       throw new Error();
@@ -51,6 +56,7 @@ const AdminVendorDetails = () => {
     open: false,
     edit: false,
     activate: false,
+    deActivate: false,
     delete: false,
     upload: false,
     vendorId: null,
@@ -176,13 +182,12 @@ const AdminVendorDetails = () => {
   };
 
   const { data, isError, isLoading, isSuccess } = useQuery({
-    queryKey: ["vendor", id],
+    queryKey: ["vendors", id],
     queryFn: () => getVendorAndProducts(`${url}`),
-    staleTime: 20000,
+    staleTime: 5000,
     refetchOnMount: "always",
   });
 
-  //console.log(data.products);
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900">
@@ -231,6 +236,24 @@ const AdminVendorDetails = () => {
                 {data?.vendor?.ContactAddress}
               </dd>
             </div>
+            <div>
+              {data?.vendor?.IsActive ? (
+                <button
+                  onClick={() => dispatch({ type: "deActivate" })}
+                  className="bg-redborder p-2 rounded-xl cursor-pointer shadow-lg font-semibold"
+                >
+                  De-Activate
+
+                </button>
+              ) : (
+                <button
+                  onClick={() => dispatch({ type: "activate" })}
+                  className="bg-background p-2 rounded-xl cursor-pointer shadow-lg font-semibold"
+                >
+                  Activate
+                </button>
+              )}
+            </div>
           </dl>
         </div>
       </section>
@@ -253,6 +276,21 @@ const AdminVendorDetails = () => {
         product={state.product}
         vendorId={state.vendorId}
       />
+      <DeActivateDialogue
+        open={state.deActivate}
+        handleClose={dispatch}
+        url={`${baseUrl}vendor`}
+        entity="vendor"
+        Id={id}
+      />
+      <ActivateDialogue
+        open={state.activate}
+        handleClose={dispatch}
+        url={`${baseUrl}vendor`}
+        entity="vendor"
+        Id={id}
+      />
+
       {/*
   
 //         <DeleteDialogue

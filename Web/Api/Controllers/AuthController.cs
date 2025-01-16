@@ -78,7 +78,7 @@ namespace Api.Controllers
                 {
                     return Unauthorized(ex.Message);
                 }
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -218,6 +218,7 @@ namespace Api.Controllers
             try
             {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == UserId);
+                
                 if (user == null)
                 {
                     return NotFound("User not found");

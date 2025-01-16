@@ -88,7 +88,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> deleteAsync(int id)
+        public async Task<object> deleteAsync(int id)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Api.Services
                 if (rider == null) return null!;
                 _dbContext.Riders.Remove(rider);
                 await _dbContext.SaveChangesAsync();
-                return "Rider deleted";
+                return new {success = "Rider deleted"};
             }
             catch (Exception ex)
             {

@@ -9,7 +9,7 @@ namespace Api.Interfaces
         public Task<PagedList<Rider>> getAllAsync(SearchPaging props);
         public Task<GetRiderDto> getAsync(int id);
         public Task<GetRiderDto> updateAsync(CreateRiderDto rider, int id);
-        public Task<string> deleteAsync(int id);
+        public Task<object> deleteAsync(int id);
         public Task<AuthRiderDto> createAsync(CreateRiderDto rider);
         public Task<IEnumerable<OrderDto>> orderLists(int id);
         public Task<IEnumerable<GetRiderDto>> searchAsync(string searchString);

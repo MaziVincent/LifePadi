@@ -11,8 +11,8 @@ namespace Api.Models
         
         public int? DeliveryAddressId { get; set; }
         public Address? DeliveryAddress { get; set; }
-        
-        public string? PickupType { get; set; }
+
+        public string? PickupType { get; set; } = "Normal";
         public double DeliveryFee { get; set; }
         public string? Status { get; set; }
         public int OrderId { get; set; }

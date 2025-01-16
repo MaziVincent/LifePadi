@@ -170,7 +170,8 @@ namespace Api.Services
                 if (delivery == null) return null!;
                 var DeliveryDto = _mapper.Map<DeliveryDto>(delivery);
                 return DeliveryDto;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
@@ -182,6 +183,8 @@ namespace Api.Services
             try
             {
                 var delivery = await _dbContext.Deliveries
+                .Include(d => d.PickUpAddress)
+                .Include(d => d.DeliveryAddress)
                     .Include(d => d.Order)
                     .ThenInclude(o => o!.OrderItems)!
                     .ThenInclude(oi => oi.Product)
@@ -231,7 +234,7 @@ namespace Api.Services
                         .ThenInclude(o => o!.Customer)
                         .Include(d => d.Rider)
                         .OrderByDescending(d => d.CreatedAt)
-                        .Where(d => d.RiderId == riderId )
+                        .Where(d => d.RiderId == riderId)
                         .ToListAsync();
                     deliveryList = deliveryList.Concat(_mapper.Map<List<DeliveryDto>>(deliveries));
                     var result = PagedList<DeliveryDto>.ToPagedList(deliveryList, props.PageNumber, props.PageSize);
@@ -482,7 +485,7 @@ namespace Api.Services
                 string str = "Completed";
                 var delivery = await _dbContext.Deliveries.FirstOrDefaultAsync(d => d.Id == id);
                 if (delivery == null) return null!;
-                if (status.ToLower() == str.ToLower())
+                if (status.ToLower() == str.ToLower() || status.ToLower() == "delivered")
                 {
                     var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == delivery.OrderId);
                     if (order == null) return null!;
