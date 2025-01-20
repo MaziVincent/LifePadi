@@ -1,23 +1,25 @@
-﻿using Api.DTO;
-using Api.Interfaces;
-using Api.Models;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using Api.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Api.DTO;
+using Api.Helpers;
+using Api.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CustomerController : ControllerBase
+    public class AdminController : ControllerBase
     {
-        private readonly ICustomer? _icustomer;
+        private readonly IAdmin? _iadmin;
         private readonly IMapper _mapper;
         private readonly IEmailVerification _emailVerify;
-        public CustomerController(ICustomer icustomer, IMapper mapper, IEmailVerification emailVerify)
+        public AdminController(IAdmin iadmin, IMapper mapper, IEmailVerification emailVerify)
         {
-            _icustomer = icustomer;
+            _iadmin = iadmin;
             _mapper = mapper;
             _emailVerify = emailVerify;
         }
@@ -57,9 +59,9 @@ namespace Api.Controllers
         {
             try
             {
-                var customer = await _icustomer!.getAsync(id);
-                if (customer == null) return NotFound();
-                return Ok(customer);
+                var admin = await _iadmin!.getAsync(id);
+                if (admin == null) return NotFound();
+                return Ok(admin);
             }
             catch (Exception ex)
             {
@@ -67,34 +69,21 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("getByPhone/{phone}")]
-        public async Task<IActionResult> getByPhone(string phone)
-        {
-            try
-            {
-                var customer = await _icustomer!.getByPhone(phone);
-                if (customer == null) return NotFound();
-                return Ok(customer);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
         [HttpGet("all")]
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
             {
-                var customers = await _icustomer!.getAllAsync(props);
-                var result = _mapper.Map<List<CustomerDtoLite>>(customers);
+                var admins = await _iadmin!.getAllAsync(props);
+                var result = _mapper.Map<List<AdminDtoLite>>(admins);
 
                 var dataList = new
                 {
-                    customers.TotalCount,
-                    customers.TotalPages,
-                    customers.CurrentPage,
-                    customers.PageSize
+                    admins.TotalCount,
+                    admins.TotalPages,
+                    admins.CurrentPage,
+                    admins.PageSize
                 };
 
 
@@ -111,7 +100,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.deleteAsync(id);
+                var response = await _iadmin!.deleteAsync(id);
                 if (response == null) return NotFound();
                 return Ok(response);
             }
@@ -122,13 +111,13 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromForm] CustomerDto customer)
+        public async Task<IActionResult> create([FromForm] AdminDto admin)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest("Some form values are not correct");
-                var authCustomer = await _icustomer!.createAsync(customer);
-                return Ok(authCustomer);
+                var authAdmin = await _iadmin!.createAsync(admin);
+                return Ok(authAdmin);
 
             }
             catch (Exception ex)
@@ -142,11 +131,11 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> update(int id, [FromForm] CustomerDto customer)
+        public async Task<IActionResult> update(int id, [FromForm] AdminDto admin)
         {
             try
             {
-                var updateCustomer = await _icustomer!.updateAsync(customer, id);
+                var updateCustomer = await _iadmin!.updateAsync(admin, id);
                 if (updateCustomer == null) return NotFound();
                 return Ok(updateCustomer);
             }
@@ -156,47 +145,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("orders/{id}")]
-        public async Task<IActionResult> getOrders(int id)
-        {
-            try
-            {
-                var customerOders = await _icustomer!.getCustomerOders(id);
-                return Ok(customerOders);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("addresses/{id}")]
-        public async Task<IActionResult> getAddresses(int id)
-        {
-            try
-            {
-                var customersAddresses = await _icustomer!.customerAddresses(id);
-                return Ok(customersAddresses);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("search")]
-        public async Task<IActionResult> search([FromRoute] string searchString)
-        {
-            try
-            {
-                var response = await _icustomer!.search(searchString);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
 
 
         [HttpPost("send-otp")]
@@ -204,7 +153,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.sendOtp(phoneNumber);
+                var response = await _iadmin!.sendOtp(phoneNumber);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -222,7 +171,7 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.verifyOtp(otpVerify.pinId!, otpVerify.pin!);
+                var response = await _iadmin!.verifyOtp(otpVerify.pinId!, otpVerify.pin!);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -231,37 +180,16 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("check-user-exists")]
-        public async Task<IActionResult> checkUserExists(checkUserExistsDto checkUser)
-        {
-            try
-            {
-                var response = await _icustomer!.checkPhoneAndEmail(checkUser.PhoneNumber!, checkUser.Email!);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("Phone number already exists"))
-                {
-                    return StatusCode(409, ex.Message);
-                }
-                if (ex.Message.Contains("Email already exists"))
-                {
-                    return StatusCode(409, ex.Message);
-                }
-                return BadRequest(ex.Message);
-            }
-        }
-
+        
 
         [HttpPost("password-reset")]
         public async Task<IActionResult> passwordReset([FromForm] string phoneNumber)
         {
             try
             {
-                var user = await _icustomer!.checkPhoneExists(phoneNumber);
+                var user = await _iadmin!.checkPhoneExists(phoneNumber);
                 if (user == false) return NotFound("User not found");
-                var response = await _icustomer!.passwordReset(phoneNumber);
+                var response = await _iadmin!.passwordReset(phoneNumber);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -275,12 +203,12 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.toggleStatus(id);
+                var response = await _iadmin!.toggleStatus(id);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                if(ex.Message.Contains("Customer not found"))
+                if (ex.Message.Contains("Admin not found"))
                 {
                     return NotFound(ex.Message);
                 }
@@ -293,12 +221,12 @@ namespace Api.Controllers
         {
             try
             {
-                var response = await _icustomer!.toggleStatus(id);
+                var response = await _iadmin!.toggleStatus(id);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("Customer not found"))
+                if (ex.Message.Contains("Admin not found"))
                 {
                     return NotFound(ex.Message);
                 }

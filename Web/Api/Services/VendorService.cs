@@ -40,6 +40,7 @@ namespace Api.Services
                 {
                     var vendor1 = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products).Include(v => v.Addresses).AsSplitQuery()
                     .ToListAsync();
+                   
                     vendorList = vendorList.Concat(vendor1);
                     var result = PagedList<Vendor>.ToPagedList(vendorList, props.PageNumber, props.PageSize);
                     return result;
@@ -128,6 +129,7 @@ namespace Api.Services
                         Email = vendor.Email,
                         PhoneNumber = vendor.PhoneNumber,
                         Tag = vendor.Tag,
+                        IsActive = vendor.IsActive,
                         OpeningHours = vendor.OpeningHours,
                         ClosingHours = vendor.ClosingHours,
                         ServiceId = vendor.ServiceId,
@@ -150,6 +152,7 @@ namespace Api.Services
                     PhoneNumber = vendor.PhoneNumber,
                     //Password = vendor.PasswordHash,
                     Tag = vendor.Tag,
+                    IsActive = vendor.IsActive,
                     OpeningHours = vendor.OpeningHours,
                     ClosingHours = vendor.ClosingHours,
                     ServiceId = vendor.ServiceId,

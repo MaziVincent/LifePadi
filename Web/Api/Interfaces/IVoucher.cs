@@ -15,8 +15,8 @@ namespace Api.Interfaces
         public Task<IEnumerable<VoucherDto>> searchWithType(string voucherType);
         public Task<int> getNumberAvailableVoucher(int id);
         public Task<bool> checkIfExpired(int id);
-        public Task<string> deactivateVoucher(int id);
-        public Task<string> activateVoucher(int id);
+        public Task<object> deactivateVoucher(int id);
+        public Task<object> activateVoucher(int id);
         public Task<object> deleteAsync(int id);
         public Task<VoucherDto> updateAsync(VoucherDto voucher, int id);
         public Task<string> deactivateAllExpiredVouchers();

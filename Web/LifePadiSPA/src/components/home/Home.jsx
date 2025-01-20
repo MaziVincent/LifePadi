@@ -94,7 +94,7 @@ const Home = () => {
           ></Lottie>
         </div>
         <div className="text-center text-background text-4xl md:text-6xl font-bold  absolute top-0 h-full w-full flex justify-center items-center z-20 ">
-        <span className="text-accent"> Padi for </span> &nbsp;
+          <span className="text-accent"> Padi for </span> &nbsp;
           <motion.div
             key={currentWord}
             initial={{ opacity: 0, y: -50 }}
@@ -102,7 +102,7 @@ const Home = () => {
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 1 }}
           >
-            { words[currentWord]}
+            {words[currentWord]}
           </motion.div>
         </div>
       </section>
@@ -118,9 +118,10 @@ const Home = () => {
               </div>
               <div className=" pb-3">
                 <p className=" text-center font-normal text-base px-5 text-grayTxt">
-                Enjoy the ease of swift delivery from countless services, 
-                offering a wide range of cuisines, grocery shopping,
-                 errands, and more! We, your padi, we ensure your satisfaction every time.
+                  Enjoy the ease of swift delivery from countless services,
+                  offering a wide range of cuisines, grocery shopping, errands,
+                  and more! We, your padi, we ensure your satisfaction every
+                  time.
                 </p>
               </div>
             </div>
@@ -133,13 +134,16 @@ const Home = () => {
                   className="w-40 h-10 object-cover rounded-lg"
                 />
               </button>
-              <button className="flex items-center py-2 px-4 rounded-xl border-2 bg-accent">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.lifepadi.app"
+                className="flex items-center py-2 px-4 rounded-xl border-2 bg-accent"
+              >
                 <img
                   src={PlayStore}
                   alt="Button Image"
                   className="w-40 h-10 object-cover rounded-lg"
                 />
-              </button>
+              </a>
             </div>
           </div>
           <FadeIn
@@ -343,9 +347,9 @@ const Home = () => {
 
                 <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  From delicious local dishes to international cuisines, 
-                  we've got your cravings covered. Enjoy fresh, hot meals 
-                  delivered right to your doorstep. 🍲🚀
+                  From delicious local dishes to international cuisines, we've
+                  got your cravings covered. Enjoy fresh, hot meals delivered
+                  right to your doorstep. 🍲🚀
                 </p>
               </div>
               <div className="flex flex-col items-center h-48 mb-6 ">
@@ -364,7 +368,8 @@ const Home = () => {
 
                 <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  Experience lightning-fast delivery that gets your items to you in no time. 🚀⏱️
+                  Experience lightning-fast delivery that gets your items to you
+                  in no time. 🚀⏱️
                 </p>
               </div>
 
@@ -384,8 +389,9 @@ const Home = () => {
 
                 <p className="h-1/3 px-5 text-center md:w-1/2 lg:w-full">
                   {" "}
-                  Need errands run? We've got you covered. From picking
-                   up packages to grocery shopping, we handle it all so you can relax. 🚀🛒
+                  Need errands run? We've got you covered. From picking up
+                  packages to grocery shopping, we handle it all so you can
+                  relax. 🚀🛒
                 </p>
               </div>
             </div>
@@ -432,13 +438,16 @@ const Home = () => {
                   delay={0.4}
                   direction="up"
                 >
-                  <Link className=" rounded-lg ">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.lifepadi.app"
+                    className=" rounded-lg "
+                  >
                     <img
                       src={PlayStore}
                       alt=""
                       className="w-40"
                     />
-                  </Link>
+                  </a>
                 </FadeIn>
 
                 <FadeIn
@@ -456,34 +465,31 @@ const Home = () => {
               </div>
 
               <div className=" w-full flex justify-start px-3 ">
-              <FadeIn
+                <FadeIn
                   delay={0.8}
                   direction="up"
                 >
-                <button
-                  type="button"
-                  className=" text-accent h-14 w-40 bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-base px-2 py-2.5 text-center "
-                >
-                  Explore our Store
-                </button>
+                  <button
+                    type="button"
+                    className=" text-accent h-14 w-40 bg-secondary flex justify-center items-center hover:bg-background focus:ring-4 focus:outline-none focus:ring-primary-300 font-semibold rounded-lg text-base px-2 py-2.5 text-center "
+                  >
+                    Explore our Store
+                  </button>
                 </FadeIn>
               </div>
               <div className="flex justify-center">
-                
-
                 <FadeIn
                   delay={0.8}
                   direction="left"
                 >
                   <div className="h-96 max-md:h-48 mt-8 px-2 ">
-                  <img
-                    src={buyingfood}
-                    alt=""
-                    className="h-full"
-                  />
+                    <img
+                      src={buyingfood}
+                      alt=""
+                      className="h-full"
+                    />
                   </div>
-
-                  </FadeIn>
+                </FadeIn>
                 <div className="hidden w-1/2 md:flex md:justify-center  rounded-3xl h-96">
                   <img
                     src={iphone}

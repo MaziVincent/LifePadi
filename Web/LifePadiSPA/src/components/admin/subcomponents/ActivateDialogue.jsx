@@ -4,27 +4,36 @@ import toast, { Toaster } from "react-hot-toast";
 import useActivate from "../../../hooks/useActivate";
 import useAuth from "../../../hooks/useAuth";
 import { useQueryClient } from "react-query";
+import { useState } from "react";
+import LoadingGif from "../../shared/LodingGif";
 
 const ActivateDialogue = ({ open, handleClose, Id, url, entity }) => {
   const { auth } = useAuth();
   const activate = useActivate();
   const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
 
   const handleActivate = async (_id) => {
+    setLoading(true);
     const activateUrl = `${url}/activate/${_id}`;
-
-    const result = await activate(activateUrl, auth.accessToken);
-    if (!result.success) {
+    try {
+      const result = await activate(activateUrl, auth.accessToken);
+      if (!result.success) {
         toast.error(`error activating ${entity}`);
-        console.log(result);
-      //handleClose({type:"deActivate"});
+        //console.log(result);
+        //handleClose({type:"deActivate"});
+        setLoading(false);
         return;
-        
+      }
+      toast.success(`${entity} activated successfully`);
+      queryClient.invalidateQueries(`${entity}s`);
+      handleClose({ type: "activate" });
+    } catch (error) {
+      console.error(error);
+      toast.error(`error activating ${entity}`);
+    } finally {
+      setLoading(false);
     }
-    toast.success(`${entity} activated successfully`);
-    queryClient.invalidateQueries(`${entity}s`);
-    handleClose({ type: "activate" });
-
     //
   };
   return (
@@ -97,7 +106,7 @@ const ActivateDialogue = ({ open, handleClose, Id, url, entity }) => {
               onClick={() => handleActivate(Id)}
               className="py-2 px-3 text-sm font-medium text-center text-white bg-secondary rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
             >
-              Yes, I'm sure
+              {loading ? <LoadingGif /> : " Yes, I'm sure"}
             </button>
           </div>
         </div>

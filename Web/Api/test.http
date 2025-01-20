@@ -152,4 +152,22 @@ Content-Type: application/json
       "pin_time_to_live": 5,
       "pin_type": "NUMERIC"
     }
+###
+GET https://localhost:7216/api/dashboard/dashboardStats
+
+###
+GET https://localhost:7216/api/vendor/all
+
+
+
+
+###
+PUT https://localhost:7216/api/delivery/updatestatus/11?status=Completed
+Content-Type: application/json
+
+{
+    "PhoneNumber":"2349030604334"
+}
+
+
 

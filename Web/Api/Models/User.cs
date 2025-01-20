@@ -20,7 +20,7 @@ namespace Api.Models
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
         public string? SearchString { get; set; }
         public string? PasswordResetToken { get; set; }
-        public bool? IsActive { get; set; }
+        public bool? IsActive { get; set; } = true;
         public List<Address>? Addresses { get; set; }
     }
 }

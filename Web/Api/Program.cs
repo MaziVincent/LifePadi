@@ -90,6 +90,8 @@ builder.Services.AddScoped<IFcmService, FcmService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
+builder.Services.AddScoped<IDashboard, DashboardService>();
+builder.Services.AddScoped<IAdmin, AdminService>();
 
 
 builder.Logging.ClearProviders();

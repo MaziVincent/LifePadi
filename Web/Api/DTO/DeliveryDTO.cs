@@ -4,6 +4,7 @@ namespace Api.DTO
 {
     public class DeliveryDto
     {
+        
         public int Id { get; set; }
         public int? PickupAddressId { get; set; }
         public AddressDto? PickUpAddress {get; set;}
@@ -42,5 +43,9 @@ namespace Api.DTO
         public int OrderId { get; set; }
         public string? DeliveryAddress { get; set; }
 
+    }
+
+    public class DeliveryFeeDto{
+        public double Distance { get; set; }
     }
 }

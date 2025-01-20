@@ -7,6 +7,7 @@ namespace Api.Controllers.Admin
     [Route("api/[controller]")]
     public class DashboardController : ControllerBase
     {
+        private readonly IDashboard _dashboard;
         private readonly IOrder _order;
         private readonly IOrderItem _orderItem;
         private readonly IDelivery _delivery;
@@ -20,6 +21,7 @@ namespace Api.Controllers.Admin
         private readonly IProduct _product;
         private readonly IUser _user;
         public DashboardController(
+            IDashboard dashboard,
             IOrder order,
             IOrderItem orderItem,
             IDelivery delivery,
@@ -34,6 +36,7 @@ namespace Api.Controllers.Admin
             IUser user
             )
         {
+            _dashboard = dashboard;
             _order = order;
             _orderItem = orderItem;
             _delivery = delivery;
@@ -332,6 +335,21 @@ namespace Api.Controllers.Admin
             try
             {
                 var response = await _voucher.voucherStats();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //dashboard
+        [HttpGet("dashboardStats")]
+        public async Task<IActionResult> dashboardStats()
+        {
+            try
+            {
+                var response = await _dashboard.GetDashboardData();
                 return Ok(response);
             }
             catch (Exception ex)

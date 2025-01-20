@@ -133,9 +133,21 @@ namespace Api.Services
                 IQueryable<Customer> customerList = Enumerable.Empty<Customer>().AsQueryable();
                 if (props.SearchString is null)
                 {
-                    var customerLs = await _dbContext.Customers.Include(c => c.Addresses)
+                    var customerLs = await _dbContext.Customers.Include(c => c.Addresses).Include(c=>c.Wallet)
                         .OrderByDescending(r => r.CreatedAt)
                         .ToListAsync();
+                //    foreach (var customer in customerLs){
+                //     if (customer.Wallet == null){
+                //             await _dbContext.Wallets.AddAsync(new Wallet
+                //             {
+                //                 CustomerId = customer.Id,
+                //                 InitialBalance = 0.0,
+                //                 Balance = 0.0
+                //             });
+                //         }
+                //         customer.IsActive ??= true;
+                //    }
+                //    await _dbContext.SaveChangesAsync();
 
                     customerList = customerList.Concat(customerLs);
                     var result = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
@@ -144,6 +156,8 @@ namespace Api.Services
 
                 }
                 var customers = await _dbContext.Customers
+                        .Include(c => c.Addresses)
+                        .Include(c => c.Wallet)
                         .OrderByDescending(r => r.CreatedAt)
                         .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
                         .ToListAsync();
@@ -430,6 +444,29 @@ namespace Api.Services
                 }
 
                 throw new Exceptions.ServiceException(response.ErrorMessage ?? response.StatusCode.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        public async Task<object> toggleStatus(int id)
+        {
+            try
+            {
+                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+                if (customer == null) throw new Exceptions.ServiceException("Customer not found");
+                if (customer.IsActive == true)
+                {
+                    customer.IsActive = false;
+                }
+                else
+                {
+                    customer.IsActive = true;
+                }
+                await _dbContext.SaveChangesAsync();
+                return new {success = true, message = "Customer status updated"};
             }
             catch (Exception ex)
             {

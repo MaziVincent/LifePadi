@@ -11,10 +11,12 @@ namespace Api.Controllers
     {
         private readonly IDelivery _idelivery;
         private readonly IMapper _mapper;
-        public DeliveryController(IDelivery idelivery, IMapper mapper)
+        private IConfiguration _config;
+        public DeliveryController(IDelivery idelivery, IMapper mapper, IConfiguration configuration)
         {
             _idelivery = idelivery;
             _mapper = mapper;
+            _config = configuration;
         }
 
         [HttpGet("all")]
@@ -287,6 +289,20 @@ namespace Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("getfee")]
+        public IActionResult CalculateDeliveryFee([FromQuery] DeliveryFeeDto delivery){
+
+            if(!ModelState.IsValid){
+                return BadRequest("distance is required ");
+            }
+            int distancePerKilometer = int.Parse( _config.GetSection("Distance:Price_Per_Kilometer").Value!);
+
+            double DeliveryFee = delivery.Distance * distancePerKilometer;
+
+            return Ok(new { DeliveryFee });
+        
         }
     }
 }

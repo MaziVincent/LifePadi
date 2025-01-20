@@ -23,5 +23,6 @@ namespace Api.Interfaces
         public Task<string> passwordReset(string phoneNumber);
         public Task<bool> checkPhoneExists(string phoneNumber);
         public Task<string> sendOtp(string phoneNumber);
+        public Task<object> toggleStatus(int id);
     }
 }

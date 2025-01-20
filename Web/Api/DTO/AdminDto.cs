@@ -1,9 +1,12 @@
-﻿using Api.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Api.DTO
 {
-    public class CustomerDto
+    public class AdminDto
     {
         public int? Id { get; set; }
         [Required]
@@ -13,7 +16,7 @@ namespace Api.DTO
 
         [Required]
         //[StringLength(50, MinimumLength = 2)]
-       // [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
+        // [RegularExpression(@"^([A-Za-z-.']+)$", ErrorMessage = "format not accepted")]
         public string? LastName { get; set; }
         [Required]
         public string? Email { get; set; }
@@ -24,14 +27,10 @@ namespace Api.DTO
         public string? RefreshToken { get; set; }
         public string? SearchString { get; set; }
         public bool? IsActive { get; set; }
-        public WalletDto? Wallet { get; set; }
-        public DateTime DOB { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
-        public List<OrderDtoLite>? Orders { get; set; }
-        public List<CustomerVoucherDto>? CustomerVouchers { get; set;}
     }
 
-    public class CustomerDtoLite
+    public class AdminDtoLite
     {
         public int? Id { get; set; }
         public string? FirstName { get; set; }
@@ -41,12 +40,12 @@ namespace Api.DTO
         public string? Role { get; set; }
         public bool? IsActive { get; set; }
         public string? ContactAddress { get; set; }
-        public DateTime DOB { get; set; }
-        public WalletDto? Wallet { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public List<AddressDtoLite>? Addresses { get; set; }
     }
 
-    public class AuthCustomerDto
+    public class AuthAdminDto
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }
@@ -58,12 +57,7 @@ namespace Api.DTO
         public string? AccessToken { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public WalletDto? Wallet { get; set; }
     }
 
-    public class checkUserExistsDto
-    {
-        public string? PhoneNumber { get; set; }
-        public string? Email { get; set; }
-    }
+
 }

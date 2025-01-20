@@ -7,13 +7,15 @@ import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 
 const AssignRider = ({ id, open, handleClose }) =>{
     const update = useUpdate();
     const fetch = useFetch();
     const { auth } = useAuth();
-    const url = `${baseUrl}rider/all?PageSize=10`;
-    const queryClient = useQueryClient();
+    const url = `${baseUrl}rider/allActive?PageSize=10`;
+  const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
 
     const getRiders = async (url) => {
       const res = await fetch(url, auth.accessToken);
@@ -38,20 +40,22 @@ const AssignRider = ({ id, open, handleClose }) =>{
     } = useForm({ mode: "all" });
 
     const create = async (data) => {
-       
+      setLoading(true);
       const info = {riderId: data.RiderId, id}
       //const formData = new FormData();
       // for (const key in data) {
       //   formData.append(key, data[key]);
       // }
      const response = await update(`${baseUrl}delivery/assignRider/${id}/${data.RiderId}`, info, auth?.accessToken);
-      console.log(response.data);
+      //console.log(response.data);
+      setLoading(false);
     };
 
     const { mutate } = useMutation(create, {
       onSuccess: () => {
         queryClient.invalidateQueries("delivery");
         toast.success("Rider Assigned Successfully");
+        setLoading(false);
         handleClose(false);
         reset();
       },
@@ -174,7 +178,7 @@ const AssignRider = ({ id, open, handleClose }) =>{
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                { isSubmitting ? <CircularProgress /> : 'Assign Rider'}  
+                { isSubmitting || loading ? <CircularProgress /> : 'Assign Rider'}  
                 </button>
               </form>
             </div>

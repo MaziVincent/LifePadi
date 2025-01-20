@@ -4,27 +4,43 @@ import toast, { Toaster } from "react-hot-toast";
 import useDelete from "../../../hooks/useDelete";
 import useAuth from "../../../hooks/useAuth";
 import { useQueryClient } from "react-query";
+import { useState } from "react";
 
 const DeleteDialogue = ({ open, handleClose, deleteId, url, name }) => {
   const { auth } = useAuth();
   const del = useDelete();
   const queryClient = useQueryClient();
-//console.log(deleteId)
+  const [loading, setLoading] = useState(false);
+//
   //handle delete
   const handleDelete = async (_id) => {
-    const result = await del(`${url}/delete/${_id}`, auth.accessToken);
-    //console.log(result);
-    if (!result.success) {
-      toast.error("Error Deleting Item");
-      handleClose({type:"delete"});
-      return;
-    }
-    toast.success("Item Deleted Successfully");
-    queryClient.invalidateQueries(`${name}`);
-    handleClose({type:"delete"});
+    setLoading(true);
 
+    try {
+      
+    
+      const result = await del(`${url}/delete/${_id}`, auth.accessToken);
+      //console.log(result);
+      if (!result.success) {
+        toast.error("Error Deleting Item");
+        setLoading(false);
+        handleClose({ type: "delete" });
+
+        return;
+      }
+      toast.success("Item Deleted Successfully");
+      queryClient.invalidateQueries(`${name}s`);
+      handleClose({ type: "delete" });
+
+    } catch (error) {
+      console.error(error)
+       toast.error("Error Deleting Item");
+    } finally {
+      setLoading(false);
+    }
     //
   };
+
   return (
     <Dialog
       open={open}

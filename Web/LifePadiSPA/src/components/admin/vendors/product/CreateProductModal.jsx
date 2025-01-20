@@ -28,11 +28,11 @@ const CreateProductModal = ({ open, handleClose, vendorId }) => {
     queryKey: ["categories"],
     queryFn: () => getCategories(`${baseUrl}category/allLite`),
     keepPreviousData: true,
-    staleTime: 20000,
+    staleTime: 10000,
     refetchOnMount: "always",
   });
 
- console.log(data);
+// console.log(data);
   const {
     register,
     handleSubmit,

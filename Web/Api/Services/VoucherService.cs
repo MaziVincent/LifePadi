@@ -24,7 +24,7 @@ namespace Api.Services
 
         }
 
-        public async Task<string> activateVoucher(int id)
+        public async Task<object> activateVoucher(int id)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Api.Services
                 voucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
-                return "Voucher activated";
+                return new { success = true, message = "Voucher activated" };
             }
             catch (Exception ex)
             {
@@ -176,7 +176,7 @@ namespace Api.Services
             }
         }
 
-        public async Task<string> deactivateVoucher(int id)
+        public async Task<object> deactivateVoucher(int id)
         {
             try
             {
@@ -186,7 +186,7 @@ namespace Api.Services
                 voucher.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Vouchers.Attach(voucher);
                 await _dbContext.SaveChangesAsync();
-                return "Voucher deactivated";
+                return new { success = true, message = "Voucher deactivated" };
             }
             catch (Exception ex)
             {

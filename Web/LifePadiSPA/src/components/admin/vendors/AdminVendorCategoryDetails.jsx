@@ -87,6 +87,14 @@ const AdminVendorCategoryDetails = () => {
     },
 
     {
+      field: "IsActive",
+      headerName: "Active",
+      //description: "This column has a value getter and is not sortable.",
+      // sortable: false,
+      width: 80,
+    },
+
+    {
       field: "deleteButton",
       headerName: "Actions",
       description: "Actions column.",
@@ -195,7 +203,7 @@ const AdminVendorCategoryDetails = () => {
     refetchOnMount: "always",
   });
 
-  //console.log(data);
+  console.log(data);
 
 
   return (
@@ -304,11 +312,11 @@ const AdminVendorCategoryDetails = () => {
                   initialState={{
                     pagination: {
                       paginationModel: {
-                        pageSize: 5,
+                        pageSize: 10,
                       },
                     },
                   }}
-                  pageSizeOptions={[5]}
+                  pageSizeOptions={[10]}
                   //checkboxSelection
                   disableRowSelectionOnClick
                   getRowId={(row) => row.Id}

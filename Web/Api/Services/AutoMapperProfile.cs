@@ -16,6 +16,12 @@ namespace Api.Services
             CreateMap<UserDto, Admin>();
             CreateMap<Admin, UserDto>();
             CreateMap<Admin, AuthUserDto>();
+            CreateMap<Admin, AdminDto>();
+            CreateMap<AdminDto, Admin>();
+            CreateMap<AdminDtoLite, Admin>();
+            CreateMap<Admin, AdminDtoLite>();
+            CreateMap<Admin, AuthAdminDto>();
+            CreateMap< AuthAdminDto, Admin>();
             CreateMap<AuthUserDto, User>();
             CreateMap<GenTokenDto, AuthUserDto>();
             CreateMap<User, UserDtoLiteMessage>();

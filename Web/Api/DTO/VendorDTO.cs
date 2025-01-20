@@ -11,6 +11,7 @@ namespace Api.DTO
         public string? VendorImgUrl { get; set; }
         public string? SearchString { get; set; }
         public string? Tag { get; set; }
+        public bool? IsActive { get; set; }
         public string? TimeTakesToPurchase { get; set; }
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }
@@ -31,6 +32,7 @@ namespace Api.DTO
         public string? VendorImgUrl { get; set; }
         public string? SearchString { get; set; }
         public string? Tag { get; set; }
+        public bool? IsActive { get; set; }
         public string? TimeTakesToPurchase { get; set; }
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
@@ -48,6 +50,8 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? Tag { get; set; }
+        public bool? IsActive { get; set; }
+
         public string? TimeTakesToPurchase { get; set; }
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
@@ -74,6 +78,8 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
         public string? Tag { get; set; }
+        public bool? IsActive { get; set; }
+
         public string? OpeningHours { get; set; }
         public int? ServiceId {get; set;}
         public int? VendorCategoryId {get; set;}

@@ -22,7 +22,7 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfProducts();
         public Task<int> totalNumberOfProductsByVendor(int vendorId);
         public Task<int> totalNumberOfProductsByCategory(int categoryId);
-        public Task<string> toogleProductStatus(int id);
+        public Task<object> toogleProductStatus(int id);
         public Task<object> getVendorProductStat(int vendorId);
         public Task<PagedList<Product>> GetProductsByCategory(int categoryId, SearchPaging props);
         public Task<SearchDTO> SearchAsync(SearchPaging props);

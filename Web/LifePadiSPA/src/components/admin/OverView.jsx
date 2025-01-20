@@ -36,6 +36,7 @@ const Overview = () => {
   const fetch = useFetch();
   const { auth } = useAuth();
   const url = `${baseUrl}order`;
+  const dashboardUrl = `${baseUrl}dashboard/dashboardstats`;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
@@ -61,11 +62,29 @@ const Overview = () => {
     queryFn: () =>
       getOrders(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
     keepPreviousData: true,
-    staleTime: 20000,
+    staleTime: 5000,
     refetchOnMount: "always",
   });
 
-  //console.log(data);
+
+  const getDahboardStats = async (url) => {
+    const response = await fetch(url, auth.accessToken);
+
+    return response.data;
+  };
+
+  const { data:dashboard, isError:dashboardError, isLoading:dashboardLoading, isSuccess:dashboardSuccess } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: () =>
+      getDahboardStats(
+        `${dashboardUrl}`
+      ),
+    keepPreviousData: true,
+    staleTime: 5000,
+    refetchOnMount: "always",
+  });
+
+  // console.log(dashboard);
 
 
   const handlePageChange = (event, value) => {
@@ -82,10 +101,14 @@ const Overview = () => {
     <div className="bg-gray-100">
       <section className="bg-white dark:bg-gray-900 mb-5">
         <div className="max-w-screen-xl px-4 py-8 mx-auto text-center dark:bg-darkMenu lg:py-16 lg:px-6 shadow-md ">
-          <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white">
+          <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 lg:grid-cols-4 dark:text-white">
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-purple-700">
-                73M+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalOrders} </span>}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Total Orders
@@ -93,7 +116,11 @@ const Overview = () => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-blue-700">
-                1B+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalRiders} </span>}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Riders
@@ -101,7 +128,11 @@ const Overview = () => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-teal-700">
-                4M+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalCustomers} </span>}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Customers
@@ -109,7 +140,11 @@ const Overview = () => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-yellow-700">
-                4M+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalVendors} </span>}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Vendors
@@ -117,7 +152,13 @@ const Overview = () => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-orange-700">
-                4M+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && (
+                  <span> {dashboard.TotalProductCategories} </span>
+                )}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Product Categories
@@ -125,17 +166,107 @@ const Overview = () => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
-                4M+
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalServices} </span>}
               </dt>
               <dd className="font-light text-gray-500 dark:text-gray-400">
                 Services
               </dd>
             </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && (
+                  <span> {dashboard.TotalTransactions} </span>
+                )}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Transactions
+              </dd>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalVouchers} </span>}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Vouchers
+              </dd>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && (
+                  <span> {dashboard.TotalPendingOrders} </span>
+                )}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Total Pending Orders
+              </dd>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && (
+                  <span> {dashboard.TotalOngoingOrders} </span>
+                )}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Total Ongoing Orders
+              </dd>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && (
+                  <span> {dashboard.TotalCompletedOrders} </span>
+                )}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Total Completed Orders
+              </dd>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <dt className="mb-2 text-3xl md:text-4xl font-extrabold text-rose-700">
+                {dashboardError && (
+                  <Alert severity="error">Error Fetching Data..</Alert>
+                )}
+                {dashboardLoading && <CircularProgress />}
+                {dashboardSuccess && <span> {dashboard.TotalCancelledOrders} </span>}
+              </dt>
+              <dd className="font-light text-gray-500 dark:text-gray-400">
+                Total Cancelled Orders
+              </dd>
+            </div>
           </dl>
         </div>
       </section>
-      <OrderStatusModal open={state.edit} handleClose={dispatch} url={url} id={state.id} name="orders" />
-     
+      <OrderStatusModal
+        open={state.edit}
+        handleClose={dispatch}
+        url={url}
+        id={state.id}
+        name="orders"
+      />
+
       <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
           <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -323,7 +454,7 @@ const Overview = () => {
               </div>
             </div>
             <div className="overflow-x-auto">
-            {isLoading && (
+              {isLoading && (
                 <p className="flex items-center justify-center">
                   {" "}
                   <CircularProgress />
@@ -336,73 +467,96 @@ const Overview = () => {
                 </p>
               )}
               {isSuccess && (
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs uppercase bg-gray dark:bg-darkMenu ">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Order Date
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Delivery Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      Customer
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3"
-                    >
-                      <span className="sr-only">Actions</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.result.map((order) => (
-                    <tr key={order.Id} className="border-b hover:bg-graybg dark:hover:bg-darkHover">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs uppercase bg-gray dark:bg-darkMenu ">
+                    <tr>
                       <th
-                        scope="row"
-                        className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        scope="col"
+                        className="px-4 py-3"
                       >
-                        {new Date(order.CreatedAt).toDateString()}
+                        Order Date
                       </th>
-                      <td className={`px-4 py-3 ${order.Status == 'Completed' ? 'text-background'
-                        : order.Status == 'Pending' ? 'text-yellow' : 'text-lightindigo'
-                      }`}>{order.Status}</td>
-                      <td className={`px-4 py-3 ${order.IsDelivered ? 'text-lightgreen':'text-redborder'}`}>{order.IsDelivered ? 'Delivered' : 'Not Delivered'}</td>
-                      <td className="px-4 py-3">{order.Customer.FirstName} {order.Customer.LastName}</td>
-                      <td className="px-4 py-3 flex items-center justify-end ">
-                        <ActionsMenu view = {handleOrderDetails} dispatch={dispatch} id={order.Id} />
-                      </td>
-                    </tr>
-                  ))}
+                      <th
+                        scope="col"
+                        className="px-4 py-3"
+                      >
+                        Status
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3"
+                      >
+                        Delivery Status
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-4 py-3"
+                      >
+                        Customer
+                      </th>
 
-                </tbody>
-              </table> )}
+                      <th
+                        scope="col"
+                        className="px-4 py-3"
+                      >
+                        <span className="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.result.map((order) => (
+                      <tr
+                        key={order.Id}
+                        className="border-b hover:bg-graybg dark:hover:bg-darkHover"
+                      >
+                        <th
+                          scope="row"
+                          className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {new Date(order.CreatedAt).toDateString()}
+                        </th>
+                        <td
+                          className={`px-4 py-3 ${
+                            order.Status == "Completed"
+                              ? "text-background"
+                              : order.Status == "Pending"
+                              ? "text-yellow"
+                              : "text-lightindigo"
+                          }`}
+                        >
+                          {order.Status}
+                        </td>
+                        <td
+                          className={`px-4 py-3 ${
+                            order.IsDelivered
+                              ? "text-lightgreen"
+                              : "text-redborder"
+                          }`}
+                        >
+                          {order.IsDelivered ? "Delivered" : "Not Delivered"}
+                        </td>
+                        <td className="px-4 py-3">
+                          {order.Customer.FirstName} {order.Customer.LastName}
+                        </td>
+                        <td className="px-4 py-3 flex items-center justify-end ">
+                          <ActionsMenu
+                            view={handleOrderDetails}
+                            dispatch={dispatch}
+                            id={order.Id}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <nav
               className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4 dark:bg-darkMenu"
               aria-label="Table navigation"
             >
-               <Pagination
-                count={
-                  data?.dataList.TotalPages
-                }
+              <Pagination
+                count={data?.dataList.TotalPages}
                 page={page}
                 onChange={handlePageChange}
                 variant="outlined"

@@ -82,7 +82,7 @@ namespace Api.Controllers
             return Ok(new { latitude, longitude });
         }
 
-         [HttpGet("distance")]
+         [HttpGet("distancewithaddress")]
         public async Task<IActionResult> GetDistance([FromQuery] Distance _distance){
         
             var origin = _distance.Origin;
@@ -113,22 +113,137 @@ namespace Api.Controllers
 
 
         [HttpGet("autocomplete")]
-    public async Task<IActionResult> GetAutocompleteSuggestions(string input)
-    {
-        var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
-        var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&key={apiKey}";
-        var response = await _httpClient.GetAsync(requestUri);
-
-        if (!response.IsSuccessStatusCode)
+        public async Task<IActionResult> GetAutocompleteSuggestions(string input)
         {
-            return StatusCode((int)response.StatusCode);
+            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+            var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&components=country:ng&key={apiKey}";
+            var response = await _httpClient.GetAsync(requestUri);
+
+            if (!response.IsSuccessStatusCode)
+            {
+            return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(result);
+
+            if (json["status"]!.ToString() != "OK")
+            {
+            return BadRequest(json["status"]!.ToString());
+            }
+
+            var suggestions = json["predictions"]?.Select(p => new
+            {
+            description = p["description"]?.ToString(),
+            placeId = p["place_id"]?.ToString()
+            });
+
+            return Ok(suggestions);
         }
 
-        var result = await response.Content.ReadAsStringAsync();
-        return Ok(result);
-    }
+        [HttpGet("distancewithplaceid")]
+        public async Task<IActionResult> CalculateDistance([FromQuery] PlaceDTO place)
+        {
+            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
 
+            // Distance Matrix API URL with place IDs
+            var requestUri = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{place.OriginPlaceId}&destinations=place_id:{place.DestinationPlaceId}&key={apiKey}";
+            var response = await _httpClient.GetAsync(requestUri);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode((int)response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(result);
+
+            if (json["status"]?.ToString() != "OK")
+            {
+                return BadRequest(json["status"]?.ToString());
+            }
+
+            // Extract the distance and duration
+            var distance = json["rows"]?[0]?["elements"]?[0]?["distance"]?["value"];
+            var duration = json["rows"]?[0]?["elements"]?[0]?["duration"]?["text"]?.ToString();
+
+            return Ok(new
+            {
+                distance,
+                duration
+            });
+        }
+
+      
+        private async Task<object> GetAddressDetailsFromPlaceId(string placeId)
+        {
+            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+
+            // Place Details API URL
+            var requestUri = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={apiKey}";
+            var response = await _httpClient.GetAsync(requestUri);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Failed to fetch place details. Status Code: {response.StatusCode}");
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            var json = JObject.Parse(result);
+
+            if (json["status"]?.ToString() != "OK")
+            {
+                throw new Exception($"Error fetching place details: {json["status"]}");
+            }
+
+            var details = json["result"];
+            var addressComponents = details?["address_components"];
+
+            // Helper function to extract a specific address component by type
+            string? GetAddressComponent(string type)
+            {
+                return addressComponents?
+                    .FirstOrDefault(c => c["types"]?.Any(t => t.ToString() == type) == true)?["long_name"]
+                    ?.ToString();
+            }
+
+            // Extract properties
+            var formattedAddress = new
+            {
+                Name = details?["name"]?.ToString(),
+                Town = GetAddressComponent("sublocality"),
+                City = GetAddressComponent("locality"),
+                LocalGovt = GetAddressComponent("administrative_area_level_2"),
+                State = GetAddressComponent("administrative_area_level_1"),
+                PostalCode = GetAddressComponent("postal_code"),
+                Longitude = details?["geometry"]?["location"]?["lng"]?.ToString(),
+                Latitude = details?["geometry"]?["location"]?["lat"]?.ToString()
+            };
+
+            return formattedAddress;
+        }
+
+        [HttpGet("addressfromplaceid")]
+        public async Task<IActionResult> GetFromPlaceID([FromQuery] PlaceDTO place)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Enter place id for both origin and destination");
+            }
+            try
+            {
+                var SenderAddress = await GetAddressDetailsFromPlaceId(place.OriginPlaceId!);
+                var RecieverAddress = await GetAddressDetailsFromPlaceId(place.DestinationPlaceId!);
+                
+                return Ok(new {
+                    SenderAddress,
+                    RecieverAddress
+                });
+                
+            }catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
