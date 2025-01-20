@@ -4,15 +4,30 @@ import { ClickAwayListener } from "@mui/material";
 import LoadingGif from "../shared/LodingGif";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import baseUrl from "../../api/baseUrl";
 import axios from "axios";
 import usePost from "../../hooks/usePost";
 import { useDistance } from "../../hooks/useDistance";
+import { useDeliveryFee } from "../../hooks/useDeliveryFee";
 import useAuth from "../../hooks/useAuth";
 import useCart from "../../hooks/useCart";
+import ChooseAddressModal from "./ChooseAddressModal";
 
-const SendPackage = ({ dispatch, open }) => {
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "showAddresses":
+      return { ...state, showAddresses: !state.showAddresses };
+    case "pickUpAddress":
+      return { ...state, pickUpAddress: action.payload };
+    case "deliveryAddress":
+      return { ...state, deliveryAddress: action.payload };
+    default:
+      throw new Error();
+  }
+}
+
+const SendPackage = ({ handleClose, open }) => {
   const {
     register,
     handleSubmit,
@@ -23,6 +38,12 @@ const SendPackage = ({ dispatch, open }) => {
   } = useForm({
     mode: "all",
   });
+
+  const [ state, dispatch ] = useReducer(reducer, {
+    showAddresses: false,
+    pickUpAddress: null,
+    deliveryAddress:null,
+  })
   const { auth } = useAuth();
   const post = usePost();
   const { state: cartState, dispatch: cartDispatch } = useCart();
@@ -30,8 +51,11 @@ const SendPackage = ({ dispatch, open }) => {
   const [senderSuggestions, setSenderSuggestions] = useState([]);
   const [recieverSuggestions, setRecieverSuggestions] = useState([]);
   const [focusedField, setFocusedField] = useState(null);
-  const [deliveryFee, setDeliveryFee] = useState(0);
+  //const [deliveryFee, setDeliveryFee] = useState(0);
+  const [originPlaceId, setOriginPlaceId] = useState("");
+  const [destinationPlaceId, setDestinationPlaceId] = useState("");
   const url = `${baseUrl}logistics/create`;
+  
   const options = [
     "Documents",
     "Food Stuff",
@@ -49,15 +73,15 @@ const SendPackage = ({ dispatch, open }) => {
         : [...prevSelected, option]
     );
 
-   // console.log(selectedChips);
+    // console.log(selectedChips);
   };
 
   const handleClickAway = () => {
-    dispatch({ type: "send" });
+    handleClose({ type: "send" });
   };
 
   const SenderAddress = watch("SenderAddress");
-  const RecieverAddress = watch("RecieverAddress");
+  const RecieverAddress = watch("ReceiverAddress");
 
   const fetchSuggestions = async (value, field) => {
     if (value.length > 2) {
@@ -67,7 +91,7 @@ const SendPackage = ({ dispatch, open }) => {
             input: value,
           },
         });
-       // console.log(response);
+        // console.log(response);
         const data = response.data;
 
         if (field === "SenderAddress") {
@@ -95,12 +119,12 @@ const SendPackage = ({ dispatch, open }) => {
 
   // Handle suggestion click
   const handleSuggestionClick = (suggestion) => {
-    
     if (focusedField === "SenderAddress") {
       setValue("SenderAddress", suggestion.description); // Set pickup address in the form
+      setOriginPlaceId(suggestion.placeId);
     } else if (focusedField === "RecieverAddress") {
-     
       setValue("ReceiverAddress", suggestion.description); // Set delivery address in the form
+      setDestinationPlaceId(suggestion.placeId);
     }
     setSenderSuggestions([]);
     setRecieverSuggestions([]); // Clear suggestions after selection
@@ -112,17 +136,16 @@ const SendPackage = ({ dispatch, open }) => {
   };
 
   const { distance, duration, error, loading } = useDistance(
-    SenderAddress,
-    RecieverAddress
+    originPlaceId,
+    destinationPlaceId
   );
-  console.log(distance)
 
-  useEffect(() => {
-    if (distance) {
-      setDeliveryFee(Math.trunc((distance / 1000) * 300));
-    }
-  });
-
+  const {
+    deliveryFee,
+    loading: feeLoading,
+    error: feeError,
+  } = useDeliveryFee(Math.ceil(distance / 1000));
+ 
   const handleSend = async (data) => {
     selectedChips.forEach((chip) => {
       if (!data.Item) {
@@ -131,7 +154,7 @@ const SendPackage = ({ dispatch, open }) => {
         data.Item = `${data.Item} and ${chip}`;
       }
     });
-//console.log(data);
+    //console.log(data);
     const order = {
       CustomerId: auth.Id,
       Type: "Logistics",
@@ -144,7 +167,7 @@ const SendPackage = ({ dispatch, open }) => {
       return;
     }
 
-    console.log(res);
+    //console.log(res);
 
     data.OrderId = res.data.Id;
 
@@ -172,7 +195,7 @@ const SendPackage = ({ dispatch, open }) => {
     cartDispatch({ type: "total", payload: deliveryFee });
     cartDispatch({ type: "checkOut", payload: deliveryFee });
     localStorage.setItem("delivery", JSON.stringify(delivery));
-    dispatch({ type: "send" });
+    handleClose({ type: "send" });
   };
 
   // console.log(auth)
@@ -180,7 +203,7 @@ const SendPackage = ({ dispatch, open }) => {
     <Modal
       open={open}
       onClose={() => {
-        dispatch({ type: "send" });
+        handleClose({ type: "send" });
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -197,7 +220,7 @@ const SendPackage = ({ dispatch, open }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    dispatch({ type: "send" });
+                    handleClose({ type: "send" });
                   }}
                   className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-toggle="defaultModal"
@@ -234,6 +257,16 @@ const SendPackage = ({ dispatch, open }) => {
                       >
                         Pick up address
                       </label>
+                      <div className="m-2 ">
+                        <button onClick={() => dispatch({type:"showAddresses"})} className="text-base text-background cursor-pointer">Choose Existing Address</button>
+                      </div>
+                       <div
+                        className={`${
+                          state.showAddresses ? "block" : "hidden"
+                        } border-2 rounded-lg border-graybg`}
+                      >
+                        <ChooseAddressModal />
+                      </div> 
                       <div className="flex ">
                         <span
                           className={` text-gray "flex"
@@ -354,13 +387,12 @@ const SendPackage = ({ dispatch, open }) => {
                             handleInputChange(e, "RecieverAddress")
                           }
                         />
-                       
                       </div>
                       {errors.ReceiverAddress && (
-                          <p className="text-sm text-redborder">
-                            Delivery address is required
-                          </p>
-                        )}
+                        <p className="text-sm text-redborder">
+                          Delivery address is required
+                        </p>
+                      )}
                     </div>
 
                     {/* Address Suggestions */}
@@ -387,7 +419,17 @@ const SendPackage = ({ dispatch, open }) => {
                     <div className="col-span-2">
                       <p className="bg-lightForest rounded-xl p-2 text-accent ">
                         {" "}
-                        Delivery Fee : &#8358;{deliveryFee}
+                        {/* {
+                          feeLoading && <LoadingGif />
+                        } */}
+                        {deliveryFee && (
+                          <span> Delivery Fee : &#8358;{deliveryFee} </span>
+                        )}
+                        {feeError && (
+                          <span className="text-redborder">
+                            Couldn't Calculate Delivery Fee
+                          </span>
+                        )}
                       </p>
                     </div>
 
@@ -565,7 +607,7 @@ const SendPackage = ({ dispatch, open }) => {
                   </div>
                   <button
                     type="submit"
-                    disabled={isSubmitting }
+                    disabled={isSubmitting}
                     className="w-full text-accent bg-background flex justify-center items-center hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >
                     {isSubmitting ? <LoadingGif /> : " Proceed "}

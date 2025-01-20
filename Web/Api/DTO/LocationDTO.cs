@@ -31,4 +31,10 @@ namespace Api.DTO
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
     }
+
+    public class PlaceDTO {
+
+        public string? OriginPlaceId { get; set; }
+        public string? DestinationPlaceId { get; set; }
+    }
 }

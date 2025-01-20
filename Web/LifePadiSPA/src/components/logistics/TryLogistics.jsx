@@ -1,6 +1,4 @@
 
-import sendPackage from "../../assets/images/send package.png"
-import recievePackage from "../../assets/images/recieve package.png"
 import { useReducer } from "react";
 import SendPackage from "./SendPackage";
 import RecievePackage from "./RecievePackage";
@@ -84,11 +82,11 @@ const TryLogistics = () => {
         </div>
       </div>
       <SendPackage
-        dispatch={dispatch}
+        handleClose={dispatch}
         open={state.send}
       />
       <RecievePackage
-        dispatch={dispatch}
+        handleClose={dispatch}
         open={state.recieve}
       />
     </div>

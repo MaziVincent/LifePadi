@@ -4,37 +4,37 @@ import baseUrl from "../api/baseUrl";
 import { useState, useEffect } from 'react';
  import axios from 'axios';
 
-export const useDistance = (Origin, Destination,) => {
+export const useDistance = (OriginPlaceId, DestinationPlaceId) => {
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const axiosPrivate = useAxiosPrivate();
 
-  // console.log(`Origin is ${Origin}`)
-  // console.log(`Destination is ${Destination}`)
-
   useEffect(() => {
     const fetchDistance = async () => {
       try {
-        const response = await axios.get(`${baseUrl}googlemaps/distance`, {
-          params: { Destination, Origin },
-        });
+        const response = await axios.get(
+          `${baseUrl}googlemaps/distancewithplaceid`,
+          {
+            params: { OriginPlaceId, DestinationPlaceId },
+          }
+        );
 
-        console.log(response.data)
+       // console.log(response.data);
         setDistance(response.data.distance);
         setDuration(response.data.duration);
       } catch (err) {
-        setError(err.message || 'Error calculating distance');
+        setError(err.message || "Error calculating distance");
       } finally {
         setLoading(false);
       }
     };
 
-    if (Destination && Origin) {
+    if (OriginPlaceId && DestinationPlaceId) {
       fetchDistance();
     }
-  }, [Destination, Origin]);
+  }, [OriginPlaceId, DestinationPlaceId]);
 
   return { distance, duration, error, loading };
 };
