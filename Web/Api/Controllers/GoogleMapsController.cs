@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Api.DTO;
+using Api.Helpers;
 
 namespace Api.Controllers
 {
@@ -142,12 +143,12 @@ namespace Api.Controllers
         }
 
         [HttpGet("distancewithplaceid")]
-        public async Task<IActionResult> CalculateDistance([FromQuery] PlaceDTO place)
+        public async Task<IActionResult> CalculateDistance([FromQuery] Distance _distance)
         {
             var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
 
             // Distance Matrix API URL with place IDs
-            var requestUri = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{place.OriginPlaceId}&destinations=place_id:{place.DestinationPlaceId}&key={apiKey}";
+            var requestUri = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{_distance.Origin}&destinations=place_id:{_distance.Destination}&key={apiKey}";
             var response = await _httpClient.GetAsync(requestUri);
 
             if (!response.IsSuccessStatusCode)
@@ -224,25 +225,51 @@ namespace Api.Controllers
         }
 
         [HttpGet("addressfromplaceid")]
-        public async Task<IActionResult> GetFromPlaceID([FromQuery] PlaceDTO place)
+        public async Task<IActionResult> GetFromPlaceID([FromQuery] string placeId)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Enter place id for both origin and destination");
+                return BadRequest("Enter place id");
             }
             try
             {
-                var SenderAddress = await GetAddressDetailsFromPlaceId(place.OriginPlaceId!);
-                var RecieverAddress = await GetAddressDetailsFromPlaceId(place.DestinationPlaceId!);
+                var Address = await GetAddressDetailsFromPlaceId(placeId!);
                 
                 return Ok(new {
-                    SenderAddress,
-                    RecieverAddress
+                    PlaceId = placeId,
+                    Address,
                 });
                 
             }catch(Exception ex){
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        public IActionResult CalculateDistance([FromBody] DistanceRequest request)
+        {
+            if (request == null ||
+                request.OriginLatitude == 0 || request.OriginLongitude == 0 ||
+                request.DestinationLatitude == 0 || request.DestinationLongitude == 0)
+            {
+                return BadRequest("Invalid input. Please provide valid coordinates.");
+            }
+
+            // Calculate distance using the Haversine formula
+            
+            var distance = DistanceHelper.CalculateDistance(
+                request.OriginLatitude,
+                request.OriginLongitude,
+                request.DestinationLatitude,
+                request.DestinationLongitude
+            );
+
+            return Ok(new
+            {
+                Origin = new { Latitude = request.OriginLatitude, Longitude = request.OriginLongitude },
+                Destination = new { Latitude = request.DestinationLatitude, Longitude = request.DestinationLongitude },
+                DistanceInKm = distance
+            });
         }
 
     }

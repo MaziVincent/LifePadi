@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Lottie from "lottie-react";
 import { motion } from "framer-motion";
-import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
-import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
+// import HeroAnimation5 from "../../assets/lottie/HeroAnimation5.json";
+// import HeroAnimation2 from "../../assets/lottie/HeroAnimation2.json";
 import HeroAnimation4 from "../../assets/lottie/Heroanimation4.json";
 import Hero1 from "../../assets/lottie/Hero1.json";
 import LandingPageSlide from "./LandingPageSlide";

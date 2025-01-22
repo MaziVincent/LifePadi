@@ -25,6 +25,16 @@ namespace Api.DTO
 
     }
 
+    public class DistanceRequest
+    {
+
+        public double OriginLatitude { get; set; }
+        public double OriginLongitude { get; set; }
+        public double DestinationLatitude { get; set; }
+        public double DestinationLongitude { get; set; }
+
+    }
+
     public class RiderLocation
     {
         public string? RiderId { get; set; }

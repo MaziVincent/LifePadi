@@ -137,7 +137,9 @@ const SendPackage = ({ handleClose, open }) => {
 
   const { distance, duration, error, loading } = useDistance(
     originPlaceId,
-    destinationPlaceId
+    destinationPlaceId,
+    `${baseUrl}googlemaps/distancewithplaceid`,
+    auth.accessToken
   );
 
   const {
@@ -197,6 +199,10 @@ const SendPackage = ({ handleClose, open }) => {
     localStorage.setItem("delivery", JSON.stringify(delivery));
     handleClose({ type: "send" });
   };
+
+  const handlePickUpAddress = (address) => {
+console.log(address)
+  }
 
   // console.log(auth)
   return (
@@ -265,7 +271,7 @@ const SendPackage = ({ handleClose, open }) => {
                           state.showAddresses ? "block" : "hidden"
                         } border-2 rounded-lg border-graybg`}
                       >
-                        <ChooseAddressModal />
+                        <ChooseAddressModal handleAddress={handlePickUpAddress} />
                       </div> 
                       <div className="flex ">
                         <span

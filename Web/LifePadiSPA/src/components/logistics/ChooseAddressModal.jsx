@@ -5,7 +5,7 @@ import { useGet } from "../../hooks/useGet";
 import baseUrl from "../../api/baseUrl";
 import useAuth from "../../hooks/useAuth";
 import LoadingGif from "../shared/LodingGif";
-const ChooseAddressModal = () => {
+const ChooseAddressModal = ({handleAddress}) => {
   const { auth } = useAuth();
   const addressUrl = `${baseUrl}address/customer-addresses`;
 
@@ -37,7 +37,7 @@ const ChooseAddressModal = () => {
                     value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
                     onChange={(e) => {
                      // handleClick(e);
-                      //handleDeliveryAddress(e)
+                      handleAddress(ad)
                     }}
                   />
                   <label htmlFor={`address${ad.Id}`}>
