@@ -159,6 +159,9 @@ GET https://localhost:7216/api/dashboard/dashboardStats
 GET https://localhost:7216/api/vendor/all
 
 
+###
+GET https://localhost:7216/api/address/all
+
 
 
 ###
@@ -169,5 +172,11 @@ Content-Type: application/json
     "PhoneNumber":"2349030604334"
 }
 
+###
+GET https://localhost:7216/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jehXBARMwg7ylaaXNI
+###
+GET https://localhost:7216/api/googlemaps/autocomplete?input=Dreamlink
 
+###
+GET https://localhost:7216/api/googlemaps/coordinates?address=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 

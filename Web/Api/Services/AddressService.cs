@@ -25,6 +25,16 @@ namespace Api.Services
                 var addresses = await _dbContext.Addresses
                     .Include(a => a.User)
                     .OrderByDescending(a => a.CreatedAt).ToListAsync();
+                foreach (var ad in addresses)
+                {
+                    if (ad.IsActive == null)
+                    {
+                        ad.IsActive = true;
+                        _dbContext.Addresses.Update(ad);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                }
+                
                 var AddressDtoLite = _mapper.Map<List<AddressDto>>(addresses);
                 return AddressDtoLite;
             }
@@ -39,10 +49,11 @@ namespace Api.Services
             
             try
             {
-                var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State);
+                var initialAddress = await _dbContext.Addresses.Where(a => (a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State) || (a.Latitude == address.Latitude && a.Longitude == address.Longitude)).FirstOrDefaultAsync();
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
                 var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
                 if (defaultAddress == null) address.DefaultAddress = true;
+                address.IsActive = true;
                 var newaddress = _mapper.Map<Address>(address);
                 await _dbContext.Addresses.AddAsync(newaddress);
                 await _dbContext.SaveChangesAsync();
@@ -127,6 +138,7 @@ namespace Api.Services
                 var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId)
                 .Where(a => a.IsActive == true).ToListAsync();
                 if (addresses == null) return null!;
+               
                 var AddressDtoLite = _mapper.Map<List<AddressDtoLite>>(addresses);
                 return AddressDtoLite;
             }

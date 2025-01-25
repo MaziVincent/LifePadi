@@ -23,8 +23,8 @@ const usePost = () => {
       
       // console.log(data)
     } catch (error) {
-     // console.log(error)
-     return {error:error.response.data}
+      console.log(error)
+     return {error:error.response?.data, status:error.response?.status}
       //navigate('/Login',{state:{from: location}, replace:true })
     }
     controller.abort();
