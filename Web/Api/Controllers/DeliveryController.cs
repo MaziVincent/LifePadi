@@ -299,7 +299,7 @@ namespace Api.Controllers
             }
             int distancePerKilometer = int.Parse( _config.GetSection("Distance:Price_Per_Kilometer").Value!);
 
-            double DeliveryFee = delivery.Distance * distancePerKilometer;
+            double DeliveryFee = 1000 + ( delivery.Distance * distancePerKilometer);
 
             return Ok(new { DeliveryFee });
         

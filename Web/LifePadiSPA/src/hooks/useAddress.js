@@ -2,7 +2,7 @@ import baseUrl from "../api/baseUrl";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const useAddress = (latitude, longitude) => {
+export const useAddress = (latitude, longitude ) => {
   const [address, setAddress] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -10,6 +10,7 @@ export const useAddress = (latitude, longitude) => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`${baseUrl}googlemaps/address`, {
           params: { latitude, longitude },
         });

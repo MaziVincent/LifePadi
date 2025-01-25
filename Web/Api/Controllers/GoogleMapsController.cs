@@ -30,9 +30,9 @@ namespace Api.Controllers
             var longitude = coordinates.Longitude;
             var latitude = coordinates.Latitude;
 
-            if (longitude is null || latitude is null)
+            if (longitude == null || latitude == null)
             {
-                return BadRequest();
+                return BadRequest("Longitude and Latitude must be provided.");
             }
 
             var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
@@ -52,8 +52,35 @@ namespace Api.Controllers
                 return BadRequest(json["status"]!.ToString());
             }
 
-            var address = json["results"]?[0]?["formatted_address"]?.ToString();
-            return Ok(address);
+            var details = json["results"]?.FirstOrDefault();
+            var addressComponents = details?["address_components"];
+
+            if (addressComponents == null)
+            {
+                return NotFound("Address components are missing from the response.");
+            }
+
+            // Helper function to extract a specific address component by type
+            string? GetAddressComponent(string type)
+            {
+                return addressComponents?
+                    .FirstOrDefault(c => c["types"]?.Any(t => t.ToString() == type) == true)?["long_name"]
+                    ?.ToString();
+            }
+
+            // Extract properties
+            var formattedAddress = new
+            {
+                Name = details?["formatted_address"]?.ToString(),
+                Town = GetAddressComponent("sublocality_level_1"),
+                City = GetAddressComponent("locality"),
+                LocalGovt = GetAddressComponent("administrative_area_level_2"),
+                State = GetAddressComponent("administrative_area_level_1"),
+                PostalCode = GetAddressComponent("postal_code"),
+                Longitude = details?["geometry"]?["location"]?["lng"],
+                Latitude = details?["geometry"]?["location"]?["lat"]
+            };
+            return Ok(formattedAddress);
         }
 
         [HttpGet("coordinates")]
@@ -197,9 +224,13 @@ namespace Api.Controllers
                 throw new Exception($"Error fetching place details: {json["status"]}");
             }
 
-            var details = json["result"];
+           var details = json["result"];
             var addressComponents = details?["address_components"];
 
+            if (addressComponents == null)
+            {
+                return NotFound("Address components are missing from the response.");
+            }
             // Helper function to extract a specific address component by type
             string? GetAddressComponent(string type)
             {
@@ -211,14 +242,14 @@ namespace Api.Controllers
             // Extract properties
             var formattedAddress = new
             {
-                Name = details?["name"]?.ToString(),
-                Town = GetAddressComponent("sublocality"),
+                Name = details?["formatted_address"]?.ToString(),
+                Town = GetAddressComponent("sublocality_level_1"),
                 City = GetAddressComponent("locality"),
                 LocalGovt = GetAddressComponent("administrative_area_level_2"),
                 State = GetAddressComponent("administrative_area_level_1"),
                 PostalCode = GetAddressComponent("postal_code"),
-                Longitude = details?["geometry"]?["location"]?["lng"]?.ToString(),
-                Latitude = details?["geometry"]?["location"]?["lat"]?.ToString()
+                Longitude = details?["geometry"]?["location"]?["lng"],
+                Latitude = details?["geometry"]?["location"]?["lat"]
             };
 
             return formattedAddress;

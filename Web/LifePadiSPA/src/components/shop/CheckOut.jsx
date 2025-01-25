@@ -77,7 +77,7 @@ const CheckOut = () => {
                   dispatch({ type: "checkOut" });
                   setLoading(false);
                 }}
-                className="text-darkHover bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-darkHover dark:text-graybg bg-transparent border-2 hover:bg-gray-200 hover:text-gray rounded-full text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
               >
                 <svg

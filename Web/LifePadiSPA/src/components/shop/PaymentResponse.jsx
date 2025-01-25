@@ -52,21 +52,9 @@ const PaymentResponse = () => {
 
         setPaymentStatus(true);
         setResponseMsg(res.data?.message);
-        const delivery = localStorage.getItem("delivery");
-        const deliveryData = JSON.parse(delivery);
-        //console.log(deliveryData)
-        const response = await post(
-          deliveryUrl,
-          deliveryData,
-          auth.accessToken
-        );
-     // const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
-        
-          localStorage.removeItem("delivery");
-          setTimeout(() => {
-            navigate("/user");
-          }, 3000);
        
+     // const res =   await post(`${baseUrl}order/updateStatus/${deliveryData?.OrderId}`)
+  
       } else {
         setResponseMsg(res.data.message);
         setPaymentStatus(true);
