@@ -120,7 +120,7 @@ const RecievePackage = ({ handleClose, open }) => {
   };
 
   const handleClickAway = () => {
-    handleClose({ type: "send" });
+    handleClose({ type: "recieve" });
   };
 
   const SenderAddress = watch("SenderAddress");
@@ -339,7 +339,7 @@ const RecievePackage = ({ handleClose, open }) => {
       cartDispatch({ type: "total", payload: deliveryFee });
       cartDispatch({ type: "checkOut", payload: deliveryFee });
       //localStorage.setItem("delivery", JSON.stringify(delivery));
-      handleClose({ type: "send" });
+      handleClose({ type: "recieve" });
     } catch (error) {
       console.log(error);
       if (error.response?.status == 409) {
@@ -408,7 +408,7 @@ const RecievePackage = ({ handleClose, open }) => {
     <Modal
       open={open}
       onClose={() => {
-        handleClose({ type: "send" });
+        handleClose({ type: "recieve" });
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -425,7 +425,7 @@ const RecievePackage = ({ handleClose, open }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    handleClose({ type: "send" });
+                    handleClose({ type: "recieve" });
                   }}
                   className="text-gray-400 bg-transparent hover:bg-graybg hover:text-gray-900 rounded-full border-2 border-gray text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   data-modal-toggle="defaultModal"
