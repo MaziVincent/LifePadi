@@ -1,0 +1,47 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '3.1.x'
+    
+    - name: Install Lambda tools
+      run: dotnet tool install -g Amazon.Lambda.Tools
+    
+    - name: Add Lambda tools to PATH
+      run: echo "$(dotnet --list-tools-path)" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: dotnet restore Web/Api
+
+    - name: Build project
+      run: dotnet build Web/Api --configuration Release --no-restore
+
+    - name: Package Lambda function
+      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
+
+    - name: Upload to S3
+      run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
+
+    - name: Deploy to Lambda
+      run: aws lambda update-function-code --function-name Lifepadi-API --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
