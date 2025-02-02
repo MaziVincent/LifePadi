@@ -14,7 +14,7 @@ const ChooseAddressModal = ({handleAddress}) => {
     loading: addressLoading,
     error: addressError,
   } = useGet(`${addressUrl}/${auth.Id}`);
-  console.log(addresses);
+  //console.log(addresses);
   const handleChange = (e, ad) => {
     handleAddress(ad);
   }

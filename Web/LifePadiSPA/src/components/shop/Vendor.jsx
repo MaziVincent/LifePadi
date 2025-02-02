@@ -24,12 +24,14 @@ import LoadingGif from "../shared/LodingGif";
 import { useDistance } from "../../hooks/useDistance";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
-import { addAddressToDb } from "./services/services";
+import { createAddress } from "./services/services";
 import VendorSkeleton from "../shared/VendorSkeleton";
 import ProductSkeleton from "../shared/ProductSkeleton";
 import useUpdate from "../../hooks/useUpdate";
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import { Alert } from "@mui/material";
+import NewAddressModal from "./NewAddressModal";
+import useDistanceCalculator from "../../hooks/useDistanceCalculator";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -72,6 +74,7 @@ const Vendor = () => {
   const orderUrl = `${baseUrl}order/create`;
   const orderItemUrl = `${baseUrl}orderitem/create`;
   const navigate = useNavigate();
+  const { calculateDistance } = useDistanceCalculator();
 
   const {
     cart,
@@ -222,7 +225,7 @@ const Vendor = () => {
   };
 
   const handleGift = async () => {
-    cartDispatch({type:"voucherError", payload:""})
+    cartDispatch({ type: "voucherError", payload: "" });
 
     if (!auth.accessToken) {
       setCartState(false);
@@ -230,80 +233,95 @@ const Vendor = () => {
 
       return;
     }
-  
-      const response = await update(`${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,cartState.voucherCode, auth.accessToken);
-      if(response.data?.IsActive && !response.data?.IsExpired){
-        cartDispatch({type:"voucher", payload:response.data})
-        cartDispatch({type:"voucherError", payload:""})
-        cartDispatch({type:"gift"})
-        cartDispatch({type:"voucherMessage", payload:`${response.data?.DiscountAmount} Naira Discount applied `})
-        //handleTotalAmount()
-        //handleDeliveryFee(response.data?.DiscountAmount)
 
-      }
-     
+    const response = await update(
+      `${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,
+      cartState.voucherCode,
+      auth.accessToken
+    );
+    if (response.data?.IsActive && !response.data?.IsExpired) {
+      cartDispatch({ type: "voucher", payload: response.data });
+      cartDispatch({ type: "voucherError", payload: "" });
+      cartDispatch({ type: "gift" });
+      cartDispatch({
+        type: "voucherMessage",
+        payload: `${response.data?.DiscountAmount} Naira Discount applied `,
+      });
+      //handleTotalAmount()
+      //handleDeliveryFee(response.data?.DiscountAmount)
+    }
 
-      if(response.error){
-        cartDispatch({type:"voucherError", payload:response.error})
-        console.log(response.error)
-        return
-      }
-
-    
-
-
+    if (response.error) {
+      cartDispatch({ type: "voucherError", payload: response.error });
+      console.log(response.error);
+      return;
+    }
   };
 
-  const handleDeliveryFee = ( ) => {
-    if (distance == null || distance == 0) {
+  const handleDeliveryFee = () => {
+    if (cartState.distance == null || cartState.distance == 0) {
       // if(discountPercentage){
       //   const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
       //   cartDispatch({ type: "deliveryFee", payload: deliveryFee });
       //   return;
-      // }else 
-      if(cartState.voucher?.DiscountAmount){
+      // }else
+      if (cartState.voucher?.DiscountAmount) {
         const deliveryFee = 1500 - cartState.voucher.DiscountAmount;
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
-      if(cartState.voucher?.DiscountPercentage){
-        const deliveryFee = Math.trunc( 1500 - ((cartState.voucher?.DiscountPercentage / 100) * (1500) ));
+      if (cartState.voucher?.DiscountPercentage) {
+        const deliveryFee = Math.trunc(
+          1500 - (cartState.voucher?.DiscountPercentage / 100) * 1500
+        );
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
       const deliveryFee = 1500;
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
-      
     } else {
-      if(cartState.voucher?.DiscountAmount){
-        const deliveryFee =  Math.trunc((1500 + 200 * (distance / 1000)) - cartState.voucher.DiscountAmount);
+      if (cartState.voucher?.DiscountAmount) {
+        const deliveryFee = Math.trunc(
+          1500 + 200 * (cartState.distance / 1000) - cartState.voucher.DiscountAmount
+        );
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
-      if(cartState.voucher?.DiscountPercentage){
-        const deliveryFee = Math.trunc( (1500 + 200 * (distance / 1000)) - ((cartState.voucher?.DiscountPercentage / 100) * (1500 + 200 * (distance / 1000)) ));
+      if (cartState.voucher?.DiscountPercentage) {
+        const deliveryFee = Math.trunc(
+          1500 +
+            200 * (cartState.distance / 1000) -
+            (cartState.voucher?.DiscountPercentage / 100) *
+              (1500 + 200 * (cartState.distance / 1000))
+        );
         cartDispatch({ type: "deliveryFee", payload: deliveryFee });
         return;
       }
-      const deliveryFee = Math.trunc(1500 + 200 * (distance / 1000));
+      const deliveryFee = Math.trunc(1500 + 200 * (cartState.distance / 1000));
       cartDispatch({ type: "deliveryFee", payload: deliveryFee });
     }
   };
 
-  const handleLocation = () => {
-   // console.log(location);
-    cartDispatch({ type: "setAddress", payload: location.address });
-    handleDeliveryFee();
-   // console.log(cartState.deliveryAddress);
+  const handleLocation = async () => {
+    //console.log(location);
+    //  // console.log(cartState.deliveryAddress);
     cartDispatch({ type: "address" });
     cartDispatch({ type: "error", payload: "" });
-    addAddressToDb(`${addressUrl}create`, location, auth.accessToken, auth?.Id);
+    const data = await createAddress(
+      location.address,
+      auth.accessToken,
+      auth?.Id,
+      cartDispatch
+    );
+    if (!data) return;
+    cartDispatch({ type: "setAddress", payload: data });
+    handleDeliveryFee();
   };
 
-  const handleClick = async (e) => {
-    console.log(e.target.value);
-    cartDispatch({ type: "setAddress", payload: e.target.value });
-    handleDeliveryFee();
+  const handleClick = async (address) => {
+    //console.log(e.target.value);
+    cartDispatch({ type: "setAddress", payload: address });
+    //handleDeliveryFee();
     cartDispatch({ type: "address" });
     cartDispatch({ type: "error", payload: "" });
   };
@@ -371,7 +389,7 @@ const Vendor = () => {
       setOrderLoading(false);
       cartDispatch({ type: "checkOut" });
       //console.log(delivery)
-     
+
       localStorage.setItem("delivery", JSON.stringify(delivery));
     } catch (error) {
       console.log(error);
@@ -379,7 +397,6 @@ const Vendor = () => {
       setOrderLoading(false);
     }
   };
-
 
   const clearCart = () => {
     setCart([]);
@@ -390,8 +407,7 @@ const Vendor = () => {
   };
 
   const handleTotalAmount = () => {
-    
-    const totalAmount = Math.trunc( state.subTotal + cartState.deliveryFee);
+    const totalAmount = Math.trunc(state.subTotal + cartState.deliveryFee);
     cartDispatch({ type: "total", payload: totalAmount });
   };
 
@@ -399,7 +415,6 @@ const Vendor = () => {
     getProductCategory();
     //setVendors(data?.result);
     //console.log('services')
-
   }, []);
 
   useEffect(() => {
@@ -424,23 +439,38 @@ const Vendor = () => {
   }, [cart]);
 
   useEffect(() => {
-    setOrigin(
-      `${cartState.vendor?.ContactAddress}, ${cartState.vendor?.Town}, ${cartState.vendor?.City}, ${cartState.vendor?.State}`
-    );
-  }, [cartState.vendor]);
+    
+    if (cartState.vendor && cartState.deliveryAddress) {
+      const distance = calculateDistance(
+        {
+          lat: cartState.vendor?.Latitude,
+          lng: cartState.vendor?.Longitude,
+        },
+        {
+          lat: cartState.deliveryAddress?.Latitude,
+          lng: cartState.deliveryAddress?.Longitude,
+        }
+      );
+      cartDispatch({ type: "distance", payload: distance });
+      console.log(distance);
+    }
+  }, [cartState.vendor, cartState.deliveryAddress]);
 
-  
-
-
-  const { distance, duration, error } = useDistance(
-    origin,
-    cartState.deliveryAddress
-  );
+  // const { distance, duration, error } = useDistance(
+  //   origin,
+  //   cartState.deliveryAddress?.Name
+  // );
 
   useEffect(() => {
     handleDeliveryFee();
     handleTotalAmount();
-  }, [state.subTotal, distance, cartState.deliveryFee, cart, cartState.voucher]);
+  }, [
+    state.subTotal,
+    cartState.distance,
+    cartState.deliveryFee,
+    cart,
+    cartState.voucher,
+  ]);
 
   //console.log(distance);
   //console.log(cartState.vendor);
@@ -638,7 +668,7 @@ const Vendor = () => {
                 <div className=" flex justify-between items-center text-sm font-normal">
                   <p>
                     <span className="font-bold">Choose Address:</span>{" "}
-                    {cartState.deliveryAddress}{" "}
+                    {cartState.deliveryAddress?.Name}{" "}
                   </p>
                   {cartState.address ? (
                     <button
@@ -672,7 +702,7 @@ const Vendor = () => {
                   {cartState.addresses.map((ad) => (
                     <div
                       key={ad.Id}
-                      className=" flex gap-3 text-gray text-sm rounded-lg px-5 py-2"
+                      className=" flex gap-3 text-gray  text-sm rounded-lg px-5 py-2"
                     >
                       {" "}
                       <input
@@ -681,11 +711,15 @@ const Vendor = () => {
                         id={`address${ad.Id}`}
                         value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
                         onChange={(e) => {
-                          handleClick(e);
+                          handleClick(ad);
                           //handleDeliveryAddress(e)
                         }}
+                        className="cursor-pointer"
                       />
-                      <label htmlFor={`address${ad.Id}`}>
+                      <label
+                        htmlFor={`address${ad.Id}`}
+                        className="cursor-pointer"
+                      >
                         {" "}
                         {ad.Name} {ad.Town}
                       </label>
@@ -782,15 +816,20 @@ const Vendor = () => {
                     }
                   />
                   <div className="flex justify-between">
-                  {cartState.voucherError && <p className="text-sm text-redborder"> {cartState.voucherError }</p>}
-
+                    {cartState.voucherError && (
+                      <p className="text-sm text-redborder">
+                        {" "}
+                        {cartState.voucherError}
+                      </p>
+                    )}
                     <button
-                      onClick={() =>{ handleGift(); } }
+                      onClick={() => {
+                        handleGift();
+                      }}
                       className=" text-background "
                     >
                       Use Code
                     </button>{" "}
-                    
                   </div>
                 </div>
               </div>
@@ -839,9 +878,12 @@ const Vendor = () => {
                   <span className="">Total</span>
                   <span className="">&#8358;{cartState.total}</span>
                 </p>
-                {
-                  cartState.voucherMessage && <p className="text-sm text-background"> {cartState.voucherMessage} <ThumbUpOffAltIcon /> </p>
-                }
+                {cartState.voucherMessage && (
+                  <p className="text-sm text-background">
+                    {" "}
+                    {cartState.voucherMessage} <ThumbUpOffAltIcon />{" "}
+                  </p>
+                )}
               </div>
               <div>
                 {cartState.error && (
@@ -898,7 +940,7 @@ const Vendor = () => {
           handleNewAddress={dispatch}
           handleGift={handleGift}
           handleDeliveryFee={handleDeliveryFee}
-         // handleTotalAmount={handleTotalAmount}
+          // handleTotalAmount={handleTotalAmount}
           //distance={handleDistance}
           //handleDeliveryInstruction = {setDeliveryInstruction}
         />
@@ -912,7 +954,11 @@ const Vendor = () => {
         product={state.product}
         vendor={data}
       />
-      <AddAddressModal
+      {/* <AddAddressModal
+        open={state.edit}
+        handleClose={dispatch}
+      /> */}
+      <NewAddressModal
         open={state.edit}
         handleClose={dispatch}
       />

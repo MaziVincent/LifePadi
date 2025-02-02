@@ -103,7 +103,7 @@ const UserLogin = () => {
           break;
       }
       setIsLoading(false);
-      console.error(err);
+      console.error(err.response);
     }
   };
   const togglePersist = () => {

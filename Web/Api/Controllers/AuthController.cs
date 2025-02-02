@@ -76,7 +76,7 @@ namespace Api.Controllers
                 }
                 if (ex.Message.Contains("Invalid email or password"))
                 {
-                    return Unauthorized(ex.Message);
+                    return BadRequest(ex.Message);
                 }
                 return StatusCode(500, ex.Message);
             }

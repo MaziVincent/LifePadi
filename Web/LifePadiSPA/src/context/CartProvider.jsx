@@ -1,9 +1,11 @@
+import { SignalCellularNullRounded } from "@mui/icons-material";
+import { distance } from "framer-motion";
 import { createContext, useState, useReducer } from "react";
 
 const CartContext = createContext({});
 
 const initialState = {
-  deliveryAddress: "",
+  deliveryAddress: null,
   deliveryInstruction: "",
   address: false,
   instruction: false,
@@ -22,7 +24,8 @@ const initialState = {
   gift:false,
   voucherCode:"",
   voucher: null,
-  voucherMessage:""
+  voucherMessage: "",
+  distance: 0,
 }
 
 const reducer = (state, action) => {
@@ -63,6 +66,8 @@ const reducer = (state, action) => {
       return { ...state, voucher: action.payload };
     case "voucherMessage":
       return { ...state, voucherMessage: action.payload };
+    case "distance":
+      return { ...state, distance: action.payload };
     case "gift":
       return { ...state, gift: !state.gift };
     case "checkOut":

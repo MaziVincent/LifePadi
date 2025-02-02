@@ -45,7 +45,10 @@ namespace Api.DTO
 
     }
 
-    public class DeliveryFeeDto{
+    public class DeliveryFeeDto
+    {
         public double Distance { get; set; }
+        public int? DiscountPercentage { get; set; }
+        public double? DiscountAmount { get; set; }
     }
 }
