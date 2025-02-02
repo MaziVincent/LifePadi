@@ -1,4 +1,5 @@
 import usePost from "../../../hooks/usePost";
+import baseUrl from "../../../api/baseUrl";
 import { useDistance } from "../../../hooks/useDistance";
 import useAuth from "../../../hooks/useAuth";
 import useCart from "../../../hooks/useCart";
@@ -39,6 +40,32 @@ export const addAddressToDb = async (url, location, token, userId ) => {
     console.log(response)
 
 }
+
+  export const createAddress = async (address, token, userId, cartDispatch) => {
+    address.UserId = userId;
+    const formData = new FormData();
+    Object.entries(address).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const res = await post(`${baseUrl}address/create`, formData, token);
+    if (res.error && res.status == 409) {
+      cartDispatch({
+        type: "error",
+        payload: "Address already exists Choose from Existing Address ",
+      });
+      return null;
+    } else if (res.error) {
+      cartDispatch({
+        type: "error",
+        payload: "Error Creating Address ",
+      });
+      return null;
+    }
+
+    return res.data;
+  };
+
 
 // export const getDistanceFromAddress = (origin, destination) => {
 

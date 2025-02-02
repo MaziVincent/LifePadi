@@ -92,8 +92,8 @@ const SendPackage = ({ handleClose, open }) => {
   const [recieverSuggestions, setRecieverSuggestions] = useState([]);
   const [focusedField, setFocusedField] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [pkId, setPkId] = useState(null);
-  const [dlId, setdlId] = useState(null);
+  // const [pkId, setPkId] = useState(null);
+  // const [dlId, setdlId] = useState(null);
   //const [deliveryFee, setDeliveryFee] = useState(0);
   // const [originPlaceId, setOriginPlaceId] = useState("");
   // const [destinationPlaceId, setDestinationPlaceId] = useState("");

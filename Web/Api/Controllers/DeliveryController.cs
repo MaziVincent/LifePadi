@@ -297,9 +297,39 @@ namespace Api.Controllers
             if(!ModelState.IsValid){
                 return BadRequest("distance is required ");
             }
-            int distancePerKilometer = int.Parse( _config.GetSection("Distance:Price_Per_Kilometer").Value!);
+            if (delivery.Distance < 0)
+            {
+                return BadRequest("Distance cannot be less than 0");
+            }
+            int pricePerKilometer = int.Parse(_config.GetSection("Distance:Price_Per_Kilometer").Value!);
+           
+            if (delivery.DiscountPercentage != null && delivery.DiscountAmount != null)
+            {
+                return BadRequest("Only one discount type is allowed");
+            }
+            if (delivery.DiscountPercentage != null)
+            {
+                if (delivery.DiscountPercentage > 100)
+                {
+                    return BadRequest("Discount percentage cannot be greater than 100");
+                }
 
-            double DeliveryFee = 1000 + ( delivery.Distance * distancePerKilometer);
+                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * (delivery.DiscountPercentage / 100));
+                return Ok(new {DeliveryFee = deliveryFeeAfterPercentageDiscount});
+            }
+            if (delivery.DiscountAmount != null)
+            {
+                if (delivery.DiscountAmount < 0)
+                {
+                    return BadRequest("Discount amount cannot be less than 0");
+                }
+                double deliveryFeeAfterAmountDiscount = 1000 + (delivery.Distance * pricePerKilometer) - (double)delivery.DiscountAmount;
+                return Ok(new {DeliveryFee = deliveryFeeAfterAmountDiscount});
+            }
+           
+            
+
+            double DeliveryFee = 1000 + ( delivery.Distance * pricePerKilometer);
 
             return Ok(new { DeliveryFee });
         

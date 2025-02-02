@@ -8,6 +8,8 @@ const useDistanceCalculator = () => {
 
   // Function to calculate the distance
   const calculateDistance = useCallback((origin, destination) => {
+    // console.log(origin)
+    // console.log(destination)
     if (!origin || !destination) {
       console.error("Origin and destination coordinates are required.");
       return null;

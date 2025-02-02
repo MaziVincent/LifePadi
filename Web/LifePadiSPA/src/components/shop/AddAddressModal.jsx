@@ -35,7 +35,7 @@ const AddAddressModal = ({ open, handleClose }) => {
       formData.append(key, data[key])
     }
     const response = await post(url, formData, auth?.accessToken);
-    console.log(response);
+    //console.log(response);
   };
 
   const { mutate } = useMutation(create, {
