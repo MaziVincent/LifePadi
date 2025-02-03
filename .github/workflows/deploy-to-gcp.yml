@@ -25,8 +25,9 @@ jobs:
         project_id: ${{ env.PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SE_SECRET }}
 
-    - name: Authenticate Docker to GCP
-      run: gcloud auth configure-docker --quiet
+    - name: Authenticate Docker to GCP Artifact Registry
+      run: |
+        gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
 
     - name: Build Docker image
       working-directory: ./Web/Api  # Change to the directory containing the Dockerfile
