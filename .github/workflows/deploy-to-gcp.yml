@@ -27,6 +27,8 @@ jobs:
 
     - name: Authenticate Docker to GCP Artifact Registry
       run: |
+        echo "${{ secrets.GCP_SE_SECRET }}" > sa-key.json
+        gcloud auth activate-service-account --key-file=sa-key.json
         gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
 
     - name: Build Docker image
