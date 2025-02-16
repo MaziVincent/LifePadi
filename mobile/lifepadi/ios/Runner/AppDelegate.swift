@@ -5,6 +5,8 @@ import workmanager
 import awesome_notifications
 import shared_preferences_foundation
 import flutter_secure_storage
+import FirebaseCore
+import FirebaseMessaging
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -35,6 +37,13 @@ import flutter_secure_storage
     }
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken:Data){
+    // Fixes the error: APNS token has not been set yet.
+    // Please ensure the APNS token is available by calling getAPNSToken()
+    Messaging.messaging().apnsToken = deviceToken
+    super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
   }
 
    override func userNotificationCenter(
