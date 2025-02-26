@@ -73,7 +73,7 @@ class GetStartedPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                20.verticalSpace,
+                16.verticalSpace,
                 Padding(
                   padding: kHorizontalPadding,
                   child: PrimaryButton(
@@ -81,7 +81,7 @@ class GetStartedPage extends StatelessWidget {
                     text: 'Get started',
                   ),
                 ),
-                16.verticalSpace,
+                12.verticalSpace,
                 Padding(
                   padding: kHorizontalPadding,
                   child: PrimaryOutlineButton(
@@ -89,7 +89,7 @@ class GetStartedPage extends StatelessWidget {
                     onPressed: () => context.go(const LoginRoute().location),
                   ),
                 ),
-                17.verticalSpace,
+                14.verticalSpace,
               ],
             ),
           ],
