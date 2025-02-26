@@ -16,7 +16,7 @@ class Logistics with LogisticsMappable {
     required this.item,
     this.description,
     this.weight,
-    required this.fragile,
+    this.fragile = false,
     this.deliveryFee = 0.0,
     this.isPaid = false,
   });
