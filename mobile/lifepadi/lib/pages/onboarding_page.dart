@@ -13,21 +13,21 @@ class OnboardingPage extends HookWidget {
     final features = useMemoized(
       () => <OnboardingInfo>[
         (
-          info: 'We deliver right at your\n door step',
+          info: 'Doorstep Delivery',
           description:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+              'Get your groceries and essentials delivered right to your doorstep.',
           image: Assets.images.manWithGroceries.path,
         ),
         (
-          info: 'Lorem Ipsum is simply dummy text.',
+          info: 'Easy Shopping',
           description:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+              'Browse products and shop securely with just a few taps.',
           image: Assets.images.manWithCart.path,
         ),
         (
-          info: 'Lorem Ipsum is simply dummy text.',
+          info: 'Real-time Tracking',
           description:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+              'Track your orders and get instant updates on delivery status.',
           image: Assets.images.signDeliverPkg.path,
         ),
       ],

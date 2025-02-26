@@ -21,7 +21,7 @@ class ChatsPage extends StatelessWidget {
           const ChatTile(
             subject: 'Lifepadi Support',
             content:
-                'Hi, David. Are you still around lorem ipsum dolor sunt amet?',
+                'Hi David, how may we assist you today with your shopping needs?',
             time: '29 mar',
           ),
         ],
