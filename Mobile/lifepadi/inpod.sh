@@ -14,7 +14,7 @@ while [ $retry_count -lt $MAX_RETRIES ] && [ "$success" = false ]; do
     # Clean pod installation
     rm -rf Pods
     rm -rf Podfile.lock
-    # rm -rf ~/.cocoapods/repos
+    rm -rf ~/.cocoapods/repos
     pod cache clean --all
 
     # Update cocoapods repo
