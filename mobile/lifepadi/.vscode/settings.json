@@ -11,7 +11,7 @@
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
     },
-    "editor.inlineSuggest.enabled": true,
+    "editor.inlineSuggest.enabled": true
   },
   "eslint.enable": false,
   "eslint.format.enable": false,
