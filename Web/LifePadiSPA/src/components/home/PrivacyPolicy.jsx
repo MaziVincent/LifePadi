@@ -72,10 +72,13 @@ const PrivacyPolicy = () => {
           </h2>
           <p class="text-gray-700">We collect personal information when you:</p>
           <ul class="list-disc list-inside text-gray-700 space-y-1">
-            <li>Register for an account (name, email, phone, address).</li>
+            <li>
+              Register for an account (name, email, phone, address, gender).
+            </li>
             <li>Place an order for delivery or logistics services.</li>
             <li>Make a payment through our platform.</li>
             <li>Use location-based services (with your consent).</li>
+            <li>Use biometrics data (with your consent) to login.</li>
             <li>Contact customer support.</li>
             <li>Browse our website or mobile app.</li>
           </ul>
