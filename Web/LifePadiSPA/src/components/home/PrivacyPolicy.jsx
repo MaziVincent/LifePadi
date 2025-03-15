@@ -38,33 +38,88 @@ const PrivacyPolicy = () => {
           <h2 className="text-2xl font-semibold mb-2">
             2. Collecting your personal information
           </h2>
-          <p className="mb-4">
-            We are committed to informing and limiting the collection of
-            essential personal information. We can get your personal information
-            when you:
+          <p>We collect your personal information when you:</p>
+          <ul>
+            <li>Purchase a product or service.</li>
+            <li>
+              Register for a specific service (e.g., providing your name, phone
+              number, email address, and physical address).
+            </li>
+            <li>Subscribe to newsletters or other services.</li>
+            <li>Contact us with a question or complaint.</li>
+            <li>Participate in promotions or surveys.</li>
+            <li>Use our app or interact with our services.</li>
+          </ul>
+
+          <p>
+            With your consent and as permitted by law, we may also collect
+            personal information from trusted third parties, such as
+            fraud-prevention agencies or business directories, to verify
+            identity and prevent fraudulent activities.
           </p>
-          <ul className="mb-4 list-disc list-inside">
-            <li>Buy a product or service from us.</li>
+
+          <p>
+            The collected information is used solely to provide and improve our
+            services, enhance security, and comply with legal requirements. We
+            do not sell or share personal data without your consent, except as
+            required by law.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            A. Information We Collect
+          </h2>
+          <p class="text-gray-700">We collect personal information when you:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Register for an account (name, email, phone, address).</li>
+            <li>Place an order for delivery or logistics services.</li>
+            <li>Make a payment through our platform.</li>
+            <li>Use location-based services (with your consent).</li>
+            <li>Contact customer support.</li>
+            <li>Browse our website or mobile app.</li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            B. How We Use Your Information
+          </h2>
+          <p class="text-gray-700">Your data is used to:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Process and fulfill your orders.</li>
+            <li>Improve our website, app, and services.</li>
+            <li>Provide customer support.</li>
+            <li>Send notifications and service updates.</li>
+            <li>Ensure security and fraud prevention.</li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            C. Data Sharing and Security
+          </h2>
+          <p class="text-gray-700">
+            We do not sell your data. However, we may share it with:
+          </p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
             <li>
-              Register for a specific product or service (such as registering
-              your name, phone number, email address and physical address
-              details for any of our services).
+              <strong>Service Providers:</strong> Payment processors, delivery
+              partners.
             </li>
-            <li>Subscribe to newsletters or other services from us.</li>
             <li>
-              Ask us for more information about a product or service or contact
-              us with a question or complaint.
+              <strong>Legal Authorities:</strong> When required by law.
             </li>
-            <li>Take part in a promo or survey.</li>
-            <li>Use our website and other services.</li>
-            <li>Visit or browse our website or other platforms.</li>
             <li>
-              With your permission or consent and/or as permitted by law, we may
-              also collect information about you from other organizations or
-              third parties if this is appropriate and allowed by law. These
-              include fraud-prevention agencies, business directories, and
-              credit reference agencies.
+              <strong>Business Transfers:</strong> If our company undergoes a
+              merger or acquisition.
             </li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            D. Your Rights
+          </h2>
+          <p class="text-gray-700">You have the right to:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Access and update your personal data.</li>
+            <li>Request data deletion.</li>
+            <li>Manage cookies and tracking preferences.</li>
           </ul>
         </div>
 
