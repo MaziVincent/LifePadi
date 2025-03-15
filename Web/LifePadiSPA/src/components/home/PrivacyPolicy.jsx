@@ -38,34 +38,32 @@ const PrivacyPolicy = () => {
           <h2 className="text-2xl font-semibold mb-2">
             2. Collecting your personal information
           </h2>
-          <p className="mb-4">
-            We are committed to informing and limiting the collection of
-            essential personal information. We can get your personal information
-            when you:
-          </p>
-          <ul className="mb-4 list-disc list-inside">
-            <li>Buy a product or service from us.</li>
+          <p>We collect your personal information when you:</p>
+          <ul>
+            <li>Purchase a product or service.</li>
             <li>
-              Register for a specific product or service (such as registering
-              your name, phone number, email address and physical address
-              details for any of our services).
+              Register for a specific service (e.g., providing your name, phone
+              number, email address, and physical address).
             </li>
-            <li>Subscribe to newsletters or other services from us.</li>
-            <li>
-              Ask us for more information about a product or service or contact
-              us with a question or complaint.
-            </li>
-            <li>Take part in a promo or survey.</li>
-            <li>Use our website and other services.</li>
-            <li>Visit or browse our website or other platforms.</li>
-            <li>
-              With your permission or consent and/or as permitted by law, we may
-              also collect information about you from other organizations or
-              third parties if this is appropriate and allowed by law. These
-              include fraud-prevention agencies, business directories, and
-              credit reference agencies.
-            </li>
+            <li>Subscribe to newsletters or other services.</li>
+            <li>Contact us with a question or complaint.</li>
+            <li>Participate in promotions or surveys.</li>
+            <li>Use our app or interact with our services.</li>
           </ul>
+
+          <p>
+            With your consent and as permitted by law, we may also collect
+            personal information from trusted third parties, such as
+            fraud-prevention agencies or business directories, to verify
+            identity and prevent fraudulent activities.
+          </p>
+
+          <p>
+            The collected information is used solely to provide and improve our
+            services, enhance security, and comply with legal requirements. We
+            do not sell or share personal data without your consent, except as
+            required by law.
+          </p>
         </div>
 
         <div>
