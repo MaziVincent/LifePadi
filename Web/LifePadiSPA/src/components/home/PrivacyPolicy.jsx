@@ -67,6 +67,63 @@ const PrivacyPolicy = () => {
         </div>
 
         <div>
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            A. Information We Collect
+          </h2>
+          <p class="text-gray-700">We collect personal information when you:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Register for an account (name, email, phone, address).</li>
+            <li>Place an order for delivery or logistics services.</li>
+            <li>Make a payment through our platform.</li>
+            <li>Use location-based services (with your consent).</li>
+            <li>Contact customer support.</li>
+            <li>Browse our website or mobile app.</li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            B. How We Use Your Information
+          </h2>
+          <p class="text-gray-700">Your data is used to:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Process and fulfill your orders.</li>
+            <li>Improve our website, app, and services.</li>
+            <li>Provide customer support.</li>
+            <li>Send notifications and service updates.</li>
+            <li>Ensure security and fraud prevention.</li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            C. Data Sharing and Security
+          </h2>
+          <p class="text-gray-700">
+            We do not sell your data. However, we may share it with:
+          </p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>
+              <strong>Service Providers:</strong> Payment processors, delivery
+              partners.
+            </li>
+            <li>
+              <strong>Legal Authorities:</strong> When required by law.
+            </li>
+            <li>
+              <strong>Business Transfers:</strong> If our company undergoes a
+              merger or acquisition.
+            </li>
+          </ul>
+
+          <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-2">
+            D. Your Rights
+          </h2>
+          <p class="text-gray-700">You have the right to:</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-1">
+            <li>Access and update your personal data.</li>
+            <li>Request data deletion.</li>
+            <li>Manage cookies and tracking preferences.</li>
+          </ul>
+        </div>
+
+        <div>
           <h1 className="text-2xl font-semibold mb-2">
             3. Understanding what you want (the use of cookies)
           </h1>
