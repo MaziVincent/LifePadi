@@ -6,6 +6,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 
 /// Navigation buttons for the onboarding page.
@@ -20,6 +21,13 @@ class OnboardingNavigation extends StatelessWidget {
   final ValueNotifier<int> currentPage;
   final PageController pageController;
   final List<OnboardingInfo> features;
+
+  void _completeOnboarding(BuildContext context) {
+    // Set flag indicating user has seen onboarding
+    PreferencesHelper.setBool(key: 'hasSeenOnboarding', value: true);
+    // Navigate directly to home instead of get-started
+    context.go(const HomeRoute().location);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,7 @@ class OnboardingNavigation extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  context.go(const GetStartedRoute().location);
+                  _completeOnboarding(context);
                 },
                 child: const SectionTitle(
                   'Skip',
@@ -75,7 +83,7 @@ class OnboardingNavigation extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if (currentPage.value == features.length - 1) {
-                    context.go(const GetStartedRoute().location);
+                    _completeOnboarding(context);
                   } else {
                     pageController.animateToPage(
                       currentPage.value + 1,

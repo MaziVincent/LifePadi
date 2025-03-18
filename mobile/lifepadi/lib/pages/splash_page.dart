@@ -16,6 +16,11 @@ bool hasLoggedInBefore() {
   return hasLoggedIn ?? false;
 }
 
+bool hasSeenOnboarding() {
+  final hasSeenOnboarding = PreferencesHelper.getBool('hasSeenOnboarding');
+  return hasSeenOnboarding ?? false;
+}
+
 class SplashPage extends HookConsumerWidget {
   const SplashPage({super.key});
 
@@ -28,20 +33,20 @@ class SplashPage extends HookConsumerWidget {
         controller
           ..addStatusListener((status) async {
             if (status == AnimationStatus.completed) {
-              final canRestoreAuth = await ref
-                  .read(authControllerProvider.notifier)
-                  .canRestoreAuth();
               final auth = ref.read(authControllerProvider);
-
               String nextRoute;
+
+              // If user is authenticated, go to home
               if (auth.value?.isAuth ?? false) {
                 nextRoute = const HomeRoute().location;
               } else {
-                nextRoute = hasLoggedInBefore()
-                    ? (canRestoreAuth
-                        ? const LoginRoute().location
-                        : const GetStartedRoute().location)
-                    : const OnboardingRoute().location;
+                // If user has not seen onboarding, show it first
+                if (!hasSeenOnboarding()) {
+                  nextRoute = const OnboardingRoute().location;
+                } else {
+                  // User has seen onboarding, go directly to home
+                  nextRoute = const HomeRoute().location;
+                }
               }
 
               if (context.mounted) {

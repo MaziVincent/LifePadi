@@ -41,6 +41,17 @@ GoRouter router(Ref ref) {
     debugLogDiagnostics: true,
     routes: $appRoutes,
     redirect: (context, state) async {
+      final authRestrictedRoutes = [
+        CartRoute().location,
+        CheckoutRoute().location,
+        const OrdersRoute().location,
+        const EditProfileRoute().location,
+        const WishlistRoute().location,
+        const WalletRoute().location,
+        const LocationsRoute().location,
+        const TransactionHistoryRoute().location,
+      ];
+
       final guestRoutes = [
         const OnboardingRoute().location,
         const LoginRoute().location,
@@ -49,22 +60,37 @@ GoRouter router(Ref ref) {
         const ForgotPasswordRoute().location,
         const ResetPasswordRoute().location,
       ];
+
       final isLoggingIn = guestRoutes.contains(state.uri.path);
       final isSplash = state.uri.path == const SplashRoute().location;
+      final isAuthRestricted = authRestrictedRoutes.any(
+        (route) => state.uri.path == route || state.uri.path.startsWith(route),
+      );
 
       if (isSplash) return null; // Let splash page handle its own navigation
 
       if (isAuth.value.isLoading || !isAuth.value.hasValue) {
         return const SplashRoute().location;
       }
+
       if (isAuth.value.unwrapPrevious().hasError) {
         return isLoggingIn ? null : const GetStartedRoute().location;
       }
 
       final auth = isAuth.value.requireValue;
-      if (isLoggingIn) return auth ? const HomeRoute().location : null;
 
-      return auth ? null : const GetStartedRoute().location;
+      // If trying to access auth-restricted route but not logged in
+      if (isAuthRestricted && !auth) {
+        return const GetStartedRoute().location;
+      }
+
+      // If trying to log in but already authenticated
+      if (isLoggingIn && auth) {
+        return const HomeRoute().location;
+      }
+
+      // Allow non-auth-restricted routes regardless of auth status
+      return null;
     },
   );
   ref.onDispose(router.dispose);

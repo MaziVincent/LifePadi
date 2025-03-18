@@ -12,6 +12,7 @@ class PrimaryButton extends StatelessWidget {
     this.iconWidget,
     this.radius,
     this.fontSize,
+    this.textStyle,
   });
 
   final VoidCallback? onPressed;
@@ -19,6 +20,7 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
   final Widget? iconWidget;
   final double? radius, fontSize;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +64,13 @@ class PrimaryButton extends StatelessWidget {
                 if (text != '')
                   Text(
                     text,
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: fontSize ?? 16.sp,
-                      letterSpacing: -0.88.r,
-                    ),
+                    style: textStyle ??
+                        textTheme.bodyLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: fontSize ?? 16.sp,
+                          letterSpacing: -0.88.r,
+                        ),
                   ),
               ],
             ),

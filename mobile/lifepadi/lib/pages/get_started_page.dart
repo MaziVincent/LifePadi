@@ -16,8 +16,19 @@ class GetStartedPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: kHorizontalPadding,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: TextButton.icon(
+                  onPressed: () => context.go(const HomeRoute().location),
+                  icon: const Icon(Icons.explore),
+                  label: const Text('Explore'),
+                ),
+              ),
+            ),
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * .40,
+              height: MediaQuery.sizeOf(context).height * .35,
               child: Stack(
                 children: [
                   Assets.images.handPackageToLady.image(

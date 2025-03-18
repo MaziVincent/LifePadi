@@ -8,6 +8,7 @@ import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/pages/pages.dart';
+import 'package:lifepadi/router/auth_required_mixin.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
@@ -90,7 +91,7 @@ class HomeRoute extends GoRouteData {
   }
 }
 
-class OrdersRoute extends GoRouteData {
+class OrdersRoute extends GoRouteData with AuthRequiredMixin {
   const OrdersRoute();
 
   @override
@@ -298,7 +299,7 @@ class TrackOrderRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 
-class CartRoute extends GoRouteData {
+class CartRoute extends GoRouteData with AuthRequiredMixin {
   CartRoute();
 
   @override
@@ -363,7 +364,7 @@ class VendorsRoute extends GoRouteData {
 }
 
 @TypedGoRoute<CheckoutRoute>(path: '/checkout')
-class CheckoutRoute extends GoRouteData {
+class CheckoutRoute extends GoRouteData with AuthRequiredMixin {
   CheckoutRoute({
     this.type = CheckoutType.cart,
   });
@@ -479,7 +480,7 @@ class SingleServiceRoute extends GoRouteData {
 }
 
 @TypedGoRoute<WishlistRoute>(path: '/wishlist')
-class WishlistRoute extends GoRouteData {
+class WishlistRoute extends GoRouteData with AuthRequiredMixin {
   const WishlistRoute();
 
   @override
@@ -508,7 +509,7 @@ class SettingsRoute extends GoRouteData {
   }
 }
 
-class EditProfileRoute extends GoRouteData {
+class EditProfileRoute extends GoRouteData with AuthRequiredMixin {
   const EditProfileRoute();
 
   @override
@@ -526,7 +527,7 @@ class EditProfileRoute extends GoRouteData {
     TypedGoRoute<EditLocationRoute>(path: ':id/edit'),
   ],
 )
-class LocationsRoute extends GoRouteData {
+class LocationsRoute extends GoRouteData with AuthRequiredMixin {
   const LocationsRoute();
 
   @override
@@ -549,7 +550,7 @@ class EditLocationRoute extends GoRouteData {
 }
 
 @TypedGoRoute<WalletRoute>(path: '/wallet')
-class WalletRoute extends GoRouteData {
+class WalletRoute extends GoRouteData with AuthRequiredMixin {
   const WalletRoute();
 
   @override
@@ -608,7 +609,7 @@ class PaymentRoute extends GoRouteData {
 /// This route shows all the transactions made by the user
 /// on his/her wallet.
 @TypedGoRoute<TransactionHistoryRoute>(path: '/transactions')
-class TransactionHistoryRoute extends GoRouteData {
+class TransactionHistoryRoute extends GoRouteData with AuthRequiredMixin {
   const TransactionHistoryRoute();
 
   @override

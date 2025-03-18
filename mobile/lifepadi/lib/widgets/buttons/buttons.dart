@@ -13,3 +13,4 @@ export 'primary_outline_action_button.dart';
 export 'primary_outline_button.dart';
 export 'primary_outline_choice_button.dart';
 export 'primary_rectangle_button.dart';
+export 'profile_auth_actions.dart';

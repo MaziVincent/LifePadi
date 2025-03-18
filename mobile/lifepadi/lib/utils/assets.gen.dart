@@ -115,36 +115,36 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        arrowRight,
-        boxClosed,
-        boxOpen,
-        cookingGas,
-        download,
-        emptyTrolley,
-        errandBoy,
-        fuelStation,
-        gasFilling,
-        google,
-        groceryStore,
-        imageAttachment,
-        info,
-        laundry,
-        location,
-        mapPin,
-        mastercard,
-        pathToLocation,
-        paystack,
-        restaurant,
-        riderPin,
-        scan,
-        share,
-        speedBus,
-        star,
-        starHalf,
-        successCheckOpen,
-        success,
-        voucher
-      ];
+    arrowRight,
+    boxClosed,
+    boxOpen,
+    cookingGas,
+    download,
+    emptyTrolley,
+    errandBoy,
+    fuelStation,
+    gasFilling,
+    google,
+    groceryStore,
+    imageAttachment,
+    info,
+    laundry,
+    location,
+    mapPin,
+    mastercard,
+    pathToLocation,
+    paystack,
+    restaurant,
+    riderPin,
+    scan,
+    share,
+    speedBus,
+    star,
+    starHalf,
+    successCheckOpen,
+    success,
+    voucher,
+  ];
 }
 
 class $AssetsImagesGen {
@@ -214,24 +214,24 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        bnbBlenderLg,
-        bnbBlender,
-        deliverPackageToLady,
-        handPackageToLady,
-        johnBayo,
-        johnDoeAvatar,
-        johnLukman,
-        loadingWheel,
-        logoDark,
-        manWithCart,
-        manWithGroceries,
-        map,
-        miniBlender,
-        oilPerfumes,
-        plainTees,
-        profileAvatar,
-        signDeliverPkg
-      ];
+    bnbBlenderLg,
+    bnbBlender,
+    deliverPackageToLady,
+    handPackageToLady,
+    johnBayo,
+    johnDoeAvatar,
+    johnLukman,
+    loadingWheel,
+    logoDark,
+    manWithCart,
+    manWithGroceries,
+    map,
+    miniBlender,
+    oilPerfumes,
+    plainTees,
+    profileAvatar,
+    signDeliverPkg,
+  ];
 }
 
 class $AssetsImagesAuthHerosGen {
@@ -301,19 +301,19 @@ class $AssetsImagesCategoriesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        agro,
-        babycare,
-        beverage,
-        edibleOil,
-        electronic,
-        fashion,
-        fruit,
-        furniture,
-        grocery,
-        household,
-        pharmaceutical,
-        vegetable
-      ];
+    agro,
+    babycare,
+    beverage,
+    edibleOil,
+    electronic,
+    fashion,
+    fruit,
+    furniture,
+    grocery,
+    household,
+    pharmaceutical,
+    vegetable,
+  ];
 }
 
 class $AssetsImagesVendorsGen {
@@ -333,7 +333,7 @@ class $AssetsImagesVendorsGen {
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsAnimationsGen animations = $AssetsAnimationsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
@@ -341,11 +341,7 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
 
@@ -373,7 +369,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -405,15 +401,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
@@ -422,17 +411,10 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}}) : _isVecFormat = false;
 
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -461,11 +443,7 @@ class SvgGenImage {
   }) {
     final _svg.BytesLoader loader;
     if (_isVecFormat) {
-      loader = _vg.AssetBytesLoader(
-        _assetName,
-        assetBundle: bundle,
-        packageName: package,
-      );
+      loader = _vg.AssetBytesLoader(_assetName, assetBundle: bundle, packageName: package);
     } else {
       loader = _svg.SvgAssetLoader(
         _assetName,
@@ -498,10 +476,7 @@ class SvgGenImage {
 }
 
 class LottieGenImage {
-  const LottieGenImage(
-    this._assetName, {
-    this.flavors = const {},
-  });
+  const LottieGenImage(this._assetName, {this.flavors = const {}});
 
   final String _assetName;
   final Set<String> flavors;
@@ -518,11 +493,7 @@ class LottieGenImage {
     _lottie.LottieImageProviderFactory? imageProviderFactory,
     Key? key,
     AssetBundle? bundle,
-    Widget Function(
-      BuildContext,
-      Widget,
-      _lottie.LottieComposition?,
-    )? frameBuilder,
+    Widget Function(BuildContext, Widget, _lottie.LottieComposition?)? frameBuilder,
     ImageErrorWidgetBuilder? errorBuilder,
     double? width,
     double? height,
@@ -532,6 +503,9 @@ class LottieGenImage {
     bool? addRepaintBoundary,
     FilterQuality? filterQuality,
     void Function(String)? onWarning,
+    _lottie.LottieDecoder? decoder,
+    _lottie.RenderCache? renderCache,
+    bool? backgroundLoading,
   }) {
     return _lottie.Lottie.asset(
       _assetName,
@@ -556,6 +530,9 @@ class LottieGenImage {
       addRepaintBoundary: addRepaintBoundary,
       filterQuality: filterQuality,
       onWarning: onWarning,
+      decoder: decoder,
+      renderCache: renderCache,
+      backgroundLoading: backgroundLoading,
     );
   }
 

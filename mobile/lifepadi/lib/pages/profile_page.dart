@@ -22,6 +22,7 @@ class ProfilePage extends HookConsumerWidget {
     final showNotifications =
         useState(PreferencesHelper.getNotificationsEnabled());
     final user = ref.watch(authControllerProvider);
+    final isAuthenticated = user.value?.isAuth ?? false;
 
     return Scaffold(
       body: CustomScrollView(
@@ -51,13 +52,14 @@ class ProfilePage extends HookConsumerWidget {
               ),
             ),
             actions: [
-              MyIconButton(
-                icon: IconsaxPlusLinear.user_edit,
-                onPressed: () =>
-                    context.push(const EditProfileRoute().location),
-                backgroundColor: const Color(0x19F5F5F5),
-                iconColor: Colors.white,
-              ),
+              if (isAuthenticated)
+                MyIconButton(
+                  icon: IconsaxPlusLinear.user_edit,
+                  onPressed: () =>
+                      context.push(const EditProfileRoute().location),
+                  backgroundColor: const Color(0x19F5F5F5),
+                  iconColor: Colors.white,
+                ),
               24.horizontalSpace,
             ],
           ),
@@ -65,24 +67,26 @@ class ProfilePage extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
             sliver: SliverList.list(
               children: [
-                SettingsPanel(
-                  title: 'Personal Details',
-                  child: switch (user) {
-                    AsyncData(:final value) =>
-                      _PersonalDetailsContent(user: value),
-                    AsyncError(:final error) => MyErrorWidget(error: error),
-                    _ => const GreenyLoadingWheel(),
-                  },
-                ),
+                if (isAuthenticated)
+                  SettingsPanel(
+                    title: 'Personal Details',
+                    child: switch (user) {
+                      AsyncData(:final value) =>
+                        _PersonalDetailsContent(user: value),
+                      AsyncError(:final error) => MyErrorWidget(error: error),
+                      _ => const GreenyLoadingWheel(),
+                    },
+                  ),
                 SettingsPanel(
                   title: 'Account management',
                   child: Column(
                     children: [
-                      AccountManagementTile(
-                        name: 'Locations',
-                        onTap: () =>
-                            context.push(const LocationsRoute().location),
-                      ),
+                      if (isAuthenticated)
+                        AccountManagementTile(
+                          name: 'Locations',
+                          onTap: () =>
+                              context.push(const LocationsRoute().location),
+                        ),
                       AccountManagementTile(
                         name: 'Notification',
                         child: SwitchInput(
@@ -130,17 +134,30 @@ class ProfilePage extends HookConsumerWidget {
                     ],
                   ),
                 ),
+                if (!isAuthenticated)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Text(
+                      'Sign in to access additional features like saving locations, tracking orders, and more.',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                if (isAuthenticated) ...[
+                  SettingsTile(
+                    title: 'Wallet',
+                    onTap: () => context.push(const WalletRoute().location),
+                  ),
+                  SettingsTile(
+                    title: 'Customer support',
+                    onTap: () => context.push(const SupportRoute().location),
+                  ),
+                ],
                 SettingsTile(
                   title: 'Wishlist',
                   onTap: () => context.push(const WishlistRoute().location),
-                ),
-                SettingsTile(
-                  title: 'Wallet',
-                  onTap: () => context.push(const WalletRoute().location),
-                ),
-                SettingsTile(
-                  title: 'Customer support',
-                  onTap: () => context.push(const SupportRoute().location),
                 ),
                 SettingsTile(
                   title: 'Settings',
@@ -152,7 +169,7 @@ class ProfilePage extends HookConsumerWidget {
           SliverPadding(
             padding: kHorizontalPadding.copyWith(top: 12.h),
             sliver: const SliverToBoxAdapter(
-              child: LogoutButton(),
+              child: ProfileAuthActions(),
             ),
           ),
         ],

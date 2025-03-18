@@ -10,6 +10,7 @@ import 'package:lifepadi/state/product.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/widgets/auth_required_action.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ProductDetailsPage extends ConsumerWidget {
@@ -42,7 +43,7 @@ class ProductDetailsPage extends ConsumerWidget {
   }
 }
 
-class _ProductDetailsContent extends HookWidget {
+class _ProductDetailsContent extends HookConsumerWidget {
   const _ProductDetailsContent({
     required this.product,
   });
@@ -50,7 +51,7 @@ class _ProductDetailsContent extends HookWidget {
   final Product product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final quantity = useState(1);
 
     return SuperListView(
@@ -178,29 +179,48 @@ class _ProductDetailsContent extends HookWidget {
               children: [
                 QuantityWidget(
                   quantity: isInCart ? productInCart!.quantity : quantity.value,
-                  onIncrement: () => isInCart
-                      ? ref
-                          .read(cartStateProvider.notifier)
-                          .incrementQuantity(product.id)
-                      : quantity.value++,
-                  onDecrement: () => isInCart
-                      ? ref
-                          .read(cartStateProvider.notifier)
-                          .decrementQuantity(product.id)
-                      : quantity.value--,
+                  onIncrement: () async {
+                    if (isInCart) {
+                      // Check auth before allowing cart modifications
+                      if (await AuthRequiredAction.checkAuth(context, ref)) {
+                        await ref
+                            .read(cartStateProvider.notifier)
+                            .incrementQuantity(product.id);
+                      }
+                    } else {
+                      quantity.value++;
+                    }
+                  },
+                  onDecrement: () async {
+                    if (isInCart) {
+                      // Check auth before allowing cart modifications
+                      if (await AuthRequiredAction.checkAuth(context, ref)) {
+                        await ref
+                            .read(cartStateProvider.notifier)
+                            .decrementQuantity(product.id);
+                      }
+                    } else {
+                      if (quantity.value > 1) {
+                        quantity.value--;
+                      }
+                    }
+                  },
                 ),
                 16.horizontalSpace,
                 Expanded(
                   child: PrimaryButton(
                     onPressed: () async {
-                      final notifier = ref.read(cartStateProvider.notifier);
-                      if (isInCart) {
-                        await notifier.removeFromCart(product.id);
-                      } else {
-                        await notifier.addToCart(
-                          product,
-                          quantity: quantity.value,
-                        );
+                      // Check if user is authenticated before cart operations
+                      if (await AuthRequiredAction.checkAuth(context, ref)) {
+                        final notifier = ref.read(cartStateProvider.notifier);
+                        if (isInCart) {
+                          await notifier.removeFromCart(product.id);
+                        } else {
+                          await notifier.addToCart(
+                            product,
+                            quantity: quantity.value,
+                          );
+                        }
                       }
                     },
                     text: isInCart ? 'Remove from Cart' : 'Add to Cart',

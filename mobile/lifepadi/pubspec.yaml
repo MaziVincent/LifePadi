@@ -74,8 +74,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  custom_lint: ^0.6.4
-  riverpod_lint: ^2.3.2
   riverpod_generator: ^2.3.5
   go_router_builder: ^2.3.4
   flutter_gen_runner: ^5.6.0
@@ -98,7 +96,7 @@ flutter_gen:
 
   # Optional
   integrations:
+    image: true
     flutter_svg: true
     lottie: true
-    flare_flutter: false
     rive: false

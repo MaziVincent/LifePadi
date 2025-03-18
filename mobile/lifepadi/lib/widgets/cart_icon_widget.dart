@@ -4,6 +4,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/widgets/auth_required_action.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class CartIconWidget extends ConsumerWidget {
@@ -27,7 +28,12 @@ class CartIconWidget extends ConsumerWidget {
       backgroundColor: kDarkPrimaryColor,
       child: MyIconButton(
         icon: IconsaxPlusLinear.shopping_cart,
-        onPressed: () => context.go(CartRoute().location),
+        onPressed: () async {
+          // Check if user is authenticated before navigating to cart
+          if (await AuthRequiredAction.checkAuth(context, ref)) {
+            context.go(CartRoute().location);
+          }
+        },
       ),
     );
   }
