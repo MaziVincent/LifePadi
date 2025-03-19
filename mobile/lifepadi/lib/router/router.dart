@@ -46,7 +46,6 @@ GoRouter router(Ref ref) {
         CheckoutRoute().location,
         const OrdersRoute().location,
         const EditProfileRoute().location,
-        const WishlistRoute().location,
         const WalletRoute().location,
         const LocationsRoute().location,
         const TransactionHistoryRoute().location,
