@@ -117,6 +117,8 @@ class AuthController extends _$AuthController {
 
     await _secureStorage.remove(kCredentialsKey);
     state = const AsyncData(Guest());
+
+    // Note: Navigation and showing the dialog will be handled in the widget that calls logout
   }
 
   /// Login method that performs a request to the server.

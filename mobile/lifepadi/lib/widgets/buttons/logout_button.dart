@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +26,18 @@ class LogoutButton extends ConsumerWidget {
           icon: IconsaxPlusLinear.logout,
           onYes: () async {
             await ref.read(authControllerProvider.notifier).logout().then((_) {
-              if (context.mounted) context.go(const LoginRoute().location);
+              if (context.mounted) {
+                // Navigate to home route instead of login route
+                context.go(const HomeRoute().location);
+
+                // Show success modal
+                openSuccessDialog(
+                  context: context,
+                  title: 'Logged Out Successfully',
+                  description: 'You have been logged out of your account.',
+                  icon: MdiIcons.logout,
+                );
+              }
             });
           },
         );
