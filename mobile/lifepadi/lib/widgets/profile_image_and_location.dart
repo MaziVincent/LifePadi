@@ -34,9 +34,11 @@ class _ProfilePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = user.isAuth;
+
     return Column(
       children: [
-        16.verticalSpace,
+        const Spacer(),
         SizedBox(
           height: 130.h,
           width: 125.w,
@@ -54,37 +56,41 @@ class _ProfilePageContent extends StatelessWidget {
             ),
           ),
         ),
-        12.verticalSpace,
-        Text(
-          user.name,
-          style: context.textTheme.bodyLarge?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 20.sp,
-            letterSpacing: -0.24,
+        // Only show name and address if user is authenticated
+        if (isLoggedIn) ...[
+          12.verticalSpace,
+          Text(
+            user.name,
+            style: context.textTheme.bodyLarge?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 20.sp,
+              letterSpacing: -0.24,
+            ),
           ),
-        ),
-        4.verticalSpace,
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Remix.map_pin_5_line,
-              size: 18.r,
-              color: kStrokeColor,
-            ),
-            4.horizontalSpace,
-            Text(
-              user.address ?? 'Not set',
-              style: context.textTheme.bodySmall?.copyWith(
+          4.verticalSpace,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Remix.map_pin_5_line,
+                size: 18.r,
                 color: kStrokeColor,
-                fontWeight: FontWeight.w400,
-                fontSize: 12.sp,
               ),
-            ),
-          ],
-        ),
+              4.horizontalSpace,
+              Text(
+                user.address ?? 'Not set',
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: kStrokeColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ],
+          ),
+        ],
+        const Spacer(),
       ],
     );
   }

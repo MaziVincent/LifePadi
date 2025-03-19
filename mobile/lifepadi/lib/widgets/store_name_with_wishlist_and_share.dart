@@ -6,7 +6,6 @@ import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/widgets/auth_required_action.dart';
 
 import 'buttons/circular_button.dart';
 
@@ -55,12 +54,8 @@ class StoreNameWithWishlistAndShare extends StatelessWidget {
 
                   return CircularButton(
                     onTap: () async {
-                      // Check if user is authenticated before adding to wishlist
-                      if (await AuthRequiredAction.checkAuth(context, ref)) {
-                        await ref
-                            .read(wishlistProvider.notifier)
-                            .toggle(product);
-                      }
+                      // Wishlist is accessible by all users since it's stored locally
+                      await ref.read(wishlistProvider.notifier).toggle(product);
                     },
                     child: Icon(
                       isInWishlist ? MdiIcons.heart : MdiIcons.heartOutline,

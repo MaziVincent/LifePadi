@@ -57,16 +57,18 @@ class AuthRequiredAction {
                     PrimaryButton(
                       text: 'LOG IN',
                       onPressed: () {
-                        Navigator.of(context).pop(true);
-                        context.go(const LoginRoute().location);
+                        context
+                          ..pop(false)
+                          ..push(const LoginRoute().location);
                       },
                     ),
                     12.verticalSpace,
                     PrimaryOutlineButton(
                       text: 'CREATE ACCOUNT',
                       onPressed: () {
-                        Navigator.of(context).pop(true);
-                        context.go(const RegisterRoute().location);
+                        context
+                          ..pop(false)
+                          ..push(const RegisterRoute().location);
                       },
                     ),
                     12.verticalSpace,

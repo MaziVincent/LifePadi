@@ -17,7 +17,7 @@ mixin AuthRequiredMixin on GoRouteData {
 
     // If user is not authenticated, redirect to login page
     if (authController.valueOrNull?.isAuth != true) {
-      return const GetStartedRoute().location;
+      return const LoginRoute().location;
     }
 
     return null;

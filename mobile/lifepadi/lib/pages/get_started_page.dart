@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lifepadi/router/routes.dart';
@@ -16,25 +18,56 @@ class GetStartedPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: kHorizontalPadding,
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: TextButton.icon(
-                  onPressed: () => context.go(const HomeRoute().location),
-                  icon: const Icon(Icons.explore),
-                  label: const Text('Explore'),
-                ),
-              ),
-            ),
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * .35,
+              height: .35.sh,
               child: Stack(
                 children: [
                   Assets.images.handPackageToLady.image(
                     fit: BoxFit.fill,
                     width: double.infinity,
                     height: double.infinity,
+                  ),
+                  // Add glassmorphic home button at top left
+                  Positioned(
+                    left: 16.w,
+                    top: 16.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                          ),
+                          child: GestureDetector(
+                            onTap: () => context.pop(),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.home, color: Colors.white),
+                                6.horizontalSpace,
+                                Text(
+                                  'Home',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   Container(
                     width: double.infinity,

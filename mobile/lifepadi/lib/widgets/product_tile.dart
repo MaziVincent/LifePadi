@@ -9,6 +9,7 @@ import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/wishlist.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/widgets/auth_required_action.dart';
 import 'package:lifepadi/widgets/section_title.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -203,15 +204,20 @@ class ProductTile extends ConsumerWidget {
       isInCart: isInCart,
       isInWishlist: isInWishlist,
       onCartToggle: () async {
-        final notifier = ref.read(cartStateProvider.notifier);
-        if (isInCart) {
-          await notifier.removeFromCart(product.id);
-        } else {
-          await notifier.addToCart(product);
+        // Check if user is authenticated before cart operations
+        if (await AuthRequiredAction.checkAuth(context, ref)) {
+          final notifier = ref.read(cartStateProvider.notifier);
+          if (isInCart) {
+            await notifier.removeFromCart(product.id);
+          } else {
+            await notifier.addToCart(product);
+          }
         }
       },
-      onWishlistToggle: () {
-        ref.read(wishlistProvider.notifier).toggle(product);
+      onWishlistToggle: () async {
+        // Wishlist should be accessible by anyone since it is stored locally
+        final notifier = ref.read(wishlistProvider.notifier);
+        await notifier.toggle(product);
       },
     );
   }

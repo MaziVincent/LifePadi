@@ -157,19 +157,7 @@ class OnboardingRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<GetStartedRoute>(
-  path: '/get-started',
-  routes: [
-    TypedGoRoute<LoginRoute>(
-      path: 'login',
-      routes: [
-        TypedGoRoute<ForgotPasswordRoute>(path: 'forgot-password'),
-        TypedGoRoute<ResetPasswordRoute>(path: 'reset-password'),
-      ],
-    ),
-    TypedGoRoute<RegisterRoute>(path: 'register'),
-  ],
-)
+@TypedGoRoute<GetStartedRoute>(path: '/get-started')
 class GetStartedRoute extends GoRouteData {
   const GetStartedRoute();
 
@@ -179,6 +167,13 @@ class GetStartedRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<LoginRoute>(
+  path: '/login',
+  routes: [
+    TypedGoRoute<ForgotPasswordRoute>(path: 'forgot-password'),
+    TypedGoRoute<ResetPasswordRoute>(path: 'reset-password'),
+  ],
+)
 class LoginRoute extends GoRouteData {
   const LoginRoute();
 
@@ -186,6 +181,20 @@ class LoginRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return const LoginPage();
   }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
+
+@TypedGoRoute<RegisterRoute>(path: '/register')
+class RegisterRoute extends GoRouteData {
+  const RegisterRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const RegisterPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
 
 class ForgotPasswordRoute extends GoRouteData {
@@ -203,15 +212,6 @@ class ResetPasswordRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const ResetPasswordPage();
-  }
-}
-
-class RegisterRoute extends GoRouteData {
-  const RegisterRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const RegisterPage();
   }
 }
 
@@ -480,7 +480,7 @@ class SingleServiceRoute extends GoRouteData {
 }
 
 @TypedGoRoute<WishlistRoute>(path: '/wishlist')
-class WishlistRoute extends GoRouteData with AuthRequiredMixin {
+class WishlistRoute extends GoRouteData {
   const WishlistRoute();
 
   @override

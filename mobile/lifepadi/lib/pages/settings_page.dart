@@ -26,25 +26,34 @@ class SettingsPage extends HookWidget {
       body: SuperListView(
         padding: kHorizontalPadding,
         children: [
-          SettingTile(
-            name: 'Biometrics',
-            child: Consumer(
-              builder: (context, ref, child) {
-                return SwitchInput(
-                  value: biometricsEnabled.value,
-                  onChanged: (value) async {
-                    try {
-                      await ref
-                          .read(authControllerProvider.notifier)
-                          .setBiometricsEnabled(enabled: value);
-                      biometricsEnabled.value = value;
-                    } catch (e) {
-                      await showToast(getErrorInfo(e).description);
-                    }
-                  },
+          Consumer(
+            builder: (context, ref, child) {
+              final user = ref.watch(authControllerProvider);
+              final isAuthenticated = user.value?.isAuth ?? false;
+
+              // Only show biometrics option if user is logged in
+              if (isAuthenticated) {
+                return SettingTile(
+                  name: 'Biometrics',
+                  child: SwitchInput(
+                    value: biometricsEnabled.value,
+                    onChanged: (value) async {
+                      try {
+                        await ref
+                            .read(authControllerProvider.notifier)
+                            .setBiometricsEnabled(enabled: value);
+                        biometricsEnabled.value = value;
+                      } catch (e) {
+                        await showToast(getErrorInfo(e).description);
+                      }
+                    },
+                  ),
                 );
-              },
-            ),
+              }
+
+              return const SizedBox
+                  .shrink(); // Return empty widget if not authenticated
+            },
           ),
           SettingTile(
             name: 'Terms and Conditions',
@@ -60,33 +69,42 @@ class SettingsPage extends HookWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              return SettingTile(
-                name: 'Delete Account',
-                onTap: () async {
-                  final confirm = await openChoiceDialog(
-                    context: context,
-                    title: 'Delete Account',
-                    description:
-                        'Are you sure you want to delete your account? This action can not be undone.',
-                    icon: IconsaxPlusLinear.trash,
-                  );
+              final user = ref.watch(authControllerProvider);
+              final isAuthenticated = user.value?.isAuth ?? false;
 
-                  if (confirm == true) {
-                    try {
-                      await ref
-                          .read(authControllerProvider.notifier)
-                          .deleteAccount();
-                      if (context.mounted) {
-                        context.go(const GetStartedRoute().location);
+              // Only show delete account option if user is logged in
+              if (isAuthenticated) {
+                return SettingTile(
+                  name: 'Delete Account',
+                  onTap: () async {
+                    final confirm = await openChoiceDialog(
+                      context: context,
+                      title: 'Delete Account',
+                      description:
+                          'Are you sure you want to delete your account? This action can not be undone.',
+                      icon: IconsaxPlusLinear.trash,
+                    );
+
+                    if (confirm == true) {
+                      try {
+                        await ref
+                            .read(authControllerProvider.notifier)
+                            .deleteAccount();
+                        if (context.mounted) {
+                          context.go(const LoginRoute().location);
+                        }
+                        await showToast('Account deleted successfully');
+                      } catch (e) {
+                        await showToast(getErrorInfo(e).description);
                       }
-                      await showToast('Account deleted successfully');
-                    } catch (e) {
-                      await showToast(getErrorInfo(e).description);
                     }
-                  }
-                },
-                textColor: kDangerColor,
-              );
+                  },
+                  textColor: kDangerColor,
+                );
+              }
+
+              return const SizedBox
+                  .shrink(); // Return empty widget if not authenticated
             },
           ),
         ],

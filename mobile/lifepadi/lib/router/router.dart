@@ -74,14 +74,14 @@ GoRouter router(Ref ref) {
       }
 
       if (isAuth.value.unwrapPrevious().hasError) {
-        return isLoggingIn ? null : const GetStartedRoute().location;
+        return isLoggingIn ? null : const HomeRoute().location;
       }
 
       final auth = isAuth.value.requireValue;
 
       // If trying to access auth-restricted route but not logged in
       if (isAuthRestricted && !auth) {
-        return const GetStartedRoute().location;
+        return const LoginRoute().location;
       }
 
       // If trying to log in but already authenticated

@@ -11,6 +11,7 @@ import 'package:lifepadi/state/location.dart';
 import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/auth_required_action.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsPage extends HookConsumerWidget {
@@ -240,25 +241,29 @@ class LogisticsPage extends HookConsumerWidget {
                 16.verticalSpace,
                 LocationCard(
                   onTap: () async {
-                    await displayBottomPanel(
-                      context,
-                      child: EditLocationModalForm(
-                        title: 'Pickup Location',
-                        selectedLocationId: pickupLocation?.id,
-                        onLocationSelected: (location) {
-                          if (location.id == dropoffLocation?.id) {
-                            showToast(
-                              'Pickup location must be different from drop-off location',
-                              gravity: ToastGravity.CENTER,
-                              isLong: true,
-                            );
-                            return;
-                          }
-                          ref.read(pickupLocationProvider.notifier).state =
-                              location;
-                        },
-                      ),
-                    );
+                    // Show auth required modal when selecting location
+                    if (await AuthRequiredAction.checkAuth(context, ref)) {
+                      await displayBottomPanel(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        child: EditLocationModalForm(
+                          title: 'Pickup Location',
+                          selectedLocationId: pickupLocation?.id,
+                          onLocationSelected: (location) {
+                            if (location.id == dropoffLocation?.id) {
+                              showToast(
+                                'Pickup location must be different from drop-off location',
+                                gravity: ToastGravity.CENTER,
+                                isLong: true,
+                              );
+                              return;
+                            }
+                            ref.read(pickupLocationProvider.notifier).state =
+                                location;
+                          },
+                        ),
+                      );
+                    }
                   },
                   address: locations.whenOrNull(
                         data: (locations) =>
@@ -294,25 +299,28 @@ class LogisticsPage extends HookConsumerWidget {
                 16.verticalSpace,
                 LocationCard(
                   onTap: () async {
-                    await displayBottomPanel(
-                      context,
-                      child: EditLocationModalForm(
-                        title: 'Drop-off location',
-                        selectedLocationId: dropoffLocation?.id,
-                        onLocationSelected: (location) {
-                          if (location.id == pickupLocation?.id) {
-                            showToast(
-                              'Drop-off location must be different from pickup location',
-                              gravity: ToastGravity.CENTER,
-                              isLong: true,
-                            );
-                            return;
-                          }
-                          ref.read(dropoffLocationProvider.notifier).state =
-                              location;
-                        },
-                      ),
-                    );
+                    // Show auth required modal when selecting location
+                    if (await AuthRequiredAction.checkAuth(context, ref)) {
+                      await displayBottomPanel(
+                        context,
+                        child: EditLocationModalForm(
+                          title: 'Drop-off location',
+                          selectedLocationId: dropoffLocation?.id,
+                          onLocationSelected: (location) {
+                            if (location.id == pickupLocation?.id) {
+                              showToast(
+                                'Drop-off location must be different from pickup location',
+                                gravity: ToastGravity.CENTER,
+                                isLong: true,
+                              );
+                              return;
+                            }
+                            ref.read(dropoffLocationProvider.notifier).state =
+                                location;
+                          },
+                        ),
+                      );
+                    }
                   },
                   address: locations.whenOrNull(
                         data: (locations) =>
@@ -379,10 +387,14 @@ class LogisticsPage extends HookConsumerWidget {
                             fragile: isFragile.value,
                           );
 
-                      if (context.mounted) {
-                        await context.push(
-                          CheckoutRoute(type: CheckoutType.logistics).location,
-                        );
+                      // Show auth required modal when proceeding to checkout
+                      if (await AuthRequiredAction.checkAuth(context, ref)) {
+                        if (context.mounted) {
+                          await context.push(
+                            CheckoutRoute(type: CheckoutType.logistics)
+                                .location,
+                          );
+                        }
                       }
                     }
                   },
