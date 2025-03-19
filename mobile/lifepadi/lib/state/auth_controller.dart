@@ -93,6 +93,9 @@ class AuthController extends _$AuthController {
     }
 
     await PreferencesHelper.clear();
+    // So that onboarding page is not shown again
+    await PreferencesHelper.setBool(key: kHasSeenOnboarding, value: true);
+    await PreferencesHelper.setBool(key: kHasEverLoggedIn, value: true);
 
     // Clear all the cached data
     ref

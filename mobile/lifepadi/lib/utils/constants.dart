@@ -65,6 +65,7 @@ const kNotificationKey = 'notifications';
 const kNotificationSettingsKey = 'notification_settings';
 const kBiometricsKey = 'biometrics_enabled';
 const kHasEverLoggedIn = 'hasEverLoggedIn';
+const kHasSeenOnboarding = 'hasSeenOnboarding';
 
 const kGoogleMapsApiKey = 'AIzaSyCDCjPcOfiVWRTDuH260B3nVRUmSuoHBoo';
 

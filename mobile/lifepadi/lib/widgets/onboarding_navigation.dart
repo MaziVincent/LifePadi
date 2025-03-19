@@ -24,7 +24,7 @@ class OnboardingNavigation extends StatelessWidget {
 
   void _completeOnboarding(BuildContext context) {
     // Set flag indicating user has seen onboarding
-    PreferencesHelper.setBool(key: 'hasSeenOnboarding', value: true);
+    PreferencesHelper.setBool(key: kHasSeenOnboarding, value: true);
     // Navigate directly to home instead of get-started
     context.go(const HomeRoute().location);
   }

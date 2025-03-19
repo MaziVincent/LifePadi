@@ -4,20 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
-bool hasLoggedInBefore() {
-  final hasLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
-  return hasLoggedIn ?? false;
-}
-
 bool hasSeenOnboarding() {
-  final hasSeenOnboarding = PreferencesHelper.getBool('hasSeenOnboarding');
+  final hasSeenOnboarding = PreferencesHelper.getBool(kHasSeenOnboarding);
   return hasSeenOnboarding ?? false;
 }
 
@@ -33,20 +27,16 @@ class SplashPage extends HookConsumerWidget {
         controller
           ..addStatusListener((status) async {
             if (status == AnimationStatus.completed) {
-              final auth = ref.read(authControllerProvider);
               String nextRoute;
 
-              // If user is authenticated, go to home
-              if (auth.value?.isAuth ?? false) {
-                nextRoute = const HomeRoute().location;
+              // First check: Has the user seen onboarding?
+              if (!hasSeenOnboarding()) {
+                // User has never seen onboarding, show it first
+                nextRoute = const OnboardingRoute().location;
               } else {
-                // If user has not seen onboarding, show it first
-                if (!hasSeenOnboarding()) {
-                  nextRoute = const OnboardingRoute().location;
-                } else {
-                  // User has seen onboarding, go directly to home
-                  nextRoute = const HomeRoute().location;
-                }
+                // User has seen onboarding, always go to home
+                // regardless of authentication status
+                nextRoute = const HomeRoute().location;
               }
 
               if (context.mounted) {
