@@ -86,7 +86,6 @@ class AuthController extends _$AuthController {
   Future<void> logout() async {
     final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
     if (notificationsEnabled) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic('general');
       await FirebaseMessaging.instance.unsubscribeFromTopic(
         'orders-${state.requireValue.id}',
       );
