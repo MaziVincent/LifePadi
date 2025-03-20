@@ -30,7 +30,8 @@ class CartIconWidget extends ConsumerWidget {
         icon: IconsaxPlusLinear.shopping_cart,
         onPressed: () async {
           // Check if user is authenticated before navigating to cart
-          if (await AuthRequiredAction.checkAuth(context, ref)) {
+          if (await AuthRequiredAction.checkAuth(context, ref) &&
+              context.mounted) {
             context.go(CartRoute().location);
           }
         },

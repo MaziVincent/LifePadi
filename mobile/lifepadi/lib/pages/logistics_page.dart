@@ -300,7 +300,8 @@ class LogisticsPage extends HookConsumerWidget {
                 LocationCard(
                   onTap: () async {
                     // Show auth required modal when selecting location
-                    if (await AuthRequiredAction.checkAuth(context, ref)) {
+                    if (await AuthRequiredAction.checkAuth(context, ref) &&
+                        context.mounted) {
                       await displayBottomPanel(
                         context,
                         child: EditLocationModalForm(
@@ -388,6 +389,7 @@ class LogisticsPage extends HookConsumerWidget {
                           );
 
                       // Show auth required modal when proceeding to checkout
+                      // ignore: use_build_context_synchronously
                       if (await AuthRequiredAction.checkAuth(context, ref)) {
                         if (context.mounted) {
                           await context.push(
