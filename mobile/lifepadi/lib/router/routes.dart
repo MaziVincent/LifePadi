@@ -629,3 +629,14 @@ class SearchRoute extends GoRouteData {
     return SearchPage(query: query);
   }
 }
+
+@TypedGoRoute<BiometricAuthRoute>(path: '/biometric-auth')
+class BiometricAuthRoute extends GoRouteData {
+  const BiometricAuthRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const BiometricAuthPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}

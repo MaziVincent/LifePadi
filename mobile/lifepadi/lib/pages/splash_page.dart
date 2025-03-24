@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/biometric_service.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -34,9 +36,22 @@ class SplashPage extends HookConsumerWidget {
                 // User has never seen onboarding, show it first
                 nextRoute = const OnboardingRoute().location;
               } else {
-                // User has seen onboarding, always go to home
-                // regardless of authentication status
-                nextRoute = const HomeRoute().location;
+                // Check for biometric authentication need
+                final isBiometricEnabled =
+                    PreferencesHelper.getBool(kBiometricsKey) ?? false;
+                final canRestoreAuth = await ref
+                    .read(authControllerProvider.notifier)
+                    .canRestoreAuth();
+
+                if (isBiometricEnabled &&
+                    canRestoreAuth &&
+                    await BiometricService().isSupported()) {
+                  // Go to biometric auth page if biometrics is enabled and auth can be restored
+                  nextRoute = const BiometricAuthRoute().location;
+                } else {
+                  // Otherwise go to home page
+                  nextRoute = const HomeRoute().location;
+                }
               }
 
               if (context.mounted) {

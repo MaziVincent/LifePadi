@@ -26,6 +26,7 @@ class LoginPage extends HookConsumerWidget {
     final hidePassword = useState(true);
     final usePhone = useState(false);
     final formKey = useMemoized(GlobalKey<FormState>.new);
+
     // Create the input states
     final email = useState('');
     final password = useState('');
@@ -37,13 +38,17 @@ class LoginPage extends HookConsumerWidget {
         final authenticated = await BiometricService().authenticate();
         if (authenticated) {
           // Attempt to restore previous login
-          await ref
+          final user = await ref
               .read(
                 authControllerProvider.notifier,
               )
               .attemptLoginRecovery();
-          // ignore: use_build_context_synchronously
-          context.pop();
+
+          if (user.isAuth) {
+            // Only navigate if authentication was successful
+            // ignore: use_build_context_synchronously
+            context.go(const HomeRoute().location);
+          }
         }
       } catch (e) {
         logger.e(
@@ -71,9 +76,9 @@ class LoginPage extends HookConsumerWidget {
 
           final canRestoreAuth =
               await ref.read(authControllerProvider.notifier).canRestoreAuth();
-          showBiometrics.value = canRestoreAuth;
 
-          if (showBiometrics.value) await authenticateWithBiometrics();
+          // Only show the biometrics button, but don't authenticate automatically
+          showBiometrics.value = canRestoreAuth;
         });
 
         return null;

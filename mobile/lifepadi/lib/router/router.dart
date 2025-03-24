@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../state/auth_controller.dart';
@@ -58,6 +60,8 @@ GoRouter router(Ref ref) {
         const RegisterRoute().location,
         const ForgotPasswordRoute().location,
         const ResetPasswordRoute().location,
+        const BiometricAuthRoute()
+            .location, // Add biometric auth to guest routes
       ];
 
       final isLoggingIn = guestRoutes.contains(state.uri.path);
@@ -78,6 +82,22 @@ GoRouter router(Ref ref) {
 
       final auth = isAuth.value.requireValue;
 
+      // Check for biometric authentication scenario
+      // If user is not authenticated but has saved credentials and biometric enabled
+      if (!auth && state.uri.path != const BiometricAuthRoute().location) {
+        final isBiometricEnabled =
+            PreferencesHelper.getBool(kBiometricsKey) ?? false;
+        final canRestoreAuth =
+            await ref.read(authControllerProvider.notifier).canRestoreAuth();
+
+        // If biometric is enabled and auth can be restored, and we're not already on login page or any of the guest routes
+        if (isBiometricEnabled &&
+            canRestoreAuth &&
+            !guestRoutes.contains(state.uri.path)) {
+          return const BiometricAuthRoute().location;
+        }
+      }
+
       // If trying to access auth-restricted route but not logged in
       if (isAuthRestricted && !auth) {
         return const LoginRoute().location;
@@ -92,7 +112,7 @@ GoRouter router(Ref ref) {
       return null;
     },
   );
-  ref.onDispose(router.dispose);
 
+  ref.onDispose(router.dispose);
   return router;
 }

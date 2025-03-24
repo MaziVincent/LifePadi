@@ -1,5 +1,6 @@
 library;
 
+export 'biometric_auth_page.dart';
 export 'cart_page.dart';
 export 'categories_page.dart';
 export 'chats_page.dart';
