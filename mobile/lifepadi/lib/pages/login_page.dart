@@ -42,6 +42,8 @@ class LoginPage extends HookConsumerWidget {
                 authControllerProvider.notifier,
               )
               .attemptLoginRecovery();
+          // ignore: use_build_context_synchronously
+          context.pop();
         }
       } catch (e) {
         logger.e(
