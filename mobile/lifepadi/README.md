@@ -15,10 +15,7 @@ Download LifePadi today and experience logistics made simple!
 ### Build an Android app bundle for deployment
 
 ```bash
-flutter build appbundle \
-  --release \
-  --obfuscate \
-  --split-debug-info=build/app/outputs/symbols
+flutter build appbundle
 ```
 
 ### Build an iOS archive for deployment
