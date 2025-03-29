@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/pages/connection_failed_page.dart';
 import 'package:lifepadi/theme/theme.dart';
 import 'package:lifepadi/utils/connectivity_service.dart';
-import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/network_condition.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 
@@ -35,24 +34,19 @@ Future<void> _handleFcmBackgroundMessage(RemoteMessage message) async {
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Global flag to indicate if we're in offline mode
-bool $isOfflineMode = false;
+bool isOfflineMode = false;
 
 // Create a provider to expose app state, so we can rebuild just what's needed
-final appStateProvider = StateProvider<bool>((ref) => $isOfflineMode);
+final appStateProvider = StateProvider<bool>((ref) => isOfflineMode);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   // Lock app to portrait orientation
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  // Initialize network condition monitor
-  await $networkCondition.initState();
-
   // First check connectivity to determine if we're in offline mode
-  final connectivityService = ConnectivityService();
-  final hasConnection = await connectivityService.isConnected();
-  logger.i('Network connection: $hasConnection');
+  final connectivityResult = await Connectivity().checkConnectivity();
+  final hasConnection = !connectivityResult.contains(ConnectivityResult.none);
 
   // Initialize awesome notifications, which doesn't require internet
   await NotificationUtils.initialize();
@@ -111,19 +105,19 @@ void main() async {
       }
     } catch (e) {
       // If Firebase initialization fails, we'll run in offline mode
-      $isOfflineMode = true;
+      isOfflineMode = true;
       debugPrint('Firebase initialization failed: $e');
     }
   } else {
     // No connectivity, run in offline mode
-    $isOfflineMode = true;
+    isOfflineMode = true;
   }
 
   runApp(
     ProviderScope(
       observers: const [StateLogger()],
       overrides: [
-        appStateProvider.overrideWith((ref) => $isOfflineMode),
+        appStateProvider.overrideWith((ref) => isOfflineMode),
       ],
       child: const LifepadiApp(),
     ),
@@ -132,7 +126,7 @@ void main() async {
 
 // This function properly initializes Firebase services when connectivity is restored
 Future<void> initializeFirebaseServices() async {
-  if ($isOfflineMode) {
+  if (isOfflineMode) {
     try {
       await Firebase.initializeApp().timeout(const Duration(seconds: 5));
 
@@ -154,7 +148,7 @@ Future<void> initializeFirebaseServices() async {
 
       // Successfully initialized Firebase
       // Offline mode can be turned off now
-      $isOfflineMode = false;
+      isOfflineMode = false;
       return;
     } catch (e) {
       debugPrint('Failed to initialize Firebase: $e');
@@ -188,17 +182,18 @@ class LifepadiApp extends ConsumerWidget {
                 final connectivityService =
                     ref.read(connectivityServiceProvider);
                 final hasConnection = await connectivityService.isConnected();
+
                 if (hasConnection) {
                   // Try to initialize Firebase services
                   await initializeFirebaseServices();
+
                   // Update app state to trigger a rebuild
-                  ref.read(appStateProvider.notifier).state = $isOfflineMode;
+                  ref.read(appStateProvider.notifier).state = isOfflineMode;
                 }
               },
             ),
           );
         }
-
         // Online mode - use router as usual
         final router = ref.watch(routerProvider);
         return MaterialApp.router(
