@@ -1,4 +1,4 @@
-.PHONY: build-appbundle build-ipa extract-symbols reset watch
+.PHONY: build-appbundle build-ipa extract-symbols reset watch build-apk
 
 # Default target
 all: help
@@ -52,3 +52,9 @@ reset:
 watch:
 	@echo "Starting build_runner in watch mode..."
 	dart run build_runner watch -d
+
+# Build Android apk
+build-apk:
+	@echo "Building Android apk..."
+	flutter build apk
+	@echo "Android apk created successfully."
