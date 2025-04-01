@@ -5,6 +5,7 @@ export 'cart_page.dart';
 export 'categories_page.dart';
 export 'chats_page.dart';
 export 'checkout_page.dart';
+export 'connection_failed_page.dart';
 export 'details_page.dart';
 export 'edit_location_page.dart';
 export 'edit_profile_page.dart';

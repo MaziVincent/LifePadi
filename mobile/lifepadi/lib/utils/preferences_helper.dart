@@ -125,6 +125,11 @@ class PreferencesHelper {
     _memoryPrefs.clear();
   }
 
+  /// Check if notifications are enabled.
+  /// If not set, default to true
+  ///
+  /// This is because notifications are enabled by default
+  /// and only disable them if the user explicitly chooses to do so
   static bool getNotificationsEnabled() {
     return getBool(kNotificationSettingsKey) ?? true;
   }
@@ -135,7 +140,7 @@ class PreferencesHelper {
 
   static Future<void> saveNotification({
     required String title,
-    required String body,
+    required String body, 
     required String? route,
   }) async {
     // Only save if notifications are enabled

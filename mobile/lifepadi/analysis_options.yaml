@@ -23,6 +23,7 @@ analyzer:
     - "**/*.freezed.dart"
     - "**/*.mapper.dart"
     - packages/salomon_bottom_bar/**
+    - "unpacked/**"
 
 linter:
   rules:

@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,22 +8,6 @@ import 'package:lifepadi/utils/preferences_helper.dart';
 
 import 'router/router.dart';
 import 'utils/state_logger.dart';
-
-@pragma('vm:entry-point')
-Future<void> _handleFcmBackgroundMessage(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-
-  if (message.notification == null) return;
-  final route = message.data['route'] as String?;
-
-  await PreferencesHelper.saveNotification(
-    title: message.notification?.title ?? '',
-    body: message.notification?.body ?? '',
-    route: route,
-  );
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,43 +21,7 @@ void main() async {
   // Load shared preferences
   await PreferencesHelper.load();
 
-  await Firebase.initializeApp();
-
-  // Listen for FCM notifications
-  // Terminated
-  await FirebaseMessaging.instance.getInitialMessage().then((message) async {
-    if (message != null) {
-      if (message.notification == null) return;
-      final route = message.data['route'] as String?;
-
-      await PreferencesHelper.saveNotification(
-        title: message.notification?.title ?? '',
-        body: message.notification?.body ?? '',
-        route: route,
-      );
-    }
-  });
-
-  // Background
-  FirebaseMessaging.onBackgroundMessage(_handleFcmBackgroundMessage);
-
-  // Foreground
-  FirebaseMessaging.onMessage.listen((message) async {
-    if (message.notification == null) return;
-    final route = message.data['route'] as String?;
-
-    await PreferencesHelper.saveNotification(
-      title: message.notification?.title ?? '',
-      body: message.notification?.body ?? '',
-      route: route,
-    );
-  });
-
-  final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
-  if (notificationsEnabled) {
-    await FirebaseMessaging.instance.subscribeToTopic('general');
-  }
-
+  // Run the app
   runApp(
     const ProviderScope(
       observers: [StateLogger()],

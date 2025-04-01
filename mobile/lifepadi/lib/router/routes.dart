@@ -640,3 +640,14 @@ class BiometricAuthRoute extends GoRouteData {
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
+
+@TypedGoRoute<ConnectionFailedRoute>(path: '/connection-failed')
+class ConnectionFailedRoute extends GoRouteData {
+  const ConnectionFailedRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ConnectionFailedPage();
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
