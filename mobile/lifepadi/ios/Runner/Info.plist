@@ -69,5 +69,9 @@
 	<string>Why is my app authenticating using face id?</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key><true/>
+	</dict>
 </dict>
 </plist>

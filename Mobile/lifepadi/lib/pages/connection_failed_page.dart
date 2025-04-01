@@ -1,46 +1,120 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/widgets/buttons/buttons.dart';
+import 'dart:async';
 
-class ConnectionFailedPage extends StatelessWidget {
-  const ConnectionFailedPage({
-    super.key,
-    required this.onRetry,
-  });
-  final VoidCallback onRetry;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/network_connectivity.dart';
+import 'package:lifepadi/widgets/widgets.dart';
+
+class ConnectionFailedPage extends StatefulWidget {
+  const ConnectionFailedPage({super.key});
+
+  @override
+  State<ConnectionFailedPage> createState() => _ConnectionFailedPageState();
+}
+
+class _ConnectionFailedPageState extends State<ConnectionFailedPage> {
+  StreamSubscription<InternetConnectionStatus>? _subscription;
+  bool _isChecking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen for connection changes
+    _subscription = NetworkConnectivity.onConnectionChange.listen(
+      (InternetConnectionStatus status) {
+        // If connection is restored, navigate to splash
+        if (status == InternetConnectionStatus.connected && mounted) {
+          context.go(const SplashRoute().location);
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // Cancel subscription to avoid memory leaks
+    _subscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(24.0.r),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
-              Assets.animations.logo.lottie(repeat: true),
-              SizedBox(height: 32.h),
+              Icon(
+                Icons.signal_wifi_off,
+                size: 80.r,
+                color: kDarkPrimaryColor,
+              ),
+              24.verticalSpace,
               Text(
                 'No Internet Connection',
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16.h),
+              16.verticalSpace,
               Text(
                 'Please check your internet connection and try again.',
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey[600],
-                ),
               ),
-              const Spacer(),
-              PrimaryButton(onPressed: onRetry, text: 'Retry'),
-              SizedBox(height: 32.h),
+              40.verticalSpace,
+              PrimaryButton(
+                onPressed: _isChecking
+                    ? null
+                    : () async {
+                        if (_isChecking) return;
+
+                        setState(() {
+                          _isChecking = true;
+                        });
+
+                        // Show loading indicator
+                        await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) =>
+                              const Center(child: GreenyLoadingWheel()),
+                        );
+
+                        // Check for connectivity
+                        final hasConnection =
+                            await NetworkConnectivity.isConnected;
+
+                        // Close loading dialog
+                        if (context.mounted) {
+                          context.pop();
+                        }
+
+                        setState(() {
+                          _isChecking = false;
+                        });
+
+                        // Navigate to splash if connection is restored
+                        if (hasConnection && context.mounted) {
+                          context.go(const SplashRoute().location);
+                        } else {
+                          // Show error toast if still disconnected
+                          await showToast(
+                            'Still no internet connection. Please try again.',
+                            isLong: true,
+                            backgroundColor: kDangerColor,
+                          );
+                        }
+                      },
+                text: 'Retry',
+              ),
             ],
           ),
         ),
