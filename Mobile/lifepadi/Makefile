@@ -25,9 +25,8 @@ extract-symbols:
 	@TIMESTAMP=$$(date +%Y%m%d-%H%M%S); \
 	cd build/app/intermediates/merged_native_libs/release/mergeReleaseNativeLibs/out/lib/ && \
 	zip -r symbols.zip . && \
-	cp symbols.zip ../../../../../../.. && \
-	mv ../../../../../../../symbols.zip ../../../../../../../bundle-symbols-$$TIMESTAMP.zip && \
-	echo "Symbols extracted and saved as bundle-symbols-$$TIMESTAMP.zip in the project root directory."
+	cp symbols.zip ~/Downloads/bundle-symbols-$$TIMESTAMP.zip && \
+	echo "Symbols extracted and saved at $${HOME}/Downloads/bundle-symbols-$$TIMESTAMP.zip"
 
 # Build iOS archive for deployment
 build-ipa:
