@@ -41,10 +41,10 @@ class GetStartedPage extends StatelessWidget {
                             vertical: 8.h,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(12.r),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.5),
+                              color: Colors.white.withValues(alpha: 0.5),
                             ),
                           ),
                           child: GestureDetector(
@@ -78,9 +78,9 @@ class GetStartedPage extends StatelessWidget {
                         end: Alignment.center,
                         stops: const [0.0, 0.3, 0.6],
                         colors: [
-                          Colors.white.withOpacity(1),
-                          Colors.white.withOpacity(0.6),
-                          Colors.white.withOpacity(0),
+                          Colors.white.withValues(alpha: 1),
+                          Colors.white.withValues(alpha: 0.6),
+                          Colors.white.withValues(alpha: 0),
                         ],
                       ),
                     ),

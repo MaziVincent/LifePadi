@@ -102,7 +102,7 @@ class TrackOrderPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                             width: 1.60,
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha: 0.05),
                           ),
                           borderRadius: BorderRadius.circular(12.83.r),
                         ),
