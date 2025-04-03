@@ -83,12 +83,6 @@ class WalletPage extends HookWidget {
           ),
           padding: EdgeInsets.only(top: 75.h),
         ),
-        leading: Padding(
-          padding: EdgeInsets.only(left: 16.w),
-          child: const Align(
-            child: GlassmorphicBackButton(),
-          ),
-        ),
         // toolbarHeight: 0.16.sh,
       ),
       body: Stack(

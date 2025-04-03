@@ -80,7 +80,6 @@ class HomePage extends HookConsumerWidget {
           MyIconButton(
             onPressed: () => context.go(NotificationRoute().location),
             icon: MdiIcons.bellBadgeOutline,
-            iconColor: kDarkPrimaryColor,
           ),
         ],
       ),
