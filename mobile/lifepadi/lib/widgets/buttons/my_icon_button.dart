@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lifepadi/utils/constants.dart';
 
 class MyIconButton extends StatelessWidget {
   const MyIconButton({
@@ -9,7 +8,6 @@ class MyIconButton extends StatelessWidget {
     this.backgroundColor,
     this.iconColor,
     this.icon,
-    this.showBadge = false,
     this.iconWidget,
   }) : assert(
           icon != null || iconWidget != null,
@@ -20,35 +18,17 @@ class MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? backgroundColor;
   final Color? iconColor;
-  final bool showBadge;
   final Widget? iconWidget;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onPressed,
-      icon: Stack(
-        children: [
-          iconWidget ??
-              Icon(
-                icon,
-                color: iconColor,
-              ),
-          if (showBadge)
-            Positioned(
-              right: 2.5.r,
-              top: 2.7.r,
-              child: Container(
-                width: 6.r,
-                height: 6.r,
-                decoration: const BoxDecoration(
-                  color: kDarkPrimaryColor,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-        ],
-      ),
+      icon: iconWidget ??
+          Icon(
+            icon,
+            color: iconColor,
+          ),
       padding: const EdgeInsets.all(8).r,
       style: IconButton.styleFrom(
         backgroundColor: backgroundColor ?? const Color(0xFFF5F5F5),

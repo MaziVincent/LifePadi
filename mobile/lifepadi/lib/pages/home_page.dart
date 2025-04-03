@@ -81,7 +81,6 @@ class HomePage extends HookConsumerWidget {
           MyIconButton(
             onPressed: () => context.go(NotificationRoute().location),
             icon: MdiIcons.bellBadgeOutline,
-            showBadge: true,
           ),
         ],
       ),
@@ -132,6 +131,7 @@ class HomePage extends HookConsumerWidget {
           16.verticalSpace,
           vendors.when(
             data: (data) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final vendor in data)
                   VendorCard(
@@ -149,10 +149,11 @@ class HomePage extends HookConsumerWidget {
                   icon: IconsaxPlusLinear.element_plus,
                   onTap: () => VendorsRoute().go(context),
                 ),
-              ].separatedBy(10.horizontalSpace),
+              ],
             ),
             error: (error, _) => MyErrorWidget(error: error),
             loading: () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
@@ -162,7 +163,7 @@ class HomePage extends HookConsumerWidget {
                       onTap: () {},
                     ),
                   ),
-              ].separatedBy(10.horizontalSpace),
+              ],
             ),
           ),
           16.verticalSpace,
@@ -173,6 +174,7 @@ class HomePage extends HookConsumerWidget {
           16.verticalSpace,
           services.when(
             data: (data) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final service in data)
                   ServiceCard(
@@ -185,10 +187,11 @@ class HomePage extends HookConsumerWidget {
                       ).location,
                     ),
                   ),
-              ].separatedBy(10.horizontalSpace),
+              ],
             ),
             error: (error, _) => MyErrorWidget(error: error),
             loading: () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final _ in [1, 2, 3, 4])
                   Skeletonizer(
@@ -199,7 +202,7 @@ class HomePage extends HookConsumerWidget {
                       isNetworkImage: false,
                     ),
                   ),
-              ].separatedBy(10.horizontalSpace),
+              ],
             ),
           ),
           16.verticalSpace,
