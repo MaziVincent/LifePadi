@@ -81,7 +81,7 @@ class _ConnectionFailedPageState extends State<ConnectionFailedPage> {
                         });
 
                         // Show loading indicator
-                        await showDialog(
+                        await showDialog<dynamic>(
                           context: context,
                           barrierDismissible: false,
                           builder: (context) =>
