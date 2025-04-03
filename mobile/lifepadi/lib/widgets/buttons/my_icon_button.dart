@@ -29,15 +29,12 @@ class MyIconButton extends StatelessWidget {
             icon,
             color: iconColor,
           ),
-      padding: const EdgeInsets.all(8).r,
       style: IconButton.styleFrom(
         backgroundColor: backgroundColor ?? const Color(0xFFF5F5F5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
         ),
-        fixedSize: Size.square(34.h),
       ),
-      iconSize: 20.sp,
     );
   }
 }
