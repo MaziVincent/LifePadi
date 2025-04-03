@@ -54,7 +54,6 @@ class HomePage extends HookConsumerWidget {
                     letterSpacing: 0.16,
                   ),
                 ),
-                4.verticalSpace,
                 SizedBox(
                   width: 120.w,
                   child: Text(
@@ -81,6 +80,7 @@ class HomePage extends HookConsumerWidget {
           MyIconButton(
             onPressed: () => context.go(NotificationRoute().location),
             icon: MdiIcons.bellBadgeOutline,
+            iconColor: kDarkPrimaryColor,
           ),
         ],
       ),
