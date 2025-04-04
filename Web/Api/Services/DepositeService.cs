@@ -490,7 +490,7 @@ namespace Api.Services
                 request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 //add the auth token to the header
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
 
                 //send request and get the respond
@@ -531,7 +531,7 @@ namespace Api.Services
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
