@@ -10,6 +10,7 @@ import 'package:lifepadi/utils/biometric_service.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/preferences_helper.dart';
 import 'package:remixicon/remixicon.dart';
 
 class BiometricAuthPage extends HookConsumerWidget {
@@ -34,9 +35,14 @@ class BiometricAuthPage extends HookConsumerWidget {
               .attemptLoginRecovery();
 
           if (user.isAuth) {
-            // If user is authenticated, go to home
+            // Get the previously stored route or default to home if none exists
+            final lastRoute = PreferencesHelper.getString(kLastRouteKey) ??
+                const HomeRoute().location;
+
             // ignore: use_build_context_synchronously
-            context.go(const HomeRoute().location);
+            if (context.mounted) {
+              context.go(lastRoute);
+            }
           } else {
             // Authentication failed
             // ignore: use_build_context_synchronously

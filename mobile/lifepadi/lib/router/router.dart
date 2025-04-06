@@ -64,10 +64,13 @@ GoRouter router(Ref ref) {
             .location, // Add biometric auth to guest routes
       ];
 
-      final isLoggingIn = guestRoutes.contains(state.uri.path);
-      final isSplash = state.uri.path == const SplashRoute().location;
+      // Get current path to potentially save it
+      final currentPath = state.uri.path;
+
+      final isLoggingIn = guestRoutes.contains(currentPath);
+      final isSplash = currentPath == const SplashRoute().location;
       final isAuthRestricted = authRestrictedRoutes.any(
-        (route) => state.uri.path == route || state.uri.path.startsWith(route),
+        (route) => currentPath == route || currentPath.startsWith(route),
       );
 
       if (isSplash) return null; // Let splash page handle its own navigation
@@ -84,7 +87,7 @@ GoRouter router(Ref ref) {
 
       // Check for biometric authentication scenario
       // If user is not authenticated but has saved credentials and biometric enabled
-      if (!auth && state.uri.path != const BiometricAuthRoute().location) {
+      if (!auth && currentPath != const BiometricAuthRoute().location) {
         final isBiometricEnabled =
             PreferencesHelper.getBool(kBiometricsKey) ?? false;
         final canRestoreAuth =
@@ -93,7 +96,18 @@ GoRouter router(Ref ref) {
         // If biometric is enabled and auth can be restored, and we're not already on login page or any of the guest routes
         if (isBiometricEnabled &&
             canRestoreAuth &&
-            !guestRoutes.contains(state.uri.path)) {
+            !guestRoutes.contains(currentPath)) {
+          // Store the current path so we can return to it after authentication
+          // Don't save system routes or the biometric page itself
+          if (!currentPath.startsWith('/system/') &&
+              currentPath != const BiometricAuthRoute().location &&
+              currentPath != const SplashRoute().location) {
+            await PreferencesHelper.setString(
+              key: kLastRouteKey,
+              value: currentPath,
+            );
+          }
+
           return const BiometricAuthRoute().location;
         }
       }

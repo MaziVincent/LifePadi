@@ -75,6 +75,7 @@ const kTotalDescription =
     'This is the total amount of all the items in your cart including the delivery fee and any other charges.';
 
 const String kCredentialsKey = 'currentUser';
+const String kLastRouteKey = 'lastRoute'; // Key for storing last route
 
 // Background tasks
 const kPingRider = 'lifepadi.pingRider';
