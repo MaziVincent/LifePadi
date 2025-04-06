@@ -369,7 +369,7 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from server');
       }
 
-      final customerData = CustomerMapper.fromMap(response.data!);
+      final customerData = CustomerMapper.fromMap(stripAuth(response.data!));
       final currentCustomer = state.requireValue as Customer;
       final updatedCustomer = currentCustomer.copyWith(
         firstName: customerData.firstName,
@@ -384,6 +384,7 @@ class AuthController extends _$AuthController {
       // Update the state with the new details
       state = AsyncData(updatedCustomer);
     } catch (e) {
+      logger.e('Error updating profile: ', error: e);
       rethrow;
     }
   }

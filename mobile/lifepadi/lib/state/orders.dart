@@ -51,11 +51,11 @@ FutureOr<List<Order>> orders(
   // strip auth on rider if it contains a rider key
   data = data.map((order) {
     if (order.containsKey('Rider') && order['Rider'] != null) {
-      stripAuth(order['Rider'] as JsonMap);
+      stripAuth(order['Rider'] as JsonMap, addWallet: false);
     }
     // strip auth on customer
     if (order.containsKey('Customer') && order['Customer'] != null) {
-      stripAuth(order['Customer'] as JsonMap, addWallet: true);
+      stripAuth(order['Customer'] as JsonMap);
     }
     return order;
   }).toList();
@@ -75,12 +75,12 @@ FutureOr<Order> order(Ref ref, int id) async {
 
   // strip auth on rider
   if (response.data!.containsKey('Rider') && response.data!['Rider'] != null) {
-    stripAuth(response.data!['Rider'] as JsonMap);
+    stripAuth(response.data!['Rider'] as JsonMap, addWallet: false);
   }
   // strip auth on customer
   if (response.data!.containsKey('Customer') &&
       response.data!['Customer'] != null) {
-    stripAuth(response.data!['Customer'] as JsonMap, addWallet: true);
+    stripAuth(response.data!['Customer'] as JsonMap);
   }
 
   ref.cache();

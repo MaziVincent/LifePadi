@@ -216,7 +216,7 @@ Future<void> handleError(
         );
 }
 
-JsonMap stripAuth(JsonMap json, {bool addWallet = false}) {
+JsonMap stripAuth(JsonMap json, {bool addWallet = true}) {
   json['accessToken'] = '';
   json['refreshToken'] = '';
   json['Role'] = UserRole.guest.toValue();
