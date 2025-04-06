@@ -14,21 +14,21 @@ FutureOr<void> customerSupport(
   required String message,
 }) async {
   final client = ref.read(dioProvider());
-  final user = ref.read(authControllerProvider);
-  final userId = user.maybeWhen(
-    data: (user) => user.id,
+  final userAsync = ref.read(authControllerProvider);
+  final user = userAsync.maybeWhen(
+    data: (user) => user,
     orElse: () => null,
   );
-  if (userId == null) {
+  if (user == null) {
     throw const UnauthorizedException('No user found');
   }
 
   final response = await client.post<String>(
-    '/customersupport/create',
+    '/customersupport/send',
     data: {
-      'CustomerId': userId,
       'Subject': subject,
-      'Message': message,
+      'Message':
+          'Customer support message from ${user.name} (${user.email}):<br> $message',
     },
   );
   if (response.data == null) {
