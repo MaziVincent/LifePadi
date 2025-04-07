@@ -15,9 +15,9 @@ mixin AuthRequiredMixin on GoRouteData {
     final authController =
         ProviderScope.containerOf(context).read(authControllerProvider);
 
-    // If user is not authenticated, redirect to login page
+    // If user is not authenticated, redirect to home page
     if (authController.valueOrNull?.isAuth != true) {
-      return const LoginRoute().location;
+      return const HomeRoute().location;
     }
 
     return null;
