@@ -32,7 +32,7 @@ class ProfileAuthActions extends ConsumerWidget {
         children: [
           PrimaryButton(
             text: 'Login'.toUpperCase(),
-            onPressed: () => context.go(const LoginRoute().location),
+            onPressed: () => context.push(const LoginRoute().location),
             textStyle: context.textTheme.bodyLarge?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -42,7 +42,7 @@ class ProfileAuthActions extends ConsumerWidget {
           12.verticalSpace,
           PrimaryOutlineButton(
             text: 'Create account'.toUpperCase(),
-            onPressed: () => context.go(const RegisterRoute().location),
+            onPressed: () => context.push(const RegisterRoute().location),
             textStyle: context.textTheme.bodyLarge?.copyWith(
               color: kDarkPrimaryColor,
               fontWeight: FontWeight.w700,

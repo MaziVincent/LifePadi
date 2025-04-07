@@ -282,7 +282,7 @@ class RegisterPage extends HookConsumerWidget {
                           child: ToggleAuthPage(
                             question: 'Already have account?',
                             action: 'Login',
-                            onPressed: () => context.go(
+                            onPressed: () => context.push(
                               const LoginRoute().location,
                             ),
                           ),
