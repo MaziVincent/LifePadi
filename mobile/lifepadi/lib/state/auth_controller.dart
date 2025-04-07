@@ -47,18 +47,22 @@ class AuthController extends _$AuthController {
 
     _persistenceRefreshLogic();
 
-    // Check if we can restore auth and biometric is enabled
+    // Check if we can restore auth
     if (await canRestoreAuth()) {
       final isBiometricEnabled =
           PreferencesHelper.getBool(kBiometricsKey) ?? false;
       if (isBiometricEnabled && await _biometricService.isSupported()) {
         // Return Guest which will show login page, biometric auth will be shown first via router
         return const Guest();
+      } else {
+        // No biometrics or not supported, but we have saved credentials
+        // Attempt to recover login directly
+        return attemptLoginRecovery();
       }
     }
 
-    // No biometric or no saved auth, try normal login recovery
-    return attemptLoginRecovery();
+    // No saved auth, return guest user
+    return const Guest();
   }
 
   /// Tries to perform a login with the saved token on the persistant storage.
