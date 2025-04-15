@@ -346,19 +346,22 @@ namespace Api.Services
                     amount = initiatePaymentDto.Amount,
                     totalAmount = initiatePaymentDto.TotalAmount,
                     deliveryFee = initiatePaymentDto.DeliveryFee,
+                    type = initiatePaymentDto.Type,
                     createdAt = DateTime.UtcNow
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 var redirect_url = _config["Base_Url:Remote_GCP"] + "/transaction/paystack-confirmPayment";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var webhook_url = _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
                 {
                     email = order.Customer!.Email,
                     amount = Math.Round(initiatePaymentDto.TotalAmount * 100, 1),
                     reference = tx_ref,
                     callback_url = redirect_url,
-                    metadata = customerData
+                    metadata = customerData,
+                    webhook_url
                 };
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -499,7 +502,7 @@ namespace Api.Services
                     transaction.PaidAt = paymentRes.data!.paid_at;
                     transaction.PaymentChannel = paymentRes.data!.channel;
                     transaction.SubTotal = paymentRes.data!.metadata!.amount;
-                    transaction.Type = "Payment";
+                    transaction.Type = paymentRes.data!.metadata!.type ;
                     if (paymentRes.data.metadata.voucherCode != "")
                     {
                         var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
@@ -619,5 +622,9 @@ namespace Api.Services
         {
             throw new NotImplementedException();
         }
+
+       
+
+
     }
 }

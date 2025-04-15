@@ -28,7 +28,8 @@ namespace Api.Services
             _config = config;
             _ClientFactory = ClientFactory;
         }
-        readonly string errorMessage = "Deposite not found";
+        readonly string errorMessage = "Deposit not found";
+        
         public async Task<DepositeDto> createAsync(DepositeDto t)
         {
             try
@@ -464,20 +465,22 @@ namespace Api.Services
                 {
                     amount = initiateDepositeDto.Amount,
                     walletId = initiateDepositeDto.WalletId,
-                    type = "Deposite",
+                    type = "Deposit",
                     CreatedAt = DateTime.UtcNow
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 var redirect_url = _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var webhook_url = _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
                 {
                     email = customer!.Email,
                     amount = initiateDepositeDto.Amount * 100,
                     reference = tx_ref,
                     callback_url = redirect_url,
-                    metadata = depositeData
+                    metadata = depositeData,
+                    webhook_url
                 };
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -524,7 +527,7 @@ namespace Api.Services
                 {
                     return new
                     {
-                        message = "Deposite already verified",
+                        message = "Deposit already verified",
                     };
                 }
 

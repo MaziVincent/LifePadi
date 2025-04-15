@@ -5,8 +5,22 @@ GET https://localhost:7216/api/voucher/all
 GET https://localhost:7216/api/vendor/all
 
 ###
+
+GET https://localhost:7216/api/vendorcategory/vendors/2
+
+###
 GET https://localhost:7216/api/address/all
- 
+
+###
+
+GET https://localhost:7216/api/category/all
+
+###
+
+GET https://localhost:7216/api/category/3/products
+
+
+
 ###
 
 PUT https://localhost:7216/api/address/setasdefault
@@ -51,10 +65,8 @@ Content-Type: application/json
 
 {
     "Topic":"general",
-    "Title":"Happy Friday My Padi",
-    "Body":"Use this voucher for a 20% discount on your delivery fee today
-
-LifePadi-fGeDBKQf0h"
+    "Title":"TUESDAYS ARE FOR PIZZA RIGHT?🤔",
+    "Body":"I got you! Request as much errands as you need today and be among our 5 customers to be surprised with a box of pizza🥰"
 }
 
 

@@ -92,6 +92,7 @@ builder.Services.AddScoped<IUserIdProvider, CustomUserIdProvider>();
 builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 builder.Services.AddScoped<IDashboard, DashboardService>();
 builder.Services.AddScoped<IAdmin, AdminService>();
+builder.Services.AddScoped<IWebHookService, WebHookService>();
 
 
 builder.Logging.ClearProviders();

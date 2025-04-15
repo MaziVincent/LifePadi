@@ -45,10 +45,10 @@ namespace Api.DTO
         public string? currency { get; set; }
         public string? ip_address { get; set; }
         public int? amount { get; set; }
-        public DepositeMetada? metadata { get; set; }
+        public DepositeMetadata? metadata { get; set; }
     }
 
-    public class DepositeMetada
+    public class DepositeMetadata
     {
         public double amount { get; set; }
         public int walletId { get; set; }
