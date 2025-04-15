@@ -141,6 +141,7 @@ class _CartCheckoutContent extends HookWidget {
                   storeOrderProvider(
                     instruction: deliveryInstruction.value,
                     totalAmount: cart!.total,
+                    type: CheckoutType.cart,
                   ).future,
                 );
 
@@ -150,6 +151,7 @@ class _CartCheckoutContent extends HookWidget {
                     orderId: order!.id,
                     fee: cart!.deliveryFee,
                     deliveryAddressId: cart!.deliveryLocation!.id,
+                    type: CheckoutType.cart,
                   ).future,
                 );
 
@@ -187,6 +189,7 @@ class _CartCheckoutContent extends HookWidget {
                     deliveryFee: deliveryFee,
                     totalAmount: totalAmount,
                     voucherCode: voucherCode,
+                    type: CheckoutType.cart,
                   ).future,
                 );
 

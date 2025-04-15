@@ -133,7 +133,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                   storeOrderProvider(
                     instruction: deliveryInstruction.value,
                     totalAmount: logistics!.deliveryFee,
-                    type: CheckoutType.logistics.name.capitalize(),
+                    type: CheckoutType.logistics,
                   ).future,
                 );
 
@@ -170,6 +170,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                     amount: 0,
                     deliveryFee: deliveryFee,
                     totalAmount: deliveryFee,
+                    type: CheckoutType.logistics,
                   ).future,
                 );
 

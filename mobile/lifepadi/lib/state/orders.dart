@@ -93,7 +93,7 @@ FutureOr<Order> storeOrder(
   Ref ref, {
   String? instruction,
   required double totalAmount,
-  String? type,
+  required CheckoutType type,
 }) async {
   final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
@@ -158,6 +158,7 @@ FutureOr<String> paymentLink(
   required double deliveryFee,
   required double amount,
   String? voucherCode,
+  required CheckoutType type,
 }) async {
   final client = ref.read(dioProvider());
   final requestData = {
@@ -166,6 +167,7 @@ FutureOr<String> paymentLink(
     'DeliveryFee': deliveryFee,
     'TotalAmount': totalAmount,
     'VoucherCode': voucherCode ?? '',
+    'Type': type.toValue().toString(),
   };
   final response = await client.post<String>(
     '/transaction/MobilePaystackCheckout',
@@ -216,7 +218,7 @@ Future<void> storeDelivery(
   required int orderId,
   required double fee,
   int? deliveryAddressId,
-  CheckoutType type = CheckoutType.cart,
+  required CheckoutType type,
   int? pickupAddressId,
 }) async {
   final client = ref.read(dioProvider());

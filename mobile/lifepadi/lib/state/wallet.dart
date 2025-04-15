@@ -46,6 +46,7 @@ Future<double> balance(Ref ref) async {
 FutureOr<String> walletDeposit(
   Ref ref, {
   required double amount,
+  CheckoutType type = CheckoutType.topUp,
 }) async {
   final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
@@ -64,6 +65,7 @@ FutureOr<String> walletDeposit(
     data: {
       'WalletId': walletId,
       'Amount': amount,
+      'Type': type.toValue().toString(),
     },
   );
 
