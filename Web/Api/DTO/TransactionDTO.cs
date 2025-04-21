@@ -1,4 +1,5 @@
 ﻿using Api.Models;
+using Newtonsoft.Json;
 using System.Numerics;
 
 namespace Api.DTO
@@ -18,10 +19,10 @@ namespace Api.DTO
         public OrderDtoLite? Order { get; set; }
 
         public DateTime? PaidAt { get; set; }
-        public string? PaymentChannel {get; set;}
+        public string? PaymentChannel { get; set; }
         public string? Type { get; set; }
-        public double? DeliveryFee {get; set;}
-       // public WalletDtoLite? Wallet { get; set; }
+        public double? DeliveryFee { get; set; }
+        // public WalletDtoLite? Wallet { get; set; }
 
     }
 
@@ -47,6 +48,7 @@ namespace Api.DTO
         public double DeliveryFee { get; set; }
         public int OrderId { get; set; }
         public string? VoucherCode { get; set; }
+        public string? Type{ get; set; }
 
     }
 
@@ -153,16 +155,29 @@ namespace Api.DTO
         public string? currency { get; set; }
         public string? ip_address { get; set; }
         public int? amount { get; set; }
-        public PaystackMetada? metadata { get; set; }
+        public PaystackMetadata? metadata { get; set; }
     }
 
-    public class PaystackMetada
+    public class PaystackMetadata
     {
         public string? voucherCode { get; set; }
         public int orderId { get; set; }
         public double totalAmount { get; set; }
         public double deliveryFee { get; set; }
         public double amount { get; set; }
+        public int? walletId { get; set; }
+        public string? type { get; set; }
         public DateTime? createdAt { get; set; }
     }
+
+
+    public class PaystackWebhookEvent
+    {
+        [JsonProperty("event")]
+        public string Event { get; set; }
+
+        [JsonProperty("data")]
+        public PaystackVerificationData Data { get; set; }
+    }
 }
+   

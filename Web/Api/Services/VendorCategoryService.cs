@@ -102,7 +102,7 @@ namespace Api.Services
         public async Task<PagedList<VendorDtoLite>> getAllVendors(int id, SearchPaging props)
         {
             IQueryable<VendorDtoLite> vendorsList = Enumerable.Empty<VendorDtoLite>().AsQueryable();
-
+            var random = new Random();
             try
             {
                 var vendors = await _context.Vendors.Include(v => v.Addresses)
@@ -113,8 +113,10 @@ namespace Api.Services
                 {
                     return null!;
                 }
+
+                var randomizedVendors = vendors.OrderBy(v => random.Next()).ToList();
                 
-                var vendorsDto = _mapper.Map<List<VendorDtoLite>>(vendors);
+                var vendorsDto = _mapper.Map<List<VendorDtoLite>>(randomizedVendors);
                 vendorsList = vendorsList.Concat(vendorsDto);
                 var result = PagedList<VendorDtoLite>.ToPagedList(vendorsList, props.PageNumber, props.PageSize);
                 return result;

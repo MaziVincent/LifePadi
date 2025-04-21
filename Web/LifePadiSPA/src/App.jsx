@@ -50,268 +50,277 @@ import TrackOrder from "./components/customer/TrackOrder";
 import PrivacyPolicy from "./components/home/PrivacyPolicy";
 import TermsAndCondition from "./components/home/TermsAndCondition";
 import Faq from "./components/home/Faq";
+import AppSubdomain from "./AppSubDomain";
 
 function App() {
-  const queryClient = new QueryClient();
+	const queryClient = new QueryClient();
+	const isAppSubdomain = window.location.hostname === "app.lifepadi.com";
 
-  const ROLES = {
-    admin: "Admin",
-    customer: "Customer",
-    rider: "Rider",
-    vendor: "Vendor",
-  };
+	const ROLES = {
+		admin: "Admin",
+		customer: "Customer",
+		rider: "Rider",
+		vendor: "Vendor",
+	};
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Routes>
-        {/*PIBLIC ROUTES */}
-        <Route
-          path="/"
-          element={<Layout />}
-        >
-          <Route
-            path="about"
-            element={<About />}
-          />
-          <Route
-            path="contact"
-            element={<Contact />}
-          />
-          <Route
-            path="logistics"
-            element={<Logistics />}
-          />
-          <Route
-            path="privacypolicy"
-            element={<PrivacyPolicy />}
-          />
+	return (
+		<Routes>
+			{isAppSubdomain ? (
+				<Route
+					path="*"
+					element={<AppSubdomain />}
+				/>
+			) : (
+				<QueryClientProvider client={queryClient}>
+					{/*PIBLIC ROUTES */}
+					<Route
+						path="/"
+						element={<Layout />}
+					>
+						<Route
+							path="about"
+							element={<About />}
+						/>
+						<Route
+							path="contact"
+							element={<Contact />}
+						/>
+						<Route
+							path="logistics"
+							element={<Logistics />}
+						/>
+						<Route
+							path="privacypolicy"
+							element={<PrivacyPolicy />}
+						/>
 
-          <Route
-            path="termsandconditions"
-            element={<TermsAndCondition />}
-          />
+						<Route
+							path="termsandconditions"
+							element={<TermsAndCondition />}
+						/>
 
-          <Route
-            path="faq"
-            element={<Faq />}
-          />
+						<Route
+							path="faq"
+							element={<Faq />}
+						/>
 
-          <Route
-            index
-            element={<Home />}
-          />
-        </Route>
+						<Route
+							index
+							element={<Home />}
+						/>
+					</Route>
 
-        {/* AUTH */}
+					{/* AUTH */}
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+					<Route
+						path="/login"
+						element={<Login />}
+					/>
 
-        <Route
-          path="/forgotPassword"
-          element={<ForgotPassword />}
-        />
+					<Route
+						path="/forgotPassword"
+						element={<ForgotPassword />}
+					/>
 
-        {/* SHOP ROUTES */}
-        <Route element={<PersistLogin />}>
-          <Route
-            path="/shop"
-            element={<ShopLayout />}
-          >
-            <Route
-              path="/shop/vendor/:id"
-              element={<Vendor />}
-            />
-            <Route
-              path="/shop/payment-response"
-              element={<PaymentResponse />}
-            />
-            <Route
-              path="/shop/logistics"
-              element={<TryLogistics />}
-            />
-            <Route
-              index
-              element={<Shop />}
-            />
-          </Route>
-        </Route>
+					{/* SHOP ROUTES */}
+					<Route element={<PersistLogin />}>
+						<Route
+							path="/shop"
+							element={<ShopLayout />}
+						>
+							<Route
+								path="/shop/vendor/:id"
+								element={<Vendor />}
+							/>
+							<Route
+								path="/shop/payment-response"
+								element={<PaymentResponse />}
+							/>
+							<Route
+								path="/shop/logistics"
+								element={<TryLogistics />}
+							/>
+							<Route
+								index
+								element={<Shop />}
+							/>
+						</Route>
+					</Route>
 
-        {/* USER ROUTES */}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRole={ROLES.customer} />}>
-            <Route
-              path="/user"
-              element={<UserLayout />}
-            >
-              <Route
-                index
-                element={<UserDashboard />}
-              />
-              <Route
-                path="/user/address"
-                element={<Address />}
-              />
-              <Route
-                path="/user/gift"
-                element={<Gift />}
-              />
-              <Route
-                path="/user/favourite"
-                element={<Favourite />}
-              />
-              <Route
-                path="/user/details/:id"
-                element={<OrderDetails />}
-              />
+					{/* USER ROUTES */}
+					<Route element={<PersistLogin />}>
+						<Route element={<RequireAuth allowedRole={ROLES.customer} />}>
+							<Route
+								path="/user"
+								element={<UserLayout />}
+							>
+								<Route
+									index
+									element={<UserDashboard />}
+								/>
+								<Route
+									path="/user/address"
+									element={<Address />}
+								/>
+								<Route
+									path="/user/gift"
+									element={<Gift />}
+								/>
+								<Route
+									path="/user/favourite"
+									element={<Favourite />}
+								/>
+								<Route
+									path="/user/details/:id"
+									element={<OrderDetails />}
+								/>
 
-              <Route
-                path="/user/track/:status"
-                element={<TrackOrder />}
-              />
-            </Route>
-          </Route>
-        </Route>
+								<Route
+									path="/user/track/:status"
+									element={<TrackOrder />}
+								/>
+							</Route>
+						</Route>
+					</Route>
 
-        {/*PROTECTED ROUTES ADMIN */}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
-            <Route
-              path="/admin"
-              element={<AdminLayout />}
-            >
-              <Route
-                index
-                element={<Overview />}
-              />
-              <Route
-                path="/admin/service"
-                element={<AdminService />}
-              />
-              <Route
-                path="/admin/service/:id"
-                element={<AdminServiceDetails />}
-              />
-              <Route
-                path="/admin/category"
-                element={<AdminCategory />}
-              />
-              <Route
-                path="/admin/category/:id"
-                element={<AdminCategoryDetails />}
-              />
-              <Route
-                path="/admin/rider"
-                element={<AdminRider />}
-              />
-              <Route
-                path="/admin/rider/:id"
-                element={<AdminRiderDetails />}
-              />
-              <Route
-                path="/admin/customer"
-                element={<AdminCustomer />}
-              />
-              <Route
-                path="/admin/customer/:id"
-                element={<AdminCustomerDetails />}
-              />
-              <Route
-                path="/admin/vendorcategory"
-                element={<AdminVendorCategory />}
-              />
-              <Route
-                path="/admin/vendorcategory/:id"
-                element={<AdminVendorCategoryDetails />}
-              />
-              <Route
-                path="/admin/vendor/:id"
-                element={<AdminVendorDetails />}
-              />
-              <Route
-                path="/admin/product/:id"
-                element={<AdminProduct />}
-              />
+					{/*PROTECTED ROUTES ADMIN */}
+					<Route element={<PersistLogin />}>
+						<Route element={<RequireAuthAdmin allowedRole={ROLES.admin} />}>
+							<Route
+								path="/admin"
+								element={<AdminLayout />}
+							>
+								<Route
+									index
+									element={<Overview />}
+								/>
+								<Route
+									path="/admin/service"
+									element={<AdminService />}
+								/>
+								<Route
+									path="/admin/service/:id"
+									element={<AdminServiceDetails />}
+								/>
+								<Route
+									path="/admin/category"
+									element={<AdminCategory />}
+								/>
+								<Route
+									path="/admin/category/:id"
+									element={<AdminCategoryDetails />}
+								/>
+								<Route
+									path="/admin/rider"
+									element={<AdminRider />}
+								/>
+								<Route
+									path="/admin/rider/:id"
+									element={<AdminRiderDetails />}
+								/>
+								<Route
+									path="/admin/customer"
+									element={<AdminCustomer />}
+								/>
+								<Route
+									path="/admin/customer/:id"
+									element={<AdminCustomerDetails />}
+								/>
+								<Route
+									path="/admin/vendorcategory"
+									element={<AdminVendorCategory />}
+								/>
+								<Route
+									path="/admin/vendorcategory/:id"
+									element={<AdminVendorCategoryDetails />}
+								/>
+								<Route
+									path="/admin/vendor/:id"
+									element={<AdminVendorDetails />}
+								/>
+								<Route
+									path="/admin/product/:id"
+									element={<AdminProduct />}
+								/>
 
-              <Route
-                path="/admin/order/:id"
-                element={<AdminOrderDetails />}
-              />
-              <Route
-                path="/admin/voucher"
-                element={<AdminVoucher />}
-              />
-              <Route
-                path="/admin/admin"
-                element={<Admin />}
-              />
-              <Route
-                path="/admin/order/:id"
-                element={<AdminOrderDetails />}
-              />
-              <Route
-                path="/admin/voucher"
-                element={<AdminVoucher />}
-              />
-              <Route
-                path="/admin/admin"
-                element={<Admin />}
-              />
-            </Route>
-          </Route>
-        </Route>
+								<Route
+									path="/admin/order/:id"
+									element={<AdminOrderDetails />}
+								/>
+								<Route
+									path="/admin/voucher"
+									element={<AdminVoucher />}
+								/>
+								<Route
+									path="/admin/admin"
+									element={<Admin />}
+								/>
+								<Route
+									path="/admin/order/:id"
+									element={<AdminOrderDetails />}
+								/>
+								<Route
+									path="/admin/voucher"
+									element={<AdminVoucher />}
+								/>
+								<Route
+									path="/admin/admin"
+									element={<Admin />}
+								/>
+							</Route>
+						</Route>
+					</Route>
 
-        {/* PROTECTED ROUTES FOR RIDER */}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuthAdmin allowedRole={ROLES.rider} />}>
-            <Route
-              path="/rider"
-              element={<RiderLayout />}
-            >
-              <Route
-                index
-                element={<RiderdDashboard />}
-              />
-              <Route
-                path="/rider/delivery/:id"
-                element={<ViewDelivery />}
-              />
-            </Route>
-          </Route>
-        </Route>
+					{/* PROTECTED ROUTES FOR RIDER */}
+					<Route element={<PersistLogin />}>
+						<Route element={<RequireAuthAdmin allowedRole={ROLES.rider} />}>
+							<Route
+								path="/rider"
+								element={<RiderLayout />}
+							>
+								<Route
+									index
+									element={<RiderdDashboard />}
+								/>
+								<Route
+									path="/rider/delivery/:id"
+									element={<ViewDelivery />}
+								/>
+							</Route>
+						</Route>
+					</Route>
 
-        {/* PROTECTED ROUTES FOR VENDOR */}
-        <Route element={<PersistLogin />}>
-          <Route element={<RequireAuthAdmin allowedRole={ROLES.vendor} />}>
-            <Route
-              path="/vendor"
-              element={<VendorLayout />}
-            >
-              <Route
-                index
-                element={<VendorDashboard />}
-              />
-              <Route
-                path="/vendor/product/:id"
-                element={<VendorViewProduct />}
-              />
-            </Route>
-          </Route>
-        </Route>
+					{/* PROTECTED ROUTES FOR VENDOR */}
+					<Route element={<PersistLogin />}>
+						<Route element={<RequireAuthAdmin allowedRole={ROLES.vendor} />}>
+							<Route
+								path="/vendor"
+								element={<VendorLayout />}
+							>
+								<Route
+									index
+									element={<VendorDashboard />}
+								/>
+								<Route
+									path="/vendor/product/:id"
+									element={<VendorViewProduct />}
+								/>
+							</Route>
+						</Route>
+					</Route>
 
-        <Route
-          path="/unauthorized"
-          element={<Unauthorized />}
-        />
-        <Route
-          path="*"
-          element={<Page404 />}
-        />
-      </Routes>
-    </QueryClientProvider>
-  );
+					<Route
+						path="/unauthorized"
+						element={<Unauthorized />}
+					/>
+					<Route
+						path="*"
+						element={<Page404 />}
+					/>
+				</QueryClientProvider>
+			)}
+		</Routes>
+	);
 }
 
 export default App;

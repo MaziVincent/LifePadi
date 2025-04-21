@@ -24,11 +24,13 @@ namespace Api.Controllers
             {
                 var categories = await _icategory.allAsync(props);
                 var result = _mapper.Map<List<CategoryDto>>(categories);
-                var dataList = new {
+                var dataList = new
+                {
                     categories.PageSize,
                     categories.TotalPages,
                     categories.TotalCount,
                     categories.CurrentPage
+                    
                 };
                 return Ok(new {result, dataList});
             }catch (Exception ex)

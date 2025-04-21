@@ -5,6 +5,7 @@ using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using CloudinaryDotNet;
+using System;
 
 
 namespace Api.Services
@@ -32,13 +33,17 @@ namespace Api.Services
             try
             {
                 IQueryable<Category> categoryList = Enumerable.Empty<Category>().AsQueryable();
+                var random = new Random(); 
 
                 if (props.SearchString is null)
                 {
                     var categories1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
                     .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .ToListAsync();
-                    categoryList = categoryList.Concat(categories1);
+                    // Randomize the order
+                    var randomizedCategories = categories1.OrderBy(c => random.Next()).ToList();
+
+                    categoryList = categoryList.Concat(randomizedCategories);
                     var result = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                     return result;
                 }
@@ -46,7 +51,10 @@ namespace Api.Services
                 .Include(c => c.Products!).ThenInclude(p => p.Vendor)
                     .Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
                     .ToListAsync();
-                categoryList = categoryList.Concat(categories);
+                // Randomize the order
+                var randomizedFilteredCategories = categories.OrderBy(c => random.Next()).ToList();
+
+                categoryList = categoryList.Concat(randomizedFilteredCategories);
                 var returned = PagedList<Category>.ToPagedList(categoryList, props.PageNumber, props.PageSize);
                 return returned;
             }
@@ -57,33 +65,79 @@ namespace Api.Services
             }
         }
 
+        // public async Task<PagedList<Product>> getCategoryProducts(int id, SearchPaging props)
+        // {
+        //     try
+        //     {
+        //         IQueryable<Product> productList = Enumerable.Empty<Product>().AsQueryable();
+        //         var random = new Random();
+
+        //         if (props.SearchString is null)
+        //         {
+        //             var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+        //             .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
+        //             .Where(c => c.Id == id)
+        //             .AsSplitQuery()
+        //             .OrderBy(c => random.Next()) // Randomize the order
+        //             .ToListAsync();
+        //             productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
+        //             var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+        //             return result;
+        //         }
+        //         var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
+        //         .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
+        //             .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
+        //             .AsSplitQuery()
+        //             .OrderBy(c => Guid.NewGuid())
+        //             .ToListAsync();
+        //         productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
+        //         var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
+        //         return returned;
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         throw new Exceptions.ServiceException(ex.Message);
+        //     }
+        // }
+
+
         public async Task<PagedList<Product>> getCategoryProducts(int id, SearchPaging props)
         {
             try
             {
-                IQueryable<Product> productList = Enumerable.Empty<Product>().AsQueryable();
-
-                if (props.SearchString is null)
-                {
-                    var product1 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-                    .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
+                // Create base query with includes
+                var query = _dbContext.Categories
                     .Where(c => c.Id == id)
-                    .AsSplitQuery()
-                    .OrderBy(c => Guid.NewGuid())
-                    .ToListAsync();
-                    productList = productList.Concat(product1.SelectMany(c => c.Products!).AsQueryable());
-                    var result = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
-                    return result;
+                    .Include(c => c.Products!)
+                        .ThenInclude(p => p.Vendor)
+                        .ThenInclude(v => v!.Addresses)
+                    .AsSplitQuery();
+
+                // Apply search filter if provided
+                if (!string.IsNullOrEmpty(props.SearchString))
+                {
+                    query = query.Where(c => c.Name!.ToLower().Contains(props.SearchString.ToLower()));
                 }
-                var product2 = await _dbContext.Categories.OrderByDescending(c => c.CreatedAt)
-                .Include(c => c.Products!).ThenInclude(p => p.Vendor).ThenInclude(v => v!.Addresses)
-                    .Where(c => c.Id == id && c.Name!.ToLower().Contains(props.SearchString!.ToLower()))
-                    .AsSplitQuery()
-                    .OrderBy(c => Guid.NewGuid())
-                    .ToListAsync();
-                productList = productList.Concat(product2.SelectMany(c => c.Products!).AsQueryable());
-                var returned = PagedList<Product>.ToPagedList(productList, props.PageNumber, props.PageSize);
-                return returned;
+
+                // Execute query and get the category (should be single)
+                var category = await query.FirstOrDefaultAsync();
+
+                if (category == null || category.Products == null || !category.Products.Any())
+                {
+                    return PagedList<Product>.ToPagedList(Enumerable.Empty<Product>(), props.PageNumber, props.PageSize);
+                }
+
+                // Randomize products
+                var random = new Random();
+                var randomizedProducts = category.Products
+                    .OrderBy(p => random.Next())
+                    .ToList();
+
+                // Return paged result
+                return PagedList<Product>.ToPagedList(
+                    randomizedProducts.AsQueryable(),
+                    props.PageNumber,
+                    props.PageSize);
             }
             catch (Exception ex)
             {

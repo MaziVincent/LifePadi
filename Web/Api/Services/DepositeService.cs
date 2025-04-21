@@ -28,7 +28,8 @@ namespace Api.Services
             _config = config;
             _ClientFactory = ClientFactory;
         }
-        readonly string errorMessage = "Deposite not found";
+        readonly string errorMessage = "Deposit not found";
+        
         public async Task<DepositeDto> createAsync(DepositeDto t)
         {
             try
@@ -464,20 +465,22 @@ namespace Api.Services
                 {
                     amount = initiateDepositeDto.Amount,
                     walletId = initiateDepositeDto.WalletId,
-                    type = "Deposite",
+                    type = "Deposit",
                     CreatedAt = DateTime.UtcNow
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 var redirect_url = _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
+                var webhook_url = _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
                 {
                     email = customer!.Email,
                     amount = initiateDepositeDto.Amount * 100,
                     reference = tx_ref,
                     callback_url = redirect_url,
-                    metadata = depositeData
+                    metadata = depositeData,
+                    webhook_url
                 };
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -490,7 +493,7 @@ namespace Api.Services
                 request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 //add the auth token to the header
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
 
                 //send request and get the respond
@@ -524,14 +527,14 @@ namespace Api.Services
                 {
                     return new
                     {
-                        message = "Deposite already verified",
+                        message = "Deposit already verified",
                     };
                 }
 
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
