@@ -17,7 +17,7 @@ GET https://localhost:7216/api/category/all
 
 ###
 
-GET https://localhost:7216/api/category/3/products
+GET https://lifepadi-948405839190.us-east1.run.app/api/category/1/products?pageNumber=2&pageSize=5
 
 
 
