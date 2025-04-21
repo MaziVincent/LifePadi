@@ -1,7 +1,8 @@
 { "rewrites": [
-	{ "source": "/(.*)", "destination": "/index.html" },
-	{
+    {
 		"source": "app.lifepadi.com",
 		"destination": "/index.html?subdomain=app"
-	}
+	},
+	{ "source": "/(.*)", "destination": "/index.html" }
+	
 ] }
