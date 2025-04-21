@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/theme/theme.dart';
+import 'package:lifepadi/utils/app_links_service.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
 
@@ -17,6 +18,9 @@ void main() async {
 
   // Initialize awesome notifications
   await NotificationUtils.initialize();
+
+  // Initialize app links for deep linking
+  await AppLinksService().init();
 
   // Load shared preferences
   await PreferencesHelper.load();
@@ -36,6 +40,8 @@ class LifepadiApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+
+    AppLinksService().setRouter(router);
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),

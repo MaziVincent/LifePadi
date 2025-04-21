@@ -1145,6 +1145,8 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240116.2)
+  - app_links (0.0.2):
+    - Flutter
   - awesome_notifications (0.10.0):
     - Flutter
     - IosAwnCore (~> 0.10.0)
@@ -1469,6 +1471,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - awesome_notifications (from `.symlinks/plugins/awesome_notifications/ios`)
   - awesome_notifications_core (from `.symlinks/plugins/awesome_notifications_core/ios`)
   - awesome_notifications_fcm (from `.symlinks/plugins/awesome_notifications_fcm/ios`)
@@ -1529,6 +1532,8 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   awesome_notifications:
     :path: ".symlinks/plugins/awesome_notifications/ios"
   awesome_notifications_core:
@@ -1576,6 +1581,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
+  app_links: 76b66b60cc809390ca1ad69bfd66b998d2387ac7
   awesome_notifications: 0f432b28098d193920b11a44cfa9d2d9313a3888
   awesome_notifications_core: 429c28df8746780a474de177e5acde33af87da63
   awesome_notifications_fcm: ad14f584c81e2488ae4310ab96331327dcbb5368

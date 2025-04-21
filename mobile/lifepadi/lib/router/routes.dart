@@ -127,6 +127,19 @@ class ProfileRoute extends GoRouteData {
   }
 }
 
+/// HomeAliasRoute
+/// This route redirects /home to the root / path
+@TypedGoRoute<HomeAliasRoute>(path: '/home')
+class HomeAliasRoute extends GoRouteData {
+  const HomeAliasRoute();
+
+  @override
+  FutureOr<String?> redirect(BuildContext context, GoRouterState state) {
+    // Simply redirect to the root path
+    return '/';
+  }
+}
+
 @TypedGoRoute<SplashRoute>(path: '/splash')
 class SplashRoute extends GoRouteData {
   const SplashRoute();

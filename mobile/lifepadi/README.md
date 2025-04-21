@@ -12,6 +12,88 @@ Key Features:
 
 Download LifePadi today and experience logistics made simple!
 
+## Deep Linking
+
+LifePadi supports deep linking to directly navigate to specific screens within the app using custom URI schemes and universal links.
+
+### Supported Deep Link Formats
+
+- Custom URI scheme: `lifepadi://app/{route}`
+- Fragment-based: `lifepadi://app/#{route}`
+- Universal links (iOS): `https://app.lifepadi.com/{route}`
+- App links (Android): `https://app.lifepadi.com/{route}`
+
+### Example Deep Links
+
+```
+lifepadi://app/profile         // Opens the profile screen
+lifepadi://app/wallet          // Opens the wallet screen
+lifepadi://app/orders          // Opens the orders list screen
+lifepadi://app/orders/123      // Opens a specific order
+lifepadi://app/products/456    // Opens a specific product
+lifepadi://app/logistics       // Opens the logistics screen
+lifepadi://app/errands         // Opens the errands screen
+lifepadi://app/settings        // Opens settings screen
+
+// Fragment-based examples
+lifepadi://app/#/profile       // Opens the profile screen
+lifepadi://app/#/wallet        // Opens the wallet screen
+
+// Web URLs (requires proper setup of Universal Links/App Links)
+https://app.lifepadi.com/profile   // Opens the profile screen
+```
+
+### Testing Deep Links
+
+#### Android
+
+**Using Terminal**
+
+```bash
+# Using adb to test deep links on emulator or connected device
+adb shell am start -a android.intent.action.VIEW -d "lifepadi://app/profile"
+adb shell am start -a android.intent.action.VIEW -d "lifepadi://app/logistics"
+adb shell am start -a android.intent.action.VIEW -d "https://app.lifepadi.com/orders"
+```
+
+**On Physical Device**
+
+1. Send a message containing the deep link URL to yourself (WhatsApp, SMS, etc.)
+2. Tap on the link to open the app
+3. You can also type the URL in any browser on your device
+
+#### iOS
+
+**Using Terminal (Simulator)**
+
+```bash
+# Open deep links on iOS simulator
+xcrun simctl openurl booted "lifepadi://app/profile"
+xcrun simctl openurl booted "lifepadi://app/logistics"
+xcrun simctl openurl booted "https://app.lifepadi.com/orders"
+```
+
+**On Physical Device**
+
+2. **Notes App Method** - Type the deep link in a note and tap on it: `lifepadi://app/profile`
+
+3. **Safari Method** - Type the deep link directly in Safari's address bar: `lifepadi://app/wallet`
+
+4. **Message Method** - Send yourself a message with the deep link and tap on it.
+
+### Deep Links Setup for Production
+
+For production deployment, the following is required:
+
+1. **Android App Links**:
+
+   - Create an `assetlinks.json` file at `https://app.lifepadi.com/.well-known/assetlinks.json`
+   - The file should contain the app's package name and SHA-256 certificate fingerprints
+
+2. **iOS Universal Links**:
+   - Create an `apple-app-site-association` file at `https://app.lifepadi.com/.well-known/apple-app-site-association`
+   - Add the Associated Domains capability to your Xcode project
+
 ### Build an Android app bundle for deployment
 
 ```bash

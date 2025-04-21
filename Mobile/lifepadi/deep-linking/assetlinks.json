@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lifepadi.app",
+      "sha256_cert_fingerprints": [
+        "6A:81:B9:68:1C:A6:2B:50:2F:67:F4:67:84:57:81:61:36:A8:85:99:9E:82:E8:38:35:FA:E0:67:D9:32:1B:9D"
+      ]
+    }
+  }
+]
