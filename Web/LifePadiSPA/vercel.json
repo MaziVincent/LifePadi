@@ -1,8 +1,11 @@
 { "rewrites": [
-    {
+	{
+		"source": "/.well-known/(.*)",
+		"destination": "/.well-known/$1"
+	},
+	{
 		"source": "app.lifepadi.com",
 		"destination": "/index.html?subdomain=app"
 	},
 	{ "source": "/(.*)", "destination": "/index.html" }
-	
 ] }
