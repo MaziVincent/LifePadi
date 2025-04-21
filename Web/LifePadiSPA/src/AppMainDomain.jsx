@@ -51,8 +51,14 @@ import TermsAndCondition from "./components/home/TermsAndCondition";
 import Faq from "./components/home/Faq";
 
 const AppMainDomain = () => {
+	const ROLES = {
+		admin: "Admin",
+		customer: "Customer",
+		rider: "Rider",
+		vendor: "Vendor",
+	};
 	return (
-		<>
+		<Routes>
 			{/*PIBLIC ROUTES */}
 			<Route
 				path="/"
@@ -298,7 +304,7 @@ const AppMainDomain = () => {
 				path="*"
 				element={<Page404 />}
 			/>
-		</>
+		</Routes>
 	);
 };
 
