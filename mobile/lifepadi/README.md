@@ -92,6 +92,7 @@ For production deployment, the following is required:
 
 2. **iOS Universal Links**:
    - Create an `apple-app-site-association` file at `https://app.lifepadi.com/.well-known/apple-app-site-association`
+   - Add the Associated Domains capability to the identity in your Apple Developer account (Certificates, Identifiers & Profiles).
    - Add the Associated Domains capability to your Xcode project
 
 ### Build an Android app bundle for deployment
