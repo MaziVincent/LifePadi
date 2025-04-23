@@ -153,7 +153,7 @@ class _RiderPageState extends ConsumerState<RiderPage> {
                             .logout()
                             .then((_) {
                           if (context.mounted) {
-                            context.push(const LoginRoute().location);
+                            context.go(const LoginRoute().location);
                           }
                         });
                       },

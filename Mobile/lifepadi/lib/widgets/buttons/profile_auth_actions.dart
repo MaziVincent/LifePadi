@@ -32,7 +32,7 @@ class ProfileAuthActions extends ConsumerWidget {
         children: [
           PrimaryButton(
             text: 'Login'.toUpperCase(),
-            onPressed: () => context.push(const LoginRoute().location),
+            onPressed: () => context.go(const LoginRoute().location),
             textStyle: context.textTheme.bodyLarge?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,

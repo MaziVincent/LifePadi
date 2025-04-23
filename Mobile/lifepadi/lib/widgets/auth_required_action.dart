@@ -59,7 +59,7 @@ class AuthRequiredAction {
                       onPressed: () {
                         context
                           ..pop(false)
-                          ..push(const LoginRoute().location);
+                          ..go(const LoginRoute().location);
                       },
                     ),
                     12.verticalSpace,

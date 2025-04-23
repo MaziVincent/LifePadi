@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -93,8 +91,9 @@ class SettingsPage extends HookWidget {
                             .read(authControllerProvider.notifier)
                             .deleteAccount();
                         if (context.mounted) {
-                          unawaited(context.push(const LoginRoute().location));
+                          context.go(const LoginRoute().location);
                         }
+
                         await showToast('Account deleted successfully');
                       } catch (e) {
                         await showToast(getErrorInfo(e).description);
