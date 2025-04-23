@@ -18,11 +18,7 @@ class AppLinksService {
   /// App links plugin instance
   final _appLinks = AppLinks();
 
-  GoRouter? _router;
-
-  void setRouter(GoRouter router) {
-    _router = router;
-  }
+  GoRouter? router;
 
   /// Initialize deep linking
   Future<void> init() async {
@@ -91,9 +87,9 @@ class AppLinksService {
     final route = getRouteFromUri(uri);
     if (route != null) {
       logger.d('Navigating to route: $route');
-      if (_router != null) {
+      if (router != null) {
         // Use the router to navigate
-        _router!.push(route);
+        router!.push(route);
       } else if (rootNavigatorKey.currentContext != null) {
         // Fallback to root navigator if router is not set
         GoRouter.of(rootNavigatorKey.currentContext!).push(route);

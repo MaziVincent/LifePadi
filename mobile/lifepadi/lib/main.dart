@@ -41,7 +41,7 @@ class LifepadiApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
-    AppLinksService().setRouter(router);
+    AppLinksService().router = router;
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
