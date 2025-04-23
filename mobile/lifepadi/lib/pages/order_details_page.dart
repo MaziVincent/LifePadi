@@ -28,29 +28,33 @@ class OrderDetailsPage extends ConsumerWidget {
         actions: [
           switch (userAsync) {
             AsyncData(:final value) => value is Customer
-                ? MyIconButton(
-                    icon: Remix.more_2_fill,
-                    onPressed: () {
-                      showMenu(
-                        context: context,
-                        position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
-                        color: Colors.white,
-                        items: [
-                          PopupMenuItem<dynamic>(
-                            child: Text(
-                              'View Receipt',
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontSize: 14.sp,
-                                color: const Color(0xFF27272A),
+                ? orderAsync.maybeWhen(
+                    data: (order) => MyIconButton(
+                      icon: Remix.more_2_fill,
+                      onPressed: () {
+                        showMenu(
+                          context: context,
+                          position: RelativeRect.fromLTRB(100.w, 0, 0, 0),
+                          color: Colors.white,
+                          items: [
+                            PopupMenuItem<dynamic>(
+                              child: Text(
+                                'View Receipt',
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  fontSize: 14.sp,
+                                  color: const Color(0xFF27272A),
+                                ),
+                              ),
+                              onTap: () => context.push(
+                                ReceiptRoute(orderId: id, goBack: true)
+                                    .location,
                               ),
                             ),
-                            onTap: () => context.push(
-                              ReceiptRoute(orderId: id, goBack: true).location,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+                          ],
+                        );
+                      },
+                    ),
+                    orElse: () => const SizedBox.shrink(),
                   )
                 : const SizedBox.shrink(),
             _ => const SizedBox.shrink(),
@@ -116,6 +120,7 @@ class _BottomPanelContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        // Pending order
         if (order.status == OrderStatus.pending) ...[
           PrimaryButton(
             onPressed: () async => context.push(
