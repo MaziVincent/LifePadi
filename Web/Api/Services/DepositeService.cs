@@ -468,9 +468,12 @@ namespace Api.Services
                     type = "Deposit",
                     CreatedAt = DateTime.UtcNow
                 };
+
+               
+
                 var tx_ref = GenerateTxRef.genTx_rf();
-                // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                var redirect_url = _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
+                var redirect_url = _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
+                //var redirect_url = _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var webhook_url = _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
@@ -482,6 +485,19 @@ namespace Api.Services
                     metadata = depositeData,
                     webhook_url
                 };
+
+                Deposite deposit = new Deposite
+                {
+                    Amount = initiateDepositeDto.Amount,
+                    WalletId = initiateDepositeDto.WalletId,
+                    Status = "pending",
+                    ReferenceId = tx_ref,
+                    Type = "Deposit",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                };
+                await _context.AddAsync(deposit);
+                await _context.SaveChangesAsync();
 
                 var jsonPayload = JsonConvert.SerializeObject(payload);
 
@@ -528,6 +544,7 @@ namespace Api.Services
                     return new
                     {
                         message = "Deposit already verified",
+                        verified = true
                     };
                 }
 
@@ -556,15 +573,39 @@ namespace Api.Services
                     transaction.WalletId = paymentRes.data.metadata!.walletId;
                     transaction.StatusBool = paymentRes.status;
 
+                    var deposite = await _context.Deposites.Where(d => d.ReferenceId == reference).FirstOrDefaultAsync();
 
-                    var deposite = new Deposite();
+                    if (deposite is null)
+                    {
+                        var deposit = new Deposite();
+                        deposit.Status = paymentRes!.data!.status;
+                        deposit.Type = "Deposit";
+                        deposit.TransactionId = (BigInteger)paymentRes.data!.id!;
+                        deposit.Amount = (Double)paymentRes.data!.amount! / 100;
+                        deposit.ReferenceId = reference;
+                        deposit.WalletId = paymentRes.data.metadata!.walletId;
+                        deposit.CreatedAt = paymentRes.data.paid_at;
+                        deposit.UpdatedAt = paymentRes.data.paid_at;
+                        deposit.PaymentMethod = paymentRes.data.channel;
+
+                        var wallet0 = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == deposit.WalletId);
+                        if (wallet0 == null) throw new Exceptions.ServiceException("Wallet not found");
+
+                        wallet0.InitialBalance = wallet0.Balance;
+                        wallet0.Balance += deposit.Amount;
+                        wallet0.UpdatedAt = DateTime.UtcNow;
+
+                        await _context.Deposites.AddAsync(deposit);
+                        await _context.Transactions.AddAsync(transaction);
+                        _context.Wallets.Update(wallet0);
+                        await _context.SaveChangesAsync();
+
+                        return paymentRes!;
+
+                    }
+                   
                     deposite.Status = paymentRes!.data!.status;
-                    deposite.Type = "Deposit";
                     deposite.TransactionId = (BigInteger)paymentRes.data!.id!;
-                    deposite.Amount = (Double)paymentRes.data!.amount! / 100;
-                    deposite.ReferenceId = reference;
-                    deposite.WalletId = paymentRes.data.metadata!.walletId;
-                    deposite.CreatedAt = paymentRes.data.paid_at;
                     deposite.UpdatedAt = paymentRes.data.paid_at;
                     deposite.PaymentMethod = paymentRes.data.channel; 
                     
@@ -575,7 +616,7 @@ namespace Api.Services
                     wallet.Balance += deposite.Amount;
                     wallet.UpdatedAt = DateTime.UtcNow;
 
-                    await _context.Deposites.AddAsync(deposite);
+                    _context.Deposites.Update(deposite);
                     await _context.Transactions.AddAsync(transaction);
                     _context.Wallets.Update(wallet);
                     await _context.SaveChangesAsync();

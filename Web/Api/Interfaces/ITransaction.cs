@@ -7,6 +7,7 @@ namespace Api.Interfaces
     {
         public Task<IEnumerable<TransactionDto>> AllAsync();
         public Task<TransactionDto> GetAsync(int id);
+        public Task<TransactionDto> GetByReference(string reference);
         public Task<TransactionDto> UpdateAsync(TransactionDto transaction, int id);
         public Task<string> DeleteAsync(int id);
         public Task<TransactionDto> CreateAsync(TransactionDto transaction);
