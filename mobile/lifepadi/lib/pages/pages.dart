@@ -20,6 +20,7 @@ export 'notification_page.dart';
 export 'onboarding_page.dart';
 export 'order_details_page.dart';
 export 'orders_page.dart';
+export 'payment_confirmation_page.dart';
 export 'payment_page.dart';
 export 'product_details_page.dart';
 export 'products_page.dart';

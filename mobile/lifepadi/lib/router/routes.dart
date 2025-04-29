@@ -664,3 +664,17 @@ class ConnectionFailedRoute extends GoRouteData {
 
   static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
 }
+
+@TypedGoRoute<PaymentConfirmRoute>(path: '/payment/confirm')
+class PaymentConfirmRoute extends GoRouteData {
+  const PaymentConfirmRoute({required this.ref});
+
+  final String ref;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PaymentConfirmationPage(ref: ref);
+  }
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+}
