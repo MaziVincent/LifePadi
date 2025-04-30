@@ -11,6 +11,7 @@ help:
 	@echo "  make extract-symbols  - Extract Android symbols (run after build-appbundle)"
 	@echo "  make reset            - Clean build, get dependencies, and run build_runner"
 	@echo "  make watch            - Run build_runner in watch mode"
+	@echo "  make build-apk        - Build Android apk"
 
 # Build Android app bundle for deployment
 build-appbundle:

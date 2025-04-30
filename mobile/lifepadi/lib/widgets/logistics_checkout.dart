@@ -15,7 +15,6 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsCheckout extends ConsumerWidget {
@@ -158,7 +157,6 @@ class _LogisticsCheckoutContent extends HookWidget {
               }
 
               // Process payment
-              Receipt? receipt;
               final deliveryFee =
                   existingOrder?.deliveryFee ?? logistics!.deliveryFee;
               final isExistingOrder = existingOrder != null;
@@ -177,7 +175,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                 await showToast('Processing payment...');
                 // Use webview to process payment
                 if (context.mounted) {
-                  receipt = await context.push<Receipt>(
+                  await context.push<Receipt>(
                     PaymentRoute(
                       link: paymentLink,
                       isExistingOrder: isExistingOrder,
@@ -186,7 +184,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                 }
               } else if (selectedPaymentMethod.value == 1) {
                 // Use wallet to process payment
-                receipt = await ref.read(
+                await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.logistics,
                     orderId: order.id,
@@ -196,27 +194,6 @@ class _LogisticsCheckoutContent extends HookWidget {
                     existingOrder: isExistingOrder,
                   ).future,
                 );
-              }
-
-              if (receipt != null && receipt.status) {
-                // show success notification
-                await NotificationUtils.showNotification(
-                  id: order.id,
-                  title: 'Order successful',
-                  body:
-                      'Logistics order #${order.orderId} has been placed successfully.',
-                  payload: {
-                    'route': OrderDetailsRoute(id: order.id).location,
-                  },
-                  save: true,
-                );
-
-                if (context.mounted) {
-                  context.go(
-                    ReceiptRoute(orderId: order.id).location,
-                    extra: receipt,
-                  );
-                }
               }
             } on PaymentFailedException catch (e) {
               if (context.mounted) {

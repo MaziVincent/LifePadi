@@ -10,7 +10,7 @@ class Receipt with ReceiptMappable {
     required this.reference,
     required this.paidAt,
     required this.channel,
-    required this.orderId,
+    this.orderId,
     this.deliveryFee,
     required this.totalAmount,
     required this.type,
@@ -25,7 +25,7 @@ class Receipt with ReceiptMappable {
   @MappableField(key: 'PaymentChannel')
   final String channel;
   @MappableField(key: 'OrderId')
-  final int orderId;
+  final int? orderId;
   double get subtotal => totalAmount - (deliveryFee ?? 0);
   @MappableField(key: 'DeliveryFee')
   final double? deliveryFee;

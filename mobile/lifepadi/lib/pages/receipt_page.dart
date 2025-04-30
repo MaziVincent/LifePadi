@@ -14,12 +14,15 @@ import '../utils/constants.dart';
 class ReceiptPage extends StatelessWidget {
   const ReceiptPage({
     super.key,
-    required this.orderId,
+    this.orderId,
     this.receipt,
     this.goBack = false,
-  });
+  }) : assert(
+          orderId != null || receipt != null,
+          'Either orderId or receipt must be provided',
+        );
 
-  final int orderId;
+  final int? orderId;
   final Receipt? receipt;
   final bool goBack;
 
@@ -74,7 +77,7 @@ class ReceiptPage extends StatelessWidget {
             ? _ReceiptContent(receipt: receipt!, goBack: goBack)
             : Consumer(
                 builder: (context, ref, child) {
-                  final receipt = ref.watch(receiptProvider(orderId));
+                  final receipt = ref.watch(receiptProvider(orderId!));
 
                   return switch (receipt) {
                     AsyncData(:final value) =>
@@ -153,9 +156,25 @@ class _ReceiptContent extends StatelessWidget {
         ),
         const Spacer(),
         PrimaryButton(
-          onPressed: () =>
-              goBack ? context.pop() : context.go(const OrdersRoute().location),
-          text: goBack ? 'Back' : 'Go to Orders',
+          onPressed: () {
+            if (goBack) {
+              context.pop();
+            } else {
+              // Check the type of the order to navigate to the correct page
+              // If it's a cart order, navigate to the orders page
+              // If it's a logistics order, navigate to the logistics page
+              // If it's a deposit, navigate to the wallet page
+              switch (receipt.type) {
+                case CheckoutType.cart:
+                  context.go(const OrdersRoute().location);
+                case CheckoutType.logistics:
+                  context.go(const LogisticsRoute().location);
+                case CheckoutType.topUp:
+                  context.go(const WalletRoute().location);
+              }
+            }
+          },
+          text: goBack ? 'Back' : 'Go to ${receipt.type.pageName}',
         ),
         const Spacer(),
       ],

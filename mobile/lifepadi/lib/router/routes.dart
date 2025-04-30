@@ -394,9 +394,9 @@ class CheckoutRoute extends GoRouteData with AuthRequiredMixin {
 }
 
 class ReceiptRoute extends GoRouteData {
-  ReceiptRoute({required this.orderId, this.goBack = false});
+  ReceiptRoute({this.orderId, this.goBack = false});
 
-  final int orderId;
+  final int? orderId;
   final bool goBack;
 
   @override

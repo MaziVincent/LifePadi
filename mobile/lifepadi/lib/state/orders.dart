@@ -181,34 +181,6 @@ FutureOr<String> paymentLink(
   return data['link'] as String;
 }
 
-/// Confirm payment for an order.
-///
-/// This is called after the payment has been made.
-@riverpod
-Future<Receipt> confirmPayment(
-  Ref ref, {
-  required Map<String, String> queryParameters,
-  required CheckoutType type,
-  bool existingOrder = false,
-}) async {
-  final client = ref.read(dioProvider());
-  final response = await client.get<JsonMap>(
-    '/transaction/paystack-confirmPayment',
-    queryParameters: queryParameters,
-  );
-  if (response.data == null) {
-    throw const ServerErrorException('No data returned from the server');
-  }
-  if (response.data?['StatusBool'] != true) {
-    throw PaymentFailedException(response.data?['message'] as String);
-  }
-
-  final receipt = ReceiptMapper.fromMap(response.data!);
-  await resetStateAfterCheckout(ref, type: type, existingOrder: existingOrder);
-
-  return receipt;
-}
-
 /// Create delivery
 ///
 /// This is called after the payment has been confirmed.

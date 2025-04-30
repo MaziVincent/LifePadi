@@ -336,18 +336,12 @@ class WalletPage extends HookWidget {
                                   walletDepositProvider(amount: amount).future,
                                 );
                                 if (context.mounted) {
-                                  final result = await context.push<bool>(
+                                  await context.push<bool>(
                                     PaymentRoute(
                                       link: paymentLink,
                                       type: CheckoutType.topUp,
                                     ).location,
                                   );
-                                  if (result == true) {
-                                    await refreshBalance(ref);
-                                    ref.invalidate(
-                                      transactionHistoryProvider(),
-                                    );
-                                  }
                                 }
                               },
                             );

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/models/payment_confirm.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -77,28 +78,26 @@ FutureOr<String> walletDeposit(
   return data['link'] as String;
 }
 
-/// Confirm a deposit to the user's wallet.
+/// Confirm a payment and determine if it was successful.
 ///
 /// This method is called after the user has successfully \
-/// made a payment to fund their wallet.
+/// made a payment for an order or for wallet deposit.
+/// It checks whether the payment has been verified. \
+/// If the payment is successful, it also returns the receipt.
 @riverpod
-FutureOr<bool> confirmDeposit(
+FutureOr<PaymentConfirm> confirmPayment(
   Ref ref, {
-  required Map<String, String> queryParameters,
+  required String reference,
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
-    '/walletdeposite/confirmDeposite',
-    queryParameters: queryParameters,
+    '/transaction/confirmPayment?reference=$reference',
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  if (response.data?['status'] != true) {
-    throw PaymentFailedException(response.data?['message'] as String);
-  }
 
-  return true;
+  return PaymentConfirmMapper.fromMap(response.data!);
 }
 
 /// Retrieves a list of orders from the server.

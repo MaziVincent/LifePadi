@@ -15,7 +15,6 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 /// Cart checkout widget
@@ -172,7 +171,6 @@ class _CartCheckoutContent extends HookWidget {
               }
 
               // Process payment
-              Receipt? receipt;
               final subtotal = existingOrder != null ? 0.0 : cart!.subtotal;
               final deliveryFee =
                   existingOrder?.deliveryFee ?? cart!.deliveryFee;
@@ -196,7 +194,7 @@ class _CartCheckoutContent extends HookWidget {
                 await showToast('Processing payment...');
                 // Use webview to process payment
                 if (context.mounted) {
-                  receipt = await context.push<Receipt>(
+                  await context.push<Receipt>(
                     PaymentRoute(
                       link: paymentLink,
                       isExistingOrder: isExistingOrder,
@@ -205,7 +203,7 @@ class _CartCheckoutContent extends HookWidget {
                 }
               } else if (selectedPaymentMethod.value == 1) {
                 // Use wallet to process payment
-                receipt = await ref.read(
+                await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.cart,
                     orderId: order.id,
@@ -216,27 +214,6 @@ class _CartCheckoutContent extends HookWidget {
                     existingOrder: isExistingOrder,
                   ).future,
                 );
-              }
-
-              if (receipt != null && receipt.status) {
-                // Show success notification
-                await NotificationUtils.showNotification(
-                  id: order.id,
-                  title: 'Order successful',
-                  body: 'Order #${order.orderId} has been placed successfully.',
-                  payload: {
-                    'route': OrderDetailsRoute(id: order.id).location,
-                  },
-                  save: true,
-                );
-
-                // After that, go to receipt page
-                if (context.mounted) {
-                  context.go(
-                    ReceiptRoute(orderId: order.id).location,
-                    extra: receipt,
-                  );
-                }
               }
             } on PaymentFailedException catch (e) {
               if (context.mounted) {

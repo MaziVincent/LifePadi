@@ -1,11 +1,8 @@
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/checkout_type.dart';
-import 'package:lifepadi/state/orders.dart';
-import 'package:lifepadi/state/wallet.dart';
-import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentPage extends ConsumerStatefulWidget {
@@ -47,10 +44,8 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
             setState(() => loadingPercentage = 100);
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (request.url.contains('/transaction/paystack-confirmPayment') ||
-                request.url.contains('/walletDeposite/confirmDeposite')) {
-              await showToast('Confirming payment');
-              await confirmPayment(redirectUrl: request.url);
+            if (request.url.contains('/transaction/confirmPayment')) {
+              await launchUrl(Uri.parse(request.url));
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
@@ -58,31 +53,6 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
         ),
       )
       ..loadRequest(Uri.parse(widget.transactionLink));
-  }
-
-  Future<void> confirmPayment({required String redirectUrl}) async {
-    final queryParameters = Uri.parse(redirectUrl).queryParameters;
-
-    if (widget.type == CheckoutType.topUp) {
-      final status = await ref.read(
-        confirmDepositProvider(queryParameters: queryParameters).future,
-      );
-
-      // ignore: use_build_context_synchronously
-      context.pop(status);
-      return;
-    }
-
-    final receipt = await ref.read(
-      confirmPaymentProvider(
-        queryParameters: queryParameters,
-        type: widget.type,
-        existingOrder: widget.isExistingOrder,
-      ).future,
-    );
-
-    // ignore: use_build_context_synchronously
-    context.pop(receipt);
   }
 
   @override

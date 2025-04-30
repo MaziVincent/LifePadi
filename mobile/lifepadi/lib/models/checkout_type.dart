@@ -15,5 +15,12 @@ enum CheckoutType {
 
   /// For wallet top-up
   @MappableValue('Deposit')
-  topUp,
+  topUp;
+
+  /// Getter that returns human-readable page name based on the checkout type
+  /// This is used for displaying the name of the page in the UI
+  String get pageName => switch (this) {
+        CheckoutType.cart || CheckoutType.logistics => 'Orders',
+        CheckoutType.topUp => 'Top Up',
+      };
 }

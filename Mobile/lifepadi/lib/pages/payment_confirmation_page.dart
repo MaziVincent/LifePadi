@@ -1,10 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:lottie/lottie.dart';
 
@@ -35,25 +38,74 @@ class _PaymentConfirmationPageState
 
   Future<void> _verifyPayment() async {
     try {
-      // Simulate a network call to verify payment
-      final status = await Future.delayed(
-        const Duration(seconds: 2),
-        () => Random().nextBool(),
-      );
+      // Make request to verify payment
+      final result =
+          await ref.read(confirmPaymentProvider(reference: widget.ref).future);
 
       setState(() {
         _isLoading = false;
-        _isSuccess = status;
-        _message = status ? 'Payment successful!' : 'Payment failed!';
+        _isSuccess = result.status;
+        _message = result.status ? 'Payment successful!' : 'Payment failed!';
       });
 
       // Wait a bit before navigating away
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 2));
 
       // Navigate based on the result
       if (mounted) {
         if (_isSuccess) {
-          context.go('/profile');
+          // If order id is not null in the receipt,
+          // that means the payment was for logistics or cart
+          if (result.receipt!.orderId != null) {
+            final orderName = switch (result.receipt!.type) {
+              CheckoutType.logistics => 'logistics order',
+              _ => 'order',
+            };
+            await NotificationUtils.showNotification(
+              id: result.receipt!.orderId!,
+              title: 'Order successful',
+              body:
+                  'Your $orderName #${result.receipt!.orderId} has been placed successfully.',
+              payload: {
+                'route':
+                    OrderDetailsRoute(id: result.receipt!.orderId!).location,
+              },
+              save: true,
+            );
+
+            // Go to receipt page
+            final receipt = result.receipt;
+            if (mounted) {
+              context.go(
+                ReceiptRoute().location,
+                extra: receipt,
+              );
+            }
+          } else {
+            // Order id is null in the receipt,
+            // that means the payment was for wallet top up
+            await NotificationUtils.showNotification(
+              id: result.receipt!.orderId!,
+              title: 'Deposit successful',
+              body:
+                  'Your deposit of ${result.receipt!.totalAmount.currency} has been processed successfully.',
+              save: true,
+            );
+
+            // Refresh balance
+            ref.invalidate(balanceProvider);
+
+            // Refresh transaction history
+            ref.invalidate(transactionHistoryProvider());
+
+            // Go to wallet page
+            if (mounted) {
+              context.go(
+                const WalletRoute().location,
+                extra: result.receipt,
+              );
+            }
+          }
         } else {
           context.go('/');
         }
@@ -65,10 +117,13 @@ class _PaymentConfirmationPageState
         _message = 'An error occurred: $e';
       });
 
-      await showToast('Failed to verify payment: $e');
+      await showToast(
+        'Failed to verify payment',
+        backgroundColor: kDangerColor,
+      );
 
       // Navigate back home after error
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 2));
       if (mounted) {
         context.go('/');
       }
