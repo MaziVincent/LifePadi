@@ -111,7 +111,7 @@ FutureOr<Order> storeOrder(
       'CustomerId': userId,
       'Instruction': instruction,
       'TotalAmount': totalAmount,
-      'Type': type,
+      'Type': type.toValue().toString(),
     },
   );
   if (response.data == null) {
