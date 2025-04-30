@@ -52,12 +52,20 @@ class AppLinksService {
   String? getRouteFromUri(Uri uri) {
     logger.i('Processing deep link: $uri');
 
+    // Prepare query string if it exists
+    final queryParams = uri.queryParameters;
+    final queryString = queryParams.isNotEmpty
+        ? '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}'
+        : '';
+
     // Check if URI has a fragment (anything after #)
     final uriString = uri.toString();
     if (uriString.contains('#')) {
       logger.i('Found fragment-based route: ${uri.fragment}');
       // For URIs like lifepadi://app/#/profile, return the fragment
-      return uri.fragment.startsWith('/') ? uri.fragment : '/${uri.fragment}';
+      final route =
+          uri.fragment.startsWith('/') ? uri.fragment : '/${uri.fragment}';
+      return route + queryString;
     }
 
     // For URIs like lifepadi://app/profile
@@ -68,18 +76,21 @@ class AppLinksService {
     if (uri.host == 'app') {
       logger.i('Found app-based route: $path');
       // For URIs like lifepadi://app/profile
-      return path.startsWith('/') ? path : '/$path';
+      final route = path.startsWith('/') ? path : '/$path';
+      return route + queryString;
     }
 
     // For URIs like https://app.lifepadi.com/profile
     if (uri.host == 'app.lifepadi.com') {
       logger.i('Found subdomain-based route: $path');
-      return path.startsWith('/') ? path : '/$path';
+      final route = path.startsWith('/') ? path : '/$path';
+      return route + queryString;
     }
 
     // For any other host
     logger.i('Found web-based route: $path');
-    return path.startsWith('/') ? path : '/$path';
+    final route = path.startsWith('/') ? path : '/$path';
+    return route + queryString;
   }
 
   /// Navigate to the route specified by the URI using GoRouter

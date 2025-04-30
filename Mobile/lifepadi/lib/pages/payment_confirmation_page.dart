@@ -14,10 +14,10 @@ import 'package:lottie/lottie.dart';
 class PaymentConfirmationPage extends ConsumerStatefulWidget {
   const PaymentConfirmationPage({
     super.key,
-    required this.ref,
+    required this.reference,
   });
 
-  final String ref;
+  final String reference;
 
   @override
   ConsumerState<PaymentConfirmationPage> createState() =>
@@ -39,8 +39,8 @@ class _PaymentConfirmationPageState
   Future<void> _verifyPayment() async {
     try {
       // Make request to verify payment
-      final result =
-          await ref.read(confirmPaymentProvider(reference: widget.ref).future);
+      final result = await ref
+          .read(confirmPaymentProvider(reference: widget.reference).future);
 
       setState(() {
         _isLoading = false;
@@ -49,7 +49,7 @@ class _PaymentConfirmationPageState
       });
 
       // Wait a bit before navigating away
-      await Future<void>.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 3));
 
       // Navigate based on the result
       if (mounted) {
@@ -85,7 +85,7 @@ class _PaymentConfirmationPageState
             // Order id is null in the receipt,
             // that means the payment was for wallet top up
             await NotificationUtils.showNotification(
-              id: result.receipt!.orderId!,
+              id: result.receipt!.reference.hashCode,
               title: 'Deposit successful',
               body:
                   'Your deposit of ${result.receipt!.totalAmount.currency} has been processed successfully.',
@@ -100,9 +100,8 @@ class _PaymentConfirmationPageState
 
             // Go to wallet page
             if (mounted) {
-              context.go(
+              await context.push(
                 const WalletRoute().location,
-                extra: result.receipt,
               );
             }
           }
@@ -111,10 +110,11 @@ class _PaymentConfirmationPageState
         }
       }
     } catch (e) {
+      // Handle error
       setState(() {
         _isLoading = false;
         _isSuccess = false;
-        _message = 'An error occurred: $e';
+        _message = getErrorInfo(e).description;
       });
 
       await showToast(
@@ -123,7 +123,7 @@ class _PaymentConfirmationPageState
       );
 
       // Navigate back home after error
-      await Future<void>.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 5));
       if (mounted) {
         context.go('/');
       }

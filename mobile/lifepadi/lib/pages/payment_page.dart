@@ -44,7 +44,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
             setState(() => loadingPercentage = 100);
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (request.url.contains('/transaction/confirmPayment')) {
+            if (request.url.contains('/payment/confirm')) {
               await launchUrl(Uri.parse(request.url));
               return NavigationDecision.prevent;
             }

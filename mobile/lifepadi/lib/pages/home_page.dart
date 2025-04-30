@@ -37,8 +37,7 @@ class HomePage extends HookConsumerWidget {
           children: [
             MyIconButton(
               icon: Remix.map_pin_5_line,
-              onPressed: () =>
-                  context.push(const PaymentConfirmRoute(ref: 'foo').location),
+              onPressed: () {},
               backgroundColor: const Color(0x194FAF5A),
               iconColor: kDarkPrimaryColor,
             ),

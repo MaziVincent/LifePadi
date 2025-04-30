@@ -91,7 +91,7 @@ FutureOr<PaymentConfirm> confirmPayment(
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
-    '/transaction/confirmPayment?reference=$reference',
+    '/transaction/paystack-confirmPayment?reference=$reference',
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
