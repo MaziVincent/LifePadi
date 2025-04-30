@@ -743,34 +743,64 @@ namespace Api.Services
                     WalletId = data.metadata.walletId
                 };
 
-                var deposit = new Deposite
+                var CurrentDepsit = await _dbContext.Deposites.Where(d => d.ReferenceId == data.reference).FirstOrDefaultAsync();
+                if (CurrentDepsit is null)
                 {
-                    Status = data.status,
-                    Type = "Deposit",
-                    TransactionId = (BigInteger)data.id,
-                    Amount = (double)data.amount / 100,
-                    ReferenceId = data.reference,
-                    WalletId = (int)data.metadata.walletId!,
-                    CreatedAt = data.paid_at ?? DateTime.UtcNow,
-                    UpdatedAt = data.paid_at ?? DateTime.UtcNow,
-                    PaymentMethod = data.channel
-                };
+                    var deposit = new Deposite
+                    {
+                        Status = data.status,
+                        Type = "Deposit",
+                        TransactionId = (BigInteger)data.id,
+                        Amount = (double)data.amount / 100,
+                        ReferenceId = data.reference,
+                        WalletId = (int)data.metadata.walletId!,
+                        CreatedAt = data.paid_at ?? DateTime.UtcNow,
+                        UpdatedAt = data.paid_at ?? DateTime.UtcNow,
+                        PaymentMethod = data.channel
+                    };
 
-                var wallet = await _dbContext.Wallets.FindAsync(data.metadata.walletId);
-                if (wallet == null)
-                {
-                    _logger.LogError($"Wallet not found for deposit: {data.reference}");
-                    return new ServiceException("Wallet not found");
+                    var wallet = await _dbContext.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        throw new ServiceException("Wallet not found");
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += deposit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                    await _dbContext.Deposites.AddAsync(deposit);
+                    await _dbContext.Transactions.AddAsync(transaction);
+                    _dbContext.Wallets.Update(wallet);
+                    await _dbContext.SaveChangesAsync();
+
                 }
+                else
+                {
 
-                wallet.InitialBalance = wallet.Balance;
-                wallet.Balance += deposit.Amount;
-                wallet.UpdatedAt = DateTime.UtcNow;
+                    CurrentDepsit.Status = data.status;
+                    CurrentDepsit.TransactionId = (BigInteger)data.id;
+                    CurrentDepsit.UpdatedAt = data.paid_at ?? DateTime.UtcNow;
+                    CurrentDepsit.PaymentMethod = data.channel;
 
-                await _dbContext.Deposites.AddAsync(deposit);
-                await _dbContext.Transactions.AddAsync(transaction);
-                _dbContext.Wallets.Update(wallet);
-                await _dbContext.SaveChangesAsync();
+
+                    var wallet = await _dbContext.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        throw new ServiceException("Wallet not found");
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += CurrentDepsit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                    _dbContext.Deposites.Update(CurrentDepsit);
+                    await _dbContext.Transactions.AddAsync(transaction);
+                    _dbContext.Wallets.Update(wallet);
+                    await _dbContext.SaveChangesAsync();
+                }
 
                 _logger.LogInformation($"Processed wallet deposit: {data.reference}");
                 return transaction;

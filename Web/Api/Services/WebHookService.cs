@@ -130,10 +130,6 @@ namespace Api.Services
         {
             try
             {
-                var existingDeposit = await _context.Deposites
-                    .FirstOrDefaultAsync(d => d.ReferenceId == data.reference);
-
-                if (existingDeposit != null) return;
 
                 var transaction = new Transaction
                 {
