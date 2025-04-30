@@ -73,6 +73,21 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("getByReference")]
+        public async Task<IActionResult> get([FromQuery] string reference)
+        {
+            try
+            {
+                var response = await _itran.GetByReference(reference);
+                if (response == null) return StatusCode(404, "Transaction not found");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("BaniCheckout")]
         public async Task<IActionResult> baniCheckout([FromBody] InitiatePaymentDto initiatePaymentDto)
         {
@@ -129,6 +144,7 @@ namespace Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpGet("transactionByOrderId/{orderId}")]
         public async Task<IActionResult> transactionByOrderId(int orderId)

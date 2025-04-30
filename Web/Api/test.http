@@ -87,6 +87,10 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/walletDeposite/confirmDep
 GET https://lifepadi-948405839190.us-east1.run.app/api/wallet/transactions/8
 
 ###
+GET https://lifepadi-948405839190.us-east1.run.app/api/transaction/paystack-confirmPayment?reference=LifePadi-UBjiMXRGS5
+
+
+###
  PUT https://localhost:7216/api/rider/updateLocation/51
 Content-Type: application/json
 

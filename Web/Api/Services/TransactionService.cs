@@ -3,7 +3,7 @@ using Api.Helpers;
 using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
-using Bogus.DataSets;
+//using Api.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -11,6 +11,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Api.Exceptions;
 
 namespace Api.Services
 {
@@ -22,7 +23,16 @@ namespace Api.Services
         private readonly IHttpClientFactory _ClientFactory;
         private readonly IVoucher _ivoucher;
         private readonly HttpClient _httpClient;
-        public TransactionService(DBContext dbContext, IMapper mapper, IConfiguration config, IHttpClientFactory clientFactory, IVoucher ivoucher, HttpClient httpClient)
+        private readonly IWebHookService _webhookService;
+        private readonly ILogger<TransactionService> _logger;
+        public TransactionService(DBContext dbContext,
+        IMapper mapper,
+        IConfiguration config,
+        IHttpClientFactory clientFactory,
+        IVoucher ivoucher,
+        HttpClient httpClient,
+        IWebHookService webHookService,
+        ILogger<TransactionService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -30,6 +40,8 @@ namespace Api.Services
             _ClientFactory = clientFactory;
             _ivoucher = ivoucher;
             _httpClient = httpClient;
+            _webhookService = webHookService;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<TransactionDto>> AllAsync()
@@ -227,6 +239,25 @@ namespace Api.Services
             }
         }
 
+        public async Task<TransactionDto> GetByReference(string reference)
+        {
+            try
+            {
+                var transaction = await _dbContext.Transactions
+                    .Where(t => t.TransactionRef == reference)
+                    .Include(t => t.Order)
+                    .ThenInclude(o => o!.Customer)
+                    .FirstOrDefaultAsync();
+                if(transaction == null) throw new ServiceException("Transaction not found");
+                var transactionDTO = _mapper.Map<TransactionDto>(transaction);
+                return transactionDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
+
         public async Task<TransactionDto> GetByPaymentId(BigInteger transactionId)
         {
             try
@@ -351,7 +382,7 @@ namespace Api.Services
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                var redirect_url = _config["Base_Url:Remote_GCP"] + "/transaction/paystack-confirmPayment";
+                var redirect_url = _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var webhook_url = _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
@@ -476,76 +507,59 @@ namespace Api.Services
                     return new
                     {
                         message = "Transaction already verified",
+                        verified = true,
+                        transaction = initial_transaction
                     };
                 }
 
                 string paymentUrl = _config["Paystack:Verify_Payment_Url"] + "/" + reference;
                 var request = new HttpRequestMessage(HttpMethod.Get, paymentUrl);
                 var client = _ClientFactory.CreateClient();
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
                 HttpResponseMessage response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (!(response.StatusCode == System.Net.HttpStatusCode.OK))
                 {
-                    var apiString = await response.Content.ReadAsStringAsync();
-                    var paymentRes = JsonConvert.DeserializeObject<PaystackVerificationResponse>(apiString);
+                    throw new ServiceException(
+                   new
+                   {
+                       message = response.ReasonPhrase!.ToString(),
+                       verified = false
+                   }
 
-                    //insert transaction into the database
-                    var transaction = new Transaction();
-                    transaction.Status = paymentRes!.data!.status;
-                    transaction.StatusBool = paymentRes!.status;
-                    transaction.AmountPaid = (Double)paymentRes.data!.amount! / 100;
-                    transaction.TransactionRef = reference;
-                    transaction.PaymentId = (BigInteger)paymentRes.data!.id!;
-                    transaction.TotalAmount = paymentRes.data!.metadata!.totalAmount;
-                    transaction.OrderId = (int)paymentRes.data!.metadata!.orderId!;
-                    transaction.DeliveryFee = paymentRes.data!.metadata!.deliveryFee;
-                    transaction.PaidAt = paymentRes.data!.paid_at;
-                    transaction.PaymentChannel = paymentRes.data!.channel;
-                    transaction.SubTotal = paymentRes.data!.metadata!.amount;
-                    transaction.Type = paymentRes.data!.metadata!.type ;
-                    if (paymentRes.data.metadata.voucherCode != "")
-                    {
-                        var voucher = await _ivoucher.searchWithCode(paymentRes.data!.metadata.voucherCode!);
-                        var dorder = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == transaction.OrderId);
-                        var customerVoucher = await _dbContext.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
-                        if (customerVoucher == null)
-                        {
-                            var newCustomerVoucher = new CustomerVoucher
-                            {
-                                CustomerId = dorder!.CustomerId,
-                                VoucherId = voucher.Id,
-                                TransactionId = transaction.Id
-                            };
-                            await _dbContext.CustomerVouchers.AddAsync(newCustomerVoucher);
-                        }
-                        else
-                        {
-                            customerVoucher.TransactionId = transaction.Id;
-                        }
-                        await _dbContext.SaveChangesAsync();
-                        transaction.VoucherId = voucher.Id;
-                    }
-
-                    //update order status to ongoing
-                    var order = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == (int)paymentRes!.data!.metadata!.orderId!);
-                    if (order == null) throw new Exceptions.ServiceException("Order not found");
-                    order.Status = "Ongoing";
-                    order.PaymentMethod = "PayStack";
-                    order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
-                    // await _dbContext.SaveChangesAsync();
-
-                    await _dbContext.Transactions.AddAsync(transaction);
-                    await _dbContext.SaveChangesAsync();
-
-                    return transaction!;
+                   );
                 }
-                throw new Exceptions.ServiceException(response.ReasonPhrase!.ToString());
+
+                var apiString = await response.Content.ReadAsStringAsync();
+                var paymentRes = JsonConvert.DeserializeObject<PaystackVerificationResponse>(apiString);
+
+                if (paymentRes!.data!.metadata!.walletId! != null)
+                {
+                    var transaction = await ProcessWalletDeposit(paymentRes.data);
+                    return new
+                    {
+                        message = paymentRes.message,
+                        verified = true,
+                        transaction = transaction
+
+
+                    };
+
+                }
+
+                var transaction1 = await ProcessOrderPayment(paymentRes.data);
+                return new
+                {
+                    message = paymentRes.message,
+                    verified = true,
+                    transaction = transaction1
+                };
             }
             catch (Exception ex)
             {
-                throw new Exceptions.ServiceException(ex.Message);
+                throw new ServiceException(ex.Message);
             }
         }
+        
 
         public async Task<int> TotalNumberOfFailedTransactions()
         {
@@ -623,8 +637,180 @@ namespace Api.Services
             throw new NotImplementedException();
         }
 
-       
 
+        //process order payment
+        public async Task<object> ProcessOrderPayment(PaystackVerificationData data)
+        {
+            try
+            {
+                var transaction = new Transaction
+                {
+                    Status = data.status,
+                    StatusBool = true,
+                    AmountPaid = (double)data.amount! / 100,
+                    TransactionRef = data.reference,
+                    PaymentId = (BigInteger)data.id,
+                    TotalAmount = data.metadata!.totalAmount,
+                    OrderId = data.metadata.orderId,
+                    DeliveryFee = data.metadata.deliveryFee,
+                    PaidAt = data.paid_at,
+                    PaymentChannel = data.channel,
+                    SubTotal = data.metadata.amount,
+                    Type = data.metadata.type
+                };
+
+                // Handle voucher if exists
+                if (!string.IsNullOrEmpty(data.metadata.voucherCode))
+                {
+                    await ProcessVoucher(data, transaction);
+                }
+
+                // Update order status
+                var order = await _dbContext.Orders.FindAsync(data.metadata.orderId);
+                if (order != null)
+                {
+                    order.Status = "Ongoing";
+                    order.PaymentMethod = "PayStack";
+                    order.SearchString = $"{order.Status.ToUpper()} {order.Type?.ToUpper()} {order.Order_Id}";
+                }
+
+                await _dbContext.Transactions.AddAsync(transaction);
+                await _dbContext.SaveChangesAsync();
+
+
+                _logger.LogInformation($"Processed order payment: {data.reference}");
+                return transaction;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error processing order payment: {data.reference}");
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+//process voucher
+        private async Task ProcessVoucher(PaystackVerificationData data, Transaction transaction)
+        {
+            try
+            {
+                var voucher = await _ivoucher.searchWithCode(data.metadata!.voucherCode!);
+                var order = await _dbContext.Orders.FindAsync(transaction.OrderId);
+
+                if (order == null) return;
+
+                var customerVoucher = await _dbContext.CustomerVouchers
+                    .FirstOrDefaultAsync(cv => cv.CustomerId == order.CustomerId && cv.VoucherId == voucher.Id);
+
+                if (customerVoucher == null)
+                {
+                    var newCustomerVoucher = new CustomerVoucher
+                    {
+                        CustomerId = order.CustomerId,
+                        VoucherId = voucher.Id,
+                        TransactionId = transaction.Id
+                    };
+                    await _dbContext.CustomerVouchers.AddAsync(newCustomerVoucher);
+                }
+                else
+                {
+                    customerVoucher.TransactionId = transaction.Id;
+                }
+
+                transaction.VoucherId = voucher.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error processing voucher for transaction: {data.reference}");
+                throw new ServiceException(ex.Message);
+            }
+        }
+//process wallet deposit
+        public async Task<object> ProcessWalletDeposit(PaystackVerificationData data)
+        {
+            try
+            {
+                var transaction = new Transaction
+                {
+                    Status = data.status,
+                    StatusBool = true,
+                    AmountPaid = (double)data.amount! / 100,
+                    TransactionRef = data.reference,
+                    PaymentId = (BigInteger)data.id,
+                    TotalAmount = data.metadata!.amount,
+                    PaidAt = data.paid_at,
+                    PaymentChannel = data.channel,
+                    Type = "Deposit",
+                    WalletId = data.metadata.walletId
+                };
+
+                var CurrentDepsit = await _dbContext.Deposites.Where(d => d.ReferenceId == data.reference).FirstOrDefaultAsync();
+                if (CurrentDepsit is null)
+                {
+                    var deposit = new Deposite
+                    {
+                        Status = data.status,
+                        Type = "Deposit",
+                        TransactionId = (BigInteger)data.id,
+                        Amount = (double)data.amount / 100,
+                        ReferenceId = data.reference,
+                        WalletId = (int)data.metadata.walletId!,
+                        CreatedAt = data.paid_at ?? DateTime.UtcNow,
+                        UpdatedAt = data.paid_at ?? DateTime.UtcNow,
+                        PaymentMethod = data.channel
+                    };
+
+                    var wallet = await _dbContext.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        throw new ServiceException("Wallet not found");
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += deposit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                    await _dbContext.Deposites.AddAsync(deposit);
+                    await _dbContext.Transactions.AddAsync(transaction);
+                    _dbContext.Wallets.Update(wallet);
+                    await _dbContext.SaveChangesAsync();
+
+                }
+                else
+                {
+
+                    CurrentDepsit.Status = data.status;
+                    CurrentDepsit.TransactionId = (BigInteger)data.id;
+                    CurrentDepsit.UpdatedAt = data.paid_at ?? DateTime.UtcNow;
+                    CurrentDepsit.PaymentMethod = data.channel;
+
+
+                    var wallet = await _dbContext.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        throw new ServiceException("Wallet not found");
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += CurrentDepsit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                    _dbContext.Deposites.Update(CurrentDepsit);
+                    await _dbContext.Transactions.AddAsync(transaction);
+                    _dbContext.Wallets.Update(wallet);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                _logger.LogInformation($"Processed wallet deposit: {data.reference}");
+                return transaction;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error processing wallet deposit: {data.reference}");
+                throw;
+            }
+        }
 
     }
 }

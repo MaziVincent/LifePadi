@@ -130,10 +130,6 @@ namespace Api.Services
         {
             try
             {
-                var existingDeposit = await _context.Deposites
-                    .FirstOrDefaultAsync(d => d.ReferenceId == data.reference);
-
-                if (existingDeposit != null) return;
 
                 var transaction = new Transaction
                 {
@@ -148,35 +144,67 @@ namespace Api.Services
                     Type = "Deposit",
                     WalletId = data.metadata.walletId
                 };
-
-                var deposit = new Deposite
+                var CurrentDepsit = await _context.Deposites.Where(d => d.ReferenceId == data.reference).FirstOrDefaultAsync();
+                if (CurrentDepsit is null)
                 {
-                    Status = data.status,
-                    Type = "Deposit",
-                    TransactionId = (BigInteger)data.id,
-                    Amount = (double)data.amount / 100,
-                    ReferenceId = data.reference,
-                    WalletId = (int)data.metadata.walletId!,
-                    CreatedAt = data.paid_at ?? DateTime.UtcNow,
-                    UpdatedAt = data.paid_at ?? DateTime.UtcNow,
-                    PaymentMethod = data.channel
-                };
+                    var deposit = new Deposite
+                    {
+                        Status = data.status,
+                        Type = "Deposit",
+                        TransactionId = (BigInteger)data.id,
+                        Amount = (double)data.amount / 100,
+                        ReferenceId = data.reference,
+                        WalletId = (int)data.metadata.walletId!,
+                        CreatedAt = data.paid_at ?? DateTime.UtcNow,
+                        UpdatedAt = data.paid_at ?? DateTime.UtcNow,
+                        PaymentMethod = data.channel
+                    };
 
-                var wallet = await _context.Wallets.FindAsync(data.metadata.walletId);
-                if (wallet == null)
+                    var wallet = await _context.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        return;
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += deposit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                    await _context.Deposites.AddAsync(deposit);
+                    await _context.Transactions.AddAsync(transaction);
+                    _context.Wallets.Update(wallet);
+                    await _context.SaveChangesAsync();
+
+                }
+                else
                 {
-                    _logger.LogError($"Wallet not found for deposit: {data.reference}");
-                    return;
+
+                    CurrentDepsit.Status = data.status;
+                    CurrentDepsit.TransactionId = (BigInteger)data.id;
+                    CurrentDepsit.UpdatedAt = data.paid_at ?? DateTime.UtcNow;
+                    CurrentDepsit.PaymentMethod = data.channel;
+                   
+
+                    var wallet = await _context.Wallets.FindAsync(data.metadata.walletId);
+                    if (wallet == null)
+                    {
+                        _logger.LogError($"Wallet not found for deposit: {data.reference}");
+                        return;
+                    }
+
+                    wallet.InitialBalance = wallet.Balance;
+                    wallet.Balance += CurrentDepsit.Amount;
+                    wallet.UpdatedAt = DateTime.UtcNow;
+
+                     _context.Deposites.Update(CurrentDepsit);
+                    await _context.Transactions.AddAsync(transaction);
+                    _context.Wallets.Update(wallet);
+                    await _context.SaveChangesAsync();
                 }
 
-                wallet.InitialBalance = wallet.Balance;
-                wallet.Balance += deposit.Amount;
-                wallet.UpdatedAt = DateTime.UtcNow;
 
-                await _context.Deposites.AddAsync(deposit);
-                await _context.Transactions.AddAsync(transaction);
-                _context.Wallets.Update(wallet);
-                await _context.SaveChangesAsync();
+               
 
                 _logger.LogInformation($"Processed wallet deposit: {data.reference}");
             }
