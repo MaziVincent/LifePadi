@@ -11,7 +11,7 @@ const AppSubdomain = () => {
 
 
 	return (
-		<div className="flex flex-col items-center justify-center h-screen">
+		<div className="flex flex-col items-center justify-center gap-5 h-screen">
 			<h1 className="text-3xl">Payment Processing... </h1>
 			<p className="flex flex-col items-center">
 				<button
@@ -21,10 +21,10 @@ const AppSubdomain = () => {
 				</button>
 
 				<div className="flex justify-center gap-6">
-					<a href="https://play.google.com/store/apps/details?id=com.lifepadi.app">
+					<a className="bg-secondary p-3" href="https://play.google.com/store/apps/details?id=com.lifepadi.app">
 						Download App (Android){" "}
 					</a>
-					<a href="https://apps.apple.com/us/app/lifepadi/id6741829265">
+					<a className="bg-secondary p-3 " href="https://apps.apple.com/us/app/lifepadi/id6741829265">
 						Download App (IOS){" "}
 					</a>
 				</div>
