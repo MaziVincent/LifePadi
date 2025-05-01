@@ -132,7 +132,7 @@ class ProductTileBase extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '(2.3k)',
+                        '(200)',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: const Color(0xFF616161),
                           fontWeight: FontWeight.w500,
