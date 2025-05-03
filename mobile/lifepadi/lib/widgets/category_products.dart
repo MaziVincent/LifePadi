@@ -38,7 +38,9 @@ class CategoryProducts extends HookConsumerWidget {
     );
 
     return RefreshIndicator.adaptive(
-      onRefresh: () => Future.sync(controller.refresh),
+      onRefresh: () {
+        return Future.sync(controller.refresh);
+      },
       child: MyPagedListView<int, Product>.separated(
         shrinkWrap: true,
         primary: false,
@@ -80,13 +82,21 @@ class CategoryProducts extends HookConsumerWidget {
         ).future,
       );
 
+      // Get current items to check for duplicates
+      final currentItems = controller.itemList ?? [];
+      final currentIds = currentItems.map((item) => item.id).toSet();
+
+      // Filter out duplicates
+      final uniqueNewProducts =
+          result.where((product) => !currentIds.contains(product.id)).toList();
+
       final isLastPage = result.length < pageSize;
 
       if (isLastPage) {
-        controller.appendLastPage(result);
+        controller.appendLastPage(uniqueNewProducts);
       } else {
         final nextPageKey = pageKey + 1;
-        controller.appendPage(result, nextPageKey);
+        controller.appendPage(uniqueNewProducts, nextPageKey);
       }
     } catch (e) {
       controller.error = e;
