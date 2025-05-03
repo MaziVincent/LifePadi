@@ -86,11 +86,14 @@ class ProductTileBase extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SectionTitle(
-                        product.name,
-                        color: const Color(0xFF212121),
-                        handleOverFlow: true,
+                      Expanded(
+                        child: SectionTitle(
+                          product.name,
+                          color: const Color(0xFF212121),
+                          handleOverFlow: true,
+                        ),
                       ),
                       7.74.horizontalSpace,
 
