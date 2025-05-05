@@ -15,6 +15,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class LogisticsCheckout extends ConsumerWidget {
@@ -184,7 +185,7 @@ class _LogisticsCheckoutContent extends HookWidget {
                 }
               } else if (selectedPaymentMethod.value == 1) {
                 // Use wallet to process payment
-                await ref.read(
+                final receipt = await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.logistics,
                     orderId: order.id,
@@ -194,6 +195,27 @@ class _LogisticsCheckoutContent extends HookWidget {
                     existingOrder: isExistingOrder,
                   ).future,
                 );
+
+                if (receipt.status) {
+                  // show success notification
+                  await NotificationUtils.showNotification(
+                    id: order.id,
+                    title: 'Order successful',
+                    body:
+                        'Your logistics order #${order.orderId} has been placed successfully.',
+                    payload: {
+                      'route': OrderDetailsRoute(id: order.id).location,
+                    },
+                    save: true,
+                  );
+
+                  if (context.mounted) {
+                    context.go(
+                      ReceiptRoute(orderId: order.id).location,
+                      extra: receipt,
+                    );
+                  }
+                }
               }
             } on PaymentFailedException catch (e) {
               if (context.mounted) {

@@ -15,6 +15,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 /// Cart checkout widget
@@ -203,7 +204,7 @@ class _CartCheckoutContent extends HookWidget {
                 }
               } else if (selectedPaymentMethod.value == 1) {
                 // Use wallet to process payment
-                await ref.read(
+                final receipt = await ref.read(
                   walletPaymentProvider(
                     type: CheckoutType.cart,
                     orderId: order.id,
@@ -214,6 +215,28 @@ class _CartCheckoutContent extends HookWidget {
                     existingOrder: isExistingOrder,
                   ).future,
                 );
+
+                if (receipt.status) {
+                  // Show success notification
+                  await NotificationUtils.showNotification(
+                    id: order.id,
+                    title: 'Order successful',
+                    body:
+                        'Your order #${order.orderId} has been placed successfully.',
+                    payload: {
+                      'route': OrderDetailsRoute(id: order.id).location,
+                    },
+                    save: true,
+                  );
+
+                  // After that, go to receipt page
+                  if (context.mounted) {
+                    context.go(
+                      ReceiptRoute(orderId: order.id).location,
+                      extra: receipt,
+                    );
+                  }
+                }
               }
             } on PaymentFailedException catch (e) {
               if (context.mounted) {
