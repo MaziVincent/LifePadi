@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";
@@ -9,15 +9,13 @@ const AppSubdomain = () => {
 		const params = new URLSearchParams(location.search);
 	const reference = params.get("reference");
 	
-	useEffect(() => {
-		const handleRedirect = async () => { 
-			window.location.href = `https://app.lifepadi.com/payment/confirm?reference=${reference}`;
-		}
+	// useEffect(() => {
+	// 	const handleRedirect = async () => { 
+	// 		window.location.href = `https://app.lifepadi.com/payment/confirm?reference=${reference}`;
+	// 	}
 
-		if(reference) {
-			handleRedirect();
-		}
-	}, [reference]);
+		
+	// }, [reference]);
     
 
 
