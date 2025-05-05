@@ -260,7 +260,7 @@ FutureOr<List<Order>> riderOrders(
 /// Reset the state data after a successful checkout
 /// has been completed.
 Future<void> resetStateAfterCheckout(
-  Ref<Object?> ref, {
+  Ref ref, {
   required CheckoutType type,
   bool fromWallet = false,
   bool existingOrder = false,

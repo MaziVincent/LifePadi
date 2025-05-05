@@ -97,7 +97,12 @@ FutureOr<PaymentConfirm> confirmPayment(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  return PaymentConfirmMapper.fromMap(response.data!);
+  final confirmationResult = PaymentConfirmMapper.fromMap(response.data!);
+  if (confirmationResult.status == true) {
+    await resetStateAfterCheckout(ref, type: confirmationResult.receipt!.type);
+  }
+
+  return confirmationResult;
 }
 
 /// Retrieves a list of orders from the server.
