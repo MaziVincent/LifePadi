@@ -4,7 +4,7 @@
 cd ios
 
 # Maximum number of retry attempts
-MAX_RETRIES=50
+MAX_RETRIES=30
 retry_count=0
 success=false
 
