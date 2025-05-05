@@ -156,7 +156,7 @@ class _ProductDetailsContent extends HookConsumerWidget {
               glow: false,
             ),
             Text(
-              '(20.6k reviews)',
+              '(200 reviews)',
               style: context.textTheme.bodyLarge?.copyWith(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
