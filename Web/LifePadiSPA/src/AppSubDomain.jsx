@@ -11,7 +11,7 @@ const AppSubdomain = () => {
 	
 	useEffect(() => {
 		const handleRedirect = async () => { 
-			window.location.href = `lifepadi://payment/confirm?reference=${reference}`;
+			window.location.href = `https://app.lifepadi.com/payment/confirm?reference=${reference}`;
 		}
 
 		if(reference) {
@@ -26,8 +26,8 @@ const AppSubdomain = () => {
 			<h1 className="text-2xl">Payment Processing... </h1>
 			<p className="flex flex-col items-center">
 				<button
-					onClick={() => (window.location.href = `lifepadi://payment/confirm?reference=${reference}`)}
-					className="p-3 bg-secondary text-white rounded-md"
+					onClick={() => (window.location.href = `https://app.lifepadi.com/payment/confirm?reference=${reference}`)}
+					className="p-3 bg-secondary text-white rounded-md cursor-pointer"
 				>
 					Open in App
 				</button>
