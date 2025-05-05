@@ -45,7 +45,10 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
           },
           onNavigationRequest: (NavigationRequest request) async {
             if (request.url.contains('/payment/confirm')) {
-              await launchUrl(Uri.parse(request.url));
+              await launchUrl(
+                Uri.parse(request.url),
+                mode: LaunchMode.externalApplication,
+              );
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
