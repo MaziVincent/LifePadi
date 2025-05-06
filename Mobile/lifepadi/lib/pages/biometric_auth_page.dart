@@ -149,7 +149,7 @@ class BiometricAuthPage extends HookConsumerWidget {
                     TextButton(
                       onPressed: () {
                         // Navigate to login page
-                        context.go(const LoginRoute().location);
+                        context.push(const LoginRoute().location);
                       },
                       child: Text(
                         'Login with Password',
