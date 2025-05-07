@@ -40,6 +40,31 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("allActive")]
+        public async Task<IActionResult> getAllActive([FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var services = await _iservice.allActive(props);
+
+                var result = _mapper.Map<List<ServiceDto>>(services);
+                var dataList = new
+                {
+                    services.TotalCount,
+                    services.TotalPages,
+                    services.PageSize,
+                    services.CurrentPage
+
+                };
+
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("get/{id}")]
         public async Task<IActionResult> get(int id)
         {

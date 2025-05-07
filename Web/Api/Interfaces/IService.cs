@@ -8,6 +8,7 @@ namespace Api.Interfaces
     public interface IService
     {
         public Task<PagedList<Service>> allAsync(SearchPaging props);
+        public Task<PagedList<Service>> allActive(SearchPaging props);
         public Task<IEnumerable<ServiceDtoLite>> servicesLite();
         public Task<ServiceDto> getAsync(int id);
         public Task<ServiceDtoLite> updateAsync(ServiceDto service, int id);
