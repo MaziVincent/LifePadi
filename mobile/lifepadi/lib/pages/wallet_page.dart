@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
-import 'package:lifepadi/models/user.dart';
 import 'package:lifepadi/router/routes.dart';
-import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -16,52 +14,28 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../utils/constants.dart';
 
-class WalletPage extends HookWidget {
+class WalletPage extends HookConsumerWidget {
   const WalletPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final montserratStyle = GoogleFonts.montserrat(
       color: kDarkTextColor,
       fontSize: 16.sp,
       fontWeight: FontWeight.w600,
     );
-    final balance = useState<double>(0);
-    final isLoading = useState(false);
-    final animationController = useAnimationController(
-      duration: const Duration(seconds: 1),
-    );
+    final isBalanceVisible = useState(true);
+    final walletBalanceAsync = ref.watch(balanceProvider);
 
-    Future<void> refreshBalance(WidgetRef ref) async {
-      if (isLoading.value) return;
-      try {
-        isLoading.value = true;
-
-        final walletBalance = await ref.watch(balanceProvider.future);
-        balance.value = walletBalance;
-
-        isLoading.value = false;
-      } catch (e) {
-        await handleError(
-          e,
-          context.mounted ? context : null,
-        );
+    String getBalanceText() {
+      if (!isBalanceVisible.value) {
+        return "₦${"*" * 6}";
       }
+      return walletBalanceAsync.maybeWhen(
+        data: (value) => value.currency,
+        orElse: () => '₦0.00',
+      );
     }
-
-    useEffect(
-      () {
-        if (isLoading.value) {
-          animationController.repeat();
-        } else {
-          animationController
-            ..stop()
-            ..reset();
-        }
-        return null;
-      },
-      [isLoading.value],
-    );
 
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
@@ -87,7 +61,6 @@ class WalletPage extends HookWidget {
         leading: BackButton(
           onPressed: () => context.go(const ProfileRoute().location),
         ),
-        // toolbarHeight: 0.16.sh,
       ),
       body: Stack(
         children: [
@@ -111,50 +84,31 @@ class WalletPage extends HookWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Consumer(
-                        builder: (context, ref, child) {
-                          Future<void> getBalance() async {
-                            final user =
-                                await ref.read(authControllerProvider.future);
-                            if (user is Customer) {
-                              balance.value = user.wallet.balance;
-                            }
-                          }
-
-                          getBalance().ignore();
-
-                          return Skeletonizer(
-                            enabled: isLoading.value,
-                            child: Text(
-                              balance.value.currency,
-                              style: context.textTheme.displaySmall?.copyWith(
-                                color: Colors.white,
-                                fontSize: 40.sp,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          );
-                        },
+                      Skeletonizer(
+                        enabled: walletBalanceAsync.isLoading,
+                        child: Text(
+                          getBalanceText(),
+                          style: context.textTheme.displaySmall?.copyWith(
+                            color: Colors.white,
+                            fontSize: 40.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                       6.horizontalSpace,
-                      Consumer(
-                        builder: (context, ref, child) {
-                          return GestureDetector(
-                            onTap: () async => refreshBalance(ref),
-                            child: RotationTransition(
-                              turns: animationController,
-                              child: Icon(
-                                Remix.refresh_line,
-                                color: Colors.white,
-                                size: 20.sp,
-                              ),
-                            ),
-                          );
-                        },
+                      GestureDetector(
+                        onTap: () =>
+                            isBalanceVisible.value = !isBalanceVisible.value,
+                        child: Icon(
+                          isBalanceVisible.value
+                              ? Remix.eye_line
+                              : Remix.eye_off_line,
+                          color: Colors.white,
+                          size: 20.sp,
+                        ),
                       ),
                     ],
                   ),
-                  // 40.verticalSpace,
                 ],
               ),
             ),
@@ -334,7 +288,10 @@ class WalletPage extends HookWidget {
                         child: Consumer(
                           builder: (context, ref, child) {
                             return TopupBottomSheet(
-                              currentBalance: balance.value,
+                              currentBalance: walletBalanceAsync.maybeWhen(
+                                data: (value) => value,
+                                orElse: () => 0.0,
+                              ),
                               onTopup: (amount) async {
                                 final paymentLink = await ref.watch(
                                   walletDepositProvider(amount: amount).future,
