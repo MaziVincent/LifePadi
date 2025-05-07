@@ -83,6 +83,10 @@ class WalletPage extends HookWidget {
           ),
           padding: EdgeInsets.only(top: 75.h),
         ),
+        automaticallyImplyLeading: false,
+        leading: BackButton(
+          onPressed: () => context.go(const ProfileRoute().location),
+        ),
         // toolbarHeight: 0.16.sh,
       ),
       body: Stack(

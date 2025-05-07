@@ -37,101 +37,83 @@ class _PaymentConfirmationPageState
   }
 
   Future<void> _verifyPayment() async {
-    try {
-      // Make request to verify payment
-      final confirmationResult = await ref
-          .read(confirmPaymentProvider(reference: widget.reference).future);
+    // Make request to verify payment
+    final confirmationResult = await ref
+        .read(confirmPaymentProvider(reference: widget.reference).future);
 
-      setState(() {
-        _isLoading = false;
-        _isSuccess = confirmationResult.status;
-        _message = confirmationResult.status
-            ? 'Payment successful!'
-            : 'Payment failed!';
-      });
+    setState(() {
+      _isLoading = false;
+      _isSuccess = confirmationResult.status;
+      _message =
+          confirmationResult.status ? 'Payment successful!' : 'Payment failed!';
+    });
 
-      // Wait a bit before navigating away
-      await Future<void>.delayed(const Duration(seconds: 3));
+    // Navigate based on the result
+    if (_isSuccess) {
+      // If order id is not null in the receipt,
+      // that means the payment was for logistics or cart
+      if (confirmationResult.receipt!.orderId != null) {
+        final orderName = switch (confirmationResult.receipt!.type) {
+          CheckoutType.logistics => 'logistics order',
+          _ => 'order',
+        };
 
-      // Navigate based on the result
-      if (mounted) {
-        if (_isSuccess) {
-          // If order id is not null in the receipt,
-          // that means the payment was for logistics or cart
-          if (confirmationResult.receipt!.orderId != null) {
-            final orderName = switch (confirmationResult.receipt!.type) {
-              CheckoutType.logistics => 'logistics order',
-              _ => 'order',
-            };
-            await NotificationUtils.showNotification(
-              id: confirmationResult.receipt!.orderId!,
-              title: 'Order successful',
-              body:
-                  'Your $orderName #${confirmationResult.receipt!.orderId} has been placed successfully.',
-              payload: {
-                'route':
-                    OrderDetailsRoute(id: confirmationResult.receipt!.orderId!)
-                        .location,
-              },
-              save: true,
+        await NotificationUtils.showNotification(
+          id: confirmationResult.receipt!.orderId!,
+          title: 'Order successful',
+          body:
+              'Your $orderName #${confirmationResult.receipt!.orderId} has been placed successfully.',
+          payload: {
+            'route': OrderDetailsRoute(id: confirmationResult.receipt!.orderId!)
+                .location,
+          },
+          save: true,
+        );
+
+        // Go to receipt page
+        await Future<void>.delayed(const Duration(seconds: 3)).then((_) {
+          if (mounted) {
+            context.go(
+              ReceiptRoute(orderId: confirmationResult.receipt!.orderId)
+                  .location,
+              extra: confirmationResult.receipt,
             );
-
-            // Go to receipt page
-            final receipt = confirmationResult.receipt;
-            if (mounted) {
-              context.go(
-                ReceiptRoute().location,
-                extra: receipt,
-              );
-            }
-          } else {
-            // Order id is null in the receipt,
-            // that means the payment was for wallet top up
-            await NotificationUtils.showNotification(
-              id: confirmationResult.receipt!.reference.hashCode,
-              title: 'Deposit successful',
-              body:
-                  'Your deposit of ${confirmationResult.receipt!.totalAmount.currency} has been processed successfully.',
-              save: true,
-            );
-
-            // Refresh balance
-            ref.invalidate(balanceProvider);
-
-            // Refresh transaction history
-            ref.invalidate(transactionHistoryProvider());
-
-            // Go to wallet page
-            if (mounted) {
-              context.go(
-                ReceiptRoute().location,
-                extra: confirmationResult.receipt,
-              );
-            }
           }
-        } else {
-          context.go('/');
+        });
+      } else {
+        // Order id is null in the receipt,
+        // that means the payment was for wallet top up
+        await NotificationUtils.showNotification(
+          id: confirmationResult.receipt!.reference.hashCode,
+          title: 'Deposit successful',
+          body:
+              'Your deposit of ${confirmationResult.receipt!.totalAmount.currency} has been processed successfully.',
+          save: true,
+        );
+
+        // Refresh balance
+        ref.invalidate(balanceProvider);
+
+        // Refresh transaction history
+        ref.invalidate(transactionHistoryProvider());
+
+        // Go to wallet page
+        if (mounted) {
+          context.go(const WalletRoute().location);
         }
       }
-    } catch (e) {
-      logger.e('Error verifying payment: ', error: e);
-      // Handle error
-      setState(() {
-        _isLoading = false;
-        _isSuccess = false;
-        _message = getErrorInfo(e).description;
-      });
-
+    } else {
       await showToast(
         'Failed to verify payment',
         backgroundColor: kDangerColor,
       );
 
-      // Navigate back home after error
-      await Future<void>.delayed(const Duration(seconds: 5));
-      if (mounted) {
-        context.go('/');
-      }
+      await Future<void>.delayed(const Duration(seconds: 2)).then((_) {
+        // Go to home page
+        if (mounted) {
+          context.go('/');
+        }
+      });
     }
   }
 

@@ -1,8 +1,11 @@
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/checkout_type.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/widgets/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentPage extends ConsumerStatefulWidget {
@@ -45,10 +48,16 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
           },
           onNavigationRequest: (NavigationRequest request) async {
             if (request.url.contains('/payment/confirm')) {
-              await launchUrl(
-                Uri.parse(request.url),
-                mode: LaunchMode.externalApplication,
-              );
+              final uri = Uri.parse(request.url);
+              final reference = uri.queryParameters['reference'];
+              if (reference == null) {
+                await showToast(
+                  'Invalid payment reference',
+                  backgroundColor: kDangerColor,
+                );
+                return NavigationDecision.prevent;
+              }
+              context.go(PaymentConfirmRoute(reference: reference).location);
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
