@@ -12,7 +12,7 @@ part 'services.g.dart';
 FutureOr<List<Service>> services(Ref ref, {int pageSize = 200}) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
-    '/service/all',
+    '/service/allActive',
     queryParameters: {
       'pageNumber': 1,
       'pageSize': pageSize,

@@ -20,7 +20,7 @@ FutureOr<List<Vendor>> vendors(
 }) async {
   final client = ref.read(dioProvider());
   final response = await client.get<JsonMap>(
-    '/vendor/all',
+    '/vendor/allActive',
     queryParameters: {
       'pageNumber': pageNumber,
       'pageSize': pageSize,
