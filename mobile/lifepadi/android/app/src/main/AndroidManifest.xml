@@ -14,7 +14,8 @@
         android:label="Lifepadi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:exported="true">
+        android:exported="true"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -24,7 +25,6 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:enableOnBackInvokedCallback="true"
             android:allowBackup="false"
             android:fullBackupContent="@xml/backup_rules">
             <!-- Specifies an Android theme to apply to this Activity as soon as
