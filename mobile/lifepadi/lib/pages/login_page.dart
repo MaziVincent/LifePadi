@@ -264,12 +264,30 @@ class LoginPage extends HookConsumerWidget {
                                     phoneNumber: phone.value,
                                     usePhone: usePhone.value,
                                   )
-                                  .onError<DioException>(
-                                    (error, stackTrace) => handleError(
-                                      error,
-                                      context.mounted ? context : null,
-                                    ),
+                                  .then((_) {
+                                // Check if user is authenticated
+                                if (ref
+                                        .read(authControllerProvider)
+                                        .value
+                                        ?.isAuth ??
+                                    false) {
+                                  // Check if current path is login page
+                                  final stillOnLoginPage = context.mounted &&
+                                      GoRouter.of(context).state.uri.path ==
+                                          const LoginRoute().location;
+
+                                  if (stillOnLoginPage && context.mounted) {
+                                    context.go(const HomeRoute().location);
+                                  }
+                                }
+                              }).onError<DioException>(
+                                (error, stackTrace) {
+                                  handleError(
+                                    error,
+                                    context.mounted ? context : null,
                                   );
+                                },
+                              );
                             },
                           ),
                           17.verticalSpace,
