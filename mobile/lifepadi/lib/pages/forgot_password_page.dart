@@ -5,10 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
-import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
-import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ForgotPasswordPage extends HookConsumerWidget {
@@ -16,9 +14,7 @@ class ForgotPasswordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usePhone = useState(true);
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final email = useState('');
     final phone = useState('');
 
     return Scaffold(
@@ -71,69 +67,15 @@ class ForgotPasswordPage extends HookConsumerWidget {
                             ),
                           ),
                           16.verticalSpace,
-                          if (usePhone.value)
-                            PhoneInputField(
-                              phone: phone,
-                              onChildTap: () {
-                                // Hide this, show email input field
-                                usePhone.value = false;
-                                // Remove keyboard
-                                FocusScope.of(context).unfocus();
-                                // Clear the phone input field
-                                phone.value = '';
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 13,
-                                  right: 9.76,
-                                ).r,
-                                child: Text(
-                                  'Use Email',
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    color: kDarkPrimaryColor,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 0.12.r,
-                                  ),
-                                ),
-                              ),
-                            )
-                          else
-                            InputField(
-                              hintText: 'Enter Email',
-                              labelText: 'Email',
-                              onChanged: (value) => email.value = value,
-                              onChildTap: () {
-                                // Hide this, show phone number input field
-                                usePhone.value = true;
-                                // Remove keyboard
-                                FocusScope.of(context).unfocus();
-                                // Clear the email input field
-                                email.value = '';
-                              },
-                              keyboardType: TextInputType.emailAddress,
-                              hasValue: email.value.isNotEmpty,
-                              autofillHints: const [
-                                AutofillHints.username,
-                                AutofillHints.email,
-                              ],
-                              validator: buildEmailValidator(),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 13,
-                                  right: 9.76,
-                                ).r,
-                                child: Text(
-                                  'Use Phone',
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    color: kDarkPrimaryColor,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 0.12.r,
-                                  ),
-                                ),
-                              ),
-                            ),
+                          PhoneInputField(
+                            phone: phone,
+                            onChildTap: () {
+                              // Remove keyboard
+                              FocusScope.of(context).unfocus();
+                              // Clear the phone input field
+                              phone.value = '';
+                            },
+                          ),
                           25.verticalSpace,
                           PrimaryActionButton(
                             text: 'Continue',
