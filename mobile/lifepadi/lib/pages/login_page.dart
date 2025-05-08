@@ -236,7 +236,7 @@ class LoginPage extends HookConsumerWidget {
                           ),
                           13.01.verticalSpace,
                           GestureDetector(
-                            onTap: () => context.go(
+                            onTap: () => context.push(
                               const ForgotPasswordRoute().location,
                             ),
                             child: Text(
