@@ -151,9 +151,62 @@ namespace Api.Services
             }
         }
 
-        public Task<bool> resetPassword(ForgotPasswordDTO forgotPassword)
+        public string formatedPhoneNumber(string phoneNumber)
         {
-            throw new NotImplementedException();
+
+            if (phoneNumber.StartsWith("+"))
+            {
+                return phoneNumber;
+            }
+            // Check if the number starts with '0'
+            if (phoneNumber.StartsWith("0"))
+            {
+                // Remove the first character ('0') and prepend '+234'
+                phoneNumber = string.Concat("+234", phoneNumber.AsSpan(1));
+
+            }
+            return phoneNumber;
+
+        }
+        public async Task<string> resetPassword(ForgotPasswordDTO forgotPassword)
+        {
+            try
+            {
+
+                if (string.IsNullOrEmpty(forgotPassword.NewPassword))
+                {
+                    throw new ServiceException("New password is required");
+                }
+
+                if (forgotPassword.Email is not null)
+                {
+                    var currentUser = await getUserByEmail(forgotPassword.Email);
+                    if (currentUser == null)
+                    {
+                        throw new ServiceException("User not found");
+                    }
+                    currentUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(forgotPassword.NewPassword);
+                    _dbContext.Users.Attach(currentUser);
+                    await _dbContext.SaveChangesAsync();
+                    return "Password reset successfully";
+                }
+                var phoneNumber = formatedPhoneNumber(forgotPassword.PhoneNumber!);
+                var currentUserByPhone = await getUserByPhoneNumber(phoneNumber);
+                if (currentUserByPhone == null)
+                {
+                    throw new ServiceException("User not found");
+                }
+                currentUserByPhone.PasswordHash = BCrypt.Net.BCrypt.HashPassword(forgotPassword.NewPassword);
+                _dbContext.Users.Attach(currentUserByPhone);
+                await _dbContext.SaveChangesAsync();
+                return "Password reset successfully";
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+
+
         }
 
         public async Task<UserDtoLite> updateAsync(UserDtoLite user, int id)
@@ -194,5 +247,35 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
             }
         }
+
+        public async Task<User> getUserByEmail(string email)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null) return null!;
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
+        public async Task<User> getUserByPhoneNumber(string phoneNumber)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+                if (user == null) return null!;
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+       
+
     }
 }

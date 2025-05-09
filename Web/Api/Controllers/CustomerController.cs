@@ -264,6 +264,7 @@ namespace Api.Controllers
                 var response = await _icustomer!.passwordReset(phoneNumber);
                 return Ok(response);
             }
+            
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);

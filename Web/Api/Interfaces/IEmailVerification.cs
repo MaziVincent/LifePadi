@@ -8,5 +8,6 @@ namespace Api.Interfaces
     public interface IEmailVerification
     {
         public Task SendEmailAsync(string to, string subject, string body);
+        public Task<object> SendVerificationEmail(string email);
     }
 }
