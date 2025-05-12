@@ -220,11 +220,13 @@ class ForgotPasswordRoute extends GoRouteData {
 }
 
 class ResetPasswordRoute extends GoRouteData {
-  const ResetPasswordRoute();
+  ResetPasswordRoute({required this.phoneNumber});
+
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ResetPasswordPage();
+    return ResetPasswordPage(phoneNumber: phoneNumber);
   }
 }
 

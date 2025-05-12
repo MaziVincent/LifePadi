@@ -104,8 +104,9 @@ class ForgotPasswordPage extends HookConsumerWidget {
                                           context
                                             ..pop()
                                             ..go(
-                                              const ResetPasswordRoute()
-                                                  .location,
+                                              ResetPasswordRoute(
+                                                phoneNumber: phone.value,
+                                              ).location,
                                             );
                                         },
                                       ),

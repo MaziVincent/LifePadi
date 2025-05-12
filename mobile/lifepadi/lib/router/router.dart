@@ -59,9 +59,8 @@ GoRouter router(Ref ref) {
         const GetStartedRoute().location,
         const RegisterRoute().location,
         const ForgotPasswordRoute().location,
-        const ResetPasswordRoute().location,
-        const BiometricAuthRoute()
-            .location, // Add biometric auth to guest routes
+        '/login/reset-password',
+        const BiometricAuthRoute().location,
       ];
 
       // Get current path to potentially save it

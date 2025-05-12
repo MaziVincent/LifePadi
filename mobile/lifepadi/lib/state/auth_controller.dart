@@ -335,15 +335,16 @@ class AuthController extends _$AuthController {
   /// Make a request to reset the user's password
   Future<String> resetPassword({
     required String newPassword,
-    required int userId,
+    required String phoneNumber,
   }) async {
     final client = ref.read(dioProvider(secured: false));
 
     try {
       final response = await client.post<JsonMap>(
-        '/auth/password-reset/$userId',
+        '/auth/password-reset',
         data: FormData.fromMap({
           'NewPassword': newPassword,
+          'PhoneNumber': phoneNumber,
         }),
       );
       if (response.data == null) {

@@ -11,7 +11,9 @@ import 'package:lifepadi/utils/validation.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
 class ResetPasswordPage extends HookConsumerWidget {
-  const ResetPasswordPage({super.key});
+  const ResetPasswordPage({super.key, required this.phoneNumber});
+
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -123,8 +125,8 @@ class ResetPasswordPage extends HookConsumerWidget {
                               await ref
                                   .read(authControllerProvider.notifier)
                                   .resetPassword(
+                                    phoneNumber: phoneNumber,
                                     newPassword: password.value,
-                                    userId: 1000,
                                   )
                                   .then(
                                 (String message) async {
