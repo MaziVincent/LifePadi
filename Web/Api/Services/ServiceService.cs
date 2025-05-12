@@ -41,7 +41,6 @@ namespace Api.Services
                     var services = await _dbContext!.Services.Include(s => s.Vendors)!
                                       .ThenInclude(p => p.Products)
                                       .OrderByDescending(s => s.CreatedAt)
-                                      .Where(s => s.IsActive == true)
                                       .ToListAsync();
                     servicesList = servicesList.Concat(services);
 
@@ -54,6 +53,7 @@ namespace Api.Services
                                   .ThenInclude(p => p.Products)
                                   .OrderByDescending(s => s.CreatedAt)
                                   .Where(s => s.SearchString!.Contains(props.SearchString!.ToUpper())).ToListAsync();
+                
                 servicesList = servicesList.Concat(servicesSearch);
 
                 var returned = PagedList<Service>.ToPagedList(servicesList, props.PageNumber, props.PageSize);
@@ -66,6 +66,45 @@ namespace Api.Services
             }
         }
 
+        public async Task<PagedList<Service>> allActive(SearchPaging props)
+        {
+            try
+            {
+                //create base query
+                var query = _dbContext!.Services
+                    .Include(s => s.Vendors)!
+                    .ThenInclude(v => v.Products)
+                    .Where(s => s.IsActive == true)
+                    .AsSplitQuery();
+
+                if (!string.IsNullOrEmpty(props.SearchString))
+                {
+                    query = query.Where(c => c.SearchString!.ToLower().Contains(props.SearchString!.ToLower()));
+                }
+
+                // Execute the query and get the results
+                var serviceList = await query.ToListAsync();
+                // Check if the vendor list is empty
+                if (serviceList.Count == 0)
+                {
+                    // If empty, return an empty PagedList
+                    var emptyResult = PagedList<Service>.ToPagedList(Enumerable.Empty<Service>().AsQueryable(), props.PageNumber, props.PageSize);
+                    return emptyResult;
+                }
+
+                //Randomize the vendor list
+                var random = new Random();
+                serviceList = [.. serviceList.OrderBy(x => random.Next())];
+
+                var returned = PagedList<Service>.ToPagedList(serviceList.AsQueryable(), props.PageNumber, props.PageSize);
+                return returned;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+
+        }
         public async Task<ServiceDtoLite> createAsync(ServiceDto service)
         {
             try

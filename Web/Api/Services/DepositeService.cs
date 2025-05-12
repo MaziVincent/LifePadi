@@ -510,6 +510,7 @@ namespace Api.Services
 
                 //add the auth token to the header
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Secret_Key"]);
+               // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config["Paystack:Test_Key"]);
                 // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "sk_test_c7c794bf42d409179d35cf75f239a5949790ee49");
 
                 //send request and get the respond

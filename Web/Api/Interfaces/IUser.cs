@@ -10,7 +10,7 @@ namespace Api.Interfaces
         public Task<string> deleteAsync(int id);
         public Task<AuthUserDto> createAsync(UserDto user);
         public Task<bool> checkEmail(string email);
-        public Task<bool> resetPassword(ForgotPasswordDTO forgotPassword);
+        public Task<string> resetPassword(ForgotPasswordDTO forgotPassword);
         public Task<IEnumerable<OrderDto>> getUserOders(int id);
         public Task<AuthUserDto> login(AuthUserDtoLite user);
         public Task<int> totalNumberOfUsers();

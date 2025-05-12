@@ -21,13 +21,20 @@ namespace Api.Controllers
         private readonly IOtherService _oService;
         private readonly IEmailVerification _emailVerify;
         private readonly IMapper _mapper;
-        public AuthController(DBContext context, IConfiguration config, IOtherService oService, IEmailVerification emailVerify, IMapper mapper)
+        private readonly IUser _userService;
+        public AuthController(DBContext context,
+        IConfiguration config,
+        IOtherService oService,
+        IEmailVerification emailVerify,
+        IMapper mapper,
+        IUser userService)
         {
             _context = context;
             _config = config;
             _oService = oService;
             _emailVerify = emailVerify;
             _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -40,7 +47,7 @@ namespace Api.Controllers
                 {
                     return NotFound("Invalid email or password");
                 }
-               
+
                 //put refreshToken in a cookie
                 var cookieOptions = new CookieOptions
                 {
@@ -125,7 +132,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-              
+
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
@@ -149,11 +156,11 @@ namespace Api.Controllers
         }
 
         [HttpGet("refreshToken")]
-        public async Task<IActionResult> RefreshToken([FromQuery]string refreshToken )
+        public async Task<IActionResult> RefreshToken([FromQuery] string refreshToken)
         {
             try
             {
-               // var refreshToken = Request.Cookies["refreshToken"];
+                // var refreshToken = Request.Cookies["refreshToken"];
                 if (string.IsNullOrEmpty(refreshToken))
                 {
                     return Unauthorized("Invalid refresh token");
@@ -212,20 +219,27 @@ namespace Api.Controllers
             return Ok("Logout Successfully");
         }
 
-        [HttpPut("password-reset/{UserId}")]
-        public async Task<IActionResult> PasswordReset(int UserId, [FromForm] string NewPassword)
+        [HttpPut("password-reset")]
+        public async Task<IActionResult> PasswordReset([FromForm] ForgotPasswordDTO forgotPassword)
         {
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == UserId);
-                
-                if (user == null)
-                {
-                    return NotFound("User not found");
-                }
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
-                await _context.SaveChangesAsync();
-                return Ok("Password reset successful");
+                var response = await _userService.resetPassword(forgotPassword);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromQuery] string email)
+        {
+            try
+            {
+                var response = await _emailVerify.SendVerificationEmail(email);
+                return Ok(response);
             }
             catch (Exception ex)
             {

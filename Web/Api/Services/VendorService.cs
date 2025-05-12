@@ -32,6 +32,7 @@ namespace Api.Services
         }
         public async Task<PagedList<Vendor>> allAsync(SearchPaging props)
         {
+            
             try
             {
                 IQueryable<Vendor> vendorList = Enumerable.Empty<Vendor>().AsQueryable();
@@ -40,7 +41,7 @@ namespace Api.Services
                 {
                     var vendor1 = await _dbContext!.Vendors.OrderByDescending(c => c.CreatedAt).Include(p => p.Products).Include(v => v.Addresses).AsSplitQuery()
                     .ToListAsync();
-                   
+
                     vendorList = vendorList.Concat(vendor1);
                     var result = PagedList<Vendor>.ToPagedList(vendorList, props.PageNumber, props.PageSize);
                     return result;
@@ -58,6 +59,45 @@ namespace Api.Services
             }
         }
 
+        public async Task<PagedList<Vendor>> allActiveVendors(SearchPaging props)
+        {
+
+            try
+            {
+                //create base query
+                var query = _dbContext!.Vendors
+                    .Where(v => v.IsActive == true)
+                    .Include(p => p.Products)
+                    .Include(v => v.Addresses)
+                    .AsSplitQuery();
+
+                if (!string.IsNullOrEmpty( props.SearchString))
+                {
+                    query = query.Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()));
+                }
+                
+                // Execute the query and get the results
+                var vendorList = await query.ToListAsync();
+                // Check if the vendor list is empty
+                if (vendorList.Count == 0)
+                {
+                    // If empty, return an empty PagedList
+                    var emptyResult = PagedList<Vendor>.ToPagedList(Enumerable.Empty<Vendor>().AsQueryable(), props.PageNumber, props.PageSize);
+                    return emptyResult;
+                }
+
+                //Randomize the vendor list
+                    var random = new Random();
+                    vendorList = [.. vendorList.OrderBy(x => random.Next())];
+    
+                var returned = PagedList<Vendor>.ToPagedList(vendorList.AsQueryable(), props.PageNumber, props.PageSize);
+                return returned;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
         public async Task<AuthVendorDtoLite> createAsync(AuthVendorDto vendor)
         {
             try

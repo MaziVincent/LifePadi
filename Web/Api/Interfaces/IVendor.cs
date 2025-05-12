@@ -7,6 +7,7 @@ namespace Api.Interfaces
     public interface IVendor
     {
         public Task<PagedList<Vendor>> allAsync(SearchPaging props);
+        public Task<PagedList<Vendor>> allActiveVendors(SearchPaging props);
         public Task<IEnumerable<VendorDtoLite>> vendorsOnly();
         public Task<IEnumerable<ProductDtoLite>> vendorsProduct(int id);
         public Task<VendorDto> uploadVendorImg(int id, IFormFile image);

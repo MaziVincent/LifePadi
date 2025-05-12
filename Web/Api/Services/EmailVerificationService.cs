@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Api.Interfaces;
 using System.IO;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace Api.Services
 {
@@ -29,7 +31,7 @@ namespace Api.Services
                 {
                     throw new Exceptions.ServiceException("Email already exists");
                 }
-                
+
                 using (var client = new System.Net.Mail.SmtpClient(_iconfig["SMTPConfig:Server"]))
                 {
                     client.UseDefaultCredentials = false;
@@ -57,5 +59,46 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
+
+        public async Task<object> SendVerificationEmail(string email)
+        {
+            try
+            {
+                int code = new Random().Next(1000, 9999);
+                string Subject = "Lifepadi Email Verification";
+                string Message = " <h1> Lifepadi Verification </h1> <br/> " +
+                "<p> Your Lifepadi verification code is: </p> " +
+                "<h2>" + code + "</h2> ";
+                var emailMessage = new MimeMessage();
+                emailMessage.From.Add(new MailboxAddress("LifePadi", "info@lifepadi.com"));
+                emailMessage.To.Add(new MailboxAddress("", email));
+                emailMessage.Subject = Subject;
+
+                var bodyBuilder = new BodyBuilder { HtmlBody = Message };
+                emailMessage.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect("smtp.zoho.com", 587, false);
+                    client.Authenticate("info@lifepadi.com", "October@1992");
+
+                    await client.SendAsync(emailMessage);
+                    client.Disconnect(true);
+                }
+                var response = new
+                {
+                    code,
+                    message = "Verification code sent successfully"
+                };
+
+                return response;
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
     }
 }

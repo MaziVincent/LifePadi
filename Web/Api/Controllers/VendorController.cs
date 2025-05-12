@@ -46,6 +46,29 @@ namespace Api.Controllers
             }
         }
 
+        [HttpGet("allActive")]
+        public async Task<IActionResult> getActive([FromQuery] SearchPaging props)
+        {
+            try
+            {
+                var vendors = await _ivendor.allActiveVendors(props);
+                var result = _mapper.Map<List<VendorDtoLite>>(vendors);
+                var dataList = new
+                {
+                    vendors.PageSize,
+                    vendors.TotalPages,
+                    vendors.TotalCount,
+                    vendors.CurrentPage,
+                    vendors.HasNext
+                };
+                return Ok(new { result, dataList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {
