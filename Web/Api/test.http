@@ -149,7 +149,7 @@ POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
 GET https://lifepadi-948405839190.us-east1.run.app/api/vendorcategory/vendors/2
 
 ###
-GET https://lifepadi-948405839190.us-east1.run.app/api/vendor/all
+GET https://lifepadi-225229879541.us-east1.run.app/api/vendor/all
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/customer/send-otp
@@ -160,7 +160,7 @@ Content-Type: application/json
 }
 
 ###
-PUT https://lifepadi-948405839190.us-east1.run.app/api/auth/password-reset/1000
+PUT https://lifepadi-948405839190.us-east1.run.app/api/auth/password-reset
 Content-Type: application/json
 
 {
