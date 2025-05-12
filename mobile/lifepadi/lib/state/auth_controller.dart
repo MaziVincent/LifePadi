@@ -340,7 +340,7 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final response = await client.post<JsonMap>(
+      final response = await client.put<JsonMap>(
         '/auth/password-reset',
         data: FormData.fromMap({
           'NewPassword': newPassword,
