@@ -16,7 +16,7 @@ import app_links
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     // Google Maps API Key
-    GMSServices.provideAPIKey("AIzaSyCDCjPcOfiVWRTDuH260B3nVRUmSuoHBoo")
+    GMSServices.provideAPIKey("AIzaSyCxMjW5DaD139uiB8nDQIryPlSWIVZrR_o")
     GeneratedPluginRegistrant.register(with: self)
     UNUserNotificationCenter.current().delegate = self
 

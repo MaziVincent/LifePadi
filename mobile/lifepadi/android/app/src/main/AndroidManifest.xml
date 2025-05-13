@@ -67,7 +67,7 @@
             android:value="2" />
         <!-- Google maps api key -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCDCjPcOfiVWRTDuH260B3nVRUmSuoHBoo"/>
+        android:value="AIzaSyCxMjW5DaD139uiB8nDQIryPlSWIVZrR_o"/>
     </application>
    
     <!-- Required to query activities that can process text, see:
