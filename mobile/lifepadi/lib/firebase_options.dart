@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCdDh_VEchlDZSwnadaELE5J59mAfOKXGU',
-    appId: '1:621872356309:android:c010943aca9ef420533b5c',
-    messagingSenderId: '621872356309',
-    projectId: 'lifepadi-17e8c',
-    storageBucket: 'lifepadi-17e8c.firebasestorage.app',
+    apiKey: 'AIzaSyA3UnyIXMdxoFb1_IAuQmJGKoFE4gbVKa0',
+    appId: '1:46429790339:android:2c81ed5dea60228950fbb6',
+    messagingSenderId: '46429790339',
+    projectId: 'lifepadi-24bfe',
+    storageBucket: 'lifepadi-24bfe.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDfKhqRTg-AXAxTZH0dINXmio1QcC0kRb4',
-    appId: '1:621872356309:ios:ea96714affc0a577533b5c',
-    messagingSenderId: '621872356309',
-    projectId: 'lifepadi-17e8c',
-    storageBucket: 'lifepadi-17e8c.firebasestorage.app',
+    apiKey: 'AIzaSyBNoLbRaNlZ75hpMg8ujy9_GOzH2jcpSig',
+    appId: '1:46429790339:ios:85f7742d7dcc256f50fbb6',
+    messagingSenderId: '46429790339',
+    projectId: 'lifepadi-24bfe',
+    storageBucket: 'lifepadi-24bfe.firebasestorage.app',
     iosBundleId: 'com.lifepadi.app',
   );
+
 }
