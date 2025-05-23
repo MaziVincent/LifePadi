@@ -164,6 +164,7 @@ PUT https://lifepadi-948405839190.us-east1.run.app/api/auth/password-reset
 Content-Type: application/json
 
 {
+    "Email":"primeobjective@gmail.com",
     "NewPassword":"Esomchi"
 }
 

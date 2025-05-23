@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //Firebase App Initialization
  FirebaseApp.Create(new AppOptions()
 {
-    Credential = GoogleCredential.FromFile("lifepadi-17e8c-firebase.json")
+    Credential = GoogleCredential.FromFile("lifepadi-24bfe-firebase.json")
 });
 
 //For Json Serializer
