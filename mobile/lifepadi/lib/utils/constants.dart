@@ -67,7 +67,7 @@ const kBiometricsKey = 'biometrics_enabled';
 const kHasEverLoggedIn = 'hasEverLoggedIn';
 const kHasSeenOnboarding = 'hasSeenOnboarding';
 
-const kGoogleMapsApiKey = 'AIzaSyCDCjPcOfiVWRTDuH260B3nVRUmSuoHBoo';
+const kGoogleMapsApiKey = 'AIzaSyCxMjW5DaD139uiB8nDQIryPlSWIVZrR_o';
 
 const kDeliveryPricePerKm = 300.0;
 

@@ -38,60 +38,91 @@ mixin LocationUtils {
     LatLng position,
   ) async {
     final dio = Dio();
-    final response = await dio.get<JsonMap>(
-      'https://maps.googleapis.com/maps/api/geocode/json',
-      queryParameters: {
-        'latlng': '${position.latitude},${position.longitude}',
-        'key': kGoogleMapsApiKey,
-      },
-    );
+    const url = 'https://maps.googleapis.com/maps/api/geocode/json';
+    final queryParams = {
+      'latlng': '${position.latitude},${position.longitude}',
+      'key': kGoogleMapsApiKey,
+    };
 
-    final data = response.data;
-    if (data!['status'] == 'OK' && (data['results'] as List).isNotEmpty) {
-      final result = (data['results'] as List)[0] as JsonMap;
-      final addressComponents =
-          List<JsonMap>.from(result['address_components'] as List);
+    logger.d('Fetching location details from: $url with params: $queryParams');
 
-      String? city,
-          state,
-          country,
-          postalCode,
-          sublocality,
-          localGovernmentArea;
+    try {
+      final response = await dio.get<JsonMap>(
+        url,
+        queryParameters: queryParams,
+      );
 
-      for (final component in addressComponents) {
-        final types = component['types'] as List;
-
-        if (types.contains('locality')) {
-          city = component['long_name'] as String?;
-        } else if (types.contains('administrative_area_level_1')) {
-          state = component['long_name'] as String?;
-        } else if (types.contains('country')) {
-          country = component['long_name'] as String?;
-        } else if (types.contains('postal_code')) {
-          postalCode = component['long_name'] as String?;
-        } else if (types.contains('sublocality')) {
-          sublocality = component['long_name'] as String?;
-        } else if (types.contains('administrative_area_level_2')) {
-          localGovernmentArea = component['long_name'] as String?;
-        }
+      final data = response.data;
+      if (data == null) {
+        logger.e('Location API returned null data');
+        throw const LocationDetailsException('Location API returned null data');
       }
 
-      return LocationDetails(
-        latitude: position.latitude,
-        longitude: position.longitude,
-        address: result['formatted_address'] as String,
-        city: city ?? '',
-        state: state ?? '',
-        country: country ?? '',
-        postalCode: postalCode ?? '',
-        sublocality: sublocality ?? '',
-        localGovernmentArea: localGovernmentArea ?? '',
-      );
-    } else {
-      throw const LocationDetailsException(
-        'Could not determine location details',
-      );
+      logger.d('Location API status: ${data['status']}');
+
+      if (data['status'] == 'OK' && (data['results'] as List).isNotEmpty) {
+        final result = (data['results'] as List)[0] as JsonMap;
+        final addressComponents =
+            List<JsonMap>.from(result['address_components'] as List);
+
+        String? city,
+            state,
+            country,
+            postalCode,
+            sublocality,
+            localGovernmentArea;
+
+        for (final component in addressComponents) {
+          final types = component['types'] as List;
+
+          if (types.contains('locality')) {
+            city = component['long_name'] as String?;
+          } else if (types.contains('administrative_area_level_1')) {
+            state = component['long_name'] as String?;
+          } else if (types.contains('country')) {
+            country = component['long_name'] as String?;
+          } else if (types.contains('postal_code')) {
+            postalCode = component['long_name'] as String?;
+          } else if (types.contains('sublocality')) {
+            sublocality = component['long_name'] as String?;
+          } else if (types.contains('administrative_area_level_2')) {
+            localGovernmentArea = component['long_name'] as String?;
+          }
+        }
+
+        return LocationDetails(
+          latitude: position.latitude,
+          longitude: position.longitude,
+          address: result['formatted_address'] as String,
+          city: city ?? '',
+          state: state ?? '',
+          country: country ?? '',
+          postalCode: postalCode ?? '',
+          sublocality: sublocality ?? '',
+          localGovernmentArea: localGovernmentArea ?? '',
+        );
+      } else {
+        final errorMessage =
+            'Could not determine location details. Status: ${data['status'] ?? 'unknown'}';
+        logger.e(
+          errorMessage,
+          error: data['error_message'] ?? 'No specific error message',
+        );
+        throw LocationDetailsException(errorMessage);
+      }
+    } catch (e) {
+      const errorMessage = 'Error fetching location details';
+      logger.e(errorMessage, error: e);
+      if (e is DioException) {
+        final dioError = e;
+        final statusCode = dioError.response?.statusCode;
+        final responseData = dioError.response?.data;
+        logger.e(
+          'DioException: Status code: $statusCode, Response data: $responseData',
+        );
+        throw LocationDetailsException('Network error: ${dioError.message}');
+      }
+      throw LocationDetailsException(e.toString());
     }
   }
 }
