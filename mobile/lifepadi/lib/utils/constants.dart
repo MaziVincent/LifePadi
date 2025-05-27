@@ -69,8 +69,6 @@ const kHasSeenOnboarding = 'hasSeenOnboarding';
 
 const kGoogleMapsApiKey = 'AIzaSyCxMjW5DaD139uiB8nDQIryPlSWIVZrR_o';
 
-const kDeliveryPricePerKm = 300.0;
-
 const kTotalDescription =
     'This is the total amount of all the items in your cart including the delivery fee and any other charges.';
 

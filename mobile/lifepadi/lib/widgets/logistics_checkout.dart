@@ -8,6 +8,7 @@ import 'package:lifepadi/models/logistics.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/models/receipt.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/delivery_fee.dart';
 import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/orders.dart';
 import 'package:lifepadi/state/wallet.dart';
@@ -15,6 +16,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/location_utils.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 
@@ -46,7 +48,7 @@ class LogisticsCheckout extends ConsumerWidget {
   }
 }
 
-class _LogisticsCheckoutContent extends HookWidget {
+class _LogisticsCheckoutContent extends HookWidget with LocationUtils {
   const _LogisticsCheckoutContent({
     this.logistics,
     required this.ref,
@@ -60,10 +62,30 @@ class _LogisticsCheckoutContent extends HookWidget {
   final WidgetRef ref;
   final Order? existingOrder;
 
+  /// Calculate distance between pickup and dropoff locations
+  double _calculateLogisticsDistance(Logistics logistics) {
+    return calculateDistance(
+      logistics.pickupLocation.latLng,
+      logistics.dropoffLocation.latLng,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final deliveryInstruction = useState('');
     final selectedPaymentMethod = useState(1);
+
+    // Calculate distance and get delivery fee from backend for new orders
+    final distance =
+        logistics != null ? _calculateLogisticsDistance(logistics!) : 0.0;
+    final deliveryFeeAsync =
+        ref.watch(deliveryFeeForDistanceProvider(distance: distance));
+
+    // Determine the delivery fee based on source
+    final deliveryFee =
+        existingOrder?.deliveryFee ?? (deliveryFeeAsync.valueOrNull ?? 0.0);
+    final isLoadingDeliveryFee = deliveryFeeAsync.isLoading;
+    final deliveryFeeError = deliveryFeeAsync.error;
 
     return SuperListView(
       padding: kHorizontalPadding.copyWith(top: 12.h),
@@ -94,13 +116,15 @@ class _LogisticsCheckoutContent extends HookWidget {
             8.verticalSpace,
             PriceBreakdownItem(
               title: 'Delivery fee',
-              price: existingOrder?.deliveryFee ?? logistics!.deliveryFee,
+              price: deliveryFee,
+              isLoading: isLoadingDeliveryFee,
+              error: deliveryFeeError?.toString(),
             ),
             Padding(
               padding: EdgeInsets.only(top: 12.h),
               child: PaymentPrice(
                 title: 'Total',
-                amount: existingOrder?.deliveryFee ?? logistics!.deliveryFee,
+                amount: deliveryFee,
               ),
             ),
           ],
@@ -108,134 +132,151 @@ class _LogisticsCheckoutContent extends HookWidget {
         16.verticalSpace,
         PaymentMethodSelector(
           selectedPaymentMethod: selectedPaymentMethod,
-          totalAmount: existingOrder?.deliveryFee ?? logistics!.deliveryFee,
+          totalAmount: deliveryFee,
         ),
         30.verticalSpace,
         PrimaryActionButton(
           text: 'Proceed to Pay',
-          onPressed: () async {
-            if (selectedPaymentMethod.value == -1) {
-              await displayError(
-                context,
-                title: 'Select payment method',
-                description: 'Please select a payment method to proceed.',
-              );
-              return;
-            }
-            await showToast('Please wait, creating order...');
-
-            try {
-              var order = existingOrder;
-
-              if (order == null) {
-                // Create order
-                order = await ref.read(
-                  storeOrderProvider(
-                    instruction: deliveryInstruction.value,
-                    totalAmount: logistics!.deliveryFee,
-                    type: CheckoutType.logistics,
-                  ).future,
-                );
-
-                await ref.read(
-                  storeDeliveryProvider(
-                    orderId: order!.id,
-                    fee: logistics!.deliveryFee,
-                    deliveryAddressId: logistics!.dropoffLocation.id,
-                    type: CheckoutType.logistics,
-                    pickupAddressId: logistics!.pickupLocation.id,
-                  ).future,
-                );
-
-                // Create logistics with the order id
-                await ref.read(
-                  storeLogisticsProvider(
-                    orderId: order.id,
-                    logistics: logistics!,
-                  ).future,
-                );
-                await showToast('Order created successfully');
-              }
-
-              // Process payment
-              final deliveryFee =
-                  existingOrder?.deliveryFee ?? logistics!.deliveryFee;
-              final isExistingOrder = existingOrder != null;
-              if (selectedPaymentMethod.value == 2) {
-                // Get payment link
-                final paymentLink = await ref.read(
-                  paymentLinkProvider(
-                    orderId: order.id,
-                    amount: 0,
-                    deliveryFee: deliveryFee,
-                    totalAmount: deliveryFee,
-                    type: CheckoutType.logistics,
-                  ).future,
-                );
-
-                await showToast('Processing payment...');
-                // Use webview to process payment
-                if (context.mounted) {
-                  await context.push<Receipt>(
-                    PaymentRoute(
-                      link: paymentLink,
-                      isExistingOrder: isExistingOrder,
-                    ).location,
-                  );
-                }
-              } else if (selectedPaymentMethod.value == 1) {
-                // Use wallet to process payment
-                final receipt = await ref.read(
-                  walletPaymentProvider(
-                    type: CheckoutType.logistics,
-                    orderId: order.id,
-                    amount: 0,
-                    deliveryFee: deliveryFee,
-                    totalAmount: deliveryFee,
-                    existingOrder: isExistingOrder,
-                  ).future,
-                );
-
-                if (receipt.status) {
-                  // show success notification
-                  await NotificationUtils.showNotification(
-                    id: order.id,
-                    title: 'Order successful',
-                    body:
-                        'Your logistics order #${order.orderId} has been placed successfully.',
-                    payload: {
-                      'route': OrderDetailsRoute(id: order.id).location,
-                    },
-                    save: true,
-                  );
-
-                  if (context.mounted) {
-                    context.go(
-                      ReceiptRoute(orderId: order.id).location,
-                      extra: receipt,
+          onPressed: isLoadingDeliveryFee || deliveryFeeError != null
+              ? null
+              : () async {
+                  if (selectedPaymentMethod.value == -1) {
+                    await displayError(
+                      context,
+                      title: 'Select payment method',
+                      description: 'Please select a payment method to proceed.',
                     );
+                    return;
                   }
-                }
-              }
-            } on PaymentFailedException catch (e) {
-              if (context.mounted) {
-                await displayError(
-                  context,
-                  title: 'Payment failed',
-                  description: e.message,
-                );
-              } else {
-                await showToast(
-                  e.message,
-                  isLong: true,
-                  gravity: ToastGravity.CENTER,
-                );
-              }
-            } catch (e, s) {
-              logger.e('Error creating order', error: e, stackTrace: s);
-              await handleError(e, context.mounted ? context : null);
-            }
-          },
+
+                  if (isLoadingDeliveryFee) {
+                    await showToast(
+                        'Please wait for delivery fee calculation...');
+                    return;
+                  }
+
+                  if (deliveryFeeError != null) {
+                    await displayError(
+                      context,
+                      title: 'Delivery Fee Error',
+                      description:
+                          'Unable to calculate delivery fee. Please try again.',
+                    );
+                    return;
+                  }
+
+                  await showToast('Please wait, creating order...');
+
+                  try {
+                    var order = existingOrder;
+
+                    if (order == null) {
+                      // Create order
+                      order = await ref.read(
+                        storeOrderProvider(
+                          instruction: deliveryInstruction.value,
+                          totalAmount: deliveryFee,
+                          type: CheckoutType.logistics,
+                        ).future,
+                      );
+
+                      await ref.read(
+                        storeDeliveryProvider(
+                          orderId: order!.id,
+                          fee: deliveryFee,
+                          deliveryAddressId: logistics!.dropoffLocation.id,
+                          type: CheckoutType.logistics,
+                          pickupAddressId: logistics!.pickupLocation.id,
+                        ).future,
+                      );
+
+                      // Create logistics with the order id
+                      await ref.read(
+                        storeLogisticsProvider(
+                          orderId: order.id,
+                          logistics: logistics!,
+                        ).future,
+                      );
+                      await showToast('Order created successfully');
+                    }
+
+                    // Process payment with calculated delivery fee
+                    final isExistingOrder = existingOrder != null;
+                    if (selectedPaymentMethod.value == 2) {
+                      // Get payment link
+                      final paymentLink = await ref.read(
+                        paymentLinkProvider(
+                          orderId: order.id,
+                          amount: 0,
+                          deliveryFee: deliveryFee,
+                          totalAmount: deliveryFee,
+                          type: CheckoutType.logistics,
+                        ).future,
+                      );
+
+                      await showToast('Processing payment...');
+                      // Use webview to process payment
+                      if (context.mounted) {
+                        await context.push<Receipt>(
+                          PaymentRoute(
+                            link: paymentLink,
+                            isExistingOrder: isExistingOrder,
+                          ).location,
+                        );
+                      }
+                    } else if (selectedPaymentMethod.value == 1) {
+                      // Use wallet to process payment
+                      final receipt = await ref.read(
+                        walletPaymentProvider(
+                          type: CheckoutType.logistics,
+                          orderId: order.id,
+                          amount: 0,
+                          deliveryFee: deliveryFee,
+                          totalAmount: deliveryFee,
+                          existingOrder: isExistingOrder,
+                        ).future,
+                      );
+
+                      if (receipt.status) {
+                        // show success notification
+                        await NotificationUtils.showNotification(
+                          id: order.id,
+                          title: 'Order successful',
+                          body:
+                              'Your logistics order #${order.orderId} has been placed successfully.',
+                          payload: {
+                            'route': OrderDetailsRoute(id: order.id).location,
+                          },
+                          save: true,
+                        );
+
+                        if (context.mounted) {
+                          context.go(
+                            ReceiptRoute(orderId: order.id).location,
+                            extra: receipt,
+                          );
+                        }
+                      }
+                    }
+                  } on PaymentFailedException catch (e) {
+                    if (context.mounted) {
+                      await displayError(
+                        context,
+                        title: 'Payment failed',
+                        description: e.message,
+                      );
+                    } else {
+                      await showToast(
+                        e.message,
+                        isLong: true,
+                        gravity: ToastGravity.CENTER,
+                      );
+                    }
+                  } catch (e, s) {
+                    logger.e('Error creating order', error: e, stackTrace: s);
+                    await handleError(e, context.mounted ? context : null);
+                  }
+                },
         ),
       ],
     );

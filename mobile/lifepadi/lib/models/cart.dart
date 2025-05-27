@@ -9,17 +9,13 @@ part 'cart.mapper.dart';
 class Cart with CartMappable {
   Cart({
     required this.products,
-    required this.total,
     required this.subtotal,
-    required this.deliveryFee,
     this.discount,
     this.deliveryLocation,
   });
 
   final List<Product> products;
   final double subtotal;
-  final double total;
-  final double deliveryFee;
   final Discount? discount;
   final LocationDetails? deliveryLocation;
   bool get isEmpty => products.isEmpty;

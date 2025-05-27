@@ -10,6 +10,13 @@ class CheckoutPage extends StatelessWidget {
   });
 
   final CheckoutType type;
+
+  /// This is useful for paying for a pending order from order details page without
+  /// needing to re-fetch the order.
+  ///
+  /// If an existing order is provided, the checkout will be for that order.
+  ///
+  /// If null, a new order will be created.
   final Order? existingOrder;
 
   @override

@@ -26,9 +26,11 @@ class LogisticsState extends _$LogisticsState with LocationUtils {
   }
 
   /// Calculate delivery fee between two points
+  /// Note: This will be replaced with backend calculation in the future
   double calculateDeliveryFee(LocationDetails pickup, LocationDetails dropoff) {
     final distance = calculateDistance(pickup.latLng, dropoff.latLng);
-    return distance * kDeliveryPricePerKm;
+    // Temporary fixed rate - will be replaced with backend call
+    return distance * 300.0;
   }
 
   /// Clear logistics data

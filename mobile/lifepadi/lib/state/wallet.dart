@@ -169,17 +169,20 @@ Future<Receipt> walletPayment(
   if (walletId == -1) {
     throw const WalletException('This user is not a customer');
   }
+
+  final requestData = {
+    'Amount': amount,
+    'OrderId': orderId,
+    'VoucherCode': voucherCode,
+    'DeliveryFee': deliveryFee,
+    'TotalAmount': totalAmount,
+    'WalletId': walletId,
+    'Type': type.toValue().toString(),
+  };
+  logger.d('Wallet payment request data: $requestData');
   final response = await client.post<JsonMap>(
     '/walletwithdrawal/withdraw/$walletId',
-    data: {
-      'Amount': amount,
-      'OrderId': orderId,
-      'VoucherCode': voucherCode,
-      'DeliveryFee': deliveryFee,
-      'TotalAmount': totalAmount,
-      'WalletId': walletId,
-      'Type': type.toValue().toString(),
-    },
+    data: requestData,
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
