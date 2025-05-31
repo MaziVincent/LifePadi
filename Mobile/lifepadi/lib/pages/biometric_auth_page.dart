@@ -146,19 +146,68 @@ class BiometricAuthPage extends HookConsumerWidget {
                       ],
                     ),
                     20.verticalSpace,
-                    TextButton(
-                      onPressed: () {
-                        // Navigate to login page
-                        context.push(const LoginRoute().location);
-                      },
-                      child: Text(
-                        'Login with Password',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: kDarkPrimaryColor,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            // Skip biometrics and attempt automatic login
+                            try {
+                              final user = await ref
+                                  .read(authControllerProvider.notifier)
+                                  .attemptLoginRecovery();
+
+                              if (user.isAuth) {
+                                // Get the previously stored route or default to home if none exists
+                                final lastRoute = PreferencesHelper.getString(
+                                      kLastRouteKey,
+                                    ) ??
+                                    const HomeRoute().location;
+
+                                // ignore: use_build_context_synchronously
+                                if (context.mounted) {
+                                  context.go(lastRoute);
+                                }
+                              } else {
+                                // If automatic login fails, go to login page
+                                // ignore: use_build_context_synchronously
+                                if (context.mounted) {
+                                  await context
+                                      .push(const LoginRoute().location);
+                                }
+                              }
+                            } catch (e) {
+                              // If automatic login fails, go to login page
+                              // ignore: use_build_context_synchronously
+                              if (context.mounted) {
+                                await context.push(const LoginRoute().location);
+                              }
+                            }
+                          },
+                          child: Text(
+                            'Skip Biometrics',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: kDarkPrimaryColor,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () {
+                            // Navigate to login page
+                            context.push(const LoginRoute().location);
+                          },
+                          child: Text(
+                            'Login with Password',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: kDarkPrimaryColor,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -48,20 +48,36 @@ class AuthController extends _$AuthController {
     _persistenceRefreshLogic();
 
     // Check if we can restore auth
-    if (await canRestoreAuth()) {
+    final canRestore = await canRestoreAuth();
+    logger.i('Can restore auth: $canRestore');
+
+    if (canRestore) {
       final isBiometricEnabled =
           PreferencesHelper.getBool(kBiometricsKey) ?? false;
-      if (isBiometricEnabled && await _biometricService.isSupported()) {
+      final biometricSupported = await _biometricService.isSupported();
+
+      logger.i(
+        'Biometric enabled: $isBiometricEnabled, supported: $biometricSupported',
+      );
+
+      if (isBiometricEnabled && biometricSupported) {
         // Return Guest which will show login page, biometric auth will be shown first via router
+        logger.i(
+          'Biometric auth required - returning Guest to trigger biometric flow',
+        );
         return const Guest();
       } else {
         // No biometrics or not supported, but we have saved credentials
         // Attempt to recover login directly
+        logger.i(
+          'Biometric not enabled/supported - attempting direct auth recovery',
+        );
         return attemptLoginRecovery();
       }
     }
 
     // No saved auth, return guest user
+    logger.i('No saved auth found - returning Guest');
     return const Guest();
   }
 
@@ -73,18 +89,45 @@ class AuthController extends _$AuthController {
     try {
       final credentials = await _secureStorage.get(kCredentialsKey);
       if (credentials == null) {
+        logger.w('No credentials found for auth recovery');
         throw const UnauthorizedException('No credentials found');
       }
 
-      await FirebaseMessaging.instance.subscribeToTopic(
-        'orders-${UserMapper.fromJson(credentials).id}',
-      );
       final user = UserMapper.fromJson(credentials);
+      logger.i('Attempting to restore auth for user: ${user.id}');
+
+      // Check if the access token is still valid by attempting to refresh it
+      // This ensures we have a valid session before proceeding
+      try {
+        state = AsyncData(user);
+        await refreshToken();
+        logger.i('Successfully refreshed token during auth recovery');
+      } catch (e) {
+        logger.w(
+          'Token refresh failed during recovery, using stored credentials: $e',
+        );
+        // If refresh fails, we'll still try to use the stored credentials
+        // The API calls will handle token refresh automatically if needed
+      }
+
+      // Subscribe to notifications if enabled
+      final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
+      if (notificationsEnabled) {
+        await FirebaseMessaging.instance.subscribeToTopic(
+          'orders-${user.id}',
+        );
+      }
+
       state = AsyncData(user);
+      logger.i('Successfully restored auth for user: ${user.id}');
       return user;
-    } catch (_, __) {
+    } catch (error, stackTrace) {
+      logger.e('Auth recovery failed', error: error, stackTrace: stackTrace);
+
+      // Only remove credentials if we can't restore auth at all
       if (!(await canRestoreAuth())) {
         await _secureStorage.remove(kCredentialsKey);
+        logger.i('Removed invalid credentials from storage');
       }
       return Future.value(const Guest());
     }
@@ -420,12 +463,22 @@ class AuthController extends _$AuthController {
 
   /// Check if there's auth to restore in secure storage
   Future<bool> canRestoreAuth() async {
-    final credentials = await _secureStorage.get(kCredentialsKey);
-    if (credentials != null) {
-      final user = UserMapper.fromJson(credentials);
-      return user is! Rider;
+    try {
+      final credentials = await _secureStorage.get(kCredentialsKey);
+      if (credentials != null) {
+        final user = UserMapper.fromJson(credentials);
+        final canRestore = user is! Rider;
+        logger.d(
+          'Found credentials for user ${user.id}, can restore: $canRestore',
+        );
+        return canRestore;
+      }
+      logger.d('No credentials found in secure storage');
+      return false;
+    } catch (e) {
+      logger.w('Error checking if auth can be restored: $e');
+      return false;
     }
-    return false;
   }
 
   /// Remove the user's account
