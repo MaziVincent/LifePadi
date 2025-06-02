@@ -29,80 +29,103 @@ namespace Api.Services
         {
             try
             {
-                var wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == t.WalletId) ?? throw new Exceptions.ServiceException("Wallet not found");
-                if (wallet.Balance < t.TotalAmount)
-                    throw new Exceptions.ServiceException("Insufficient balance");
-                var withdrawal = _mapper.Map<Withdrawal>(t);
-                var tx_ref = GenerateTxRef.genTx_rf();
-                withdrawal.ReferenceId = tx_ref;
-                withdrawal.TransactionId = GenerateTxRef.genTxId();
-                withdrawal.Status = "successful";
-                withdrawal.Type = t.Type;
-                withdrawal.PaymentMethod = "withdrawal";
-                withdrawal.CreatedAt = DateTime.UtcNow;
-                withdrawal.UpdatedAt = DateTime.UtcNow;
+                ArgumentNullException.ThrowIfNull(t);
 
-                wallet.InitialBalance = wallet.Balance;
-                wallet.Balance -= t.TotalAmount;
-                wallet.UpdatedAt = DateTime.UtcNow;
+                // Get all required entities in one query where possible
+                var wallet = await _context.Wallets
+                .FirstOrDefaultAsync(w => w.Id == t.WalletId)
+                ?? throw new Exceptions.ServiceException("Wallet not found");
 
-                // create a transaction
-                var transaction = new Transaction();
-                transaction.TotalAmount = t.TotalAmount;
-                if (t.VoucherCode != null)
-                {
-                    var voucher = await _ivoucher.searchWithCode(t.VoucherCode);
-                    var dorder = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
-                    var customerVoucher = await _context.CustomerVouchers.FirstOrDefaultAsync(cv => cv.CustomerId == dorder!.CustomerId && cv.VoucherId == voucher.Id);
-                    if (customerVoucher == null)
-                    {
-                        var newCustomerVoucher = new CustomerVoucher
-                        {
-                            CustomerId = dorder!.CustomerId,
-                            VoucherId = voucher.Id,
-                            TransactionId = transaction.Id
-                        };
-                        await _context.CustomerVouchers.AddAsync(newCustomerVoucher);
-                    }
-                    else
-                    {
-                        customerVoucher.TransactionId = transaction.Id;
-                    }
-                    await _context.SaveChangesAsync();
-                    transaction.VoucherId = voucher.Id;
-                }
-                transaction.AmountPaid = t.TotalAmount;
-                transaction.OrderId = t.OrderId;
-                transaction.TransactionRef = tx_ref;
-                transaction.PaymentId = withdrawal.TransactionId;
-                transaction.Status = "successful";
-                transaction.Type = t.Type;
-                transaction.UpdatedAt = DateTime.UtcNow;
-                transaction.WalletId = t.WalletId;
-                transaction.PaymentChannel = "Wallet";
-                transaction.StatusBool = true;
-                transaction.PaidAt = DateTime.UtcNow;
-                transaction.DeliveryFee = t.DeliveryFee;
-                transaction.SubTotal = t.Amount;
+            if (wallet.Balance < t.TotalAmount)
+                throw new Exceptions.ServiceException("Insufficient balance");
 
-                //update order status to ongoing
-                var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
-                if(order == null) throw new Exceptions.ServiceException("Order not found");
-                order.Status = "Ongoing";
-                order.PaymentMethod = "Lifepadi_Wallet";
-                order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.Id == t.OrderId)
+                ?? throw new Exceptions.ServiceException("Order not found");
 
-                await _context.Transactions.AddAsync(transaction);
-                await _context.Withdrawals.AddAsync(withdrawal);
-                 _context.Update(order);
-                _context.Wallets.Attach(wallet);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<TransactionDto>(transaction);
-            }
+            // Generate transaction references once
+            var txRef = GenerateTxRef.genTx_rf();
+            var txId = GenerateTxRef.genTxId();
+            var now = DateTime.UtcNow;
+
+            // Create withdrawal
+            var withdrawal = _mapper.Map<Withdrawal>(t);
+            withdrawal.ReferenceId = txRef;
+            withdrawal.TransactionId = txId;
+            withdrawal.Status = "successful";
+            withdrawal.PaymentMethod = "withdrawal";
+            withdrawal.CreatedAt = now;
+            withdrawal.UpdatedAt = now;
+
+            // Update wallet
+            wallet.InitialBalance = wallet.Balance;
+            wallet.Balance -= t.TotalAmount;
+            wallet.UpdatedAt = now;
+
+            // Create transaction
+            var transaction = new Transaction
+            {
+                TotalAmount = t.TotalAmount,
+                AmountPaid = t.TotalAmount,
+                OrderId = t.OrderId,
+                TransactionRef = txRef,
+                PaymentId = txId,
+                Status = "successful",
+                Type = t.Type,
+                UpdatedAt = now,
+                WalletId = t.WalletId,
+                PaymentChannel = "Wallet",
+                StatusBool = true,
+                PaidAt = now,
+                DeliveryFee = t.DeliveryFee,
+                SubTotal = t.Amount,
+                VoucherId = t.VoucherCode != null ? (await HandleVoucher(t.VoucherCode, order))?.Id : null
+            };
+
+            // Update order
+            order.Status = "Ongoing";
+            order.PaymentMethod = "Lifepadi_Wallet";
+            order.SearchString = $"{order.Status.ToUpper()} {order.Type?.ToUpper()} {order.Order_Id}";
+
+            // Add all entities at once
+            _context.Transactions.Add(transaction);
+            _context.Withdrawals.Add(withdrawal);
+            _context.Orders.Update(order);
+            _context.Wallets.Update(wallet);
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<TransactionDto>(transaction);
+        }
+
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
+        }
+
+        public async Task<VoucherDto?> HandleVoucher(string voucherCode, Order order)
+        {
+
+            if (string.IsNullOrWhiteSpace(voucherCode)) return null;
+
+    var voucher = await _ivoucher.searchWithCode(voucherCode);
+    if (voucher == null) return null;
+
+    var customerVoucher = await _context.CustomerVouchers
+        .FirstOrDefaultAsync(cv => cv.CustomerId == order.CustomerId && cv.VoucherId == voucher.Id);
+
+    if (customerVoucher == null)
+    {
+        customerVoucher = new CustomerVoucher
+        {
+            CustomerId = order.CustomerId,
+            VoucherId = voucher.Id
+        };
+        _context.CustomerVouchers.Add(customerVoucher);
+    }
+
+    return voucher;
         }
 
         public async Task<object> customerTransactionStats(int customerId)

@@ -1,2 +1,61 @@
 //"LifePadiDBConnection": "Server=lifepadi.cjkuw0skw142.us-east-1.rds.amazonaws.com;Port=5432;Database=lifepadi_db;Username=postgres;Password=Esomchi92;"
 //"LifePadiDBConnection": "Server=34.75.175.218;Port=5432;Database=lifepadi-01;Username=postgres;Password=Esomchi92;"
+
+
+
+
+
+ {
+                var wallet = await _context.Wallets.FirstOrDefaultAsync(w => w.Id == t.WalletId) ?? throw new Exceptions.ServiceException("Wallet not found");
+                if (wallet.Balance < t.TotalAmount)
+                    throw new Exceptions.ServiceException("Insufficient balance");
+                var withdrawal = _mapper.Map<Withdrawal>(t);
+                var tx_ref = GenerateTxRef.genTx_rf();
+                withdrawal.ReferenceId = tx_ref;
+                withdrawal.TransactionId = GenerateTxRef.genTxId();
+                withdrawal.Status = "successful";
+                withdrawal.Type = t.Type;
+                withdrawal.PaymentMethod = "withdrawal";
+                withdrawal.CreatedAt = DateTime.UtcNow;
+                withdrawal.UpdatedAt = DateTime.UtcNow;
+
+                wallet.InitialBalance = wallet.Balance;
+                wallet.Balance -= t.TotalAmount;
+                wallet.UpdatedAt = DateTime.UtcNow;
+
+                // create a transaction
+                var transaction = new Transaction();
+                transaction.TotalAmount = t.TotalAmount;
+                transaction.AmountPaid = t.TotalAmount;
+                transaction.OrderId = t.OrderId;
+                transaction.TransactionRef = tx_ref;
+                transaction.PaymentId = withdrawal.TransactionId;
+                transaction.Status = "successful";
+                transaction.Type = t.Type;
+                transaction.UpdatedAt = DateTime.UtcNow;
+                transaction.WalletId = t.WalletId;
+                transaction.PaymentChannel = "Wallet";
+                transaction.StatusBool = true;
+                transaction.PaidAt = DateTime.UtcNow;
+                transaction.DeliveryFee = t.DeliveryFee;
+                transaction.SubTotal = t.Amount;
+
+                //update order status to ongoing
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == t.OrderId);
+                if(order == null) throw new Exceptions.ServiceException("Order not found");
+                order.Status = "Ongoing";
+                order.PaymentMethod = "Lifepadi_Wallet";
+                order.SearchString = order.Status.ToUpper() + " " + order.Type!.ToUpper() + " " + order.Order_Id;
+
+                await _context.Transactions.AddAsync(transaction);
+                await _context.Withdrawals.AddAsync(withdrawal);
+                 _context.Update(order);
+                _context.Wallets.Attach(wallet);
+                await _context.SaveChangesAsync();
+                if (t.VoucherCode is not null)
+                {
+                    await HandleVoucher(t.VoucherCode, transaction, order);
+                    
+                }
+                return _mapper.Map<TransactionDto>(transaction);
+            }

@@ -313,8 +313,8 @@ namespace Api.Controllers
                 {
                     return BadRequest("Discount percentage cannot be greater than 100");
                 }
-
-                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * (delivery.DiscountPercentage / 100));
+                double percentage = (double)((double)delivery.DiscountPercentage / 100);
+                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * percentage );
                 return Ok(new {DeliveryFee = deliveryFeeAfterPercentageDiscount});
             }
             if (delivery.DiscountAmount != null)
