@@ -56,18 +56,17 @@ class CartDiscount extends HookWidget {
                     text: 'use',
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        // Use the voucher code
                         await ref
-                            .read(cartStateProvider.notifier)
-                            .applyDiscount(
-                              voucherCode: voucherCode.value,
-                            )
-                            .catchError(
-                              (dynamic error) => handleError(
-                                error,
-                                context.mounted ? context : null,
-                              ),
-                            );
+                              .read(cartStateProvider.notifier)
+                              .applyDiscount(
+                                voucherCode: voucherCode.value,
+                              )
+                              .catchError(
+                                (dynamic error) => handleError(
+                                  error,
+                                  context.mounted ? context : null,
+                                ),
+                              );
                       }
                     },
                     radius: 8.r,

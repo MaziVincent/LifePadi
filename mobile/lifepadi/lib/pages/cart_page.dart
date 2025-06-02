@@ -19,7 +19,6 @@ class CartPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartAsync = ref.watch(cartStateProvider);
-    final isExpanded = useState(false);
     final locations = ref.watch(locationsProvider);
     final hasInitialized = useState(false);
 
@@ -47,8 +46,6 @@ class CartPage extends HookConsumerWidget {
       },
       [locations],
     );
-
-    void togglePanel() => isExpanded.value = !isExpanded.value;
 
     return Scaffold(
       appBar: MyAppBar(
@@ -149,61 +146,20 @@ class CartPage extends HookConsumerWidget {
                     .toList()
                     .separatedBy(14.verticalSpace),
                 31.verticalSpace,
-                if (isExpanded.value) 332.verticalSpace else 150.verticalSpace,
+                // Simple bottom panel with just subtotal and checkout button
+                150.verticalSpace,
               ],
             ),
             BottomPanel(
-              height: isExpanded.value ? 332.h : 150.h,
+              height: 140.h,
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (!isExpanded.value)
-                        Expanded(
-                          child: PaymentPrice(
-                            title: 'Subtotal',
-                            amount: cart.subtotal,
-                            description:
-                                'This is the total amount of all the items in your cart.',
-                          ),
-                        )
-                      else
-                        const Expanded(child: Text('Hide details')),
-                      IconButton(
-                        icon: Icon(
-                          isExpanded.value
-                              ? Icons.keyboard_double_arrow_down
-                              : Icons.keyboard_double_arrow_up,
-                        ),
-                        onPressed: togglePanel,
-                      ),
-                    ],
+                  PaymentPrice(
+                    title: 'Subtotal',
+                    amount: cart.subtotal,
+                    description:
+                        'This is the total amount of all the items in your cart.',
                   ),
-                  if (isExpanded.value) ...[
-                    const CartDiscount(),
-                    const MyDivider(),
-                    12.verticalSpace,
-                    if (cart.discount != null)
-                      Text(
-                        cart.discount!.statement,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic,
-                          color: const Color(0xFF7F7F89),
-                        ),
-                      ),
-                    PaymentPrice(
-                      title: 'Delivery Fee',
-                      amount: cart.deliveryFee,
-                    ),
-                    PaymentPrice(
-                      title: 'Total',
-                      amount: cart.total,
-                      description: kTotalDescription,
-                    ),
-                  ],
                   10.verticalSpace,
                   PrimaryButton(
                     text: 'Proceed to checkout',

@@ -4,6 +4,7 @@ import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/client.dart';
+import 'package:lifepadi/state/delivery_fee.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/helpers.dart';
@@ -24,12 +25,12 @@ class CartState extends _$CartState with LocationUtils {
   Future<Cart> _getCart() async {
     final cartJson = PreferencesHelper.getString(kCartKey);
     if (cartJson == null) {
-      return Cart(products: [], total: 0, subtotal: 0, deliveryFee: 0);
+      return Cart(products: [], subtotal: 0);
     }
     return CartMapper.fromJson(cartJson);
   }
 
-  /// Calculate the cart total based on the products in the cart
+  /// Calculate the cart subtotal based on the products in the cart
   Cart _computeCart({
     List<Product>? products,
     Discount? discount,
@@ -49,106 +50,13 @@ class CartState extends _$CartState with LocationUtils {
       0,
       (sum, product) => sum + (product.price * product.quantity),
     );
-    final locations = _getUniqueLocations(products);
-    var deliveryFee = _calculateDeliveryFee(locations, selectedLocation);
-    var discountPrice = 0.0;
-    if (discount != null) {
-      if (discount.amount != null) {
-        discountPrice = discount.amount!;
-      } else if (discount.percentage != null) {
-        discountPrice = (discount.percentage! / 100) * deliveryFee;
-      }
-      // Apply discount to delivery fee
-      deliveryFee -= discountPrice;
-    }
-
-    deliveryFee = double.parse(deliveryFee.toStringAsFixed(0));
-    var total = subtotal + deliveryFee;
-    total = double.parse(total.toStringAsFixed(0));
 
     return Cart(
       products: products,
       subtotal: subtotal,
-      total: total,
-      deliveryFee: deliveryFee,
       discount: discount ?? currentState?.discount,
       deliveryLocation: selectedLocation ?? currentState?.deliveryLocation,
     );
-  }
-
-  /// Get unique vendor locations from the products in the cart
-  Set<LocationDetails> _getUniqueLocations(List<Product> products) {
-    final locations = <LocationDetails>{};
-
-    // Add all vendor locations
-    for (final product in products) {
-      locations.add(product.vendor.address!);
-    }
-
-    return locations;
-  }
-
-  /// Calculate delivery fee based on the Travelling Salesman Problem (TSP)
-  double _calculateDeliveryFee(
-    Set<LocationDetails> locations,
-    LocationDetails? deliveryLocation,
-  ) {
-    if (locations.isEmpty) return 0;
-
-    final points = locations.toList();
-
-    // Get current delivery location from state
-    if (deliveryLocation == null) return 0;
-
-    // Find route between vendor locations
-    final route = _findNearestNeighborRoute(points)
-      // Add delivery location as final destination
-      ..add(deliveryLocation);
-
-    // Calculate total distance along route including to delivery location
-    var totalDistance = 0.0;
-    for (var i = 0; i < route.length - 1; i++) {
-      totalDistance += calculateDistance(
-        route[i].latLng,
-        route[i + 1].latLng,
-      );
-    }
-
-    return totalDistance * kDeliveryPricePerKm;
-  }
-
-  /// Find the nearest neighbor route using the Nearest Neighbor algorithm
-  List<LocationDetails> _findNearestNeighborRoute(
-    List<LocationDetails> points,
-  ) {
-    if (points.isEmpty) return [];
-    if (points.length == 1) return points;
-
-    final route = <LocationDetails>[points.first];
-    final unvisited = points.skip(1).toList();
-
-    while (unvisited.isNotEmpty) {
-      final current = route.last;
-      var nearestIdx = 0;
-      var minDistance = double.infinity;
-
-      // Find nearest unvisited point
-      for (var i = 0; i < unvisited.length; i++) {
-        final distance = calculateDistance(
-          current.latLng,
-          unvisited[i].latLng,
-        );
-        if (distance < minDistance) {
-          minDistance = distance;
-          nearestIdx = i;
-        }
-      }
-
-      route.add(unvisited[nearestIdx]);
-      unvisited.removeAt(nearestIdx);
-    }
-
-    return route;
   }
 
   /// Save the cart to shared preferences
@@ -170,9 +78,7 @@ class CartState extends _$CartState with LocationUtils {
     state = AsyncData(
       Cart(
         products: [],
-        total: 0,
         subtotal: 0,
-        deliveryFee: 0,
         deliveryLocation:
             keepDeliveryLocation ? state.valueOrNull?.deliveryLocation : null,
       ),
@@ -273,11 +179,12 @@ class CartState extends _$CartState with LocationUtils {
     final discount = DiscountMapper.fromJson(response.data!);
 
     await _saveCart(_computeCart(discount: discount));
+    // Invalidate the delivery fee provider to recalculate the fee
+    ref.invalidate(deliveryFeeProvider);
     await showToast('Discount applied');
   }
 
   /// Select a location for delivery
-  /// and update the delivery fee
   Future<void> selectDeliveryLocation(
     LocationDetails location, {
     bool notifyDefault = false,

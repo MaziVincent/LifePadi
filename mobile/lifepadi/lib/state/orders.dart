@@ -169,6 +169,7 @@ FutureOr<String> paymentLink(
     'VoucherCode': voucherCode ?? '',
     'Type': type.toValue().toString(),
   };
+  logger.d('Payment link request data: $requestData');
   final response = await client.post<String>(
     '/transaction/MobilePaystackCheckout',
     data: requestData,
