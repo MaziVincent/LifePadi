@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:lifepadi/services/background_location_service.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/categories.dart';
 import 'package:lifepadi/state/client.dart';
@@ -30,6 +31,8 @@ part 'auth_controller.g.dart';
 class AuthController extends _$AuthController {
   final SecureStorageService _secureStorage = SecureStorageService();
   final BiometricService _biometricService = BiometricService();
+  final BackgroundLocationService _backgroundLocationService =
+      BackgroundLocationService();
 
   @override
   Future<User> build() async {
@@ -118,6 +121,11 @@ class AuthController extends _$AuthController {
         );
       }
 
+      // Start background location tracking if user is a rider
+      if (user is Rider) {
+        await _backgroundLocationService.onRiderLogin(user);
+      }
+
       state = AsyncData(user);
       logger.i('Successfully restored auth for user: ${user.id}');
       return user;
@@ -139,6 +147,12 @@ class AuthController extends _$AuthController {
       await FirebaseMessaging.instance.unsubscribeFromTopic(
         'orders-${state.requireValue.id}',
       );
+    }
+
+    // Stop background location tracking if user is a rider
+    final currentUser = state.requireValue;
+    if (currentUser is Rider) {
+      await _backgroundLocationService.onRiderLogout();
     }
 
     await PreferencesHelper.clear();
@@ -211,6 +225,12 @@ class AuthController extends _$AuthController {
       if (notificationsEnabled) {
         await FirebaseMessaging.instance.subscribeToTopic('orders-${user.id}');
       }
+
+      // Start background location tracking if user is a rider
+      if (user is Rider) {
+        await _backgroundLocationService.onRiderLogin(user);
+      }
+
       state = AsyncData(user);
     } catch (e) {
       rethrow;

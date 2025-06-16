@@ -34,7 +34,7 @@ ThemeData lightTheme() {
         ),
       ),
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       shape: RoundedRectangleBorder(

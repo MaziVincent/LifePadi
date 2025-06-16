@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/order.dart';
 import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/services/background_location_service.dart';
 import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/client.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -26,6 +27,8 @@ class _RiderPageState extends ConsumerState<RiderPage> {
   HubConnection? hubConnection;
   Location location = Location();
   DateTime? lastUpdatedAt;
+  final BackgroundLocationService _backgroundLocationService =
+      BackgroundLocationService();
 
   /// Update rider location with a PUT request
   ///
@@ -53,7 +56,7 @@ class _RiderPageState extends ConsumerState<RiderPage> {
     );
   }
 
-  /// Setup location tracking with SignalR
+  /// Setup location tracking with both foreground SignalR and background service
   Future<void> setupLocationTracking() async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
@@ -72,7 +75,10 @@ class _RiderPageState extends ConsumerState<RiderPage> {
       if (permissionGranted != PermissionStatus.granted) return;
     }
 
-    // Setup SignalR
+    // Ensure background location tracking is enabled
+    await _backgroundLocationService.initializeFromAuthState();
+
+    // Setup foreground SignalR for real-time updates when app is active
     hubConnection = HubConnectionBuilder()
         .withUrl(kSignalRLocationUrl)
         .withAutomaticReconnect()
@@ -81,7 +87,7 @@ class _RiderPageState extends ConsumerState<RiderPage> {
     try {
       await hubConnection?.start();
 
-      // Start location tracking
+      // Start foreground location tracking for real-time updates
       locationSubscription =
           location.onLocationChanged.listen((locationData) async {
         if (locationData.latitude == null || locationData.longitude == null) {
@@ -91,12 +97,15 @@ class _RiderPageState extends ConsumerState<RiderPage> {
         logger.d(
           '[Rider ${rider.id}#] (${locationData.latitude}, ${locationData.longitude})',
         );
+
+        // Update via HTTP API (with throttling)
         updateRiderLocationWithPutRequest(
           riderId: rider.id,
           latitude: locationData.latitude!,
           longitude: locationData.longitude!,
         ).ignore();
 
+        // Send real-time update via SignalR
         await hubConnection?.invoke(
           'UpdateLocation',
           args: [
@@ -113,6 +122,14 @@ class _RiderPageState extends ConsumerState<RiderPage> {
       logger.e('SignalR connection error', error: e);
     }
   }
+
+  /// Get background location tracking status
+  bool get isBackgroundTrackingEnabled =>
+      _backgroundLocationService.isBackgroundTrackingEnabled;
+
+  /// Get last location update time
+  DateTime? get lastLocationUpdate =>
+      _backgroundLocationService.lastLocationUpdate;
 
   @override
   void initState() {
@@ -136,6 +153,42 @@ class _RiderPageState extends ConsumerState<RiderPage> {
           title: 'Deliveries',
           height: 126.h,
           actions: [
+            /// Background location status indicator with test button
+            Container(
+              margin: EdgeInsets.only(right: 8.w),
+              child: GestureDetector(
+                onTap: () async {
+                  // Force a background location update for testing
+                  await _backgroundLocationService.forceLocationUpdate();
+                  logger.i('Forced background location update');
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      isBackgroundTrackingEnabled
+                          ? IconsaxPlusLinear.location
+                          : IconsaxPlusLinear.location_slash,
+                      color: isBackgroundTrackingEnabled
+                          ? kBrightGreen
+                          : Colors.orange,
+                      size: 20.sp,
+                    ),
+                    Text(
+                      isBackgroundTrackingEnabled ? 'Active' : 'Inactive',
+                      style: TextStyle(
+                        fontSize: 8.sp,
+                        color: isBackgroundTrackingEnabled
+                            ? kBrightGreen
+                            : Colors.orange,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
             /// Logout button
             Consumer(
               builder: (context, ref, child) {
