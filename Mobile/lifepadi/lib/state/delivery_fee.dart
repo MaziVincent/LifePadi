@@ -86,7 +86,7 @@ Future<double> deliveryFeeForDistance(
   }
 
   return double.parse(
-      (response.data!['DeliveryFee'] as num).toStringAsFixed(2));
+      (response.data!['DeliveryFee'] as num).toStringAsFixed(2),);
 }
 
 /// Calculate total distance using TSP algorithm like the original implementation

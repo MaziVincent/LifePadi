@@ -148,6 +148,7 @@ class BackgroundLocationService {
   }
 
   /// Update the last location update timestamp
+  // ignore: unused_element
   Future<void> _updateLastLocationTimestamp() async {
     await PreferencesHelper.setString(
       key: _lastLocationUpdateKey,

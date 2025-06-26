@@ -91,11 +91,10 @@ class _PaymentConfirmationPageState
           save: true,
         );
 
-        // Refresh balance
-        ref.invalidate(balanceProvider);
-
-        // Refresh transaction history
-        ref.invalidate(transactionHistoryProvider());
+        // Refresh balance and txn history
+        ref
+          ..invalidate(balanceProvider)
+          ..invalidate(transactionHistoryProvider());
 
         // Go to wallet page
         if (mounted) {

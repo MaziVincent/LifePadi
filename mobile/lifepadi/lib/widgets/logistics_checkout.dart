@@ -151,7 +151,7 @@ class _LogisticsCheckoutContent extends HookWidget with LocationUtils {
 
                   if (isLoadingDeliveryFee) {
                     await showToast(
-                        'Please wait for delivery fee calculation...');
+                        'Please wait for delivery fee calculation...',);
                     return;
                   }
 
