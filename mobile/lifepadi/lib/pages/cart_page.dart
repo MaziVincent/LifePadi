@@ -1,0 +1,195 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/cart_state.dart';
+import 'package:lifepadi/state/location.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
+
+class CartPage extends HookConsumerWidget {
+  const CartPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartAsync = ref.watch(cartStateProvider);
+    final locations = ref.watch(locationsProvider);
+    final hasInitialized = useState(false);
+
+    useEffect(
+      () {
+        if (!hasInitialized.value) {
+          locations.whenData((locationsList) {
+            final cart = ref.read(cartStateProvider).valueOrNull;
+            if (cart?.deliveryLocation == null) {
+              final defaultLocation = locationsList.firstWhere(
+                (location) => location.isDefault,
+                orElse: () => locationsList.first,
+              );
+              if (defaultLocation.isDefault) {
+                ref.read(cartStateProvider.notifier).selectDeliveryLocation(
+                      defaultLocation,
+                      notifyDefault: true,
+                    );
+              }
+            }
+            hasInitialized.value = true;
+          });
+        }
+        return null;
+      },
+      [locations],
+    );
+
+    return Scaffold(
+      appBar: MyAppBar(
+        title: 'Cart',
+        actions: [
+          MyIconButton(
+            icon: Remix.more_2_fill,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: cartAsync.when(
+        loading: () => const Center(child: GreenyLoadingWheel()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (cart) => Stack(
+          children: [
+            SuperListView(
+              padding: kHorizontalPadding.copyWith(top: 12.h),
+              children: [
+                const SectionTitle('Location'),
+                12.verticalSpace,
+                LocationCard(
+                  onTap: () async {
+                    await displayBottomPanel(
+                      context,
+                      child: EditLocationModalForm(
+                        selectedLocationId: cart.deliveryLocation?.id,
+                        onLocationSelected: (location) => ref
+                            .read(cartStateProvider.notifier)
+                            .selectDeliveryLocation(location),
+                      ),
+                    );
+                  },
+                  address: locations.whenOrNull(
+                        data: (locations) => cart.deliveryLocation != null
+                            ? locations
+                                .where(
+                                  (location) =>
+                                      location.id == cart.deliveryLocation?.id,
+                                )
+                                .firstOrNull
+                                ?.address
+                            : 'Select a delivery location',
+                      ) ??
+                      'Loading locations...',
+                ),
+                18.verticalSpace,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SectionTitle('Items in Cart'),
+                    IconButton(
+                      onPressed: cart.isEmpty
+                          ? null // Disables the clear button if the cart is empty
+                          : () =>
+                              ref.read(cartStateProvider.notifier).clearCart(
+                                    keepDeliveryLocation: true,
+                                  ),
+                      icon: const Icon(IconsaxPlusLinear.trash),
+                      iconSize: 24.sp,
+                    ),
+                  ],
+                ),
+                4.verticalSpace,
+                const MyDivider(),
+                16.verticalSpace,
+                if (cart.products.isEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 16.w),
+                    child: Center(
+                      child: Text(
+                        'Your cart is empty',
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: kDarkPrimaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ...cart.products
+                    .map(
+                      (product) => CartItem(
+                        image: CachedNetworkImageProvider(product.imageUrl),
+                        price: product.price * product.quantity,
+                        name: product.name,
+                        quantity: product.quantity,
+                        onIncrement: () => ref
+                            .read(cartStateProvider.notifier)
+                            .incrementQuantity(product.id),
+                        onDecrement: () => ref
+                            .read(cartStateProvider.notifier)
+                            .decrementQuantity(product.id),
+                        onRemove: () => ref
+                            .read(cartStateProvider.notifier)
+                            .removeFromCart(product.id),
+                        vendorName: product.vendor.name,
+                      ),
+                    )
+                    .toList()
+                    .separatedBy(14.verticalSpace),
+                31.verticalSpace,
+                // Simple bottom panel with just subtotal and checkout button
+                150.verticalSpace,
+              ],
+            ),
+            BottomPanel(
+              height: 140.h,
+              child: Column(
+                children: [
+                  PaymentPrice(
+                    title: 'Subtotal',
+                    amount: cart.subtotal,
+                    description:
+                        'This is the total amount of all the items in your cart.',
+                  ),
+                  10.verticalSpace,
+                  PrimaryButton(
+                    text: 'Proceed to checkout',
+                    onPressed: () async {
+                      if (cart.deliveryLocation == null) {
+                        if (context.mounted) {
+                          await displayError(
+                            context,
+                            title: 'No delivery location selected',
+                            description: 'Please choose a delivery location',
+                          );
+                        } else {
+                          await showToast('Please select a delivery location');
+                        }
+                      } else if (cart.products.isEmpty) {
+                        await showToast(
+                          'Your cart is empty, nothing to checkout',
+                          gravity: ToastGravity.CENTER,
+                        );
+                      } else {
+                        await CheckoutRoute().push<bool>(context);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

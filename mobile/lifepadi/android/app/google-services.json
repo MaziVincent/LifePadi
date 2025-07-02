@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "46429790339",
+    "project_id": "lifepadi-24bfe",
+    "storage_bucket": "lifepadi-24bfe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46429790339:android:2c81ed5dea60228950fbb6",
+        "android_client_info": {
+          "package_name": "com.lifepadi.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3UnyIXMdxoFb1_IAuQmJGKoFE4gbVKa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

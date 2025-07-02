@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+<<<<<<< HEAD
+<<<<<<< HEAD
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -19,7 +21,27 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: us-east-1
+=======
+>>>>>>> bd96ed0 (added session token)
+=======
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
+>>>>>>> 53ef23c (Update deploy.yml)
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "3.1.x"
+=======
+>>>>>>> 9f31878 (Update 3 deploy.yml)
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -30,7 +52,27 @@ jobs:
     
     - name: Add Lambda tools to PATH
       run: echo "$(dotnet --list-tools-path)" >> $GITHUB_PATH
+<<<<<<< HEAD
+=======
+>>>>>>> 4d4898c (Update 3 deploy.yml)
+>>>>>>> 9f31878 (Update 3 deploy.yml)
 
+    - name: Install dependencies
+      run: dotnet restore Web/Api
+
+    - name: Build project
+      run: dotnet build Web/Api --configuration Release --no-restore
+
+<<<<<<< HEAD
+    - name: Package Lambda function
+      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
+
+    - name: Upload to S3
+      run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
+
+    - name: Deploy to Lambda
+      run: aws lambda update-function-code --function-name Lifepadi-API --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
+=======
     - name: Install dependencies
       run: dotnet restore Web/Api
 
@@ -40,8 +82,20 @@ jobs:
     - name: Package Lambda function
       run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
 
+<<<<<<< HEAD
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1 # Change to your region
+
+=======
+>>>>>>> 53ef23c (Update deploy.yml)
     - name: Upload to S3
-      run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
+      run: aws s3 cp Api/MyLambdaFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
 
     - name: Deploy to Lambda
-      run: aws lambda update-function-code --function-name Lifepadi-API --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
+      run: aws lambda update-function-code --function-name Lifepadi-Api --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
+>>>>>>> bd96ed0 (added session token)

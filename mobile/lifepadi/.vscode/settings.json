@@ -1,0 +1,23 @@
+{
+  "[dart]": {
+    "editor.rulers": [
+      100
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.inlineSuggest.enabled": true
+  },
+  "eslint.enable": false,
+  "eslint.format.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
+  "todo-tree.tree.scanMode": "workspace only",
+  "makefile.configureOnOpen": true,
+}

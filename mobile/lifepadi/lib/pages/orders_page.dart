@@ -1,0 +1,70 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lifepadi/models/order.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/widgets/widgets.dart';
+
+class OrdersPage extends StatelessWidget {
+  const OrdersPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: Text(
+            'Orders',
+            style: context.textTheme.titleLarge?.copyWith(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          actions: const [
+            CartIconWidget(),
+          ],
+          height: 143.h,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Pending', height: 39.h),
+              Tab(text: 'Ongoing', height: 39.h),
+              Tab(text: 'Completed', height: 39.h),
+              Tab(text: 'Cancelled', height: 39.h),
+            ],
+            dividerHeight: 0,
+            tabAlignment: TabAlignment.fill,
+            indicator: BoxDecoration(
+              color: const Color(0xFFF1F1FD),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            padding: EdgeInsets.only(left: 10.w, top: 10.h),
+            labelColor: kBrightGreen,
+            unselectedLabelColor: const Color(0xFFBDBDBD),
+            labelPadding: EdgeInsets.zero,
+            splashFactory: NoSplash.splashFactory,
+            labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            unselectedLabelStyle:
+                TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            indicatorSize: TabBarIndicatorSize.tab,
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            MyOrderList(
+              status: OrderStatus.pending,
+            ),
+            MyOrderList(
+              status: OrderStatus.ongoing,
+            ),
+            MyOrderList(
+              status: OrderStatus.completed,
+            ),
+            MyOrderList(
+              status: OrderStatus.cancelled,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

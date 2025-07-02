@@ -53,7 +53,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/order/all
 GET https://localhost:7216/api/order/customer/35?pageNumber=1&pageSize=5&SearchString=Ongoing
 
 ###
-POST https://lifepadi-948405839190.us-east1.run.app/hubs/location/negotiate
+POST https://lifepadi-225229879541.us-east1.run.app/hubs/location/negotiate
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/hubs/notification/negotiate
@@ -117,12 +117,13 @@ Content-Type: application/json
 Content-Type: application/json
 
 {
-    "WalletId":8,
-    "Amount":"5000",
+    "WalletId":124,
+    "Amount":"4000",
     "DeliveryFee":"1000",
-    "TotalAmount":"6000",
-    "OrderId":426,
-    "Type":"Wallet"
+    "TotalAmount":"5000",
+    "OrderId":611,
+    "Type":"Normal",
+    "VoucherCode":"Lifepadi-bwrsiMxGoQ"
 }
 
 ###
@@ -218,4 +219,11 @@ GET https://localhost:7216/api/googlemaps/autocomplete?input=Dreamlink
 
 ###
 GET https://localhost:7216/api/googlemaps/coordinates?address=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
+
+###
+GET https://lifepadi-225229879541.us-east1.run.app/api/delivery/getfee?Distance=5.7&DiscountPercentage=50
+###
+GET https://localhost:7216/api/delivery/getfee?Distance=5.7&DiscountAmount=500
+
+
 

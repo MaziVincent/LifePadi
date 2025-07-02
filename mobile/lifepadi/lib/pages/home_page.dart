@@ -1,0 +1,292 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:lifepadi/models/category.dart';
+import 'package:lifepadi/router/routes.dart';
+import 'package:lifepadi/state/categories.dart';
+import 'package:lifepadi/state/location.dart';
+import 'package:lifepadi/state/services.dart';
+import 'package:lifepadi/state/vendors.dart';
+import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/utils/constants.dart';
+import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/widgets/widgets.dart';
+import 'package:remixicon/remixicon.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+class HomePage extends HookConsumerWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vendors = ref.watch(vendorsProvider(pageSize: 3));
+    final services = ref.watch(servicesProvider(pageSize: 4));
+    final activeCategoryIndex = useState(0);
+    final categories = ref.watch(productCategoriesProvider());
+    final locationDetails = ref.watch(currentLocationProvider);
+
+    return Scaffold(
+      appBar: MyAppBar(
+        height: 90.h,
+        title: Row(
+          children: [
+            MyIconButton(
+              icon: Remix.map_pin_5_line,
+              onPressed: () {},
+              backgroundColor: const Color(0x194FAF5A),
+              iconColor: kDarkPrimaryColor,
+            ),
+            8.horizontalSpace,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Current location',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: kLightTextColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    letterSpacing: 0.16,
+                  ),
+                ),
+                SizedBox(
+                  width: 120.w,
+                  child: Text(
+                    locationDetails.when(
+                      data: (data) => data.address,
+                      loading: () => 'Fetching location...',
+                      error: (_, __) => 'Could not fetch location',
+                    ),
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: kDarkTextColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.sp,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          const CartIconWidget(),
+          6.horizontalSpace,
+          MyIconButton(
+            onPressed: () => context.go(NotificationRoute().location),
+            icon: MdiIcons.bellBadgeOutline,
+          ),
+        ],
+      ),
+      body: SuperListView(
+        padding: EdgeInsets.only(top: 4.h, left: 24.w, right: 24.w),
+        children: [
+          TextFormField(
+            cursorColor: kDarkPrimaryColor,
+            decoration: InputDecoration(
+              border: inputBorder(),
+              enabledBorder: inputBorder(),
+              focusedBorder: inputBorder(color: const Color(0xFF21D1A5)),
+              hintText: 'Search for products, categories, vendors, etc.',
+              hintStyle: inputTextStyle(context),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+              prefixIcon: const Icon(
+                IconsaxPlusLinear.search_normal,
+                size: 20,
+                color: Color(0xFF878787),
+              ),
+              suffixIcon: GestureDetector(
+                onTap: () async => displayBottomPanel(
+                  context,
+                  child: const FilterModal(),
+                ),
+                child: Icon(
+                  IconsaxPlusBold.filter_search,
+                  size: 24.r,
+                  color: kDarkPrimaryColor,
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.search,
+            style: context.textTheme.bodyLarge?.copyWith(
+              color: Colors.black,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0.12.r,
+            ),
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            onFieldSubmitted: (String query) =>
+                context.push(SearchRoute(query: query).location),
+          ),
+          16.verticalSpace,
+          const SectionTitle('Stores and Vendors'),
+          16.verticalSpace,
+          vendors.when(
+            data: (data) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final vendor in data)
+                  VendorCard(
+                    name: vendor.name,
+                    image: CachedNetworkImageProvider(vendor.imageUrl ?? ''),
+                    onTap: () => context.push(
+                      ProductsRoute(
+                        vendorId: vendor.id,
+                        vendorName: vendor.name,
+                      ).location,
+                    ),
+                  ),
+                VendorCard(
+                  name: 'See more',
+                  icon: IconsaxPlusLinear.element_plus,
+                  onTap: () => VendorsRoute().go(context),
+                ),
+              ],
+            ),
+            error: (error, _) => MyErrorWidget(error: error),
+            loading: () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final _ in [1, 2, 3, 4])
+                  Skeletonizer(
+                    child: VendorCard(
+                      name: BoneMock.name,
+                      image: Assets.images.vendors.shoprite.provider(),
+                      onTap: () {},
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          16.verticalSpace,
+          HeaderWithSeeAll(
+            title: 'Service Errands',
+            onSeeAllTap: () => context.go(const ErrandsRoute().location),
+          ),
+          16.verticalSpace,
+          services.when(
+            data: (data) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final service in data)
+                  ServiceCard(
+                    name: service.name,
+                    imageUrl: service.iconUrl,
+                    onTap: () => context.push(
+                      SingleServiceRoute(
+                        id: service.id,
+                        name: service.name,
+                      ).location,
+                    ),
+                  ),
+              ],
+            ),
+            error: (error, _) => MyErrorWidget(error: error),
+            loading: () => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                for (final _ in [1, 2, 3, 4])
+                  Skeletonizer(
+                    child: ServiceCard(
+                      name: BoneMock.name,
+                      imageUrl: Assets.icons.cookingGas.path,
+                      onTap: () {},
+                      isNetworkImage: false,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          16.verticalSpace,
+          HeaderWithSeeAll(
+            title: 'Categories',
+            onSeeAllTap: () => context
+                .go(CategoriesRoute(type: CategoryType.product).location),
+          ),
+          13.87.verticalSpace,
+          categories.when(
+            data: (categoryList) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 43.h,
+                    child: SuperListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoryList.length,
+                      itemBuilder: (context, index) {
+                        return CategoryTab(
+                          isActive: index == activeCategoryIndex.value,
+                          name: categoryList[index].name,
+                          onTap: () => activeCategoryIndex.value = index,
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          6.93.horizontalSpace,
+                    ),
+                  ),
+                  22.72.verticalSpace,
+                  HeaderWithSeeAll(
+                    title:
+                        'Products in ${categoryList[activeCategoryIndex.value].name.capitalize()}',
+                    onSeeAllTap: () => context.push(
+                      ProductsRoute(
+                        categoryId: categoryList[activeCategoryIndex.value].id,
+                        categoryName: categoryList[activeCategoryIndex.value]
+                            .name
+                            .capitalize(),
+                      ).location,
+                    ),
+                  ),
+                  16.verticalSpace,
+                  CategoryProducts(
+                    categoryId: categoryList[activeCategoryIndex.value].id,
+                  ),
+                  15.verticalSpace,
+                ],
+              );
+            },
+            error: (err, _) => MyErrorWidget(error: err),
+            loading: () => Column(
+              children: [
+                Skeletonizer(
+                  child: SizedBox(
+                    height: 43.h,
+                    child: SuperListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 6,
+                      itemBuilder: (context, index) => Skeleton.leaf(
+                        child: CategoryTab(
+                          isActive: index == activeCategoryIndex.value,
+                          name: BoneMock.name,
+                          onTap: () {},
+                        ),
+                      ),
+                      separatorBuilder: (context, index) =>
+                          6.93.horizontalSpace,
+                    ),
+                  ),
+                ),
+                22.72.verticalSpace,
+                Skeletonizer(
+                  child: HeaderWithSeeAll(
+                    title: 'Products in ${BoneMock.name}',
+                    onSeeAllTap: () {},
+                  ),
+                ),
+                16.verticalSpace,
+                const MockProductsSkeleton(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

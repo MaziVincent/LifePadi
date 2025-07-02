@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBNoLbRaNlZ75hpMg8ujy9_GOzH2jcpSig</string>
+	<key>GCM_SENDER_ID</key>
+	<string>46429790339</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.lifepadi.app</string>
+	<key>PROJECT_ID</key>
+	<string>lifepadi-24bfe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>lifepadi-24bfe.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:46429790339:ios:85f7742d7dcc256f50fbb6</string>
+</dict>
+</plist>
