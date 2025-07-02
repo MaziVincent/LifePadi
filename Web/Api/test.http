@@ -5,7 +5,7 @@ GET https://localhost:7216/api/voucher/all
 
 ###
 
-GET https://localhost:7216/api/vendor/all
+GET https://lifepadi-v2-225229879541.us-east1.run.app/api/vendor/all
 
 ###
 
@@ -25,7 +25,7 @@ GET https://localhost:7216/api/address/all
 
 ###
 
-GET https://localhost:7216/api/category/all
+GET https://lifepadi-v2-225229879541.us-east1.run.app/api/category/all
 
 ###
 
