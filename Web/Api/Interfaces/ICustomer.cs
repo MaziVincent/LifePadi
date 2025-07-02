@@ -7,7 +7,7 @@ namespace Api.Interfaces
     public interface ICustomer
     {
         public Task<AuthUserDto> createAsync(CustomerDto customer);
-        public Task<PagedList<Customer>> getAllAsync (SearchPaging props);
+        public Task<PagedList<Customer>> getAllAsync(SearchPaging props);
         public Task<Customer> getByEmail(string email);
         public Task<Customer> getByPhone(string phone);
         public Task<CustomerDtoLite> updateAsync(CustomerDto customer, int id);
@@ -24,5 +24,7 @@ namespace Api.Interfaces
         public Task<bool> checkPhoneExists(string phoneNumber);
         public Task<string> sendOtp(string phoneNumber);
         public Task<object> toggleStatus(int id);
+        public Task<object> GenerateReferralCodesForExistingCustomers();
+        public Task<object> RegenerateReferralCode(int customerId);
     }
 }

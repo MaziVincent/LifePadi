@@ -20,7 +20,9 @@ namespace Api.Helpers
         {
             try
             {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config!.GetSection("Jwt:Key").Value!));
+                // Use the same key source as JWT validation in Program.cs
+                var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? _config!.GetSection("Jwt:Key").Value!;
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 var Claims = new[]
@@ -28,11 +30,18 @@ namespace Api.Helpers
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
                     new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique token ID
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                    new Claim("user_type", genTokenDTO!.Role!) // Custom claim for user type
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(Claims),
-                    Expires = DateTime.Now.AddDays(1),
+                    Expires = DateTime.UtcNow.AddMinutes(30), // Short-lived access tokens (15 minutes)
+                    NotBefore = DateTime.UtcNow,
+                    IssuedAt = DateTime.UtcNow,
+                    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "LifePadi-API",
+                    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "LifePadi-Client",
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -40,7 +49,8 @@ namespace Api.Helpers
                 var accessToken = tokenHandler.CreateToken(tokenDescriptor);
 
                 return tokenHandler.WriteToken(accessToken);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -58,11 +68,18 @@ namespace Api.Helpers
                     new Claim(ClaimTypes.NameIdentifier, genTokenDTO!.Id!.ToString()!),
                     new Claim(ClaimTypes.Role, genTokenDTO!.Role!),
                     new Claim(ClaimTypes.Email, genTokenDTO!.Email!),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique token ID for refresh token
+                    new Claim("token_type", "refresh"), // Mark as refresh token
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
                 };
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(Claims),
-                    Expires = DateTime.Now.AddDays(5),
+                    Expires = DateTime.UtcNow.AddDays(7), // Refresh tokens last 7 days
+                    NotBefore = DateTime.UtcNow,
+                    IssuedAt = DateTime.UtcNow,
+                    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "LifePadi-API",
+                    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "LifePadi-Client",
                     SigningCredentials = credentials,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -82,14 +99,18 @@ namespace Api.Helpers
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_config!.GetSection("Jwt:Key").Value!);
+                var key = Encoding.UTF8.GetBytes(_config!.GetSection("Jwt:Key").Value!);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
+                    ValidateIssuer = true,
+                    ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "LifePadi-API",
+                    ValidateAudience = true,
+                    ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "LifePadi-Client",
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    RequireExpirationTime = true
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;

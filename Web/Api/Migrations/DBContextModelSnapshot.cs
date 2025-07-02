@@ -1084,6 +1084,9 @@ namespace Api.Migrations
                     b.Property<DateTime>("DOB")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("ReferralCode")
+                        .HasColumnType("text");
+
                     b.HasDiscriminator().HasValue("Customer");
                 });
 

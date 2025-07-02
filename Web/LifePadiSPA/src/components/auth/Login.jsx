@@ -38,10 +38,10 @@ const Login = () => {
       });
 
       //console.log(response.data);
-      setAuth(response.data);
-      localStorage.setItem("refreshToken", JSON.stringify(response.data?.refreshToken))
+      setAuth(response.data?.Data);
+      localStorage.setItem("refreshToken", JSON.stringify(response.data?.Data?.refreshToken))
      toast.success("Logged in Successfully");
-      const role = response.data?.Role;
+      const role = response.data?.Data?.Role;
       setTimeout(() => {
         switch (role) {
           case "Customer":

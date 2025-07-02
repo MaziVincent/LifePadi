@@ -1,0 +1,46 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+
+# Copy project file and global.json first for better caching
+COPY Api.csproj .
+COPY global.json .
+
+# Restore dependencies
+RUN dotnet restore
+
+# Copy only necessary source files
+COPY Controllers/ ./Controllers/
+COPY Models/ ./Models/
+COPY Services/ ./Services/
+COPY Repositories/ ./Repositories/
+COPY Data/ ./Data/
+COPY DTO/ ./DTO/
+COPY Interfaces/ ./Interfaces/
+COPY Helpers/ ./Helpers/
+COPY Middleware/ ./Middleware/
+COPY Authorization/ ./Authorization/
+COPY Chat/ ./Chat/
+COPY Exceptions/ ./Exceptions/
+COPY Validation/ ./Validation/
+COPY Templates/ ./Templates/
+COPY Properties/ ./Properties/
+
+# Copy configuration files
+COPY appsettings*.json ./
+COPY lifepadi-24bfe-firebase.json ./
+COPY Program.cs ./
+
+# Publish the application
+RUN dotnet publish -c Release -o out
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+
+# Copy the published output
+COPY --from=build /app/out .
+
+# Expose port for Cloud Run
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Api.dll"]

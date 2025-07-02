@@ -6,7 +6,7 @@ namespace Api.Models
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<User> Users { get; set; }
@@ -44,7 +44,7 @@ namespace Api.Models
                 .HasOne(c => c.Wallet)
                 .WithOne(w => w.Customer)
                 .HasForeignKey<Wallet>(w => w.CustomerId);
-            
+
         }
     }
 }

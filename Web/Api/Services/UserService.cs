@@ -11,12 +11,13 @@ namespace Api.Services
 {
     public class UserService : IUser
     {
-        private readonly DBContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IConfiguration? _config;
-        public UserService(DBContext dbContext, IMapper mapper, IConfiguration config)
+
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
         }
@@ -24,7 +25,7 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email!.ToLower() == email.ToLower());
+                var user = await _unitOfWork.Users.GetFirstOrDefaultAsync(x => x.Email!.ToLower() == email.ToLower());
                 if (user == null)
                 {
                     return false;
@@ -49,8 +50,10 @@ namespace Api.Services
                 var newAdmin = _mapper.Map<Admin>(user);
                 newAdmin.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
                 newAdmin.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
-                await _dbContext.Admins.AddAsync(newAdmin);
-                await _dbContext.SaveChangesAsync();
+
+                await _unitOfWork.Admins.AddAsync(newAdmin);
+                await _unitOfWork.SaveChangesAsync();
+
                 var authuser = _mapper.Map<AuthUserDto>(newAdmin);
                 return authuser;
             }
@@ -64,10 +67,11 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _unitOfWork.Admins.GetByIdAsync(id);
                 if (user == null) return null!;
-                _dbContext.Remove(user);
-                await _dbContext.SaveChangesAsync();
+
+                _unitOfWork.Admins.Remove(user);
+                await _unitOfWork.SaveChangesAsync();
                 return "User deleted";
             }
             catch (Exception ex)
@@ -80,9 +84,12 @@ namespace Api.Services
         {
             try
             {
-                var skip = (pageNumber - 1) * pageSize;
-                var users = await _dbContext.Admins.Skip(skip).Take(pageSize).OrderByDescending(a => a.CreatedAt).ToListAsync();
-                var UserDtos = _mapper.Map<List<UserDtoLite>>(users);
+                var users = await _unitOfWork.Admins.GetAsync(
+                    orderBy: q => q.OrderByDescending(a => a.CreatedAt));
+
+                // Apply pagination
+                var paginatedUsers = users.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+                var UserDtos = _mapper.Map<List<UserDtoLite>>(paginatedUsers);
 
                 return UserDtos!;
             }
@@ -96,7 +103,7 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
+                var user = await _unitOfWork.Admins.GetByIdAsync(id);
                 var UserDto = _mapper.Map<UserDto>(user);
                 return UserDto;
             }
@@ -136,7 +143,7 @@ namespace Api.Services
         {
             try
             {
-                var loginUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+                var loginUser = await _unitOfWork.Users.GetFirstOrDefaultAsync(u => u.Email == user.Email);
                 if (loginUser == null) return null!;
                 if (BCrypt.Net.BCrypt.Verify(user.Password, loginUser.PasswordHash))
                 {
@@ -186,8 +193,8 @@ namespace Api.Services
                         throw new ServiceException("User not found");
                     }
                     currentUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(forgotPassword.NewPassword);
-                    _dbContext.Users.Attach(currentUser);
-                    await _dbContext.SaveChangesAsync();
+                    _unitOfWork.Users.Update(currentUser);
+                    await _unitOfWork.SaveChangesAsync();
                     return "Password reset successfully";
                 }
                 var phoneNumber = formatedPhoneNumber(forgotPassword.PhoneNumber!);
@@ -197,8 +204,8 @@ namespace Api.Services
                     throw new ServiceException("User not found");
                 }
                 currentUserByPhone.PasswordHash = BCrypt.Net.BCrypt.HashPassword(forgotPassword.NewPassword);
-                _dbContext.Users.Attach(currentUserByPhone);
-                await _dbContext.SaveChangesAsync();
+                _unitOfWork.Users.Update(currentUserByPhone);
+                await _unitOfWork.SaveChangesAsync();
                 return "Password reset successfully";
             }
             catch (Exception ex)
@@ -213,7 +220,7 @@ namespace Api.Services
         {
             try
             {
-                var updateUser = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Id == id);
+                var updateUser = await _unitOfWork.Admins.GetByIdAsync(id);
                 if (updateUser == null) return null!;
                 updateUser.FirstName = user.FirstName;
                 updateUser.LastName = user.LastName;
@@ -223,8 +230,8 @@ namespace Api.Services
                 updateUser.SearchString = user.FirstName!.ToUpper() + " " + user.LastName!.ToUpper() + " " + user.Email!.ToUpper();
                 updateUser.UpdatedAt = DateTime.UtcNow;
 
-                _dbContext.Admins.Attach(updateUser);
-                await _dbContext.SaveChangesAsync();
+                _unitOfWork.Admins.Update(updateUser);
+                await _unitOfWork.SaveChangesAsync();
                 var updatedUser = _mapper.Map<UserDtoLite>(updateUser);
                 return updatedUser;
 
@@ -239,7 +246,7 @@ namespace Api.Services
         {
             try
             {
-                var response = await _dbContext.Users.CountAsync();
+                var response = await _unitOfWork.Users.CountAsync();
                 return response;
             }
             catch (Exception ex)
@@ -252,20 +259,7 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-                if (user == null) return null!;
-                return user;
-            }
-            catch (Exception ex)
-            {
-                throw new ServiceException(ex.Message);
-            }
-        }
-        public async Task<User> getUserByPhoneNumber(string phoneNumber)
-        {
-            try
-            {
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+                var user = await _unitOfWork.Users.GetFirstOrDefaultAsync(u => u.Email == email);
                 if (user == null) return null!;
                 return user;
             }
@@ -275,7 +269,21 @@ namespace Api.Services
             }
         }
 
-       
+        public async Task<User> getUserByPhoneNumber(string phoneNumber)
+        {
+            try
+            {
+                var user = await _unitOfWork.Users.GetFirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+                if (user == null) return null!;
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(ex.Message);
+            }
+        }
+
+
 
     }
 }

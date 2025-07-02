@@ -32,7 +32,7 @@ namespace Api.Services
         }
         public async Task<PagedList<Vendor>> allAsync(SearchPaging props)
         {
-            
+
             try
             {
                 IQueryable<Vendor> vendorList = Enumerable.Empty<Vendor>().AsQueryable();
@@ -71,11 +71,11 @@ namespace Api.Services
                     .Include(v => v.Addresses)
                     .AsSplitQuery();
 
-                if (!string.IsNullOrEmpty( props.SearchString))
+                if (!string.IsNullOrEmpty(props.SearchString))
                 {
                     query = query.Where(c => c.Name!.ToLower().Contains(props.SearchString!.ToLower()));
                 }
-                
+
                 // Execute the query and get the results
                 var vendorList = await query.ToListAsync();
                 // Check if the vendor list is empty
@@ -87,9 +87,9 @@ namespace Api.Services
                 }
 
                 //Randomize the vendor list
-                    var random = new Random();
-                    vendorList = [.. vendorList.OrderBy(x => random.Next())];
-    
+                var random = new Random();
+                vendorList = [.. vendorList.OrderBy(x => random.Next())];
+
                 var returned = PagedList<Vendor>.ToPagedList(vendorList.AsQueryable(), props.PageNumber, props.PageSize);
                 return returned;
             }
@@ -402,7 +402,7 @@ namespace Api.Services
                         .AsSplitQuery()
                         .OrderByDescending(p => p.CreatedAt)
                         .ToListAsync();
-                    
+
 
                     productList = productList.Concat(_mapper.Map<List<ProductDto>>(products));
                     var result = PagedList<ProductDto>.ToPagedList(productList, props.PageNumber, props.PageSize);
@@ -426,18 +426,21 @@ namespace Api.Services
                 throw new ServiceException(ex.Message);
             }
         }
-    
-    public async Task<object> changeVendorActivation(int id){
-        var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
-        if(vendor == null) throw new ServiceException("Vendor does not exist");
-        if(vendor.IsActive == false){
-            vendor.IsActive = true;
-            _dbContext!.Vendors!.Update(vendor);
-            await _dbContext!.SaveChangesAsync();
-            return new{
-                message = "Vendor activated successfully",
-            };
-        }
+
+        public async Task<object> changeVendorActivation(int id)
+        {
+            var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
+            if (vendor == null) throw new ServiceException("Vendor does not exist");
+            if (vendor.IsActive == false)
+            {
+                vendor.IsActive = true;
+                _dbContext!.Vendors!.Update(vendor);
+                await _dbContext!.SaveChangesAsync();
+                return new
+                {
+                    message = "Vendor activated successfully",
+                };
+            }
             vendor.IsActive = false;
             _dbContext!.Vendors!.Update(vendor);
             await _dbContext!.SaveChangesAsync();
@@ -451,32 +454,38 @@ namespace Api.Services
 
         public async Task<string> activateVendor(int id)
         {
-            try{
+            try
+            {
                 var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
-                if(vendor == null) throw new ServiceException("Vendor does not exist");
+                if (vendor == null) throw new ServiceException("Vendor does not exist");
                 vendor.IsActive = true;
                 _dbContext!.Vendors!.Update(vendor);
                 await _dbContext!.SaveChangesAsync();
                 return "Vendor activated successfully";
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 throw new ServiceException(ex.Message);
             }
         }
 
         public async Task<string> deactivateVendor(int id)
         {
-            try{
+            try
+            {
                 var vendor = await _dbContext!.Vendors!.FirstOrDefaultAsync(v => v.Id == id);
-                if(vendor == null) throw new ServiceException("Vendor does not exist");
+                if (vendor == null) throw new ServiceException("Vendor does not exist");
                 vendor.IsActive = false;
                 _dbContext!.Vendors!.Update(vendor);
                 await _dbContext!.SaveChangesAsync();
                 return "Vendor deactivated successfully";
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 throw new ServiceException(ex.Message);
             }
         }
     }
-    
-    }
+
+}
 

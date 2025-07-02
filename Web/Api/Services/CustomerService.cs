@@ -19,14 +19,14 @@ namespace Api.Services
     public class CustomerService : ICustomer
     {
         private readonly HttpClient _httpClient;
-        private readonly DBContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
         private readonly IOtherService _oService;
 
-        public CustomerService(DBContext dBContext, IMapper mapper, IConfiguration config, HttpClient httpClient, IOtherService oService)
+        public CustomerService(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config, HttpClient httpClient, IOtherService oService)
         {
-            _dbContext = dBContext;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
             _httpClient = httpClient;
@@ -37,9 +37,9 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
+                var user = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
                 if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
-                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
                 if (customer != null) throw new Exceptions.ServiceException("Email already exists");
                 return true;
             }
@@ -53,7 +53,7 @@ namespace Api.Services
         {
             try
             {
-                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
+                var user = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
                 if (user != null) return true;
                 return false;
             }
@@ -69,22 +69,32 @@ namespace Api.Services
             {
                 var initialCustomer = await getByEmail(customer.Email!);
                 if (initialCustomer != null) throw new Exceptions.ServiceException("Email already exists");
+
                 var newCustomer = _mapper.Map<Customer>(customer);
                 newCustomer.PasswordHash = BCrypt.Net.BCrypt.HashPassword(customer.Password);
                 newCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 newCustomer.PhoneNumberConfirmed = true;
-                await _dbContext.Customers.AddAsync(newCustomer);
 
-                await _dbContext.SaveChangesAsync();
+                // Generate unique referral code
+                newCustomer.ReferralCode = await GenerateUniqueReferralCode();
 
-                await _dbContext.Wallets.AddAsync(new Wallet
+                await _unitOfWork.Customers.AddAsync(newCustomer);
+                await _unitOfWork.SaveChangesAsync();
+
+                await _unitOfWork.Wallets.AddAsync(new Wallet
                 {
                     CustomerId = newCustomer.Id,
                     InitialBalance = 0.0,
                     Balance = 0.0
                 });
 
-                await _dbContext.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
+
+                // Process referral bonus if a referral code was provided
+                if (!string.IsNullOrWhiteSpace(customer.ReferredByCode))
+                {
+                    await ProcessReferralBonus(customer.ReferredByCode);
+                }
 
                 var authUserDTO = _mapper.Map<AuthUserDto>(newCustomer);
                 return authUserDTO;
@@ -99,7 +109,7 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.Include(c => c.Addresses).FirstOrDefaultAsync(c => c.Id == id);
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.Id == id, "Addresses");
                 if (customer == null) return null!;
                 var addresses = _mapper.Map<List<AddressDtoLite>>(customer.Addresses);
                 return addresses;
@@ -114,10 +124,10 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(id);
                 if (customer == null) return null!;
-                _dbContext.Customers.Remove(customer);
-                await _dbContext.SaveChangesAsync();
+                _unitOfWork.Customers.Remove(customer);
+                await _unitOfWork.SaveChangesAsync();
                 return "Customer account deleted";
             }
             catch (Exception ex)
@@ -125,7 +135,6 @@ namespace Api.Services
                 throw new Exceptions.ServiceException(ex.Message);
             }
         }
-
         public async Task<PagedList<Customer>> getAllAsync(SearchPaging props)
         {
             try
@@ -133,41 +142,26 @@ namespace Api.Services
                 IQueryable<Customer> customerList = Enumerable.Empty<Customer>().AsQueryable();
                 if (props.SearchString is null)
                 {
-                    var customerLs = await _dbContext.Customers.Include(c => c.Addresses).Include(c=>c.Wallet)
-                        .OrderByDescending(r => r.CreatedAt)
-                        .ToListAsync();
-                //    foreach (var customer in customerLs){
-                //     if (customer.Wallet == null){
-                //             await _dbContext.Wallets.AddAsync(new Wallet
-                //             {
-                //                 CustomerId = customer.Id,
-                //                 InitialBalance = 0.0,
-                //                 Balance = 0.0
-                //             });
-                //         }
-                //         customer.IsActive ??= true;
-                //    }
-                //    await _dbContext.SaveChangesAsync();
+                    var customerLs = await _unitOfWork.Customers.GetAsync(
+                        orderBy: q => q.OrderByDescending(r => r.CreatedAt),
+                        includeProperties: "Addresses,Wallet");
 
                     customerList = customerList.Concat(customerLs);
                     var result = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
 
                     return result;
-
                 }
-                var customers = await _dbContext.Customers
-                        .Include(c => c.Addresses)
-                        .Include(c => c.Wallet)
-                        .OrderByDescending(r => r.CreatedAt)
-                        .Where(r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()))
-                        .ToListAsync();
+
+                var customers = await _unitOfWork.Customers.GetAsync(
+                    filter: r => r.SearchString!.ToLower().Contains(props.SearchString.ToLower()),
+                    orderBy: q => q.OrderByDescending(r => r.CreatedAt),
+                    includeProperties: "Addresses,Wallet");
+
                 customerList = customerList.Concat(customers);
                 var response = PagedList<Customer>.ToPagedList(customerList, props.PageNumber, props.PageSize);
 
                 return response;
-
             }
-
             catch (Exception ex)
             {
                 throw new Exceptions.ServiceException(ex.Message);
@@ -178,11 +172,10 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.Where(c => c.Id == id)
-                .Include(c => c.Addresses)
-                .Include(c => c.Orders)
-                .Include(c => c.Wallet)
-                .FirstOrDefaultAsync();
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(
+                    c => c.Id == id,
+                    "Addresses,Orders,Wallet");
+
                 if (customer == null) return null!;
                 var CustomerDto = new CustomerDto
                 {
@@ -208,7 +201,7 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.Email!.ToLower() == email.ToLower());
                 return customer!;
             }
             catch (Exception ex)
@@ -221,7 +214,7 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber! == phone);
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.PhoneNumber! == phone);
                 return customer!;
             }
             catch (Exception ex)
@@ -234,7 +227,7 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.Include(c => c.Orders).FirstOrDefaultAsync(c => c.Id == id);
+                var customer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.Id == id, "Orders");
                 if (customer == null) return null!;
                 var orders = _mapper.Map<List<OrderDtoLite>>(customer.Orders);
                 return orders;
@@ -249,7 +242,7 @@ namespace Api.Services
         {
             try
             {
-                var customers = await _dbContext.Customers.CountAsync();
+                var customers = await _unitOfWork.Customers.CountAsync();
                 return customers;
             }
             catch (Exception ex)
@@ -277,7 +270,7 @@ namespace Api.Services
             try
             {
                 var customerList = new List<Customer>();
-                var customers = await _dbContext!.Customers.ToListAsync();
+                var customers = await _unitOfWork.Customers.GetAllAsync();
                 foreach (var customer in customers)
                 {
                     var searchParam = customer.SearchString!.ToLower().Split(" ");
@@ -311,8 +304,8 @@ namespace Api.Services
         {
             try
             {
-                var initialCustomer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+                var initialCustomer = await _unitOfWork.Customers.GetByIdAsync(id);
+                var user = await _unitOfWork.Users.GetByIdAsync(id);
                 if (initialCustomer == null) return null!;
                 initialCustomer.ContactAddress = customer.ContactAddress;
                 initialCustomer.FirstName = customer.FirstName;
@@ -322,8 +315,10 @@ namespace Api.Services
                 initialCustomer.PhoneNumber = customer.PhoneNumber;
                 initialCustomer.SearchString = customer.FirstName!.ToUpper() + " " + customer.LastName!.ToUpper() + " " + customer.Email!.ToUpper();
                 initialCustomer.UpdatedAt = DateTime.UtcNow;
-                _dbContext.Customers.Attach(initialCustomer);
-                await _dbContext.SaveChangesAsync();
+
+                _unitOfWork.Customers.Update(initialCustomer);
+                await _unitOfWork.SaveChangesAsync();
+
                 var CustomerDtoLite = _mapper.Map<CustomerDtoLite>(initialCustomer);
                 var Type = _oService.Strip(user!.GetType().ToString());
                 CustomerDtoLite.Role = Type;
@@ -371,7 +366,7 @@ namespace Api.Services
             try
             {
                 string phone = "+" + phoneNumber;
-                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phone);
+                var user = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.PhoneNumber == phone);
                 if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
                 var requestUri = _config["Termii:SendOtp_Url"]; // Termii API endpoint for sending SMS
 
@@ -411,7 +406,7 @@ namespace Api.Services
             try
             {
                 var phone = "+" + phoneNumber;
-                var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phone);
+                var user = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.PhoneNumber == phone);
                 if (user != null) throw new Exceptions.ServiceException("Phone number already exists");
 
                 var client = new RestSharp.RestClient(_config["Termii:SendOtp_Url"]!);
@@ -455,7 +450,7 @@ namespace Api.Services
         {
             try
             {
-                var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(id);
                 if (customer == null) throw new Exceptions.ServiceException("Customer not found");
                 if (customer.IsActive == true)
                 {
@@ -465,8 +460,151 @@ namespace Api.Services
                 {
                     customer.IsActive = true;
                 }
-                await _dbContext.SaveChangesAsync();
-                return new {success = true, message = "Customer status updated"};
+
+                _unitOfWork.Customers.Update(customer);
+                await _unitOfWork.SaveChangesAsync();
+                return new { success = true, message = "Customer status updated" };
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException(ex.Message);
+            }
+        }
+
+        private async Task<string> GenerateUniqueReferralCode()
+        {
+            string referralCode;
+            bool codeExists;
+
+            do
+            {
+                referralCode = GenerateCode.GenerateReferralCode();
+                codeExists = await _unitOfWork.Customers.GetFirstOrDefaultAsync(c => c.ReferralCode == referralCode) != null;
+            } while (codeExists);
+
+            return referralCode;
+        }
+
+        private async Task ProcessReferralBonus(string referralCode)
+        {
+            try
+            {
+                // Find the customer who owns this referral code
+                var referringCustomer = await _unitOfWork.Customers.GetFirstOrDefaultAsync(
+                    c => c.ReferralCode == referralCode,
+                    includeProperties: "Wallet"
+                );
+
+                if (referringCustomer?.Wallet == null)
+                {
+                    // Silently handle invalid referral codes - no exception thrown
+                    return;
+                }
+
+                // Credit ₦200 to the referring customer's wallet
+                const double referralBonus = 200.0;
+
+                referringCustomer.Wallet.InitialBalance = referringCustomer.Wallet.Balance;
+                referringCustomer.Wallet.Balance += referralBonus;
+                referringCustomer.Wallet.UpdatedAt = DateTime.UtcNow;
+
+                // Record the deposit transaction
+                var deposite = new Deposite
+                {
+                    WalletId = referringCustomer.Wallet.Id,
+                    Amount = referralBonus,
+                    Status = "success",
+                    PaymentMethod = "referral_bonus",
+                    Type = "referral",
+                    ReferenceId = $"REF_{referringCustomer.ReferralCode}_{DateTime.UtcNow:yyyyMMddHHmmss}",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                await _unitOfWork.Repository<Deposite>().AddAsync(deposite);
+                _unitOfWork.Wallets.Update(referringCustomer.Wallet);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // Silently handle any errors in referral processing to not disrupt customer creation
+                // In a production environment, you might want to log this error
+            }
+        }
+
+        public async Task<object> GenerateReferralCodesForExistingCustomers()
+        {
+            try
+            {
+                // Get all customers without referral codes
+                var customersWithoutCodes = await _unitOfWork.Customers
+                    .GetAsync(c => string.IsNullOrEmpty(c.ReferralCode));
+
+                int updatedCount = 0;
+                var failedCustomers = new List<int>();
+
+                foreach (var customer in customersWithoutCodes)
+                {
+                    try
+                    {
+                        // Generate unique referral code
+                        customer.ReferralCode = await GenerateUniqueReferralCode();
+                        customer.UpdatedAt = DateTime.UtcNow;
+
+                        _unitOfWork.Customers.Update(customer);
+                        updatedCount++;
+                    }
+                    catch (Exception)
+                    {
+                        failedCustomers.Add(customer.Id);
+                    }
+                }
+
+                if (updatedCount > 0)
+                {
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                return new
+                {
+                    success = true,
+                    message = $"Successfully generated referral codes for {updatedCount} customers",
+                    updatedCount = updatedCount,
+                    failedCount = failedCustomers.Count,
+                    failedCustomerIds = failedCustomers
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exceptions.ServiceException($"Error generating referral codes: {ex.Message}");
+            }
+        }
+
+        public async Task<object> RegenerateReferralCode(int customerId)
+        {
+            try
+            {
+                var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+                if (customer == null)
+                {
+                    throw new Exceptions.ServiceException("Customer not found");
+                }
+
+                string oldCode = customer.ReferralCode ?? "None";
+                customer.ReferralCode = await GenerateUniqueReferralCode();
+                customer.UpdatedAt = DateTime.UtcNow;
+
+                _unitOfWork.Customers.Update(customer);
+                await _unitOfWork.SaveChangesAsync();
+
+                return new
+                {
+                    success = true,
+                    message = "Referral code regenerated successfully",
+                    customerId = customerId,
+                    oldReferralCode = oldCode,
+                    newReferralCode = customer.ReferralCode
+                };
             }
             catch (Exception ex)
             {

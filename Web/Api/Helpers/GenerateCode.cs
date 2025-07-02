@@ -42,8 +42,20 @@ namespace Api.Helpers
                 .Replace("+", "")   // Remove special characters
                 .Replace("/", "")   // Remove special characters
                 .Substring(0, 12);  // Take the first 12 characters
-            
+
             return shortGuid;
+        }
+
+        public static string GenerateReferralCode()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 6; i++)
+            {
+                sb.Append(chars[random.Next(chars.Length)]);
+            }
+            return sb.ToString();
         }
     }
 }

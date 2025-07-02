@@ -1,6 +1,8 @@
 ﻿using Api.DTO;
 using Api.Interfaces;
 using Api.Models;
+using Api.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Api.Helpers;
@@ -53,6 +55,8 @@ namespace Api.Controllers
         }
 
         [HttpGet("get/{id}")]
+        [Authorize]
+        [ResourceOwnerOrAdmin("id")]
         public async Task<IActionResult> get(int id)
         {
             try
@@ -82,6 +86,7 @@ namespace Api.Controllers
             }
         }
         [HttpGet("all")]
+        [Authorize(Policy = "AdminOnly")] // Only admins can view all customers
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
             try
@@ -107,6 +112,8 @@ namespace Api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Policy = "AdminOnly")] // Only admins can delete customers
+        [AuditLog("Delete Customer")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -142,6 +149,8 @@ namespace Api.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
+        [ResourceOwnerOrAdmin("id")]
         public async Task<IActionResult> update(int id, [FromForm] CustomerDto customer)
         {
             try
@@ -157,6 +166,8 @@ namespace Api.Controllers
         }
 
         [HttpGet("orders/{id}")]
+        [Authorize]
+        [ResourceOwnerOrAdmin("id")]
         public async Task<IActionResult> getOrders(int id)
         {
             try
@@ -232,7 +243,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("check-user-exists")]
-        public async Task<IActionResult> checkUserExists(checkUserExistsDto checkUser)
+        public async Task<IActionResult> checkUserExists(CheckUserExistsDto checkUser)
         {
             try
             {
@@ -264,7 +275,7 @@ namespace Api.Controllers
                 var response = await _icustomer!.passwordReset(phoneNumber);
                 return Ok(response);
             }
-            
+
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -281,7 +292,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                if(ex.Message.Contains("Customer not found"))
+                if (ex.Message.Contains("Customer not found"))
                 {
                     return NotFound(ex.Message);
                 }
@@ -295,6 +306,40 @@ namespace Api.Controllers
             try
             {
                 var response = await _icustomer!.toggleStatus(id);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Customer not found"))
+                {
+                    return NotFound(ex.Message);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("generate-referral-codes")]
+        [Authorize(Policy = "AdminOnly")] // Only admins can run this operation
+        public async Task<IActionResult> GenerateReferralCodesForExistingCustomers()
+        {
+            try
+            {
+                var response = await _icustomer!.GenerateReferralCodesForExistingCustomers();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("regenerate-referral-code/{id}")]
+        [Authorize(Policy = "AdminOnly")] // Only admins can regenerate referral codes
+        public async Task<IActionResult> RegenerateReferralCode(int id)
+        {
+            try
+            {
+                var response = await _icustomer!.RegenerateReferralCode(id);
                 return Ok(response);
             }
             catch (Exception ex)

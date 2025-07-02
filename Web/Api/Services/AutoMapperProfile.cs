@@ -21,7 +21,7 @@ namespace Api.Services
             CreateMap<AdminDtoLite, Admin>();
             CreateMap<Admin, AdminDtoLite>();
             CreateMap<Admin, AuthAdminDto>();
-            CreateMap< AuthAdminDto, Admin>();
+            CreateMap<AuthAdminDto, Admin>();
             CreateMap<AuthUserDto, User>();
             CreateMap<GenTokenDto, AuthUserDto>();
             CreateMap<User, UserDtoLiteMessage>();
@@ -30,6 +30,7 @@ namespace Api.Services
             CreateMap<CustomerDto, Customer>();
             CreateMap<Customer, CustomerDtoLite>();
             CreateMap<Customer, AuthUserDto>();
+            CreateMap<Customer, AuthCustomerDto>();
 
             //Rider
             CreateMap<RiderDto, Rider>();

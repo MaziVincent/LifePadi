@@ -9,12 +9,12 @@ namespace Api.Services
 {
     public class AddressService : IAddress
     {
-        private readonly DBContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AddressService(DBContext dbContext, IMapper mapper)
+        public AddressService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -22,19 +22,27 @@ namespace Api.Services
         {
             try
             {
-                var addresses = await _dbContext.Addresses
-                    .Include(a => a.User)
-                    .OrderByDescending(a => a.CreatedAt).ToListAsync();
+                var addresses = await _unitOfWork.Addresses.GetAsync(
+                    orderBy: q => q.OrderByDescending(a => a.CreatedAt),
+                    includeProperties: "User");
+
+                // Update addresses with null IsActive to true (maintaining existing behavior)
+                var addressesToUpdate = new List<Address>();
                 foreach (var ad in addresses)
                 {
                     if (ad.IsActive == null)
                     {
                         ad.IsActive = true;
-                        _dbContext.Addresses.Update(ad);
-                        await _dbContext.SaveChangesAsync();
+                        addressesToUpdate.Add(ad);
                     }
                 }
-                
+
+                if (addressesToUpdate.Any())
+                {
+                    _unitOfWork.Addresses.UpdateRange(addressesToUpdate);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
                 var AddressDtoLite = _mapper.Map<List<AddressDto>>(addresses);
                 return AddressDtoLite;
             }
@@ -46,17 +54,28 @@ namespace Api.Services
 
         public async Task<AddressDtoLite> createAsync(AddressDto address)
         {
-            
+
             try
             {
-                var initialAddress = await _dbContext.Addresses.Where(a => (a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town && a.City == address.City && a.State == address.State) || (a.Latitude == address.Latitude && a.Longitude == address.Longitude)).FirstOrDefaultAsync();
+                // Check for existing address with same details or coordinates
+                var initialAddress = await _unitOfWork.Addresses.GetFirstOrDefaultAsync(a =>
+                    (a.UserId == address.UserId && a.Name == address.Name && a.Town == address.Town &&
+                     a.City == address.City && a.State == address.State) ||
+                    (a.Latitude == address.Latitude && a.Longitude == address.Longitude));
+
                 if (initialAddress != null) throw new Exceptions.ServiceException("Address already exist");
-                var defaultAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.UserId == address.UserId && a.DefaultAddress == true);
+
+                // Check if user has any default address
+                var defaultAddress = await _unitOfWork.Addresses.GetFirstOrDefaultAsync(a =>
+                    a.UserId == address.UserId && a.DefaultAddress == true);
+
                 if (defaultAddress == null) address.DefaultAddress = true;
                 address.IsActive = true;
+
                 var newaddress = _mapper.Map<Address>(address);
-                await _dbContext.Addresses.AddAsync(newaddress);
-                await _dbContext.SaveChangesAsync();
+                await _unitOfWork.Addresses.AddAsync(newaddress);
+                await _unitOfWork.SaveChangesAsync();
+
                 var AddressDtoLite = _mapper.Map<AddressDtoLite>(newaddress);
                 return AddressDtoLite;
             }
@@ -70,17 +89,23 @@ namespace Api.Services
         {
             try
             {
-                var address = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.Id == id);
+                var address = await _unitOfWork.Addresses.GetByIdAsync(id);
                 if (address == null) return null!;
-                var delivery = await _dbContext
-                .Deliveries.FirstOrDefaultAsync(d => d.PickUpAddressId == id || d.DeliveryAddressId == id);
-                if (delivery != null) {
+
+                var delivery = await _unitOfWork.Deliveries.GetFirstOrDefaultAsync(d =>
+                    d.PickUpAddressId == id || d.DeliveryAddressId == id);
+
+                if (delivery != null)
+                {
                     address.IsActive = false;
-                    _dbContext.Addresses.Update(address);
-                }else{
-                    _dbContext.Addresses.Remove(address);
+                    _unitOfWork.Addresses.Update(address);
                 }
-                await _dbContext.SaveChangesAsync();
+                else
+                {
+                    _unitOfWork.Addresses.Remove(address);
+                }
+
+                await _unitOfWork.SaveChangesAsync();
                 return "Deleted successfuly";
             }
             catch (Exception ex)
@@ -89,25 +114,34 @@ namespace Api.Services
             }
         }
 
-           public async Task<string> setAsDefault(int id, int customerId)
+        public async Task<string> setAsDefault(int id, int customerId)
         {
             try
             {
-                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId).ToListAsync();
-                if (addresses == null) return null!;
+                var addresses = await _unitOfWork.Addresses.GetAsync(a => a.UserId == customerId);
+                if (addresses == null || !addresses.Any()) return null!;
+
+                var addressesToUpdate = new List<Address>();
                 foreach (var address in addresses)
                 {
-                    if(address.DefaultAddress == true){
+                    if (address.DefaultAddress == true)
+                    {
                         address.DefaultAddress = false;
-                         _dbContext.Addresses.Update(address);
+                        addressesToUpdate.Add(address);
                     }
-                    if(address.Id == id){
+                    if (address.Id == id)
+                    {
                         address.DefaultAddress = true;
-                         _dbContext.Addresses.Update(address);
+                        addressesToUpdate.Add(address);
                     }
                 }
-               
-                await _dbContext.SaveChangesAsync();
+
+                if (addressesToUpdate.Any())
+                {
+                    _unitOfWork.Addresses.UpdateRange(addressesToUpdate);
+                }
+
+                await _unitOfWork.SaveChangesAsync();
                 return "Address Updated successfully";
             }
             catch (Exception ex)
@@ -120,7 +154,10 @@ namespace Api.Services
         {
             try
             {
-                var address = await _dbContext.Addresses.Include(a => a.User).FirstOrDefaultAsync(a => a.Id == id);
+                var address = await _unitOfWork.Addresses.GetFirstOrDefaultAsync(
+                    a => a.Id == id,
+                    "User");
+
                 if (address == null) return null!;
                 var AddressDto = _mapper.Map<AddressDto>(address);
                 return AddressDto;
@@ -135,10 +172,11 @@ namespace Api.Services
         {
             try
             {
-                var addresses = await _dbContext.Addresses.Where(a => a.UserId == customerId)
-                .Where(a => a.IsActive == true).ToListAsync();
-                if (addresses == null) return null!;
-               
+                var addresses = await _unitOfWork.Addresses.GetAsync(
+                    filter: a => a.UserId == customerId && a.IsActive == true);
+
+                if (addresses == null || !addresses.Any()) return null!;
+
                 var AddressDtoLite = _mapper.Map<List<AddressDtoLite>>(addresses);
                 return AddressDtoLite;
             }
@@ -152,9 +190,10 @@ namespace Api.Services
         {
             try
             {
-                var userAddress = await _dbContext.Addresses.Include(a => a.User)
-                .Where(a => a.UserId == userId)
-                .ToListAsync();
+                var userAddress = await _unitOfWork.Addresses.GetAsync(
+                    filter: a => a.UserId == userId,
+                    includeProperties: "User");
+
                 var addresDtoLite = _mapper.Map<List<AddressDtoLite>>(userAddress);
                 return addresDtoLite;
             }
@@ -168,8 +207,10 @@ namespace Api.Services
         {
             try
             {
-                var initialAddress = await _dbContext.Addresses.FirstOrDefaultAsync(a => a.Id == id);
-                initialAddress!.Name = address.Name;
+                var initialAddress = await _unitOfWork.Addresses.GetByIdAsync(id);
+                if (initialAddress == null) return null!;
+
+                initialAddress.Name = address.Name;
                 initialAddress.PostalCode = address.PostalCode;
                 initialAddress.City = address.City;
                 initialAddress.Latitude = address.Latitude;
@@ -178,8 +219,9 @@ namespace Api.Services
                 initialAddress.Town = address.Town;
                 initialAddress.UpdatedAt = DateTime.UtcNow;
 
-                _dbContext.Addresses.Attach(initialAddress);
-                await _dbContext.SaveChangesAsync();
+                _unitOfWork.Addresses.Update(initialAddress);
+                await _unitOfWork.SaveChangesAsync();
+
                 var AddressDtoLite = _mapper.Map<AddressDtoLite>(initialAddress);
                 return AddressDtoLite;
             }

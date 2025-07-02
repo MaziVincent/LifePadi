@@ -21,7 +21,7 @@ const AdminOrderDetails = () => {
   const getOrder = async (url) => {
     const response = await fetch(url, auth.accessToken);
 
-    return response.data;
+    return response.data?.Data;
   };
 
   const getDelivery = async (url) => {
@@ -33,7 +33,7 @@ const AdminOrderDetails = () => {
 
   const getTransaction = async (url) => {
     const response = await fetch(url, auth.accessToken);
-    return response.data;
+    return response.data?.Data;
   };
 
   const getLogistics = async (url) => {
@@ -95,7 +95,9 @@ const AdminOrderDetails = () => {
     enabled: order?.Type === "Logistics",
   });
 
-  //console.log(delivery);
+  console.log(delivery);
+  console.log(order);
+  console.log(transaction);
 
   const handleAssignRider = () => {
     setAssignRider(true);

@@ -53,8 +53,8 @@ const Overview = () => {
 
   const getOrders = async (url) => {
     const response = await fetch(url, auth.accessToken);
-
-    return response.data;
+    //console.log(response.data)
+    return response.data?.Data;
   };
 
   const { data, isError, isLoading, isSuccess } = useQuery({
@@ -96,6 +96,8 @@ const Overview = () => {
     navigate(`/admin/order/${id}`)
 
   }
+
+  //console.log(auth)
 
   return (
     <div className="bg-gray-100">
