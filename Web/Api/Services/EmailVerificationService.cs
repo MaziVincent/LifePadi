@@ -37,7 +37,16 @@ namespace Api.Services
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(_iconfig["SMTPConfig:Username"], _iconfig["SMTPConfig:Password"]);
                     client.EnableSsl = true;
-                    client.Port = Int32.Parse(_iconfig["SMTPConfig:Port"]!);
+
+                    // Parse port safely with fallback
+                    if (int.TryParse(_iconfig["SMTPConfig:Port"], out int smtpPort))
+                    {
+                        client.Port = smtpPort;
+                    }
+                    else
+                    {
+                        client.Port = 587; // Default SMTP port
+                    }
 
                     var message = new MailMessage(_iconfig["SMTPConfig:Username"]!, to)
                     {
@@ -92,7 +101,7 @@ namespace Api.Services
                 };
 
                 return response;
-                
+
             }
             catch (Exception ex)
             {

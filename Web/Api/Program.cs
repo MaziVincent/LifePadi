@@ -18,14 +18,20 @@ using System.Reflection;
 
 // Load environment variables
 Env.Load();
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
+// Configure Kestrel for Cloud Run compatibility
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port) && int.TryParse(port, out int portNumber))
 {
-    options.ListenAnyIP(int.Parse(port));
-});
+    builder.WebHost.UseUrls($"http://0.0.0.0:{portNumber}");
+}
+else
+{
+    // Fallback for local development
+    builder.WebHost.UseUrls("http://0.0.0.0:8080");
+}
 
 // Add environment variables configuration
 builder.Configuration.AddEnvironmentVariables();
@@ -37,11 +43,41 @@ builder.Services.AddSecurityServices();
 
 
 //DB context
-builder.Services.AddDbContext<DBContext>(option => option.UseNpgsql(
-    Environment.GetEnvironmentVariable("DB_SERVER") != null
-        ? $"Server={Environment.GetEnvironmentVariable("DB_SERVER")};Port={Environment.GetEnvironmentVariable("DB_PORT")};Database={Environment.GetEnvironmentVariable("DB_NAME")};Username={Environment.GetEnvironmentVariable("DB_USERNAME")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};"
-        : builder.Configuration.GetConnectionString("LifePadiDBConnection")
-    ));
+builder.Services.AddDbContext<DBContext>(option =>
+{
+    string connectionString;
+
+    // Check if environment variables are available for database connection
+    var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+    var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+    var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+    var dbUsername = Environment.GetEnvironmentVariable("DB_USERNAME");
+    var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+    if (!string.IsNullOrEmpty(dbServer) && !string.IsNullOrEmpty(dbName) &&
+        !string.IsNullOrEmpty(dbUsername) && !string.IsNullOrEmpty(dbPassword))
+    {
+        // Use environment variables with fallback port
+        var portToUse = !string.IsNullOrEmpty(dbPort) ? dbPort : "5432";
+        connectionString = $"Server={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
+        Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}");
+    }
+    else
+    {
+        // Build connection string manually from individual environment variables or use hardcoded fallback
+        // This avoids the ${} placeholder issue in appsettings.json
+        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "lifepadi.cjkuw0skw142.us-east-1.rds.amazonaws.com";
+        var fallbackPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
+        var fallbackDatabase = Environment.GetEnvironmentVariable("DB_NAME") ?? "lifepadi_db";
+        var fallbackUsername = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
+        var fallbackPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Esomchi92";
+
+        connectionString = $"Server={fallbackServer};Port={fallbackPort};Database={fallbackDatabase};Username={fallbackUsername};Password={fallbackPassword};";
+        Console.WriteLine($"Using fallback DB connection. Server: {fallbackServer}, Port: {fallbackPort}, Database: {fallbackDatabase}");
+    }
+
+    option.UseNpgsql(connectionString);
+});
 
 builder.Services.AddHttpClient<CustomerService>();
 builder.Services.AddHttpClient<TransactionService>();
@@ -303,7 +339,7 @@ builder.Services.AddSwaggerGen(c =>
     c.DocInclusionPredicate((name, api) => true);
 });
 
-builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+// Note: Removed AddAWSLambdaHosting as we're deploying to Google Cloud Run
 
 
 
@@ -349,7 +385,12 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection in development
+// Cloud Run handles HTTPS termination at the load balancer
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseRouting();
 
 // Use secure CORS policy

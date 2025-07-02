@@ -292,17 +292,24 @@ namespace Api.Controllers
         }
 
         [HttpGet("getfee")]
-        public IActionResult CalculateDeliveryFee([FromQuery] DeliveryFeeDto delivery){
+        public IActionResult CalculateDeliveryFee([FromQuery] DeliveryFeeDto delivery)
+        {
 
-            if(!ModelState.IsValid){
+            if (!ModelState.IsValid)
+            {
                 return BadRequest("distance is required ");
             }
             if (delivery.Distance < 0)
             {
                 return BadRequest("Distance cannot be less than 0");
             }
-            int pricePerKilometer = int.Parse(_config.GetSection("Distance:Price_Per_Kilometer").Value!);
-           
+
+            // Parse price per kilometer with fallback
+            if (!int.TryParse(_config.GetSection("Distance:Price_Per_Kilometer").Value, out int pricePerKilometer))
+            {
+                pricePerKilometer = 100; // Default price per kilometer
+            }
+
             if (delivery.DiscountPercentage != null && delivery.DiscountAmount != null)
             {
                 return BadRequest("Only one discount type is allowed");
@@ -313,9 +320,10 @@ namespace Api.Controllers
                 {
                     return BadRequest("Discount percentage cannot be greater than 100");
                 }
-                double percentage = (double)((double)delivery.DiscountPercentage / 100);
-                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * percentage );
-                return Ok(new {DeliveryFee = deliveryFeeAfterPercentageDiscount});
+
+
+                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * (delivery.DiscountPercentage / 100));
+                return Ok(new { DeliveryFee = deliveryFeeAfterPercentageDiscount });
             }
             if (delivery.DiscountAmount != null)
             {
@@ -324,15 +332,15 @@ namespace Api.Controllers
                     return BadRequest("Discount amount cannot be less than 0");
                 }
                 double deliveryFeeAfterAmountDiscount = 1000 + (delivery.Distance * pricePerKilometer) - (double)delivery.DiscountAmount;
-                return Ok(new {DeliveryFee = deliveryFeeAfterAmountDiscount});
+                return Ok(new { DeliveryFee = deliveryFeeAfterAmountDiscount });
             }
-           
-            
 
-            double DeliveryFee = 1000 + ( delivery.Distance * pricePerKilometer);
+
+
+            double DeliveryFee = 1000 + (delivery.Distance * pricePerKilometer);
 
             return Ok(new { DeliveryFee });
-        
+
         }
     }
 }
