@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.DTO;
 using Api.Interfaces;
+using Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Api.Authorization;
 
 namespace Api.Controllers
 {
@@ -13,18 +16,42 @@ namespace Api.Controllers
     public class ProductReviewController : ControllerBase
     {
         private readonly IReview<ProductReviewDto> _reviewService;
-        public ProductReviewController( IReview<ProductReviewDto> reviewService)
+        private readonly ProductReviewService _productReviewService;
+
+        public ProductReviewController(IReview<ProductReviewDto> reviewService, ProductReviewService productReviewService)
         {
             _reviewService = reviewService;
+            _productReviewService = productReviewService;
         }
 
         [HttpGet("all")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> allAsync()
         {
             try
             {
-                var productReview = await _reviewService.allAsync();
-                return Ok(productReview);
+                var productReviews = await _reviewService.allAsync();
+                return Ok(productReviews);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("all/paginated")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> GetAllPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1 || pageSize > 100) pageSize = 10; // Limit page size to prevent abuse
+
+                var pagedReviews = await ((BaseReviewService<Models.ProductReview, ProductReviewDto>)_reviewService)
+                    .GetAllPaginatedAsync(pageNumber, pageSize);
+
+                return Ok(pagedReviews);
             }
             catch (Exception e)
             {
@@ -37,8 +64,27 @@ namespace Api.Controllers
         {
             try
             {
-                var productReview = await _reviewService.allByObjectAsync(productId);
-                return Ok(productReview);
+                var productReviews = await _reviewService.allByObjectAsync(productId);
+                return Ok(productReviews);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("allByProduct/{productId}/paginated")]
+        public async Task<IActionResult> GetByProductPaginated(int productId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+                var pagedReviews = await ((BaseReviewService<Models.ProductReview, ProductReviewDto>)_reviewService)
+                    .GetByObjectPaginatedAsync(productId, pageNumber, pageSize);
+
+                return Ok(pagedReviews);
             }
             catch (Exception e)
             {
@@ -52,7 +98,7 @@ namespace Api.Controllers
             try
             {
                 var averageRating = await _reviewService.averageRating(productId);
-                return Ok(averageRating);
+                return Ok(new { averageRating });
             }
             catch (Exception e)
             {
@@ -60,35 +106,7 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> createAsync([FromBody] ProductReviewDto productReviewDto)
-        {
-            try
-            {
-                var productReview = await _reviewService.createAsync(productReviewDto);
-                return Ok(productReview);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("delete/{id}")]
-        public async Task<IActionResult> deleteAsync(int id)
-        {
-            try
-            {
-                var productReview = await _reviewService.deleteAsync(id);
-                return Ok(productReview);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> findAsync(int id)
         {
             try
@@ -102,13 +120,70 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("update/{id}")]
+        [HttpPost("create")]
+        [Authorize]
+        public async Task<IActionResult> createAsync([FromBody] ProductReviewDto productReviewDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var productReview = await _reviewService.createAsync(productReviewDto);
+                return CreatedAtAction(nameof(findAsync), new { id = productReview.Id }, productReview);
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("already reviewed"))
+                    return Conflict(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> deleteAsync(int id)
+        {
+            try
+            {
+                var result = await _reviewService.deleteAsync(id);
+                return Ok(new { message = result });
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("not found"))
+                    return NotFound(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<IActionResult> updateAsync(int id, [FromBody] ProductReviewDto productReviewDto)
         {
             try
             {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
                 var productReview = await _reviewService.updateAsync(id, productReviewDto);
                 return Ok(productReview);
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("not found"))
+                    return NotFound(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("stats/{productId}")]
+        public async Task<IActionResult> productReviewStats(int productId)
+        {
+            try
+            {
+                var productReviewStats = await _reviewService.reviewStats(productId);
+                return Ok(productReviewStats);
             }
             catch (Exception e)
             {
@@ -116,13 +191,29 @@ namespace Api.Controllers
             }
         }
 
-        [HttpGet("productReviewStats/{productId}")]
-        public async Task<IActionResult> productReviewStats(int productId)
+        [HttpGet("ratingBreakdown/{productId}")]
+        public async Task<IActionResult> GetProductRatingBreakdown(int productId)
         {
             try
             {
-                var productReviewStats = await _reviewService.reviewStats(productId);
-                return Ok(productReviewStats);
+                var breakdown = await _productReviewService.GetProductRatingBreakdown(productId);
+                return Ok(breakdown);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("customer/{customerId}")]
+        [Authorize]
+        [ResourceOwnerOrAdmin("customerId")]
+        public async Task<IActionResult> GetReviewsByCustomer(int customerId)
+        {
+            try
+            {
+                var reviews = await _productReviewService.GetReviewsByCustomer(customerId);
+                return Ok(reviews);
             }
             catch (Exception e)
             {

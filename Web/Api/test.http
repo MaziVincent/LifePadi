@@ -1,3 +1,6 @@
+
+ 
+
 GET https://localhost:7216/api/voucher/all
 
 ###
@@ -69,13 +72,13 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/order/get/467
 
 ###
 
-POST https://lifepadi-948405839190.us-east1.run.app/api/notification/general
+POST https://lifepadi-225229879541.us-east1.run.app/api/notification/general
 Content-Type: application/json
 
 {
     "Topic":"general",
-    "Title":"TUESDAYS ARE FOR PIZZA RIGHT?🤔",
-    "Body":"I got you! Request as much errands as you need today and be among our 5 customers to be surprised with a box of pizza🥰"
+    "Title":"WE ARE DELIVERING HAPPINESS TO FATHERS TODAY",
+    "Body":"Fathers are unique, so also is Lifepadi. Deliver happiness to Dad using Lifepadi🥰"
 }
 
 
@@ -147,7 +150,7 @@ Content-Type: application/json
 POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
 
 ###
-GET https://lifepadi-948405839190.us-east1.run.app/api/vendorcategory/vendors/2
+GET https://localhost:7216/api/vendorcategory/vendors/2
 
 ###
 GET https://lifepadi-225229879541.us-east1.run.app/api/vendor/all
@@ -165,6 +168,7 @@ PUT https://lifepadi-948405839190.us-east1.run.app/api/auth/password-reset
 Content-Type: application/json
 
 {
+    "Email":"primeobjective@gmail.com",
     "NewPassword":"Esomchi"
 }
 

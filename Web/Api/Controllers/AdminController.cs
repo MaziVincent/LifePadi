@@ -5,13 +5,16 @@ using System.Threading.Tasks;
 using Api.DTO;
 using Api.Helpers;
 using Api.Interfaces;
+using Api.Authorization;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "AdminOnly")] // Only admins can access admin endpoints
     public class AdminController : ControllerBase
     {
         private readonly IAdmin? _iadmin;
@@ -69,7 +72,7 @@ namespace Api.Controllers
             }
         }
 
-       
+
         [HttpGet("all")]
         public async Task<IActionResult> getAll([FromQuery] SearchPaging props)
         {
@@ -96,6 +99,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [AuditLog("Delete Admin")]
         public async Task<IActionResult> delete(int id)
         {
             try
@@ -111,6 +115,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
+        [AuditLog("Create Admin")]
         public async Task<IActionResult> create([FromForm] AdminDto admin)
         {
             try
@@ -145,7 +150,7 @@ namespace Api.Controllers
             }
         }
 
-       
+
 
 
         [HttpPost("send-otp")]
@@ -180,7 +185,7 @@ namespace Api.Controllers
             }
         }
 
-        
+
 
         [HttpPost("password-reset")]
         public async Task<IActionResult> passwordReset([FromForm] string phoneNumber)

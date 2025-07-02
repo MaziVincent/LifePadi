@@ -11,7 +11,7 @@ using Api.DTO;
 public class FcmService : IFcmService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _fcmEndpoint = "https://fcm.googleapis.com/v1/projects/lifepadi-17e8c/messages:send";
+    private readonly string _fcmEndpoint = "https://fcm.googleapis.com/v1/projects/lifepadi-24bfe/messages:send";
     private readonly GoogleCredential _googleCredential;
     private readonly FirebaseApp _firebaseApp;
 
@@ -19,7 +19,7 @@ public class FcmService : IFcmService
     {
         _httpClient = new HttpClient(new HttpClientHandler());
         _googleCredential = GoogleCredential
-            .FromFile("lifepadi-17e8c-firebase.json")
+            .FromFile("lifepadi-24bfe-firebase.json")
             .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
 
     }

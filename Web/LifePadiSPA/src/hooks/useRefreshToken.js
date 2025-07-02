@@ -20,8 +20,8 @@ const useRefreshToken = () => {
             
         });
 
-       // console.log(response.data);
-        setAuth(response.data);
+        console.log(response.data);
+        setAuth(response.data?.Data);
         //dispatch({type:"setAddress", payload:response.data?.user.ContactAddress})
    
     return response.data.accessToken;

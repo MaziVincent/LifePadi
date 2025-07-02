@@ -9,11 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api.Interfaces;
 using AutoMapper;
+using Api.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers
 {
+    /// <summary>
+    /// Authentication controller responsible for user login, registration, and password management
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
+    [SwaggerTag("Authentication and authorization endpoints")]
     public class AuthController : ControllerBase
     {
         private readonly DBContext _context;
@@ -22,12 +30,14 @@ namespace Api.Controllers
         private readonly IEmailVerification _emailVerify;
         private readonly IMapper _mapper;
         private readonly IUser _userService;
+        private readonly ILogger<AuthController> _logger;
         public AuthController(DBContext context,
         IConfiguration config,
         IOtherService oService,
         IEmailVerification emailVerify,
         IMapper mapper,
-        IUser userService)
+        IUser userService,
+        ILogger<AuthController> logger)
         {
             _context = context;
             _config = config;
@@ -35,106 +45,129 @@ namespace Api.Controllers
             _emailVerify = emailVerify;
             _mapper = mapper;
             _userService = userService;
+            _logger = logger;
         }
 
+        /// <summary>
+        /// Logs in a user using email/phone and password
+        /// </summary>
+        /// <param name="loginDTO">Login data transfer object containing email or phone number and password</param>
+        /// <returns>Returns user information and tokens upon successful login</returns>
+        /// <response code="200">Login successful</response>
+        /// <response code="400">Invalid login data</response>
+        /// <response code="401">Unauthorized - invalid credentials</response>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDTO)
         {
-            try
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
             {
-                var user = await authenticateUser(loginDTO);
-                if (user == null)
-                {
-                    return NotFound("Invalid email or password");
-                }
+                ["Action"] = nameof(Login),
+                ["Email"] = loginDTO?.Email ?? "N/A",
+                ["PhoneNumber"] = loginDTO?.PhoneNumber ?? "N/A"
+            });
 
-                //put refreshToken in a cookie
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    Secure = true,
-                    Path = "/",
+            _logger.LogInformation("Processing login request");
 
-                };
-                Response.Cookies.Append("refreshToken", user.RefreshToken!, cookieOptions);
-
-                var token = new
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber,
-                    ContactAddress = user.ContactAddress,
-                    Role = user.Role,
-                    refreshToken = user.RefreshToken,
-                    accessToken = user.AccessToken,
-                    Wallet = user.Wallet
-                };
-                return Ok(token);
-            }
-            catch (Exception ex)
+            if (loginDTO == null)
             {
-                if (ex.Message.Contains("User not found"))
-                {
-                    return NotFound(ex.Message);
-                }
-                if (ex.Message.Contains("Invalid email or password"))
-                {
-                    return BadRequest(ex.Message);
-                }
-                return StatusCode(500, ex.Message);
+                _logger.LogWarning("Login request with null data");
+                throw new ValidationException("Login data is required");
             }
+
+            var user = await authenticateUser(loginDTO);
+            if (user == null)
+            {
+                _logger.LogWarning("Authentication failed - user not found or invalid credentials");
+                throw new Api.Exceptions.UnauthorizedAccessException("Invalid email or password");
+            }
+
+            //put refreshToken in a cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Secure = true,
+                Path = "/",
+            };
+            Response.Cookies.Append("refreshToken", user.RefreshToken!, cookieOptions);
+
+            var token = new
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                ContactAddress = user.ContactAddress,
+                Role = user.Role,
+                refreshToken = user.RefreshToken,
+                accessToken = user.AccessToken,
+                Wallet = user.Wallet
+            };
+
+            _logger.LogInformation("User login successful for UserId: {UserId}", user.Id);
+            return Ok(ApiResponse<object>.CreateSuccess(token, "Login successful"));
         }
 
         private async Task<LoggedInUserDto> authenticateUser(LoginDto loginDTO)
         {
+            _logger.LogDebug("Authenticating user with email: {Email} or phone: {PhoneNumber}",
+                loginDTO.Email ?? "N/A", loginDTO.PhoneNumber ?? "N/A");
+
+            var user = await GetUserByLoginDtoAsync(loginDTO);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found during authentication");
+                throw new ResourceNotFoundException("User not found");
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, user!.PasswordHash))
+            {
+                _logger.LogWarning("Invalid password for user: {UserId}", user.Id);
+                throw new Api.Exceptions.UnauthorizedAccessException("Invalid email or password");
+            }
+
+            var Type = _oService.Strip(user.GetType().ToString());
+            var genTokenDTO = new GenTokenDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Role = Type
+            };
+
+            var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
+            var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
+            user!.RefreshToken = refreshToken;
+
             try
             {
-                var user = await GetUserByLoginDtoAsync(loginDTO);
-                if (user == null)
-                {
-                    throw new Exceptions.ServiceException("User not found");
-                }
-
-                if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, user!.PasswordHash))
-                {
-                    throw new Exceptions.ServiceException("Invalid email or password");
-                }
-                var Type = _oService.Strip(user.GetType().ToString());
-                var genTokenDTO = new GenTokenDto
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Role = Type
-                };
-                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO);
-                var refreshToken = new GenerateToken(_config).generateRefreshToken(genTokenDTO);
-                user!.RefreshToken = refreshToken;
                 await _context.SaveChangesAsync();
-                var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.CustomerId == user.Id);
-                var walletDto = _mapper.Map<WalletDtoLite>(wallet);
-                return new LoggedInUserDto
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber,
-                    ContactAddress = user.ContactAddress,
-                    RefreshToken = refreshToken,
-                    AccessToken = accessToken,
-                    Role = Type,
-                    Wallet = walletDto
-                };
             }
             catch (Exception ex)
             {
-
-                throw new Exceptions.ServiceException(ex.Message);
+                _logger.LogError(ex, "Failed to save refresh token for user: {UserId}", user.Id);
+                throw new DatabaseException("Failed to update user session");
             }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.CustomerId == user.Id);
+            var walletDto = _mapper.Map<WalletDtoLite>(wallet);
+
+            _logger.LogDebug("User authentication successful for UserId: {UserId}", user.Id);
+
+            return new LoggedInUserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                ContactAddress = user.ContactAddress,
+                RefreshToken = refreshToken,
+                AccessToken = accessToken,
+                Role = Type,
+                Wallet = walletDto
+            };
         }
 
 
@@ -155,58 +188,102 @@ namespace Api.Controllers
             return null;
         }
 
+        /// <summary>
+        /// Refreshes the access token using a valid refresh token
+        /// </summary>
+        /// <param name="refreshToken">The refresh token</param>
+        /// <returns>Returns new access token and user information</returns>
+        /// <response code="200">Token refreshed successfully</response>
+        /// <response code="401">Unauthorized - invalid refresh token</response>
         [HttpGet("refreshToken")]
         public async Task<IActionResult> RefreshToken([FromQuery] string refreshToken)
         {
-            try
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
             {
-                // var refreshToken = Request.Cookies["refreshToken"];
-                if (string.IsNullOrEmpty(refreshToken))
-                {
-                    return Unauthorized("Invalid refresh token");
-                }
-                var genTokenDTO = new GenerateToken(_config).validateRefreshToken(refreshToken);
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == genTokenDTO!.Id);
-                if (user == null)
-                {
-                    return NoContent();
-                }
-                var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
-                var token = new
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    ContactAddress = user.ContactAddress,
-                    PhoneNumber = user.PhoneNumber,
-                    Role = genTokenDTO!.Role,
-                    refreshToken = user.RefreshToken,
-                    accessToken = accessToken
-                };
-                return Ok(token);
-            }
-            catch (Exception ex)
+                ["Action"] = nameof(RefreshToken)
+            });
+
+            _logger.LogInformation("Processing refresh token request");
+
+            if (string.IsNullOrEmpty(refreshToken))
             {
-                return BadRequest(ex.Message);
+                _logger.LogWarning("Refresh token request with empty token");
+                throw new Api.Exceptions.UnauthorizedAccessException("Invalid refresh token");
             }
+
+            var genTokenDTO = new GenerateToken(_config).validateRefreshToken(refreshToken);
+            if (genTokenDTO == null)
+            {
+                _logger.LogWarning("Invalid refresh token provided");
+                throw new Api.Exceptions.UnauthorizedAccessException("Invalid refresh token");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == genTokenDTO!.Id);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found for token refresh: {UserId}", genTokenDTO.Id);
+                throw new ResourceNotFoundException("User not found");
+            }
+
+            var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
+            var token = new
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ContactAddress = user.ContactAddress,
+                PhoneNumber = user.PhoneNumber,
+                Role = genTokenDTO!.Role,
+                refreshToken = user.RefreshToken,
+                accessToken = accessToken
+            };
+
+            _logger.LogInformation("Token refresh successful for UserId: {UserId}", user.Id);
+            return Ok(ApiResponse<object>.CreateSuccess(token, "Token refreshed successfully"));
         }
 
+        /// <summary>
+        /// Logs out the user by invalidating the refresh token
+        /// </summary>
+        /// <returns>Returns success message</returns>
+        /// <response code="200">Logout successful</response>
+        /// <response code="400">Invalid refresh token</response>
         [HttpGet("logOut")]
         public async Task<IActionResult> LogOut()
         {
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
+            {
+                ["Action"] = nameof(LogOut)
+            });
+
+            _logger.LogInformation("Processing logout request");
+
             var refreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
             {
-                return BadRequest("Invalid refresh token");
+                _logger.LogWarning("Logout request with invalid refresh token");
+                throw new ValidationException("Invalid refresh token");
             }
+
             var user = await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
             if (user != null)
             {
                 user!.RefreshToken = null;
                 _context.Users.Attach(user);
-                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogDebug("User session cleared for UserId: {UserId}", user.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to clear user session for UserId: {UserId}", user.Id);
+                    throw new DatabaseException("Failed to clear user session");
+                }
             }
+
             Response.Cookies.Delete("refreshToken", new CookieOptions
             {
                 HttpOnly = true,
@@ -214,37 +291,70 @@ namespace Api.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
                 Path = "/"
-
             });
-            return Ok("Logout Successfully");
+
+            _logger.LogInformation("User logout successful");
+            return Ok(ApiResponse.CreateSuccess("Logout Successfully"));
         }
 
+        /// <summary>
+        /// Resets the password for a user
+        /// </summary>
+        /// <param name="forgotPassword">Forgot password data transfer object containing email</param>
+        /// <returns>Returns success message</returns>
+        /// <response code="200">Password reset successful</response>
+        /// <response code="400">Invalid password reset data</response>
         [HttpPut("password-reset")]
         public async Task<IActionResult> PasswordReset([FromForm] ForgotPasswordDTO forgotPassword)
         {
-            try
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
             {
-                var response = await _userService.resetPassword(forgotPassword);
-                return Ok(response);
-            }
-            catch (Exception ex)
+                ["Action"] = nameof(PasswordReset),
+                ["Email"] = forgotPassword?.Email ?? "N/A"
+            });
+
+            _logger.LogInformation("Processing password reset request");
+
+            if (forgotPassword == null)
             {
-                return BadRequest(ex.Message);
+                _logger.LogWarning("Password reset request with null data");
+                throw new ValidationException("Password reset data is required");
             }
+
+            var response = await _userService.resetPassword(forgotPassword);
+
+            _logger.LogInformation("Password reset completed for email: {Email}", forgotPassword.Email);
+            return Ok(ApiResponse<object>.CreateSuccess(response, "Password reset successful"));
         }
 
+        /// <summary>
+        /// Verifies the user's email by sending a verification email
+        /// </summary>
+        /// <param name="email">The email address to verify</param>
+        /// <returns>Returns success message</returns>
+        /// <response code="200">Verification email sent successfully</response>
+        /// <response code="400">Invalid email</response>
         [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string email)
         {
-            try
+            using var scope = _logger.BeginScope(new Dictionary<string, object>
             {
-                var response = await _emailVerify.SendVerificationEmail(email);
-                return Ok(response);
-            }
-            catch (Exception ex)
+                ["Action"] = nameof(VerifyEmail),
+                ["Email"] = email ?? "N/A"
+            });
+
+            _logger.LogInformation("Processing email verification request");
+
+            if (string.IsNullOrEmpty(email))
             {
-                return BadRequest(ex.Message);
+                _logger.LogWarning("Email verification request with empty email");
+                throw new ValidationException("Email is required");
             }
+
+            var response = await _emailVerify.SendVerificationEmail(email);
+
+            _logger.LogInformation("Email verification sent to: {Email}", email);
+            return Ok(ApiResponse<object>.CreateSuccess(response, "Verification email sent successfully"));
         }
     }
 }

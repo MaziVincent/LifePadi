@@ -7,152 +7,134 @@ using Api.Interfaces;
 using Api.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Api.Services
 {
-    public class RiderReviewService : IReview<RiderReviewDto>
+    public class RiderReviewService : BaseReviewService<RiderReview, RiderReviewDto>
     {
-        private readonly DBContext _context;
-        private readonly IMapper _mapper;
-        public RiderReviewService(DBContext context, IMapper mapper)
+        public RiderReviewService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _context = context;
-            _mapper = mapper;
         }
-        public async Task<List<RiderReviewDto>> allAsync()
+
+        protected override Expression<Func<RiderReview, bool>> GetObjectFilterExpression(int objectId)
         {
-            try
+            return rr => rr.RiderId == objectId;
+        }
+
+        protected override Expression<Func<RiderReview, DateTime>> GetCreatedAtSelector()
+        {
+            return rr => rr.CreatedAt;
+        }
+
+        protected override Expression<Func<RiderReview, double>> GetRatingSelector()
+        {
+            return rr => rr.Rating;
+        }
+
+        protected override string GetIncludeProperties()
+        {
+            return "Customer,Rider";
+        }
+
+        protected override string GetEntityName()
+        {
+            return "Rider";
+        }
+
+        protected override void SetUpdatedAt(RiderReview entity)
+        {
+            entity.UpdatedAt = DateTime.UtcNow;
+        }
+
+        protected override async Task ValidateUniqueReview(RiderReviewDto reviewDto)
+        {
+            var existingReview = await _repository.GetFirstOrDefaultAsync(
+                rr => rr.CustomerId == reviewDto.CustomerId && rr.RiderId == reviewDto.RiderId
+            );
+
+            if (existingReview != null)
             {
-                var riderReview = await _context.RiderReviews.OrderByDescending(rr => rr.CreatedAt)
-                .Include(rr => rr.Rider)
-                .Include(rr => rr.Customer)
-                .ToListAsync();
-                return _mapper.Map<List<RiderReviewDto>>(riderReview);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
+                throw new Exceptions.ServiceException("You have already reviewed this rider");
             }
         }
 
-        public async Task<List<RiderReviewDto>> allByObjectAsync(int objectId)
+        // Additional rider-specific methods
+        public async Task<List<RiderReviewDto>> GetReviewsByCustomer(int customerId)
         {
             try
             {
-                var riderReview = await _context.RiderReviews.OrderByDescending(rr => rr.CreatedAt)
-                .Include(rr => rr.Rider)
-                .Include(rr => rr.Customer)
-                .Where(rr => rr.RiderId == objectId)
-                .ToListAsync();
-                return _mapper.Map<List<RiderReviewDto>>(riderReview);
+                var reviews = await _repository.GetAsync(
+                    filter: rr => rr.CustomerId == customerId,
+                    orderBy: q => q.OrderByDescending(rr => rr.CreatedAt),
+                    includeProperties: GetIncludeProperties()
+                );
+
+                return _mapper.Map<List<RiderReviewDto>>(reviews);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exceptions.ServiceException(e.Message);
+                throw new Exceptions.ServiceException($"Error retrieving customer reviews: {ex.Message}");
             }
         }
 
-        public async Task<double> averageRating(int objectId)
+        public async Task<object> GetRiderPerformanceStats(int riderId)
         {
             try
             {
-                var riderReview = await _context.RiderReviews
-                .Where(rr => rr.RiderId == objectId)
-                .AverageAsync(rr => rr.Rating);
-                return riderReview;
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
-            }
-        }
+                var reviews = await _repository.GetAsync(filter: rr => rr.RiderId == riderId);
 
-        public async Task<RiderReviewDto> createAsync(RiderReviewDto reviewDto)
-        {
-            try
-            {
-                var riderReview = _mapper.Map<RiderReview>(reviewDto);
-                await _context.RiderReviews.AddAsync(riderReview);
-                await _context.SaveChangesAsync();
-                return _mapper.Map<RiderReviewDto>(riderReview);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
-            }
-        }
-
-        public async Task<string> deleteAsync(int id)
-        {
-            try
-            {
-                var riderReview = await _context.RiderReviews.FirstOrDefaultAsync(rr => rr.Id == id);
-                if (riderReview == null)
+                if (!reviews.Any())
                 {
-                    return "Rider Review not found";
+                    return new
+                    {
+                        totalReviews = 0,
+                        averageRating = 0.0,
+                        ratingBreakdown = new Dictionary<int, int>(),
+                        performanceLevel = "No reviews yet"
+                    };
                 }
-                _context.RiderReviews.Remove(riderReview);
-                await _context.SaveChangesAsync();
-                return "Rider Review deleted successfully";
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
-            }
-        }
 
-        public async Task<RiderReviewDto> findAsync(int id)
-        {
-            try
-            {
-                var riderReview = await _context.RiderReviews
-                .Include(rr => rr.Rider)
-                .Include(rr => rr.Customer)
-                .FirstOrDefaultAsync(rr => rr.Id == id);
-                return _mapper.Map<RiderReviewDto>(riderReview);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
-            }
-        }
+                var ratingBreakdown = reviews
+                    .GroupBy(r => (int)Math.Round(r.Rating))
+                    .ToDictionary(g => g.Key, g => g.Count());
 
-        public async Task<object> reviewStats(int objectId)
-        {
-            try
-            {
-                var reviewStats = new
+                // Ensure all ratings 1-5 are represented
+                for (int i = 1; i <= 5; i++)
                 {
-                    averageRating = await averageRating(objectId),
-                    totalReviews = await _context.RiderReviews.Where(rr => rr.RiderId == objectId).CountAsync()
+                    if (!ratingBreakdown.ContainsKey(i))
+                        ratingBreakdown[i] = 0;
+                }
+
+                var averageRating = Math.Round(reviews.Average(r => r.Rating), 1);
+                var performanceLevel = GetPerformanceLevel(averageRating);
+
+                return new
+                {
+                    totalReviews = reviews.Count(),
+                    averageRating = averageRating,
+                    ratingBreakdown = ratingBreakdown.OrderByDescending(kvp => kvp.Key),
+                    performanceLevel = performanceLevel
                 };
-                return reviewStats;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exceptions.ServiceException(e.Message);
+                throw new Exceptions.ServiceException($"Error getting rider performance stats: {ex.Message}");
             }
         }
 
-        public async Task<RiderReviewDto> updateAsync(int id, RiderReviewDto reviewDto)
+        private string GetPerformanceLevel(double averageRating)
         {
-            try
+            return averageRating switch
             {
-                var riderReview = await _context.RiderReviews.FirstOrDefaultAsync(rr => rr.Id == id);
-                if (riderReview == null)
-                {
-                    throw new Exceptions.ServiceException("Rider Review not found");
-                }
-                _context.Entry(riderReview).CurrentValues.SetValues(reviewDto);
-                riderReview.UpdatedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-                return _mapper.Map<RiderReviewDto>(riderReview);
-            }
-            catch (Exception e)
-            {
-                throw new Exceptions.ServiceException(e.Message);
-            
-            }
+                >= 4.5 => "Excellent",
+                >= 4.0 => "Very Good",
+                >= 3.5 => "Good",
+                >= 3.0 => "Average",
+                >= 2.0 => "Below Average",
+                _ => "Poor"
+            };
         }
     }
 }
