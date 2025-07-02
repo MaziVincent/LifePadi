@@ -307,7 +307,7 @@ namespace Api.Controllers
             // Parse price per kilometer with fallback
             if (!int.TryParse(_config.GetSection("Distance:Price_Per_Kilometer").Value, out int pricePerKilometer))
             {
-                pricePerKilometer = 100; // Default price per kilometer
+                pricePerKilometer = 300; // Default price per kilometer
             }
 
             if (delivery.DiscountPercentage != null && delivery.DiscountAmount != null)
