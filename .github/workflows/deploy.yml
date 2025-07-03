@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'Web/Api/**'
+      - 'web/api/**/*'
 
 jobs:
   build-deploy:
