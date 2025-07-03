@@ -6,7 +6,10 @@ on:
       - master
     paths:
       - 'Web/Api/**'
-      - 'web/api/**/*'
+      - 'Web/Api/**/*'
+      - '/Web/Api/**/*'
+      - '**/Web/Api/**/*'
+      - '**/Api/**/*'
 
 jobs:
   build-deploy:
