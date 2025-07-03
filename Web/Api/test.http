@@ -1,7 +1,9 @@
-
+@local_url=http://localhost:8080
+@remote_url=https://lifepadi-948405839190.us-east1.run.app
+@remote_url_v2=https://lifepadi-v2-225229879541.us-east1.run.app
  
 
-GET https://localhost:7216/api/voucher/all
+GET http://localhost:8080/api/voucher/all
 
 ###
 
@@ -14,14 +16,14 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/vendor/allActive
 
 ###
 
-GET https://localhost:7216/api/vendorcategory/vendors/2
+GET http://localhost:8080/api/vendorcategory/vendors/2
 
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/service/allActive
 
 
 ###
-GET https://localhost:7216/api/address/all
+GET http://localhost:8080/api/address/all
 
 ###
 
@@ -35,7 +37,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/category/1/products?pageN
 
 ###
 
-PUT https://localhost:7216/api/address/setasdefault
+PUT http://localhost:8080/api/address/setasdefault
 Content-Type: application/json
 
 {
@@ -44,13 +46,13 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:7216/api/order/get/367
+GET http://localhost:8080/api/order/get/367
 
 ###
 GET https://lifepadi-948405839190.us-east1.run.app/api/order/all
 
 ###
-GET https://localhost:7216/api/order/customer/35?pageNumber=1&pageSize=5&SearchString=Ongoing
+GET http://localhost:8080/api/order/customer/35?pageNumber=1&pageSize=5&SearchString=Ongoing
 
 ###
 POST https://lifepadi-225229879541.us-east1.run.app/hubs/location/negotiate
@@ -103,7 +105,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/transaction/paystack-conf
 
 
 ###
- PUT https://localhost:7216/api/rider/updateLocation/51
+ PUT http://localhost:8080/api/rider/updateLocation/51
 Content-Type: application/json
 
 {
@@ -113,7 +115,7 @@ Content-Type: application/json
 }
 
 ###
- POST https://localhost:7216/api/walletwithdrawal/withdraw/8
+ POST http://localhost:8080/api/walletwithdrawal/withdraw/8
 Content-Type: application/json
 
 {
@@ -127,7 +129,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE https://localhost:7216/api/address/delete/93
+DELETE http://localhost:8080/api/address/delete/93
 
 
 ###
@@ -135,7 +137,7 @@ GET https://lifepadi-948405839190.us-east1.run.app/api/rider/51/getOrders?PageSi
 
 
 ###
-GET https://localhost:7216/api/product/searchAll?SearchString=dr
+GET http://localhost:8080/api/product/searchAll?SearchString=dr
 
 ###
 POST https://lifepadi-948405839190.us-east1.run.app/api/customersupport/send
@@ -150,7 +152,7 @@ Content-Type: application/json
 POST https://lifepadi-948405839190.us-east1.run.app/chatHub/negotiate
 
 ###
-GET https://localhost:7216/api/vendorcategory/vendors/2
+GET http://localhost:8080/api/vendorcategory/vendors/2
 
 ###
 GET https://lifepadi-225229879541.us-east1.run.app/api/vendor/all
@@ -173,7 +175,7 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:7216/api/customer/orders/400
+GET http://localhost:8080/api/customer/orders/400
 
 ###
 POST https://v3.api.termii.com/api/sms/otp/send
@@ -193,19 +195,19 @@ Content-Type: application/json
       "pin_type": "NUMERIC"
     }
 ###
-GET https://localhost:7216/api/dashboard/dashboardStats
+GET http://localhost:8080/api/dashboard/dashboardStats
 
 ###
-GET https://localhost:7216/api/vendor/all
-
-
-###
-GET https://localhost:7216/api/address/all
-
+GET http://localhost:8080/api/vendor/all
 
 
 ###
-PUT https://localhost:7216/api/delivery/updatestatus/11?status=Completed
+GET http://localhost:8080/api/address/all
+
+
+
+###
+PUT http://localhost:8080/api/delivery/updatestatus/11?status=Completed
 Content-Type: application/json
 
 {
@@ -213,17 +215,17 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost:7216/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jehXBARMwg7ylaaXNI
+GET http://localhost:8080/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jehXBARMwg7ylaaXNI
 ###
-GET https://localhost:7216/api/googlemaps/autocomplete?input=Dreamlink
+GET http://localhost:8080/api/googlemaps/autocomplete?input=Dreamlink
 
 ###
 GET https://localhost:7216/api/googlemaps/coordinates?address=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 
 ###
-GET https://lifepadi-225229879541.us-east1.run.app/api/delivery/getfee?Distance=5.7&DiscountPercentage=50
+GET https://localhost:7216/api/delivery/getfee?Distance=5.7&DiscountPercentage=50
 ###
-GET https://localhost:7216/api/delivery/getfee?Distance=5.7&DiscountAmount=500
+GET {{remote_url_v2}}/api/delivery/getfee?Distance=5.7&DiscountAmount=500
 
 
 

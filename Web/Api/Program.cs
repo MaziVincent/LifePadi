@@ -22,16 +22,16 @@ Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Kestrel for Cloud Run compatibility
-var port = Environment.GetEnvironmentVariable("PORT");
-if (!string.IsNullOrEmpty(port) && int.TryParse(port, out int portNumber))
-{
-    builder.WebHost.UseUrls($"http://0.0.0.0:{portNumber}");
-}
-else
-{
-    // Fallback for local development
-    builder.WebHost.UseUrls("http://0.0.0.0:8080");
-}
+// var port = Environment.GetEnvironmentVariable("PORT");
+// if (!string.IsNullOrEmpty(port) && int.TryParse(port, out int portNumber))
+// {
+//     builder.WebHost.UseUrls($"http://0.0.0.0:{portNumber}");
+// }
+// else
+// {
+//     // Fallback for local development
+//     builder.WebHost.UseUrls("http://0.0.0.0:8080");
+// }
 
 // Add environment variables configuration
 builder.Configuration.AddEnvironmentVariables();

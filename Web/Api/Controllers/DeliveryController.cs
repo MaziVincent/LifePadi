@@ -305,10 +305,13 @@ namespace Api.Controllers
             }
 
             // Parse price per kilometer with fallback
-            if (!int.TryParse(_config.GetSection("Distance:Price_Per_Kilometer").Value, out int pricePerKilometer))
+            if (!int.TryParse(Environment.GetEnvironmentVariable("PRICE_PER_KILOMETER"), out int pricePerKilometer))
             {
                 pricePerKilometer = 300; // Default price per kilometer
             }
+
+            //  Console.WriteLine($"Price per kilometer in configuration is {pricePerKilometer}, using default value.");
+
 
             if (delivery.DiscountPercentage != null && delivery.DiscountAmount != null)
             {
@@ -316,13 +319,15 @@ namespace Api.Controllers
             }
             if (delivery.DiscountPercentage != null)
             {
-                if (delivery.DiscountPercentage > 100)
+                if (delivery.DiscountPercentage > 100 || delivery.DiscountPercentage < 0)
                 {
-                    return BadRequest("Discount percentage cannot be greater than 100");
+                    return BadRequest("Discount percentage cannot be greater than 100 or less than 0");
                 }
 
-
-                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * (delivery.DiscountPercentage / 100));
+                double amount = 1000 + (delivery.Distance * pricePerKilometer);
+                double percentage = (double)delivery.DiscountPercentage / 100;
+        
+                double deliveryFeeAfterPercentageDiscount = amount * (1 - percentage);
                 return Ok(new { DeliveryFee = deliveryFeeAfterPercentageDiscount });
             }
             if (delivery.DiscountAmount != null)
