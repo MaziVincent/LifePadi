@@ -220,12 +220,12 @@ GET http://localhost:8080/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jeh
 GET http://localhost:8080/api/googlemaps/autocomplete?input=Dreamlink
 
 ###
-GET http://localhost:8080/api/googlemaps/coordinates?address=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
+GET https://localhost:7216/api/googlemaps/coordinates?address=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 
 ###
-GET https://lifepadi-225229879541.us-east1.run.app/api/delivery/getfee?Distance=5.7&DiscountPercentage=50
+GET https://localhost:7216/api/delivery/getfee?Distance=5.7&DiscountPercentage=50
 ###
-GET http://localhost:8080/api/delivery/getfee?Distance=5.7&DiscountAmount=500
+GET {{remote_url_v2}}/api/delivery/getfee?Distance=5.7&DiscountAmount=500
 
 
 

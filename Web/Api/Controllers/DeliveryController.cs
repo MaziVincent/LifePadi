@@ -319,13 +319,15 @@ namespace Api.Controllers
             }
             if (delivery.DiscountPercentage != null)
             {
-                if (delivery.DiscountPercentage > 100)
+                if (delivery.DiscountPercentage > 100 || delivery.DiscountPercentage < 0)
                 {
-                    return BadRequest("Discount percentage cannot be greater than 100");
+                    return BadRequest("Discount percentage cannot be greater than 100 or less than 0");
                 }
 
-
-                double deliveryFeeAfterPercentageDiscount = (double)((1000 + (delivery.Distance * pricePerKilometer)) * (delivery.DiscountPercentage / 100));
+                double amount = 1000 + (delivery.Distance * pricePerKilometer);
+                double percentage = (double)delivery.DiscountPercentage / 100;
+        
+                double deliveryFeeAfterPercentageDiscount = amount * (1 - percentage);
                 return Ok(new { DeliveryFee = deliveryFeeAfterPercentageDiscount });
             }
             if (delivery.DiscountAmount != null)

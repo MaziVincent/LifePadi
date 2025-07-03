@@ -1,101 +1,34 @@
-name: Deploy to AWS Lambda
+name: Deploy to Cloud Run
 
 on:
   push:
     branches:
-      - master
+      - main
+    paths:
+      - 'web/api/**'
 
 jobs:
-  build:
+  build-deploy:
+    name: Build & Deploy to Cloud Run
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-<<<<<<< HEAD
-<<<<<<< HEAD
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1
-=======
->>>>>>> bd96ed0 (added session token)
-=======
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1
->>>>>>> 53ef23c (Update deploy.yml)
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v3
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          dotnet-version: "3.1.x"
-=======
->>>>>>> 9f31878 (Update 3 deploy.yml)
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '3.1.x'
-    
-    - name: Install Lambda tools
-      run: dotnet tool install -g Amazon.Lambda.Tools
-    
-    - name: Add Lambda tools to PATH
-      run: echo "$(dotnet --list-tools-path)" >> $GITHUB_PATH
-<<<<<<< HEAD
-=======
->>>>>>> 4d4898c (Update 3 deploy.yml)
->>>>>>> 9f31878 (Update 3 deploy.yml)
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-    - name: Install dependencies
-      run: dotnet restore Web/Api
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          install_components: 'beta'
 
-    - name: Build project
-      run: dotnet build Web/Api --configuration Release --no-restore
-
-<<<<<<< HEAD
-    - name: Package Lambda function
-      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
-
-    - name: Upload to S3
-      run: aws s3 cp Web/Api/LifePadiFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
-
-    - name: Deploy to Lambda
-      run: aws lambda update-function-code --function-name Lifepadi-API --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
-=======
-    - name: Install dependencies
-      run: dotnet restore Web/Api
-
-    - name: Build project
-      run: dotnet build Web/Api --configuration Release --no-restore
-
-    - name: Package Lambda function
-      run: dotnet lambda package --project-location Web/Api --configuration Release --output-package ./Web/Api/LifePadiFunction.zip
-
-<<<<<<< HEAD
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1 # Change to your region
-
-=======
->>>>>>> 53ef23c (Update deploy.yml)
-    - name: Upload to S3
-      run: aws s3 cp Api/MyLambdaFunction.zip s3://lifepadi-bucket/LifePadiFunction.zip
-
-    - name: Deploy to Lambda
-      run: aws lambda update-function-code --function-name Lifepadi-Api --s3-bucket lifepadi-bucket --s3-key LifePadiFunction.zip
->>>>>>> bd96ed0 (added session token)
+      - name: Trigger Cloud Build (cloudbuild.yaml)
+        run: |
+          gcloud builds submit --config=cloudbuild.yaml \
+            --substitutions=_REGION=${{ secrets.GCP_REGION }} \
+            --project=${{ secrets.GCP_PROJECT }}
