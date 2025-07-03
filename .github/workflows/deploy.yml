@@ -6,10 +6,6 @@ on:
       - master
     paths:
       - 'Web/Api/**'
-      - 'Web/Api/**/*'
-      - '/Web/Api/**/*'
-      - '**/Web/Api/**/*'
-      - '**/Api/**/*'
 
 jobs:
   build-deploy:
@@ -32,6 +28,7 @@ jobs:
           install_components: 'beta'
 
       - name: Trigger Cloud Build (cloudbuild.yaml)
+        working-directory: Web/Api
         run: |
           gcloud builds submit --config=cloudbuild.yaml \
             --substitutions=_REGION=${{ secrets.GCP_REGION }} \
