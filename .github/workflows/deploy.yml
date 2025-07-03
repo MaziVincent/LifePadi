@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'web/api/**'
+      - Web/Api/**
 
 jobs:
   build-deploy:
