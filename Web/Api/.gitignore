@@ -4,6 +4,9 @@ obj/
 bin/
 packages/
 out/
+debug/
+.vscode/
+.obj/
 
 # Environment files - NEVER commit these
 .env
