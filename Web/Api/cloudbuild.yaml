@@ -1,9 +1,11 @@
+substitutions:
+  _TAG: "latest"
 steps:
   # Step 1: Build the Docker image and tag it for Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args: [
       "build", 
-      "-t", "us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:${SHORT_SHA:-latest}", 
+      "-t", "us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:${_TAG}", 
       "."
     ]
 
@@ -11,7 +13,7 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args: [
       "push", 
-      "us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:$SHORT_SHA"
+      "us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:${_TAG}"
     ]
 
   # Step 3: Deploy the pushed image to Cloud Run
@@ -20,7 +22,7 @@ steps:
       "run",
       "deploy",
       "lifepadi-v2",
-      "--image=us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:$SHORT_SHA",
+      "--image=us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:${_TAG}",
       "--region=us-east1",
       "--platform=managed",
       "--allow-unauthenticated"
