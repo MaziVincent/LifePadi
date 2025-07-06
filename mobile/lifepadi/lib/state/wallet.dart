@@ -34,9 +34,6 @@ Future<double> balance(Ref ref) async {
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  logger
-    ..d('Balance:')
-    ..d(response.data);
 
   // Handle v2 API response structure
   final balance = response.data!['Data'] as double;
@@ -79,7 +76,7 @@ FutureOr<String> walletDeposit(
   }
 
   // Handle v2 API response structure
-  final data = response.data!['Data'] as JsonMap;
+  final data = response.data!;
   return data['link'] as String;
 }
 
@@ -188,7 +185,6 @@ Future<Receipt> walletPayment(
     'WalletId': walletId,
     'Type': type.toValue().toString(),
   };
-  logger.d('Wallet payment request data: $requestData');
   final response = await client.post<JsonMap>(
     '/walletwithdrawal/withdraw/$walletId',
     data: requestData,
@@ -198,7 +194,7 @@ Future<Receipt> walletPayment(
   }
 
   // Handle v2 API response structure
-  final success = response.data!['Success'] as bool? ?? false;
+  final success = response.data!['StatusBool'] as bool? ?? false;
   if (!success) {
     final message =
         response.data!['Message'] as String? ?? 'Could not process payment';
@@ -209,7 +205,7 @@ Future<Receipt> walletPayment(
   await ref.read(balanceProvider.future);
 
   // Return the receipt from the Data field
-  final data = response.data!['Data'] as JsonMap;
+  final data = response.data!;
   final receipt = ReceiptMapper.fromMap(data);
   await resetStateAfterCheckout(
     ref,
