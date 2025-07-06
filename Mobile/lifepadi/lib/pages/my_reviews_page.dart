@@ -22,7 +22,7 @@ class MyReviewsPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
+      appBar: const MyAppBar(
         title: 'My Reviews',
         backgroundColor: Colors.white,
       ),
@@ -93,7 +93,7 @@ class MyReviewsPage extends ConsumerWidget {
           return _buildEmptyState(
             context,
             'No Product Reviews',
-            'You haven\'t reviewed any products yet.',
+            "You haven't reviewed any products yet.",
             IconsaxPlusLinear.box,
           );
         }
@@ -124,7 +124,7 @@ class MyReviewsPage extends ConsumerWidget {
           return _buildEmptyState(
             context,
             'No Vendor Reviews',
-            'You haven\'t reviewed any vendors yet.',
+            "You haven't reviewed any vendors yet.",
             IconsaxPlusLinear.shop,
           );
         }

@@ -25,7 +25,7 @@ class ProductReviewsPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
+      appBar: const MyAppBar(
         title: 'Product Reviews',
         backgroundColor: Colors.white,
       ),
@@ -52,8 +52,6 @@ class ProductReviewsPage extends ConsumerWidget {
           ReviewsList(
             isProductReview: true,
             targetId: productId,
-            showHeader: true,
-            showAddButton: true,
           ),
         ],
       ),

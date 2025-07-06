@@ -274,10 +274,11 @@ class ProductReviewController extends _$ProductReviewController {
       final review = await service.createReview(request);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(productReviewsProvider(productId));
-      ref.invalidate(productAverageRatingProvider(productId));
-      ref.invalidate(productReviewStatisticsProvider(productId));
-      ref.invalidate(customerProductReviewsProvider(customerId));
+      ref
+        ..invalidate(productReviewsProvider(productId))
+        ..invalidate(productAverageRatingProvider(productId))
+        ..invalidate(productReviewStatisticsProvider(productId))
+        ..invalidate(customerProductReviewsProvider(customerId));
 
       state = const AsyncData(null);
       return review;
@@ -315,11 +316,12 @@ class ProductReviewController extends _$ProductReviewController {
       final review = await service.updateReview(reviewId, request);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(productReviewsProvider(productId));
-      ref.invalidate(productAverageRatingProvider(productId));
-      ref.invalidate(productReviewStatisticsProvider(productId));
-      ref.invalidate(customerProductReviewsProvider(customerId));
-      ref.invalidate(productReviewProvider(reviewId));
+      ref
+        ..invalidate(productReviewsProvider(productId))
+        ..invalidate(productAverageRatingProvider(productId))
+        ..invalidate(productReviewStatisticsProvider(productId))
+        ..invalidate(customerProductReviewsProvider(customerId))
+        ..invalidate(productReviewProvider(reviewId));
 
       state = const AsyncData(null);
       return review;
@@ -348,11 +350,12 @@ class ProductReviewController extends _$ProductReviewController {
       await service.deleteReview(reviewId);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(productReviewsProvider(productId));
-      ref.invalidate(productAverageRatingProvider(productId));
-      ref.invalidate(productReviewStatisticsProvider(productId));
-      ref.invalidate(customerProductReviewsProvider(customerId));
-      ref.invalidate(productReviewProvider(reviewId));
+      ref
+        ..invalidate(productReviewsProvider(productId))
+        ..invalidate(productAverageRatingProvider(productId))
+        ..invalidate(productReviewStatisticsProvider(productId))
+        ..invalidate(customerProductReviewsProvider(customerId))
+        ..invalidate(productReviewProvider(reviewId));
 
       state = const AsyncData(null);
     } catch (error, stackTrace) {

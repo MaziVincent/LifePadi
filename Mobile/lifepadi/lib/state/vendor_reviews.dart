@@ -274,10 +274,11 @@ class VendorReviewController extends _$VendorReviewController {
       final review = await service.createReview(request);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(vendorReviewsProvider(vendorId));
-      ref.invalidate(vendorAverageRatingProvider(vendorId));
-      ref.invalidate(vendorReviewStatisticsProvider(vendorId));
-      ref.invalidate(customerVendorReviewsProvider(customerId));
+      ref
+        ..invalidate(vendorReviewsProvider(vendorId))
+        ..invalidate(vendorAverageRatingProvider(vendorId))
+        ..invalidate(vendorReviewStatisticsProvider(vendorId))
+        ..invalidate(customerVendorReviewsProvider(customerId));
 
       state = const AsyncData(null);
       return review;
@@ -315,11 +316,12 @@ class VendorReviewController extends _$VendorReviewController {
       final review = await service.updateReview(reviewId, request);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(vendorReviewsProvider(vendorId));
-      ref.invalidate(vendorAverageRatingProvider(vendorId));
-      ref.invalidate(vendorReviewStatisticsProvider(vendorId));
-      ref.invalidate(customerVendorReviewsProvider(customerId));
-      ref.invalidate(vendorReviewProvider(reviewId));
+      ref
+        ..invalidate(vendorReviewsProvider(vendorId))
+        ..invalidate(vendorAverageRatingProvider(vendorId))
+        ..invalidate(vendorReviewStatisticsProvider(vendorId))
+        ..invalidate(customerVendorReviewsProvider(customerId))
+        ..invalidate(vendorReviewProvider(reviewId));
 
       state = const AsyncData(null);
       return review;
@@ -348,11 +350,12 @@ class VendorReviewController extends _$VendorReviewController {
       await service.deleteReview(reviewId);
 
       // Invalidate related providers to refresh data
-      ref.invalidate(vendorReviewsProvider(vendorId));
-      ref.invalidate(vendorAverageRatingProvider(vendorId));
-      ref.invalidate(vendorReviewStatisticsProvider(vendorId));
-      ref.invalidate(customerVendorReviewsProvider(customerId));
-      ref.invalidate(vendorReviewProvider(reviewId));
+      ref
+        ..invalidate(vendorReviewsProvider(vendorId))
+        ..invalidate(vendorAverageRatingProvider(vendorId))
+        ..invalidate(vendorReviewStatisticsProvider(vendorId))
+        ..invalidate(customerVendorReviewsProvider(customerId))
+        ..invalidate(vendorReviewProvider(reviewId));
 
       state = const AsyncData(null);
     } catch (error, stackTrace) {
