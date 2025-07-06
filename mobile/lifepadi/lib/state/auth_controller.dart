@@ -129,6 +129,31 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> logout() async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      // Call the v2 logout endpoint with refresh token cookie
+      final refreshToken = state.requireValue.refreshToken;
+      final options = Options(
+        headers: {
+          'Cookie': 'refreshToken=$refreshToken',
+        },
+      );
+
+      final response = await client.get<JsonMap>(
+        '/logout',
+        options: options,
+      );
+
+      // Log the response but don't fail if the server logout fails
+      if (response.data != null) {
+        logger.d('Server logout successful: ${response.data}');
+      }
+    } catch (e) {
+      // Don't fail the logout process if server logout fails
+      logger.w('Server logout failed, continuing with local logout: $e');
+    }
+
     final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
     if (notificationsEnabled) {
       await FirebaseMessaging.instance.unsubscribeFromTopic(
