@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/order.dart';
@@ -46,7 +44,9 @@ FutureOr<List<Order>> orders(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  var data = List<JsonMap>.from(response.data!['orders'] as List);
+  // Handle v2 API response structure
+  final responseData = response.data!['Data'] as JsonMap;
+  var data = List<JsonMap>.from(responseData['orders'] as List);
 
   // strip auth on rider if it contains a rider key
   data = data.map((order) {
@@ -73,18 +73,20 @@ FutureOr<Order> order(Ref ref, int id) async {
     throw const ServerErrorException('No data returned from the server');
   }
 
+  // Handle v2 API response structure
+  final data = response.data!['Data'] as JsonMap;
+
   // strip auth on rider
-  if (response.data!.containsKey('Rider') && response.data!['Rider'] != null) {
-    stripAuth(response.data!['Rider'] as JsonMap, addWallet: false);
+  if (data.containsKey('Rider') && data['Rider'] != null) {
+    stripAuth(data['Rider'] as JsonMap, addWallet: false);
   }
   // strip auth on customer
-  if (response.data!.containsKey('Customer') &&
-      response.data!['Customer'] != null) {
-    stripAuth(response.data!['Customer'] as JsonMap);
+  if (data.containsKey('Customer') && data['Customer'] != null) {
+    stripAuth(data['Customer'] as JsonMap);
   }
 
   ref.cache();
-  return OrderMapper.fromMap(response.data!);
+  return OrderMapper.fromMap(data);
 }
 
 /// Store a new order.
@@ -105,7 +107,7 @@ FutureOr<Order> storeOrder(
     throw const UnauthorizedException('No user found');
   }
 
-  final response = await client.post<String>(
+  final response = await client.post<JsonMap>(
     '/order/create',
     data: {
       'CustomerId': userId,
@@ -118,7 +120,9 @@ FutureOr<Order> storeOrder(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  return OrderMapper.fromJson(response.data!);
+  // Handle v2 API response structure
+  final data = response.data!['Data'] as JsonMap;
+  return OrderMapper.fromMap(data);
 }
 
 /// Store a new order item.
@@ -170,15 +174,16 @@ FutureOr<String> paymentLink(
     'Type': type.toValue().toString(),
   };
   logger.d('Payment link request data: $requestData');
-  final response = await client.post<String>(
+  final response = await client.post<JsonMap>(
     '/transaction/MobilePaystackCheckout',
     data: requestData,
   );
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  final data = jsonDecode(response.data!) as JsonMap;
 
+  // Handle v2 API response structure
+  final data = response.data!['Data'] as JsonMap;
   return data['link'] as String;
 }
 
@@ -252,7 +257,9 @@ FutureOr<List<Order>> riderOrders(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['result'] as List);
+  // Handle v2 API response structure
+  final responseData = response.data!['Data'] as JsonMap;
+  final data = List<JsonMap>.from(responseData['result'] as List);
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();

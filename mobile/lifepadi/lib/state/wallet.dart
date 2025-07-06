@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/checkout_type.dart';
 import 'package:lifepadi/models/payment_confirm.dart';
@@ -30,12 +28,14 @@ Future<double> balance(Ref ref) async {
   if (walletId == -1) {
     throw const WalletException('This user is not a customer');
   }
-  final response = await client.get<double>('/wallet/balance/$walletId');
+  final response = await client.get<JsonMap>('/wallet/balance/$walletId');
 
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  final balance = response.data!;
+
+  // Handle v2 API response structure
+  final balance = response.data!['Data'] as double;
   // Update the user's balance
   await ref.read(authControllerProvider.notifier).updateBalance(balance);
 
@@ -61,7 +61,7 @@ FutureOr<String> walletDeposit(
   if (walletId == -1) {
     throw const WalletException('This user is not a customer');
   }
-  final response = await client.post<String>(
+  final response = await client.post<JsonMap>(
     '/walletDeposite/initiate',
     data: {
       'WalletId': walletId,
@@ -73,8 +73,9 @@ FutureOr<String> walletDeposit(
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  final data = jsonDecode(response.data!) as JsonMap;
 
+  // Handle v2 API response structure
+  final data = response.data!['Data'] as JsonMap;
   return data['link'] as String;
 }
 
@@ -97,7 +98,9 @@ FutureOr<PaymentConfirm> confirmPayment(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final confirmationResult = PaymentConfirmMapper.fromMap(response.data!);
+  // Handle v2 API response structure
+  final data = response.data!['Data'] as JsonMap;
+  final confirmationResult = PaymentConfirmMapper.fromMap(data);
   if (confirmationResult.status == true) {
     await resetStateAfterCheckout(ref, type: confirmationResult.receipt!.type);
   }
@@ -136,7 +139,9 @@ FutureOr<List<Receipt>> transactionHistory(
     throw const ServerErrorException('No data returned from the server');
   }
 
-  final data = List<JsonMap>.from(response.data!['result'] as List);
+  // Handle v2 API response structure
+  final responseData = response.data!['Data'] as JsonMap;
+  final data = List<JsonMap>.from(responseData['result'] as List);
 
   ref.cache();
   return data.map(ReceiptMapper.fromMap).toList();
@@ -187,17 +192,21 @@ Future<Receipt> walletPayment(
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
-  if (response.data?['StatusBool'] != true) {
-    throw PaymentFailedException(
-      response.data?['message'] as String? ?? 'Could not process payment',
-    );
+
+  // Handle v2 API response structure
+  final success = response.data!['Success'] as bool? ?? false;
+  if (!success) {
+    final message =
+        response.data!['Message'] as String? ?? 'Could not process payment';
+    throw PaymentFailedException(message);
   }
 
   // Update the user's balance
   await ref.read(balanceProvider.future);
 
-  // Return the receipt
-  final receipt = ReceiptMapper.fromMap(response.data!);
+  // Return the receipt from the Data field
+  final data = response.data!['Data'] as JsonMap;
+  final receipt = ReceiptMapper.fromMap(data);
   await resetStateAfterCheckout(
     ref,
     type: type,

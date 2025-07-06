@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -205,19 +204,19 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
       logger
-      ..d('Login page')
-      ..d(response.data);
+        ..d('Login page')
+        ..d(response.data);
 
-      // Extract the refresh token from the response headers
-      final refreshToken = response.headers['set-cookie']!
-          .toString()
-          .split(';')
-          .firstWhere((element) => element.contains('refreshToken'))
-          .split('=')
-          .last;
-      response.data!['refreshToken'] = refreshToken;
+      // Extract user data from the new API v2 response structure
+      final userData = response.data!['Data'] as JsonMap;
 
-      final user = User.fromMap(response.data!);
+      // Extract the refresh token from the response data (v2 includes it in the response)
+      final refreshToken = userData['refreshToken'] as String;
+
+      // Add the refresh token to the user data for the User model
+      userData['refreshToken'] = refreshToken;
+
+      final user = User.fromMap(userData);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
       final hasEverLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
@@ -294,11 +293,14 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      final user = User.fromMap(response.data!);
+      // Extract user data from the new API v2 response structure
+      final userData = response.data!['Data'] as JsonMap;
+
+      final user = User.fromMap(userData);
       // Save the new token to the secure storage
       state = AsyncData(user);
       await _saveDetailsToStorage(state.requireValue);
-      return response.data!['accessToken'] as String;
+      return userData['accessToken'] as String;
     } catch (e) {
       rethrow;
     }
@@ -329,15 +331,18 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Login the user after registration
-      if (response.statusCode! >= 200) {
+      // Check if registration was successful using v2 response structure
+      final success = response.data!['Success'] as bool? ?? false;
+      if (success) {
         return await login(
           email: email,
           password: password,
           phoneNumber: phoneNumber,
         );
       } else {
-        throw const ServerErrorException('Failed to register');
+        final message =
+            response.data!['Message'] as String? ?? 'Failed to register';
+        throw ServerErrorException(message);
       }
     } catch (e) {
       rethrow;
@@ -349,7 +354,7 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final response = await client.post<String>(
+      final response = await client.post<JsonMap>(
         '/customer/send-otp',
         data: FormData.fromMap({
           'phoneNumber': phoneNumber,
@@ -358,8 +363,9 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
-      final data = jsonDecode(response.data!) as JsonMap;
 
+      // Handle v2 API response structure
+      final data = response.data!['Data'] as JsonMap;
       return data['pinId'].toString();
     } catch (e) {
       rethrow;
@@ -374,7 +380,7 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final response = await client.post<String>(
+      final response = await client.post<JsonMap>(
         '/customer/verify-otp',
         queryParameters: {
           'pinId': pinId,
@@ -384,7 +390,9 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
-      final data = jsonDecode(response.data!) as JsonMap;
+
+      // Handle v2 API response structure
+      final data = response.data!['Data'] as JsonMap;
 
       final verified = data['verified'] as bool;
       if (!verified) {
@@ -417,7 +425,10 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from server');
       }
-      return response.data!['message'] as String;
+
+      // Handle v2 API response structure
+      return response.data!['Message'] as String? ??
+          'Password reset successful';
     } catch (e) {
       rethrow;
     }
@@ -441,7 +452,9 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from server');
       }
 
-      final customerData = CustomerMapper.fromMap(stripAuth(response.data!));
+      // Handle v2 API response structure
+      final data = response.data!['Data'] as JsonMap;
+      final customerData = CustomerMapper.fromMap(stripAuth(data));
       final currentCustomer = state.requireValue as Customer;
       final updatedCustomer = currentCustomer.copyWith(
         firstName: customerData.firstName,
@@ -511,10 +524,19 @@ class AuthController extends _$AuthController {
 
     try {
       final response = await client
-          .delete<String>('/customer/delete/${state.requireValue.id}');
+          .delete<JsonMap>('/customer/delete/${state.requireValue.id}');
       if (response.data == null) {
         throw const ServerErrorException('No data returned from server');
       }
+
+      // Check if deletion was successful using v2 response structure
+      final success = response.data!['Success'] as bool? ?? false;
+      if (!success) {
+        final message =
+            response.data!['Message'] as String? ?? 'Failed to delete account';
+        throw ServerErrorException(message);
+      }
+
       await logout();
     } catch (e) {
       rethrow;
