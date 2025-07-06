@@ -101,6 +101,7 @@ namespace Api.Controllers
                 PhoneNumber = user.PhoneNumber,
                 ContactAddress = user.ContactAddress,
                 Role = user.Role,
+                ReferralCode = user.ReferralCode,
                 refreshToken = user.RefreshToken,
                 accessToken = user.AccessToken,
                 Wallet = user.Wallet
@@ -155,6 +156,14 @@ namespace Api.Controllers
 
             _logger.LogDebug("User authentication successful for UserId: {UserId}", user.Id);
 
+            // Only include referral code if user is a Customer
+            string? referralCode = null;
+            if (Type == "Customer" && user is Customer customer)
+            {
+                referralCode = customer.ReferralCode ?? string.Empty;
+                _logger.LogDebug("Including referral code for Customer user: {UserId}", user.Id);
+            }
+           
             return new LoggedInUserDto
             {
                 Id = user.Id,
@@ -166,7 +175,8 @@ namespace Api.Controllers
                 RefreshToken = refreshToken,
                 AccessToken = accessToken,
                 Role = Type,
-                Wallet = walletDto
+                Wallet = walletDto,
+                ReferralCode = referralCode
             };
         }
 

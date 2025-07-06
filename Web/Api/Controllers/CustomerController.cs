@@ -319,7 +319,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("generate-referral-codes")]
-        [Authorize(Policy = "AdminOnly")] // Only admins can run this operation
+       // [Authorize(Policy = "AdminOnly")] // Only admins can run this operation
         public async Task<IActionResult> GenerateReferralCodesForExistingCustomers()
         {
             try

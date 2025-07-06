@@ -31,6 +31,7 @@ namespace Api.DTO
         public string? LastName { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Role { get; set; }
+        public string? ReferralCode { get; set; } // This is the unique referral code for the user
         public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
         public string? AccessToken { get; set; }
