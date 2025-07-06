@@ -242,6 +242,24 @@ Future<List<ProductReview>> customerProductReviews(
   return reviews;
 }
 
+/// Check if current user has already reviewed a specific product
+@riverpod
+Future<bool> hasUserReviewedProduct(
+  Ref ref,
+  int productId,
+) async {
+  final user = ref.read(authControllerProvider);
+
+  return user.maybeWhen(
+    data: (user) async {
+      final customerReviews =
+          await ref.read(customerProductReviewsProvider(user.id).future);
+      return customerReviews.any((review) => review.productId == productId);
+    },
+    orElse: () => false,
+  );
+}
+
 /// Product review controller for CRUD operations
 @riverpod
 class ProductReviewController extends _$ProductReviewController {
@@ -281,7 +299,8 @@ class ProductReviewController extends _$ProductReviewController {
         ..invalidate(productReviewsProvider(productId))
         ..invalidate(productAverageRatingProvider(productId))
         ..invalidate(productReviewStatisticsProvider(productId))
-        ..invalidate(customerProductReviewsProvider(customerId));
+        ..invalidate(customerProductReviewsProvider(customerId))
+        ..invalidate(hasUserReviewedProductProvider(productId));
 
       state = const AsyncData(null);
       return review;
@@ -324,7 +343,8 @@ class ProductReviewController extends _$ProductReviewController {
         ..invalidate(productAverageRatingProvider(productId))
         ..invalidate(productReviewStatisticsProvider(productId))
         ..invalidate(customerProductReviewsProvider(customerId))
-        ..invalidate(productReviewProvider(reviewId));
+        ..invalidate(productReviewProvider(reviewId))
+        ..invalidate(hasUserReviewedProductProvider(productId));
 
       state = const AsyncData(null);
       return review;
@@ -358,7 +378,8 @@ class ProductReviewController extends _$ProductReviewController {
         ..invalidate(productAverageRatingProvider(productId))
         ..invalidate(productReviewStatisticsProvider(productId))
         ..invalidate(customerProductReviewsProvider(customerId))
-        ..invalidate(productReviewProvider(reviewId));
+        ..invalidate(productReviewProvider(reviewId))
+        ..invalidate(hasUserReviewedProductProvider(productId));
 
       state = const AsyncData(null);
     } catch (error, stackTrace) {

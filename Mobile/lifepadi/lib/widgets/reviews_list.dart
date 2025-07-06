@@ -5,6 +5,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:lifepadi/models/product_review.dart';
 import 'package:lifepadi/models/review_statistics.dart';
 import 'package:lifepadi/models/vendor_review.dart';
+import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/state/product_reviews.dart';
 import 'package:lifepadi/state/vendor_reviews.dart';
 import 'package:lifepadi/utils/constants.dart';
@@ -46,6 +47,18 @@ class ReviewsList extends ConsumerWidget {
         ? ref.watch(productReviewStatisticsProvider(targetId))
         : ref.watch(vendorReviewStatisticsProvider(targetId));
 
+    // Check if current user has already reviewed this product/vendor
+    final hasReviewedAsync = isProductReview
+        ? ref.watch(hasUserReviewedProductProvider(targetId))
+        : ref.watch(hasUserReviewedVendorProvider(targetId));
+
+    // Check if user is authenticated
+    final currentUser = ref.watch(authControllerProvider);
+    final isAuthenticated = currentUser.maybeWhen(
+      data: (user) => user.id != 0, // Assuming Guest has id 0
+      orElse: () => false,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,11 +68,29 @@ class ReviewsList extends ConsumerWidget {
           24.verticalSpace,
         ],
 
-        // Add review button
-        if (showAddButton) ...[
-          _buildAddReviewButton(context),
-          16.verticalSpace,
-        ],
+        // Add review button - only show if user is authenticated, showAddButton is true, and user hasn't reviewed yet
+        if (showAddButton && isAuthenticated)
+          hasReviewedAsync.when(
+            data: (hasReviewed) {
+              if (hasReviewed) {
+                return const SizedBox
+                    .shrink(); // Hide button if already reviewed
+              }
+              return Column(
+                children: [
+                  _buildAddReviewButton(context),
+                  16.verticalSpace,
+                ],
+              );
+            },
+            loading: () => const SizedBox.shrink(), // Hide while loading
+            error: (_, __) => Column(
+              children: [
+                _buildAddReviewButton(context), // Show button on error
+                16.verticalSpace,
+              ],
+            ),
+          ),
 
         // Reviews list
         reviewsAsync.when(
