@@ -130,7 +130,7 @@ namespace Api.Controllers
                     return BadRequest(ModelState);
 
                 var productReview = await _reviewService.createAsync(productReviewDto);
-                return CreatedAtAction(nameof(findAsync), new { id = productReview.Id }, productReview);
+                return Ok(  productReview);
             }
             catch (Exception e)
             {

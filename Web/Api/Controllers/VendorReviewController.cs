@@ -130,7 +130,7 @@ namespace Api.Controllers
                     return BadRequest(ModelState);
 
                 var vendorReview = await _reviewService.createAsync(vendorReviewDto);
-                return CreatedAtAction(nameof(findAsync), new { id = vendorReview.Id }, vendorReview);
+                return Ok(vendorReview);
             }
             catch (Exception e)
             {
