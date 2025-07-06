@@ -100,12 +100,20 @@ class AuthController extends _$AuthController {
 
       state = AsyncData(user);
 
-      // Subscribe to notifications if enabled
-      final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
-      if (notificationsEnabled) {
-        await FirebaseMessaging.instance.subscribeToTopic(
-          'orders-${user.id}',
+      // Subscribe to notifications if enabled (only if Firebase is initialized)
+      try {
+        final notificationsEnabled =
+            PreferencesHelper.getNotificationsEnabled();
+        if (notificationsEnabled) {
+          await FirebaseMessaging.instance.subscribeToTopic(
+            'orders-${user.id}',
+          );
+        }
+      } catch (e) {
+        logger.w(
+          'Firebase not initialized yet, skipping notification subscription: $e',
         );
+        // This is not a critical error for auth recovery, so we continue
       }
 
       // Start background location tracking if user is a rider
