@@ -35,7 +35,7 @@ namespace Api.Controllers
                 return BadRequest("Longitude and Latitude must be provided.");
             }
 
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
             var requestUri = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={apiKey}";
 
             var response = await _httpClient.GetAsync(requestUri);
@@ -86,7 +86,7 @@ namespace Api.Controllers
         [HttpGet("coordinates")]
         public async Task<IActionResult> GetCoordinatesFromAddress(string address)
         {
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
             var requestUri = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={apiKey}";
 
             var response = await _httpClient.GetAsync(requestUri);
@@ -116,7 +116,7 @@ namespace Api.Controllers
             var origin = _distance.Origin;
             var destination = _distance.Destination;
             
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value; // Replace with your actual API key
            string requestUri = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origin+"&destinations="+destination+"&key="+apiKey;
 
             var response = await _httpClient.GetAsync(requestUri);
@@ -143,7 +143,7 @@ namespace Api.Controllers
         [HttpGet("autocomplete")]
         public async Task<IActionResult> GetAutocompleteSuggestions(string input)
         {
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value;
             var requestUri = $"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={input}&components=country:ng&key={apiKey}";
             var response = await _httpClient.GetAsync(requestUri);
 
@@ -172,7 +172,7 @@ namespace Api.Controllers
         [HttpGet("distancewithplaceid")]
         public async Task<IActionResult> CalculateDistance([FromQuery] Distance _distance)
         {
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value;
 
             // Distance Matrix API URL with place IDs
             var requestUri = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins=place_id:{_distance.Origin}&destinations=place_id:{_distance.Destination}&key={apiKey}";
@@ -205,7 +205,7 @@ namespace Api.Controllers
       
         private async Task<object> GetAddressDetailsFromPlaceId(string placeId)
         {
-            var apiKey = _config.GetSection("Google_Maps:Api_Key").Value;
+            var apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? _config.GetSection("Google_Maps:Api_Key").Value;
 
             // Place Details API URL
             var requestUri = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={placeId}&key={apiKey}";

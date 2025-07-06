@@ -16,10 +16,53 @@ using DotNetEnv;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
-// Load environment variables
-Env.Load();
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Helper method to load environment variables
+static async Task LoadEnvironmentVariablesAsync(IHostEnvironment env)
+{
+    try
+    {
+        // Check if we're running in Google Cloud (has GOOGLE_CLOUD_PROJECT or GCP_PROJECT)
+        var isGoogleCloud = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT")) ||
+                           !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GCP_PROJECT"));
+
+        if (isGoogleCloud || env.IsProduction())
+        {
+            // Running in Google Cloud - load from Secret Manager
+            Console.WriteLine("Running in Google Cloud - loading environment variables from Secret Manager");
+
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            var logger = loggerFactory.CreateLogger<SecretManagerService>();
+            var secretManager = new SecretManagerService(logger);
+
+            // Load .env file content from Secret Manager
+            // The secret should be named "lifepadi-env" and contain your .env file content
+            await secretManager.LoadEnvironmentVariablesFromSecretAsync("lifepadi-Secret");
+
+            Console.WriteLine("Successfully loaded environment variables from Secret Manager");
+        }
+        else
+        {
+            // Running locally - load from .env file
+            Console.WriteLine("Running locally - loading environment variables from .env file");
+            Env.Load();
+            Console.WriteLine("Successfully loaded environment variables from .env file");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Warning: Failed to load environment variables: {ex.Message}");
+        Console.WriteLine("Continuing with system environment variables and configuration...");
+    }
+}
+
+// Load environment variables
+await LoadEnvironmentVariablesAsync(builder.Environment);
 
 // Configure Kestrel for Cloud Run compatibility
 // var port = Environment.GetEnvironmentVariable("PORT");
@@ -237,8 +280,11 @@ builder.Services.AddScoped<IVendorCategory, VendorCategoryService>();
 builder.Services.AddScoped<IOtherService, OtherService>();
 builder.Services.AddScoped<IEmailVerification, EmailVerificationService>();
 builder.Services.AddScoped<IReview<ProductReviewDto>, ProductReviewService>();
+builder.Services.AddScoped<ProductReviewService>(); // Register concrete service for specific methods
 builder.Services.AddScoped<IReview<VendorReviewDto>, VendorReviewService>();
+builder.Services.AddScoped<VendorReviewService>(); // Register concrete service for specific methods
 builder.Services.AddScoped<IReview<RiderReviewDto>, RiderReviewService>();
+builder.Services.AddScoped<RiderReviewService>(); // Register concrete service for specific methods
 builder.Services.AddScoped<IWallet, WalletService>();
 builder.Services.AddScoped<IWalletDeposite, DepositeService>();
 builder.Services.AddScoped<IWalletWithdrawal, WithdrawalService>();

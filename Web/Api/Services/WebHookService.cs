@@ -35,7 +35,7 @@ namespace Api.Services
         {
             try
             {
-                using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(_config["Paystack:Secret_Key"]!));
+                using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("PAYSTACK_SECRET_KEY") ??_config["Paystack:Secret_Key"]!));
                 var computedSignature = BitConverter.ToString(
                     hmac.ComputeHash(Encoding.UTF8.GetBytes(payload)))
                     .Replace("-", "")

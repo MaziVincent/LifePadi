@@ -14,14 +14,24 @@ namespace Api.Helpers
         public GenerateToken(IConfiguration config)
         {
             _config = config;
-        }
-
-        public string generateAccessToken(GenTokenDto genTokenDTO)
+        }        public string generateAccessToken(GenTokenDto genTokenDTO)
         {
             try
             {
-                // Use the same key source as JWT validation in Program.cs
+                // Use the same key source as JWT validation in Program.cs with fallback
                 var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? _config!.GetSection("Jwt:Key").Value!;
+                
+                // Debug logging for troubleshooting
+                Console.WriteLine($"[generateAccessToken] JWT_KEY from environment: {(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_KEY")) ? "NOT SET" : "SET")}");
+                Console.WriteLine($"[generateAccessToken] JWT_KEY from config: {(string.IsNullOrEmpty(_config!.GetSection("Jwt:Key").Value) ? "NOT SET" : "SET")}");
+                Console.WriteLine($"[generateAccessToken] Final JWT key length: {jwtKey?.Length ?? 0}");
+                
+                // Validate key length for HS256 (minimum 128 bits = 16 characters)
+                if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 16)
+                {
+                    throw new ArgumentException($"JWT key must be at least 16 characters long for HS256 algorithm. Current key length: {jwtKey?.Length ?? 0}");
+                }
+                
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -60,7 +70,21 @@ namespace Api.Helpers
         {
             try
             {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config!.GetSection("Jwt:Key").Value!));
+                // Use the same key source as JWT validation in Program.cs with fallback
+                var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? _config!.GetSection("Jwt:Key").Value!;
+                
+                // Debug logging for troubleshooting
+                Console.WriteLine($"[generateRefreshToken] JWT_KEY from environment: {(string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JWT_KEY")) ? "NOT SET" : "SET")}");
+                Console.WriteLine($"[generateRefreshToken] JWT_KEY from config: {(string.IsNullOrEmpty(_config!.GetSection("Jwt:Key").Value) ? "NOT SET" : "SET")}");
+                Console.WriteLine($"[generateRefreshToken] Final JWT key length: {jwtKey?.Length ?? 0}");
+                
+                // Validate key length for HS256 (minimum 128 bits = 16 characters)
+                if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 16)
+                {
+                    throw new ArgumentException($"JWT key must be at least 16 characters long for HS256 algorithm. Current key length: {jwtKey?.Length ?? 0}");
+                }
+                
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 var Claims = new[]
@@ -99,7 +123,17 @@ namespace Api.Helpers
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_config!.GetSection("Jwt:Key").Value!);
+                
+                // Use the same key source as JWT validation in Program.cs with fallback
+                var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY") ?? _config!.GetSection("Jwt:Key").Value!;
+                
+                // Validate key length for HS256 (minimum 128 bits = 16 characters)
+                if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 16)
+                {
+                    throw new ArgumentException($"JWT key must be at least 16 characters long for HS256 algorithm. Current key length: {jwtKey?.Length ?? 0}");
+                }
+                
+                var key = Encoding.UTF8.GetBytes(jwtKey);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

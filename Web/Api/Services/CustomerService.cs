@@ -342,7 +342,7 @@ namespace Api.Services
                     pin_id = pinId,
                     pinId = pinId,
                     pin = pin,
-                    api_key = _config["Termii:Api_Key"]
+                    api_key = Environment.GetEnvironmentVariable("TERMII_API_KEY") ?? _config["Termii:Api_Key"]
                 };
                 request.AddJsonBody(payload);
 
@@ -373,10 +373,10 @@ namespace Api.Services
                 var payload = new
                 {
                     to = phoneNumber,
-                    from = _config["Termii:Sender_Id"],
+                    from = Environment.GetEnvironmentVariable("TERMII_SENDER_ID") ?? _config["Termii:Sender_Id"],
                     message_type = "NUMERIC",
                     channel = "dnd",
-                    api_key = _config["Termii:Api_Key"],
+                    api_key = Environment.GetEnvironmentVariable("TERMII_API_KEY") ?? _config["Termii:Api_Key"],
                     pin_length = 4,
                     pin_placeholder = "< 1234 >",
                     message_text = "Your Lifepadi verification code is < 1234 >, it will expire in 5 minutes",
@@ -416,10 +416,10 @@ namespace Api.Services
                 var payload = new
                 {
                     to = phoneNumber,
-                    from = _config["Termii:Sender_Id"],
+                    from = Environment.GetEnvironmentVariable("TERMII_SENDER_ID") ?? _config["Termii:Sender_Id"],
                     message_type = "NUMERIC",
                     channel = "dnd",
-                    api_key = _config["Termii:Api_Key"],
+                    api_key = Environment.GetEnvironmentVariable("TERMII_API_KEY") ?? _config["Termii:Api_Key"],
                     pin_length = 4,
                     pin_placeholder = "< 1234 >",
                     message_text = "Your Lifepadi verification code is < 1234 >, it will expire in 5 minutes",

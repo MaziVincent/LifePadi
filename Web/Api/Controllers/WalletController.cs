@@ -30,8 +30,31 @@ namespace Api.Controllers
             _logger = logger;
         }
 
+        [HttpGet("balance/customer/{customerId}")]
+        [ResourceOwnerOrAdmin("customerId")]
+        public async Task<ActionResult<ApiResponse<object>>> GetBalanceByCustomer(int customerId)
+        {
+            if (customerId <= 0)
+            {
+                return BadRequest(ApiResponse<object>.CreateError("Invalid customer ID", "INVALID_CUSTOMER_ID"));
+            }
+
+            var correlationId = HttpContext.GetCorrelationId();
+            _logger.LogInformation("Getting wallet balance for customer ID: {CustomerId} - CorrelationId: {CorrelationId}", customerId, correlationId);
+
+            // Get wallet by customer ID first, then get balance
+            var wallet = await _wallet.getWalletByCustomerId(customerId);
+            if (wallet == null)
+            {
+                return NotFound(ApiResponse<object>.CreateNotFound($"Wallet for customer ID {customerId} not found"));
+            }
+
+            var response = await _wallet.getBalance(wallet.Id);
+            return Ok(ApiResponse<object>.CreateSuccess(response, "Wallet balance retrieved successfully"));
+        }
+
         [HttpGet("balance/{id}")]
-        [ResourceOwnerOrAdmin("id")]
+        [WalletOwnerOrAdmin("id")]
         public async Task<ActionResult<ApiResponse<object>>> GetBalance(int id)
         {
             if (id <= 0)
@@ -58,6 +81,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("get/{id}")]
+        [WalletOwnerOrAdmin("id")]
         public async Task<ActionResult<ApiResponse<object>>> Get(int id)
         {
             if (id <= 0)
@@ -79,6 +103,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("stats/{id}")]
+        [ResourceOwnerOrAdmin("id")]
         public async Task<ActionResult<ApiResponse<object>>> GetWalletStats(int id)
         {
             if (id <= 0)
@@ -100,6 +125,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("initial-balance/{id}")]
+        [WalletOwnerOrAdmin("id")]
         public async Task<ActionResult<ApiResponse<object>>> GetInitialBalance(int id)
         {
             if (id <= 0)
@@ -115,6 +141,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("customer/{customerId}")]
+        [ResourceOwnerOrAdmin("customerId")]
         public async Task<ActionResult<ApiResponse<object>>> GetCustomerWallet(int customerId)
         {
             if (customerId <= 0)
@@ -227,6 +254,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("last-five-transactions/{walletId}")]
+        [WalletOwnerOrAdmin("walletId")]
         public async Task<ActionResult<ApiResponse<object>>> GetLastFiveTransactions(int walletId)
         {
             if (walletId <= 0)
@@ -243,6 +271,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("transactions/{id}")]
+        [WalletOwnerOrAdmin("id")]
         public async Task<ActionResult<ApiResponse<object>>> GetTransactions(int id, [FromQuery] SearchPaging props)
         {
             if (id <= 0)

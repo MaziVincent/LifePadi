@@ -25,7 +25,11 @@ steps:
       "--image=us-east1-docker.pkg.dev/$PROJECT_ID/lifepadi-repo/lifepadi-v2:${_TAG}",
       "--region=us-east1",
       "--platform=managed",
-      "--allow-unauthenticated"
+      "--allow-unauthenticated",
+      "--memory=1Gi",
+      "--cpu=1",
+      "--max-instances=10",
+      "--port=8080"
     ]
 
 timeout: "1200s"

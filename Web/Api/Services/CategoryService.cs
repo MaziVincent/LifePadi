@@ -22,9 +22,9 @@ namespace Api.Services
             _mapper = mapper;
             _config = config;
             var account = new Account(
-                _config["Cloudinary:Cloud_Name"],
-                _config["Cloudinary:Api_Key"],
-                _config["Cloudinary:Api_Secret"]
+              Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ??  _config["Cloudinary:Cloud_Name"],
+              Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY") ??  _config["Cloudinary:Api_Key"],
+               Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? _config["Cloudinary:Api_Secret"]
             );
             _cloudinary = new Cloudinary(account);
         }
