@@ -38,7 +38,7 @@ class ProductReview with ProductReviewMappable {
   final int productId;
 
   @MappableField(key: 'Product')
-  final Product? product;
+  final ProductLite? product;
 
   @MappableField(key: 'CreatedAt')
   final DateTime createdAt;

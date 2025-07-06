@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
-import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/models/vendor.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
