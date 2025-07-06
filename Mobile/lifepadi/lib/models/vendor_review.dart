@@ -19,31 +19,31 @@ class VendorReview with VendorReviewMappable {
     required this.updatedAt,
   });
 
-  @MappableField(key: 'id')
+  @MappableField(key: 'Id')
   final int id;
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'customer')
+  @MappableField(key: 'Customer')
   final Customer? customer;
 
-  @MappableField(key: 'vendorId')
+  @MappableField(key: 'VendorId')
   final int vendorId;
 
-  @MappableField(key: 'vendor')
+  @MappableField(key: 'Vendor')
   final Vendor? vendor;
 
-  @MappableField(key: 'createdAt')
+  @MappableField(key: 'CreatedAt')
   final DateTime createdAt;
 
-  @MappableField(key: 'updatedAt')
+  @MappableField(key: 'UpdatedAt')
   final DateTime updatedAt;
 
   static const fromMap = VendorReviewMapper.fromMap;
@@ -60,16 +60,16 @@ class CreateVendorReviewRequest with CreateVendorReviewRequestMappable {
     required this.vendorId,
   });
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'vendorId')
+  @MappableField(key: 'VendorId')
   final int vendorId;
 
   static const fromMap = CreateVendorReviewRequestMapper.fromMap;
@@ -86,16 +86,16 @@ class UpdateVendorReviewRequest with UpdateVendorReviewRequestMappable {
     required this.vendorId,
   });
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'vendorId')
+  @MappableField(key: 'VendorId')
   final int vendorId;
 
   static const fromMap = UpdateVendorReviewRequestMapper.fromMap;

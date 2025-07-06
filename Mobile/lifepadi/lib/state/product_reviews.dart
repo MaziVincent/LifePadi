@@ -26,6 +26,9 @@ class ProductReviewService {
     if (response.data == null) {
       throw const ServerErrorException('No data returned from the server');
     }
+    logger
+      ..i('getReviewsByProduct:')
+      ..i(response.data);
 
     return response.data!
         .map((json) => ProductReview.fromMap(json as JsonMap))

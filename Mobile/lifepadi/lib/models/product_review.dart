@@ -19,31 +19,31 @@ class ProductReview with ProductReviewMappable {
     required this.updatedAt,
   });
 
-  @MappableField(key: 'id')
+  @MappableField(key: 'Id')
   final int id;
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'customer')
+  @MappableField(key: 'Customer')
   final Customer? customer;
 
-  @MappableField(key: 'productId')
+  @MappableField(key: 'ProductId')
   final int productId;
 
-  @MappableField(key: 'product')
+  @MappableField(key: 'Product')
   final Product? product;
 
-  @MappableField(key: 'createdAt')
+  @MappableField(key: 'CreatedAt')
   final DateTime createdAt;
 
-  @MappableField(key: 'updatedAt')
+  @MappableField(key: 'UpdatedAt')
   final DateTime updatedAt;
 
   static const fromMap = ProductReviewMapper.fromMap;
@@ -60,16 +60,16 @@ class CreateProductReviewRequest with CreateProductReviewRequestMappable {
     required this.productId,
   });
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'productId')
+  @MappableField(key: 'ProductId')
   final int productId;
 
   static const fromMap = CreateProductReviewRequestMapper.fromMap;
@@ -86,16 +86,16 @@ class UpdateProductReviewRequest with UpdateProductReviewRequestMappable {
     required this.productId,
   });
 
-  @MappableField(key: 'rating')
+  @MappableField(key: 'Rating')
   final double rating;
 
-  @MappableField(key: 'body')
+  @MappableField(key: 'Body')
   final String? body;
 
-  @MappableField(key: 'customerId')
+  @MappableField(key: 'CustomerId')
   final int customerId;
 
-  @MappableField(key: 'productId')
+  @MappableField(key: 'ProductId')
   final int productId;
 
   static const fromMap = UpdateProductReviewRequestMapper.fromMap;
