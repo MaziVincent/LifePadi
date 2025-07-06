@@ -118,7 +118,7 @@ class _ProductDetailsContent extends HookConsumerWidget {
         HeaderWithSeeAll(
           title: 'Ratings & Review',
           onSeeAllTap: () {
-            ProductReviewsRoute(product.id).go(context);
+            ProductReviewsRoute(product.id).push<void>(context);
           },
         ),
         5.verticalSpace,
