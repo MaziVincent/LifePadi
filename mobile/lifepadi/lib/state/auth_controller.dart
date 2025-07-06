@@ -272,7 +272,7 @@ class AuthController extends _$AuthController {
           'Cookie': 'refreshToken=$refreshToken',
         },
       );
-      final response = await client.post<JsonMap>(
+      final response = await client.get<JsonMap>(
         '/auth/refreshToken',
         options: options,
       );
