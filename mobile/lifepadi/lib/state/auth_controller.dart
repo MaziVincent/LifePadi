@@ -98,19 +98,7 @@ class AuthController extends _$AuthController {
       final user = UserMapper.fromJson(credentials);
       logger.i('Attempting to restore auth for user: ${user.id}');
 
-      // Check if the access token is still valid by attempting to refresh it
-      // This ensures we have a valid session before proceeding
-      try {
-        state = AsyncData(user);
-        await refreshToken();
-        logger.i('Successfully refreshed token during auth recovery');
-      } catch (e) {
-        logger.w(
-          'Token refresh failed during recovery, using stored credentials: $e',
-        );
-        // If refresh fails, we'll still try to use the stored credentials
-        // The API calls will handle token refresh automatically if needed
-      }
+      state = AsyncData(user);
 
       // Subscribe to notifications if enabled
       final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
