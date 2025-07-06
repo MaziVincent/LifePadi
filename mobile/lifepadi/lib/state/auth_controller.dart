@@ -216,9 +216,6 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
-      logger
-        ..d('Login page')
-        ..d(response.data);
 
       // Extract user data from the new API v2 response structure
       final userData = response.data!['Data'] as JsonMap;
@@ -292,14 +289,11 @@ class AuthController extends _$AuthController {
 
     try {
       final refreshToken = state.requireValue.refreshToken;
-      final options = Options(
-        headers: {
-          'Cookie': 'refreshToken=$refreshToken',
-        },
-      );
       final response = await client.get<JsonMap>(
         '/auth/refreshToken',
-        options: options,
+        queryParameters: {
+          'refreshToken': refreshToken,
+        },
       );
 
       if (response.data == null) {
