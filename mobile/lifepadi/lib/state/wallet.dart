@@ -18,21 +18,25 @@ part 'wallet.g.dart';
 Future<double> balance(Ref ref) async {
   final client = ref.read(dioProvider());
   final user = ref.read(authControllerProvider);
-  final walletId = user.maybeWhen(
-    data: (user) => user is Customer ? user.wallet.id : -1,
+  final userId = user.maybeWhen(
+    data: (user) => user is Customer ? user.id : -1,
     orElse: () => null,
   );
-  if (walletId == null) {
+  if (userId == null) {
     throw const UnauthorizedException('No user found');
   }
-  if (walletId == -1) {
+  if (userId == -1) {
     throw const WalletException('This user is not a customer');
   }
-  final response = await client.get<JsonMap>('/wallet/balance/$walletId');
+  final response =
+      await client.get<JsonMap>('/wallet/balance/customer/$userId');
 
   if (response.data == null) {
     throw const ServerErrorException('No data returned from the server');
   }
+  logger
+    ..d('Balance:')
+    ..d(response.data);
 
   // Handle v2 API response structure
   final balance = response.data!['Data'] as double;
@@ -140,8 +144,8 @@ FutureOr<List<Receipt>> transactionHistory(
   }
 
   // Handle v2 API response structure
-  final responseData = response.data!['Data'] as JsonMap;
-  final data = List<JsonMap>.from(responseData['result'] as List);
+  // The Data field contains the transactions array directly
+  final data = List<JsonMap>.from(response.data!['Data'] as List);
 
   ref.cache();
   return data.map(ReceiptMapper.fromMap).toList();
