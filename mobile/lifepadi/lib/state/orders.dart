@@ -9,7 +9,7 @@ import 'package:lifepadi/state/logistics.dart';
 import 'package:lifepadi/state/wallet.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
-import 'package:lifepadi/utils/helpers.dart';
+import 'package:lifepadi/utils/helpers.dart' show JsonMap, logger;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'orders.g.dart';
@@ -46,19 +46,7 @@ FutureOr<List<Order>> orders(
 
   // Handle v2 API response structure
   final responseData = response.data!['Data'] as JsonMap;
-  var data = List<JsonMap>.from(responseData['orders'] as List);
-
-  // strip auth on rider if it contains a rider key
-  data = data.map((order) {
-    if (order.containsKey('Rider') && order['Rider'] != null) {
-      stripAuth(order['Rider'] as JsonMap, addWallet: false);
-    }
-    // strip auth on customer
-    if (order.containsKey('Customer') && order['Customer'] != null) {
-      stripAuth(order['Customer'] as JsonMap);
-    }
-    return order;
-  }).toList();
+  final data = List<JsonMap>.from(responseData['orders'] as List);
 
   ref.cache();
   return data.map(OrderMapper.fromMap).toList();
@@ -75,15 +63,6 @@ FutureOr<Order> order(Ref ref, int id) async {
 
   // Handle v2 API response structure
   final data = response.data!['Data'] as JsonMap;
-
-  // strip auth on rider
-  if (data.containsKey('Rider') && data['Rider'] != null) {
-    stripAuth(data['Rider'] as JsonMap, addWallet: false);
-  }
-  // strip auth on customer
-  if (data.containsKey('Customer') && data['Customer'] != null) {
-    stripAuth(data['Customer'] as JsonMap);
-  }
 
   ref.cache();
   return OrderMapper.fromMap(data);

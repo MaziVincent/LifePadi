@@ -22,6 +22,7 @@ import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/user.dart';
+import '../models/user_role.dart';
 
 part 'auth_controller.g.dart';
 
@@ -469,8 +470,17 @@ class AuthController extends _$AuthController {
 
       // Handle v2 API response structure
       final data = response.data!['Data'] as JsonMap;
-      final customerData = CustomerMapper.fromMap(stripAuth(data));
       final currentCustomer = state.requireValue as Customer;
+
+      // Preserve auth tokens from current user and merge with updated data
+      final updatedData = {
+        ...data,
+        'accessToken': currentCustomer.accessToken,
+        'refreshToken': currentCustomer.refreshToken,
+        'Role': currentCustomer.role.toValue(),
+      };
+
+      final customerData = CustomerMapper.fromMap(updatedData);
       final updatedCustomer = currentCustomer.copyWith(
         firstName: customerData.firstName,
         lastName: customerData.lastName,
@@ -478,6 +488,7 @@ class AuthController extends _$AuthController {
         phoneNumber: customerData.phoneNumber,
         address: customerData.address,
         dateOfBirth: customerData.dateOfBirth,
+        wallet: customerData.wallet,
       );
       // Save the updated details to the secure storage
       await _saveDetailsToStorage(updatedCustomer);

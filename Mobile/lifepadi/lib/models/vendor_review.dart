@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/models/user_lite.dart';
 import 'package:lifepadi/models/vendor.dart';
 
 part 'vendor_review.mapper.dart';
@@ -32,7 +32,7 @@ class VendorReview with VendorReviewMappable {
   final int customerId;
 
   @MappableField(key: 'Customer')
-  final Customer? customer;
+  final CustomerLite? customer;
 
   @MappableField(key: 'VendorId')
   final int vendorId;

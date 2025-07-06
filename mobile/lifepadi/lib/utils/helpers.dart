@@ -216,19 +216,6 @@ Future<void> handleError(
         );
 }
 
-JsonMap stripAuth(JsonMap json, {bool addWallet = true}) {
-  json['accessToken'] = '';
-  json['refreshToken'] = '';
-  json['Role'] = UserRole.guest.toValue();
-  if (addWallet) {
-    json['Wallet'] = {
-      'Id': -1,
-      'Balance': 1000,
-    };
-  }
-  return json;
-}
-
 Product makeFakeProduct({required int id}) {
   return Product(
     id: id,
