@@ -43,7 +43,7 @@ class MyReviewsPage extends ConsumerWidget {
           Container(
             margin: kHorizontalPadding,
             decoration: BoxDecoration(
-              color: kStrokeColor.withOpacity(0.3),
+              color: kStrokeColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: TabBar(
@@ -67,9 +67,9 @@ class MyReviewsPage extends ConsumerWidget {
               ],
             ),
           ),
-          
+
           16.verticalSpace,
-          
+
           // Tab views
           Expanded(
             child: TabBarView(
@@ -84,7 +84,11 @@ class MyReviewsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildProductReviews(BuildContext context, WidgetRef ref, int customerId) {
+  Widget _buildProductReviews(
+    BuildContext context,
+    WidgetRef ref,
+    int customerId,
+  ) {
     final reviewsAsync = ref.watch(customerProductReviewsProvider(customerId));
 
     return reviewsAsync.when(
@@ -115,7 +119,11 @@ class MyReviewsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildVendorReviews(BuildContext context, WidgetRef ref, int customerId) {
+  Widget _buildVendorReviews(
+    BuildContext context,
+    WidgetRef ref,
+    int customerId,
+  ) {
     final reviewsAsync = ref.watch(customerVendorReviewsProvider(customerId));
 
     return reviewsAsync.when(
@@ -162,7 +170,7 @@ class MyReviewsPage extends ConsumerWidget {
             width: 80.r,
             height: 80.r,
             decoration: BoxDecoration(
-              color: kStrokeColor.withOpacity(0.3),
+              color: kStrokeColor.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(40.r),
             ),
             child: Icon(
@@ -171,9 +179,7 @@ class MyReviewsPage extends ConsumerWidget {
               color: kLightTextColor,
             ),
           ),
-          
           24.verticalSpace,
-          
           Text(
             title,
             style: context.textTheme.bodyMedium?.copyWith(
@@ -182,9 +188,7 @@ class MyReviewsPage extends ConsumerWidget {
               color: kDarkTextColor,
             ),
           ),
-          
           8.verticalSpace,
-          
           Text(
             subtitle,
             style: context.textTheme.bodyMedium?.copyWith(
@@ -193,9 +197,7 @@ class MyReviewsPage extends ConsumerWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          
           32.verticalSpace,
-          
           OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
             style: OutlinedButton.styleFrom(

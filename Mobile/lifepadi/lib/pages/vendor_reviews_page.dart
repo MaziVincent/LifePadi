@@ -55,7 +55,7 @@ class VendorReviewsPage extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: kStrokeColor.withOpacity(0.3),
+        color: kStrokeColor.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: kStrokeColor,
@@ -69,7 +69,7 @@ class VendorReviewsPage extends ConsumerWidget {
             width: 60.r,
             height: 60.r,
             decoration: BoxDecoration(
-              color: kDarkPrimaryColor.withOpacity(0.1),
+              color: kDarkPrimaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Icon(

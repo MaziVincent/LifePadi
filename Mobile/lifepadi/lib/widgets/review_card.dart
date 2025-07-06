@@ -66,7 +66,7 @@ class ReviewCard extends ConsumerWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8.r,
             offset: Offset(0, 2.h),
           ),
@@ -241,7 +241,7 @@ class ReviewCard extends ConsumerWidget {
                 vertical: 8.h,
               ),
               decoration: BoxDecoration(
-                color: kStrokeColor.withOpacity(0.5),
+                color: kStrokeColor.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(
@@ -273,7 +273,7 @@ class ReviewCard extends ConsumerWidget {
                 vertical: 8.h,
               ),
               decoration: BoxDecoration(
-                color: kStrokeColor.withOpacity(0.5),
+                color: kStrokeColor.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Row(

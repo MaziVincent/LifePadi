@@ -45,9 +45,9 @@ class ProductReviewsPage extends ConsumerWidget {
         children: [
           // Product info header
           _buildProductHeader(context, product),
-          
+
           32.verticalSpace,
-          
+
           // Reviews list
           ReviewsList(
             isProductReview: true,
@@ -62,7 +62,7 @@ class ProductReviewsPage extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: kStrokeColor.withOpacity(0.3),
+        color: kStrokeColor.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: kStrokeColor,
@@ -94,9 +94,9 @@ class ProductReviewsPage extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           16.horizontalSpace,
-          
+
           // Product details
           Expanded(
             child: Column(
@@ -112,9 +112,7 @@ class ProductReviewsPage extends ConsumerWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                
                 4.verticalSpace,
-                
                 Text(
                   product.price.currency,
                   style: context.textTheme.bodyMedium?.copyWith(
@@ -123,9 +121,7 @@ class ProductReviewsPage extends ConsumerWidget {
                     color: kBrightGreen,
                   ),
                 ),
-                
                 4.verticalSpace,
-                
                 if (product.vendor.name.isNotEmpty) ...[
                   Text(
                     'by ${product.vendor.name}',
