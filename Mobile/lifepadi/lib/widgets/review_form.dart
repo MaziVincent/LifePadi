@@ -83,6 +83,7 @@ class ReviewForm extends HookConsumerWidget {
           RatingBar.builder(
             initialRating: rating.value,
             minRating: 1,
+            allowHalfRating: true,
             itemSize: 40.r,
             itemPadding: EdgeInsets.symmetric(horizontal: 4.w),
             itemBuilder: (context, index) {
