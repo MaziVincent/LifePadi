@@ -472,10 +472,10 @@ namespace Api.Services
                
 
                 var tx_ref = GenerateTxRef.genTx_rf();
-                var redirect_url = _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
+                var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN")+ "/payment/confirm" ?? _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
                 //var redirect_url = Environment.GetEnvironmentVariable("API_REMOTE_GCP_URL") ?? _config["Base_Url:Remote_GCP"] + "/walletDeposite/confirmDeposite";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
-                var webhook_url = Environment.GetEnvironmentVariable("API_REMOTE_GCP_URL") ?? _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
+                var webhook_url = Environment.GetEnvironmentVariable("API_REMOTE_GCP_URL") + "webhook/paystack-webhook" ?? _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
                 {
                     email = customer!.Email,

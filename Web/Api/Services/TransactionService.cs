@@ -382,9 +382,9 @@ namespace Api.Services
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
                 // var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
-                var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
+                var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL")+ "/payment/confirm" ?? _config["Base_Url:Frontend_Remote_SubDomain"] + "/payment/confirm";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
-                var webhook_url = Environment.GetEnvironmentVariable("API_REMOTE_GCP_URL") ?? _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
+                var webhook_url = Environment.GetEnvironmentVariable("API_REMOTE_GCP_URL") + "webhook/paystack-webhook" ?? _config["Base_Url:Remote_GCP"] + "webhook/paystack-webhook";
                 var payload = new
                 {
                     email = order.Customer!.Email,
@@ -453,7 +453,7 @@ namespace Api.Services
                     createdAt = DateTime.UtcNow
                 };
                 var tx_ref = GenerateTxRef.genTx_rf();
-                var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
+                var redirect_url = Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL")+ "/shop/payment-response" ?? _config["Base_Url:Frontend_remote"] + "/shop/payment-response";
                 // var redirect_url = _config["Base_Url:Local"] + "/transaction/paystack-confirmPayment";
                 string paymentUrl = _config["Paystack:Initialize_Payment_Url"]!;
                 var payload = new
