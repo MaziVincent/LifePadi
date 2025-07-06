@@ -141,7 +141,7 @@ class AuthController extends _$AuthController {
       );
 
       final response = await client.get<JsonMap>(
-        '/logout',
+        '/auth/logout',
         options: options,
       );
 
