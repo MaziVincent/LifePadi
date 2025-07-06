@@ -204,6 +204,9 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
+      logger
+      ..d('Login page')
+      ..d(response.data);
 
       // Extract the refresh token from the response headers
       final refreshToken = response.headers['set-cookie']!
@@ -233,6 +236,7 @@ class AuthController extends _$AuthController {
 
       state = AsyncData(user);
     } catch (e) {
+      logger.e('Login failed', error: e);
       rethrow;
     }
   }
