@@ -26,9 +26,9 @@ namespace Api.DTO
         [NoHtmlValidation(ErrorMessage = "Phone number cannot contain HTML or script content")]
         public string? PhoneNumber { get; set; }
 
-        [PasswordValidation(MinLength = 8, RequireUppercase = true, RequireLowercase = true,
-                           RequireDigit = true, RequireSpecialChar = true,
-                           ErrorMessage = "Password must be at least 8 characters with uppercase, lowercase, digit, and special character")]
+        [PasswordValidation(MinLength = 6, RequireUppercase = false, RequireLowercase = false,
+                           RequireDigit = false, RequireSpecialChar = false,
+                           ErrorMessage = "Password must be at least 6 characters")]
         public string? Password { get; set; }
         public string? ContactAddress { get; set; }
         public string? RefreshToken { get; set; }
@@ -88,8 +88,9 @@ namespace Api.DTO
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
-        [PasswordValidation(MinLength = 6, 
-                           ErrorMessage = "Password must be at least 8 characters with uppercase, lowercase, digit, and special character")]
+        [PasswordValidation(MinLength = 6, RequireUppercase = true, RequireLowercase = true,
+                           RequireDigit = true, RequireSpecialChar = true,
+                           ErrorMessage = "Password must be at least 6 characters with uppercase, lowercase, digit, and special character")]
         public string? Password { get; set; }
     }
 
@@ -104,8 +105,9 @@ namespace Api.DTO
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "New password is required")]
-        [PasswordValidation(MinLength = 6, 
-                           ErrorMessage = "New password must be at least 8 characters with uppercase, lowercase, digit, and special character")]
+        [PasswordValidation(MinLength = 6, RequireUppercase = true, RequireLowercase = true,
+                           RequireDigit = true, RequireSpecialChar = true,
+                           ErrorMessage = "New password must be at least 6 characters with uppercase, lowercase, digit, and special character")]
         public string? NewPassword { get; set; }
     }
 }
