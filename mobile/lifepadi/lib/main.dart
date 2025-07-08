@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/theme/theme.dart';
 import 'package:lifepadi/utils/app_links_service.dart';
+import 'package:lifepadi/utils/app_upgrader.dart';
 import 'package:lifepadi/utils/background.dart';
 import 'package:lifepadi/utils/notification_utils.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
@@ -54,11 +55,14 @@ class LifepadiApp extends ConsumerWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       builder: (_, __) {
-        return MaterialApp.router(
-          routerConfig: router,
-          title: 'Lifepadi',
-          theme: lightTheme(),
-          debugShowCheckedModeBanner: false,
+        return AppUpgrader.createUpgradeAlert(
+          alertDuration: const Duration(hours: 2),
+          child: MaterialApp.router(
+            routerConfig: router,
+            title: 'Lifepadi',
+            theme: lightTheme(),
+            debugShowCheckedModeBanner: false,
+          ),
         );
       },
     );
