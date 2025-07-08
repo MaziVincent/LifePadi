@@ -560,6 +560,16 @@ class SupportRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<LiveChatRoute>(path: '/live-chat')
+class LiveChatRoute extends GoRouteData {
+  const LiveChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LiveChatPage();
+  }
+}
+
 @TypedGoRoute<SettingsRoute>(path: '/settings')
 class SettingsRoute extends GoRouteData {
   const SettingsRoute();

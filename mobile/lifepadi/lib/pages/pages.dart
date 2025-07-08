@@ -12,6 +12,7 @@ export 'edit_profile_page.dart';
 export 'forgot_password_page.dart';
 export 'get_started_page.dart';
 export 'home_page.dart';
+export 'live_chat_page.dart';
 export 'locations_page.dart';
 export 'login_page.dart';
 export 'logistics_page.dart';

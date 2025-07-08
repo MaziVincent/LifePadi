@@ -154,6 +154,10 @@ class ProfilePage extends HookConsumerWidget {
                     title: 'Customer support',
                     onTap: () => context.push(const SupportRoute().location),
                   ),
+                  SettingsTile(
+                    title: 'Live chat',
+                    onTap: () => context.push(const LiveChatRoute().location),
+                  ),
                 ],
                 SettingsTile(
                   title: 'Wishlist',
