@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -328,6 +329,7 @@ class AuthController extends _$AuthController {
     required String email,
     required String phoneNumber,
     required String password,
+    String? referredByCode,
   }) async {
     final client = ref.read(dioProvider(secured: false));
     final formData = FormData.fromMap({
@@ -336,6 +338,7 @@ class AuthController extends _$AuthController {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'Password': password,
+      if (referredByCode != null) 'ReferredByCode': referredByCode,
     });
 
     try {
@@ -347,18 +350,12 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Check if registration was successful using v2 response structure
-      final success = response.data!['Success'] as bool? ?? false;
-      if (success) {
-        return await login(
+      if (response.statusCode == 201) {
+        return login(
           email: email,
           password: password,
           phoneNumber: phoneNumber,
         );
-      } else {
-        final message =
-            response.data!['Message'] as String? ?? 'Failed to register';
-        throw ServerErrorException(message);
       }
     } catch (e) {
       rethrow;
@@ -370,7 +367,7 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final response = await client.post<JsonMap>(
+      final response = await client.post<String>(
         '/customer/send-otp',
         data: FormData.fromMap({
           'phoneNumber': phoneNumber,
@@ -379,9 +376,8 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
+      final data = jsonDecode(response.data!) as JsonMap;
 
-      // Handle v2 API response structure
-      final data = response.data!['Data'] as JsonMap;
       return data['pinId'].toString();
     } catch (e) {
       rethrow;
@@ -396,7 +392,7 @@ class AuthController extends _$AuthController {
     final client = ref.read(dioProvider(secured: false));
 
     try {
-      final response = await client.post<JsonMap>(
+      final response = await client.post<String>(
         '/customer/verify-otp',
         queryParameters: {
           'pinId': pinId,
@@ -407,8 +403,7 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Handle v2 API response structure
-      final data = response.data!['Data'] as JsonMap;
+      final data = jsonDecode(response.data!) as JsonMap;
 
       final verified = data['verified'] as bool;
       if (!verified) {

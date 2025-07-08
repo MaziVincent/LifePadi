@@ -28,6 +28,7 @@ class RegisterPage extends HookConsumerWidget {
     final confirmPassword = useState('');
     final firstName = useState('');
     final lastName = useState('');
+    final referralCode = useState('');
     final isPhoneVerified = useState(false);
 
     return Scaffold(
@@ -252,6 +253,16 @@ class RegisterPage extends HookConsumerWidget {
                             size: 19.52.r,
                           ),
                         ),
+                        19.verticalSpace,
+                        InputField(
+                          hintText: 'Enter referral code (Optional)',
+                          labelText: 'Referred By',
+                          onChanged: (value) =>
+                              referralCode.value = value.toUpperCase(),
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.done,
+                          hasValue: referralCode.value.isNotEmpty,
+                        ),
                         25.verticalSpace,
                         PrimaryActionButton(
                           text: 'Register',
@@ -268,13 +279,36 @@ class RegisterPage extends HookConsumerWidget {
                                         email: email.value,
                                         phoneNumber: phone.value,
                                         password: password.value,
+                                        referredByCode:
+                                            referralCode.value.isEmpty
+                                                ? null
+                                                : referralCode.value,
                                       )
-                                      .onError<DioException>(
-                                        (error, stackTrace) => handleError(
-                                          error,
-                                          context.mounted ? context : null,
-                                        ),
+                                      .then((_) {
+                                    // Check if user is authenticated
+                                    if (ref
+                                            .read(authControllerProvider)
+                                            .value
+                                            ?.isAuth ??
+                                        false) {
+                                      // Check if user is still on the register page
+                                      final stillOnLoginPage = context
+                                              .mounted &&
+                                          GoRouter.of(context).state.uri.path ==
+                                              const RegisterRoute().location;
+
+                                      if (stillOnLoginPage && context.mounted) {
+                                        context.go(const HomeRoute().location);
+                                      }
+                                    }
+                                  }).onError<DioException>(
+                                    (error, stackTrace) {
+                                      handleError(
+                                        error,
+                                        context.mounted ? context : null,
                                       );
+                                    },
+                                  );
                                 },
                         ),
                         17.verticalSpace,

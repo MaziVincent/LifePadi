@@ -66,6 +66,7 @@ class Customer extends User with CustomerMappable {
     this.dateOfBirth,
     this.gender,
     required this.wallet,
+    this.referralCode,
   });
 
   @MappableField(key: 'DateOfBirth')
@@ -74,6 +75,8 @@ class Customer extends User with CustomerMappable {
   final String? gender;
   @MappableField(key: 'Wallet')
   final Wallet wallet;
+  @MappableField(key: 'ReferralCode')
+  final String? referralCode;
 }
 
 /// Represents a rider that uses the app.

@@ -16,6 +16,7 @@ class CustomerLite with CustomerLiteMappable {
     this.address,
     this.dateOfBirth,
     this.gender,
+    this.referralCode,
   });
 
   @MappableField(key: 'Id')
@@ -34,6 +35,8 @@ class CustomerLite with CustomerLiteMappable {
   final DateTime? dateOfBirth;
   @MappableField(key: 'Gender')
   final String? gender;
+  @MappableField(key: 'ReferralCode')
+  final String? referralCode;
 
   String get name => '${firstName.capitalize()} ${lastName.capitalize()}';
 
