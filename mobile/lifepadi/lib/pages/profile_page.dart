@@ -11,6 +11,7 @@ import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/utils/helpers.dart';
 import 'package:lifepadi/utils/preferences_helper.dart';
+import 'package:lifepadi/widgets/profile_detail_info_with_actions.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -213,6 +214,12 @@ class _PersonalDetailsContent extends StatelessWidget {
           name: 'Address',
           value: user.address ?? 'Not set',
         ),
+        // Show referral code for customers
+        if (user is Customer && (user as Customer).referralCode != null)
+          ProfileDetailInfoWithActions(
+            name: 'Referral Code',
+            value: (user as Customer).referralCode!,
+          ),
       ],
     );
   }
