@@ -525,7 +525,8 @@ class AuthController extends _$AuthController {
       final credentials = await _secureStorage.get(kCredentialsKey);
       if (credentials != null) {
         final user = UserMapper.fromJson(credentials);
-        final canRestore = user is! Rider;
+        // Allow auth restoration for all user types
+        const canRestore = true;
         logger.d(
           'Found credentials for user ${user.id}, can restore: $canRestore',
         );
