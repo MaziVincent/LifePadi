@@ -10,11 +10,14 @@ namespace Api.Services
     {
         private readonly DBContext _dbContext;
         private readonly IMapper _mapper;
-        public DeliveryService(DBContext dBContext, IMapper mapper)
+        private readonly IFcmService _fcmService;
+        public DeliveryService(DBContext dBContext, IMapper mapper, IFcmService fcmService)
         {
             _dbContext = dBContext;
             _mapper = mapper;
+            _fcmService = fcmService;
         }
+       
         public async Task<IEnumerable<DeliveryDto>> allAsync()
         {
             try
@@ -63,6 +66,12 @@ namespace Api.Services
                 delivery.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Deliveries.Attach(delivery);
                 await _dbContext.SaveChangesAsync();
+                //send Delivery Notificatio
+                var topic = "Delivery";
+                var title = "New Delivery Assigned";
+                var body = "You have been Assigned a Delivery with Order ID: " + delivery.Order!.Order_Id;
+                await _fcmService.SendTopicNotificationAsync(topic, title, body);
+
                 return "Rider assign successfully";
             }
             catch (Exception ex)

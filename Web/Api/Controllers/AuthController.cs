@@ -236,6 +236,12 @@ namespace Api.Controllers
             }
 
             var accessToken = new GenerateToken(_config).generateAccessToken(genTokenDTO!);
+            string? referralCode = null;
+            if (genTokenDTO.Role == "Customer" && user is Customer customer)
+            {
+                referralCode = customer.ReferralCode ?? string.Empty;
+                _logger.LogDebug("Including referral code for Customer user: {UserId}", user.Id);
+            }
             var token = new
             {
                 Id = user.Id,
@@ -246,6 +252,7 @@ namespace Api.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Role = genTokenDTO!.Role,
                 refreshToken = user.RefreshToken,
+                ReferralCode = referralCode,
                 accessToken = accessToken
             };
 
