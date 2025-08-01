@@ -23,6 +23,7 @@ import 'package:lifepadi/utils/secure_storage_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/user.dart';
+import '../models/user_role.dart';
 
 part 'auth_controller.g.dart';
 
@@ -99,26 +100,22 @@ class AuthController extends _$AuthController {
       final user = UserMapper.fromJson(credentials);
       logger.i('Attempting to restore auth for user: ${user.id}');
 
-      // Check if the access token is still valid by attempting to refresh it
-      // This ensures we have a valid session before proceeding
+      state = AsyncData(user);
+
+      // Subscribe to notifications if enabled (only if Firebase is initialized)
       try {
-        state = AsyncData(user);
-        await refreshToken();
-        logger.i('Successfully refreshed token during auth recovery');
+        final notificationsEnabled =
+            PreferencesHelper.getNotificationsEnabled();
+        if (notificationsEnabled) {
+          await FirebaseMessaging.instance.subscribeToTopic(
+            'orders-${user.id}',
+          );
+        }
       } catch (e) {
         logger.w(
-          'Token refresh failed during recovery, using stored credentials: $e',
+          'Firebase not initialized yet, skipping notification subscription: $e',
         );
-        // If refresh fails, we'll still try to use the stored credentials
-        // The API calls will handle token refresh automatically if needed
-      }
-
-      // Subscribe to notifications if enabled
-      final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
-      if (notificationsEnabled) {
-        await FirebaseMessaging.instance.subscribeToTopic(
-          'orders-${user.id}',
-        );
+        // This is not a critical error for auth recovery, so we continue
       }
 
       // Start background location tracking if user is a rider
@@ -142,6 +139,31 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> logout() async {
+    final client = ref.read(dioProvider(secured: false));
+
+    try {
+      // Call the v2 logout endpoint with refresh token cookie
+      final refreshToken = state.requireValue.refreshToken;
+      final options = Options(
+        headers: {
+          'Cookie': 'refreshToken=$refreshToken',
+        },
+      );
+
+      final response = await client.get<JsonMap>(
+        '/auth/logout',
+        options: options,
+      );
+
+      // Log the response but don't fail if the server logout fails
+      if (response.data != null) {
+        logger.d('Server logout successful: ${response.data}');
+      }
+    } catch (e) {
+      // Don't fail the logout process if server logout fails
+      logger.w('Server logout failed, continuing with local logout: $e');
+    }
+
     final notificationsEnabled = PreferencesHelper.getNotificationsEnabled();
     if (notificationsEnabled) {
       await FirebaseMessaging.instance.unsubscribeFromTopic(
@@ -205,16 +227,16 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Extract the refresh token from the response headers
-      final refreshToken = response.headers['set-cookie']!
-          .toString()
-          .split(';')
-          .firstWhere((element) => element.contains('refreshToken'))
-          .split('=')
-          .last;
-      response.data!['refreshToken'] = refreshToken;
+      // Extract user data from the new API v2 response structure
+      final userData = response.data!['Data'] as JsonMap;
 
-      final user = User.fromMap(response.data!);
+      // Extract the refresh token from the response data (v2 includes it in the response)
+      final refreshToken = userData['refreshToken'] as String;
+
+      // Add the refresh token to the user data for the User model
+      userData['refreshToken'] = refreshToken;
+
+      final user = User.fromMap(userData);
       // Save the user data to the secure storage
       await _saveDetailsToStorage(user);
       final hasEverLoggedIn = PreferencesHelper.getBool(kHasEverLoggedIn);
@@ -233,6 +255,7 @@ class AuthController extends _$AuthController {
 
       state = AsyncData(user);
     } catch (e) {
+      logger.e('Login failed', error: e);
       rethrow;
     }
   }
@@ -276,25 +299,25 @@ class AuthController extends _$AuthController {
 
     try {
       final refreshToken = state.requireValue.refreshToken;
-      final options = Options(
-        headers: {
-          'Cookie': 'refreshToken=$refreshToken',
-        },
-      );
-      final response = await client.post<JsonMap>(
+      final response = await client.get<JsonMap>(
         '/auth/refreshToken',
-        options: options,
+        queryParameters: {
+          'refreshToken': refreshToken,
+        },
       );
 
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      final user = User.fromMap(response.data!);
+      // Extract user data from the new API v2 response structure
+      final userData = response.data!['Data'] as JsonMap;
+
+      final user = User.fromMap(userData);
       // Save the new token to the secure storage
       state = AsyncData(user);
       await _saveDetailsToStorage(state.requireValue);
-      return response.data!['accessToken'] as String;
+      return userData['accessToken'] as String;
     } catch (e) {
       rethrow;
     }
@@ -306,6 +329,7 @@ class AuthController extends _$AuthController {
     required String email,
     required String phoneNumber,
     required String password,
+    String? referredByCode,
   }) async {
     final client = ref.read(dioProvider(secured: false));
     final formData = FormData.fromMap({
@@ -314,6 +338,7 @@ class AuthController extends _$AuthController {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'Password': password,
+      if (referredByCode != null) 'ReferredByCode': referredByCode,
     });
 
     try {
@@ -325,15 +350,12 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from the server');
       }
 
-      // Login the user after registration
-      if (response.statusCode! >= 200) {
-        return await login(
+      if (response.statusCode == 201) {
+        return login(
           email: email,
           password: password,
           phoneNumber: phoneNumber,
         );
-      } else {
-        throw const ServerErrorException('Failed to register');
       }
     } catch (e) {
       rethrow;
@@ -380,6 +402,7 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from the server');
       }
+
       final data = jsonDecode(response.data!) as JsonMap;
 
       final verified = data['verified'] as bool;
@@ -413,7 +436,10 @@ class AuthController extends _$AuthController {
       if (response.data == null) {
         throw const ServerErrorException('No data returned from server');
       }
-      return response.data!['message'] as String;
+
+      // Handle v2 API response structure
+      return response.data!['Message'] as String? ??
+          'Password reset successful';
     } catch (e) {
       rethrow;
     }
@@ -437,8 +463,19 @@ class AuthController extends _$AuthController {
         throw const ServerErrorException('No data returned from server');
       }
 
-      final customerData = CustomerMapper.fromMap(stripAuth(response.data!));
+      // Handle v2 API response structure
+      final data = response.data!['Data'] as JsonMap;
       final currentCustomer = state.requireValue as Customer;
+
+      // Preserve auth tokens from current user and merge with updated data
+      final updatedData = {
+        ...data,
+        'accessToken': currentCustomer.accessToken,
+        'refreshToken': currentCustomer.refreshToken,
+        'Role': currentCustomer.role.toValue(),
+      };
+
+      final customerData = CustomerMapper.fromMap(updatedData);
       final updatedCustomer = currentCustomer.copyWith(
         firstName: customerData.firstName,
         lastName: customerData.lastName,
@@ -446,6 +483,7 @@ class AuthController extends _$AuthController {
         phoneNumber: customerData.phoneNumber,
         address: customerData.address,
         dateOfBirth: customerData.dateOfBirth,
+        wallet: customerData.wallet,
       );
       // Save the updated details to the secure storage
       await _saveDetailsToStorage(updatedCustomer);
@@ -487,7 +525,8 @@ class AuthController extends _$AuthController {
       final credentials = await _secureStorage.get(kCredentialsKey);
       if (credentials != null) {
         final user = UserMapper.fromJson(credentials);
-        final canRestore = user is! Rider;
+        // Allow auth restoration for all user types
+        const canRestore = true;
         logger.d(
           'Found credentials for user ${user.id}, can restore: $canRestore',
         );
@@ -507,10 +546,19 @@ class AuthController extends _$AuthController {
 
     try {
       final response = await client
-          .delete<String>('/customer/delete/${state.requireValue.id}');
+          .delete<JsonMap>('/customer/delete/${state.requireValue.id}');
       if (response.data == null) {
         throw const ServerErrorException('No data returned from server');
       }
+
+      // Check if deletion was successful using v2 response structure
+      final success = response.data!['Success'] as bool? ?? false;
+      if (!success) {
+        final message =
+            response.data!['Message'] as String? ?? 'Failed to delete account';
+        throw ServerErrorException(message);
+      }
+
       await logout();
     } catch (e) {
       rethrow;

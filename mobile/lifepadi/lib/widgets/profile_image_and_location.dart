@@ -5,6 +5,7 @@ import 'package:lifepadi/state/auth_controller.dart';
 import 'package:lifepadi/utils/assets.gen.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
+import 'package:lifepadi/widgets/referral_code_display.dart';
 import 'package:lifepadi/widgets/widgets.dart';
 import 'package:remixicon/remixicon.dart';
 
@@ -69,26 +70,39 @@ class _ProfilePageContent extends StatelessWidget {
             ),
           ),
           4.verticalSpace,
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Remix.map_pin_5_line,
-                size: 18.r,
+          // Show referral code for customers, or fallback message for other user types
+          if (user is Customer && (user as Customer).referralCode != null)
+            ReferralCodeDisplay(
+              referralCode: (user as Customer).referralCode!,
+              textStyle: context.textTheme.bodySmall?.copyWith(
                 color: kStrokeColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 12.sp,
               ),
-              4.horizontalSpace,
-              Text(
-                user.address ?? 'Not set',
-                style: context.textTheme.bodySmall?.copyWith(
+              iconColor: kStrokeColor,
+              isCompact: true,
+            )
+          else
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Remix.map_pin_5_line,
+                  size: 18.r,
                   color: kStrokeColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12.sp,
                 ),
-              ),
-            ],
-          ),
+                4.horizontalSpace,
+                Text(
+                  user.address ?? 'Not set',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: kStrokeColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
         ],
         const Spacer(),
       ],

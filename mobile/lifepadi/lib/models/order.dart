@@ -4,7 +4,7 @@ import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/logistics.dart';
 import 'package:lifepadi/models/order_item.dart';
 import 'package:lifepadi/models/payment_method.dart';
-import 'package:lifepadi/models/user.dart';
+import 'package:lifepadi/models/user_lite.dart';
 
 part 'order.mapper.dart';
 
@@ -65,9 +65,9 @@ class Order with OrderMappable {
   @MappableField(key: 'DeliveryFee')
   final double deliveryFee;
   @MappableField(key: 'Rider')
-  final Rider? rider;
+  final RiderLite? rider;
   @MappableField(key: 'Customer')
-  final Customer? customer;
+  final CustomerLite? customer;
   @MappableField(key: 'PaymentMethod', hook: PaymentMethodHook())
   final PaymentMethod? paymentMethod;
 }

@@ -6,10 +6,10 @@ import 'package:flutter_material_design_icons/flutter_material_design_icons.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifepadi/models/api_error_response.dart';
 import 'package:lifepadi/models/category.dart';
 import 'package:lifepadi/models/location_details.dart';
 import 'package:lifepadi/models/product.dart';
-import 'package:lifepadi/models/user_role.dart';
 import 'package:lifepadi/models/vendor.dart';
 import 'package:lifepadi/utils/exceptions.dart';
 import 'package:lifepadi/utils/extensions.dart';
@@ -216,19 +216,6 @@ Future<void> handleError(
         );
 }
 
-JsonMap stripAuth(JsonMap json, {bool addWallet = true}) {
-  json['accessToken'] = '';
-  json['refreshToken'] = '';
-  json['Role'] = UserRole.guest.toValue();
-  if (addWallet) {
-    json['Wallet'] = {
-      'Id': -1,
-      'Balance': 1000,
-    };
-  }
-  return json;
-}
-
 Product makeFakeProduct({required int id}) {
   return Product(
     id: id,
@@ -262,10 +249,11 @@ Product makeFakeProduct({required int id}) {
 }
 
 ({String title, String description}) getErrorInfo(dynamic error) {
-  var title = 'An error occured';
+  var title = 'An error occurred';
   var description = error.toString();
 
   if (error is DioException) {
+    // Handle network-level errors first
     title = switch (error.error) {
       final Exception e when e is HttpException => 'Poor connection',
       final Exception e when e is SocketException => 'No Internet Connection',
@@ -274,11 +262,19 @@ Product makeFakeProduct({required int id}) {
       final Exception e when e is PhoneVerificationFailedException =>
         'Phone verification failed',
       final Exception e when e is PaymentFailedException => 'Payment Failed',
-      _ => 'An error occured',
+      _ => 'An error occurred',
     };
 
     if (error.response != null) {
-      description = error.response!.data.toString();
+      // Try to parse API v2 error response
+      final apiError = _parseApiV2Error(error.response!.data);
+      if (apiError != null) {
+        title = apiError.errorTitle;
+        description = apiError.userFriendlyMessage;
+      } else {
+        // Fallback to raw response if parsing fails
+        description = error.response!.data.toString();
+      }
     } else {
       description = switch (error.error) {
         final Exception e when e is HttpException => e.message,
@@ -291,4 +287,17 @@ Product makeFakeProduct({required int id}) {
   }
 
   return (title: title, description: description);
+}
+
+/// Parse API v2 error response
+ApiErrorResponse? _parseApiV2Error(dynamic responseData) {
+  try {
+    if (responseData is Map<String, dynamic>) {
+      return ApiErrorResponse.fromMap(responseData);
+    }
+  } catch (e) {
+    // If parsing fails, return null to use fallback
+    logger.w('Failed to parse API v2 error response: $e');
+  }
+  return null;
 }

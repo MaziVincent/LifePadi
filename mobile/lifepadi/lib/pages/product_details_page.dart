@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/models/product.dart';
+import 'package:lifepadi/router/routes.dart';
 import 'package:lifepadi/state/cart_state.dart';
 import 'package:lifepadi/state/product.dart';
-import 'package:lifepadi/utils/assets.gen.dart';
+import 'package:lifepadi/state/product_reviews.dart';
 import 'package:lifepadi/utils/constants.dart';
 import 'package:lifepadi/utils/extensions.dart';
 import 'package:lifepadi/widgets/auth_required_action.dart';
@@ -118,51 +118,47 @@ class _ProductDetailsContent extends HookConsumerWidget {
         HeaderWithSeeAll(
           title: 'Ratings & Review',
           onSeeAllTap: () {
-            // TODO: Pull up reviews modal.
+            ProductReviewsRoute(product.id).push<void>(context);
           },
         ),
         5.verticalSpace,
-        Column(
-          children: [
-            Text(
-              '4.5',
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF261E27),
-                fontSize: 32.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            RatingBar(
-              initialRating: 4.5,
-              minRating: 1,
-              allowHalfRating: true,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.w),
-              ratingWidget: RatingWidget(
-                full: Assets.icons.star.image(
-                  height: 32.r,
-                  width: 32.r,
+        Consumer(
+          builder: (context, ref, child) {
+            final averageRatingAsync =
+                ref.watch(productAverageRatingProvider(product.id));
+            final statisticsAsync =
+                ref.watch(productReviewStatisticsProvider(product.id));
+
+            return averageRatingAsync.when(
+              data: (averageRating) => statisticsAsync.when(
+                data: (statistics) => RatingDisplay(
+                  averageRating: averageRating,
+                  totalReviews: statistics.totalReviews,
+                  size: RatingDisplaySize.large,
                 ),
-                half: Assets.icons.starHalf.image(
-                  height: 32.r,
-                  width: 32.r,
-                ),
-                empty: Assets.icons.star.image(
-                  color: const Color(0xFFE8E8E8),
-                  height: 32.r,
-                  width: 32.r,
+                loading: () =>
+                    const RatingDisplayLoading(size: RatingDisplaySize.large),
+                error: (_, __) => RatingDisplay(
+                  averageRating: averageRating,
+                  totalReviews: 0,
+                  size: RatingDisplaySize.large,
                 ),
               ),
-              onRatingUpdate: print,
-              glow: false,
-            ),
-            Text(
-              '(200 reviews)',
-              style: context.textTheme.bodyLarge?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
+              loading: () =>
+                  const RatingDisplayLoading(size: RatingDisplaySize.large),
+              error: (_, __) => const RatingDisplay(
+                averageRating: 0,
+                totalReviews: 0,
+                size: RatingDisplaySize.large,
               ),
-            ),
-          ].separatedBy(8.verticalSpace),
+            );
+          },
+        ),
+        16.verticalSpace,
+        CompactReviewsList(
+          isProductReview: true,
+          targetId: product.id,
+          maxItems: 2,
         ),
         20.verticalSpace,
         Consumer(

@@ -44,9 +44,9 @@ const kRadialGradient = RadialGradient(
   stops: [0.0, 1.0],
 );
 
-const kRemoteApiUrl = 'https://lifepadi-225229879541.us-east1.run.app/api';
+const kRemoteApiUrl = 'https://lifepadi-v2-225229879541.us-east1.run.app/api';
 const kSignalRLocationUrl =
-    'https://lifepadi-225229879541.us-east1.run.app/hubs/location';
+    'https://lifepadi-v2-225229879541.us-east1.run.app/hubs/location';
 const kPrivacyPolicyUrl = 'https://lifepadi.com/privacypolicy';
 const kTermsAndConditionsUrl = 'https://lifepadi.com/termsandconditions';
 const kFaqUrl = 'https://lifepadi.com/faq';

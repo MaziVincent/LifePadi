@@ -272,6 +272,38 @@ class ProductDetailsRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<ProductReviewsRoute>(path: '/products/:productId/reviews')
+class ProductReviewsRoute extends GoRouteData {
+  const ProductReviewsRoute(this.productId);
+  final int productId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProductReviewsPage(productId: productId);
+  }
+}
+
+@TypedGoRoute<VendorReviewsRoute>(path: '/vendors/:vendorId/reviews')
+class VendorReviewsRoute extends GoRouteData {
+  const VendorReviewsRoute(this.vendorId);
+  final int vendorId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return VendorReviewsPage(vendorId: vendorId);
+  }
+}
+
+@TypedGoRoute<MyReviewsRoute>(path: '/my-reviews')
+class MyReviewsRoute extends GoRouteData {
+  const MyReviewsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MyReviewsPage();
+  }
+}
+
 class OrderDetailsRoute extends GoRouteData {
   const OrderDetailsRoute({required this.id});
 
@@ -525,6 +557,16 @@ class SupportRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SupportPage();
+  }
+}
+
+@TypedGoRoute<LiveChatRoute>(path: '/live-chat')
+class LiveChatRoute extends GoRouteData {
+  const LiveChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LiveChatPage();
   }
 }
 

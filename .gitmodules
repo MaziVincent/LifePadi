@@ -1,0 +1,3 @@
+[submodule "mobile/lifepadi/LifePadiRider"]
+	path = mobile/lifepadi/LifePadiRider
+	url = https://github.com/MaziVincent/LifePadiRider
