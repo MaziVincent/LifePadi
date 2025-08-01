@@ -20,7 +20,6 @@ analyzer:
     - lib/generated_plugin_registrant.dart
     - lib/l10n/**
     - "**/*.g.dart"
-    - "**/*.freezed.dart"
     - "**/*.mapper.dart"
     - packages/salomon_bottom_bar/**
     - "unpacked/**"
