@@ -102,20 +102,20 @@ builder.Services.AddDbContext<DBContext>(option =>
     {
         // Use environment variables with fallback port
         var portToUse = !string.IsNullOrEmpty(dbPort) ? dbPort : "5432";
-        connectionString = $"Server={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
+        connectionString = $"Host={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
         Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}");
     }
     else
     {
         // Build connection string manually from individual environment variables or use hardcoded fallback
         // This avoids the ${} placeholder issue in appsettings.json
-        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "lifepadi.cjkuw0skw142.us-east-1.rds.amazonaws.com";
+        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "35.231.124.218";
         var fallbackPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-        var fallbackDatabase = Environment.GetEnvironmentVariable("DB_NAME") ?? "lifepadi_db";
+        var fallbackDatabase = Environment.GetEnvironmentVariable("DB_NAME") ?? "lifepadi";
         var fallbackUsername = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
-        var fallbackPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Esomchi92";
+        var fallbackPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Esomchi@92";
 
-        connectionString = $"Server={fallbackServer};Port={fallbackPort};Database={fallbackDatabase};Username={fallbackUsername};Password={fallbackPassword};";
+        connectionString = $"Host={fallbackServer};Port={fallbackPort};Database={fallbackDatabase};Username={fallbackUsername};Password={fallbackPassword};";
         Console.WriteLine($"Using fallback DB connection. Server: {fallbackServer}, Port: {fallbackPort}, Database: {fallbackDatabase}");
     }
 
