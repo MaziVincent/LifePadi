@@ -17,7 +17,7 @@ namespace Api.Services
             _mapper = mapper;
             _fcmService = fcmService;
         }
-       
+
         public async Task<IEnumerable<DeliveryDto>> allAsync()
         {
             try
@@ -513,6 +513,41 @@ namespace Api.Services
             {
                 throw new Exceptions.ServiceException(ex.Message);
             }
+        }
+
+        public object calculateDeliveryFee(DeliveryFeeDto delivery)
+        {
+            // Parse price per kilometer with fallback
+            if (!int.TryParse(Environment.GetEnvironmentVariable("PRICE_PER_KILOMETER"), out int pricePerKilometer))
+            {
+                pricePerKilometer = 300; // Default price per kilometer
+            }
+
+            //  Console.WriteLine($"Price per kilometer in configuration is {pricePerKilometer}, using default value.");
+
+
+
+            if (delivery.DiscountPercentage != null)
+            {
+
+
+                double amount = 1000 + (delivery.Distance * pricePerKilometer);
+                double percentage = (double)delivery.DiscountPercentage / 100;
+
+                double deliveryFeeAfterPercentageDiscount = amount * (1 - percentage);
+                return new { DeliveryFee = deliveryFeeAfterPercentageDiscount };
+            }
+            if (delivery.DiscountAmount != null)
+            {
+
+                double deliveryFeeAfterAmountDiscount = 1000 + (delivery.Distance * pricePerKilometer) - (double)delivery.DiscountAmount;
+                return new { DeliveryFee = deliveryFeeAfterAmountDiscount };
+            }
+
+
+
+            double DeliveryFee = 1000 + (delivery.Distance * pricePerKilometer);
+            return new { DeliveryFee };
         }
     }
 }

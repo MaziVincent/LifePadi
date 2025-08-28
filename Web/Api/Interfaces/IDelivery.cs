@@ -30,5 +30,6 @@ namespace Api.Interfaces
         public Task<int> totalNumberOfPendingDeliveriesByRider(int riderId);
         public Task<int> totalNumberOfSuccessfulDeliveriesByRider(int riderId);
         public Task<DeliveryDto> getCustomersOrder(int customerId);
+        public object calculateDeliveryFee(DeliveryFeeDto delivery);
     }
 }

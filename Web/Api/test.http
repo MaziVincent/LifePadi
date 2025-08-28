@@ -217,6 +217,9 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jehXBARMwg7ylaaXNI
+
+###
+GET {{base_url}}/api/googlemaps/distancewithaddress?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 ###
 GET http://localhost:8080/api/googlemaps/autocomplete?input=Dreamlink
 
@@ -233,6 +236,34 @@ GET {{local_url}}/api/ProductReview/stats/124
 
 ###
 POST {{base_url}}/api/Customer/generate-referral-codes
+
+###
+GET {{base_url}}/api/yonko/delivery-fee?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
+
+###
+POST {{base_url}}/api/yonko
+Content-Type: application/json
+
+{
+    "PickUpAddress":"34 Alugbalueze street Mile 50 Abakaliki",
+    "DeliveryAddress":"Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria",
+    "DeliveryFee":2100,
+    "CustomerFirstName":"Prime",
+    "CustomerLastName":"Objective",
+    "CustomerEmail":"prime@gmail.com",
+    "PhoneNumber":"09012312341"
+
+}
+
+###
+GET {{base_url}}/api/yonko
+
+###
+GET {{base_url}}/api/yonko/2
+
+###
+DELETE {{base_url}}/api/yonko/1
+
 
 
 

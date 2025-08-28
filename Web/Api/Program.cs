@@ -18,6 +18,7 @@ using System.Reflection;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -84,7 +85,7 @@ builder.Services.AddSecurityServices();
 
 // Add services to the container.
 
-
+var env = builder.Environment;
 //DB context
 builder.Services.AddDbContext<DBContext>(option =>
 {
@@ -93,6 +94,12 @@ builder.Services.AddDbContext<DBContext>(option =>
     // Check if environment variables are available for database connection
     var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
     var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
+    if (env.IsDevelopment())
+    {
+        dbServer = "127.0.0.1";
+        dbPort = "5433";
+    }
+    
     var dbName = Environment.GetEnvironmentVariable("DB_NAME");
     var dbUsername = Environment.GetEnvironmentVariable("DB_USERNAME");
     var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
@@ -109,7 +116,7 @@ builder.Services.AddDbContext<DBContext>(option =>
     {
         // Build connection string manually from individual environment variables or use hardcoded fallback
         // This avoids the ${} placeholder issue in appsettings.json
-        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "35.231.124.218";
+        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "/cloudsql/lifepadi-459511:us-east1:lifepadi-db";
         var fallbackPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
         var fallbackDatabase = Environment.GetEnvironmentVariable("DB_NAME") ?? "lifepadi";
         var fallbackUsername = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
@@ -124,6 +131,8 @@ builder.Services.AddDbContext<DBContext>(option =>
 
 builder.Services.AddHttpClient<CustomerService>();
 builder.Services.AddHttpClient<TransactionService>();
+builder.Services.AddHttpClient<GoogleMapsService>();
+builder.Services.AddMemoryCache();
 
 //SignalR
 builder.Services.AddSignalR();
@@ -300,6 +309,7 @@ builder.Services.AddScoped<ICustomerSupport, CustomerSupportService>();
 builder.Services.AddScoped<IDashboard, DashboardService>();
 builder.Services.AddScoped<IAdmin, AdminService>();
 builder.Services.AddScoped<IWebHookService, WebHookService>();
+builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
 
 
 builder.Logging.ClearProviders();

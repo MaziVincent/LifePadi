@@ -156,6 +156,8 @@ namespace Api.Services
             //Message
             CreateMap<Message, MessageDto>();
             CreateMap<MessageDto, Message>();
+            CreateMap<CreateYonkoDeliveryDTO, YonkoDelivery>();
+            CreateMap<YonkoDelivery, YonkoDeliveryDTO>();
         }
     }
 }

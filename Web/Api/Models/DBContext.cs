@@ -37,6 +37,7 @@ namespace Api.Models
         public DbSet<VoucherNotification> VoucherNotifications { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<CustomerSupport> CustomerSupports { get; set; }
+        public DbSet<YonkoDelivery> YonkoDeliveries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

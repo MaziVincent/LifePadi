@@ -304,47 +304,21 @@ namespace Api.Controllers
                 return BadRequest("Distance cannot be less than 0");
             }
 
-            // Parse price per kilometer with fallback
-            if (!int.TryParse(Environment.GetEnvironmentVariable("PRICE_PER_KILOMETER"), out int pricePerKilometer))
-            {
-                pricePerKilometer = 300; // Default price per kilometer
-            }
-
-            //  Console.WriteLine($"Price per kilometer in configuration is {pricePerKilometer}, using default value.");
-
-
             if (delivery.DiscountPercentage != null && delivery.DiscountAmount != null)
             {
                 return BadRequest("Only one discount type is allowed");
             }
-            if (delivery.DiscountPercentage != null)
+            
+             if (delivery.DiscountPercentage > 100 || delivery.DiscountPercentage < 0)
             {
-                if (delivery.DiscountPercentage > 100 || delivery.DiscountPercentage < 0)
-                {
-                    return BadRequest("Discount percentage cannot be greater than 100 or less than 0");
-                }
-
-                double amount = 1000 + (delivery.Distance * pricePerKilometer);
-                double percentage = (double)delivery.DiscountPercentage / 100;
-        
-                double deliveryFeeAfterPercentageDiscount = amount * (1 - percentage);
-                return Ok(new { DeliveryFee = deliveryFeeAfterPercentageDiscount });
+                return BadRequest("Discount percentage cannot be greater than 100 or less than 0");
             }
-            if (delivery.DiscountAmount != null)
-            {
-                if (delivery.DiscountAmount < 0)
+            if (delivery.DiscountAmount < 0)
                 {
                     return BadRequest("Discount amount cannot be less than 0");
                 }
-                double deliveryFeeAfterAmountDiscount = 1000 + (delivery.Distance * pricePerKilometer) - (double)delivery.DiscountAmount;
-                return Ok(new { DeliveryFee = deliveryFeeAfterAmountDiscount });
-            }
-
-
-
-            double DeliveryFee = 1000 + (delivery.Distance * pricePerKilometer);
-
-            return Ok(new { DeliveryFee });
+            var result = _idelivery.calculateDeliveryFee(delivery);
+            return Ok(result);
 
         }
     }
