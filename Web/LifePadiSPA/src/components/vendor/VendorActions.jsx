@@ -1,103 +1,133 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react'
-import Button from '@mui/material/Button'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Fade from '@mui/material/Fade'
-import { Link } from 'react-router-dom'
-import { ViewModal, UpdateModal, DeleteModal, ToggleStatusModal } from './VendorModals'
+import { useState } from "react";
+import useUpdate from "../../hooks/useUpdate";
+import useAuth from "../../hooks/useAuth";
+import { useQueryClient } from "react-query";
+import { toggolProductStatusUrl } from "./vendorUri/VendorURI";
+import {
+	IconButton,
+	Menu,
+	MenuItem,
+	Tooltip,
+	ListItemIcon,
+	ListItemText,
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import { ViewModal, DeleteModal, ToggleStatusModal } from "./VendorModals";
+import UpdateProductModal from "./UpdateProductModal";
 
 const VendorActions = ({ product }) => {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-  const [openViewModal, setOpenViewModal] = useState(false)
-  const handleOpenViewModal = () => setOpenViewModal(true)
-  const [openUpdateModal, setOpenUpdateModal] = useState(false)
-  const handleOpenUpdateModal = () => setOpenUpdateModal(true)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true)
-  const [openToggleStatusModal, setOpenToggleStatusModal] = useState(false)
-  const handleOpenToggleStatusModal = () => setOpenToggleStatusModal(true)
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => setAnchorEl(event.currentTarget);
+	const handleClose = () => setAnchorEl(null);
+	const [openViewModal, setOpenViewModal] = useState(false);
+	const [openUpdateModal, setOpenUpdateModal] = useState(false);
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [openToggleStatusModal, setOpenToggleStatusModal] = useState(false);
+	const update = useUpdate();
+	const { auth } = useAuth();
+	const queryClient = useQueryClient();
 
-  return (
-    <div>
-      <Button
-        id='fade-button'
-        aria-controls={open ? 'fade-menu' : undefined}
-        aria-haspopup='true'
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        <svg
-          className='w-5 h-5'
-          aria-hidden='true'
-          fill='currentColor'
-          viewBox='0 0 20 20'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <path d='M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z' />
-        </svg>
-      </Button>
-      <Menu
-        id='fade-menu'
-        MenuListProps={{
-          'aria-labelledby': 'fade-button',
-        }}
-        // sx={{ width: '5rem'}}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Fade}
-      >
-        <MenuItem onClick={handleClose}>
-          <Link to={`/vendor/product/${product.Id}`} >
-            View
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to='#' onClick={handleOpenToggleStatusModal}>
-            {product.Status ? 'Deactivate' : 'Activate'}
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to='#' onClick={handleOpenUpdateModal}>
-            Update
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to='#' onClick={handleOpenDeleteModal}>
-            Delete
-          </Link>
-        </MenuItem>
-      </Menu>
-      <ViewModal
-        product={product}
-        openViewModal={openViewModal}
-        setOpenViewModal={setOpenViewModal}
-      />
-      <UpdateModal
-        product={product}
-        openUpdateModal={openUpdateModal}
-        setOpenUpdateModal={setOpenUpdateModal}
-      />
-      <DeleteModal
-        product={product}
-        openDeleteModal={openDeleteModal}
-        setOpenDeleteModal={setOpenDeleteModal}
-      />
-      <ToggleStatusModal
-        product={product}
-        openToggleStatusModal={openToggleStatusModal}
-        setOpenToggleStatusModal={setOpenToggleStatusModal}
-      />
-    </div>
-  )
-}
+	const handleToggleStatus = async (p) => {
+		if (!p?.Id) return;
+		const url = toggolProductStatusUrl.replace("{id}", p.Id);
+		await update(url, {}, auth.accessToken);
+		// Invalidate product lists & stats so UI refreshes
+		queryClient.invalidateQueries("vendorProducts");
+		queryClient.invalidateQueries("vendorProductsList");
+		queryClient.invalidateQueries("vendorProductStats");
+	};
 
-export default VendorActions
+	return (
+		<>
+			<Tooltip title="Actions">
+				<IconButton
+					size="medium"
+					sx={{ color: "black" }}
+					onClick={handleClick}
+					aria-label="actions">
+					<MoreVertIcon />
+				</IconButton>
+			</Tooltip>
+			<Menu
+				anchorEl={anchorEl}
+				open={open}
+				onClose={handleClose}
+				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+				transformOrigin={{ vertical: "top", horizontal: "right" }}>
+				<MenuItem
+					onClick={() => {
+						handleClose();
+						setOpenViewModal(true);
+					}}>
+					<ListItemIcon>
+						<VisibilityIcon fontSize="small" />
+					</ListItemIcon>
+					<ListItemText primary="View" />
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleClose();
+						setOpenToggleStatusModal(true);
+					}}>
+					<ListItemIcon>
+						{product.Status ? (
+							<ToggleOffIcon fontSize="small" />
+						) : (
+							<ToggleOnIcon fontSize="small" />
+						)}
+					</ListItemIcon>
+					<ListItemText primary={product.Status ? "Deactivate" : "Activate"} />
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleClose();
+						setOpenUpdateModal(true);
+					}}>
+					<ListItemIcon>
+						<EditIcon fontSize="small" />
+					</ListItemIcon>
+					<ListItemText primary="Update" />
+				</MenuItem>
+				<MenuItem
+					onClick={() => {
+						handleClose();
+						setOpenDeleteModal(true);
+					}}>
+					<ListItemIcon>
+						<DeleteIcon fontSize="small" />
+					</ListItemIcon>
+					<ListItemText primary="Delete" />
+				</MenuItem>
+			</Menu>
+			<ViewModal
+				product={product}
+				openViewModal={openViewModal}
+				setOpenViewModal={setOpenViewModal}
+			/>
+			<UpdateProductModal
+				open={openUpdateModal}
+				onClose={() => setOpenUpdateModal(false)}
+				product={product}
+			/>
+			<DeleteModal
+				product={product}
+				openDeleteModal={openDeleteModal}
+				setOpenDeleteModal={setOpenDeleteModal}
+			/>
+			<ToggleStatusModal
+				product={product}
+				open={openToggleStatusModal}
+				onClose={() => setOpenToggleStatusModal(false)}
+				onToggle={handleToggleStatus}
+			/>
+		</>
+	);
+};
+
+export default VendorActions;

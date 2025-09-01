@@ -8,7 +8,7 @@ import axios from "../api/axios";
 const useRefreshToken = () => {
     const {auth, setAuth} = useAuth();
     //const {dispatch} = useCart();
-    const refreshToken = JSON.parse( localStorage.getItem('refreshToken'));
+    const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
    // console.log(refreshToken);
     const refresh = async () => {
 
@@ -20,7 +20,7 @@ const useRefreshToken = () => {
             
         });
 
-        console.log(response.data);
+       // console.log(response.data);
         setAuth(response.data?.Data);
         //dispatch({type:"setAddress", payload:response.data?.user.ContactAddress})
    

@@ -1,131 +1,252 @@
-import { Link } from 'react-router-dom'
-import SideNav from '../rider/SideNav'
-import { Outlet } from 'react-router-dom'
-import { ClickAwayListener } from '@mui/material'
-import { useState } from 'react'
-import logo from '../../assets/images/Logo(dark).svg'
-import useLogout from '../../hooks/useLogout'
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
+import {
+	AppBar,
+	Toolbar,
+	IconButton,
+	Typography,
+	Drawer,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Box,
+	CssBaseline,
+	Divider,
+	Button,
+	useTheme,
+	useMediaQuery,
+	Tooltip,
+	Switch,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import StoreIcon from "@mui/icons-material/Store";
+import LogoutIcon from "@mui/icons-material/Logout";
+import logo from "../../assets/images/Logo(dark).svg";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import useLogout from "../../hooks/useLogout";
 
-const RiderLayout = () => {
-  const [aside, setAside] = useState(false)
-  const logout = useLogout()
+const drawerWidth = 220;
 
-  const handleLogout = async () => {
-    const res = await logout()
-    console.log(res)
-    if (res.status === 'success') {
-      console.log('logged out')
-    }
-  }
+const navItems = [
+	{ text: "Dashboard", icon: <DashboardIcon />, path: "/vendor" },
+	{ text: "Products", icon: <StoreIcon />, path: "/vendor/products" },
+];
 
-  return (
-    <main>
-      <div className='bg-primary dark:bg-darkBg dark:text-primary min-h-[130vh] '>
-        <div className='flex justify-between bg-gray-50 text-primary  border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 '>
-          <ClickAwayListener
-            onClickAway={() => {
-              setAside(false)
-            }}
-          >
-            <button
-              data-drawer-target='drawer-navigation'
-              data-drawer-toggle='drawer-navigation'
-              aria-controls='drawer-navigation'
-              className='p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-              onClick={() => setAside((aside) => !aside)}
-            >
-              <svg
-                aria-hidden='true'
-                className='w-6 h-6'
-                fill='currentColor'
-                viewBox='0 0 20 20'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  fillRule='evenodd'
-                  d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
-                  clipRule='evenodd'
-                ></path>
-              </svg>
+const VendorLayout = () => {
+	const [mobileOpen, setMobileOpen] = useState(false);
+	const [mode, setMode] = useState(
+		() => localStorage.getItem("lp-vendor-theme") || "light"
+	);
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+	const logout = useLogout();
+	const location = useLocation();
 
-              <svg
-                aria-hidden='true'
-                className='hidden w-6 h-6'
-                fill='currentColor'
-                viewBox='0 0 20 20'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  fillRule='evenodd'
-                  d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                  clipRule='evenodd'
-                ></path>
-              </svg>
+	useEffect(() => {
+		localStorage.setItem("lp-vendor-theme", mode);
+		const root = document.documentElement;
+		if (mode === "dark") root.classList.add("dark");
+		else root.classList.remove("dark");
+	}, [mode]);
 
-              <span className='sr-only'>Toggle sidebar</span>
-            </button>
-          </ClickAwayListener>
+	const toggleMode = () =>
+		setMode((prev) => (prev === "light" ? "dark" : "light"));
 
-          <div className=''>
-            <Link
-              to='#'
-              className='flex items-center justify-between gap-5 mr-4'
-            >
-              <div className='w-10 h-12'>
-                {' '}
-                <img src={logo} alt='' className='w-full' />{' '}
-              </div>
-              <span className='self-center text-gray-700 text-2xl font-semibold whitespace-nowrap  dark:text-white'>
-                Vendor Dashboard
-              </span>
-            </Link>
-          </div>
-          <div className='flex  justify-end w-auto items-center'>
-            <button
-              onClick={handleLogout}
-              className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'
-            >
-              <svg
-                className='w-6 h-6 text-red-500 dark:text-red-500'
-                aria-hidden='true'
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                fill='none'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  stroke='currentColor'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2'
-                />
-              </svg>{' '}
-              Logout
-            </button>
-          </div>
-        </div>
-        <div className='flex min-h-screen'>
-          <div className=''>
-            <SideNav aside={aside} />
-          </div>
-          <div
-            className={`p-2 pl-5 ml-1 md:ml-20 lg:ml-48 py-20 w-full min-h-screen overflow-hidden`}
-          >
-            <Outlet />
-          </div>
-        </div>
-        <div className='footer fixed bottom-0 dark:border-b border-darkMenu px-4 py-2.5 dark:bg-darkMenu  w-full '>
-          <div className='flex justify-center '>
-            <span className='text-sm text-gray-500 dark:text-gray-400'>
-              &copy; 2024 Listacc All rights reserved.
-            </span>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
-}
+	const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+	const handleLogout = async () => {
+		await logout();
+		// Optionally redirect
+	};
 
-export default RiderLayout
+	const drawer = (
+		<Box
+			sx={{
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				bgcolor: mode === "dark" ? "rgba(24,24,24,.9)" : "background.paper",
+				backdropFilter: "blur(6px)",
+			}}>
+			<Box sx={{ display: "flex", alignItems: "center", p: 2, gap: 1 }}>
+				<img src={logo} alt="Logo" style={{ width: 40, height: 40 }} />
+				<Typography
+					variant="h6"
+					fontWeight={700}
+					color={mode === "dark" ? "secondary" : "primary"}>
+					Vendor
+				</Typography>
+			</Box>
+			<Divider />
+			<List>
+				{navItems.map((item) => {
+					const active = location.pathname === item.path;
+					return (
+						<ListItem
+							button
+							key={item.text}
+							component={Link}
+							to={item.path}
+							onClick={() => setMobileOpen(false)}
+							sx={{
+								borderRadius: 2,
+								mb: 0.5,
+								color: active
+									? mode === "dark"
+										? "secondary.main"
+										: "primary.main"
+									: "text.secondary",
+								bgcolor: active
+									? mode === "dark"
+										? "darkHover"
+										: "grey.100"
+									: "transparent",
+								"&:hover": {
+									bgcolor: active
+										? mode === "dark"
+											? "darkHover"
+											: "grey.200"
+										: mode === "dark"
+										? "darkHover"
+										: "grey.100",
+								},
+							}}>
+							<ListItemIcon sx={{ color: "inherit", minWidth: 40 }}>
+								{item.icon}
+							</ListItemIcon>
+							<ListItemText
+								primaryTypographyProps={{ fontWeight: active ? 600 : 400 }}
+								primary={item.text}
+							/>
+						</ListItem>
+					);
+				})}
+			</List>
+			<Box sx={{ flexGrow: 1 }} />
+			<Box sx={{ px: 2, py: 1, display: "flex", alignItems: "center", gap: 1 }}>
+				<LightModeIcon
+					fontSize="small"
+					color={mode === "light" ? "warning" : "disabled"}
+				/>
+				<Switch size="small" checked={mode === "dark"} onChange={toggleMode} />
+				<DarkModeIcon
+					fontSize="small"
+					color={mode === "dark" ? "secondary" : "disabled"}
+				/>
+			</Box>
+			<Divider />
+			<Button
+				startIcon={<LogoutIcon />}
+				color="error"
+				sx={{ m: 2 }}
+				onClick={handleLogout}>
+				Logout
+			</Button>
+		</Box>
+	);
+
+	return (
+		<Box
+			sx={{
+				display: "flex",
+				minHeight: "100vh",
+				bgcolor: mode === "dark" ? "#121212" : "grey.50",
+				transition: "background-color .3s",
+			}}>
+			<CssBaseline />
+			<AppBar
+				position="fixed"
+				color={mode === "dark" ? "default" : "inherit"}
+				elevation={0}
+				sx={{
+					zIndex: (theme) => theme.zIndex.drawer + 1,
+					backdropFilter: "blur(8px)",
+					bgcolor:
+						mode === "dark" ? "rgba(33,33,33,.85)" : "rgba(255,255,255,.85)",
+					borderBottom: (theme) =>
+						`1px solid ${mode === "dark" ? "#333" : "#e5e7eb"}`,
+				}}>
+				<Toolbar>
+					{isMobile && (
+						<IconButton
+							color="inherit"
+							edge="start"
+							onClick={handleDrawerToggle}
+							sx={{ mr: 2 }}>
+							<MenuIcon />
+						</IconButton>
+					)}
+					<img
+						src={logo}
+						alt="Logo"
+						style={{ width: 36, height: 36, marginRight: 12 }}
+					/>
+					<Typography
+						variant="h6"
+						fontWeight={700}
+						sx={{
+							flexGrow: 1,
+							color: mode === "dark" ? "secondary.main" : "primary.main",
+						}}>
+						Vendor Dashboard
+					</Typography>
+					<Tooltip
+						title={
+							mode === "dark" ? "Switch to light mode" : "Switch to dark mode"
+						}>
+						<IconButton
+							onClick={toggleMode}
+							color="inherit"
+							size="small"
+							sx={{ ml: 1 }}>
+							{mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+						</IconButton>
+					</Tooltip>
+				</Toolbar>
+			</AppBar>
+			<Box
+				component="nav"
+				sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
+				<Drawer
+					variant={isMobile ? "temporary" : "permanent"}
+					open={isMobile ? mobileOpen : true}
+					onClose={handleDrawerToggle}
+					ModalProps={{ keepMounted: true }}
+					sx={{
+						display: { xs: "block", md: "block" },
+						"& .MuiDrawer-paper": {
+							width: drawerWidth,
+							boxSizing: "border-box",
+						},
+					}}>
+					{drawer}
+				</Drawer>
+			</Box>
+			<Box
+				component="main"
+				sx={{
+					flexGrow: 1,
+					p: { xs: 2, md: 4 },
+					mt: 8,
+					minHeight: "100vh",
+					bgcolor: mode === "dark" ? "#181818" : "background.default",
+					transition: "background-color .3s",
+				}}>
+				<Outlet />
+				<Box
+					sx={{
+						mt: 8,
+						textAlign: "center",
+						color: mode === "dark" ? "darkSecondaryText" : "text.secondary",
+						fontSize: 14,
+					}}>
+					&copy; {new Date().getFullYear()} LifePadi. All rights reserved.
+				</Box>
+			</Box>
+		</Box>
+	);
+};
+
+export default VendorLayout;
