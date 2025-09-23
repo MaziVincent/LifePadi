@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 using Api.Interfaces;
 using Api.DTO;
 using Api.Models;
+using Api.Authorization;
 
 namespace LifePadi.Web.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ApiKeyAuth]
     public class YonkoController : ControllerBase
     {
         private readonly IOtherService _otherService;

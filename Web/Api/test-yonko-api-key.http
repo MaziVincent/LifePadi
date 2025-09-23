@@ -1,0 +1,33 @@
+# Test Yonko API Key Authentication
+@baseUrl = https://localhost:7216
+
+### Test 1: Valid API Key
+GET {{baseUrl}}/api/yonko/delivery-fee?Origin=Victoria Island&Destination=Ikeja
+X-API-Key: dev-yonko-key-2025-external-access
+
+### Test 2: Invalid API Key
+GET {{baseUrl}}/api/yonko/delivery-fee?Origin=Victoria Island&Destination=Ikeja
+X-API-Key: invalid-key
+
+### Test 3: Missing API Key
+GET {{baseUrl}}/api/yonko/delivery-fee?Origin=Victoria Island&Destination=Ikeja
+
+### Test 4: Create with Valid API Key
+POST {{baseUrl}}/api/yonko
+Content-Type: application/json
+X-API-Key: dev-yonko-key-2025-external-access
+
+{
+  "pickUpAddress": "24 Ajao Rd, Lagos",
+  "deliveryAddress": "7 Marina Rd, Lagos",
+  "pickupType": "Normal",
+  "deliveryFee": 1500,
+  "customerFirstName": "John",
+  "customerLastName": "Doe",
+  "customerEmail": "john.doe@example.com",
+  "phoneNumber": "09123456789"
+}
+
+### Test 5: List with Valid API Key
+GET {{baseUrl}}/api/yonko?pageNumber=1&pageSize=5
+X-API-Key: dev-yonko-key-2025-external-access

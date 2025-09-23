@@ -1,6 +1,7 @@
 @local_url=http://localhost:8080
 @base_url=https://localhost:7216
 @remote_url=https://lifepadi-948405839190.us-east1.run.app
+@remote_api_url=https://api.lifepadi.com
 @remote_url_v2=https://lifepadi-v2-225229879541.us-east1.run.app
  
 
@@ -219,7 +220,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/googlemaps/addressfromplaceid?placeid=ChIJ5w1p-jehXBARMwg7ylaaXNI
 
 ###
-GET {{base_url}}/api/googlemaps/distancewithaddress?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
+GET {{remote_api_url}}/api/googlemaps/distancewithaddress?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 ###
 GET http://localhost:8080/api/googlemaps/autocomplete?input=Dreamlink
 
@@ -238,7 +239,7 @@ GET {{local_url}}/api/ProductReview/stats/124
 POST {{base_url}}/api/Customer/generate-referral-codes
 
 ###
-GET {{base_url}}/api/yonko/delivery-fee?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
+GET {{remote_api_url}}/api/yonko/delivery-fee?Origin=34 Alugbalueze street Mile 50 Abakaliki&Destination=Dreamlink Concepts, Abakaliki, Ebonyi State, Nigeria
 
 ###
 POST {{base_url}}/api/yonko

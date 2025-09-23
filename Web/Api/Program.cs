@@ -346,7 +346,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             Name = "LifePadi Development Team",
             Email = "dev@lifepadi.com",
-            Url = new Uri("https://lifepadi.com")
+            Url = new Uri("https://www.lifepadi.com")
         },
         License = new OpenApiLicense
         {
@@ -449,8 +449,53 @@ if (app.Environment.IsDevelopment())
 }
 app.UseRouting();
 
-// Use secure CORS policy
-app.UseCors("SecureCorsPolicy");
+// Use conditional CORS policy based on environment and path
+app.Use(async (context, next) =>
+{
+    var isApiRequest = context.Request.Path.StartsWithSegments("/api");
+    var isProduction = app.Environment.IsProduction();
+    
+    if (isApiRequest && !isProduction)
+    {
+        // Use more permissive CORS for API endpoints in development
+        await next();
+    }
+    else
+    {
+        await next();
+    }
+});
+
+// Use CORS policy - more permissive for API testing
+app.UseCors(builder =>
+{
+    var isProduction = app.Environment.IsProduction();
+    
+    // Always allow requests without origin (Postman, curl, server-to-server, etc.)
+    builder.SetIsOriginAllowed(origin => 
+    {
+        if (string.IsNullOrEmpty(origin)) return true; // No origin header
+        
+        // Check allowed origins
+        var allowedOrigins = new[]
+        {
+            Environment.GetEnvironmentVariable("FRONTEND_LOCAL_URL") ?? "http://localhost:5173",
+            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? "https://lifepadi.com", 
+            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? "https://www.lifepadi.com",
+            "https://www.lifepadi.com",
+            "http://localhost:3000", // Additional local dev ports
+            "http://localhost:3001",
+            "http://localhost:5000",
+            "http://localhost:5001"
+        };
+        
+        return allowedOrigins.Contains(origin) || !isProduction;
+    })
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    .WithExposedHeaders("X-Rate-Limit-Remaining", "X-Rate-Limit-Reset", "X-Total-Count", "X-Total-Pages", "X-Current-Page", "X-Page-Size");
+});
 
 app.MapHub<LocationHub>("/hubs/location");
 app.MapHub<NotificationHub>("/hubs/notification");

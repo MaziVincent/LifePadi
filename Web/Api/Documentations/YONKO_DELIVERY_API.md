@@ -6,7 +6,34 @@ Base URL: `/api/yonko`
 
 ## Authentication & Authorization
 
-Currently no role attributes are defined on the controller. Apply auth/role policies as needed. All examples assume a bearer token is supplied if global auth is enforced.
+**IMPORTANT:** All endpoints in this controller require API key authentication for external access.
+
+### API Key Header
+
+All requests must include the following header:
+
+```
+X-API-Key: <your-api-key>
+```
+
+The API key should be obtained from the LifePadi team and configured in the environment variable `YONKO_API_KEY`.
+
+### Error Responses for Authentication
+
+- `401 Unauthorized` - API key missing or invalid
+  ```json
+  {
+  	"error": "API key is required",
+  	"header": "X-API-Key"
+  }
+  ```
+  or
+  ```json
+  {
+  	"error": "Invalid API key"
+  }
+  ```
+- `500 Internal Server Error` - API key configuration not found on server
 
 ---
 
@@ -211,11 +238,59 @@ Standard responses:
 
 - `400 BadRequest` for validation/model errors
 - `404 NotFound` when resource missing
+- `401 Unauthorized` for missing or invalid API key
 - `500 InternalServerError` (unhandled exceptions; consider adding global exception middleware for uniform formatting)
 
+---
 
+## Quick Examples (HTTP)
+
+**Note:** All requests require the `X-API-Key` header with a valid API key.
+
+```http
+# Calculate Fee
+GET /api/yonko/delivery-fee?Origin=no. 12 marina&Destination=no 16 hill top
+X-API-Key: your-api-key-here
+
+# Create
+POST /api/yonko
+Content-Type: application/json
+X-API-Key: your-api-key-here
+
+{
+  "pickUpAddress": "24 Ajao Rd, Lagos",
+  "deliveryAddress": "7 Marina Rd, Lagos",
+  "pickupType": "Normal",
+  "deliveryFee": 1500,
+  "customerFirstName": "John",
+  "customerLastName": "Doe",
+  "customerEmail": "john.doe@example.com",
+  "phoneNumber": "09123456789"
+}
+
+# List with Pagination
+GET /api/yonko?pageNumber=1&pageSize=10&searchString=lagos
+X-API-Key: your-api-key-here
+
+# Get One
+GET /api/yonko/5
+X-API-Key: your-api-key-here
+
+# Update
+PUT /api/yonko/5
+Content-Type: application/json
+X-API-Key: your-api-key-here
+
+{
+  "status": "Dispatched",
+  "deliveryFee": 1700
+}
+
+# Delete
+DELETE /api/yonko/5
+X-API-Key: your-api-key-here
 ```
 
 ---
 
-Document Version: 1.0 | Last Updated: 2025-08-28
+Document Version: 2.0 | Last Updated: 2025-09-13

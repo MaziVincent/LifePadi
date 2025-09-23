@@ -214,98 +214,99 @@ namespace Api.Authorization
     /// </summary>
     public class WalletOwnerOrAdminAttribute : Attribute, IAsyncAuthorizationFilter
     {
-        private readonly string _walletIdParameterName;
+        private readonly string _userIdParameterName;
 
-        public WalletOwnerOrAdminAttribute(string walletIdParameterName = "id")
+        public WalletOwnerOrAdminAttribute(string userIdParameterName = "id")
         {
-            _walletIdParameterName = walletIdParameterName;
+            _userIdParameterName = userIdParameterName;
         }
 
-        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        public Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.User;
-            
+
             // Check if user is authenticated
             if (!user.Identity?.IsAuthenticated ?? true)
             {
                 context.Result = new UnauthorizedResult();
-                return;
+                return Task.CompletedTask;
             }
 
             // Admin can access any resource
             if (user.IsInRole("Admin"))
             {
-                return;
+                return Task.CompletedTask;
             }
 
             // Get the current user's ID from claims
             var currentUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(currentUserId) || !int.TryParse(currentUserId, out int currentUserIdInt))
+            if (string.IsNullOrEmpty(currentUserId))
             {
                 context.Result = new UnauthorizedResult();
-                return;
+                return Task.CompletedTask;
             }
 
-            // Get the requested wallet ID from route parameters
-            var walletIdString = context.RouteData.Values[_walletIdParameterName]?.ToString();
-            if (string.IsNullOrEmpty(walletIdString) || !int.TryParse(walletIdString, out int walletId))
+            // Get the requested resource user ID from route parameters
+            var requestedUserId = context.RouteData.Values[_userIdParameterName]?.ToString();
+            if (string.IsNullOrEmpty(requestedUserId))
             {
-                context.Result = new BadRequestObjectResult(new { error = "Wallet ID parameter is required" });
-                return;
+                context.Result = new BadRequestObjectResult(new { error = "User ID parameter is required" });
+                return Task.CompletedTask;
             }
 
-            // Get wallet service from DI container
-            var walletService = context.HttpContext.RequestServices.GetService<Api.Interfaces.IWallet>();
-            if (walletService == null)
+            // Check if the current user is accessing their own wallet resource
+            if (currentUserId != requestedUserId)
             {
-                context.Result = new ObjectResult(new { error = "Wallet service not available" }) { StatusCode = 500 };
-                return;
+                context.Result = new ForbidResult();
+                return Task.CompletedTask;
             }
 
-            try
-            {
-                // Get the wallet to check ownership
-                var wallet = await walletService.getAsync(walletId);
-                if (wallet == null)
-                {
-                    context.Result = new NotFoundObjectResult(new { error = $"Wallet with ID {walletId} not found" });
-                    return;
-                }
-
-                // Check if the current user owns this wallet
-                // Assuming the wallet has a CustomerId property that matches the user ID
-                var walletOwnerId = GetWalletOwnerId(wallet);
-                if (walletOwnerId != currentUserIdInt)
-                {
-                    context.Result = new ForbidResult();
-                    return;
-                }
-            }
-            catch (Exception)
-            {
-                // Log the exception (you might want to inject a logger here)
-                context.Result = new ObjectResult(new { error = "Authorization check failed" }) { StatusCode = 500 };
-                return;
-            }
+            return Task.CompletedTask;
         }
+    }
 
-        private int GetWalletOwnerId(object wallet)
+    /// <summary>
+    /// Validates API key for external API access
+    /// </summary>
+    public class ApiKeyAuthAttribute : Attribute, IAuthorizationFilter
+    {
+        private const string ApiKeyHeaderName = "X-API-Key";
+
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
-            // This method extracts the customer ID from the wallet object
-            // You might need to adjust this based on your wallet model structure
-            var walletType = wallet.GetType();
-            var customerIdProperty = walletType.GetProperty("CustomerId");
+            var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             
-            if (customerIdProperty != null)
+            // Get the expected API key from configuration
+            var expectedApiKey = configuration["ApiKeys:YonkoExternalAccess"];
+            
+            if (string.IsNullOrEmpty(expectedApiKey))
             {
-                var customerId = customerIdProperty.GetValue(wallet);
-                if (customerId != null && int.TryParse(customerId.ToString(), out int customerIdInt))
+                context.Result = new ObjectResult(new { error = "API key configuration not found" })
                 {
-                    return customerIdInt;
-                }
+                    StatusCode = 500
+                };
+                return;
             }
 
-            throw new InvalidOperationException("Unable to determine wallet owner");
+            // Check if the API key header exists
+            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var providedApiKey))
+            {
+                context.Result = new ObjectResult(new { error = "API key is required", header = ApiKeyHeaderName })
+                {
+                    StatusCode = 401
+                };
+                return;
+            }
+
+            // Validate the API key
+            if (providedApiKey != expectedApiKey)
+            {
+                context.Result = new ObjectResult(new { error = "Invalid API key" })
+                {
+                    StatusCode = 401
+                };
+                return;
+            }
         }
     }
 }
