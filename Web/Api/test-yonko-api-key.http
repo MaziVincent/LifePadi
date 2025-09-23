@@ -1,8 +1,9 @@
 # Test Yonko API Key Authentication
 @baseUrl = https://localhost:7216
+@remoteUrl = https://api.lifepadi.com
 
 ### Test 1: Valid API Key
-GET {{baseUrl}}/api/yonko/delivery-fee?Origin=Victoria Island&Destination=Ikeja
+GET {{remoteUrl}}/api/yonko/delivery-fee?Origin=Victoria Island&Destination=Ikeja
 X-API-Key: dev-yonko-key-2025-external-access
 
 ### Test 2: Invalid API Key

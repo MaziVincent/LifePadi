@@ -274,10 +274,10 @@ namespace Api.Authorization
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            //var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             
             // Get the expected API key from configuration
-            var expectedApiKey = configuration["ApiKeys:YonkoExternalAccess"];
+            var expectedApiKey = Environment.GetEnvironmentVariable("YONKO_API_KEY");
             
             if (string.IsNullOrEmpty(expectedApiKey))
             {
