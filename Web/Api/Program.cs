@@ -322,7 +322,9 @@ builder.Services.AddCors(c =>
         .WithOrigins(
             Environment.GetEnvironmentVariable("FRONTEND_LOCAL_URL") ?? "http://localhost:5173",
             Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? "https://lifepadi.com",
-            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? "https://www.lifepadi.com"
+            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? "https://www.lifepadi.com",
+
+ Environment.GetEnvironmentVariable("YONKO_URL") ?? "https://www.yonkomktp.com"
         )
         .AllowAnyMethod()
         .AllowAnyHeader()
