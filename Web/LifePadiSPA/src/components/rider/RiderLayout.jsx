@@ -1,128 +1,109 @@
-import { Link } from 'react-router-dom'
-import SideNav from './SideNav'
-import { Outlet } from 'react-router-dom'
-import { ClickAwayListener } from '@mui/material'
-import { useState } from 'react'
-import logo from '../../assets/images/Logo(dark).svg'
-import useLogout from '../../hooks/useLogout'
+import { useState } from "react";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { LayoutDashboard, LogOut, Menu, Bike } from "lucide-react";
+import logo from "../../assets/images/Logo(dark).svg";
+import useLogout from "../../hooks/useLogout";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import ThemeToggle from "../shared/ThemeToggle";
+
+const NAV_ITEMS = [
+	{ to: "/rider", label: "Overview", Icon: LayoutDashboard, end: true },
+];
+
+const SidebarBody = ({ onItemClick }) => (
+	<nav className="flex flex-col gap-1 p-3">
+		{NAV_ITEMS.map(({ to, label, Icon, end }) => (
+			<NavLink
+				key={to}
+				to={to}
+				end={end}
+				onClick={onItemClick}
+				className={({ isActive }) =>
+					`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition ${
+						isActive
+							? "bg-primary/10 text-primary"
+							: "text-foreground/80 hover:bg-muted"
+					}`
+				}>
+				<Icon className="h-4 w-4" />
+				{label}
+			</NavLink>
+		))}
+	</nav>
+);
 
 const RiderLayout = () => {
-    const [aside, setAside] = useState(false);
-    const logout = useLogout();
+	const [openMobile, setOpenMobile] = useState(false);
+	const logout = useLogout();
+	const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        const res = await logout();
-        console.log(res);
-        if (res.status === 'success') {
-            console.log('logged out');
-        }
-    };
+	const handleLogout = async () => {
+		await logout();
+		navigate("/");
+	};
 
-  return (
-    <main>
-      <div className='bg-primary dark:bg-darkBg dark:text-primary h-auto '>
-        <div className='flex justify-between bg-lightGray text-accent shadow-lg border-darkMenu px-4 py-2.5 dark:bg-darkMenu fixed left-0 right-0 top-0 z-50 '>
-          <ClickAwayListener
-            onClickAway={() => {
-              setAside(false)
-            }}
-          >
-            <button
-              data-drawer-target='drawer-navigation'
-              data-drawer-toggle='drawer-navigation'
-              aria-controls='drawer-navigation'
-              className='p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-              onClick={() => setAside((aside) => !aside)}
-            >
-              <svg
-                aria-hidden='true'
-                className='w-6 h-6'
-                fill='currentColor'
-                viewBox='0 0 20 20'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  fillRule='evenodd'
-                  d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
-                  clipRule='evenodd'
-                ></path>
-              </svg>
+	return (
+		<div className="min-h-screen bg-background text-foreground">
+			{/* Top bar */}
+			<header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b bg-card px-4 shadow-sm">
+				<div className="flex items-center gap-2">
+					<Sheet open={openMobile} onOpenChange={setOpenMobile}>
+						<SheetTrigger asChild>
+							<Button
+								variant="ghost"
+								size="icon"
+								className="md:hidden"
+								aria-label="Open menu">
+								<Menu className="h-5 w-5" />
+							</Button>
+						</SheetTrigger>
+						<SheetContent side="left" className="w-[260px] p-0">
+							<div className="flex h-14 items-center gap-2 border-b px-4">
+								<img src={logo} alt="LifePadi" className="h-8" />
+								<span className="font-semibold">Rider</span>
+							</div>
+							<SidebarBody onItemClick={() => setOpenMobile(false)} />
+						</SheetContent>
+					</Sheet>
 
-              <svg
-                aria-hidden='true'
-                className='hidden w-6 h-6'
-                fill='currentColor'
-                viewBox='0 0 20 20'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  fillRule='evenodd'
-                  d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                  clipRule='evenodd'
-                ></path>
-              </svg>
+					<Link to="/" className="flex items-center gap-2">
+						<img src={logo} alt="LifePadi" className="h-8" />
+						<span className="hidden md:inline-flex items-center gap-1 font-semibold">
+							<Bike className="h-4 w-4 text-primary" />
+							Rider
+						</span>
+					</Link>
+				</div>
 
-              <span className='sr-only'>Toggle sidebar</span>
-            </button>
-          </ClickAwayListener>
+				<div className="flex items-center gap-2">
+					<ThemeToggle />
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={handleLogout}
+						className="text-destructive hover:text-destructive">
+						<LogOut className="mr-2 h-4 w-4" />
+						<span className="hidden sm:inline">Logout</span>
+					</Button>
+				</div>
+			</header>
 
-          <div className=''>
-            <Link
-              to='/'
-              className='flex items-center justify-between gap-5 mr-4'
-            >
-              <div className='w-10 h-12'>
-                {' '}
-                <img src={logo} alt='' className='w-full' />{' '}
-              </div>
-              <span className='self-center text-gray-700 dark:text-primary text-2xl font-semibold whitespace-nowrap  dark:text-white'>
-                Rider
-              </span>
-            </Link>
-          </div>
-          <div className='flex  justify-end w-auto items-center'>
-            <button onClick={handleLogout} className='flex items-center justify-center text-red cursor-pointer focus:border-2  border-red-300 rounded-lg'>
-              <svg
-                className='w-6 h-6 text-red-500 dark:text-red-500'
-                aria-hidden='true'
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                fill='none'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  stroke='currentColor'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2'
-                />
-              </svg>{' '}
-              Logout
-            </button>
-          </div>
-        </div>
-        <div className='flex h-screen'>
-          <div className=''>
-            <SideNav aside={aside} />
-          </div>
-          <div
-            className={`p-2 pl-1 ml-1 md:ml-20 lg:ml-44 py-20 w-full overflow-y-auto overflow-hidden`}
-          >
-            <Outlet />
-          </div>
-        </div>
-        <div className='footer fixed bottom-0  px-4 py-2.5 bg-lightGray dark:bg-darkMenu dark:text-primary  w-full '>
-          <div className='flex justify-center '>
-            <span className='text-sm text-gray-500 dark:text-gray-400'>
-              &copy; 2024 Listacc All rights reserved.
-            </span>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
-}
+			{/* Desktop sidebar */}
+			<aside className="fixed inset-y-0 left-0 top-14 hidden w-[220px] border-r bg-card md:block">
+				<Separator />
+				<SidebarBody />
+			</aside>
 
-export default RiderLayout
+			{/* Main */}
+			<main className="pt-14 md:ml-[220px]">
+				<div className="p-4 md:p-6">
+					<Outlet />
+				</div>
+			</main>
+		</div>
+	);
+};
+
+export default RiderLayout;

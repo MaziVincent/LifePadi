@@ -4,9 +4,9 @@ const VendorSkeleton = () => {
   return (
     <div
       role="status"
-      className="max-w-xl p-4 border border-gray rounded shadow animate-pulse md:p-6 dark:border-darkHover"
+      className="max-w-xl p-4 border border-gray rounded shadow animate-pulse md:p-6 dark:border-border"
     >
-      <div className="flex items-center justify-center h-48 mb-4 bg-gray rounded dark:bg-darkHover">
+      <div className="flex items-center justify-center h-48 mb-4 bg-gray rounded dark:bg-muted">
         <svg
           className="w-10 h-10 text-graybg dark:text-gray"
           aria-hidden="true"
@@ -18,9 +18,9 @@ const VendorSkeleton = () => {
           <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
         </svg>
       </div>
-      <div className="h-2.5 bg-graybg rounded-full dark:bg-darkHover w-48 mb-4"></div>
-      <div className="h-2.5 bg-graybg rounded-full dark:bg-darkHover w-36 mb-4"></div>
-      <div className="h-2.5 bg-graybg rounded-full dark:bg-darkHover w-36 mb-4"></div>
+      <div className="h-2.5 bg-graybg rounded-full dark:bg-muted w-48 mb-4"></div>
+      <div className="h-2.5 bg-graybg rounded-full dark:bg-muted w-36 mb-4"></div>
+      <div className="h-2.5 bg-graybg rounded-full dark:bg-muted w-36 mb-4"></div>
 
       <span className="sr-only">Loading...</span>
     </div>

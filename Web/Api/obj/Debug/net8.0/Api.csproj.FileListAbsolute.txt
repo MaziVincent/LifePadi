@@ -470,3 +470,4 @@ C:/Users/dell/Documents/LifePadi/Web/Api/obj/Debug/net8.0/ref/Api.dll
 /Users/admin/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Grpc.Core.Api.dll
 /Users/admin/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Grpc.Net.Client.dll
 /Users/admin/Projects/LifePadi/Web/Api/bin/Debug/net8.0/Grpc.Net.Common.dll
+/Users/admin/Projects/LifePadi/Web/Api/obj/Debug/net8.0/swae.build.ex.cache

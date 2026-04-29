@@ -104,27 +104,18 @@ builder.Services.AddDbContext<DBContext>(option =>
     var dbUsername = Environment.GetEnvironmentVariable("DB_USERNAME");
     var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-    if (!string.IsNullOrEmpty(dbServer) && !string.IsNullOrEmpty(dbName) &&
-        !string.IsNullOrEmpty(dbUsername) && !string.IsNullOrEmpty(dbPassword))
+    if (string.IsNullOrEmpty(dbServer) || string.IsNullOrEmpty(dbName) ||
+        string.IsNullOrEmpty(dbUsername) || string.IsNullOrEmpty(dbPassword))
     {
-        // Use environment variables with fallback port
-        var portToUse = !string.IsNullOrEmpty(dbPort) ? dbPort : "5432";
-        connectionString = $"Host={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
-        Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}");
+        throw new InvalidOperationException(
+            "Database configuration is incomplete. Required environment variables: " +
+            "DB_SERVER, DB_NAME, DB_USERNAME, DB_PASSWORD. " +
+            "In production these must be supplied via Google Secret Manager.");
     }
-    else
-    {
-        // Build connection string manually from individual environment variables or use hardcoded fallback
-        // This avoids the ${} placeholder issue in appsettings.json
-        var fallbackServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "/cloudsql/lifepadi-459511:us-east1:lifepadi-db";
-        var fallbackPort = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-        var fallbackDatabase = Environment.GetEnvironmentVariable("DB_NAME") ?? "lifepadi";
-        var fallbackUsername = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
-        var fallbackPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Esomchi@92";
 
-        connectionString = $"Host={fallbackServer};Port={fallbackPort};Database={fallbackDatabase};Username={fallbackUsername};Password={fallbackPassword};";
-        Console.WriteLine($"Using fallback DB connection. Server: {fallbackServer}, Port: {fallbackPort}, Database: {fallbackDatabase}");
-    }
+    var portToUse = !string.IsNullOrEmpty(dbPort) ? dbPort : "5432";
+    connectionString = $"Host={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
+    Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}");
 
     option.UseNpgsql(connectionString);
 });
@@ -258,10 +249,34 @@ builder.Services.AddAuthorization(options =>
 });
 
 //Firebase App Initialization
-FirebaseApp.Create(new AppOptions()
+// Prefer credential JSON loaded from Secret Manager / environment.
+// Fall back to a local file ONLY in development.
 {
-    Credential = GoogleCredential.FromFile("lifepadi-24bfe-firebase.json")
-});
+    GoogleCredential firebaseCredential;
+    var firebaseJson = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS_JSON");
+    if (!string.IsNullOrWhiteSpace(firebaseJson))
+    {
+        firebaseCredential = GoogleCredential.FromJson(firebaseJson);
+    }
+    else if (builder.Environment.IsDevelopment())
+    {
+        var localPath = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS_PATH")
+                        ?? "lifepadi-24bfe-firebase.json";
+        if (!File.Exists(localPath))
+        {
+            throw new InvalidOperationException(
+                $"Firebase credentials not found. Set FIREBASE_CREDENTIALS_JSON or place '{localPath}' on disk.");
+        }
+        firebaseCredential = GoogleCredential.FromFile(localPath);
+    }
+    else
+    {
+        throw new InvalidOperationException(
+            "Firebase credentials not configured. Set FIREBASE_CREDENTIALS_JSON via Google Secret Manager.");
+    }
+
+    FirebaseApp.Create(new AppOptions { Credential = firebaseCredential });
+}
 
 //For Json Serializer
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -315,23 +330,7 @@ builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-//enable CORS
-builder.Services.AddCors(c =>
-{
-    c.AddPolicy("SecureCorsPolicy", options => options
-        .WithOrigins(
-            Environment.GetEnvironmentVariable("FRONTEND_LOCAL_URL") ?? "http://localhost:5173",
-            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? "https://lifepadi.com",
-            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? "https://www.lifepadi.com",
-
- Environment.GetEnvironmentVariable("YONKO_URL") ?? "https://www.yonkomktp.com"
-        )
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
-        .WithExposedHeaders("X-Rate-Limit-Remaining", "X-Rate-Limit-Reset"));
-});
-
+// CORS is registered via AddSecurityServices() above ("SecureCorsPolicy").
 
 builder.Services.AddControllers();
 
@@ -414,25 +413,28 @@ app.UseGlobalExceptionHandling();
 // Add request logging middleware
 app.UseRequestLogging();
 
-// Configure Swagger for development and production
-app.UseSwagger(c =>
+// Swagger is exposed only in non-production environments to avoid leaking the API surface.
+if (!app.Environment.IsProduction())
 {
-    c.RouteTemplate = "api-docs/{documentName}/swagger.json";
-});
+    app.UseSwagger(c =>
+    {
+        c.RouteTemplate = "api-docs/{documentName}/swagger.json";
+    });
 
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/api-docs/v1/swagger.json", "LifePadi API v1.0");
-    c.RoutePrefix = "api-docs";
-    c.DocumentTitle = "LifePadi API Documentation";
-    c.DisplayRequestDuration();
-    c.EnableDeepLinking();
-    c.EnableFilter();
-    c.ShowExtensions();
-    c.EnableValidator();
-    c.DefaultModelsExpandDepth(2);
-    c.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Example);
-});
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/api-docs/v1/swagger.json", "LifePadi API v1.0");
+        c.RoutePrefix = "api-docs";
+        c.DocumentTitle = "LifePadi API Documentation";
+        c.DisplayRequestDuration();
+        c.EnableDeepLinking();
+        c.EnableFilter();
+        c.ShowExtensions();
+        c.EnableValidator();
+        c.DefaultModelsExpandDepth(2);
+        c.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Example);
+    });
+}
 
 if (app.Environment.IsDevelopment())
 {
@@ -451,53 +453,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseRouting();
 
-// Use conditional CORS policy based on environment and path
-app.Use(async (context, next) =>
-{
-    var isApiRequest = context.Request.Path.StartsWithSegments("/api");
-    var isProduction = app.Environment.IsProduction();
-    
-    if (isApiRequest && !isProduction)
-    {
-        // Use more permissive CORS for API endpoints in development
-        await next();
-    }
-    else
-    {
-        await next();
-    }
-});
-
-// Use CORS policy - more permissive for API testing
-app.UseCors(builder =>
-{
-    var isProduction = app.Environment.IsProduction();
-    
-    // Always allow requests without origin (Postman, curl, server-to-server, etc.)
-    builder.SetIsOriginAllowed(origin => 
-    {
-        if (string.IsNullOrEmpty(origin)) return true; // No origin header
-        
-        // Check allowed origins
-        var allowedOrigins = new[]
-        {
-            Environment.GetEnvironmentVariable("FRONTEND_LOCAL_URL") ?? "http://localhost:5173",
-            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_URL") ?? "https://lifepadi.com", 
-            Environment.GetEnvironmentVariable("FRONTEND_REMOTE_SUBDOMAIN_URL") ?? "https://www.lifepadi.com",
-            "https://www.lifepadi.com",
-            "http://localhost:3000", // Additional local dev ports
-            "http://localhost:3001",
-            "http://localhost:5000",
-            "http://localhost:5001"
-        };
-        
-        return allowedOrigins.Contains(origin) || !isProduction;
-    })
-    .AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowCredentials()
-    .WithExposedHeaders("X-Rate-Limit-Remaining", "X-Rate-Limit-Reset", "X-Total-Count", "X-Total-Pages", "X-Current-Page", "X-Page-Size");
-});
+// Apply the strict, named CORS policy registered in AddSecurityServices().
+app.UseCors("SecureCorsPolicy");
 
 app.MapHub<LocationHub>("/hubs/location");
 app.MapHub<NotificationHub>("/hubs/notification");

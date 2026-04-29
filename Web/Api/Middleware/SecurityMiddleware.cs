@@ -59,15 +59,6 @@ namespace Api.Middleware
                     .AllowCredentials()
                     .WithExposedHeaders("X-Rate-Limit-Remaining", "X-Rate-Limit-Reset", "X-Total-Count", "X-Total-Pages", "X-Current-Page", "X-Page-Size");
                 });
-
-                // Add a separate policy for API testing tools (Postman, VS Code REST Client, etc.)
-                options.AddPolicy("ApiTestingPolicy", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .WithExposedHeaders("X-Rate-Limit-Remaining", "X-Rate-Limit-Reset", "X-Total-Count", "X-Total-Pages", "X-Current-Page", "X-Page-Size");
-                });
             });
 
             return services;
@@ -91,8 +82,8 @@ namespace Api.Middleware
                 {
                     context.Response.Headers.Append("Content-Security-Policy",
                         "default-src 'self'; " +
-                        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                        "style-src 'self' 'unsafe-inline'; " +
+                        "script-src 'self'; " +
+                        "style-src 'self'; " +
                         "img-src 'self' data: https:; " +
                         "font-src 'self' data:; " +
                         "connect-src 'self' https:; " +
@@ -108,7 +99,7 @@ namespace Api.Middleware
                     // Enhanced Content Security Policy for web requests
                     context.Response.Headers.Append("Content-Security-Policy",
                         "default-src 'self'; " +
-                        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com; " +
+                        "script-src 'self' https://maps.googleapis.com; " +
                         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
                         "img-src 'self' data: https: https://res.cloudinary.com https://maps.googleapis.com https://maps.gstatic.com; " +
                         "font-src 'self' data: https://fonts.gstatic.com; " +

@@ -1,103 +1,97 @@
-
 import { useReducer, useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
 import baseUrl from "../../api/baseUrl";
-import toast, { Toaster } from "react-hot-toast";
-import { CircularProgress } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
-import Alert from "@mui/material/Alert";
+import { Toaster } from "sonner";
+import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
-import DeleteDialogue from "../admin/subcomponents/DeleteDialogue";
-
 
 const reducer = (state, action) => {
-    switch (action.type) {
-      case "open":
-        return { ...state, open: !state.open };
-      case "edit":
-        return { ...state, edit: !state.edit };
-      case "activate":
-        return { ...state, activate: !state.activate };
-      case "delete":
-        return { ...state, delete: !state.delete };
-      case "service":
-        return { ...state, service: action.payload };
-      case "deleteId":
-        return { ...state, deleteId: action.payload };
-  
-      default:
-        throw new Error();
-    }
-  };
+	switch (action.type) {
+		case "open":
+			return { ...state, open: !state.open };
+		case "edit":
+			return { ...state, edit: !state.edit };
+		case "activate":
+			return { ...state, activate: !state.activate };
+		case "delete":
+			return { ...state, delete: !state.delete };
+		case "service":
+			return { ...state, service: action.payload };
+		case "deleteId":
+			return { ...state, deleteId: action.payload };
+
+		default:
+			throw new Error();
+	}
+};
 
 const Address = () => {
-    
-      const fetch = useFetch();
-      const { auth } = useAuth();
-      const url = `${baseUrl}address/customer-addresses`;
-      const [page, setPage] = useState(1);
-      const [search, setSearch] = useState("");
-      const navigate = useNavigate();
-      // const activate = useActivate();
-      //const queryClient = useQueryClient();
-    
-      const [state, dispatch] = useReducer(reducer, {
-        open: false,
-        edit: false,
-        activate: false,
-        delete: false,
-        service: {},
-        deleteId: 0,
-      });
-    
-      const getAddresses = async (url) => {
-        const result = await fetch(url, auth.accessToken);
-    
-        return result.data;
-      };
-    
-      const { data, isError, isLoading, isSuccess } = useQuery({
-        queryKey: ["addresses", page, search],
-        queryFn: () =>
-          getAddresses(`${url}/${auth?.Id}`),
-        keepPreviousData: true,
-        staleTime: 20000,
-        refetchOnMount: "always",
-      });
-    
-      console.log(data);
-    
-      // const handlePageChange = (event, value) => {
-      //   setPage(value);
-      //   //console.log("page " + value);
-      // };
-    
-      return (
-        <div className="bg-gray-100 dark:bg-gray-900">
-          <Toaster />
-          <section className="bg-white dark:bg-gray-900 mb-5">
-            <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
-              <dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
-                <div className="flex flex-col items-center justify-center">
-                  <dt className="mb-2 text-3xl md:text-4xl font-extrabold">
-                    {data?.length}
-                  </dt>
-                  <dd className="font-light text-gray-500 dark:text-gray-400">
-                    Addresses
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </section>
-    
-          <section className="bg-white dark:bg-gray-900">
-            <h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
-              Addresses{" "}
-            </h2>
-          </section>
-{/*     
+	const fetch = useFetch();
+	const { auth } = useAuth();
+	const url = `${baseUrl}address/customer-addresses`;
+	const [page, setPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const navigate = useNavigate();
+	// const activate = useActivate();
+	//const queryClient = useQueryClient();
+
+	const [state, dispatch] = useReducer(reducer, {
+		open: false,
+		edit: false,
+		activate: false,
+		delete: false,
+		service: {},
+		deleteId: 0,
+	});
+
+	const getAddresses = async (url) => {
+		const result = await fetch(url, auth.accessToken);
+
+		return result.data;
+	};
+
+	const { data, isError, isLoading, isSuccess } = useQuery({
+		queryKey: ["addresses", page, search],
+		queryFn: () => getAddresses(`${url}/${auth?.Id}`),
+		placeholderData: keepPreviousData,
+		staleTime: 20000,
+		refetchOnMount: "always",
+	});
+
+	console.log(data);
+
+	// const handlePageChange = (event, value) => {
+	//   setPage(value);
+	//   //console.log("page " + value);
+	// };
+
+	return (
+		<div className="bg-gray-100 dark:bg-gray-900">
+			<Toaster />
+			<section className="bg-white dark:bg-gray-900 mb-5">
+				<div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6 ">
+					<dl className="grid max-w-screen-md gap-8 mx-auto text-gray-900 grid-cols-1 dark:text-white">
+						<div className="flex flex-col items-center justify-center">
+							<dt className="mb-2 text-3xl md:text-4xl font-extrabold">
+								{data?.length}
+							</dt>
+							<dd className="font-light text-gray-500 dark:text-gray-400">
+								Addresses
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</section>
+
+			<section className="bg-white dark:bg-gray-900">
+				<h2 className="text-center text-4xl p-4 font-bold text-gray-900 dark:text-gray-50 ">
+					Addresses{" "}
+				</h2>
+			</section>
+			{/*     
           <CreateService
             open={state.open}
             handleClose={dispatch}
@@ -114,12 +108,12 @@ const Address = () => {
             url={url}
             name='services'
           /> */}
-    
-          <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
-            <div className="mx-auto max-w-screen-xl px-2 lg:px-12">
-              <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                  {/* <div className="w-full md:w-1/2">
+
+			<section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+				<div className="mx-auto max-w-screen-xl px-2 lg:px-12">
+					<div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+						<div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+							{/* <div className="w-full md:w-1/2">
                     <form className="flex items-center">
                       <label
                         htmlFor="simple-search"
@@ -149,14 +143,14 @@ const Address = () => {
                           onChange={(e) => {
                             setSearch(e.target.value);
                           }}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-darkHover dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-muted dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Search"
                           required=""
                         />
                       </div>
                     </form>
                   </div> */}
-                  {/* <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+							{/* <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <button
                       type="button"
                       onClick={() => dispatch({ type: "open" })}
@@ -166,89 +160,70 @@ const Address = () => {
                       Add Service
                     </button>
                   </div> */}
-                </div>
-                <div className="overflow-x-auto">
-                  {isLoading && (
-                    <p className="flex items-center justify-center">
-                      {" "}
-                      <CircularProgress />
-                    </p>
-                  )}
-                  {isError && (
-                    <p className="flex items-center justify-center">
-                      {" "}
-                      <Alert severity="error">Error Fetching Data..</Alert>
-                    </p>
-                  )}
-                
-                  {isSuccess && data.length > 0 ? (
-                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <thead className="text-xs  uppercase bg-gray-200 dark:bg-darkMenu dark:text-gray-400">
-                        <tr>
-                          <th
-                            scope="col"
-                            className="px-4 py-3"
-                          >
-                            Address Name
-                          </th>
-    
-                          <th
-                            scope="col"
-                            className="px-4 py-3"
-                          >
-                            Town
-                          </th>
+						</div>
+						<div className="overflow-x-auto">
+							{isLoading && (
+								<p className="flex items-center justify-center p-6">
+									<Loader2 className="h-8 w-8 animate-spin text-primary" />
+								</p>
+							)}
+							{isError && (
+								<div className="p-4">
+									<Alert variant="destructive">
+										<AlertDescription>Error fetching data..</AlertDescription>
+									</Alert>
+								</div>
+							)}
 
-                          <th
-                            scope="col"
-                            className="px-4 py-3"
-                          >
-                            City
-                          </th>
+							{isSuccess && data.length > 0 ? (
+								<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+									<thead className="text-xs  uppercase bg-gray-200 dark:bg-card dark:text-gray-400">
+										<tr>
+											<th scope="col" className="px-4 py-3">
+												Address Name
+											</th>
 
-                          <th
-                            scope="col"
-                            className="px-4 py-3"
-                          >
-                            LGA
-                          </th>
-    
-                          <th
-                            scope="col"
-                            className="px-4 py-3"
-                          >
-                            State
-                          </th>
-    
-                          {/* <th
+											<th scope="col" className="px-4 py-3">
+												Town
+											</th>
+
+											<th scope="col" className="px-4 py-3">
+												City
+											</th>
+
+											<th scope="col" className="px-4 py-3">
+												LGA
+											</th>
+
+											<th scope="col" className="px-4 py-3">
+												State
+											</th>
+
+											{/* <th
                             scope="col"
                             className="px-4 py-3"
                           >
                             <span className="sr-only">Actions</span>
                           </th> */}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data?.map((address) => (
-                          <tr
-                            key={address.Id}
-                            //onClick={()=>navigate(`/admin/service/${service.Id}`)}
-                            className="border-b cursor-pointer dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                          >
-                            <th
-                              scope="row"
-                              className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                            >
-                              {address.Name}
-                            </th>
-                            <td className="px-4 py-3">
-                              {address.Town}
-                            </td>
-                            <td className="px-4 py-3">{address.City}</td>
-                            <td className="px-4 py-3">{address.LocalGovt}</td>
-                            <td className="px-4 py-3">{address.State}</td>
-    
-                            {/* <td className="px-4 py-3 flex items-center justify-end">
+										</tr>
+									</thead>
+									<tbody>
+										{data?.map((address) => (
+											<tr
+												key={address.Id}
+												//onClick={()=>navigate(`/admin/service/${service.Id}`)}
+												className="border-b cursor-pointer dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+												<th
+													scope="row"
+													className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+													{address.Name}
+												</th>
+												<td className="px-4 py-3">{address.Town}</td>
+												<td className="px-4 py-3">{address.City}</td>
+												<td className="px-4 py-3">{address.LocalGovt}</td>
+												<td className="px-4 py-3">{address.State}</td>
+
+												{/* <td className="px-4 py-3 flex items-center justify-end">
                               <div className="flex justify-end gap-4">
                                 <button
                                   x-data="{ tooltip: 'Delete' }"
@@ -301,18 +276,21 @@ const Address = () => {
                                 </button>
                               </div>
                             </td> */}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : (
-                    <p className="flex items-center justify-center">
-                      {" "}
-                      <Alert severity="info"> You currently have no Address </Alert>
-                    </p>
-                  )}
-                </div>
-                {/* <nav
+											</tr>
+										))}
+									</tbody>
+								</table>
+							) : (
+								<div className="p-4">
+									<Alert>
+										<AlertDescription>
+											You currently have no address.
+										</AlertDescription>
+									</Alert>
+								</div>
+							)}
+						</div>
+						{/* <nav
                   className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                   aria-label="Table navigation"
                 >
@@ -325,12 +303,11 @@ const Address = () => {
                     className="dark:text-gray-50 dark:bg-primary"
                   />
                 </nav> */}
-              </div>
-            </div>
-          </section>
-        </div>
-      );
-    };
+					</div>
+				</div>
+			</section>
+		</div>
+	);
+};
 
- 
 export default Address;

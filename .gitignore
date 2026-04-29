@@ -1,2 +1,13 @@
 .DS_Store
 **/.DS_Store
+
+# Environment / secret files - NEVER commit
+**/.env
+**/.env.local
+**/.env.development
+**/.env.staging
+**/.env.production
+
+# Firebase service account keys
+**/*firebase.json
+**/firebase-credentials*.json

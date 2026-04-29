@@ -1,35 +1,21 @@
-import { useState, useMemo } from "react";
-import { useQuery } from "react-query";
-import {
-	Box,
-	Grid,
-	Card,
-	CardMedia,
-	CardContent,
-	Typography,
-	TextField,
-	Button,
-	Chip,
-	Container,
-	Alert,
-	Skeleton,
-	Pagination,
-	Stack,
-	InputAdornment,
-	Fab,
-	Badge,
-	IconButton,
-	Tooltip,
-	useTheme,
-} from "@mui/material";
-import {
-	Add as AddIcon,
-	Search as SearchIcon,
-	FilterList as FilterIcon,
-	GridView as GridViewIcon,
-	ViewList as ViewListIcon,
-} from "@mui/icons-material";
+import { useMemo, useState } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Plus, Search, LayoutGrid, List as ListIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "@/components/ui/pagination";
 import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
 import VendorActions from "./VendorActions";
@@ -41,14 +27,13 @@ const VendorProducts = ({
 	showTitle = true,
 	showAddButton = true,
 }) => {
-	const theme = useTheme();
 	const navigate = useNavigate();
 	const fetch = useFetch();
 	const { auth } = useAuth();
 
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState("");
-	const [viewMode, setViewMode] = useState("grid"); // "grid" or "list"
+	const [viewMode, setViewMode] = useState("grid");
 
 	const vendorId = auth.Id;
 	const vendorProductsURL = vendorProductsUrl.replace("{id}", vendorId);
@@ -67,9 +52,9 @@ const VendorProducts = ({
 		queryKey: ["vendorProductsList", page, search, pageSize],
 		queryFn: () =>
 			getVendorProducts(
-				`${vendorProductsURL}?PageNumber=${page}&PageSize=${pageSize}&SearchString=${search}`
+				`${vendorProductsURL}?PageNumber=${page}&PageSize=${pageSize}&SearchString=${search}`,
 			),
-		keepPreviousData: true,
+		placeholderData: keepPreviousData,
 		staleTime: 30000,
 		refetchOnMount: "always",
 		retry: 2,
@@ -79,408 +64,226 @@ const VendorProducts = ({
 	const totalPages = vendorProducts?.dataList?.TotalPages || 1;
 	const totalCount = vendorProducts?.dataList?.TotalCount || 0;
 
-	// Memoized calculations for performance
 	const productStats = useMemo(() => {
 		if (!products.length) return { active: 0, inactive: 0 };
-
 		return products.reduce(
-			(stats, product) => ({
-				active: stats.active + (product.Status ? 1 : 0),
-				inactive: stats.inactive + (!product.Status ? 1 : 0),
+			(s, p) => ({
+				active: s.active + (p.Status ? 1 : 0),
+				inactive: s.inactive + (!p.Status ? 1 : 0),
 			}),
-			{ active: 0, inactive: 0 }
+			{ active: 0, inactive: 0 },
 		);
 	}, [products]);
 
-	const handleSearchChange = (e) => {
-		setSearch(e.target.value);
-		setPage(1); // Reset to first page when searching
-	};
-
-	const handlePageChange = (event, newPage) => {
-		setPage(newPage);
-	};
-
 	const handleProductClick = (productId) => {
-		navigate(`/vendor/products/${productId}`);
+		navigate(`/vendor/product/${productId}`);
 	};
 
-	// Loading skeleton component
 	const ProductSkeleton = () => (
-		<Card
-			sx={{
-				borderRadius: 3,
-				height: "100%",
-				background:
-					theme.palette.mode === "dark"
-						? "linear-gradient(135deg, #212121 0%, #2c2c2c 100%)"
-						: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
-			}}
-			className="shadow-lg">
-			<Skeleton variant="rectangular" height={200} />
-			<CardContent>
-				<Skeleton variant="text" width="80%" height={32} />
-				<Skeleton variant="text" width="60%" height={24} />
-				<Skeleton variant="text" width="40%" height={28} />
-				<Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-					<Skeleton variant="rectangular" width={60} height={24} />
-					<Skeleton variant="circular" width={32} height={32} />
-				</Box>
+		<Card className="overflow-hidden">
+			<Skeleton className="h-48 w-full" />
+			<CardContent className="p-4 space-y-2">
+				<Skeleton className="h-5 w-3/4" />
+				<Skeleton className="h-4 w-1/2" />
+				<Skeleton className="h-6 w-1/3" />
 			</CardContent>
 		</Card>
 	);
 
-	// Product card component
 	const ProductCard = ({ product }) => (
 		<Card
-			sx={{
-				borderRadius: 3,
-				height: "100%",
-				background:
-					theme.palette.mode === "dark"
-						? "linear-gradient(135deg, #212121 0%, #2c2c2c 100%)"
-						: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
-				cursor: "pointer",
-				transition: "all 0.3s ease",
-				"&:hover": {
-					transform: "translateY(-4px)",
-					boxShadow: theme.shadows[8],
-				},
-			}}
-			className="shadow-lg hover:shadow-xl"
-			onClick={() => handleProductClick(product.Id)}>
-			{/* Product Image */}
-			<Box sx={{ position: "relative" }}>
-				<CardMedia
-					component="img"
-					height="200"
-					image={product.ProductImgUrl || "/placeholder-product.jpg"}
+			onClick={() => handleProductClick(product.Id)}
+			className="cursor-pointer overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
+			<div className="relative">
+				<img
+					src={product.ProductImgUrl || "/placeholder-product.jpg"}
 					alt={product.Name}
-					sx={{
-						objectFit: "cover",
-						filter:
-							theme.palette.mode === "dark"
-								? "brightness(0.9)"
-								: "brightness(0.95)",
-					}}
+					className="h-48 w-full object-cover"
 				/>
-				{/* Status Badge */}
-				<Chip
-					label={product.Status ? "Active" : "Inactive"}
-					size="small"
-					color={product.Status ? "success" : "error"}
-					sx={{
-						position: "absolute",
-						top: 12,
-						right: 12,
-						fontWeight: "bold",
-						backdropFilter: "blur(10px)",
-						backgroundColor: product.Status
-							? "rgba(76, 175, 80, 0.9)"
-							: "rgba(244, 67, 54, 0.9)",
-					}}
-				/>
-			</Box>
-
-			<CardContent sx={{ flexGrow: 1, p: 3 }}>
-				<Stack spacing={1}>
-					{/* Product Name */}
-					<Typography
-						variant="h6"
-						fontWeight="bold"
-						className="text-accent dark:text-white"
-						sx={{
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",
-						}}>
-						{product.Name}
-					</Typography>
-
-					{/* Category */}
-					<Typography
-						variant="caption"
-						color="text.secondary"
-						className="dark:text-darkSecondaryText">
+				<Badge
+					className={`absolute right-3 top-3 ${
+						product.Status
+							? "bg-emerald-500 hover:bg-emerald-500 text-white"
+							: "bg-rose-500 hover:bg-rose-500 text-white"
+					}`}>
+					{product.Status ? "Active" : "Inactive"}
+				</Badge>
+			</div>
+			<CardContent className="p-4">
+				<div className="space-y-1">
+					<h3 className="font-bold text-base truncate">{product.Name}</h3>
+					<p className="text-xs text-muted-foreground">
 						{product.Category?.Name || "Uncategorized"}
-					</Typography>
-
-					{/* Price */}
-					<Typography
-						variant="h6"
-						color="primary"
-						fontWeight="bold"
-						className="dark:!text-lightgreen">
+					</p>
+					<p className="text-lg font-bold text-primary">
 						₦{Number(product.Price).toLocaleString()}
-					</Typography>
-
-					{/* Description */}
-					<Typography
-						variant="body2"
-						color="text.secondary"
-						className="dark:text-darkSecondaryText"
-						sx={{
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							display: "-webkit-box",
-							WebkitLineClamp: 2,
-							WebkitBoxOrient: "vertical",
-							minHeight: "2.5em",
-						}}>
+					</p>
+					<p className="text-sm text-muted-foreground line-clamp-2 min-h-[2.5em]">
 						{product.Description || "No description available"}
-					</Typography>
-				</Stack>
-
-				{/* Actions */}
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "flex-end",
-						alignItems: "center",
-						mt: 2,
-						pt: 1,
-						borderTop: "1px solid",
-						borderColor: "divider",
-					}}
+					</p>
+				</div>
+				<div
+					className="mt-3 flex justify-end border-t pt-2"
 					onClick={(e) => e.stopPropagation()}>
 					<VendorActions product={product} />
-				</Box>
+				</div>
 			</CardContent>
 		</Card>
 	);
 
+	const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
 	return (
-		<Box
-			sx={{
-				minHeight: "100vh",
-				bgcolor: "background.default",
-				transition: "background-color 0.3s ease",
-			}}
-			className="bg-gradient-to-br from-white to-gray-50 dark:from-darkBg dark:to-gray-900">
-			<Container maxWidth="xl" sx={{ py: 4 }}>
-				{/* Header */}
-				{showTitle && (
-					<Box sx={{ mb: 4 }}>
-						<Stack
-							direction="row"
-							alignItems="center"
-							justifyContent="space-between"
-							sx={{ mb: 2 }}>
-							<Typography
-								variant="h4"
-								fontWeight="bold"
-								className="text-accent dark:text-white">
-								My Products
-							</Typography>
-							<Stack direction="row" spacing={1} alignItems="center">
-								<Badge badgeContent={productStats.active} color="success">
-									<Chip
-										label={`${totalCount} Products`}
-										variant="outlined"
-										className="dark:border-darkSecondaryText dark:text-darkSecondaryText"
-									/>
-								</Badge>
-								<Tooltip title="Toggle View">
-									<IconButton
-										onClick={() =>
-											setViewMode(viewMode === "grid" ? "list" : "grid")
-										}
-										className="dark:text-darkSecondaryText">
-										{viewMode === "grid" ? <ViewListIcon /> : <GridViewIcon />}
-									</IconButton>
-								</Tooltip>
-							</Stack>
-						</Stack>
-
-						{/* Stats */}
-						<Stack direction="row" spacing={2}>
-							<Chip
-								label={`${productStats.active} Active`}
-								color="success"
-								size="small"
-								variant="outlined"
-							/>
-							<Chip
-								label={`${productStats.inactive} Inactive`}
-								color="error"
-								size="small"
-								variant="outlined"
-							/>
-						</Stack>
-					</Box>
-				)}
-
-				{/* Search and Filters */}
-				<Box sx={{ mb: 4 }}>
-					<Stack
-						direction={{ xs: "column", md: "row" }}
-						spacing={2}
-						alignItems="center">
-						<TextField
-							fullWidth
-							variant="outlined"
-							placeholder="Search products by name, category, or description..."
-							value={search}
-							onChange={handleSearchChange}
-							sx={{ maxWidth: { md: 400 } }}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<SearchIcon className="text-gray-400 dark:text-darkSecondaryText" />
-									</InputAdornment>
-								),
-								className: "dark:text-white bg-white dark:bg-darkMenu",
-							}}
-							InputLabelProps={{
-								className: "dark:text-darkSecondaryText",
-							}}
-						/>
-
-						<Box sx={{ flexGrow: 1 }} />
-
-						{showAddButton && onOpenAddProduct && (
-							<Button
-								variant="contained"
-								startIcon={<AddIcon />}
-								onClick={onOpenAddProduct}
-								sx={{
-									background: "linear-gradient(45deg, #667eea, #764ba2)",
-									"&:hover": {
-										background: "linear-gradient(45deg, #5a67d8, #6b46c1)",
-									},
-								}}>
-								Add Product
-							</Button>
-						)}
-					</Stack>
-				</Box>
-
-				{/* Content */}
-				{isError ? (
-					<Alert
-						severity="error"
-						sx={{ borderRadius: 2 }}
-						className="dark:bg-red-900/20 dark:text-red-200">
-						{error?.message || "Failed to load products. Please try again."}
-					</Alert>
-				) : (
-					<>
-						{/* Products Grid/List */}
-						<Grid container spacing={3} sx={{ mb: 4 }}>
-							{isLoading ? (
-								Array.from({ length: pageSize }).map((_, index) => (
-									<Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-										<ProductSkeleton />
-									</Grid>
-								))
-							) : products.length === 0 ? (
-								<Grid item xs={12}>
-									<Box
-										sx={{
-											textAlign: "center",
-											py: 8,
-											borderRadius: 3,
-											bgcolor: "background.paper",
-										}}
-										className="dark:bg-darkMenu">
-										<Typography
-											variant="h6"
-											color="text.secondary"
-											gutterBottom>
-											{search ? "No products found" : "No products yet"}
-										</Typography>
-										<Typography
-											variant="body2"
-											color="text.secondary"
-											sx={{ mb: 3 }}>
-											{search
-												? `No products match "${search}". Try a different search term.`
-												: "Start by adding your first product to showcase your offerings."}
-										</Typography>
-										{!search && onOpenAddProduct && (
-											<Button
-												variant="contained"
-												startIcon={<AddIcon />}
-												onClick={onOpenAddProduct}
-												sx={{
-													background:
-														"linear-gradient(45deg, #667eea, #764ba2)",
-													"&:hover": {
-														background:
-															"linear-gradient(45deg, #5a67d8, #6b46c1)",
-													},
-												}}>
-												Add Your First Product
-											</Button>
-										)}
-									</Box>
-								</Grid>
+		<div className="space-y-6">
+			{showTitle && (
+				<div className="flex flex-wrap items-center justify-between gap-3">
+					<h2 className="text-2xl md:text-3xl font-bold">My Products</h2>
+					<div className="flex items-center gap-2">
+						<Badge variant="outline">{totalCount} Products</Badge>
+						<Button
+							variant="outline"
+							size="icon"
+							onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+							aria-label="Toggle view">
+							{viewMode === "grid" ? (
+								<ListIcon className="h-4 w-4" />
 							) : (
-								products.map((product) => (
-									<Grid item xs={12} sm={6} md={4} lg={3} key={product.Id}>
-										<ProductCard product={product} />
-									</Grid>
-								))
+								<LayoutGrid className="h-4 w-4" />
 							)}
-						</Grid>
-
-						{/* Pagination */}
-						{totalPages > 1 && (
-							<Box
-								sx={{
-									display: "flex",
-									justifyContent: "center",
-									alignItems: "center",
-									gap: 2,
-								}}>
-								<Typography
-									variant="body2"
-									color="text.secondary"
-									className="dark:text-darkSecondaryText">
-									Showing {(page - 1) * pageSize + 1}-
-									{Math.min(page * pageSize, totalCount)} of {totalCount}
-								</Typography>
-								<Pagination
-									count={totalPages}
-									page={page}
-									onChange={handlePageChange}
-									color="primary"
-									showFirstButton
-									showLastButton
-									className="dark:text-white"
-									sx={{
-										"& .MuiPaginationItem-root": {
-											color:
-												theme.palette.mode === "dark" ? "white" : "inherit",
-										},
-									}}
-								/>
-							</Box>
-						)}
-					</>
-				)}
-			</Container>
-
-			{/* Floating Add Button */}
-			{showAddButton && onOpenAddProduct && (
-				<Fab
-					color="primary"
-					aria-label="add product"
-					onClick={onOpenAddProduct}
-					sx={{
-						position: "fixed",
-						bottom: 24,
-						right: 24,
-						background: "linear-gradient(45deg, #667eea, #764ba2)",
-						"&:hover": {
-							background: "linear-gradient(45deg, #5a67d8, #6b46c1)",
-						},
-						display: { xs: "flex", md: "none" }, // Show only on mobile
-					}}>
-					<AddIcon />
-				</Fab>
+						</Button>
+					</div>
+				</div>
 			)}
-		</Box>
+
+			{showTitle && (
+				<div className="flex gap-2">
+					<Badge
+						variant="outline"
+						className="border-emerald-500 text-emerald-600">
+						{productStats.active} Active
+					</Badge>
+					<Badge variant="outline" className="border-rose-500 text-rose-600">
+						{productStats.inactive} Inactive
+					</Badge>
+				</div>
+			)}
+
+			{/* Search + Add */}
+			<div className="flex flex-col gap-3 md:flex-row md:items-center">
+				<div className="relative max-w-md flex-1">
+					<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+					<Input
+						placeholder="Search products by name, category, or description…"
+						value={search}
+						onChange={(e) => {
+							setSearch(e.target.value);
+							setPage(1);
+						}}
+						className="pl-9"
+					/>
+				</div>
+				<div className="flex-1" />
+				{showAddButton && onOpenAddProduct && (
+					<Button onClick={onOpenAddProduct} className="hidden md:inline-flex">
+						<Plus className="mr-2 h-4 w-4" /> Add Product
+					</Button>
+				)}
+			</div>
+
+			{/* Content */}
+			{isError ? (
+				<Alert variant="destructive">
+					<AlertDescription>
+						{error?.message || "Failed to load products. Please try again."}
+					</AlertDescription>
+				</Alert>
+			) : (
+				<>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+						{isLoading ? (
+							Array.from({ length: pageSize }).map((_, i) => (
+								<ProductSkeleton key={i} />
+							))
+						) : products.length === 0 ? (
+							<div className="col-span-full rounded-lg border border-dashed bg-card p-10 text-center">
+								<h3 className="text-lg font-semibold mb-2">
+									{search ? "No products found" : "No products yet"}
+								</h3>
+								<p className="text-sm text-muted-foreground mb-4">
+									{search
+										? `No products match "${search}". Try a different search term.`
+										: "Start by adding your first product to showcase your offerings."}
+								</p>
+								{!search && onOpenAddProduct && (
+									<Button onClick={onOpenAddProduct}>
+										<Plus className="mr-2 h-4 w-4" /> Add Your First Product
+									</Button>
+								)}
+							</div>
+						) : (
+							products.map((p) => <ProductCard key={p.Id} product={p} />)
+						)}
+					</div>
+
+					{totalPages > 1 && (
+						<div className="flex flex-col items-center gap-3">
+							<p className="text-xs text-muted-foreground">
+								Showing {(page - 1) * pageSize + 1}-
+								{Math.min(page * pageSize, totalCount)} of {totalCount}
+							</p>
+							<Pagination>
+								<PaginationContent>
+									<PaginationItem>
+										<PaginationPrevious
+											href="#"
+											onClick={(e) => {
+												e.preventDefault();
+												if (page > 1) setPage(page - 1);
+											}}
+											aria-disabled={page <= 1}
+										/>
+									</PaginationItem>
+									{pageNumbers.map((p) => (
+										<PaginationItem key={p}>
+											<PaginationLink
+												href="#"
+												isActive={p === page}
+												onClick={(e) => {
+													e.preventDefault();
+													setPage(p);
+												}}>
+												{p}
+											</PaginationLink>
+										</PaginationItem>
+									))}
+									<PaginationItem>
+										<PaginationNext
+											href="#"
+											onClick={(e) => {
+												e.preventDefault();
+												if (page < totalPages) setPage(page + 1);
+											}}
+											aria-disabled={page >= totalPages}
+										/>
+									</PaginationItem>
+								</PaginationContent>
+							</Pagination>
+						</div>
+					)}
+				</>
+			)}
+
+			{/* Mobile FAB */}
+			{showAddButton && onOpenAddProduct && (
+				<Button
+					size="icon"
+					aria-label="Add product"
+					onClick={onOpenAddProduct}
+					className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full shadow-xl md:hidden">
+					<Plus className="h-6 w-6" />
+				</Button>
+			)}
+		</div>
 	);
 };
 

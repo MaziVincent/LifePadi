@@ -27,9 +27,9 @@ namespace Api.DTO
         [PhoneValidation(ErrorMessage = "Please enter a valid phone number (e.g., +1234567890)")]
         [NoHtmlValidation(ErrorMessage = "Phone number cannot contain HTML or script content")]
         public string? PhoneNumber { get; set; }
-        [PasswordValidation(MinLength = 6, RequireUppercase = false, RequireLowercase = false,
-                           RequireDigit = false, RequireSpecialChar = false,
-                           ErrorMessage = "Password must be at least 6 characters")]
+        [PasswordValidation(MinLength = 8, RequireUppercase = true, RequireLowercase = true,
+                           RequireDigit = true, RequireSpecialChar = true,
+                           ErrorMessage = "Password must be at least 8 characters and include uppercase, lowercase, a digit, and a special character")]
         public string? Password { get; set; }
         [StringLength(200, ErrorMessage = "Contact address cannot exceed 200 characters")]
         [NoHtmlValidation(ErrorMessage = "Contact address cannot contain HTML or script content")]

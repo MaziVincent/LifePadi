@@ -1,30 +1,27 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+	MoreVertical,
+	Eye,
+	Pencil,
+	Trash2,
+	ToggleLeft,
+	ToggleRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import useUpdate from "../../hooks/useUpdate";
 import useAuth from "../../hooks/useAuth";
-import { useQueryClient } from "react-query";
 import { toggolProductStatusUrl } from "./vendorUri/VendorURI";
-import {
-	IconButton,
-	Menu,
-	MenuItem,
-	Tooltip,
-	ListItemIcon,
-	ListItemText,
-} from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import { ViewModal, DeleteModal, ToggleStatusModal } from "./VendorModals";
 import UpdateProductModal from "./UpdateProductModal";
 
 const VendorActions = ({ product }) => {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event) => setAnchorEl(event.currentTarget);
-	const handleClose = () => setAnchorEl(null);
 	const [openViewModal, setOpenViewModal] = useState(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -37,7 +34,6 @@ const VendorActions = ({ product }) => {
 		if (!p?.Id) return;
 		const url = toggolProductStatusUrl.replace("{id}", p.Id);
 		await update(url, {}, auth.accessToken);
-		// Invalidate product lists & stats so UI refreshes
 		queryClient.invalidateQueries("vendorProducts");
 		queryClient.invalidateQueries("vendorProductsList");
 		queryClient.invalidateQueries("vendorProductStats");
@@ -45,66 +41,35 @@ const VendorActions = ({ product }) => {
 
 	return (
 		<>
-			<Tooltip title="Actions">
-				<IconButton
-					size="medium"
-					sx={{ color: "black" }}
-					onClick={handleClick}
-					aria-label="actions">
-					<MoreVertIcon />
-				</IconButton>
-			</Tooltip>
-			<Menu
-				anchorEl={anchorEl}
-				open={open}
-				onClose={handleClose}
-				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-				transformOrigin={{ vertical: "top", horizontal: "right" }}>
-				<MenuItem
-					onClick={() => {
-						handleClose();
-						setOpenViewModal(true);
-					}}>
-					<ListItemIcon>
-						<VisibilityIcon fontSize="small" />
-					</ListItemIcon>
-					<ListItemText primary="View" />
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleClose();
-						setOpenToggleStatusModal(true);
-					}}>
-					<ListItemIcon>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button variant="ghost" size="icon" aria-label="Actions">
+						<MoreVertical className="h-4 w-4" />
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="end">
+					<DropdownMenuItem onClick={() => setOpenViewModal(true)}>
+						<Eye className="mr-2 h-4 w-4" /> View
+					</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setOpenToggleStatusModal(true)}>
 						{product.Status ? (
-							<ToggleOffIcon fontSize="small" />
+							<ToggleLeft className="mr-2 h-4 w-4" />
 						) : (
-							<ToggleOnIcon fontSize="small" />
+							<ToggleRight className="mr-2 h-4 w-4" />
 						)}
-					</ListItemIcon>
-					<ListItemText primary={product.Status ? "Deactivate" : "Activate"} />
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleClose();
-						setOpenUpdateModal(true);
-					}}>
-					<ListItemIcon>
-						<EditIcon fontSize="small" />
-					</ListItemIcon>
-					<ListItemText primary="Update" />
-				</MenuItem>
-				<MenuItem
-					onClick={() => {
-						handleClose();
-						setOpenDeleteModal(true);
-					}}>
-					<ListItemIcon>
-						<DeleteIcon fontSize="small" />
-					</ListItemIcon>
-					<ListItemText primary="Delete" />
-				</MenuItem>
-			</Menu>
+						{product.Status ? "Deactivate" : "Activate"}
+					</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setOpenUpdateModal(true)}>
+						<Pencil className="mr-2 h-4 w-4" /> Update
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => setOpenDeleteModal(true)}
+						className="text-destructive focus:text-destructive">
+						<Trash2 className="mr-2 h-4 w-4" /> Delete
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+
 			<ViewModal
 				product={product}
 				openViewModal={openViewModal}

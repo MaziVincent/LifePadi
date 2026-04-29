@@ -5,7 +5,7 @@ const SubmitButton = ({ isSubmitting, name }) => {
     <button
       type="submit"
       disabled={isSubmitting}
-      className={`inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-darkHover dark:focus:ring-primary-800`}
+      className={`inline-flex items-center text-background dark:text-gray-50 bg-primary-700 ring-2 hover:ring-background hover:bg-graybg focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-muted dark:focus:ring-primary-800`}
     >
       <svg
         className="mr-1 -ml-1 w-6 h-6"

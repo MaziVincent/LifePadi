@@ -1,55 +1,69 @@
-import { useParams, Link } from "react-router-dom";
-import { getDeliveryUrl } from "./rider_uri/RiderURI";
-import { CircularProgress, Chip, Alert, Box, Typography } from "@mui/material";
-import { useQuery } from "react-query";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft, Package } from "lucide-react";
 import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
 import DateFormater from "../shared/DateFormater";
+import { getDeliveryUrl } from "./rider_uri/RiderURI";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
-// Helper components
 const Field = ({ label, children }) => (
-	<div className="mb-2 text-xs md:text-sm">
-		<div className="text-gray-500 dark:text-gray-400 font-medium mb-[2px]">
+	<div className="text-sm">
+		<div className="text-xs font-medium text-muted-foreground mb-0.5">
 			{label}
 		</div>
-		<div className="text-gray-800 dark:text-gray-200 break-words max-w-full">
-			{children || <span className="text-gray-400">N/A</span>}
+		<div className="text-foreground break-words">
+			{children || <span className="text-muted-foreground">N/A</span>}
 		</div>
 	</div>
 );
 
-const statusColor = (value) => {
-	if (!value) return "default";
-	const v = value.toLowerCase();
-	if (["pending", "processing"].includes(v)) return "warning";
+const statusVariant = (status) => {
+	if (!status) return "outline";
+	const v = String(status).toLowerCase();
 	if (["delivered", "success", "successful", "completed"].includes(v))
 		return "success";
+	if (["pending", "processing"].includes(v)) return "warning";
 	if (["failed", "cancelled", "canceled", "declined"].includes(v))
-		return "error";
-	if (["intransit", "ongoing", "active"].includes(v)) return "info";
-	return "default";
+		return "destructive";
+	if (["intransit", "ongoing", "active", "accepted"].includes(v)) return "info";
+	return "outline";
 };
 
-const StatusChip = ({ value, deliveredFlag }) => {
-	if (deliveredFlag !== undefined) {
-		return (
-			<Chip
-				size="small"
-				label={deliveredFlag ? "Delivered" : "Pending"}
-				color={deliveredFlag ? "success" : "warning"}
-				variant={deliveredFlag ? "filled" : "outlined"}
-			/>
-		);
-	}
-	return (
-		<Chip
-			size="small"
-			label={value || "Unknown"}
-			color={statusColor(value)}
-			variant={statusColor(value) === "default" ? "outlined" : "filled"}
-		/>
-	);
+const StatusBadge = ({ status }) => {
+	const v = statusVariant(status);
+	const cls = {
+		success: "bg-emerald-500 hover:bg-emerald-500 text-white",
+		warning: "bg-amber-500 hover:bg-amber-500 text-white",
+		destructive: "bg-rose-500 hover:bg-rose-500 text-white",
+		info: "bg-sky-500 hover:bg-sky-500 text-white",
+		outline: "",
+	}[v];
+	if (v === "outline") return <Badge variant="outline">{status || "—"}</Badge>;
+	return <Badge className={cls}>{status}</Badge>;
 };
+
+const DeliveredBadge = ({ delivered }) =>
+	delivered ? (
+		<Badge className="bg-emerald-500 hover:bg-emerald-500 text-white">
+			Delivered
+		</Badge>
+	) : (
+		<Badge variant="outline">Pending</Badge>
+	);
 
 const currency = (v) =>
 	typeof v === "number"
@@ -57,29 +71,23 @@ const currency = (v) =>
 				style: "currency",
 				currency: "NGN",
 				minimumFractionDigits: 2,
-		  }).format(v)
+			}).format(v)
 		: v;
 
 const formatAddress = (addr) => {
 	if (!addr) return "";
 	if (typeof addr === "string") return addr;
-	const parts = [
-		addr.Name,
-		addr.Town,
-		addr.City,
-		addr.LocalGovt,
-		addr.State,
-	]
+	return [addr.Name, addr.Town, addr.City, addr.LocalGovt, addr.State]
 		.filter(Boolean)
-		.map((p) => p.trim());
-	return parts.join(", ");
+		.map((p) => String(p).trim())
+		.join(", ");
 };
 
 const ViewDelivery = () => {
 	const { id } = useParams();
 	const fetch = useFetch();
 	const { auth } = useAuth();
-	const backLink = "/rider";
+	const navigate = useNavigate();
 
 	const { data, isLoading, isError } = useQuery(
 		["delivery", id, auth?.accessToken],
@@ -88,10 +96,8 @@ const ViewDelivery = () => {
 			enabled: !!id,
 			retry: 1,
 			staleTime: 1000 * 30,
-		}
-  );
-  
-  //console.log(data)
+		},
+	);
 
 	const delivery = data?.data;
 	const isLogistic = delivery?.PickupType?.toLowerCase() === "logistics";
@@ -103,303 +109,307 @@ const ViewDelivery = () => {
 		{
 			enabled: !!logisticId && isLogistic,
 			retry: 1,
-		}
+		},
 	);
 
 	const logistic = logisticQuery.data;
 	const orderItems = delivery?.Order?.OrderItems || [];
 	const totalMoney = orderItems.reduce(
 		(sum, o) => sum + (Number(o.TotalAmount) || 0),
-		0
+		0,
 	);
 
 	return (
-		<div>
-			<section className="dark:bg-darkMenu dark:bg-gray-900 p-1 sm:p-5">
-				<div className="flex items-center mb-4">
-					<Link
-						className="text-sm px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center"
-						to={backLink}>
-						<span className="text-lg mr-1">&larr;</span> Back
-					</Link>
-				</div>
-				<div className="mx-auto max-w-screen-xl px-2 lg:px-3">
-					<div className="bg-white relative sm:rounded-lg shadow-md">
-						<div className="flex flex-col lg:flex-row gap-4 p-4">
-							{/* Delivery Details */}
-							<div className="w-full lg:w-1/3">
-								<Box className="dark:bg-darkHover rounded-md p-3 h-full border border-gray-100 dark:border-gray-700">
-									<Typography
-										variant="subtitle1"
-										className="font-semibold mb-2">
-										Delivery Details
-									</Typography>
-									{isLoading && (
-										<div className="flex justify-center py-6">
-											<CircularProgress size={28} />
-										</div>
-									)}
-									{isError && !isLoading && (
-										<Alert severity="error" className="mb-2">
-											Failed to load delivery.
-										</Alert>
-									)}
-									{delivery && (
-										<div className="overflow-auto max-h-72 pr-2">
-											<Field label="Pickup Address">
-												{`${delivery.PickUpAddress?.Name}`}
-											</Field>
-											<Field label="Delivery Address">
-												{`${delivery.DeliveryAddress?.Name}`}
-											</Field>
-											<Field label="Delivery Fee">
-												{currency(delivery.DeliveryFee)}
-											</Field>
-											<Field label="Delivery Status">
-												<StatusChip value={delivery.Status} />
-											</Field>
-											<Field label="Delivery Type">{delivery.PickupType}</Field>
-											<Field label="Created At">
-												{DateFormater(delivery.CreatedAt)}
-											</Field>
-											<Field label="Ordered Date">
-												{DateFormater(delivery.Order.CreatedAt)}
-											</Field>
-											<Field label="Order Status">
-												<StatusChip value={delivery.Order.Status} />
-											</Field>
-											<Field label="Final Delivery Time">
-												<StatusChip
-													deliveredFlag={delivery.Order.IsDelivered}
-												/>
-												{delivery.Order.IsDelivered && (
-													<span className="ml-2 text-xs text-gray-500">
-														{DateFormater(delivery.UpdatedAt)}
-													</span>
-												)}
-											</Field>
-										</div>
-									)}
-								</Box>
+		<div className="space-y-6">
+			<div className="flex items-center gap-3">
+				<Button
+					variant="outline"
+					size="icon"
+					onClick={() => navigate(-1)}
+					aria-label="Go back">
+					<ArrowLeft className="h-4 w-4" />
+				</Button>
+				<h1 className="text-2xl md:text-3xl font-bold">Delivery Details</h1>
+			</div>
+
+			<Breadcrumb>
+				<BreadcrumbList>
+					<BreadcrumbItem>
+						<BreadcrumbLink
+							href="#"
+							onClick={(e) => {
+								e.preventDefault();
+								navigate("/rider");
+							}}>
+							Dashboard
+						</BreadcrumbLink>
+					</BreadcrumbItem>
+					<BreadcrumbSeparator />
+					<BreadcrumbItem>
+						<BreadcrumbPage>Delivery</BreadcrumbPage>
+					</BreadcrumbItem>
+				</BreadcrumbList>
+			</Breadcrumb>
+
+			{isError && !isLoading && (
+				<Alert variant="destructive">
+					<AlertDescription>Failed to load delivery.</AlertDescription>
+				</Alert>
+			)}
+
+			<div className="grid gap-4 lg:grid-cols-3">
+				{/* Delivery Details */}
+				<Card>
+					<CardContent className="p-4 md:p-6">
+						<h2 className="font-semibold mb-3">Delivery Details</h2>
+						{isLoading ? (
+							<div className="space-y-3">
+								{Array.from({ length: 6 }).map((_, i) => (
+									<Skeleton key={i} className="h-6 w-full" />
+								))}
 							</div>
-							{/* Customer Details */}
-							<div className="w-full lg:w-1/3">
-								<Box className="dark:bg-darkHover rounded-md p-3 h-full border border-gray-100 dark:border-gray-700">
-									<Typography
-										variant="subtitle1"
-										className="font-semibold mb-2">
-										Customer Details
-									</Typography>
-									{delivery && (
-										<div className="overflow-auto max-h-72 pr-2">
-											<Field label="First Name">
-												{delivery.Order.Customer.FirstName}
-											</Field>
-											<Field label="Last Name">
-												{delivery.Order.Customer.LastName}
-											</Field>
-											<Field label="Phone">
-												{delivery.Order.Customer.PhoneNumber}
-											</Field>
-											<Field label="Address">
-												{formatAddress(delivery.Order.Customer.Addresses[0])}
-											</Field>
-											<Field label="Email">
-												{delivery.Order.Customer.Email}
-											</Field>
-										</div>
-									)}
-								</Box>
+						) : delivery ? (
+							<div className="space-y-3">
+								<Field label="Pickup Address">
+									{delivery.PickUpAddress?.Name}
+								</Field>
+								<Field label="Delivery Address">
+									{delivery.DeliveryAddress?.Name}
+								</Field>
+								<Field label="Delivery Fee">
+									{currency(delivery.DeliveryFee)}
+								</Field>
+								<Field label="Delivery Status">
+									<StatusBadge status={delivery.Status} />
+								</Field>
+								<Field label="Delivery Type">{delivery.PickupType}</Field>
+								<Field label="Created At">
+									{DateFormater(delivery.CreatedAt)}
+								</Field>
+								<Field label="Ordered Date">
+									{DateFormater(delivery.Order?.CreatedAt)}
+								</Field>
+								<Field label="Order Status">
+									<StatusBadge status={delivery.Order?.Status} />
+								</Field>
+								<Field label="Final Delivery Time">
+									<div className="flex items-center gap-2">
+										<DeliveredBadge delivered={delivery.Order?.IsDelivered} />
+										{delivery.Order?.IsDelivered && (
+											<span className="text-xs text-muted-foreground">
+												{DateFormater(delivery.UpdatedAt)}
+											</span>
+										)}
+									</div>
+								</Field>
 							</div>
-							{/* Logistic Details */}
-							{isLogistic && (
-								<div className="w-full lg:w-1/3">
-									<Box className="dark:bg-darkHover rounded-md p-3 h-full border border-gray-100 dark:border-gray-700">
-										<Typography
-											variant="subtitle1"
-											className="font-semibold mb-2">
-											Logistic Details
-										</Typography>
-										{logisticQuery.isLoading && (
-											<div className="flex justify-center py-6">
-												<CircularProgress size={24} />
-											</div>
-										)}
-										{logisticQuery.isError && !logisticQuery.isLoading && (
-											<Alert severity="error" className="mb-2">
-												Could not load logistics.
-											</Alert>
-										)}
-										{logistic && (
-											<div className="overflow-auto max-h-72 pr-2">
-												<Field label="Sender Name">{logistic.SenderName}</Field>
-												<Field label="Sender Phone">
-													{logistic.SenderPhone}
-												</Field>
-												<Field label="Sender Address">
-													{logistic.SenderAddress}
-												</Field>
-												<Field label="Receiver Name">
-													{logistic.ReceiverName}
-												</Field>
-												<Field label="Receiver Phone">
-													{logistic.ReceiverPhone}
-												</Field>
-												<Field label="Receiver Address">
-													{logistic.ReceiverAddress}
-												</Field>
-												<Field label="Item">{logistic.Item}</Field>
-												<Field label="Item Description">
-													{logistic.ItemDescription}
-												</Field>
-												<Field label="Item Weight">{logistic.ItemWeight}</Field>
-												<Field label="Tracking Number">
-													{logistic.TrackingNumber}
-												</Field>
-												<Field label="Status">
-													<StatusChip value={logistic.Status} />
-												</Field>
-											</div>
-										)}
-									</Box>
-								</div>
-							)}
-						</div>
-						{/* Order Items Cards */}
-						<div className="border-t border-gray-100 dark:border-gray-700 px-4 py-6">
-							<h3 className="text-sm font-semibold mb-4 text-gray-700 dark:text-gray-200">
-								Order Items
-							</h3>
-							{isLoading && (
-								<div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-									{Array.from({ length: 4 }).map((_, i) => (
-										<div
-											key={i}
-											className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-darkHover animate-pulse">
-											<div className="h-32 mb-3 bg-gray-200 dark:bg-gray-700 rounded" />
-											<div className="h-3 w-3/4 mb-2 bg-gray-200 dark:bg-gray-700 rounded" />
-											<div className="h-3 w-1/2 mb-3 bg-gray-200 dark:bg-gray-700 rounded" />
-											<div className="flex gap-2">
-												<div className="h-3 w-10 bg-gray-200 dark:bg-gray-700 rounded" />
-												<div className="h-3 w-12 bg-gray-200 dark:bg-gray-700 rounded" />
-											</div>
-										</div>
+						) : null}
+					</CardContent>
+				</Card>
+
+				{/* Customer Details */}
+				<Card>
+					<CardContent className="p-4 md:p-6">
+						<h2 className="font-semibold mb-3">Customer Details</h2>
+						{isLoading ? (
+							<div className="space-y-3">
+								{Array.from({ length: 5 }).map((_, i) => (
+									<Skeleton key={i} className="h-6 w-full" />
+								))}
+							</div>
+						) : delivery ? (
+							<div className="space-y-3">
+								<Field label="First Name">
+									{delivery.Order?.Customer?.FirstName}
+								</Field>
+								<Field label="Last Name">
+									{delivery.Order?.Customer?.LastName}
+								</Field>
+								<Field label="Phone">
+									{delivery.Order?.Customer?.PhoneNumber}
+								</Field>
+								<Field label="Address">
+									{formatAddress(delivery.Order?.Customer?.Addresses?.[0])}
+								</Field>
+								<Field label="Email">{delivery.Order?.Customer?.Email}</Field>
+							</div>
+						) : null}
+					</CardContent>
+				</Card>
+
+				{/* Logistic Details */}
+				{isLogistic && (
+					<Card>
+						<CardContent className="p-4 md:p-6">
+							<h2 className="font-semibold mb-3">Logistic Details</h2>
+							{logisticQuery.isLoading ? (
+								<div className="space-y-3">
+									{Array.from({ length: 6 }).map((_, i) => (
+										<Skeleton key={i} className="h-6 w-full" />
 									))}
 								</div>
-							)}
-							{!isLoading && delivery && orderItems.length > 0 && (
-								<div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-									{orderItems.map((o) => {
-										return (
-											<div
-												key={o.Id}
-												className="group relative flex flex-col border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-darkHover shadow-sm hover:shadow-md transition-shadow">
-												<div className="relative h-40 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-													<img
-														src={o.Product.ProductImgUrl}
-														alt={o.Product.Name}
-														className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-														loading="lazy"
-													/>
-													<div className="absolute top-2 left-2 flex gap-2">
-														<Chip
-															size="small"
-															label={`Qty: ${o.Quantity}`}
-															color="primary"
-														/>
-														<Chip
-															size="small"
-															label={o?.IsFragile ? "Fragile" : "Safe"}
-															color={o?.IsFragile ? "warning" : "default"}
-															variant={o?.IsFragile ? "filled" : "outlined"}
-														/>
-													</div>
-												</div>
-												<div className="flex flex-col flex-1 p-4">
-													<h4
-														className="font-semibold text-sm text-gray-800 dark:text-gray-100 mb-1 line-clamp-1"
-														title={o.Product.Name}>
-														{o.Product.Name}
-													</h4>
-													<p
-														className="text-xs text-gray-500 dark:text-gray-400 mb-2 line-clamp-2"
-														title={o.Product.Description}>
-														{o.Product.Description}
-													</p>
-													<div className="mt-auto space-y-1 text-xs text-gray-600 dark:text-gray-300">
-														<div className="flex justify-between">
-															<span className="font-medium">Unit:</span>
-															<span>{currency(o.Product.Price)}</span>
-														</div>
-														<div className="flex justify-between">
-															<span className="font-medium">Total:</span>
-															<span>{currency(o.TotalAmount)}</span>
-														</div>
-														<div className="flex justify-between">
-															<span className="font-medium">Vendor:</span>
-															<span
-																className=" max-w-[180px]"
-																title={formatAddress(
-																	o.Product.Vendor.ContactAddress
-																)}>
-																{o.Product.Vendor.Name}
-															</span>
-														</div>
-														{o.Name && (
-															<div className="flex justify-between">
-																<span className="font-medium">Item:</span>
-																<span
-																	className=" max-w-[180px]"
-																	title={o.Name}>
-																	{o.Name}
-																</span>
-															</div>
-														)}
-														{o.Weight && (
-															<div className="flex justify-between">
-																<span className="font-medium">Weight:</span>
-																<span>{o.Weight}</span>
-															</div>
-														)}
-														{o.Description && (
-															<div className="flex justify-between">
-																<span className="font-medium">Item Desc:</span>
-																<span
-																	className="truncate max-w-[180px]"
-																	title={o.Description}>
-																	{o.Description}
-																</span>
-															</div>
-														)}
-													</div>
-												</div>
-											</div>
-										);
-									})}
+							) : logisticQuery.isError ? (
+								<Alert variant="destructive">
+									<AlertDescription>Could not load logistics.</AlertDescription>
+								</Alert>
+							) : logistic ? (
+								<div className="space-y-3">
+									<Field label="Sender Name">{logistic.SenderName}</Field>
+									<Field label="Sender Phone">{logistic.SenderPhone}</Field>
+									<Field label="Sender Address">{logistic.SenderAddress}</Field>
+									<Field label="Receiver Name">{logistic.ReceiverName}</Field>
+									<Field label="Receiver Phone">{logistic.ReceiverPhone}</Field>
+									<Field label="Receiver Address">
+										{logistic.ReceiverAddress}
+									</Field>
+									<Field label="Item">{logistic.Item}</Field>
+									<Field label="Item Description">
+										{logistic.ItemDescription}
+									</Field>
+									<Field label="Item Weight">{logistic.ItemWeight}</Field>
+									<Field label="Tracking Number">
+										{logistic.TrackingNumber}
+									</Field>
+									<Field label="Status">
+										<StatusBadge status={logistic.Status} />
+									</Field>
 								</div>
-							)}
-							{!isLoading && delivery && orderItems.length === 0 && (
-								<div className="text-center text-sm text-gray-400 py-10">
-									No items found
-								</div>
-							)}
-							{!isLoading && !delivery && (
-								<div className="text-center text-sm text-gray-400 py-10">
-									Delivery not found
-								</div>
-							)}
+							) : null}
+						</CardContent>
+					</Card>
+				)}
+			</div>
+
+			{/* Order Items */}
+			<Card>
+				<CardContent className="p-4 md:p-6">
+					<h2 className="font-semibold mb-4 flex items-center gap-2">
+						<Package className="h-5 w-5" />
+						Order Items
+					</h2>
+
+					{isLoading ? (
+						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+							{Array.from({ length: 4 }).map((_, i) => (
+								<Card key={i}>
+									<Skeleton className="h-40 w-full" />
+									<CardContent className="p-4 space-y-2">
+										<Skeleton className="h-4 w-3/4" />
+										<Skeleton className="h-3 w-1/2" />
+									</CardContent>
+								</Card>
+							))}
 						</div>
-						<div className="flex justify-end p-4">
-							<div className="text-right">
-								<div className="text-sm font-semibold">Total Amount:</div>
-								<div className="text-lg font-bold mt-1">
-									{currency(totalMoney)}
-								</div>
-							</div>
+					) : !delivery ? (
+						<p className="py-10 text-center text-sm text-muted-foreground">
+							Delivery not found
+						</p>
+					) : orderItems.length === 0 ? (
+						<p className="py-10 text-center text-sm text-muted-foreground">
+							No items found
+						</p>
+					) : (
+						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+							{orderItems.map((o) => (
+								<Card
+									key={o.Id}
+									className="group overflow-hidden transition hover:shadow-md">
+									<div className="relative h-40 overflow-hidden bg-muted">
+										<img
+											src={o.Product.ProductImgUrl}
+											alt={o.Product.Name}
+											loading="lazy"
+											className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+										/>
+										<div className="absolute left-2 top-2 flex gap-2">
+											<Badge className="bg-primary text-primary-foreground hover:bg-primary">
+												Qty: {o.Quantity}
+											</Badge>
+											{o?.IsFragile ? (
+												<Badge className="bg-amber-500 hover:bg-amber-500 text-white">
+													Fragile
+												</Badge>
+											) : (
+												<Badge variant="outline" className="bg-background/80">
+													Safe
+												</Badge>
+											)}
+										</div>
+									</div>
+									<CardContent className="p-4">
+										<h4
+											className="mb-1 line-clamp-1 font-semibold text-sm"
+											title={o.Product.Name}>
+											{o.Product.Name}
+										</h4>
+										<p
+											className="mb-2 line-clamp-2 text-xs text-muted-foreground"
+											title={o.Product.Description}>
+											{o.Product.Description}
+										</p>
+										<div className="space-y-1 text-xs text-muted-foreground">
+											<div className="flex justify-between">
+												<span className="font-medium">Unit:</span>
+												<span>{currency(o.Product.Price)}</span>
+											</div>
+											<div className="flex justify-between">
+												<span className="font-medium">Total:</span>
+												<span>{currency(o.TotalAmount)}</span>
+											</div>
+											<div className="flex justify-between">
+												<span className="font-medium">Vendor:</span>
+												<span
+													className="max-w-[180px] truncate"
+													title={formatAddress(
+														o.Product.Vendor?.ContactAddress,
+													)}>
+													{o.Product.Vendor?.Name}
+												</span>
+											</div>
+											{o.Name && (
+												<div className="flex justify-between">
+													<span className="font-medium">Item:</span>
+													<span
+														className="max-w-[180px] truncate"
+														title={o.Name}>
+														{o.Name}
+													</span>
+												</div>
+											)}
+											{o.Weight && (
+												<div className="flex justify-between">
+													<span className="font-medium">Weight:</span>
+													<span>{o.Weight}</span>
+												</div>
+											)}
+											{o.Description && (
+												<div className="flex justify-between">
+													<span className="font-medium">Item Desc:</span>
+													<span
+														className="max-w-[180px] truncate"
+														title={o.Description}>
+														{o.Description}
+													</span>
+												</div>
+											)}
+										</div>
+									</CardContent>
+								</Card>
+							))}
+						</div>
+					)}
+
+					<Separator className="my-4" />
+					<div className="flex justify-end">
+						<div className="text-right">
+							<p className="text-sm font-medium text-muted-foreground">
+								Total Amount
+							</p>
+							<p className="text-2xl font-bold">{currency(totalMoney)}</p>
 						</div>
 					</div>
-				</div>
-			</section>
+				</CardContent>
+			</Card>
 		</div>
 	);
 };

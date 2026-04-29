@@ -63,6 +63,7 @@ namespace Api.Services
 
         public async Task<OrderDto> createAsync(OrderDto order)
         {
+            await using var transaction = await _dbContext!.Database.BeginTransactionAsync();
             try
             {
                 var newOrder = _mapper.Map<Order>(order);
@@ -81,11 +82,13 @@ namespace Api.Services
                 newOrder.SearchString = newOrder.Status.ToUpper() + " " + newOrder.Type!.ToUpper() + " " + newOrder.Order_Id;
                 await _dbContext!.Orders.AddAsync(newOrder);
                 await _dbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
                 var OrderDto = _mapper.Map<OrderDto>(newOrder);
                 return OrderDto;
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 throw new ServiceException(ex.Message);
             }
         }

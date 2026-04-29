@@ -63,7 +63,7 @@ pids
 # Coverage directory used by tools like istanbul
 coverage/
 
-# Firebase
+# Firebase service account keys - NEVER commit these
 *firebase.json
-# Allow the specific Firebase config needed for deployment
-!lifepadi-24bfe-firebase.json
+lifepadi-*-firebase.json
+firebase-credentials*.json

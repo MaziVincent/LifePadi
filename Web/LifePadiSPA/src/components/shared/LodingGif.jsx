@@ -3,7 +3,7 @@ const LoadingGif = () => {
     return (  <>
         <svg
           aria-hidden="true"
-          className="w-8 h-8 text-graybg animate-spin dark:text-darkHover fill-background"
+          className="w-8 h-8 text-graybg animate-spin dark:text-muted-foreground fill-background"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

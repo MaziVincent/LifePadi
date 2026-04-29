@@ -2,15 +2,15 @@ const ProductSkeleton = () => {
   return (
     <div
       role="status"
-      className="max-w-xl p-4 border flex gap-10 border-gray rounded shadow animate-pulse dark:border-darkHover"
+      className="max-w-xl p-4 border flex gap-10 border-gray rounded shadow animate-pulse dark:border-border"
     >
       <div className="flex flex-col justify-center w-1/2">
-        <div className="h-3 bg-graybg rounded-full dark:bg-darkHover w-20 mb-2"></div>
-        <div className="h-3 bg-graybg rounded-full dark:bg-darkHover w-20 mb-2"></div>
-        <div className="h-3 bg-graybg rounded-full dark:bg-darkHover w-20 mb-2"></div>
+        <div className="h-3 bg-graybg rounded-full dark:bg-muted w-20 mb-2"></div>
+        <div className="h-3 bg-graybg rounded-full dark:bg-muted w-20 mb-2"></div>
+        <div className="h-3 bg-graybg rounded-full dark:bg-muted w-20 mb-2"></div>
       </div>
 
-      <div className="flex items-center justify-center w-1/2 h-20 bg-gray rounded dark:bg-darkHover">
+      <div className="flex items-center justify-center w-1/2 h-20 bg-gray rounded dark:bg-muted">
         <svg
           className="w-10 h-10 text-graybg dark:text-gray"
           aria-hidden="true"

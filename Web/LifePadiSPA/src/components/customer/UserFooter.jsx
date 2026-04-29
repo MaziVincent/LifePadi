@@ -1,6 +1,6 @@
 const UserFooter = () => {
     return (
-      <footer className=" fixed bottom-0 w-full z-50 bg-white rounded-lg sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 bg-primary dark:bg-darkMenu antialiased shadow-md ">
+      <footer className=" fixed bottom-0 w-full z-50 bg-white rounded-lg sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 bg-primary dark:bg-card antialiased shadow-md ">
         <p className="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
           &copy; {new Date().getFullYear()}{" "}
           <a

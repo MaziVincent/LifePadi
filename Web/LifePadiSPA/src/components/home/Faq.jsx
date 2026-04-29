@@ -1,6 +1,6 @@
 const Faq = () => {
   return (
-    <section className="bg-primary dark:bg-darkBg pt-20">
+    <section className="bg-primary dark:bg-background pt-20">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <h2 className="mb-8 text-4xl tracking-tight font-extrabold text-grayTxt dark:text-primary">
           Frequently asked questions
