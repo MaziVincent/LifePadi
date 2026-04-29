@@ -146,10 +146,18 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 			}));
 		await Promise.all([
 			...cleanedV.map((dto) =>
-				postData(`${baseUrl}ProductOption/variants/create`, dto, auth.accessToken),
+				postData(
+					`${baseUrl}ProductOption/variants/create`,
+					dto,
+					auth.accessToken,
+				),
 			),
 			...cleanedE.map((dto) =>
-				postData(`${baseUrl}ProductOption/extras/create`, dto, auth.accessToken),
+				postData(
+					`${baseUrl}ProductOption/extras/create`,
+					dto,
+					auth.accessToken,
+				),
 			),
 		]);
 	};

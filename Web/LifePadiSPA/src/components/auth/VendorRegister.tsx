@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { type AxiosError } from "axios";
 import { toast } from "sonner";
-import { Loader2, Store, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+	Loader2,
+	Store,
+	ArrowLeft,
+	ArrowRight,
+	CheckCircle2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,23 +84,39 @@ const VendorRegister = () => {
 			try {
 				const [s, c] = await Promise.all([
 					axios.get(`${baseUrl}service/allLite`).catch(() => ({ data: [] })),
-					axios.get(`${baseUrl}vendorcategory/all?pageNumber=1&pageSize=100`).catch(() => ({
-						data: { result: [] },
-					})),
+					axios
+						.get(`${baseUrl}vendorcategory/all?pageNumber=1&pageSize=100`)
+						.catch(() => ({
+							data: { result: [] },
+						})),
 				]);
-				const sd = Array.isArray(s.data) ? s.data : s.data?.result ?? [];
-				const cd = Array.isArray(c.data) ? c.data : c.data?.result ?? [];
+				const sd = Array.isArray(s.data) ? s.data : (s.data?.result ?? []);
+				const cd = Array.isArray(c.data) ? c.data : (c.data?.result ?? []);
 				setServices(
-					sd.map((x: { Id?: number; id?: number; Name?: string; name?: string }) => ({
-						id: x.Id ?? x.id ?? 0,
-						name: x.Name ?? x.name ?? "",
-					})),
+					sd.map(
+						(x: {
+							Id?: number;
+							id?: number;
+							Name?: string;
+							name?: string;
+						}) => ({
+							id: x.Id ?? x.id ?? 0,
+							name: x.Name ?? x.name ?? "",
+						}),
+					),
 				);
 				setCategories(
-					cd.map((x: { Id?: number; id?: number; Name?: string; name?: string }) => ({
-						id: x.Id ?? x.id ?? 0,
-						name: x.Name ?? x.name ?? "",
-					})),
+					cd.map(
+						(x: {
+							Id?: number;
+							id?: number;
+							Name?: string;
+							name?: string;
+						}) => ({
+							id: x.Id ?? x.id ?? 0,
+							name: x.Name ?? x.name ?? "",
+						}),
+					),
 				);
 			} catch {
 				/* non-fatal — user can still type free-form ids */
@@ -112,7 +134,8 @@ const VendorRegister = () => {
 			if (!emailRe.test(data.email)) return "Enter a valid email";
 			if (!phoneRe.test(data.phoneNumber))
 				return "Enter a valid Nigerian phone (e.g. 08012345678)";
-			if (data.password.length < 8) return "Password must be at least 8 characters";
+			if (data.password.length < 8)
+				return "Password must be at least 8 characters";
 			if (data.password !== data.confirmPassword)
 				return "Passwords do not match";
 		}
@@ -190,8 +213,8 @@ const VendorRegister = () => {
 				<CheckCircle2 className="h-16 w-16 text-primary" />
 				<h1 className="text-2xl font-semibold">Thanks for applying!</h1>
 				<p className="text-muted-foreground">
-					Your vendor application is now being reviewed by our team. We'll
-					email you once it's approved.
+					Your vendor application is now being reviewed by our team. We'll email
+					you once it's approved.
 				</p>
 			</div>
 		);
@@ -220,8 +243,8 @@ const VendorRegister = () => {
 							i === step
 								? "bg-primary text-primary-foreground"
 								: i < step
-								? "bg-primary/15 text-primary"
-								: "bg-muted text-muted-foreground"
+									? "bg-primary/15 text-primary"
+									: "bg-muted text-muted-foreground"
 						}`}>
 						<span className="flex h-5 w-5 items-center justify-center rounded-full border border-current text-[10px]">
 							{i < step ? "✓" : i + 1}
@@ -388,8 +411,8 @@ const VendorRegister = () => {
 							v={`${data.contactAddress}, ${data.town}, ${data.city}, ${data.state}`}
 						/>
 						<p className="rounded-md bg-muted/50 p-3 text-xs text-muted-foreground">
-							After submitting, an admin will review your application. You'll
-							be able to sign in once approved.
+							After submitting, an admin will review your application. You'll be
+							able to sign in once approved.
 						</p>
 					</div>
 				)}

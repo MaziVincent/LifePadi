@@ -79,14 +79,14 @@ const RiderRegister = () => {
 			if (!emailRe.test(data.email)) return "Enter a valid email";
 			if (!phoneRe.test(data.phoneNumber))
 				return "Enter a valid Nigerian phone (e.g. 08012345678)";
-			if (data.password.length < 8) return "Password must be at least 8 characters";
+			if (data.password.length < 8)
+				return "Password must be at least 8 characters";
 			if (data.password !== data.confirmPassword)
 				return "Passwords do not match";
 		}
 		if (step === 1) {
 			if (!data.identityType) return "Pick an ID type";
-			if (data.identityNumber.trim().length < 4)
-				return "Enter your ID number";
+			if (data.identityNumber.trim().length < 4) return "Enter your ID number";
 			if (!identityImg) return "Upload a photo of your ID";
 			if (!data.contactAddress) return "Contact address is required";
 		}
@@ -146,8 +146,8 @@ const RiderRegister = () => {
 				<CheckCircle2 className="h-16 w-16 text-primary" />
 				<h1 className="text-2xl font-semibold">Application received</h1>
 				<p className="text-muted-foreground">
-					We're reviewing your details. You'll get an email the moment our
-					team approves your account.
+					We're reviewing your details. You'll get an email the moment our team
+					approves your account.
 				</p>
 			</div>
 		);
@@ -175,8 +175,8 @@ const RiderRegister = () => {
 							i === step
 								? "bg-primary text-primary-foreground"
 								: i < step
-								? "bg-primary/15 text-primary"
-								: "bg-muted text-muted-foreground"
+									? "bg-primary/15 text-primary"
+									: "bg-muted text-muted-foreground"
 						}`}>
 						<span className="flex h-5 w-5 items-center justify-center rounded-full border border-current text-[10px]">
 							{i < step ? "✓" : i + 1}
@@ -252,7 +252,9 @@ const RiderRegister = () => {
 						<Field label="ID photo" full>
 							<label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-border p-6 text-sm text-muted-foreground hover:bg-muted/40">
 								<Upload className="h-5 w-5" />
-								<span>{identityImg ? identityImg.name : "Upload a clear photo"}</span>
+								<span>
+									{identityImg ? identityImg.name : "Upload a clear photo"}
+								</span>
 								<input
 									type="file"
 									accept="image/*"

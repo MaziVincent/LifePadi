@@ -33,13 +33,21 @@ interface CreateProductModalProps {
 	vendorId: number | string;
 }
 
-interface OptionRow { name: string; price: string; isDefault?: boolean; }
+interface OptionRow {
+	name: string;
+	price: string;
+	isDefault?: boolean;
+}
 
 const selectClasses = cn(
 	"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm capitalize ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
 );
 
-const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalProps) => {
+const CreateProductModal = ({
+	open,
+	handleClose,
+	vendorId,
+}: CreateProductModalProps) => {
 	const post = usePost();
 	const fetch = useFetch();
 	const { auth } = useAuth();
@@ -82,7 +90,12 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 			calls.push(
 				post(
 					`${baseUrl}ProductOption/variants/create`,
-					{ ProductId: productId, Name: v.name, Price: Number(v.price), IsDefault: !!v.isDefault },
+					{
+						ProductId: productId,
+						Name: v.name,
+						Price: Number(v.price),
+						IsDefault: !!v.isDefault,
+					},
 					auth?.accessToken,
 				),
 			),
@@ -96,10 +109,15 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 				),
 			),
 		);
-		try { await Promise.all(calls); } catch { toast.error("Some options failed to save"); }
+		try {
+			await Promise.all(calls);
+		} catch {
+			toast.error("Some options failed to save");
+		}
 	};
 
-	const { mutate } = useMutation({ mutationFn: create,
+	const { mutate } = useMutation({
+		mutationFn: create,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["vendor"] });
 			toast.success("Product Created");
@@ -140,7 +158,9 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 						<div className="space-y-1">
 							<Label>Name</Label>
 							<Input {...register("Name", { required: true })} />
-							{errors.Name && <p className="text-xs text-destructive">Required</p>}
+							{errors.Name && (
+								<p className="text-xs text-destructive">Required</p>
+							)}
 						</div>
 						<div className="space-y-1">
 							<Label>Tag</Label>
@@ -148,7 +168,10 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 						</div>
 						<div className="space-y-1 sm:col-span-2">
 							<Label>Description</Label>
-							<Textarea rows={3} {...register("Description", { required: true })} />
+							<Textarea
+								rows={3}
+								{...register("Description", { required: true })}
+							/>
 						</div>
 						<div className="space-y-1">
 							<Label>Price</Label>
@@ -159,8 +182,9 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 							<select
 								className={selectClasses}
 								defaultValue=""
-								{...register("CategoryId", { required: "Category is required" })}
-							>
+								{...register("CategoryId", {
+									required: "Category is required",
+								})}>
 								<option value="" disabled>
 									Select Category
 								</option>
@@ -179,14 +203,31 @@ const CreateProductModal = ({ open, handleClose, vendorId }: CreateProductModalP
 								{...register("Image", { required: true })}
 								onChange={handleFile}
 							/>
-							{fileError && <p className="text-xs text-destructive">File must be under 200KB</p>}
+							{fileError && (
+								<p className="text-xs text-destructive">
+									File must be under 200KB
+								</p>
+							)}
 							{file && <p className="text-xs text-emerald-600">{file.name}</p>}
 						</div>
 					</div>
-					<OptionSection title="Variants" subtitle="Sizes / portions that REPLACE base price." items={variants} setItems={setVariants} withDefault />
-					<OptionSection title="Extras" subtitle="Add-ons that ADD to price." items={extras} setItems={setExtras} />
+					<OptionSection
+						title="Variants"
+						subtitle="Sizes / portions that REPLACE base price."
+						items={variants}
+						setItems={setVariants}
+						withDefault
+					/>
+					<OptionSection
+						title="Extras"
+						subtitle="Add-ons that ADD to price."
+						items={extras}
+						setItems={setExtras}
+					/>
 					<DialogFooter>
-						<Button type="submit" disabled={isSubmitting || fileError || !isValid}>
+						<Button
+							type="submit"
+							disabled={isSubmitting || fileError || !isValid}>
 							{isSubmitting ? (
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							) : (
@@ -209,11 +250,19 @@ interface OptionSectionProps {
 	withDefault?: boolean;
 }
 
-const OptionSection = ({ title, subtitle, items, setItems, withDefault }: OptionSectionProps) => {
-	const addRow = () => setItems((xs) => [...xs, { name: "", price: "", isDefault: false }]);
+const OptionSection = ({
+	title,
+	subtitle,
+	items,
+	setItems,
+	withDefault,
+}: OptionSectionProps) => {
+	const addRow = () =>
+		setItems((xs) => [...xs, { name: "", price: "", isDefault: false }]);
 	const updateRow = (i: number, patch: Partial<OptionRow>) =>
 		setItems((xs) => xs.map((x, idx) => (idx === i ? { ...x, ...patch } : x)));
-	const removeRow = (i: number) => setItems((xs) => xs.filter((_, idx) => idx !== i));
+	const removeRow = (i: number) =>
+		setItems((xs) => xs.filter((_, idx) => idx !== i));
 	const setDefault = (i: number) =>
 		setItems((xs) => xs.map((x, idx) => ({ ...x, isDefault: idx === i })));
 	return (
@@ -227,18 +276,42 @@ const OptionSection = ({ title, subtitle, items, setItems, withDefault }: Option
 					<Plus className="mr-1 h-3.5 w-3.5" /> Add
 				</Button>
 			</div>
-			{items.length === 0 && <p className="text-xs italic text-muted-foreground">None added.</p>}
+			{items.length === 0 && (
+				<p className="text-xs italic text-muted-foreground">None added.</p>
+			)}
 			<div className="space-y-2">
 				{items.map((row, i) => (
 					<div key={i} className="flex flex-wrap items-center gap-2">
-						<Input placeholder="Name" className="min-w-[120px] flex-1" value={row.name} onChange={(e) => updateRow(i, { name: e.target.value })} />
-						<Input type="number" min={0} step="0.01" placeholder="Price" className="w-28" value={row.price} onChange={(e) => updateRow(i, { price: e.target.value })} />
+						<Input
+							placeholder="Name"
+							className="min-w-[120px] flex-1"
+							value={row.name}
+							onChange={(e) => updateRow(i, { name: e.target.value })}
+						/>
+						<Input
+							type="number"
+							min={0}
+							step="0.01"
+							placeholder="Price"
+							className="w-28"
+							value={row.price}
+							onChange={(e) => updateRow(i, { price: e.target.value })}
+						/>
 						{withDefault && (
 							<label className="flex cursor-pointer items-center gap-1 text-xs">
-								<input type="radio" checked={!!row.isDefault} onChange={() => setDefault(i)} /> default
+								<input
+									type="radio"
+									checked={!!row.isDefault}
+									onChange={() => setDefault(i)}
+								/>{" "}
+								default
 							</label>
 						)}
-						<Button type="button" variant="ghost" size="icon" onClick={() => removeRow(i)}>
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							onClick={() => removeRow(i)}>
 							<Trash2 className="h-4 w-4 text-destructive" />
 						</Button>
 					</div>

@@ -225,18 +225,18 @@ const RiderDashboard = () => {
 							className={`border-white/40 bg-white/10 text-white ${
 								isVerified ? "" : "opacity-80"
 							}`}>
-						{isVerified ? (
-							<>
-								<ShieldCheck className="mr-1 h-3.5 w-3.5" />
-								Verified Rider
-							</>
-						) : (
-							<>
-								<ShieldAlert className="mr-1 h-3.5 w-3.5" />
-								Not Verified
-							</>
-						)}
-					</Badge>
+							{isVerified ? (
+								<>
+									<ShieldCheck className="mr-1 h-3.5 w-3.5" />
+									Verified Rider
+								</>
+							) : (
+								<>
+									<ShieldAlert className="mr-1 h-3.5 w-3.5" />
+									Not Verified
+								</>
+							)}
+						</Badge>
 					</div>
 				</CardContent>
 			</Card>

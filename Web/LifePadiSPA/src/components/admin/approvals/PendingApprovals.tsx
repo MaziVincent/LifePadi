@@ -10,12 +10,7 @@ import {
 	ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 	Dialog,
 	DialogContent,
@@ -153,7 +148,9 @@ const PendingApprovals = () => {
 				</Button>
 			</div>
 
-			<Tabs value={tab} onValueChange={(v) => setTab(v as "vendors" | "riders")}>
+			<Tabs
+				value={tab}
+				onValueChange={(v) => setTab(v as "vendors" | "riders")}>
 				<TabsList>
 					<TabsTrigger value="vendors" className="gap-2">
 						<Store className="h-4 w-4" /> Vendors
