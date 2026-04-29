@@ -206,6 +206,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("activate/{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> activate(int id)
         {
             try
@@ -221,6 +222,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("deactivate/{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> deactivate(int id)
         {
             try

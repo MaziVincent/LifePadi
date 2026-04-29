@@ -8,6 +8,8 @@ import {
 	Package,
 	CheckCircle2,
 	Clock,
+	Wallet,
+	Power,
 } from "lucide-react";
 import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
@@ -110,6 +112,12 @@ const RiderDashboard = () => {
 	}, [searchInput]);
 
 	const [isVerified, setIsVerified] = useState(false);
+	const [online, setOnline] = useState(
+		() => localStorage.getItem("riderOnline") === "1",
+	);
+	useEffect(() => {
+		localStorage.setItem("riderOnline", online ? "1" : "0");
+	}, [online]);
 
 	const fetcher = async (url) => {
 		const response = await fetch(url, auth.accessToken);
@@ -158,6 +166,20 @@ const RiderDashboard = () => {
 	const deliveries = riderDeliveriesQuery.data?.result || [];
 	const empty = !riderDeliveriesQuery.isLoading && deliveries.length === 0;
 
+	const estEarnings = useMemo(() => {
+		return deliveries
+			.filter((d) => {
+				const s = String(
+					d?.DeliveryStatus || d?.deliveryStatus || "",
+				).toLowerCase();
+				return ["delivered", "success", "successful", "completed"].includes(s);
+			})
+			.reduce(
+				(acc, d) => acc + Number(d?.DeliveryFee ?? d?.deliveryFee ?? 0),
+				0,
+			);
+	}, [deliveries]);
+
 	const anyError =
 		riderDeliveriesQuery.isError ||
 		pendingDeliveriesCountQuery.isError ||
@@ -185,11 +207,24 @@ const RiderDashboard = () => {
 							Track and manage your deliveries
 						</p>
 					</div>
-					<Badge
-						variant="outline"
-						className={`border-white/40 bg-white/10 text-white ${
-							isVerified ? "" : "opacity-80"
-						}`}>
+					<div className="flex items-center gap-2">
+						<Button
+							size="sm"
+							variant={online ? "default" : "outline"}
+							onClick={() => setOnline((v) => !v)}
+							className={
+								online
+									? "bg-emerald-500 hover:bg-emerald-600 text-white"
+									: "border-white/40 bg-white/10 text-white hover:bg-white/20"
+							}>
+							<Power className="mr-1 h-3.5 w-3.5" />
+							{online ? "Online" : "Go Online"}
+						</Button>
+						<Badge
+							variant="outline"
+							className={`border-white/40 bg-white/10 text-white ${
+								isVerified ? "" : "opacity-80"
+							}`}>
 						{isVerified ? (
 							<>
 								<ShieldCheck className="mr-1 h-3.5 w-3.5" />
@@ -202,6 +237,7 @@ const RiderDashboard = () => {
 							</>
 						)}
 					</Badge>
+					</div>
 				</CardContent>
 			</Card>
 
@@ -219,7 +255,7 @@ const RiderDashboard = () => {
 			)}
 
 			{/* Stats */}
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				<StatCard
 					label="Total Deliveries"
 					value={riderDeliveriesQuery.data?.dataList?.TotalCount}
@@ -240,6 +276,13 @@ const RiderDashboard = () => {
 					loading={pendingDeliveriesCountQuery.isLoading}
 					Icon={Clock}
 					accent="text-amber-500 bg-amber-500/10"
+				/>
+				<StatCard
+					label="Earnings (page)"
+					value={`₦${estEarnings.toLocaleString()}`}
+					loading={riderDeliveriesQuery.isLoading}
+					Icon={Wallet}
+					accent="text-fuchsia-500 bg-fuchsia-500/10"
 				/>
 			</div>
 

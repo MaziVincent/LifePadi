@@ -36,11 +36,21 @@ import { addAddressToDb } from "./services/services";
 
 interface CartItemShape {
 	Id: string | number;
+	LineKey?: string;
 	Name: string;
 	Price: number;
 	Quantity: number;
 	Amount: number;
 	Description?: string;
+	SelectedVariantId?: number | null;
+	SelectedVariantName?: string;
+	SelectedVariantPrice?: number;
+	SelectedExtras?: { Id: number; Name: string; Price: number }[];
+	VendorId?: string | number;
+	VendorName?: string;
+	VendorAddress?: string;
+	VendorLatitude?: number;
+	VendorLongitude?: number;
 	[key: string]: unknown;
 }
 
@@ -199,12 +209,56 @@ const Cart = ({
 					Description: item.Description,
 					ProductId: item.Id,
 					OrderId: response?.data?.Id,
+					SelectedVariantId: item.SelectedVariantId ?? null,
+					SelectedVariantName: item.SelectedVariantName ?? null,
+					SelectedVariantPrice: item.SelectedVariantPrice ?? null,
+					SelectedExtrasJson:
+						item.SelectedExtras && item.SelectedExtras.length > 0
+							? JSON.stringify(item.SelectedExtras)
+							: null,
 				};
 				dispatch({ type: "order", payload: response?.data });
 				await post(orderItemUrl, orderItem, auth.accessToken);
 			}
 
-			const delivery = {
+			// Multi-vendor: build one Logistic per unique vendor in the cart.
+			const vendorBuckets = new Map<
+				string,
+				{
+					PickupAddress?: string;
+					VendorId?: string | number;
+					VendorName?: string;
+				}
+			>();
+			for (const item of cart) {
+				const vId = item.VendorId ?? state.vendor?.Id;
+				const pickup = item.VendorAddress ?? state.vendor?.ContactAddress;
+				if (!vId) continue;
+				if (!vendorBuckets.has(String(vId))) {
+					vendorBuckets.set(String(vId), {
+						PickupAddress: pickup,
+						VendorId: vId,
+						VendorName: item.VendorName ?? state.vendor?.Name,
+					});
+				}
+			}
+			const pickups = Array.from(vendorBuckets.values());
+			const perLegFee =
+				pickups.length > 0
+					? Math.trunc(state.deliveryFee / pickups.length)
+					: state.deliveryFee;
+
+			const deliveries = pickups.map((p) => ({
+				PickupAddress: p.PickupAddress,
+				DeliveryAddress: state.deliveryAddress,
+				OrderId: response?.data?.Id,
+				DeliveryFee: perLegFee,
+				PickupType: "Normal",
+				VendorId: p.VendorId,
+				VendorName: p.VendorName,
+			}));
+
+			const delivery = deliveries[0] ?? {
 				OrderId: response?.data?.Id,
 				DeliveryAddress: state.deliveryAddress,
 				DeliveryFee: state.deliveryFee,
@@ -216,6 +270,7 @@ const Cart = ({
 			setOrderLoading(false);
 			dispatch({ type: "checkOut" });
 			localStorage.setItem("delivery", JSON.stringify(delivery));
+			localStorage.setItem("deliveries", JSON.stringify(deliveries));
 		} catch (err) {
 			console.error(err);
 			dispatch({ type: "error", payload: "Error placing order." });
@@ -268,16 +323,26 @@ const Cart = ({
 					<div className="space-y-3">
 						{cart.map((item, index) => (
 							<div
-								key={String(item.Id) + index}
+								key={String(item.LineKey ?? item.Id) + index}
 								className="rounded-xl border bg-card p-3 shadow-sm">
 								<div className="flex items-start justify-between gap-3">
 									<div className="min-w-0 flex-1">
 										<p className="text-xs uppercase tracking-wide text-muted-foreground">
-											Item {index + 1}
+											{item.VendorName ?? `Item ${index + 1}`}
 										</p>
 										<h4 className="mt-0.5 line-clamp-2 text-sm font-medium">
 											{item.Name}
 										</h4>
+										{item.SelectedVariantName && (
+											<p className="text-xs text-muted-foreground">
+												{item.SelectedVariantName}
+											</p>
+										)}
+										{item.SelectedExtras && item.SelectedExtras.length > 0 && (
+											<p className="line-clamp-1 text-xs text-muted-foreground">
+												+ {item.SelectedExtras.map((e) => e.Name).join(", ")}
+											</p>
+										)}
 										<p className="mt-1 text-xs text-muted-foreground">
 											₦{formatNaira(item.Price)}
 										</p>

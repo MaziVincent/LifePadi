@@ -28,6 +28,14 @@ namespace Api.Models
         public double? Weight { get; set; }
         public string? Description { get; set; }
         public bool? IsFragile { get; set; }
+        // --- Variant / Extras snapshot ---
+        // ID of the chosen variant (if any) at order time. Kept as a plain int
+        // so historical orders survive variant deletion.
+        public int? SelectedVariantId { get; set; }
+        public string? SelectedVariantName { get; set; }
+        public double? SelectedVariantPrice { get; set; }
+        // JSON snapshot of selected extras: [{"Id":1,"Name":"Cheese","Price":300}, ...]
+        public string? SelectedExtrasJson { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

@@ -1,6 +1,5 @@
 import {
 	Plus,
-	Bookmark,
 	Trash2,
 	Info,
 	Minus,
@@ -8,6 +7,12 @@ import {
 	Clock,
 	ArrowLeft,
 	ThumbsUp,
+	MapPin,
+	Sparkles,
+	Loader2,
+	ShoppingBag,
+	BadgePercent,
+	StickyNote,
 } from "lucide-react";
 import {
 	useState,
@@ -17,26 +22,55 @@ import {
 	type ChangeEvent,
 } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+
 import Cart from "./Cart";
 import EmptyCart from "./EmptyCart";
-import useCart from "../../hooks/useCart";
+import EmptyCartDesktop from "./EmptyCartDesktop";
 import ProductModal from "./ProductModal";
+import NewAddressModal from "./NewAddressModal";
+import { createAddress } from "./services/services";
+
+import useCart from "../../hooks/useCart";
 import useFetch from "../../hooks/useFetch";
 import useAuth from "../../hooks/useAuth";
-import baseUrl from "../../api/baseUrl";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import LoadingGif from "../shared/LodingGif";
-import EmptyCartDesktop from "./EmptyCartDesktop";
 import usePost from "../../hooks/usePost";
-import { createAddress } from "./services/services";
+import useUpdate from "../../hooks/useUpdate";
+import useDistanceCalculator from "../../hooks/useDistanceCalculator";
+
+import baseUrl from "../../api/baseUrl";
 import VendorSkeleton from "../shared/VendorSkeleton";
 import ProductSkeleton from "../shared/ProductSkeleton";
-import useUpdate from "../../hooks/useUpdate";
-import NewAddressModal from "./NewAddressModal";
-import useDistanceCalculator from "../../hooks/useDistanceCalculator";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+
+interface ProductVariant {
+	Id: number;
+	Name: string;
+	Price: number;
+	IsDefault?: boolean;
+}
+
+interface ProductExtra {
+	Id: number;
+	Name: string;
+	Price: number;
+}
+
+interface SelectedExtra {
+	Id: number;
+	Name: string;
+	Price: number;
+}
 
 interface Product {
 	Id: string | number;
+	LineKey?: string;
 	Name: string;
 	Price: number;
 	Quantity?: number;
@@ -44,6 +78,17 @@ interface Product {
 	Description?: string;
 	Tag?: string;
 	ProductImgUrl?: string;
+	Variants?: ProductVariant[];
+	Extras?: ProductExtra[];
+	SelectedVariantId?: number | null;
+	SelectedVariantName?: string;
+	SelectedVariantPrice?: number;
+	SelectedExtras?: SelectedExtra[];
+	VendorId?: string | number;
+	VendorName?: string;
+	VendorAddress?: string;
+	VendorLatitude?: number;
+	VendorLongitude?: number;
 	[key: string]: unknown;
 }
 
@@ -90,6 +135,7 @@ interface VendorLocalState {
 	subTotal: number;
 	newAddress: boolean;
 	loading: boolean;
+	activeCategoryId: string | number | null;
 }
 
 type VendorAction =
@@ -101,7 +147,8 @@ type VendorAction =
 	| { type: "products"; payload: Product[] }
 	| { type: "productCategories"; payload: ProductCategory[] }
 	| { type: "product"; payload: Product }
-	| { type: "subTotal"; payload: number };
+	| { type: "subTotal"; payload: number }
+	| { type: "activeCategory"; payload: string | number | null };
 
 const reducer = (
 	state: VendorLocalState,
@@ -126,18 +173,25 @@ const reducer = (
 			return { ...state, subTotal: action.payload };
 		case "newAddress":
 			return { ...state, newAddress: !state.newAddress };
+		case "activeCategory":
+			return { ...state, activeCategoryId: action.payload };
 		default:
 			return state;
 	}
 };
+
+const formatNaira = (n: number) =>
+	new Intl.NumberFormat("en-NG", {
+		style: "currency",
+		currency: "NGN",
+		maximumFractionDigits: 0,
+	}).format(n || 0);
 
 const Vendor = () => {
 	const { id } = useParams();
 	const fetch = useFetch();
 	const post = usePost();
 	const update = useUpdate();
-	const [, setProducts] = useState<unknown>(null);
-	const [, setOrigin] = useState("");
 	const [orderLoading, setOrderLoading] = useState(false);
 	const { auth, setLogin, location } = useAuth() as unknown as {
 		auth: { accessToken?: string; Id?: string | number } | null;
@@ -175,6 +229,7 @@ const Vendor = () => {
 		subTotal: 0,
 		newAddress: false,
 		loading: false,
+		activeCategoryId: null,
 	});
 
 	const getVendor = async (vendorUrl: string): Promise<VendorData> => {
@@ -195,14 +250,11 @@ const Vendor = () => {
 		refetchOnMount: "always",
 	});
 
-	//console.log(data)
-
 	const getProductCategory = useCallback(async () => {
 		try {
 			const result = (await fetch(
 				`${baseUrl}category/vendorProductCategories/${id}`,
 			)) as { data: ProductCategory[] };
-			setProducts(result);
 			dispatch({ type: "productCategories", payload: result.data ?? [] });
 		} catch (error) {
 			console.error("Error fetching product categories:", error);
@@ -212,8 +264,6 @@ const Vendor = () => {
 			});
 		}
 	}, [id]);
-
-	//console.log(state.productCategories)
 
 	const getAddresses = async (addrUrl: string): Promise<Address[]> => {
 		const result = (await fetch(addrUrl, auth?.accessToken)) as {
@@ -234,21 +284,22 @@ const Vendor = () => {
 
 	const calculateTotalAmount = () => {
 		if (cart) {
-			const total = cart.reduce((sum, item) => {
-				return sum + (item.Amount ?? 0);
-			}, 0);
-
+			const total = cart.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
 			dispatch({ type: "subTotal", payload: total });
 			cartDispatch({ type: "amount", payload: total });
 		}
-
-		return;
 	};
+
+	// Same product can appear multiple times in the cart with different
+	// variant/extras combinations, so we key cart-line operations on LineKey
+	// (set in ProductModal) and fall back to Id for legacy lines.
+	const lineMatch = (a: Product, b: Product) =>
+		a.LineKey && b.LineKey ? a.LineKey === b.LineKey : a.Id === b.Id;
 
 	const handleCartIncrement = (item: Product) => {
 		setCart(
 			cart.map((prod) =>
-				prod.Id === item.Id
+				lineMatch(prod, item)
 					? {
 							...prod,
 							Quantity: (prod.Quantity ?? 0) + 1,
@@ -257,7 +308,6 @@ const Vendor = () => {
 					: prod,
 			),
 		);
-
 		calculateTotalAmount();
 	};
 
@@ -265,7 +315,7 @@ const Vendor = () => {
 		if ((item.Quantity ?? 0) > 1) {
 			setCart(
 				cart.map((prod) =>
-					prod.Id === item.Id
+					lineMatch(prod, item)
 						? {
 								...prod,
 								Quantity: (prod.Quantity ?? 0) - 1,
@@ -274,25 +324,20 @@ const Vendor = () => {
 						: prod,
 				),
 			);
-
 			calculateTotalAmount();
 		}
-
-		return;
 	};
 
 	const handleCartItemDelete = (item: Product) => {
-		setCart((prev) => prev.filter((prod) => prod.Id !== item.Id));
+		setCart((prev) => prev.filter((prod) => !lineMatch(prod, item)));
 	};
 
 	const handleAddressChange = () => {
 		if (!auth?.accessToken) {
 			setCartState(false);
 			setLogin(true);
-
 			return;
 		}
-
 		getAddresses(`${baseUrl}address/customer-addresses/${auth?.Id}`);
 		cartDispatch({ type: "address" });
 	};
@@ -303,14 +348,11 @@ const Vendor = () => {
 
 	const handleGift = async () => {
 		cartDispatch({ type: "voucherError", payload: "" });
-
 		if (!auth?.accessToken) {
 			setCartState(false);
 			setLogin(true);
-
 			return;
 		}
-
 		const response = (await update(
 			`${baseUrl}voucher/use?voucherCode=${cartState.voucherCode}&customerId=${auth.Id}`,
 			cartState.voucherCode,
@@ -324,24 +366,14 @@ const Vendor = () => {
 				type: "voucherMessage",
 				payload: `${response.data?.DiscountAmount} Naira Discount applied `,
 			});
-			//handleTotalAmount()
-			//handleDeliveryFee(response.data?.DiscountAmount)
 		}
-
 		if (response.error) {
 			cartDispatch({ type: "voucherError", payload: response.error });
-			console.log(response.error);
-			return;
 		}
 	};
 
 	const handleDeliveryFee = () => {
 		if (cartState.distance == null || cartState.distance == 0) {
-			// if(discountPercentage){
-			//   const deliveryFee = Math.trunc( 1500 - ((discountPercentage / 100) * (1500) ));
-			//   cartDispatch({ type: "deliveryFee", payload: deliveryFee });
-			//   return;
-			// }else
 			if (cartState.voucher?.DiscountAmount) {
 				const deliveryFee = 1500 - cartState.voucher.DiscountAmount;
 				cartDispatch({ type: "deliveryFee", payload: deliveryFee });
@@ -354,8 +386,7 @@ const Vendor = () => {
 				cartDispatch({ type: "deliveryFee", payload: deliveryFee });
 				return;
 			}
-			const deliveryFee = 1500;
-			cartDispatch({ type: "deliveryFee", payload: deliveryFee });
+			cartDispatch({ type: "deliveryFee", payload: 1500 });
 		} else {
 			if (cartState.voucher?.DiscountAmount) {
 				const deliveryFee = Math.trunc(
@@ -410,14 +441,11 @@ const Vendor = () => {
 			});
 			return;
 		}
-
 		if (!auth?.accessToken) {
 			setCartState(false);
 			setLogin(true);
-
 			return;
 		}
-
 		try {
 			setOrderLoading(true);
 			const order = {
@@ -425,15 +453,10 @@ const Vendor = () => {
 				Instruction: cartState.deliveryInstruction,
 			};
 			const response = (await post(orderUrl, order, auth.accessToken)) as any;
-
 			if (response?.error) {
-				cartDispatch({
-					type: "error",
-					payload: "Error placing order ",
-				});
+				cartDispatch({ type: "error", payload: "Error placing order " });
 				return;
 			}
-
 			for (const item of cart) {
 				const orderItem = {
 					Amount: item.Price,
@@ -443,25 +466,74 @@ const Vendor = () => {
 					Description: item.Description,
 					ProductId: item.Id,
 					OrderId: response.data?.Id,
+					SelectedVariantId: item.SelectedVariantId ?? null,
+					SelectedVariantName: item.SelectedVariantName ?? null,
+					SelectedVariantPrice: item.SelectedVariantPrice ?? null,
+					SelectedExtrasJson:
+						item.SelectedExtras && item.SelectedExtras.length > 0
+							? JSON.stringify(item.SelectedExtras)
+							: null,
 				};
-
 				cartDispatch({ type: "order", payload: response.data });
 				await post(orderItemUrl, orderItem, auth.accessToken);
 			}
 
-			const delivery = {
-				PickupAddress: cartState.vendor?.ContactAddress,
+			// Multi-vendor: build one delivery (Logistic) record per unique vendor
+			// in the cart. The current vendor page is the fallback for legacy lines
+			// without a VendorId stamped on them.
+			const vendorBuckets = new Map<
+				string,
+				{
+					PickupAddress?: string;
+					VendorId?: string | number;
+					VendorName?: string;
+				}
+			>();
+			for (const item of cart) {
+				const vId = item.VendorId ?? data?.Id;
+				const pickup = item.VendorAddress ?? data?.ContactAddress;
+				if (!vId) continue;
+				if (!vendorBuckets.has(String(vId))) {
+					vendorBuckets.set(String(vId), {
+						PickupAddress: pickup,
+						VendorId: vId,
+						VendorName: item.VendorName ?? data?.Name,
+					});
+				}
+			}
+
+			const pickups = Array.from(vendorBuckets.values());
+			// Delivery fee is split evenly across pickups so the merchant settlement
+			// per-leg is at least sane; the customer total stays cartState.deliveryFee.
+			const perLegFee =
+				pickups.length > 0
+					? Math.trunc(cartState.deliveryFee / pickups.length)
+					: cartState.deliveryFee;
+
+			const deliveries = pickups.map((p) => ({
+				PickupAddress: p.PickupAddress,
+				DeliveryAddress: cartState.deliveryAddress,
+				OrderId: response.data?.Id,
+				DeliveryFee: perLegFee,
+				PickupType: "Normal",
+				VendorId: p.VendorId,
+				VendorName: p.VendorName,
+			}));
+
+			// Keep the legacy single-pickup payload for downstream consumers that
+			// still read `state.delivery` / localStorage.delivery as a single object.
+			const primaryDelivery = deliveries[0] ?? {
+				PickupAddress: data?.ContactAddress,
 				DeliveryAddress: cartState.deliveryAddress,
 				OrderId: response.data?.Id,
 				DeliveryFee: cartState.deliveryFee,
 				PickupType: "Normal",
 			};
-			cartDispatch({ type: "delivery", payload: delivery });
-
+			cartDispatch({ type: "delivery", payload: primaryDelivery });
 			setOrderLoading(false);
 			cartDispatch({ type: "checkOut" });
-
-			localStorage.setItem("delivery", JSON.stringify(delivery));
+			localStorage.setItem("delivery", JSON.stringify(primaryDelivery));
+			localStorage.setItem("deliveries", JSON.stringify(deliveries));
 		} catch (error) {
 			console.log(error);
 			dispatch({ type: "error", payload: "Error placing Order" });
@@ -484,8 +556,6 @@ const Vendor = () => {
 
 	useEffect(() => {
 		getProductCategory();
-		//setVendors(data?.result);
-		//console.log('services')
 	}, []);
 
 	useEffect(() => {
@@ -495,12 +565,9 @@ const Vendor = () => {
 			const currentVendor = JSON.parse(
 				localStorage.getItem("currentVendor") ?? "null",
 			);
-			if (currentCart) {
-				setCart(currentCart);
-			}
-			if (currentVendor) {
+			if (currentCart) setCart(currentCart);
+			if (currentVendor)
 				cartDispatch({ type: "vendor", payload: currentVendor });
-			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -515,24 +582,15 @@ const Vendor = () => {
 	useEffect(() => {
 		if (cartState.vendor && cartState.deliveryAddress) {
 			const distance = calculateDistance(
-				{
-					lat: cartState.vendor?.Latitude,
-					lng: cartState.vendor?.Longitude,
-				},
+				{ lat: cartState.vendor?.Latitude, lng: cartState.vendor?.Longitude },
 				{
 					lat: cartState.deliveryAddress?.Latitude,
 					lng: cartState.deliveryAddress?.Longitude,
 				},
 			);
 			cartDispatch({ type: "distance", payload: distance });
-			console.log(distance);
 		}
 	}, [cartState.vendor, cartState.deliveryAddress]);
-
-	// const { distance, duration, error } = useDistance(
-	//   origin,
-	//   cartState.deliveryAddress?.Name
-	// );
 
 	useEffect(() => {
 		handleDeliveryFee();
@@ -545,52 +603,133 @@ const Vendor = () => {
 		cartState.voucher,
 	]);
 
-	//console.log(distance);
-	//console.log(cartState.vendor);
+	const itemCount = cart.reduce((n, i) => n + (i.Quantity ?? 0), 0);
+
+	const renderProductsGrid = () =>
+		state.products.length === 0 ? (
+			<div className="rounded-xl border border-dashed border-border bg-card/40 p-10 text-center">
+				<p className="text-sm text-muted-foreground">
+					No products in this category yet.
+				</p>
+			</div>
+		) : (
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				{state.products.map((prod) => (
+					<button
+						type="button"
+						key={prod.Id}
+						onClick={() => {
+							if (
+								prod.Name.includes("Send Package") ||
+								prod.Name.includes("Recieve Package")
+							) {
+								navigate("/shop/logistics");
+								return;
+							}
+							dispatch({ type: "open" });
+							dispatch({ type: "product", payload: prod });
+						}}
+						className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
+						<div className="min-w-0 flex-1">
+							<h3 className="line-clamp-1 text-sm font-semibold capitalize text-foreground">
+								{prod.Name}
+							</h3>
+							{prod.Tag && (
+								<p className="line-clamp-1 text-xs text-muted-foreground">
+									{prod.Tag}
+								</p>
+							)}
+							<p className="mt-1 text-sm font-medium text-primary">
+								{formatNaira(prod.Price)}
+							</p>
+						</div>
+						<div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-muted">
+							{prod.ProductImgUrl ? (
+								<img
+									src={prod.ProductImgUrl}
+									alt={prod.Name}
+									className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+									loading="lazy"
+								/>
+							) : (
+								<div className="flex h-full items-center justify-center text-muted-foreground">
+									<ShoppingBag className="h-5 w-5" />
+								</div>
+							)}
+						</div>
+					</button>
+				))}
+			</div>
+		);
+
 	return (
-		<main className=" flex justify-center  ">
-			<div className=" w-11/12 lg:w-10/12  grid grid-cols-1 lg:grid-cols-12 justify-center gap-8">
-				<div className=" w-full  col-span-8">
-					<div className=" flex flex-col  w-full justify-center gap-5 px-2">
+		<main className="bg-background text-foreground">
+			<div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 py-6 lg:grid-cols-12 lg:px-8">
+				{/* LEFT: Vendor + products */}
+				<div className="col-span-1 lg:col-span-8">
+					<div className="flex flex-col gap-5">
 						<div>
-							<Link to="/shop" className="text-gray flex gap-2 items-center">
-								<span>
-									<ArrowLeft className="h-5 w-5" />
-								</span>
-								<span className="text-sm">Vendors</span>
+							<Link
+								to="/shop"
+								className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-primary">
+								<ArrowLeft className="h-4 w-4" />
+								<span>Back to vendors</span>
 							</Link>
 						</div>
+
 						{isSuccess && (
 							<>
-								<div className=" border-2 relative w-full rounded-lg h-48 md:h-72 ">
-									<img
-										src={data?.VendorImgUrl}
-										alt=""
-										className=" w-full rounded-lg h-full"
-									/>
-									<div className=" pb-1 absolute z-10 bottom-1 m-2 ">
-										<span className=" flex items-center gap-1 text-secondary bg-white py-2 px-2 rounded border bg-muted border-accent">
-											<Clock className="h-4 w-4" />{" "}
-											<span className="">16-26 mins</span>
-										</span>
-									</div>
+								<div className="relative h-48 w-full overflow-hidden rounded-2xl border border-border bg-muted md:h-72">
+									{data?.VendorImgUrl ? (
+										<img
+											src={data.VendorImgUrl}
+											alt={data.Name ?? "Vendor"}
+											className="h-full w-full object-cover"
+										/>
+									) : (
+										<div className="flex h-full items-center justify-center text-muted-foreground">
+											No image
+										</div>
+									)}
+									<Badge
+										variant="secondary"
+										className="absolute bottom-3 left-3 gap-1 rounded-full bg-background/80 text-foreground backdrop-blur">
+										<Clock className="h-3.5 w-3.5" />
+										16–26 mins
+									</Badge>
 								</div>
-								<div>
-									<div className=" flex justify-between items-center py-2">
-										<h2 className=" text-xl font-bold">{data?.Name}</h2>
-										<span className=" flex items-center gap-1 text-sm text-lightgreen">
-											<span className=" dark:text-gray text-grayTxt">4.3</span>{" "}
-											<Star className="h-4 w-4" />
+
+								<div className="space-y-2">
+									<div className="flex items-center justify-between gap-3">
+										<h1 className="text-2xl font-bold tracking-tight">
+											{data?.Name}
+										</h1>
+										<span className="flex items-center gap-1 text-sm">
+											<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+											<span className="text-muted-foreground">4.3</span>
 										</span>
 									</div>
-
-									<div className=" flex flex-col  ">
-										<span className=" text-gray text-md font-medium">
-											{data?.OpeningHours} - {data?.ClosingHours}
-										</span>
-										<span className=" capitalize text-secondary text-md font-medium">
-											{data?.Tag}
-										</span>
+									<div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+										{(data?.OpeningHours || data?.ClosingHours) && (
+											<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5">
+												<Clock className="h-3 w-3" />
+												{data?.OpeningHours} – {data?.ClosingHours}
+											</span>
+										)}
+										{data?.Tag && (
+											<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 capitalize">
+												<Sparkles className="h-3 w-3" />
+												{data.Tag}
+											</span>
+										)}
+										{data?.ContactAddress && (
+											<span className="inline-flex items-center gap-1 truncate rounded-full border border-border bg-card px-2 py-0.5">
+												<MapPin className="h-3 w-3" />
+												<span className="max-w-[220px] truncate">
+													{data.ContactAddress}
+												</span>
+											</span>
+										)}
 									</div>
 								</div>
 							</>
@@ -598,84 +737,56 @@ const Vendor = () => {
 
 						{isLoading && <VendorSkeleton />}
 
-						<div className="pt-3 ">
-							<div className=" flex justify-end items-center">
-								<p className="">
-									<span>
-										Min Order: <span>&#8358;2,000</span>
-									</span>
-								</p>
-							</div>
+						<div className="flex items-center justify-between text-xs text-muted-foreground">
+							<span>Tap a product to add it to your cart.</span>
+							<span>
+								Min order:{" "}
+								<span className="font-medium text-foreground">
+									{formatNaira(2000)}
+								</span>
+							</span>
 						</div>
 
-						<div className=" sticky top-20 bg-primary dark:bg-background flex justify-start gap-3 pt-3 text-center flex-nowrap overflow-x-auto ">
+						{/* Category tabs */}
+						<div className="sticky top-16 z-10 -mx-1 flex gap-2 overflow-x-auto bg-background/95 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70">
 							<button
 								type="button"
-								onClick={() =>
-									dispatch({
-										type: "products",
-										payload: data?.Products ?? [],
-									})
-								}
-								className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md">
+								onClick={() => {
+									dispatch({ type: "activeCategory", payload: null });
+									dispatch({ type: "products", payload: data?.Products ?? [] });
+								}}
+								className={`shrink-0 rounded-full border px-4 py-1.5 text-sm transition ${
+									state.activeCategoryId === null
+										? "border-primary bg-primary text-primary-foreground"
+										: "border-border bg-card text-foreground hover:border-primary/40 hover:bg-accent/40"
+								}`}>
 								All
 							</button>
-
-							{state.productCategories.map((cat) => (
-								<button
-									type="button"
-									key={cat.Id}
-									onClick={() =>
-										dispatch({ type: "products", payload: cat.Products })
-									}
-									className=" px-3 py-1 bg-secondary capitalize text-nowrap rounded-lg shadow-md ">
-									{cat.Name}
-								</button>
-							))}
+							{state.productCategories.map((cat) => {
+								const isActive = state.activeCategoryId === cat.Id;
+								return (
+									<button
+										type="button"
+										key={cat.Id}
+										onClick={() => {
+											dispatch({ type: "activeCategory", payload: cat.Id });
+											dispatch({ type: "products", payload: cat.Products });
+										}}
+										className={`shrink-0 rounded-full border px-4 py-1.5 text-sm capitalize transition ${
+											isActive
+												? "border-primary bg-primary text-primary-foreground"
+												: "border-border bg-card text-foreground hover:border-primary/40 hover:bg-accent/40"
+										}`}>
+										{cat.Name}
+									</button>
+								);
+							})}
 						</div>
 
-						{isSuccess && (
-							<div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
-								{state.products.map((prod) => (
-									<span
-										key={prod.Id}
-										onClick={() => {
-											if (
-												prod.Name.includes("Send Package") ||
-												prod.Name.includes("Recieve Package")
-											) {
-												console.log("clicked");
-												navigate("/shop/logistics");
-												return;
-											}
-											dispatch({ type: "open" });
-											dispatch({ type: "product", payload: prod });
-										}}>
-										<div className=" cursor-pointer flex justify-between items-center border border-gray rounded-lg p-4 hover:bg-graybg dark:hover:bg-muted shadow-lg ">
-											<div className=" flex flex-col">
-												<h3 className=" text-base font-semibold capitalize">
-													{prod.Name}
-												</h3>
-												<p className=" text-sm text-gray">{prod.Tag}</p>
-												<span className=" text-secondary">
-													&#8358;{prod.Price}
-												</span>
-											</div>
-											<div className=" w-20 h-20 rounded-md">
-												<img
-													src={prod.ProductImgUrl}
-													alt=""
-													className=" w-full h-full rounded-md"
-												/>
-											</div>
-										</div>
-									</span>
-								))}
-							</div>
-						)}
+						{isSuccess && renderProductsGrid()}
 
 						{isLoading && (
-							<div className="pt-3 grid grid-cols-1 md:grid-cols-2 gap-5">
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								<ProductSkeleton />
 								<ProductSkeleton />
 								<ProductSkeleton />
@@ -684,304 +795,321 @@ const Vendor = () => {
 						)}
 					</div>
 				</div>
-				{cart.length > 0 ? (
-					<div className=" hidden  overflow-y-auto border-l-2 border-graybg col-span-4 py-10 px-2 lg:flex flex-col   items-start   h-full rounded-lg">
-						<div className=" flex justify-between items-center pb-4">
-							<p className=" text-base capitalize text-secondary">
-								{cartState.vendor?.Name}
-							</p>
-						</div>
-						{cart?.map((item, index) => (
-							<div
-								key={item.Id}
-								className=" border border-dashed border-gray rounded-lg w-full mb-3">
-								<div className=" flex justify-between items-center py-2 px-2">
-									<div>
-										<h3 className=" text-sm font-medium">{`Item ${
-											index + 1
-										}`}</h3>
-									</div>
-									<button onClick={() => handleCartItemDelete(item)}>
-										<span className=" text-red hover:text-redborder">
-											<Trash2 className="h-5 w-5" />
-										</span>
-									</button>
-								</div>
-								<div className=" flex justify-between items-center py-2 px-2">
-									<p className=" flex flex-col items-start">
-										<span className=" text-sm">{item.Name}</span>
-										<span className=" text-gray text-xs">
-											&#8358;<span>{item.Price}</span>
-										</span>
-									</p>
-									<span className=" px-2 rounded-full bg-gray-200 flex items-center gap-2">
-										<button
-											onClick={() => handleCartDecrement(item)}
-											className="shadow-md cursor-pointer rounded-lg px-1 ">
-											{" "}
-											<Minus className="h-4 w-4" />
-										</button>
-										<span className=" text-md">{item.Quantity}</span>
-										<button
-											onClick={() => handleCartIncrement(item)}
-											className=" shadow-lg cursor-pointer rounded-lg px-1 ">
-											<Plus className="h-4 w-4" />
-										</button>
-									</span>
-								</div>
-							</div>
-						))}
 
-						<div className=" w-full">
-							<div className=" py-2">
-								<div className=" flex justify-between items-center text-sm font-normal">
-									<p>
-										<span className="font-bold">Choose Address:</span>{" "}
-										{cartState.deliveryAddress?.Name}{" "}
-									</p>
-									{cartState.address ? (
-										<button
-											onClick={() => cartDispatch({ type: "address" })}
-											className=" text-background cursor-pointer">
-											Close
-										</button>
-									) : (
-										<button
-											onClick={() => handleAddressChange()}
-											className=" text-background cursor-pointer">
-											Change
-										</button>
-									)}
-								</div>
-							</div>
-							<div
-								className={`${
-									cartState.address ? "block" : "hidden"
-								} border-2 rounded-lg border-graybg`}>
-								{loadingAddress && (
-									<div className="flex justify-center items-center">
-										{" "}
-										<LoadingGif />{" "}
+				{/* RIGHT: Desktop cart sidebar */}
+				{cart.length > 0 ? (
+					<aside className="col-span-1 hidden lg:col-span-4 lg:block">
+						<Card className="sticky top-20 border-border/60 shadow-sm">
+							<CardContent className="space-y-4 p-5">
+								<div className="flex items-center justify-between">
+									<div>
+										<p className="text-xs uppercase tracking-wider text-muted-foreground">
+											Your cart
+										</p>
+										<p className="text-base font-semibold capitalize">
+											{(() => {
+												const names = Array.from(
+													new Set(
+														cart
+															.map((c) => c.VendorName)
+															.filter(Boolean) as string[],
+													),
+												);
+												if (names.length === 0) return data?.Name;
+												if (names.length === 1) return names[0];
+												return `${names.length} vendors`;
+											})()}
+										</p>
 									</div>
-								)}
-								<form>
-									{(cartState.addresses as Address[]).map((ad) => (
+									<Badge variant="secondary" className="rounded-full">
+										{itemCount} item{itemCount === 1 ? "" : "s"}
+									</Badge>
+								</div>
+
+								<div className="space-y-2">
+									{cart.map((item) => (
 										<div
-											key={ad.Id}
-											className=" flex gap-3 text-gray  text-sm rounded-lg px-5 py-2">
-											{" "}
-											<input
-												type="radio"
-												name="address"
-												id={`address${ad.Id}`}
-												value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
-												onChange={(e) => {
-													handleClick(ad);
-													//handleDeliveryAddress(e)
-												}}
-												className="cursor-pointer"
-											/>
-											<label
-												htmlFor={`address${ad.Id}`}
-												className="cursor-pointer">
-												{" "}
-												{ad.Name} {ad.Town}
-											</label>
+											key={String(item.LineKey ?? item.Id)}
+											className="rounded-lg border border-border bg-background p-3">
+											<div className="flex items-start justify-between gap-2">
+												<div className="min-w-0">
+													<p className="line-clamp-1 text-sm font-medium">
+														{item.Name}
+													</p>
+													{item.VendorName && (
+														<p className="line-clamp-1 text-[11px] uppercase tracking-wide text-muted-foreground">
+															{item.VendorName}
+														</p>
+													)}
+													{item.SelectedVariantName && (
+														<p className="text-xs text-muted-foreground">
+															{item.SelectedVariantName}
+														</p>
+													)}
+													{item.SelectedExtras &&
+														item.SelectedExtras.length > 0 && (
+															<p className="line-clamp-1 text-xs text-muted-foreground">
+																+{" "}
+																{item.SelectedExtras.map((e) => e.Name).join(
+																	", ",
+																)}
+															</p>
+														)}
+													<p className="text-xs text-muted-foreground">
+														{formatNaira(item.Price)}
+													</p>
+												</div>
+												<button
+													type="button"
+													onClick={() => handleCartItemDelete(item)}
+													aria-label="Remove item"
+													className="rounded-md p-1 text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive">
+													<Trash2 className="h-4 w-4" />
+												</button>
+											</div>
+											<div className="mt-2 flex items-center justify-between">
+												<div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-2 py-1">
+													<button
+														type="button"
+														onClick={() => handleCartDecrement(item)}
+														aria-label="Decrease quantity"
+														className="rounded-full p-1 hover:bg-muted">
+														<Minus className="h-3.5 w-3.5" />
+													</button>
+													<span className="min-w-[1.25rem] text-center text-sm font-medium">
+														{item.Quantity}
+													</span>
+													<button
+														type="button"
+														onClick={() => handleCartIncrement(item)}
+														aria-label="Increase quantity"
+														className="rounded-full p-1 hover:bg-muted">
+														<Plus className="h-3.5 w-3.5" />
+													</button>
+												</div>
+												<span className="text-sm font-semibold">
+													{formatNaira(item.Amount ?? 0)}
+												</span>
+											</div>
 										</div>
 									))}
-								</form>
+								</div>
 
-								<div className="text-sm flex justify-between px-2 py-2">
-									<button
-										onClick={() => handleLocation()}
-										className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer">
-										{" "}
-										Use Current Location{" "}
-									</button>
-									<button
-										onClick={() => dispatch({ type: "edit" })}
-										className="text-background border p-2 rounded-xl border-gray hover:bg-graybg cursor-pointer">
-										{" "}
-										Add new Address{" "}
-									</button>
-								</div>
-							</div>
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-normal">
-									<span>Delivery instructions</span>
-									{cartState.instruction ? (
+								<Separator />
+
+								{/* Address */}
+								<div className="space-y-2">
+									<div className="flex items-center justify-between text-sm">
+										<span className="flex items-center gap-1.5 font-medium">
+											<MapPin className="h-4 w-4 text-primary" /> Delivery
+											address
+										</span>
 										<button
-											onClick={() => cartDispatch({ type: "instruction" })}
-											className=" text-background">
-											Close
+											type="button"
+											onClick={() =>
+												cartState.address
+													? cartDispatch({ type: "address" })
+													: handleAddressChange()
+											}
+											className="text-xs text-primary hover:underline">
+											{cartState.address ? "Close" : "Change"}
 										</button>
-									) : (
-										<button
-											onClick={() => cartDispatch({ type: "instruction" })}
-											className=" text-background">
-											Add
-										</button>
-									)}
-								</p>
-								<div
-									className={`flex flex-col ${
-										cartState.instruction ? "block" : "hidden"
-									}`}>
-									<textarea
-										name="instructions"
-										id=""
-										rows={3}
-										className="border rounded-lg border-gray bg-graybg text-accent p-3 "
-										placeholder="e.g  give it to the receptionist"
-										onChange={(e) => handleDeliveryInstruction(e)}></textarea>
-								</div>
-							</div>
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-normal mb-2">
-									<span>Use Gift </span>
-									{cartState.gift ? (
-										<button
-											onClick={() => cartDispatch({ type: "gift" })}
-											className=" text-background">
-											Close
-										</button>
-									) : (
-										<button
-											onClick={() => cartDispatch({ type: "gift" })}
-											className=" text-background">
-											Add
-										</button>
-									)}
-								</p>
-								<div
-									className={`flex flex-col ${
-										cartState.gift ? "block" : "hidden"
-									} mb-2`}>
-									<input
-										name="gift"
-										id=""
-										className="border rounded-lg border-gray bg-graybg text-accent p-3 mb-1"
-										placeholder="gift code"
-										onChange={(e) =>
-											cartDispatch({
-												type: "voucherCode",
-												payload: e.target.value,
-											})
-										}
-									/>
-									<div className="flex justify-between">
-										{cartState.voucherError && (
-											<p className="text-sm text-redborder">
-												{" "}
-												{cartState.voucherError}
-											</p>
-										)}
-										<button
-											onClick={() => {
-												handleGift();
-											}}
-											className=" text-background ">
-											Use Code
-										</button>{" "}
 									</div>
-								</div>
-							</div>
-						</div>
-						<div className=" flex justify-between items-center border-y ">
-							<div className=" flex items-center gap-2 bg-cyan-100 py-2 px-1 rounded">
-								<div className="">
-									<span className=" text-yellow">
-										<Info className="h-5 w-5" />
-									</span>
-								</div>
-								<div className=" text-gray">
-									<h1 className=" text-sm font-normal">
-										Delivery Address confirmation
-									</h1>
-									<p className=" text-xs">
-										This helps ensure that your order is brought to the right
-										address
-									</p>
-								</div>
-							</div>
-						</div>
-						<div className="w-full">
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-normal">
-									<span>
-										Sub total <span>({cart.length} item)</span>
-									</span>
-									<span className="">&#8358;{state.subTotal}</span>
-								</p>
-							</div>
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-normal">
-									<span>Delivery fee</span>
-									<span className="">&#8358;{cartState.deliveryFee}</span>
-								</p>
-							</div>
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-normal">
-									<span>Service fee</span>
-									<span className="">&#8358;0.0</span>
-								</p>
-							</div>
-							<div className=" py-2">
-								<p className=" flex justify-between items-center text-sm font-semibold">
-									<span className="">Total</span>
-									<span className="">&#8358;{cartState.total}</span>
-								</p>
-								{cartState.voucherMessage && (
-									<p className="text-sm text-background">
-										{" "}
-										{cartState.voucherMessage}{" "}
-										<ThumbsUp className="inline h-4 w-4" />{" "}
-									</p>
-								)}
-							</div>
-							<div>
-								{cartState.error && (
-									<span className="text-redborder"> {cartState.error}</span>
-								)}
-							</div>
-							{state.error && (
-								<span className="text-redborder"> {state.error}</span>
-							)}
-							<div className=" pt-3 text-center w-full">
-								<button
-									onClick={handleOrder}
-									className=" w-full bg-background py-4 px-3 flex justify-center rounded">
-									{orderLoading ? (
-										<LoadingGif />
-									) : (
-										<span className=" text-primary">Place Order</span>
+									{cartState.deliveryAddress && (
+										<p className="line-clamp-2 text-xs text-muted-foreground">
+											{cartState.deliveryAddress?.Name}
+										</p>
 									)}
-								</button>
-							</div>
-							<div className=" pt-3 text-center w-full">
-								<button
-									onClick={clearCart}
-									className=" w-full bg-redborder py-4 px-3 rounded">
-									<span className=" text-red">Clear Order</span>
-								</button>
-							</div>
-							<div className=" w-full">
-								<button className=" w-full py-2 px-3">
-									<span className=" text-background">
-										<Bookmark className="inline h-4 w-4" />
-									</span>
-									<span className=" text-background text-sm">
-										Save for later
-									</span>
-								</button>
-							</div>
-						</div>
-					</div>
+									{cartState.address && (
+										<div className="rounded-lg border border-border bg-background p-3">
+											{loadingAddress && (
+												<div className="flex items-center justify-center py-2">
+													<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+												</div>
+											)}
+											<div className="space-y-2">
+												{(cartState.addresses as Address[]).map((ad) => (
+													<label
+														key={ad.Id}
+														htmlFor={`address${ad.Id}`}
+														className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent/40">
+														<input
+															type="radio"
+															name="address"
+															id={`address${ad.Id}`}
+															value={`${ad.Name}, ${ad.Town}, ${ad.City}`}
+															onChange={() => handleClick(ad)}
+															className="h-4 w-4 cursor-pointer accent-primary"
+														/>
+														<span className="line-clamp-1 text-foreground">
+															{ad.Name} {ad.Town}
+														</span>
+													</label>
+												))}
+											</div>
+											<div className="mt-3 flex flex-wrap justify-between gap-2 text-xs">
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													onClick={() => handleLocation()}>
+													Use current location
+												</Button>
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													onClick={() => dispatch({ type: "edit" })}>
+													Add new address
+												</Button>
+											</div>
+										</div>
+									)}
+								</div>
+
+								{/* Instructions */}
+								<div className="space-y-2">
+									<div className="flex items-center justify-between text-sm">
+										<span className="flex items-center gap-1.5 font-medium">
+											<StickyNote className="h-4 w-4 text-primary" /> Delivery
+											instructions
+										</span>
+										<button
+											type="button"
+											onClick={() => cartDispatch({ type: "instruction" })}
+											className="text-xs text-primary hover:underline">
+											{cartState.instruction ? "Close" : "Add"}
+										</button>
+									</div>
+									{cartState.instruction && (
+										<Textarea
+											rows={3}
+											placeholder="e.g. give it to the receptionist"
+											onChange={handleDeliveryInstruction}
+										/>
+									)}
+								</div>
+
+								{/* Voucher */}
+								<div className="space-y-2">
+									<div className="flex items-center justify-between text-sm">
+										<span className="flex items-center gap-1.5 font-medium">
+											<BadgePercent className="h-4 w-4 text-primary" /> Use a
+											gift code
+										</span>
+										<button
+											type="button"
+											onClick={() => cartDispatch({ type: "gift" })}
+											className="text-xs text-primary hover:underline">
+											{cartState.gift ? "Close" : "Add"}
+										</button>
+									</div>
+									{cartState.gift && (
+										<div className="space-y-2">
+											<Input
+												placeholder="Gift code"
+												onChange={(e) =>
+													cartDispatch({
+														type: "voucherCode",
+														payload: e.target.value,
+													})
+												}
+											/>
+											<div className="flex items-center justify-between gap-2">
+												{cartState.voucherError && (
+													<p className="text-xs text-destructive">
+														{cartState.voucherError}
+													</p>
+												)}
+												<Button
+													type="button"
+													size="sm"
+													variant="outline"
+													className="ml-auto"
+													onClick={() => handleGift()}>
+													Use code
+												</Button>
+											</div>
+										</div>
+									)}
+								</div>
+
+								<div className="flex items-start gap-2 rounded-lg border border-amber-200/60 bg-amber-50 p-3 text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+									<Info className="mt-0.5 h-4 w-4 shrink-0" />
+									<p className="text-xs">
+										Confirm your delivery address so we bring your order to the
+										right place.
+									</p>
+								</div>
+
+								<Separator />
+
+								<div className="space-y-1.5 text-sm">
+									<div className="flex justify-between">
+										<span className="text-muted-foreground">
+											Subtotal ({cart.length} item{cart.length === 1 ? "" : "s"}
+											)
+										</span>
+										<span>{formatNaira(state.subTotal)}</span>
+									</div>
+									<div className="flex justify-between">
+										<span className="text-muted-foreground">Delivery fee</span>
+										<span>{formatNaira(cartState.deliveryFee)}</span>
+									</div>
+									<div className="flex justify-between">
+										<span className="text-muted-foreground">Service fee</span>
+										<span>{formatNaira(0)}</span>
+									</div>
+									<Separator />
+									<div className="flex justify-between text-base font-semibold">
+										<span>Total</span>
+										<span>{formatNaira(cartState.total)}</span>
+									</div>
+									{cartState.voucherMessage && (
+										<p className="flex items-center gap-1 text-xs text-primary">
+											<ThumbsUp className="h-3.5 w-3.5" />
+											{cartState.voucherMessage}
+										</p>
+									)}
+								</div>
+
+								{(cartState.error || state.error) && (
+									<p className="text-xs text-destructive">
+										{cartState.error || state.error}
+									</p>
+								)}
+
+								<div className="space-y-2">
+									<Button
+										onClick={handleOrder}
+										disabled={orderLoading}
+										className="w-full">
+										{orderLoading ? (
+											<>
+												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+												Placing order…
+											</>
+										) : (
+											"Place order"
+										)}
+									</Button>
+									<Button
+										type="button"
+										variant="outline"
+										onClick={clearCart}
+										className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive">
+										Clear cart
+									</Button>
+								</div>
+							</CardContent>
+						</Card>
+					</aside>
 				) : (
 					<EmptyCartDesktop />
 				)}
 			</div>
 
+			{/* Mobile cart Sheet (when items present) / Empty state otherwise */}
 			{cart.length >= 1 ? (
 				<Cart
 					vendor={data}

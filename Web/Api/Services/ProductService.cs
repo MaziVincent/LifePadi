@@ -38,6 +38,8 @@ namespace Api.Services
                     var products1 = await _dbContext!.Products.Skip(skip).Take(pageSize)
                         .Include(p => p.Vendor)
                         .Include(p => p.Category)
+                        .Include(p => p.Variants)
+                        .Include(p => p.Extras)
                         .OrderByDescending(p => p.CreatedAt)
                         .Where(p => p.Status == true).ToListAsync();
                     var ProductDto1 = _mapper.Map<List<ProductDto>>(products1);
@@ -46,6 +48,8 @@ namespace Api.Services
                 var products = await _dbContext.Products.Skip(skip).Take(pageSize)
                     .Include(p => p.Vendor)
                     .Include(p => p.Category)
+                    .Include(p => p.Variants)
+                    .Include(p => p.Extras)
                     .OrderByDescending(p => p.CreatedAt)
                     .Where(p => p.SearchString!.ToLower().Contains(searchString.ToLower())).ToListAsync();
                 var ProductDto = _mapper.Map<List<ProductDto>>(products);
@@ -118,6 +122,8 @@ namespace Api.Services
                     .Include(p => p.Vendor)
                     .ThenInclude(v => v!.Addresses)
                     .Include(p => p.Category)
+                    .Include(p => p.Variants)
+                    .Include(p => p.Extras)
                     .Include(p => p.ProductReviews)!
                     .ThenInclude(pr => pr.Customer)
                     .AsSplitQuery()

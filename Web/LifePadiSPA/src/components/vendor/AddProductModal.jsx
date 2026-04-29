@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ImagePlus, Loader2 } from "lucide-react";
+import { ImagePlus, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
 	Dialog,
@@ -25,6 +25,7 @@ import useAuth from "../../hooks/useAuth";
 import useFetch from "../../hooks/useFetch";
 import usePost from "../../hooks/usePost";
 import { getCategoriesUrl, createProductUrl } from "./vendorUri/VendorURI";
+import baseUrl from "@/api/baseUrl";
 
 const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 	const { auth } = useAuth();
@@ -40,6 +41,8 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 	const [tag, setTag] = useState("");
 	const [image, setImage] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
+	const [variants, setVariants] = useState([]);
+	const [extras, setExtras] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const fetchCategories = async (url) => {
@@ -63,6 +66,8 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 		setTag("");
 		setImage(null);
 		setImagePreview(null);
+		setVariants([]);
+		setExtras([]);
 		setLoading(false);
 	};
 
@@ -105,6 +110,10 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 				auth.accessToken,
 			);
 			if (result && result.success !== false && !result.error) {
+				const productId = result?.data?.Id ?? result?.data?.id;
+				if (productId) {
+					await persistOptions(productId);
+				}
 				toast.success("Product added successfully");
 				queryClient.invalidateQueries("vendorProductsList");
 				queryClient.invalidateQueries("vendorProductStats");
@@ -117,6 +126,32 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 		} finally {
 			setLoading(false);
 		}
+	};
+
+	const persistOptions = async (productId) => {
+		const cleanedV = variants
+			.filter((v) => v.name?.trim() && v.price !== "")
+			.map((v) => ({
+				ProductId: productId,
+				Name: v.name.trim(),
+				Price: Number(v.price),
+				IsDefault: !!v.isDefault,
+			}));
+		const cleanedE = extras
+			.filter((e) => e.name?.trim() && e.price !== "")
+			.map((e) => ({
+				ProductId: productId,
+				Name: e.name.trim(),
+				Price: Number(e.price),
+			}));
+		await Promise.all([
+			...cleanedV.map((dto) =>
+				postData(`${baseUrl}ProductOption/variants/create`, dto, auth.accessToken),
+			),
+			...cleanedE.map((dto) =>
+				postData(`${baseUrl}ProductOption/extras/create`, dto, auth.accessToken),
+			),
+		]);
 	};
 
 	return (
@@ -223,6 +258,21 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 						)}
 					</div>
 
+					<OptionSection
+						title="Variants"
+						subtitle="Different sizes / portions that REPLACE the base price (e.g. Small ₦500, Large ₦900)."
+						items={variants}
+						setItems={setVariants}
+						withDefault
+					/>
+
+					<OptionSection
+						title="Extras"
+						subtitle="Optional add-ons that ADD to the price (e.g. Extra cheese ₦200)."
+						items={extras}
+						setItems={setExtras}
+					/>
+
 					<DialogFooter>
 						<Button
 							type="button"
@@ -245,6 +295,71 @@ const AddProductModal = ({ openAddProductModal, setOpenAddProductModal }) => {
 				</form>
 			</DialogContent>
 		</Dialog>
+	);
+};
+
+const OptionSection = ({ title, subtitle, items, setItems, withDefault }) => {
+	const addRow = () =>
+		setItems((xs) => [...xs, { name: "", price: "", isDefault: false }]);
+	const updateRow = (i, patch) =>
+		setItems((xs) => xs.map((x, idx) => (idx === i ? { ...x, ...patch } : x)));
+	const removeRow = (i) => setItems((xs) => xs.filter((_, idx) => idx !== i));
+	const setDefault = (i) =>
+		setItems((xs) => xs.map((x, idx) => ({ ...x, isDefault: idx === i })));
+
+	return (
+		<div className="space-y-2 rounded-md border border-dashed p-3">
+			<div className="flex items-start justify-between gap-2">
+				<div>
+					<p className="text-sm font-semibold">{title}</p>
+					<p className="text-xs text-muted-foreground">{subtitle}</p>
+				</div>
+				<Button type="button" variant="outline" size="sm" onClick={addRow}>
+					<Plus className="mr-1 h-3.5 w-3.5" /> Add
+				</Button>
+			</div>
+			{items.length === 0 && (
+				<p className="text-xs italic text-muted-foreground">None added.</p>
+			)}
+			<div className="space-y-2">
+				{items.map((row, i) => (
+					<div key={i} className="flex flex-wrap items-center gap-2">
+						<Input
+							placeholder="Name"
+							className="min-w-[120px] flex-1"
+							value={row.name}
+							onChange={(e) => updateRow(i, { name: e.target.value })}
+						/>
+						<Input
+							type="number"
+							min={0}
+							step="0.01"
+							placeholder="Price"
+							className="w-28"
+							value={row.price}
+							onChange={(e) => updateRow(i, { price: e.target.value })}
+						/>
+						{withDefault && (
+							<label className="flex cursor-pointer items-center gap-1 text-xs">
+								<input
+									type="radio"
+									checked={!!row.isDefault}
+									onChange={() => setDefault(i)}
+								/>
+								default
+							</label>
+						)}
+						<Button
+							type="button"
+							variant="ghost"
+							size="icon"
+							onClick={() => removeRow(i)}>
+							<Trash2 className="h-4 w-4 text-destructive" />
+						</Button>
+					</div>
+				))}
+			</div>
+		</div>
 	);
 };
 

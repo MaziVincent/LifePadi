@@ -292,6 +292,7 @@ builder.Services.AddScoped<IVendor, VendorService>();
 builder.Services.AddScoped<IRider, RiderService>();
 builder.Services.AddScoped<ICustomer, CustomerService>();
 builder.Services.AddScoped<IProduct, ProductService>();
+builder.Services.AddScoped<IProductOption, ProductOptionService>();
 builder.Services.AddScoped<ICategory, CategoryService>();
 builder.Services.AddScoped<IAddress, AddressService>();
 builder.Services.AddScoped<IService, ServiceService>();

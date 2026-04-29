@@ -18,6 +18,7 @@ import AdminProduct from "@/components/admin/vendors/product/AdminProduct";
 import AdminOrderDetails from "@/components/admin/AdminOrderDetails";
 import AdminVoucher from "@/components/admin/vouchers/AdminVoucher";
 import Admin from "@/components/admin/admins/Admin";
+import PendingApprovals from "@/components/admin/approvals/PendingApprovals";
 import { ROLES } from "./roles";
 
 export const adminRoutes: RouteObject[] = [
@@ -32,6 +33,7 @@ export const adminRoutes: RouteObject[] = [
 						element: <AdminLayout />,
 						children: [
 							{ index: true, element: <Overview /> },
+							{ path: "approvals", element: <PendingApprovals /> },
 							{ path: "service", element: <AdminService /> },
 							{ path: "service/:id", element: <AdminServiceDetails /> },
 							{ path: "category", element: <AdminCategory /> },

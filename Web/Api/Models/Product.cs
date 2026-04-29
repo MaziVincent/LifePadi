@@ -18,5 +18,7 @@
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<ProductReview>? ProductReviews { get; set; }
         public List<Favourite>? Favourites { get; set; }
+        public List<ProductVariant>? Variants { get; set; }
+        public List<ProductExtra>? Extras { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
 	Heart,
@@ -46,6 +46,11 @@ interface CategoriesResponse {
 	result?: VendorCategory[];
 }
 
+// Module-level cache so the accumulated vendors list survives unmounts
+// (e.g. when navigating to /shop/vendor/:id and back).
+const vendorsCache = new Map<string, Vendor[]>();
+const cacheKey = (search: string) => `s=${search}`;
+
 const Shop = () => {
 	const url = `${baseUrl}vendor`;
 	const fetcher = useFetch();
@@ -57,14 +62,24 @@ const Shop = () => {
 	const [activeCategoryId, setActiveCategoryId] = useState<
 		string | number | null
 	>(null);
-	const [vendors, setVendors] = useState<Vendor[]>([]);
+	const [vendors, setVendors] = useState<Vendor[]>(
+		() => vendorsCache.get(cacheKey("")) ?? [],
+	);
 
-	// Debounce search input → query
+	// Debounce search input → query. Skip the first run so that returning
+	// to /shop from a vendor page doesn't wipe the vendor list before
+	// react-query repopulates it from cache.
+	const isFirstSearchRun = useRef(true);
 	useEffect(() => {
+		if (isFirstSearchRun.current) {
+			isFirstSearchRun.current = false;
+			return;
+		}
 		const t = setTimeout(() => {
 			setSearch(searchInput);
 			setPage(1);
-			setVendors([]);
+			const cached = vendorsCache.get(cacheKey(searchInput));
+			setVendors(cached ?? []);
 		}, 350);
 		return () => clearTimeout(t);
 	}, [searchInput]);
@@ -96,10 +111,11 @@ const Shop = () => {
 				for (const v of vendorsData.result ?? []) {
 					if (!merged.find((m) => m.Id === v.Id)) merged.push(v);
 				}
+				vendorsCache.set(cacheKey(search), merged);
 				return merged;
 			});
 		}
-	}, [vendorsSuccess, vendorsData]);
+	}, [vendorsSuccess, vendorsData, search]);
 
 	/* ---------------- Categories (cached, dedup'd) ---------------- */
 

@@ -10,6 +10,10 @@ import {
 	Eye,
 	History,
 	Loader2,
+	MapPin,
+	Heart,
+	Gift as GiftIcon,
+	ShoppingBag,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
@@ -87,6 +91,52 @@ const UserDashboard = () => {
 				</Link>
 			</div>
 			<div className="pt-5 flex flex-col items-center">
+				<div className="w-full max-w-5xl px-3 md:px-0 mb-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+					<Link
+						to="/user/address"
+						className="rounded-xl border border-border bg-card hover:bg-muted/40 transition p-4 flex items-center gap-3">
+						<span className="rounded-full bg-blue-500/10 text-blue-500 p-2">
+							<MapPin className="h-5 w-5" />
+						</span>
+						<div>
+							<p className="text-sm font-semibold">Addresses</p>
+							<p className="text-xs text-muted-foreground">Manage</p>
+						</div>
+					</Link>
+					<Link
+						to="/user/favourite"
+						className="rounded-xl border border-border bg-card hover:bg-muted/40 transition p-4 flex items-center gap-3">
+						<span className="rounded-full bg-rose-500/10 text-rose-500 p-2">
+							<Heart className="h-5 w-5" />
+						</span>
+						<div>
+							<p className="text-sm font-semibold">Favourites</p>
+							<p className="text-xs text-muted-foreground">Saved items</p>
+						</div>
+					</Link>
+					<Link
+						to="/user/gift"
+						className="rounded-xl border border-border bg-card hover:bg-muted/40 transition p-4 flex items-center gap-3">
+						<span className="rounded-full bg-amber-500/10 text-amber-500 p-2">
+							<GiftIcon className="h-5 w-5" />
+						</span>
+						<div>
+							<p className="text-sm font-semibold">Gifts</p>
+							<p className="text-xs text-muted-foreground">Send & receive</p>
+						</div>
+					</Link>
+					<Link
+						to="/shop"
+						className="rounded-xl border border-border bg-card hover:bg-muted/40 transition p-4 flex items-center gap-3">
+						<span className="rounded-full bg-emerald-500/10 text-emerald-500 p-2">
+							<ShoppingBag className="h-5 w-5" />
+						</span>
+						<div>
+							<p className="text-sm font-semibold">Shop</p>
+							<p className="text-xs text-muted-foreground">Browse stores</p>
+						</div>
+					</Link>
+				</div>
 				<h1 className=" mb-5 text-4xl text-center font-bold">My Orders</h1>
 				<main className=" flex gap-8">
 					<section className="right-section right-0 top-0 max-lg:w-full">

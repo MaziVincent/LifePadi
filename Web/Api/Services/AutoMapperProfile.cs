@@ -64,6 +64,14 @@ namespace Api.Services
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
 
+            //Product Variants & Extras
+            CreateMap<ProductVariant, ProductVariantDto>();
+            CreateMap<ProductVariantDto, ProductVariant>();
+            CreateMap<CreateProductVariantDto, ProductVariant>();
+            CreateMap<ProductExtra, ProductExtraDto>();
+            CreateMap<ProductExtraDto, ProductExtra>();
+            CreateMap<CreateProductExtraDto, ProductExtra>();
+
             //Service
             CreateMap<ServiceDto, Service>();
             CreateMap<Service, ServiceDto>();

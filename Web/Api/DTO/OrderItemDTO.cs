@@ -16,6 +16,10 @@ namespace Api.DTO
         public ProductDtoLite? Product { get; set; }
         public int OrderId { get; set; }
         public OrderDtoLite? Order { get; set; }
+        public int? SelectedVariantId { get; set; }
+        public string? SelectedVariantName { get; set; }
+        public double? SelectedVariantPrice { get; set; }
+        public string? SelectedExtrasJson { get; set; }
     }
 
     public class OrderItemDtoLite

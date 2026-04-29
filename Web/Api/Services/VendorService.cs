@@ -107,6 +107,7 @@ namespace Api.Services
                 if (vendorExist) throw new AlreadyExistException("Vendor already exists");
                 newVendor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vendor.Password);
                 newVendor.IsActive = false;
+                newVendor.ApprovalStatus = "Pending";
                 newVendor.SearchString = vendor.Name!.Replace(" ", "").ToUpper() + " " + vendor.Tag!.Replace(" ", "").ToUpper();
                 await _dbContext!.Vendors.AddAsync(newVendor);
 

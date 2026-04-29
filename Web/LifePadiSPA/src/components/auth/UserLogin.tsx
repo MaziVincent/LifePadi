@@ -85,24 +85,30 @@ const UserLogin = () => {
 			toast.success("Logged in successfully");
 			const role = response.data?.Role;
 			setTimeout(() => {
+				setLogin(false);
 				if (role === "Customer") {
-					setLogin(false);
-				} else {
-					navigate("/unauthorized");
+					// stay on current page; modal already closed
+					return;
 				}
-			}, 800);
+				if (role === "Vendor") navigate("/vendor");
+				else if (role === "Rider") navigate("/rider");
+				else if (role === "Admin") navigate("/admin");
+				else navigate("/unauthorized");
+			}, 600);
 		} catch (err) {
-			const ax = err as AxiosError;
+			const ax = err as AxiosError<{ message?: string }>;
+			const apiMsg = (ax?.response?.data as { message?: string } | undefined)
+				?.message;
 			switch (ax?.response?.status) {
 				case 400:
 				case 404:
-					toast.error("Invalid email or password");
+					toast.error(apiMsg || "Invalid email or password");
 					break;
 				case 401:
-					toast.error("Unauthorized");
+					toast.error(apiMsg || "Unauthorized");
 					break;
 				default:
-					toast.error("Login failed. Please try again.");
+					toast.error(apiMsg || "Login failed. Please try again.");
 			}
 		} finally {
 			setIsLoading(false);

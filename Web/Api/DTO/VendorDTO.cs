@@ -33,6 +33,10 @@ namespace Api.DTO
         public string? SearchString { get; set; }
         public string? Tag { get; set; }
         public bool? IsActive { get; set; }
+        public string? ApprovalStatus { get; set; }
+        public string? ApprovalReason { get; set; }
+        public DateTime? ApprovalDecisionAt { get; set; }
+        public string? Email { get; set; }
         public string? TimeTakesToPurchase { get; set; }
         public string? OpeningHours { get; set; }
         public string? ClosingHours { get; set; }
@@ -79,6 +83,7 @@ namespace Api.DTO
         public string? Name { get; set; }
         public string? Tag { get; set; }
         public bool? IsActive { get; set; }
+        public string? ApprovalStatus { get; set; }
 
         public string? OpeningHours { get; set; }
         public int? ServiceId {get; set;}

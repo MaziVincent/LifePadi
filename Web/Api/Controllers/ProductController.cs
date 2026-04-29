@@ -79,6 +79,7 @@ namespace Api.Controllers
         /// <param name="product">Product data for creation</param>
         /// <returns>Created product DTO</returns>
         [HttpPost("create")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Policy = "CanManageProducts")]
         public async Task<IActionResult> create(CreateProductDto product)
         {
             try

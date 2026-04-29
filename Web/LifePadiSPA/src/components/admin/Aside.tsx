@@ -9,11 +9,13 @@ import {
 	Users,
 	ShieldCheck,
 	Ticket,
+	UserCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
 	{ to: "/admin", label: "Overview", Icon: LayoutDashboard, end: true },
+	{ to: "/admin/approvals", label: "Approvals", Icon: UserCheck },
 	{ to: "/admin/service", label: "Services", Icon: Settings },
 	{ to: "/admin/category", label: "Categories", Icon: ListOrdered },
 	{ to: "/admin/vendorcategory", label: "Vendors", Icon: Store },

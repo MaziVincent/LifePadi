@@ -53,6 +53,9 @@ namespace Api.DTO
         public string? EmergencyContact { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsVerified { get; set; }
+        public string? ApprovalStatus { get; set; }
+        public string? ApprovalReason { get; set; }
+        public DateTime? ApprovalDecisionAt { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -84,5 +87,6 @@ namespace Api.DTO
         public string? EmergencyContact { get; set; }
         public bool? IsVerified { get; set; }
         public bool? IsActive {get; set;}
+        public string? ApprovalStatus { get; set; }
     }
 }

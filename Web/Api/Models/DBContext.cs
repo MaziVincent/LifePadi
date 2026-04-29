@@ -20,6 +20,8 @@ namespace Api.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrdersItems { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<ProductExtra> ProductExtras { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
@@ -46,6 +48,17 @@ namespace Api.Models
                 .WithOne(w => w.Customer)
                 .HasForeignKey<Wallet>(w => w.CustomerId);
 
+            modelBuilder.Entity<ProductVariant>()
+                .HasOne(v => v.Product)
+                .WithMany(p => p!.Variants)
+                .HasForeignKey(v => v.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductExtra>()
+                .HasOne(e => e.Product)
+                .WithMany(p => p!.Extras)
+                .HasForeignKey(e => e.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

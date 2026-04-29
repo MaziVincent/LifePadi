@@ -18,6 +18,8 @@ namespace Api.DTO
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public List<ProductReviewDto>? ProductReviews { get; set; }
+        public List<ProductVariantDto>? Variants { get; set; }
+        public List<ProductExtraDto>? Extras { get; set; }
 
     }
 

@@ -104,7 +104,8 @@ namespace Api.Controllers
                 ReferralCode = user.ReferralCode,
                 refreshToken = user.RefreshToken,
                 accessToken = user.AccessToken,
-                Wallet = user.Wallet
+                Wallet = user.Wallet,
+                ApprovalStatus = user.ApprovalStatus
             };
 
             _logger.LogInformation("User login successful for UserId: {UserId}", user.Id);
@@ -130,6 +131,24 @@ namespace Api.Controllers
             }
 
             var Type = _oService.Strip(user.GetType().ToString());
+
+            // Approval gate: Vendors and Riders must be Approved before they can sign in.
+            // Customers and Admins are exempt (their default ApprovalStatus is "Approved").
+            if ((Type == "Vendor" || Type == "Rider") &&
+                !string.Equals(user.ApprovalStatus, "Approved", StringComparison.OrdinalIgnoreCase))
+            {
+                var status = string.IsNullOrWhiteSpace(user.ApprovalStatus) ? "Pending" : user.ApprovalStatus!;
+                _logger.LogWarning("Login blocked for {Role} {UserId} — ApprovalStatus={Status}", Type, user.Id, status);
+                throw new Api.Exceptions.UnauthorizedAccessException(
+                    status == "Pending"
+                        ? "Your account is pending review. We'll email you once an admin approves it."
+                        : status == "Rejected"
+                            ? $"Your application was rejected. {user.ApprovalReason ?? "Please contact support."}"
+                            : status == "Suspended"
+                                ? $"Your account is suspended. {user.ApprovalReason ?? "Please contact support."}"
+                                : "Your account is not approved.");
+            }
+
             var genTokenDTO = new GenTokenDto
             {
                 Id = user.Id,
@@ -176,7 +195,8 @@ namespace Api.Controllers
                 AccessToken = accessToken,
                 Role = Type,
                 Wallet = walletDto,
-                ReferralCode = referralCode
+                ReferralCode = referralCode,
+                ApprovalStatus = user.ApprovalStatus ?? "Approved"
             };
         }
 

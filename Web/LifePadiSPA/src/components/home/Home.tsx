@@ -55,7 +55,7 @@ const ROLE_CARDS = [
 		image: vendor2,
 		icon: Store,
 		cta: "Become a vendor",
-		to: "/contact",
+		to: "/vendor-register",
 	},
 	{
 		title: "Become a Padi",
@@ -64,7 +64,7 @@ const ROLE_CARDS = [
 		image: rider,
 		icon: Bike,
 		cta: "Ride with us",
-		to: "/contact",
+		to: "/rider-register",
 	},
 	{
 		title: "Build with us",

@@ -39,6 +39,19 @@ const CheckOut = () => {
 	const [error, setError] = useState("");
 
 	const vendor = state.vendor as { Name?: string } | null;
+	const vendorNames = Array.from(
+		new Set(
+			(cart as any[])
+				.map((c) => c?.VendorName as string | undefined)
+				.filter((n): n is string => Boolean(n)),
+		),
+	);
+	const headerVendorLabel =
+		vendorNames.length === 0
+			? vendor?.Name
+			: vendorNames.length === 1
+				? vendorNames[0]
+				: `${vendorNames.length} vendors`;
 	const deliveryAddress = (() => {
 		const a = state.deliveryAddress as
 			| { Name?: string; Town?: string; City?: string }
@@ -106,7 +119,9 @@ const CheckOut = () => {
 				<div className="flex flex-col gap-4">
 					{/* Vendor + address recap */}
 					<div className="rounded-lg border bg-card p-3 text-sm">
-						{vendor?.Name && <p className="font-medium">{vendor.Name}</p>}
+						{headerVendorLabel && (
+							<p className="font-medium">{headerVendorLabel}</p>
+						)}
 						{deliveryAddress && (
 							<div className="mt-1 flex items-start gap-1.5 text-muted-foreground">
 								<MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
@@ -125,19 +140,38 @@ const CheckOut = () => {
 								{cart.map((item, i) => {
 									const it = item as {
 										Id?: string | number;
+										LineKey?: string;
 										Name?: string;
 										Price?: number;
 										Quantity?: number;
 										Amount?: number;
+										VendorName?: string;
+										SelectedVariantName?: string;
+										SelectedExtras?: { Name: string }[];
 									};
 									return (
 										<li
-											key={String(it.Id ?? i)}
+											key={String(it.LineKey ?? it.Id ?? i)}
 											className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
 											<div className="min-w-0">
 												<p className="line-clamp-1 font-medium">
 													{it.Name ?? "Item"}
 												</p>
+												{it.VendorName && (
+													<p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+														{it.VendorName}
+													</p>
+												)}
+												{it.SelectedVariantName && (
+													<p className="text-xs text-muted-foreground">
+														{it.SelectedVariantName}
+													</p>
+												)}
+												{it.SelectedExtras && it.SelectedExtras.length > 0 && (
+													<p className="line-clamp-1 text-xs text-muted-foreground">
+														+ {it.SelectedExtras.map((e) => e.Name).join(", ")}
+													</p>
+												)}
 												<p className="text-xs text-muted-foreground">
 													{it.Quantity ?? 1} × ₦{formatNaira(it.Price)}
 												</p>

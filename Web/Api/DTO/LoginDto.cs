@@ -37,5 +37,10 @@ namespace Api.DTO
         public string? AccessToken { get; set; }
         public WalletDtoLite? Wallet { get; set; }
 
+        /// <summary>
+        /// Approval lifecycle for vendors/riders. Customers/Admins are always "Approved".
+        /// </summary>
+        public string? ApprovalStatus { get; set; }
+
     }
 }
