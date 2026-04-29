@@ -393,4 +393,3 @@ Tailwind config will be rewritten to consume these via `hsl(var(--…))` instead
 - Convert `Cart.tsx` UI to a shadcn `Sheet` (slide-in) for mobile while preserving desktop side-by-side layout.
 - Optional code-splitting via `React.lazy` for the `/shop/*` route group (the build still warns at >500 kB chunks).
 - Code-shift the `Heroanimation4.json` Lottie asset (~lazy-loaded via `<Suspense>`) to slim the landing entry chunk further.
-

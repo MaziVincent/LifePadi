@@ -133,9 +133,9 @@ const Shop = () => {
 		if (vendorsData?.dataList?.HasNext) setPage((p) => p + 1);
 	};
 
-	const locationAddress =
-		(auth as unknown as { location?: { address?: string } })?.location
-			?.address;
+	const locationAddress = (
+		auth as unknown as { location?: { address?: string } }
+	)?.location?.address;
 
 	return (
 		<div className="bg-background text-foreground">

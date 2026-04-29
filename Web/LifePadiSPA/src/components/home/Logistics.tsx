@@ -99,7 +99,9 @@ const Logistics = () => {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6 }}>
-						<Badge variant="secondary" className="mb-6 gap-2 rounded-full px-4 py-1.5">
+						<Badge
+							variant="secondary"
+							className="mb-6 gap-2 rounded-full px-4 py-1.5">
 							<Sparkles className="h-3.5 w-3.5" />
 							LifePadi Logistics
 						</Badge>
@@ -108,8 +110,8 @@ const Logistics = () => {
 							<span className="text-primary">the easy way.</span>
 						</h1>
 						<p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-							From documents to bulky parcels — your padi is one tap away.
-							Track in real time, pay in-app, smile.
+							From documents to bulky parcels — your padi is one tap away. Track
+							in real time, pay in-app, smile.
 						</p>
 						<div className="mt-8 flex flex-wrap justify-center gap-3">
 							<Button asChild size="lg" className="gap-2">
@@ -194,8 +196,7 @@ const Logistics = () => {
 				<div className="mx-auto max-w-7xl px-4 py-20 lg:px-8 lg:py-28">
 					<FadeIn className="mx-auto mb-10 max-w-3xl text-center">
 						<h2 className="text-3xl font-bold tracking-tight sm:text-5xl">
-							You need it?{" "}
-							<span className="text-primary">We'll bring it.</span>
+							You need it? <span className="text-primary">We'll bring it.</span>
 						</h2>
 						<p className="mt-4 text-muted-foreground">
 							Say goodbye to harrowing deliveries and hello to quick, easy ones.
@@ -245,12 +246,20 @@ const Logistics = () => {
 							<a
 								href="https://play.google.com/store/apps/details?id=com.lifepadi.app"
 								className="rounded-xl bg-background/95 px-3 py-2 transition hover:bg-background">
-								<img src={PlayStore} alt="Play Store" className="h-10 w-40 object-contain" />
+								<img
+									src={PlayStore}
+									alt="Play Store"
+									className="h-10 w-40 object-contain"
+								/>
 							</a>
 							<a
 								href="https://apps.apple.com/us/app/lifepadi/id6741829265"
 								className="rounded-xl bg-background/95 px-3 py-2 transition hover:bg-background">
-								<img src={AppStore} alt="App Store" className="h-10 w-40 object-contain" />
+								<img
+									src={AppStore}
+									alt="App Store"
+									className="h-10 w-40 object-contain"
+								/>
 							</a>
 						</div>
 					</FadeIn>

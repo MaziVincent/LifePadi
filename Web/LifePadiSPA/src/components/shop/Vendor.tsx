@@ -103,7 +103,10 @@ type VendorAction =
 	| { type: "product"; payload: Product }
 	| { type: "subTotal"; payload: number };
 
-const reducer = (state: VendorLocalState, action: VendorAction): VendorLocalState => {
+const reducer = (
+	state: VendorLocalState,
+	action: VendorAction,
+): VendorLocalState => {
 	switch (action.type) {
 		case "open":
 			return { ...state, open: !state.open };
@@ -156,9 +159,7 @@ const Vendor = () => {
 		dispatch: cartDispatch,
 	} = useCart() as unknown as {
 		cart: Product[];
-		setCart: (
-			next: Product[] | ((prev: Product[]) => Product[]),
-		) => void;
+		setCart: (next: Product[] | ((prev: Product[]) => Product[])) => void;
 		setCartState: (v: boolean) => void;
 		state: any;
 		dispatch: (a: any) => void;
@@ -489,9 +490,8 @@ const Vendor = () => {
 
 	useEffect(() => {
 		if (cart.length === 0) {
-			const currentCart = (JSON.parse(
-				localStorage.getItem("cart") ?? "[]",
-			) ?? []) as Product[];
+			const currentCart = (JSON.parse(localStorage.getItem("cart") ?? "[]") ??
+				[]) as Product[];
 			const currentVendor = JSON.parse(
 				localStorage.getItem("currentVendor") ?? "null",
 			);
@@ -989,7 +989,9 @@ const Vendor = () => {
 					handleCartDecrement={handleCartDecrement}
 					handleCartIncrement={handleCartIncrement}
 					handleCartItemDelete={handleCartItemDelete}
-					handleNewAddress={dispatch as unknown as (a: { type: string }) => void}
+					handleNewAddress={
+						dispatch as unknown as (a: { type: string }) => void
+					}
 					handleGift={handleGift}
 					handleDeliveryFee={handleDeliveryFee}
 				/>
@@ -1000,7 +1002,15 @@ const Vendor = () => {
 			<ProductModal
 				open={state.open}
 				handleClose={dispatch as unknown as (a: { type: string }) => void}
-				product={state.product as unknown as { Id: string | number; Name: string; Tag?: string; Price: number; ProductImgUrl: string }}
+				product={
+					state.product as unknown as {
+						Id: string | number;
+						Name: string;
+						Tag?: string;
+						Price: number;
+						ProductImgUrl: string;
+					}
+				}
 				vendor={(data ?? { Id: "" }) as { Id: string | number }}
 			/>
 			<NewAddressModal

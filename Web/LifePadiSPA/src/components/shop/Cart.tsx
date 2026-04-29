@@ -87,12 +87,11 @@ const Cart = ({
 			dispatch: (a: any) => void;
 		};
 
-	const { auth, setLogin, location } =
-		useAuth() as unknown as {
-			auth: { accessToken?: string; Id?: string | number } | null;
-			setLogin: (v: boolean) => void;
-			location: any;
-		};
+	const { auth, setLogin, location } = useAuth() as unknown as {
+		auth: { accessToken?: string; Id?: string | number } | null;
+		setLogin: (v: boolean) => void;
+		location: any;
+	};
 
 	const [origin, setOrigin] = useState("");
 	const [orderLoading, setOrderLoading] = useState(false);
@@ -344,7 +343,9 @@ const Cart = ({
 								variant="ghost"
 								size="sm"
 								onClick={() =>
-									state.address ? dispatch({ type: "address" }) : handleAddressChange()
+									state.address
+										? dispatch({ type: "address" })
+										: handleAddressChange()
 								}
 								className="shrink-0 text-primary hover:bg-primary/10">
 								{state.address ? "Close" : "Change"}

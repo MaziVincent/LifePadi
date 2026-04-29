@@ -179,8 +179,8 @@ const Home = () => {
 						</h1>
 
 						<p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-							Order food, groceries, gas and packages from one place. Track
-							your padi (rider) in real time and get back to what matters.
+							Order food, groceries, gas and packages from one place. Track your
+							padi (rider) in real time and get back to what matters.
 						</p>
 
 						<div className="mt-8 flex flex-wrap gap-3">
@@ -250,8 +250,7 @@ const Home = () => {
 						Our services
 					</Badge>
 					<h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-						We deliver{" "}
-						<span className="text-primary">everything you need</span>
+						We deliver <span className="text-primary">everything you need</span>
 					</h2>
 					<p className="mt-4 text-muted-foreground">
 						One app for the moments that make up your day.
@@ -390,12 +389,20 @@ const Home = () => {
 							<a
 								href="https://apps.apple.com/us/app/lifepadi/id6741829265"
 								className="rounded-xl bg-background/95 px-3 py-2 transition hover:bg-background">
-								<img src={AppStore} alt="App Store" className="h-10 w-40 object-contain" />
+								<img
+									src={AppStore}
+									alt="App Store"
+									className="h-10 w-40 object-contain"
+								/>
 							</a>
 							<a
 								href="https://play.google.com/store/apps/details?id=com.lifepadi.app"
 								className="rounded-xl bg-background/95 px-3 py-2 transition hover:bg-background">
-								<img src={PlayStore} alt="Play Store" className="h-10 w-40 object-contain" />
+								<img
+									src={PlayStore}
+									alt="Play Store"
+									className="h-10 w-40 object-contain"
+								/>
 							</a>
 							<Button
 								asChild

@@ -56,9 +56,7 @@ const PaymentResponse = () => {
 			}
 		} catch (err) {
 			const e = err as { response?: { data?: { message?: string } } };
-			setMessage(
-				e?.response?.data?.message ?? "Payment verification failed.",
-			);
+			setMessage(e?.response?.data?.message ?? "Payment verification failed.");
 			setStatus("error");
 			console.error(err);
 		}

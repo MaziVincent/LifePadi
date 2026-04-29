@@ -84,7 +84,9 @@ const About = () => {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6 }}>
-						<Badge variant="secondary" className="mb-6 gap-2 rounded-full px-4 py-1.5">
+						<Badge
+							variant="secondary"
+							className="mb-6 gap-2 rounded-full px-4 py-1.5">
 							<Sparkles className="h-3.5 w-3.5" />
 							About LifePadi
 						</Badge>
