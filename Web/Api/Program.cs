@@ -94,15 +94,19 @@ builder.Services.AddDbContext<DBContext>(option =>
     // Check if environment variables are available for database connection
     var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
     var dbPort = Environment.GetEnvironmentVariable("DB_PORT");
-    if (env.IsDevelopment())
+
+    // Only fall back to a local proxy if DB_SERVER is not provided in development.
+    if (env.IsDevelopment() && string.IsNullOrEmpty(dbServer))
     {
         dbServer = "127.0.0.1";
         dbPort = "5433";
     }
-    
+
     var dbName = Environment.GetEnvironmentVariable("DB_NAME");
     var dbUsername = Environment.GetEnvironmentVariable("DB_USERNAME");
     var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+    var sslMode = Environment.GetEnvironmentVariable("SSL_MODE");
+    var channelBinding = Environment.GetEnvironmentVariable("CHANNEL_BINDING");
 
     if (string.IsNullOrEmpty(dbServer) || string.IsNullOrEmpty(dbName) ||
         string.IsNullOrEmpty(dbUsername) || string.IsNullOrEmpty(dbPassword))
@@ -115,7 +119,19 @@ builder.Services.AddDbContext<DBContext>(option =>
 
     var portToUse = !string.IsNullOrEmpty(dbPort) ? dbPort : "5432";
     connectionString = $"Host={dbServer};Port={portToUse};Database={dbName};Username={dbUsername};Password={dbPassword};";
-    Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}");
+
+    if (!string.IsNullOrEmpty(sslMode))
+    {
+        connectionString += $"SSL Mode={sslMode};";
+        // VerifyFull/VerifyCA require trusting the server certificate; rely on system CA store.
+        connectionString += "Trust Server Certificate=false;";
+    }
+    if (!string.IsNullOrEmpty(channelBinding))
+    {
+        connectionString += $"Channel Binding={channelBinding};";
+    }
+
+    Console.WriteLine($"Using environment variables for DB connection. Server: {dbServer}, Port: {portToUse}, Database: {dbName}, SSL Mode: {sslMode}, Channel Binding: {channelBinding}");
 
     option.UseNpgsql(connectionString);
 });
