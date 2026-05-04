@@ -25,11 +25,29 @@ import {
 import {
 	Pagination,
 	PaginationContent,
+	PaginationEllipsis,
 	PaginationItem,
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
+
+/**
+ * Build a compact pagination range with ellipses so it never spills off
+ * narrow screens. Always shows first & last pages, the current page, and
+ * one neighbour on each side.
+ */
+const buildPageRange = (current: number, total: number): (number | "…")[] => {
+	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+	const pages: (number | "…")[] = [1];
+	const start = Math.max(2, current - 1);
+	const end = Math.min(total - 1, current + 1);
+	if (start > 2) pages.push("…");
+	for (let p = start; p <= end; p++) pages.push(p);
+	if (end < total - 1) pages.push("…");
+	pages.push(total);
+	return pages;
+};
 
 interface CustomerRow {
 	Id: number | string;
@@ -52,7 +70,10 @@ type CustomerAction =
 	| { type: "delete" | "activate" | "deActivate" }
 	| { type: "id"; payload: number | string };
 
-const reducer = (state: CustomerState, action: CustomerAction): CustomerState => {
+const reducer = (
+	state: CustomerState,
+	action: CustomerAction,
+): CustomerState => {
 	switch (action.type) {
 		case "delete":
 			return { ...state, delete: !state.delete };
@@ -90,7 +111,9 @@ const AdminCustomer = () => {
 	const { data, isError, isLoading, isSuccess } = useQuery({
 		queryKey: ["customers", page, search],
 		queryFn: () =>
-			getCustomers(`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`),
+			getCustomers(
+				`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=10`,
+			),
 		placeholderData: keepPreviousData,
 		staleTime: 20000,
 		refetchOnMount: "always",
@@ -165,8 +188,7 @@ const AdminCustomer = () => {
 											<TableRow
 												key={c.Id}
 												className="cursor-pointer"
-												onClick={() => navigate(`/admin/customer/${c.Id}`)}
-											>
+												onClick={() => navigate(`/admin/customer/${c.Id}`)}>
 												<TableCell>
 													<div className="flex items-center gap-3">
 														<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-medium uppercase">
@@ -184,7 +206,9 @@ const AdminCustomer = () => {
 													</div>
 												</TableCell>
 												<TableCell>{c.PhoneNumber}</TableCell>
-												<TableCell className="capitalize">{c.ContactAddress}</TableCell>
+												<TableCell className="capitalize">
+													{c.ContactAddress}
+												</TableCell>
 												<TableCell>
 													<Badge variant={c.IsActive ? "default" : "secondary"}>
 														{c.IsActive ? "Active" : "Inactive"}
@@ -202,8 +226,7 @@ const AdminCustomer = () => {
 																	e.stopPropagation();
 																	dispatch({ type: "id", payload: c.Id });
 																	dispatch({ type: "deActivate" });
-																}}
-															>
+																}}>
 																<ShieldX className="h-4 w-4" />
 															</Button>
 														) : (
@@ -216,8 +239,7 @@ const AdminCustomer = () => {
 																	e.stopPropagation();
 																	dispatch({ type: "id", payload: c.Id });
 																	dispatch({ type: "activate" });
-																}}
-															>
+																}}>
 																<ShieldCheck className="h-4 w-4" />
 															</Button>
 														)}
@@ -226,8 +248,7 @@ const AdminCustomer = () => {
 															size="icon"
 															className="text-destructive"
 															aria-label="Delete"
-															onClick={(e) => e.stopPropagation()}
-														>
+															onClick={(e) => e.stopPropagation()}>
 															<Trash2 className="h-4 w-4" />
 														</Button>
 													</div>
@@ -236,7 +257,9 @@ const AdminCustomer = () => {
 										))
 									) : (
 										<TableRow>
-											<TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+											<TableCell
+												colSpan={5}
+												className="text-center text-muted-foreground py-8">
 												No customers found.
 											</TableCell>
 										</TableRow>
@@ -248,7 +271,7 @@ const AdminCustomer = () => {
 
 					{isSuccess && totalPages > 1 && (
 						<Pagination>
-							<PaginationContent>
+							<PaginationContent className="flex-wrap">
 								<PaginationItem>
 									<PaginationPrevious
 										href="#"
@@ -259,20 +282,25 @@ const AdminCustomer = () => {
 										aria-disabled={page <= 1}
 									/>
 								</PaginationItem>
-								{Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-									<PaginationItem key={p}>
-										<PaginationLink
-											href="#"
-											isActive={p === page}
-											onClick={(e) => {
-												e.preventDefault();
-												setPage(p);
-											}}
-										>
-											{p}
-										</PaginationLink>
-									</PaginationItem>
-								))}
+								{buildPageRange(page, totalPages).map((p, idx) =>
+									p === "…" ? (
+										<PaginationItem key={`e-${idx}`}>
+											<PaginationEllipsis />
+										</PaginationItem>
+									) : (
+										<PaginationItem key={p}>
+											<PaginationLink
+												href="#"
+												isActive={p === page}
+												onClick={(e) => {
+													e.preventDefault();
+													setPage(p);
+												}}>
+												{p}
+											</PaginationLink>
+										</PaginationItem>
+									),
+								)}
 								<PaginationItem>
 									<PaginationNext
 										href="#"

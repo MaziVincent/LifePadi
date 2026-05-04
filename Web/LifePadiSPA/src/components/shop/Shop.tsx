@@ -28,6 +28,7 @@ interface Vendor {
 	Tag?: string;
 	VendorImgUrl?: string;
 	ContactAddress?: string;
+	IsActive?: boolean;
 }
 
 interface VendorCategory {
@@ -95,7 +96,7 @@ const Shop = () => {
 		queryKey: ["vendors", page, search],
 		queryFn: async () => {
 			const response = (await fetcher(
-				`${url}/all?PageNumber=${page}&SearchString=${search}&PageSize=6`,
+				`${url}/allActive?PageNumber=${page}&SearchString=${search}&PageSize=6`,
 				auth?.accessToken,
 			)) as { data?: VendorListResponse };
 			return response.data ?? {};
@@ -138,11 +139,15 @@ const Shop = () => {
 	const categories = categoriesData?.result ?? [];
 
 	const visibleVendors = useMemo(() => {
-		if (!activeCategoryId) return vendors;
+		// Defensive: hide deactivated vendors even if the API ever returns them.
+		const active = vendors.filter((v) => v.IsActive !== false);
+		if (!activeCategoryId) return active;
 		const cat = categories.find((c) => c.Id === activeCategoryId);
-		if (!cat) return vendors;
-		const ids = new Set(cat.Vendors.map((v) => v.Id));
-		return vendors.filter((v) => ids.has(v.Id));
+		if (!cat) return active;
+		const ids = new Set(
+			cat.Vendors.filter((v) => v.IsActive !== false).map((v) => v.Id),
+		);
+		return active.filter((v) => ids.has(v.Id));
 	}, [vendors, activeCategoryId, categories]);
 
 	const loadMore = () => {

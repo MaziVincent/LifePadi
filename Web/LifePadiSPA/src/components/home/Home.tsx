@@ -194,6 +194,20 @@ const Home = () => {
 							</Button>
 						</div>
 
+						<div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+							<span className="text-muted-foreground">Join the network:</span>
+							<Link
+								to="/vendor-register"
+								className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline">
+								<Store className="h-4 w-4" /> Become a Vendor
+							</Link>
+							<Link
+								to="/rider-register"
+								className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline">
+								<Bike className="h-4 w-4" /> Become a Rider
+							</Link>
+						</div>
+
 						<dl className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
 							{HIGHLIGHTS.map((h) => (
 								<div
