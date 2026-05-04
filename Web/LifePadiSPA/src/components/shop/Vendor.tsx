@@ -29,7 +29,7 @@ import EmptyCart from "./EmptyCart";
 import EmptyCartDesktop from "./EmptyCartDesktop";
 import ProductModal from "./ProductModal";
 import NewAddressModal from "./NewAddressModal";
-import { createAddress } from "./services/services";
+import { useCreateAddress } from "./services/services";
 
 import useCart from "../../hooks/useCart";
 import useFetch from "../../hooks/useFetch";
@@ -192,6 +192,7 @@ const Vendor = () => {
 	const fetch = useFetch();
 	const post = usePost();
 	const update = useUpdate();
+	const createAddress = useCreateAddress();
 	const [orderLoading, setOrderLoading] = useState(false);
 	const { auth, setLogin, location } = useAuth() as unknown as {
 		auth: { accessToken?: string; Id?: string | number } | null;

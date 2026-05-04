@@ -82,7 +82,7 @@ const AdminVoucher = () => {
 		queryKey: ["vouchers"],
 		queryFn: async () => {
 			const r = await fetch(`${url}/all`, auth.accessToken);
-			return r.data;
+			return r.data as VoucherRow[];
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 20000,
@@ -136,7 +136,9 @@ const AdminVoucher = () => {
 					)}
 					{isError && (
 						<Alert variant="destructive">
-							<AlertDescription>We can't get your vouchers currently</AlertDescription>
+							<AlertDescription>
+								We can't get your vouchers currently
+							</AlertDescription>
 						</Alert>
 					)}
 					{isSuccess && (
@@ -168,7 +170,8 @@ const AdminVoucher = () => {
 													</Badge>
 												</TableCell>
 												<TableCell>
-													<Badge variant={v.IsExpired ? "destructive" : "default"}>
+													<Badge
+														variant={v.IsExpired ? "destructive" : "default"}>
 														{v.IsExpired ? "Expired" : "Valid"}
 													</Badge>
 												</TableCell>
@@ -176,7 +179,9 @@ const AdminVoucher = () => {
 												<TableCell>{v.TotalNumberUsed}</TableCell>
 												<TableCell>{v.DiscountPercentage}</TableCell>
 												<TableCell>{v.DiscountAmount}</TableCell>
-												<TableCell className="max-w-xs truncate">{v.Description}</TableCell>
+												<TableCell className="max-w-xs truncate">
+													{v.Description}
+												</TableCell>
 												<TableCell className="text-right">
 													<div className="flex justify-end gap-2">
 														<Button
@@ -188,8 +193,7 @@ const AdminVoucher = () => {
 																e.stopPropagation();
 																dispatch({ type: "delete" });
 																dispatch({ type: "id", payload: v.Id });
-															}}
-														>
+															}}>
 															<Trash2 className="h-4 w-4" />
 														</Button>
 														{v.IsActive ? (
@@ -200,8 +204,7 @@ const AdminVoucher = () => {
 																	e.stopPropagation();
 																	dispatch({ type: "id", payload: v.Id });
 																	dispatch({ type: "deActivate" });
-																}}
-															>
+																}}>
 																De-Activate
 															</Button>
 														) : (
@@ -211,8 +214,7 @@ const AdminVoucher = () => {
 																	e.stopPropagation();
 																	dispatch({ type: "id", payload: v.Id });
 																	dispatch({ type: "activate" });
-																}}
-															>
+																}}>
 																Activate
 															</Button>
 														)}
@@ -222,7 +224,9 @@ const AdminVoucher = () => {
 										))
 									) : (
 										<TableRow>
-											<TableCell colSpan={10} className="text-center text-muted-foreground py-8">
+											<TableCell
+												colSpan={10}
+												className="text-center text-muted-foreground py-8">
 												No vouchers.
 											</TableCell>
 										</TableRow>

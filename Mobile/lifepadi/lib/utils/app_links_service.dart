@@ -48,9 +48,62 @@ class AppLinksService {
     navigateToRoute(uri);
   }
 
+  /// Top-level route segments the app is willing to accept from external
+  /// deep links. Anything outside this set is dropped.
+  static const _allowedRouteSegments = {
+    'home',
+    'cart',
+    'notifications',
+    'categories',
+    'vendors',
+    'receipts',
+    'orders',
+    'errands',
+    'logistics',
+    'profile',
+    'splash',
+    'onboarding',
+    'get-started',
+    'login',
+    'register',
+    'details',
+    'products',
+    'my-reviews',
+    'checkout',
+    'payment',
+    'wishlist',
+    'support',
+    'live-chat',
+    'settings',
+    'wallet',
+    'transactions',
+    'search',
+  };
+
+  /// Hosts we trust to deliver deep links to this app.
+  static const _allowedHosts = {
+    'app',
+    'app.lifepadi.com',
+    'lifepadi.com',
+  };
+
+  /// Returns true when [route] points at a known top-level segment.
+  bool _isAllowedRoute(String route) {
+    final cleaned = route.startsWith('/') ? route.substring(1) : route;
+    final firstSegment = cleaned.split(RegExp('[/?#]')).first;
+    if (firstSegment.isEmpty) return false;
+    return _allowedRouteSegments.contains(firstSegment);
+  }
+
   /// Parse URI to get the appropriate GoRouter route
   String? getRouteFromUri(Uri uri) {
     logger.i('Processing deep link: $uri');
+
+    // Reject unknown hosts to prevent navigation to attacker-controlled paths.
+    if (uri.host.isNotEmpty && !_allowedHosts.contains(uri.host)) {
+      logger.w('Rejecting deep link from untrusted host: ${uri.host}');
+      return null;
+    }
 
     // Prepare query string if it exists
     final queryParams = uri.queryParameters;
@@ -58,39 +111,26 @@ class AppLinksService {
         ? '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}'
         : '';
 
+    String? candidate;
+
     // Check if URI has a fragment (anything after #)
     final uriString = uri.toString();
     if (uriString.contains('#')) {
       logger.i('Found fragment-based route: ${uri.fragment}');
-      // For URIs like lifepadi://app/#/profile, return the fragment
-      final route =
+      candidate =
           uri.fragment.startsWith('/') ? uri.fragment : '/${uri.fragment}';
-      return route + queryString;
+    } else {
+      // For URIs like lifepadi://app/profile or https://app.lifepadi.com/profile
+      final path = uri.path;
+      candidate = path.startsWith('/') ? path : '/$path';
     }
 
-    // For URIs like lifepadi://app/profile
-    // or https://app.lifepadi.com/profile
-    // Extract everything after host/domain
-    final path = uri.path;
-
-    if (uri.host == 'app') {
-      logger.i('Found app-based route: $path');
-      // For URIs like lifepadi://app/profile
-      final route = path.startsWith('/') ? path : '/$path';
-      return route + queryString;
+    if (!_isAllowedRoute(candidate)) {
+      logger.w('Rejecting deep link with unknown route: $candidate');
+      return null;
     }
 
-    // For URIs like https://app.lifepadi.com/profile
-    if (uri.host == 'app.lifepadi.com') {
-      logger.i('Found subdomain-based route: $path');
-      final route = path.startsWith('/') ? path : '/$path';
-      return route + queryString;
-    }
-
-    // For any other host
-    logger.i('Found web-based route: $path');
-    final route = path.startsWith('/') ? path : '/$path';
-    return route + queryString;
+    return candidate + queryString;
   }
 
   /// Navigate to the route specified by the URI using GoRouter

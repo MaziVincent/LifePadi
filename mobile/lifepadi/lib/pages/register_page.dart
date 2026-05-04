@@ -274,15 +274,15 @@ class RegisterPage extends HookConsumerWidget {
                                   await ref
                                       .read(authControllerProvider.notifier)
                                       .register(
-                                        firstName: firstName.value,
-                                        lastName: lastName.value,
-                                        email: email.value,
-                                        phoneNumber: phone.value,
+                                        firstName: firstName.value.trim(),
+                                        lastName: lastName.value.trim(),
+                                        email: email.value.trim(),
+                                        phoneNumber: phone.value.trim(),
                                         password: password.value,
                                         referredByCode:
-                                            referralCode.value.isEmpty
+                                            referralCode.value.trim().isEmpty
                                                 ? null
-                                                : referralCode.value,
+                                                : referralCode.value.trim(),
                                       )
                                       .then((_) {
                                     // Check if user is authenticated

@@ -25,12 +25,12 @@ class SecureStorageService {
 
   /// Add many items - key/value pairs
   Future<void> addAll({required Map<String, dynamic> items}) async {
-    items.forEach(
-      (k, v) async => _storage.write(
-        key: k,
-        value: v.toString(),
-      ),
-    );
+    for (final entry in items.entries) {
+      await _storage.write(
+        key: entry.key,
+        value: entry.value.toString(),
+      );
+    }
   }
 
   /// Get one item

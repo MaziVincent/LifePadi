@@ -60,8 +60,9 @@ mixin LocationUtils {
 
       logger.d('Location API status: ${data['status']}');
 
-      if (data['status'] == 'OK' && (data['results'] as List).isNotEmpty) {
-        final result = (data['results'] as List)[0] as JsonMap;
+      final results = (data['results'] as List?) ?? const [];
+      if (data['status'] == 'OK' && results.isNotEmpty) {
+        final result = results.first as JsonMap;
         final addressComponents =
             List<JsonMap>.from(result['address_components'] as List);
 

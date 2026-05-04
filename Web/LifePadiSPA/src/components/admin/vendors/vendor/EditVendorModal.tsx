@@ -38,7 +38,11 @@ const selectClasses = cn(
 	"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm capitalize ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
 );
 
-const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) => {
+const EditVendorModal = ({
+	open,
+	handleClose,
+	vendorId,
+}: EditVendorModalProps) => {
 	const update = useUpdate();
 	const fetch = useFetch();
 	const { auth } = useAuth();
@@ -62,7 +66,8 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 		await update(`${url}/update/${vendorId}`, fd, auth?.accessToken);
 	};
 
-	const { mutate } = useMutation({ mutationFn: updateVendor,
+	const { mutate } = useMutation({
+		mutationFn: updateVendor,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["vendorcategory"] });
 			toast.success("Vendor Updated");
@@ -77,8 +82,11 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 	const getLGAs = useCallback(
 		async (state: string) => {
 			try {
-				const result = await fetch(`https://nga-states-lga.onrender.com/?state=${state}`);
-				if (!String(result.data).includes("Error")) setLGAs(result.data);
+				const result = await fetch(
+					`https://nga-states-lga.onrender.com/?state=${state}`,
+				);
+				if (!String(result.data).includes("Error"))
+					setLGAs(result.data as string[]);
 			} catch {
 				/* ignore */
 			}
@@ -100,9 +108,9 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 		const init = async () => {
 			try {
 				const s = await fetch("https://nga-states-lga.onrender.com/fetch");
-				setStates(s.data);
+				setStates(s.data as string[]);
 				const sv = await fetch(`${baseUrl}service/allLite`);
-				setServices(sv.data);
+				setServices(sv.data as ServiceLite[]);
 			} catch {
 				/* ignore */
 			}
@@ -124,8 +132,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 			onOpenChange={() => {
 				handleClose({ type: "edit" });
 				reset();
-			}}
-		>
+			}}>
 			<DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
 				<DialogHeader>
 					<DialogTitle>Update Vendor</DialogTitle>
@@ -149,18 +156,25 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 							</div>
 							<div className="space-y-1">
 								<Label>Opening Hours</Label>
-								<Input type="time" {...register("OpeningHours", { required: true })} />
+								<Input
+									type="time"
+									{...register("OpeningHours", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Closing Hours</Label>
-								<Input type="time" {...register("ClosingHours", { required: true })} />
+								<Input
+									type="time"
+									{...register("ClosingHours", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Service</Label>
 								<select
 									className={selectClasses}
-									{...register("ServiceId", { required: "Service is required" })}
-								>
+									{...register("ServiceId", {
+										required: "Service is required",
+									})}>
 									<option value="">Select Service</option>
 									{services.map((s) => (
 										<option key={s.Id} value={s.Id}>
@@ -178,15 +192,17 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							<div className="space-y-1 sm:col-span-2">
 								<Label>Contact Address</Label>
-								<Textarea rows={3} {...register("ContactAddress", { required: true })} />
+								<Textarea
+									rows={3}
+									{...register("ContactAddress", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>State</Label>
 								<select
 									className={selectClasses}
 									{...register("State", { required: "State is required" })}
-									onChange={handleStateChange}
-								>
+									onChange={handleStateChange}>
 									<option value="">Select State</option>
 									{states.map((s) => (
 										<option key={s} value={s}>
@@ -199,8 +215,7 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 								<Label>Local Govt</Label>
 								<select
 									className={selectClasses}
-									{...register("LocalGovt", { required: "LGA is required" })}
-								>
+									{...register("LocalGovt", { required: "LGA is required" })}>
 									<option value="">Select LGA</option>
 									{lgas.map((l) => (
 										<option key={l} value={l}>
@@ -219,11 +234,19 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 							</div>
 							<div className="space-y-1">
 								<Label>Latitude</Label>
-								<Input type="number" step="any" {...register("Latitude", { required: true })} />
+								<Input
+									type="number"
+									step="any"
+									{...register("Latitude", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Longitude</Label>
-								<Input type="number" step="any" {...register("Longitude", { required: true })} />
+								<Input
+									type="number"
+									step="any"
+									{...register("Longitude", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Postal Code</Label>
@@ -248,7 +271,9 @@ const EditVendorModal = ({ open, handleClose, vendorId }: EditVendorModalProps) 
 								})}
 							/>
 							{errors.Email && (
-								<p className="text-xs text-destructive">{errors.Email.message as string}</p>
+								<p className="text-xs text-destructive">
+									{errors.Email.message as string}
+								</p>
 							)}
 						</div>
 					</div>

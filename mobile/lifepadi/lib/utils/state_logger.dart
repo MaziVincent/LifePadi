@@ -8,6 +8,19 @@ import 'package:lifepadi/utils/helpers.dart';
 class StateLogger extends ProviderObserver {
   const StateLogger();
 
+  /// Names (or runtime types) of providers whose state contains sensitive
+  /// data such as auth tokens; we log only that they changed, not the value.
+  static const _redactedProviders = {
+    'authController',
+    'authControllerProvider',
+    'AuthController',
+  };
+
+  bool _isSensitive(ProviderBase provider) {
+    final name = provider.name ?? provider.runtimeType.toString();
+    return _redactedProviders.any(name.contains);
+  }
+
   @override
   void didUpdateProvider(
     ProviderBase provider,
@@ -15,6 +28,15 @@ class StateLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
+    if (_isSensitive(provider)) {
+      logger.i({
+        'provider': '${provider.name ?? provider.runtimeType}',
+        'oldValue': '<redacted>',
+        'newValue': '<redacted>',
+      });
+      return;
+    }
+
     logger.i({
       'provider': '${provider.name ?? provider.runtimeType}',
       'oldValue': '$previousValue',

@@ -44,8 +44,9 @@ class PhoneInputField extends StatelessWidget {
         phoneNumber: phone?.value ?? controller?.text ?? '',
       ),
       onInputChanged: (PhoneNumber number) {
-        if (phone != null) {
-          phone!.value = number.phoneNumber!;
+        final value = number.phoneNumber;
+        if (phone != null && value != null) {
+          phone!.value = value;
         }
       },
       inputBorder: const OutlineInputBorder(),

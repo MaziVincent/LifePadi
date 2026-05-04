@@ -43,7 +43,11 @@ const selectClasses = cn(
 	"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm capitalize ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
 );
 
-const EditProductModal = ({ open, handleClose, product }: EditProductModalProps) => {
+const EditProductModal = ({
+	open,
+	handleClose,
+	product,
+}: EditProductModalProps) => {
 	const update = useUpdate();
 	const fetch = useFetch();
 	const { auth } = useAuth();
@@ -62,7 +66,7 @@ const EditProductModal = ({ open, handleClose, product }: EditProductModalProps)
 		queryKey: ["categories"],
 		queryFn: async () => {
 			const r = await fetch(`${baseUrl}category/allLite`, auth.accessToken);
-			return r.data;
+			return r.data as CategoryLite[];
 		},
 		staleTime: 20000,
 	});
@@ -73,7 +77,8 @@ const EditProductModal = ({ open, handleClose, product }: EditProductModalProps)
 		await update(`${url}/update/${product?.Id}`, fd, auth?.accessToken);
 	};
 
-	const { mutate } = useMutation({ mutationFn: updateProduct,
+	const { mutate } = useMutation({
+		mutationFn: updateProduct,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["vendor"] });
 			toast.success("Product Updated");
@@ -102,7 +107,9 @@ const EditProductModal = ({ open, handleClose, product }: EditProductModalProps)
 						<div className="space-y-1">
 							<Label>Name</Label>
 							<Input {...register("Name", { required: true })} />
-							{errors.Name && <p className="text-xs text-destructive">Required</p>}
+							{errors.Name && (
+								<p className="text-xs text-destructive">Required</p>
+							)}
 						</div>
 						<div className="space-y-1">
 							<Label>Tag</Label>
@@ -110,7 +117,10 @@ const EditProductModal = ({ open, handleClose, product }: EditProductModalProps)
 						</div>
 						<div className="space-y-1 sm:col-span-2">
 							<Label>Description</Label>
-							<Textarea rows={3} {...register("Description", { required: true })} />
+							<Textarea
+								rows={3}
+								{...register("Description", { required: true })}
+							/>
 						</div>
 						<div className="space-y-1">
 							<Label>Price</Label>
@@ -120,8 +130,9 @@ const EditProductModal = ({ open, handleClose, product }: EditProductModalProps)
 							<Label>Category</Label>
 							<select
 								className={selectClasses}
-								{...register("CategoryId", { required: "Category is required" })}
-							>
+								{...register("CategoryId", {
+									required: "Category is required",
+								})}>
 								<option value="">Select Category</option>
 								{categories?.map((c) => (
 									<option key={c.Id} value={c.Id}>

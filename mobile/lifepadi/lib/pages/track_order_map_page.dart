@@ -53,7 +53,7 @@ class _TrackOrderMapPageState extends ConsumerState<TrackOrderMapPage> {
     // Initial fetch
     await refreshOrderDetails();
 
-    // Setup periodic refresh every 5 minutes
+    // Setup periodic refresh every 10 minutes
     _orderRefreshTimer = Timer.periodic(
       10.minutes,
       (_) => refreshOrderDetails(),

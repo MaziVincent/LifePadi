@@ -112,8 +112,11 @@ const AdminOrderDetails = () => {
 	const deliveryQ = useQuery<DeliveryData>({
 		queryKey: ["delivery", id],
 		queryFn: async () => {
-			const r = await fetch(`${baseUrl}delivery/order/get/${id}`, auth.accessToken);
-			return r.data;
+			const r = await fetch(
+				`${baseUrl}delivery/order/get/${id}`,
+				auth.accessToken,
+			);
+			return r.data as DeliveryData;
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 10000,
@@ -137,8 +140,11 @@ const AdminOrderDetails = () => {
 	const logisticsQ = useQuery<LogisticsData>({
 		queryKey: ["logistics", id],
 		queryFn: async () => {
-			const r = await fetch(`${baseUrl}logistics/getByOrder/${id}`, auth.accessToken);
-			return r.data;
+			const r = await fetch(
+				`${baseUrl}logistics/getByOrder/${id}`,
+				auth.accessToken,
+			);
+			return r.data as LogisticsData;
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 10000,
@@ -198,19 +204,25 @@ const AdminOrderDetails = () => {
 						<CardContent className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
 							<div>
 								<h2 className="font-bold border-b pb-1 mb-2">Order Info</h2>
-								<p className="text-sm">Order Date: {new Date(order.CreatedAt || "").toDateString()}</p>
+								<p className="text-sm">
+									Order Date: {new Date(order.CreatedAt || "").toDateString()}
+								</p>
 								<p className="text-sm">Order Status: {order.Status}</p>
 								<p className="text-sm">Order Type: {order.Type}</p>
 								<p className="text-sm">
-									Delivery Status: {order.IsDelivered ? "Delivered" : "Not Delivered"}
+									Delivery Status:{" "}
+									{order.IsDelivered ? "Delivered" : "Not Delivered"}
 								</p>
 							</div>
 							<div>
 								<h2 className="font-bold border-b pb-1 mb-2">Customer Info</h2>
 								<p className="text-sm">
-									Full Name: {order.Customer?.FirstName} {order.Customer?.LastName}
+									Full Name: {order.Customer?.FirstName}{" "}
+									{order.Customer?.LastName}
 								</p>
-								<p className="text-sm">Address: {order.Customer?.ContactAddress}</p>
+								<p className="text-sm">
+									Address: {order.Customer?.ContactAddress}
+								</p>
 								<p className="text-sm">Phone: {order.Customer?.PhoneNumber}</p>
 								<p className="text-sm">Email: {order.Customer?.Email}</p>
 							</div>
@@ -248,7 +260,9 @@ const AdminOrderDetails = () => {
 												<TableCell>{item.TotalAmount}</TableCell>
 												<TableCell>{item.IsFragile ? "Yes" : "No"}</TableCell>
 												<TableCell>{item.Weight}</TableCell>
-												<TableCell className="max-w-xs truncate">{item.Description}</TableCell>
+												<TableCell className="max-w-xs truncate">
+													{item.Description}
+												</TableCell>
 											</TableRow>
 										))}
 									</TableBody>
@@ -274,15 +288,20 @@ const AdminOrderDetails = () => {
 					<>
 						<Card>
 							<CardContent className="p-5 space-y-1">
-								<h1 className="font-bold text-lg text-center">Delivery Details</h1>
+								<h1 className="font-bold text-lg text-center">
+									Delivery Details
+								</h1>
 								<p className="text-sm">
 									Delivery Date:{" "}
-									{delivery.CreatedAt ? new Date(delivery.CreatedAt).toDateString() : "—"}
+									{delivery.CreatedAt
+										? new Date(delivery.CreatedAt).toDateString()
+										: "—"}
 								</p>
 								<p className="text-sm">Delivery Fee: {delivery.DeliveryFee}</p>
 								{delivery.PickupAddress && (
 									<p className="text-sm">
-										Pickup Address: {delivery.PickupAddress.Name}, {delivery.PickupAddress.Town}
+										Pickup Address: {delivery.PickupAddress.Name},{" "}
+										{delivery.PickupAddress.Town}
 									</p>
 								)}
 								<p className="text-sm">Pickup Type: {delivery.PickupType}</p>
@@ -302,12 +321,16 @@ const AdminOrderDetails = () => {
 							<CardContent className="p-5 space-y-1">
 								<h1 className="font-bold text-lg text-center">Rider Details</h1>
 								<p className="text-sm">
-									Full Name: {delivery.Rider?.FirstName} {delivery.Rider?.LastName}
+									Full Name: {delivery.Rider?.FirstName}{" "}
+									{delivery.Rider?.LastName}
 								</p>
 								<p className="text-sm">Phone: {delivery.Rider?.PhoneNumber}</p>
 								<p className="text-sm">
 									Status:{" "}
-									<Badge variant={delivery.Rider?.IsActive ? "default" : "destructive"}>
+									<Badge
+										variant={
+											delivery.Rider?.IsActive ? "default" : "destructive"
+										}>
 										{delivery.Rider?.IsActive ? "Active" : "Inactive"}
 									</Badge>
 								</p>
@@ -326,13 +349,18 @@ const AdminOrderDetails = () => {
 				{transactionQ.isSuccess && transaction && (
 					<Card className="lg:col-span-2">
 						<CardContent className="p-5 space-y-1">
-							<h1 className="font-bold text-lg text-center">Transaction Details</h1>
+							<h1 className="font-bold text-lg text-center">
+								Transaction Details
+							</h1>
 							<p className="text-sm">Payment ID: {transaction.PaymentId}</p>
 							<p className="text-sm">
 								Payment Status:{" "}
 								<Badge
-									variant={transaction.Status === "successful" ? "default" : "destructive"}
-								>
+									variant={
+										transaction.Status === "successful"
+											? "default"
+											: "destructive"
+									}>
 									{transaction.Status}
 								</Badge>
 							</p>
@@ -344,15 +372,25 @@ const AdminOrderDetails = () => {
 				{logistics && (
 					<Card className="lg:col-span-2">
 						<CardContent className="p-5 space-y-1">
-							<h1 className="font-bold text-lg text-center">Logistics Details</h1>
+							<h1 className="font-bold text-lg text-center">
+								Logistics Details
+							</h1>
 							<p className="text-sm">Item: {logistics.Item}</p>
-							<p className="text-sm">Item Description: {logistics.ItemDescription}</p>
-							<p className="text-sm">Sender Address: {logistics.SenderAddress?.Name}</p>
+							<p className="text-sm">
+								Item Description: {logistics.ItemDescription}
+							</p>
+							<p className="text-sm">
+								Sender Address: {logistics.SenderAddress?.Name}
+							</p>
 							<p className="text-sm">Sender Name: {logistics.SenderName}</p>
 							<p className="text-sm">Sender Phone: {logistics.SenderPhone}</p>
-							<p className="text-sm">Receiver Address: {logistics.ReceiverAddress?.Name}</p>
+							<p className="text-sm">
+								Receiver Address: {logistics.ReceiverAddress?.Name}
+							</p>
 							<p className="text-sm">Receiver Name: {logistics.ReceiverName}</p>
-							<p className="text-sm">Receiver Phone: {logistics.ReceiverPhone}</p>
+							<p className="text-sm">
+								Receiver Phone: {logistics.ReceiverPhone}
+							</p>
 							<p className="text-sm">
 								Tracking Number: {logistics.TrackingNumber || "Not Available"}
 							</p>
@@ -362,7 +400,11 @@ const AdminOrderDetails = () => {
 			</div>
 
 			{delivery && (
-				<AssignRider id={delivery.Id} open={assignRider} handleClose={setAssignRider} />
+				<AssignRider
+					id={delivery.Id}
+					open={assignRider}
+					handleClose={setAssignRider}
+				/>
 			)}
 		</section>
 	);

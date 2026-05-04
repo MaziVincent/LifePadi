@@ -38,7 +38,11 @@ const selectClasses = cn(
 	"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 capitalize",
 );
 
-const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorModalProps) => {
+const CreateVendorModal = ({
+	open,
+	handleClose,
+	vendorCategory,
+}: CreateVendorModalProps) => {
 	const post = usePost();
 	const fetch = useFetch();
 	const { auth } = useAuth();
@@ -51,7 +55,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 		queryKey: ["services"],
 		queryFn: async () => {
 			const res = await fetch(`${baseUrl}service/allLite`, auth.accessToken);
-			return res.data;
+			return res.data as ServiceLite[];
 		},
 		staleTime: 20000,
 	});
@@ -71,7 +75,8 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 		await post(url, fd, auth?.accessToken);
 	};
 
-	const { mutate } = useMutation({ mutationFn: create,
+	const { mutate } = useMutation({
+		mutationFn: create,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["vendorcategory"] });
 			toast.success("Vendor Created");
@@ -87,7 +92,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 		const getStates = async () => {
 			try {
 				const result = await fetch("https://nga-states-lga.onrender.com/fetch");
-				setStates(result.data);
+				setStates(result.data as string[]);
 			} catch {
 				/* ignore */
 			}
@@ -100,7 +105,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 			const result = await fetch(
 				`https://nga-states-lga.onrender.com/?state=${e.target.value}`,
 			);
-			setLGAs(result.data);
+			setLGAs(result.data as string[]);
 		} catch {
 			/* ignore */
 		}
@@ -120,33 +125,46 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 							<div className="space-y-1">
 								<Label>Business Name</Label>
 								<Input {...register("Name", { required: true })} />
-								{errors.Name && <p className="text-xs text-destructive">Required</p>}
+								{errors.Name && (
+									<p className="text-xs text-destructive">Required</p>
+								)}
 							</div>
 							<div className="space-y-1">
 								<Label>Phone Number</Label>
 								<Input {...register("PhoneNumber", { required: true })} />
-								{errors.PhoneNumber && <p className="text-xs text-destructive">Required</p>}
+								{errors.PhoneNumber && (
+									<p className="text-xs text-destructive">Required</p>
+								)}
 							</div>
 							<div className="space-y-1">
 								<Label>Tag</Label>
 								<Input {...register("Tag", { required: true })} />
-								{errors.Tag && <p className="text-xs text-destructive">Required</p>}
+								{errors.Tag && (
+									<p className="text-xs text-destructive">Required</p>
+								)}
 							</div>
 							<div className="space-y-1">
 								<Label>Opening Hours</Label>
-								<Input type="time" {...register("OpeningHours", { required: true })} />
+								<Input
+									type="time"
+									{...register("OpeningHours", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Closing Hours</Label>
-								<Input type="time" {...register("ClosingHours", { required: true })} />
+								<Input
+									type="time"
+									{...register("ClosingHours", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Service Type</Label>
 								<select
 									className={selectClasses}
 									defaultValue=""
-									{...register("ServiceId", { required: "Service is required" })}
-								>
+									{...register("ServiceId", {
+										required: "Service is required",
+									})}>
 									<option value="" disabled>
 										Select Service
 									</option>
@@ -157,7 +175,9 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 									))}
 								</select>
 								{errors.ServiceId && (
-									<p className="text-xs text-destructive">{errors.ServiceId.message as string}</p>
+									<p className="text-xs text-destructive">
+										{errors.ServiceId.message as string}
+									</p>
 								)}
 							</div>
 						</div>
@@ -169,7 +189,10 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							<div className="space-y-1 sm:col-span-2">
 								<Label>Contact Address</Label>
-								<Textarea rows={3} {...register("ContactAddress", { required: true })} />
+								<Textarea
+									rows={3}
+									{...register("ContactAddress", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>State</Label>
@@ -177,8 +200,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 									className={selectClasses}
 									defaultValue=""
 									{...register("State", { required: "State is required" })}
-									onChange={handleStateChange}
-								>
+									onChange={handleStateChange}>
 									<option value="" disabled>
 										Select State
 									</option>
@@ -194,8 +216,7 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 								<select
 									className={selectClasses}
 									defaultValue=""
-									{...register("LocalGovt", { required: "LGA is required" })}
-								>
+									{...register("LocalGovt", { required: "LGA is required" })}>
 									<option value="" disabled>
 										Select LGA
 									</option>
@@ -216,11 +237,19 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 							</div>
 							<div className="space-y-1">
 								<Label>Latitude</Label>
-								<Input type="number" step="any" {...register("Latitude", { required: true })} />
+								<Input
+									type="number"
+									step="any"
+									{...register("Latitude", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Longitude</Label>
-								<Input type="number" step="any" {...register("Longitude", { required: true })} />
+								<Input
+									type="number"
+									step="any"
+									{...register("Longitude", { required: true })}
+								/>
 							</div>
 							<div className="space-y-1">
 								<Label>Postal Code (optional)</Label>
@@ -246,7 +275,9 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 									})}
 								/>
 								{errors.Email && (
-									<p className="text-xs text-destructive">{errors.Email.message as string}</p>
+									<p className="text-xs text-destructive">
+										{errors.Email.message as string}
+									</p>
 								)}
 							</div>
 							<div className="space-y-1">
@@ -259,7 +290,9 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 									})}
 								/>
 								{errors.Password && (
-									<p className="text-xs text-destructive">{errors.Password.message as string}</p>
+									<p className="text-xs text-destructive">
+										{errors.Password.message as string}
+									</p>
 								)}
 							</div>
 							<div className="space-y-1">
@@ -268,7 +301,8 @@ const CreateVendorModal = ({ open, handleClose, vendorCategory }: CreateVendorMo
 									type="password"
 									{...register("ConfirmPassword", {
 										required: "Confirm password is required",
-										validate: (v: string) => v === watch("Password") || "Passwords do not match",
+										validate: (v: string) =>
+											v === watch("Password") || "Passwords do not match",
 									})}
 								/>
 								{errors.ConfirmPassword && (

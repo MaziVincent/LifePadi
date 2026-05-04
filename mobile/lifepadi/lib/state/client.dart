@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lifepadi/state/auth_controller.dart';
@@ -20,7 +22,12 @@ Dio dio(
   bool logError = true,
 }) {
   return Dio(
-    BaseOptions(baseUrl: kRemoteApiUrl),
+    BaseOptions(
+      baseUrl: kRemoteApiUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
+    ),
   )..interceptors.addAll([
       if (secured) ...[
         ref.read(authInterceptorProvider),
@@ -87,6 +94,11 @@ Interceptor loggingInterceptor(
 ///
 /// if it succeeds, it updates the access token and then retries the request with the new token.
 /// if it fails, it logs out the user.
+///
+/// A single in-flight refresh is shared between concurrent 401/403 responses
+/// so we never fire duplicate refresh calls or stomp tokens.
+Completer<String?>? _pendingRefresh;
+
 @riverpod
 Interceptor refreshInterceptor(Ref ref) {
   return InterceptorsWrapper(
@@ -101,8 +113,33 @@ Interceptor refreshInterceptor(Ref ref) {
 
         if (token != null) {
           try {
-            final newToken =
-                await ref.read(authControllerProvider.notifier).refreshToken();
+            final pending = _pendingRefresh;
+            String? newToken;
+            if (pending != null && !pending.isCompleted) {
+              newToken = await pending.future;
+            } else {
+              final completer = Completer<String?>();
+              _pendingRefresh = completer;
+              try {
+                newToken = await ref
+                    .read(authControllerProvider.notifier)
+                    .refreshToken();
+                completer.complete(newToken);
+              } catch (e, st) {
+                completer.completeError(e, st);
+                rethrow;
+              } finally {
+                if (identical(_pendingRefresh, completer)) {
+                  _pendingRefresh = null;
+                }
+              }
+            }
+
+            if (newToken == null) {
+              await ref.read(authControllerProvider.notifier).logout();
+              return handler.next(error);
+            }
+
             error.requestOptions.headers['Authorization'] = 'Bearer $newToken';
             final response = await ref
                 .read(dioProvider(secured: false))

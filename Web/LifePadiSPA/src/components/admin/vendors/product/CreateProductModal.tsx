@@ -62,7 +62,7 @@ const CreateProductModal = ({
 		queryKey: ["categories"],
 		queryFn: async () => {
 			const r = await fetch(`${baseUrl}category/allLite`, auth.accessToken);
-			return r.data;
+			return r.data as CategoryLite[];
 		},
 		staleTime: 10000,
 	});

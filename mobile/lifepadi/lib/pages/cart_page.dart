@@ -22,29 +22,31 @@ class CartPage extends HookConsumerWidget {
     final locations = ref.watch(locationsProvider);
     final hasInitialized = useState(false);
 
+    final locationsList = locations.valueOrNull;
     useEffect(
       () {
-        if (!hasInitialized.value) {
-          locations.whenData((locationsList) {
-            final cart = ref.read(cartStateProvider).valueOrNull;
-            if (cart?.deliveryLocation == null) {
-              final defaultLocation = locationsList.firstWhere(
-                (location) => location.isDefault,
-                orElse: () => locationsList.first,
-              );
-              if (defaultLocation.isDefault) {
-                ref.read(cartStateProvider.notifier).selectDeliveryLocation(
-                      defaultLocation,
-                      notifyDefault: true,
-                    );
-              }
-            }
-            hasInitialized.value = true;
-          });
+        if (hasInitialized.value ||
+            locationsList == null ||
+            locationsList.isEmpty) {
+          return null;
         }
+        final cart = ref.read(cartStateProvider).valueOrNull;
+        if (cart?.deliveryLocation == null) {
+          final defaultLocation = locationsList.firstWhere(
+            (location) => location.isDefault,
+            orElse: () => locationsList.first,
+          );
+          if (defaultLocation.isDefault) {
+            ref.read(cartStateProvider.notifier).selectDeliveryLocation(
+                  defaultLocation,
+                  notifyDefault: true,
+                );
+          }
+        }
+        hasInitialized.value = true;
         return null;
       },
-      [locations],
+      [locationsList?.length ?? 0],
     );
 
     return Scaffold(

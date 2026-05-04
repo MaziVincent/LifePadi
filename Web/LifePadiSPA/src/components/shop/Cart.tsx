@@ -32,7 +32,7 @@ import useFetch from "@/hooks/useFetch";
 import usePost from "@/hooks/usePost";
 import { useDistance } from "@/hooks/useDistance";
 import baseUrl from "@/api/baseUrl";
-import { addAddressToDb } from "./services/services";
+import { useAddAddressToDb } from "./services/services";
 
 interface CartItemShape {
 	Id: string | number;
@@ -107,6 +107,7 @@ const Cart = ({
 	const [orderLoading, setOrderLoading] = useState(false);
 	const fetcher = useFetch();
 	const post = usePost();
+	const addAddressToDb = useAddAddressToDb();
 
 	const addressUrl = `${baseUrl}address/customer-addresses`;
 	const orderUrl = `${baseUrl}order/create`;

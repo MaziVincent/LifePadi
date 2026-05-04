@@ -259,9 +259,9 @@ class LoginPage extends HookConsumerWidget {
                               await ref
                                   .read(authControllerProvider.notifier)
                                   .login(
-                                    email: email.value,
+                                    email: email.value.trim(),
                                     password: password.value,
-                                    phoneNumber: phone.value,
+                                    phoneNumber: phone.value.trim(),
                                     usePhone: usePhone.value,
                                   )
                                   .then((_) {

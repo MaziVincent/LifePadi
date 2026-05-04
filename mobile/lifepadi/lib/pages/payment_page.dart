@@ -28,6 +28,17 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
   late final WebViewController controller;
   int loadingPercentage = 0;
 
+  /// Hosts allowed to host the payment confirmation redirect. Anything else
+  /// signalling a `/payment/confirm` URL is treated as suspicious and ignored.
+  static const _confirmRedirectHosts = {
+    'app.lifepadi.com',
+    'lifepadi.com',
+  };
+
+  /// Reference tokens are short alphanumeric strings issued by the gateway;
+  /// reject anything else to avoid passing crafted values into navigation.
+  static final _referencePattern = RegExp(r'^[A-Za-z0-9_\-]{6,64}$');
+
   @override
   void initState() {
     super.initState();
@@ -47,16 +58,40 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
             setState(() => loadingPercentage = 100);
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (request.url.contains('/payment/confirm')) {
-              final uri = Uri.parse(request.url);
+            final uri = Uri.tryParse(request.url);
+            if (uri == null) {
+              return NavigationDecision.prevent;
+            }
+
+            // Block plain-HTTP navigation for any non-localhost target so
+            // tokens cannot be sniffed off the wire.
+            if (uri.scheme != 'https' && uri.host != 'localhost') {
+              logger.w('Blocking non-HTTPS payment navigation: ${uri.host}');
+              return NavigationDecision.prevent;
+            }
+
+            if (uri.path.contains('/payment/confirm')) {
+              if (!_confirmRedirectHosts.contains(uri.host)) {
+                logger.w(
+                  'Rejecting payment confirm redirect from untrusted host: '
+                  '${uri.host}',
+                );
+                await showToast(
+                  'Untrusted payment redirect blocked',
+                  backgroundColor: kDangerColor,
+                );
+                return NavigationDecision.prevent;
+              }
+
               final reference = uri.queryParameters['reference'];
-              if (reference == null) {
+              if (reference == null || !_referencePattern.hasMatch(reference)) {
                 await showToast(
                   'Invalid payment reference',
                   backgroundColor: kDangerColor,
                 );
                 return NavigationDecision.prevent;
               }
+              if (!mounted) return NavigationDecision.prevent;
               context.go(PaymentConfirmRoute(reference: reference).location);
               return NavigationDecision.prevent;
             }

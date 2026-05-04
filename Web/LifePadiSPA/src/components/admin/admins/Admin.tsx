@@ -1,6 +1,15 @@
 import { useReducer, useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { Loader2, Plus, Search, KeyRound, Pencil, Trash2, ShieldX, ShieldCheck } from "lucide-react";
+import {
+	Loader2,
+	Plus,
+	Search,
+	KeyRound,
+	Pencil,
+	Trash2,
+	ShieldX,
+	ShieldCheck,
+} from "lucide-react";
 
 import CreateAdminModal from "./CreateAdminModal";
 import EditAdminModal from "./EditAdminModal";
@@ -61,7 +70,9 @@ interface State {
 }
 
 type Action =
-	| { type: "open" | "delete" | "edit" | "activate" | "password" | "deActivate" }
+	| {
+			type: "open" | "delete" | "edit" | "activate" | "password" | "deActivate";
+	  }
 	| { type: "admin"; payload: AdminRow | null }
 	| { type: "id"; payload: number | string };
 
@@ -113,7 +124,7 @@ const Admin = () => {
 				`${url}/all?PageNumber=${page}&SearchString=${search}`,
 				auth.accessToken,
 			);
-			return r.data;
+			return r.data as AdminListResp;
 		},
 		placeholderData: keepPreviousData,
 		staleTime: 5000,
@@ -126,13 +137,19 @@ const Admin = () => {
 	return (
 		<div className="space-y-6 p-4 md:p-6">
 			<section className="text-center">
-				<div className="text-3xl font-bold">{data?.dataList?.TotalCount || 0}</div>
+				<div className="text-3xl font-bold">
+					{data?.dataList?.TotalCount || 0}
+				</div>
 				<div className="text-sm text-muted-foreground">Admins</div>
 				<h1 className="mt-4 text-3xl font-bold">Admins</h1>
 			</section>
 
 			<CreateAdminModal open={state.open} handleClose={dispatch} />
-			<EditAdminModal open={state.edit} handleClose={dispatch} admin={state.admin} />
+			<EditAdminModal
+				open={state.edit}
+				handleClose={dispatch}
+				admin={state.admin}
+			/>
 			<DeActivateDialogue
 				open={state.deActivate}
 				handleClose={dispatch}
@@ -207,7 +224,9 @@ const Admin = () => {
 													<div className="font-medium capitalize">
 														{a.FirstName} {a.LastName}
 													</div>
-													<div className="text-xs text-muted-foreground">{a.Email}</div>
+													<div className="text-xs text-muted-foreground">
+														{a.Email}
+													</div>
 												</TableCell>
 												<TableCell>
 													<Badge variant={a.IsActive ? "default" : "secondary"}>
@@ -226,8 +245,7 @@ const Admin = () => {
 																onClick={() => {
 																	dispatch({ type: "id", payload: a.Id });
 																	dispatch({ type: "deActivate" });
-																}}
-															>
+																}}>
 																<ShieldX className="h-5 w-5" />
 															</Button>
 														) : (
@@ -239,8 +257,7 @@ const Admin = () => {
 																onClick={() => {
 																	dispatch({ type: "id", payload: a.Id });
 																	dispatch({ type: "activate" });
-																}}
-															>
+																}}>
 																<ShieldCheck className="h-5 w-5" />
 															</Button>
 														)}
@@ -251,8 +268,7 @@ const Admin = () => {
 															onClick={() => {
 																dispatch({ type: "admin", payload: a });
 																dispatch({ type: "edit" });
-															}}
-														>
+															}}>
 															<Pencil className="h-4 w-4" />
 														</Button>
 														<Button
@@ -263,8 +279,7 @@ const Admin = () => {
 															onClick={() => {
 																dispatch({ type: "id", payload: a.Id });
 																dispatch({ type: "delete" });
-															}}
-														>
+															}}>
 															<Trash2 className="h-4 w-4" />
 														</Button>
 														<Button
@@ -273,8 +288,7 @@ const Admin = () => {
 															onClick={() => {
 																dispatch({ type: "id", payload: a.Id });
 																dispatch({ type: "password" });
-															}}
-														>
+															}}>
 															<KeyRound className="mr-2 h-4 w-4" />
 															Password
 														</Button>
@@ -284,7 +298,9 @@ const Admin = () => {
 										))
 									) : (
 										<TableRow>
-											<TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+											<TableCell
+												colSpan={4}
+												className="text-center text-muted-foreground py-8">
 												No admins.
 											</TableCell>
 										</TableRow>
@@ -301,21 +317,29 @@ const Admin = () => {
 									<PaginationPrevious
 										onClick={() => setPage((p) => Math.max(1, p - 1))}
 										aria-disabled={page <= 1}
-										className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+										className={
+											page <= 1 ? "pointer-events-none opacity-50" : ""
+										}
 									/>
 								</PaginationItem>
-								{Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-									<PaginationItem key={p}>
-										<PaginationLink isActive={p === page} onClick={() => setPage(p)}>
-											{p}
-										</PaginationLink>
-									</PaginationItem>
-								))}
+								{Array.from({ length: totalPages }, (_, i) => i + 1).map(
+									(p) => (
+										<PaginationItem key={p}>
+											<PaginationLink
+												isActive={p === page}
+												onClick={() => setPage(p)}>
+												{p}
+											</PaginationLink>
+										</PaginationItem>
+									),
+								)}
 								<PaginationItem>
 									<PaginationNext
 										onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
 										aria-disabled={page >= totalPages}
-										className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
+										className={
+											page >= totalPages ? "pointer-events-none opacity-50" : ""
+										}
 									/>
 								</PaginationItem>
 							</PaginationContent>

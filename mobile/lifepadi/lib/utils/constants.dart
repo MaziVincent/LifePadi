@@ -67,7 +67,12 @@ const kBiometricsKey = 'biometrics_enabled';
 const kHasEverLoggedIn = 'hasEverLoggedIn';
 const kHasSeenOnboarding = 'hasSeenOnboarding';
 
-const kGoogleMapsApiKey = 'AIzaSyCxMjW5DaD139uiB8nDQIryPlSWIVZrR_o';
+/// Google Maps API key.
+///
+/// Provide via `--dart-define=GOOGLE_MAPS_API_KEY=...` at build time so the key
+/// is not committed to source control. Falls back to an empty string when
+/// missing; calling code should validate before use.
+const kGoogleMapsApiKey = String.fromEnvironment('GOOGLE_MAPS_API_KEY');
 
 const kTotalDescription =
     'This is the total amount of all the items in your cart including the delivery fee and any other charges.';
