@@ -39,5 +39,11 @@
 		]
 	},
 	"include": ["src", "src/**/*.d.ts", "vite.config.ts"],
-	"exclude": ["e2e", "playwright.config.ts", "ladle-dist"]
+	"exclude": [
+		"e2e",
+		"playwright.config.ts",
+		"ladle-dist",
+		"src/**/*.stories.tsx",
+		"src/**/*.stories.ts"
+	]
 }
